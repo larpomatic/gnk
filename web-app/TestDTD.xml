@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GNK dtd_version="1.7">
+  <GN_INFORMATION architecture="parallelized" creation_date="1382308349000" duration="4" last_update_date="1382649881000" pip_core="5" pip_max="30" pip_min="20" t0_date="1381615200000" title="Mon super GN">
+    <AUTHORS/>
+    <STEPS last_step_id="selectIntrigue">
+      <STEP date="1382649906573" id="0" id_author="0" is_active="true" module="ecran_0" version="0.1"/>
+    </STEPS>
+    <PLAYERS men="1" undefined="8" women="1"/>
+    <UNIVERSE id="5"/>
+    <TAGS>
+      <TAGS_GN>
+        <TAG db_id="105" status="" type="Tag Univers" value="Tag Univers Harry Potter" weight="48"/>
+        <TAG db_id="101" status="" type="Tag Univers" value="Tag Univers Contemporain France" weight="52"/>
+      </TAGS_GN>
+      <TAGS_MAINSTREAM>
+        <TAG db_id="102" status="" type="Tag Univers" value="Tag Univers Contemporain Anglais" weight="51"/>
+      </TAGS_MAINSTREAM>
+      <TAGS_EVENT/>
+    </TAGS>
+  </GN_INFORMATION>
+  <GN_DEFINITION>
+    <PLOTS step_id="1">
+      <BANNED/>
+      <LOCKED/>
+      <SELECTED>
+        <PLOT plot_id="101"/>
+        <PLOT plot_id="105"/>
+        <PLOT plot_id="2"/>
+        <PLOT plot_id="102"/>
+        <PLOT plot_id="1"/>
+        <PLOT plot_id="104"/>
+        <PLOT plot_id="106"/>
+        <PLOT plot_id="103"/>
+      </SELECTED>
+    </PLOTS>
+    <CHARACTERS step_id="2">
+      <CHARACTER gender="F" id="2">
+        <ROLES>
+          <ROLE plot_id="104" role_id="1048" scoring="0" status="selected"/>
+          <ROLE plot_id="1" role_id="14" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1015" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1054" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1022" scoring="0" status="selected"/>
+          <ROLE plot_id="103" role_id="1030" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="6">
+        <ROLES>
+          <ROLE plot_id="106" role_id="1062" scoring="0" status="selected"/>
+          <ROLE plot_id="103" role_id="1034" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1014" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1056" scoring="0" status="selected"/>
+          <ROLE plot_id="2" role_id="15" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="M" id="1">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1038" scoring="0" status="selected"/>
+          <ROLE plot_id="104" role_id="1046" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1024" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1013" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1064" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="10">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1039" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1068" scoring="0" status="selected"/>
+          <ROLE plot_id="104" role_id="1045" scoring="0" status="selected"/>
+          <ROLE plot_id="1" role_id="12" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1011" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="7">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1032" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1053" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1066" scoring="0" status="selected"/>
+          <ROLE plot_id="104" role_id="1041" scoring="0" status="selected"/>
+          <ROLE plot_id="2" role_id="16" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="3">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1035" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1067" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1055" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1021" scoring="0" status="selected"/>
+          <ROLE plot_id="2" role_id="17" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="9">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1036" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1051" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1065" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1012" scoring="0" status="selected"/>
+          <ROLE plot_id="2" role_id="18" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="5">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1037" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1027" scoring="0" status="selected"/>
+          <ROLE plot_id="104" role_id="1042" scoring="0" status="selected"/>
+          <ROLE plot_id="105" role_id="1052" scoring="0" status="selected"/>
+          <ROLE plot_id="1" role_id="11" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="8">
+        <ROLES>
+          <ROLE plot_id="103" role_id="1033" scoring="0" status="selected"/>
+          <ROLE plot_id="104" role_id="1044" scoring="0" status="selected"/>
+          <ROLE plot_id="106" role_id="1061" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1023" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+      <CHARACTER gender="N" id="4">
+        <ROLES>
+          <ROLE plot_id="1" role_id="13" scoring="0" status="selected"/>
+          <ROLE plot_id="101" role_id="1016" scoring="0" status="selected"/>
+          <ROLE plot_id="102" role_id="1026" scoring="0" status="selected"/>
+          <ROLE plot_id="103" role_id="1031" scoring="0" status="selected"/>
+        </ROLES>
+      </CHARACTER>
+    </CHARACTERS>
+	<SUBSTITUTION step_id="1">
+			<NAMING step_id="1">
+				<CHARACTER character_id="2">
+					<NAME name_id="3" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="3" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="1">
+					<NAME name_id="1" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="1" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="3">
+					<NAME name_id="2" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="2" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="4">
+					<NAME name_id="1" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="2" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="5">
+					<NAME name_id="4" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="5" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="6">
+					<NAME name_id="4" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="2" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="7">
+					<NAME name_id="4" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="1" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="8">
+					<NAME name_id="1" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="3" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="9">
+					<NAME name_id="3" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="1" scoring="100" status="selected"/>
+				</CHARACTER>
+				<CHARACTER character_id="10">
+					<NAME name_id="1" scoring="100" status="selected"/>
+					<FIRSTNAME firstname_id="5" scoring="100" status="selected"/>
+				</CHARACTER>
+			</NAMING>
+			<RESOURCES step_id="1">
+				<GENERIC_RESOURCE generic_resource_id="1" plot_id="1">
+					<RESOURCE resource_id="1" scoring="100" status="selected"/>
+				</GENERIC_RESOURCE>
+			</RESOURCES>
+			<PLACES step_id="1">
+				<GENERIC_PLACE generic_place_id="1" plot_id="1">
+					<PLACE place_id="1" scoring="100" status="selected"/>
+				</GENERIC_PLACE>
+			</PLACES>
+	</SUBSTITUTION>
+  </GN_DEFINITION>
+  <GN_DATA>
+    <PLOTS step_id="1">
+      <PLOT author="1" creation_date="null" id="101" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="32" title=" Le jeu de l' Amour et du Hasard">
+        <DESCRIPTION>Source : Marivaux. Aurélien B</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+          <TAG type="Type intrigue" value="Quiproquo" weight="100"/>
+        </TAGS>
+		<ROLES>
+				<ROLE id="1011" code="Si" pipr="5" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[maître déguisé en valet]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Jeune adulte" type="Âge" weight="80"/> 
+						<TAG value="Proche" type="Proximité" weight="80"/> 
+						<TAG value="Femme" type="Sexe" weight="80"/> 
+						<TAG value="Célibataire" type="Situation maritale" weight="80"/> 
+						<TAG value="Amoureux(se)" type="Statut Affectif" weight="80"/> 
+						<TAG value="Riche" type="Richesse" weight="80"/> 
+						<TAG value="Séduisant(e )" type="Traits physiques" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1012" type="Amour" is_bijective="1" is_exclusive="1" weight="80">
+							 <DESCRIPTION>
+								<![CDATA[<I:SI> et <I:DO> sont amoureux.]]>
+							</DESCRIPTION>
+						</RELATION> 
+						<RELATION role_id="1013" type="Hiérarchie Desc" is_bijective="0" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:LI> est la servante de <I:SI>]]>
+							</DESCRIPTION>
+						</RELATION> 
+						<RELATION role_id="1016" type="Fratrie" is_bijective="1" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:SI> et <I:MA> sont frère et sœur]]>
+							</DESCRIPTION>
+						</RELATION> 
+						<RELATION role_id="1015" type="Filiation" is_bijective="0" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:PR> est le père de <I:SI>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10101" title="Mon mariage" > 
+							<DESCRIPTION>
+								<![CDATA[Mon père <I:PR> a arrangé mon mariage en me trouvant un prétendant <I:DO>. Il a trouvé opportun d'organiser une rencontre.  Je ne connais pas <I:DO> et j'apréhende difficilement notre première rencontre.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+						<PAST_SCENE past_scene_id="10102" title="Changement de costume !" > 
+							<DESCRIPTION>
+								<![CDATA[Je décide d'échanger mon rôle de jeune promise avec celui de mon domestique <I:Li> pour étudier mon promis <I:Do> sous un angle différent. Je lui ai demandée de le tester, j'espère qu'elle n'ira pas trop loin. Pendant ce temps, je prendrait donc le rôle de <I:Li> dont je serai la domestique.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+				</ROLE>
+				<ROLE id="1012" code="Do" pipr="5" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[maîtresse déguisée en servante, fille de <I:PR> et sœur de <I:MA>]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Homme" type="Sexe" weight="80"/> 
+						<TAG value="Séduisant(e )" type="Traits physiques" weight="80"/> 
+						<TAG value="Jeune adulte" type="Âge" weight="80"/> 
+						<TAG value="Proche" type="Proximité" weight="80"/> 
+						<TAG value="Célibataire" type="Situation maritale" weight="80"/> 
+						<TAG value="Amoureux(se)" type="Statut Affectif" weight="80"/> 
+						<TAG value="Riche" type="Richesse" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1014" type="Hiérarchie Desc" is_bijective="0" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:AR> est le valet de <I:DO>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10101" title="Mon mariage" > 
+							<DESCRIPTION>
+								<![CDATA[<I:PR> a arrangé le mariage de sa fille <I:SI> avec moi. Il a trouvé opportun d'organiser une rencontre. Je ne connais pas <I:SI> et j'apréhende difficilement notre première rencontre.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+						<PAST_SCENE past_scene_id="10102" title="Changement de costume !" > 
+							<DESCRIPTION>
+								<![CDATA[Je décide d'échanger mon rôle de jeune prétendant avec celui de mon domestique <I:Li> pour étudier ma promise <I:SI> sous un angle différent. Je lui ai demandé de la tester, j'espère qu'il n'ira pas trop loin. Pendant ce temps, je prendrait donc le rôle de <I:AR> dont je serai le domestique.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+				</ROLE>
+				<ROLE id="1013" code="Li" pipr="3" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[Valet déguisé en maître]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Femme" type="Sexe" weight="80"/> 
+						<TAG value="Jeune adulte" type="Âge" weight="80"/> 
+						<TAG value="Proche" type="Proximité" weight="80"/> 
+						<TAG value="Célibataire" type="Situation maritale" weight="80"/> 
+						<TAG value="Pauvre et Humble" type="Richesse" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1011" type="Hiérarchie Asc" is_bijective="0" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:Li> est la servante de <I:SI>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10102" title="Changement de costume !" > 
+							<DESCRIPTION>
+								<![CDATA[<I:SI> veut changer de rôle avec moi pour étudier son futur époux <I:DO> auquel elle doit prochainement se marier (du fait de l'arrangement de son père <I:PR>) mais qu'elle n'a jamais vu. Je trouve ce jeu intéressant je vais tenter de profiter de cette situation pour qu'elle se rende compte de mon quotidien car <I:SI> sera maintenant ma domestique.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+				</ROLE>
+				<ROLE id="1014" code="Ar" pipr="3" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[Servante déguisée en maîtresse]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Homme" type="Sexe" weight="80"/> 
+						<TAG value="Jeune adulte" type="Âge" weight="80"/> 
+						<TAG value="Proche" type="Proximité" weight="80"/> 
+						<TAG value="Célibataire" type="Situation maritale" weight="80"/> 
+						<TAG value="Pauvre et Humble" type="Richesse" weight="80"/> 
+						<TAG value="Fourberie" type="Trait de personnalité" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1012" type="Hiérarchie Asc" is_bijective="0" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:AR> est le valet de <I:DO>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10102" title="Changement de costume !" > 
+							<DESCRIPTION>
+								<![CDATA[<I:DO> veut changer de rôle avec moi pour étudier sa future épouse <I:SI> à laquelle il va se marier prochainement mais qu'il n'a jamais vue. Je trouve ce jeu intéressant je vais tenter de profiter de cette situation pour qu'il se rende compte de mon quotidien car <I:DO> sera maintenant mon domestique. Il m'a donné l'ordre d'insister la séduction de <I:SI>.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+				</ROLE>
+				<ROLE id="1015" code="Pr" pipr="2" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[Père]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Âge mûr" type="Âge" weight="80"/> 
+						<TAG value="Eloigné" type="Proximité" weight="80"/> 
+						<TAG value="marié(e)" type="Situation maritale" weight="80"/> 
+						<TAG value="Riche" type="Richesse" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1016" type="Parent (direct)" is_bijective="1" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:PR> est le père de <I:MA>]]>
+							</DESCRIPTION>
+						</RELATION> 
+						<RELATION role_id="1011" type="Parent (direct)" is_bijective="1" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:PR> est le père de <I:SI>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10101" title="Le mariage de ma fille" > 
+							<DESCRIPTION>
+								<![CDATA[J'ai arrangé le mariage de ma fille <I:SI> en lui trouvant un prétendant <I:DO>. <I:DO> est un gentilhomme fort bien éduqué et sa situation sociale me serait fort profitable si celui-ci se mariait à ma fille <I:SI>. J'ai trouvé opportun d'organiser une rencontre ma fille <I:SI> et <I:DO>.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+						<PAST_SCENE past_scene_id="10103" title="La pré-rencontre" > 
+							<DESCRIPTION>
+								<![CDATA[Avec <I:MA> nous les avons espionnés, et on a tout découvert ! C'est intéressant, <I:DO> et <I:AR> ont inversé leurs rôles, tout comme <I:SI> et <I:Li> aussi.
+Je vais profiter de la situation pour m'amuser avec <I:MA> en essayant de faire tenir le jeu le plus longtemps possible.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+				</ROLE>
+				<ROLE id="1016" code="MA" pipr="2" pipi="2" type="PJ"> 
+					<DESCRIPTION>
+						<![CDATA[<I:MA> (hist Mario), fils de <I:PR> et frère de <I:DO>]]>
+					</DESCRIPTION>
+					<TAGS>
+						<TAG value="Jeune adulte" type="Âge" weight="80"/> 
+						<TAG value="Proche" type="Proximité" weight="80"/> 
+						<TAG value="Riche" type="Richesse" weight="80"/> 
+					</TAGS>
+					<RELATIONS>
+						<RELATION role_id="1015" type="Filiation" is_bijective="1" is_exclusive="0" weight="80"> 
+							<DESCRIPTION>
+								<![CDATA[<I:MA> est le fils de <I:PR>]]>
+							</DESCRIPTION>
+						</RELATION> 
+					</RELATIONS>
+					<PAST_SCENES>
+						<PAST_SCENE past_scene_id="10101" title="Le mariage de ma sœur" > 
+							<DESCRIPTION>
+								<![CDATA[Mon père <I:PR> a arrangé le mariage de ma sœur <I:SI> en lui trouvant un prétendant <I:DO> et a trouvé opportun d'organiser une rencontre entre <I:SI> et <I:DO>.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+						<PAST_SCENE past_scene_id="10103" title="La pré-rencontre" > 
+							<DESCRIPTION>
+								<![CDATA[Avec <I:PR> nous les avons espionnés, et on a tout découvert ! C'est intéressant, <I:DO> et <I:AR> ont inversé leurs rôles, tout comme <I:SI> et <I:Li> aussi.
+Je vais profiter de la situation pour m'amuser avec <I:PR> en essayant de faire tenir le jeu le plus longtemps possible.]]>
+							</DESCRIPTION>
+						</PAST_SCENE>
+					</PAST_SCENES>
+					<EVENTS> 
+						<EVENT event_id="1" title="Le marriage" is_announced="True"> 
+							<DESCRIPTION> 
+								Beau marriage blablabla
+							</DESCRIPTION> 
+							
+							<COMMENT> 
+								Plein d'émotion, c'est trop cool
+							</COMMENT> 
+							
+							<EVENEMENTIAL_DESCRIPTION> 
+								Description des évènement
+							</EVENEMENTIAL_DESCRIPTION> 
+							
+							<GENERIC_RESOURCES> 
+								<GENERIC_RESOURCE generic_resource_id="1" quantity="1"/> 
+							</GENERIC_RESOURCES> 
+						</EVENT> 
+					</EVENTS> 
+				</ROLE>
+			</ROLES>
+			
+
+			
+			<PAST_SCENES> 
+				<PAST_SCENE id="10101" title="PastScene_10101" is_public="1"> 
+					<DESCRIPTION>
+						<![CDATA[PASTSCENE 10101 description]]>
+					</DESCRIPTION>
+					
+					<!--PREDECESSORS>
+						<PREDECESSOR past_scene_id=""/>
+					</PREDECESSORS-->
+					
+					<GENERIC_PLACES> 
+						<GENERIC_PLACE generic_place_id="1"/> 
+					</GENERIC_PLACES> 
+
+					<!-- both relative and absolute are not nullable in BDD, such a shames ! -->
+					<TIME>
+						<RELATIVE time="42" time_unit="heure" />
+						<ABSOLUTE year="1" month="2" day="3" hour="4" min="5" />
+					</TIME>
+				</PAST_SCENE> 
+				
+				<PAST_SCENE id="10102" title="PastScene_10102" is_public="1"> 
+					<DESCRIPTION>
+						<![CDATA[PASTSCENE 10102 description]]>
+					</DESCRIPTION>
+					
+					<!--PREDECESSORS>
+						<PREDECESSOR past_scene_id=""/>
+					</PREDECESSORS-->
+					
+					<GENERIC_PLACES> 
+						<GENERIC_PLACE generic_place_id="1"/> 
+					</GENERIC_PLACES> 
+
+					<!-- both relative and absolute are not nullable in BDD, such a shames ! -->
+					<TIME>
+						<RELATIVE time="42" time_unit="heure" />
+						<ABSOLUTE year="1" month="2" day="3" hour="4" min="5" />
+					</TIME>
+				</PAST_SCENE> 
+				
+				<PAST_SCENE id="10103" title="PastScene_10103" is_public="1"> 
+					<DESCRIPTION>
+						<![CDATA[PASTSCENE 10103 description]]>
+					</DESCRIPTION>
+					
+					<!--PREDECESSORS>
+						<PREDECESSOR past_scene_id=""/>
+					</PREDECESSORS-->
+					
+						<GENERIC_PLACES> 
+							<GENERIC_PLACE id="1" code="genericPlace_1">
+								<TAGS>
+									<TAG value="Amour" type="Sentiments" weight="100"/>
+								</TAGS>
+								
+								<COMMENT>
+									<![CDATA[GENERICPLACE 1 commentaire]]>
+								</COMMENT>
+							</GENERIC_PLACE>
+						</GENERIC_PLACES>
+
+					<!-- both relative and absolute are not nullable in BDD, such a shames ! -->
+					<TIME>
+						<RELATIVE time="42" time_unit="heure" />
+						<ABSOLUTE year="1" month="2" day="3" hour="4" min="5" />
+					</TIME>
+				</PAST_SCENE> 
+			</PAST_SCENES> 
+			
+			<EVENTS> 
+				<!-- timing : pourcentage -->
+				<!-- duration : en heures -->
+				<EVENT id="1" title="Le mariage" timing="90" duration="2" is_public="true" is_planned="false"> 
+					<PREDECESSORS>
+					</PREDECESSORS>
+					
+					<!-- Pour parler d'un lieu générique : <L:CODE>, d'un rôle (individu) : <I:CODE>, d'une ressource (objet) : <O:CODE> -->
+					<DESCRIPTION>
+						<![CDATA[<Un magnifique mariage avec tous les joueurs !>]]>
+					</DESCRIPTION>
+					
+					<GENERIC_PLACES> 
+						<GENERIC_PLACE generic_place_id="1"/> 
+					</GENERIC_PLACES> 
+				</EVENT> 
+			</EVENTS> 
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="105" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="28" title="L'Epreuve">
+        <DESCRIPTION>Source : Marivaux. Jean-François P.</DESCRIPTION>
+        <TAGS>
+          <TAG type="Type intrigue" value="Comédie et Farce" weight="100"/>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+          <TAG type="Type intrigue" value="Amours empêchées - (Polti)" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="Mb" id="1056" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Li" id="1053" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="An" id="1052" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="MA2" id="1051" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Lu" id="1054" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Fr" id="1055" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES/>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="2" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="28" title="Second Plot">
+        <DESCRIPTION>test</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Magie" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="r2.2" id="16" pipi="4" pipr="3" type="PJ">
+            <DESCRIPTION>Second character of SecondPlot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r2.1" id="15" pipi="4" pipr="3" type="PJ">
+            <DESCRIPTION>First character of SecondPlot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r2.4" id="18" pipi="4" pipr="3" type="PJ">
+            <DESCRIPTION>Fourth character of SecondPlot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r2.3" id="17" pipi="4" pipr="3" type="PJ">
+            <DESCRIPTION>Third character of SecondPlot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES/>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="102" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="39" title=" Le Legs">
+        <DESCRIPTION>Source : Marivaux. Aurélien L</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+          <TAG type="Type intrigue" value="Amours empêchées - (Polti)" weight="100"/>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="Li" id="1025" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Le" id="1026" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="P" id="1027" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Ch" id="1024" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="M" id="1022" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="H" id="1023" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Ct" id="1021" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES/>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="1" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="17" title="The FirstPlot">
+        <DESCRIPTION>Première Intrigue&#13;
+Ceci est un test avec &#13;
+  des lettres et chiffres  AaBbCcDdEe123&#13;
+  des accents ëéàôïûèê&#13;
+  des caractères spéciaux &amp;'{@\&#13;
+&#13;
+fin de test</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Violence" weight="100"/>
+          <TAG type="Sentiments" value="Magie" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="r1.2" id="12" pipi="4" pipr="1" type="PJ">
+            <DESCRIPTION>Second  character of Firstplot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r1.4" id="14" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION>Fourth  character of Firstplot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r1.1" id="11" pipi="4" pipr="4" type="PJ">
+            <DESCRIPTION>First character of Firstplot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="r1.3" id="13" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION>Third  character of Firstplot</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES/>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="104" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="30" title=" Le Prince Travesti">
+        <DESCRIPTION>Source : Marivaux. Elodie N</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+          <TAG type="Type intrigue" value="Amours empêchées - (Polti)" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="Rc" id="1044" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Ho" id="1042" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Fd" id="1045" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Gr" id="1048" pipi="0" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Ar" id="1046" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Pb" id="1041" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Li" id="1047" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Le" id="1043" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES/>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="106" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="36" title="Le Petit maître Corrigé">
+        <DESCRIPTION>Source : Marivaux. Chloé V</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+          <TAG type="Type intrigue" value="Amours empêchées - (Polti)" weight="100"/>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="F" id="1068" pipi="2" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Lm" id="1062" pipi="0" pipr="1" type="PHJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="H" id="1063" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Lc" id="1061" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Dm" id="1065" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="M" id="1067" pipi="2" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="D" id="1066" pipi="2" pipr="3" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="R" id="1064" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCES> 
+			<GENERIC_RESOURCE id="1" code="Cadeau" owner_role_id="1">
+				<TAGS>
+					<TAG value="Amour" type="Sentiments" weight="100"/>
+				</TAGS>
+				
+				<COMMENT>
+					Une magnifique fleur
+				</COMMENT>
+			</GENERIC_RESOURCE>
+		</GENERIC_RESOURCES> 
+        <TEXTUAL_CLUES/>
+      </PLOT>
+      <PLOT author="1" creation_date="null" id="103" is_evenemential="true" is_mainstream="true" is_public="true" last_update_date="null" pipp="28" title=" Le Père prudent et Equitable">
+        <DESCRIPTION>Source : Marivaux. Bastien F.</DESCRIPTION>
+        <TAGS>
+          <TAG type="Sentiments" value="Amour" weight="100"/>
+          <TAG type="Type intrigue" value="Amours empêchées - (Polti)" weight="100"/>
+          <TAG type="Sources" value="PRC-GN-SIGL2014" weight="100"/>
+        </TAGS>
+        <ROLES>
+          <ROLE code="Père" id="1032" pipi="0" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Paysan" id="1038" pipi="0" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Valet" id="1030" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Servante" id="1033" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Fille" id="1031" pipi="2" pipr="5" type="PJ">
+            <DESCRIPTION>A fiancer</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Amant" id="1034" pipi="2" pipr="1" type="PJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Prétendant 2" id="1036" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION>Chevalier</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Prétendant 1" id="1035" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION>Propriétaire campagnard</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Postier" id="1039" pipi="0" pipr="1" type="PNJ">
+            <DESCRIPTION/>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+          <ROLE code="Prétendant 3" id="1037" pipi="1" pipr="1" type="PJ">
+            <DESCRIPTION>Financier</DESCRIPTION>
+            <TAGS/>
+            <RELATIONS/>
+            <PAST_SCENES/>
+            <EVENTS/>
+          </ROLE>
+        </ROLES>
+        <PAST_SCENES/>
+        <EVENTS/>
+        <GENERIC_PLACES/>
+        <GENERIC_RESOURCE>
+			<GENERIC_RESOURCE generic_resource_id="1" quantity="1"/> 
+		</GENERIC_RESOURCE>
+        <TEXTUAL_CLUES/>
+      </PLOT>
+    </PLOTS>
+	<FIRSTNAMES step_id="1"> 
+		<!-- gender : M | F | N -->
+		<FIRSTNAME id="1" value="Jean François" gender="M">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</FIRSTNAME>
+		<FIRSTNAME id="2" value="Aurélien" gender="M">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</FIRSTNAME>
+		<FIRSTNAME id="3" value="Elodie" gender="F">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</FIRSTNAME>
+		<FIRSTNAME id = "4" value="Chloé" gender = "F">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</FIRSTNAME>
+		<FIRSTNAME id = "5" value="Bastien" gender = "M">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</FIRSTNAME>
+	</FIRSTNAMES>
+	<NAMES step_id="1">
+		<NAME id="1" value="Picard" gender="N">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</NAME>
+		<NAME id="2" value="Legrand" gender="N">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</NAME>
+		<NAME id="3" value="Brandicourt" gender="N">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</NAME>
+		<NAME id="4" value="Fiorentini" gender="N">
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</NAME>
+	</NAMES>	
+	
+	<RESOURCES step_id="1">
+		<!-- gender : M | F | MP | FP -->
+		<RESOURCE id="1" value="Rose" gender="F">
+			<DESCRIPTION>
+				Une belle rose qui évoque l'amour.
+			</DESCRIPTION>
+			<TAGS>
+				<TAG value="Amour" type="Sentiments" weight="100"/>
+			</TAGS>
+		</RESOURCE>
+	</RESOURCES>
+	
+	<PLACES step_id="1"> 
+			<PLACE id="1" value="place_1" gender="M">
+				<DESCRIPTION>
+					<![CDATA[PLACE 1 description]]>
+				</DESCRIPTION>
+				
+				<TAGS>
+					<TAG value="Amour" type="Sentiments" weight="100"/>
+				</TAGS>
+			</PLACE>
+	</PLACES>
+				
+	</GN_DATA>
+</GNK>

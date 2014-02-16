@@ -1,0 +1,96 @@
+@CHARSET "UTF-8";
+
+.page-body {
+    padding-top: 60px;
+    padding-bottom: 100px;
+}
+
+body {
+    text-align: justify;
+    background-color: #2C2C2C;
+}
+
+.gnk {
+    background-color: #FFF;
+}
+
+h3 {
+    border-bottom: 1px solid Darkgoldenrod;
+}
+
+h4 {
+    color: DarkGoldenRod !important;
+    font-weight: normal !important;
+}
+
+p:first-letter {
+    font-family: Vladimir Script;
+    font-size: 500%;
+    color: GoldenRod;
+    float: left;
+    vertical-align: center;
+    padding-right: 1px;
+    font-weight: 500;
+}
+.gnk .brand {
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.gnk .brand-logo {
+    float: left;
+    background-image: url('../images/login_icon.png');
+    height: 30px;
+    width: 30px;
+    margin: 3px 0 0 10px;
+}
+
+.remove-action {
+	margin: 0;
+	background-color: inherit;
+	border: 0;
+}
+
+.form-small {
+	height: 1px;
+}
+
+.input-small {
+	width: 10px;
+}
+
+/* SUBNAV */
+.subnav {
+    margin-bottom: 20px;
+}
+
+/*FOOTER*/
+.footer {
+    background-color: #2C2C2C;
+}
+.footer a {
+    color: #999;
+}
+.footer ul {
+    list-style: none;
+    margin: 0;
+}
+.footer li {
+    float: left;
+    height: 20px;
+    margin: 10px;
+}
+.how-to {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.splash {
+    background-image: url('../images/weloveroleplay.jpg');
+    width: 600px;
+    height: 300px;
+    margin: 0 auto 0 auto;
+    border: solid 5px #FFFFFF;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    border-radius: 2px;
+}
