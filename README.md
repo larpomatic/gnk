@@ -19,5 +19,12 @@ How To
     GRANT ALL PRIVILEGES ON gnkdb.* TO 'gnk'@'localhost';
     FLUSH PRIVILEGES;
   <li>download schema and database data from [db](db) folder</li>
+  <li>import it into your newly created database</li>
+  
+    mysql -u gnk gnkdb < dump20140122.sql
+  <li>Thats'it :) run your project!</li>
+  
+    grails run-app
+  <li>Navigate to [http://localhost:8090/gnk](http://localhost:8090/gnk)</li>
    </lo>
     
