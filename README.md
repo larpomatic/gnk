@@ -12,7 +12,7 @@ How To
     <li>upgrade project</li>
 
     grails upgrade // choose yes (you are sure)
-  <li>install MySQL and create database gnkdb and user gnk (without password)</li>
+  <li>install MySQL and create database gnkdb and user gnk (without password) [http://dev.mysql.com/downloads/mysql] (http://dev.mysql.com/downloads/mysql)</li>
     
     CREATE DATABASE gnkdb;
     CREATE USER 'gnk'@'localhost';
