@@ -12,6 +12,8 @@ How To
     <li>upgrade project</li>
 
     grails upgrade // choose yes (you are sure)
+    
+NB: If you change your JDK version, re-upgrade grails too.
   <li>install MySQL and create database gnkdb and user gnk (without password) [http://dev.mysql.com/downloads/mysql] (http://dev.mysql.com/downloads/mysql)</li>
     
     CREATE DATABASE gnkdb;
