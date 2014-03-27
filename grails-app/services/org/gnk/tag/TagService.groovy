@@ -5,6 +5,9 @@ import org.gnk.tag.Tag
 
 class TagService {
 
+    public static final int LOCKED = 101;
+    public static final int BANNED = -101;
+
 	def serviceMethod() {
 	}
 
@@ -25,11 +28,11 @@ class TagService {
 	}
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == 100;
+        return valuedTag.getValue() == TagService.LOCKED;
     }
 
     def tagIsBanned(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == -100;
+        return valuedTag.getValue() == TagService.BANNED;
     }
 
     /**

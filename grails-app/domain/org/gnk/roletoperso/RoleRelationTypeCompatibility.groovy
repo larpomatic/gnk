@@ -1,6 +1,7 @@
 package org.gnk.roletoperso
 
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class RoleRelationTypeCompatibility {
 
@@ -28,7 +29,7 @@ class RoleRelationTypeCompatibility {
     }
 
     public boolean isBanned() {
-        return weight == -100;
+        return weight == TagService.BANNED;
     }
 
 }
