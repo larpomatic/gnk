@@ -6,6 +6,7 @@ import org.gnk.gn.Gn;
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
+import org.gnk.tag.TagService;
 
 import java.util.*;
 
@@ -280,7 +281,7 @@ public class RoleToPersoProcessing {
                 challengerTagList.put(rolehasTag.getterTag(), rolehasTag.getterWeight());
             }
         }
-        rankTag = getRankTag(character.getTags(), challengerTagList, characterLockedBannedTags);
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
