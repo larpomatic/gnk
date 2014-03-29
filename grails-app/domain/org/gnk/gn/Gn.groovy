@@ -60,7 +60,8 @@ class Gn {
         "characterSet",
         "nonPlayerCharSet",
         "firstnameSet",
-        "lastnameSet"
+        "lastnameSet",
+        "selectedEvenemential"
 	]
 
 	Date t0Date
@@ -72,6 +73,7 @@ class Gn {
 	int pipCore
 	Set<User> authors
 	Set<Plot> selectedPlotSet
+    Plot selectedEvenemential
 	Set<Plot> lockedPlotSet
 	Set<Plot> bannedPlotSet
     Set<Character> characterSet

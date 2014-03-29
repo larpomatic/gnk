@@ -27,6 +27,7 @@ class SelectIntrigueController {
 		Gn gnInstance
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
 		Set<Plot> selectedPlotInstanceList = new HashSet<Plot>()
+        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
 		List<List<String>> statisticResultList = new ArrayList<List<String>>()
 		if (id >= 0) {
@@ -62,6 +63,7 @@ class SelectIntrigueController {
 
 				SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
 				selectedPlotInstanceList = algo.getSelectedPlots();
+                selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
 				gnInstance.selectedPlotSet = selectedPlotInstanceList;
 				gnInstance.bannedPlotSet = bannedPlot;
 				gnInstance.lockedPlotSet = lockedPlot;
@@ -89,8 +91,22 @@ class SelectIntrigueController {
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
         if (gnInstance && gnInstance.bannedPlotSet)
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
-		[gnInstance: gnInstance, screenStep: params?.screenStep, plotTagList: (new TagService()).getPlotTagQuery(), universList: Univers.list(),plotInstanceList: selectedPlotInstanceList, bannedPlotInstanceList: gnInstance?.bannedPlotSet, nonTreatedPlots: nonTreatedPlots ,statisticResultList: statisticResultList]
+		[gnInstance: gnInstance,
+                screenStep: params?.screenStep,
+                plotTagList: (new TagService()).getPlotTagQuery(),
+                universList: Univers.list(),
+                plotInstanceList: selectedPlotInstanceList,
+                evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
+                bannedPlotInstanceList: gnInstance?.bannedPlotSet,
+                nonTreatedPlots: nonTreatedPlots ,
+                statisticResultList: statisticResultList]
 	}
+
+    def selectEvenemential(Long gnId) {
+        if (id >= 0) {
+            gnInstance = Gn.get(gnId);
+        }
+    }
 
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
 		List<String> stat = new ArrayList<String>(3)
@@ -101,7 +117,6 @@ class SelectIntrigueController {
 	}
 
 	def save() {
-		Object obj = params
 		Gn gnInstance = new Gn(params)
 		formatParams(gnInstance)
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)

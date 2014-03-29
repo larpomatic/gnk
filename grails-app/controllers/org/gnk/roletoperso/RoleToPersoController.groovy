@@ -1,5 +1,6 @@
 package org.gnk.roletoperso
 
+import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
@@ -27,6 +28,9 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.setSelectedEvenemential(evenementialPlot);
 
         assert (gn != null)
         if (gn == null) {
@@ -110,7 +114,7 @@ class RoleToPersoController {
             }
         }
 
-        RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
+//        RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {

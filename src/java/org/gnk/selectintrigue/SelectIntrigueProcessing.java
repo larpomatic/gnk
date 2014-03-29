@@ -13,15 +13,19 @@ import org.gnk.tag.Tag;
 
 public class SelectIntrigueProcessing {
 	private Gn _gn;
+    private Set<Plot> _selectedEvenementialPlotList;
 	private Set<Plot> _selectedPlotList;
 	private Set<Plot> _lockedPlotList;
 	private Set<Plot> _bannedPlotList;
 	private Set<Plot> _allPlotList;
 	private Map<Tag, Integer> _value;
+    private Map<Tag, Integer> _valueEvenemential;
 	private Set<Tag> _bannedTagList;
 
 	private Map<Tag, Integer> _sumAllPlot;
+    private Map<Tag, Integer> _sumAllEvenementialPlot;
 	private int _sumAllPlotDividor = 0;
+    private int _sumAllEvenementialPlotDividor = 0;
 
 	private Integer _minPip;
 	private Integer _maxPip;
@@ -32,15 +36,22 @@ public class SelectIntrigueProcessing {
 	public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
 		_gn = parGn;
 		_selectedPlotList = new HashSet<Plot>();
+        _selectedEvenementialPlotList = new HashSet<Plot>();
 		_lockedPlotList = lockedPlot;
 		_bannedPlotList = bannedList;
 		_allPlotList = new HashSet<Plot>();
 		_value = new HashMap<Tag, Integer>(parGn.getGnTags().size());
 		_sumAllPlot = new HashMap<Tag, Integer>(parGn.getGnTags().size());
+        _valueEvenemential = new HashMap<Tag, Integer>(parGn.getEvenementialTags().size());
+        _sumAllEvenementialPlot = new HashMap<Tag, Integer>(parGn.getEvenementialTags().size());
 		for (Tag tag : parGn.getGnTags().keySet()) {
 			_value.put(tag, 0);
 			_sumAllPlot.put(tag, 0);
 		}
+        for (Tag tag : parGn.getEvenementialTags().keySet()) {
+            _valueEvenemential.put(tag, 0);
+            _sumAllEvenementialPlot.put(tag, 0);
+        }
 		setBannedTagList();
 		for (Plot plot : parAllPlotList) {
 			if (plotIsCompatible(plot)) {
@@ -56,6 +67,15 @@ public class SelectIntrigueProcessing {
 					entry.setValue(entry.getValue() + value);
 				}
 			}
+            if (plot.getIsEvenemential()) {
+                for (Entry<Tag, Integer> entry : _sumAllEvenementialPlot.entrySet()) {
+                    if (plot.hasPlotTag(entry.getKey())) {
+                        int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
+                        _sumAllEvenementialPlotDividor += value;
+                        entry.setValue(entry.getValue() + value);
+                    }
+                }
+            }
 		}
 
 		if (_sumAllPlotDividor > 0) {
@@ -63,6 +83,12 @@ public class SelectIntrigueProcessing {
 				entry.setValue((entry.getValue() * 100) / _sumAllPlotDividor);
 			}
 		}
+
+        if (_sumAllEvenementialPlotDividor > 0) {
+            for (Entry<Tag, Integer> entry : _sumAllEvenementialPlot.entrySet()) {
+                entry.setValue((entry.getValue() * 100) / _sumAllEvenementialPlotDividor);
+            }
+        }
 
         _maxPip = _gn.getNbPlayers() * _gn.getPipMax();
         int realMinPip = _gn.getNbPlayers() * _gn.getPipMin();
@@ -80,6 +106,10 @@ public class SelectIntrigueProcessing {
 	public Set<Plot> getSelectedPlots() {
 		return _selectedPlotList;
 	}
+
+    public Set<Plot> getSelectedEvenementialPlotList() {
+        return _selectedEvenementialPlotList;
+    }
 
 	public int getPipByPlayer() {
 		return _gn.getNbPlayers() > 0 ? _currentPip / _gn.getNbPlayers() : 0;
@@ -143,6 +173,11 @@ public class SelectIntrigueProcessing {
 				_bannedTagList.add(plotTagEntry.getKey());
 			}
 		}
+        for (Entry<Tag, Integer> plotTagEntry : _gn.getEvenementialTags().entrySet()) {
+            if (plotTagEntry.getValue() < 0) {
+                _bannedTagList.add(plotTagEntry.getKey());
+            }
+        }
 	}
 
 	private boolean plotIsCompatible(Plot plot) {
@@ -186,7 +221,12 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void selectPlot(Plot plot) {
-		_selectedPlotList.add(plot);
+        if (plot.getIsEvenemential()) {
+            _selectedEvenementialPlotList.add(plot);
+        }
+        else {
+            _selectedPlotList.add(plot);
+        }
 		_allPlotList.remove(plot);
 	}
 
@@ -210,6 +250,7 @@ public class SelectIntrigueProcessing {
 		if (selectedPlot == null) {
 			return false;
 		}
+        // si l'intrigue est évenementielle, ajouter au bon endroit
 		selectPlot(selectedPlot);
 		return (_currentPip < _minPip);
 	}
