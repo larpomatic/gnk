@@ -8,5 +8,7 @@ $(function(){
     });
 
     $(".radioEvenemential").first().prop("checked", true);
+
+    $('.selectedEvenemential').val($(".radioEvenemential").first().val());
 });
 

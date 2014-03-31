@@ -102,12 +102,6 @@ class SelectIntrigueController {
                 statisticResultList: statisticResultList]
 	}
 
-    def selectEvenemential(Long gnId) {
-        if (id >= 0) {
-            gnInstance = Gn.get(gnId);
-        }
-    }
-
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
 		List<String> stat = new ArrayList<String>(3)
 		stat.add(name)

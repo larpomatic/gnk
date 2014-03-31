@@ -28,14 +28,16 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-        int evenementialId = params.selectedEvenemential as int;
-        Plot evenementialPlot = Plot.findById(evenementialId);
-        gn.setSelectedEvenemential(evenementialPlot);
 
         assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
         }
+
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.setSelectedEvenemential(evenementialPlot);
+
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
         for (Character character1 : gn.getterCharacterSet()) {
@@ -114,7 +116,7 @@ class RoleToPersoController {
             }
         }
 
-//        RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
+        RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
