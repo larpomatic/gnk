@@ -60,20 +60,18 @@ public class SelectIntrigueProcessing {
 		}
 
 		for (Plot plot : _allPlotList) {
+			for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
+				if (plot.hasPlotTag(entry.getKey())) {
+					int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
+					_sumAllPlotDividor += value;
+					entry.setValue(entry.getValue() + value);
+				}
+			}
             if (plot.getIsEvenemential()) {
                 for (Entry<Tag, Integer> entry : _sumAllEvenementialPlot.entrySet()) {
                     if (plot.hasPlotTag(entry.getKey())) {
                         int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
                         _sumAllEvenementialPlotDividor += value;
-                        entry.setValue(entry.getValue() + value);
-                    }
-                }
-            }
-            else {
-                for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
-                    if (plot.hasPlotTag(entry.getKey())) {
-                        int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
-                        _sumAllPlotDividor += value;
                         entry.setValue(entry.getValue() + value);
                     }
                 }
@@ -95,6 +93,8 @@ public class SelectIntrigueProcessing {
         _maxPip = _gn.getNbPlayers() * _gn.getPipMax();
         int realMinPip = _gn.getNbPlayers() * _gn.getPipMin();
 		_minPip = ((_maxPip - realMinPip) / 2) + realMinPip;//Heuristique pour que R2P soit plus facile derrière.
+
+
         _currentPip = 0;
 
 		_allPlotList.removeAll(_bannedPlotList);
