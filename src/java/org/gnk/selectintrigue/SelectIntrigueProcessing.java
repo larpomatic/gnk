@@ -22,11 +22,6 @@ public class SelectIntrigueProcessing {
     private Map<Tag, Integer> _valueEvenemential;
 	private Set<Tag> _bannedTagList;
 
-	private Map<Tag, Integer> _sumAllPlot;
-    private Map<Tag, Integer> _sumAllEvenementialPlot;
-	private int _sumAllPlotDividor = 0;
-    private int _sumAllEvenementialPlotDividor = 0;
-
 	private Integer _minPip;
 	private Integer _maxPip;
 	private Integer _currentPip;
@@ -41,16 +36,12 @@ public class SelectIntrigueProcessing {
 		_bannedPlotList = bannedList;
 		_allPlotList = new HashSet<Plot>();
 		_value = new HashMap<Tag, Integer>(parGn.getGnTags().size());
-		_sumAllPlot = new HashMap<Tag, Integer>(parGn.getGnTags().size());
         _valueEvenemential = new HashMap<Tag, Integer>(parGn.getEvenementialTags().size());
-        _sumAllEvenementialPlot = new HashMap<Tag, Integer>(parGn.getEvenementialTags().size());
 		for (Tag tag : parGn.getGnTags().keySet()) {
 			_value.put(tag, 0);
-			_sumAllPlot.put(tag, 0);
 		}
         for (Tag tag : parGn.getEvenementialTags().keySet()) {
             _valueEvenemential.put(tag, 0);
-            _sumAllEvenementialPlot.put(tag, 0);
         }
 		setBannedTagList();
 		for (Plot plot : parAllPlotList) {
@@ -59,41 +50,9 @@ public class SelectIntrigueProcessing {
 			}
 		}
 
-		for (Plot plot : _allPlotList) {
-			for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
-				if (plot.hasPlotTag(entry.getKey())) {
-					int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
-					_sumAllPlotDividor += value;
-					entry.setValue(entry.getValue() + value);
-				}
-			}
-            if (plot.getIsEvenemential()) {
-                for (Entry<Tag, Integer> entry : _sumAllEvenementialPlot.entrySet()) {
-                    if (plot.hasPlotTag(entry.getKey())) {
-                        int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
-                        _sumAllEvenementialPlotDividor += value;
-                        entry.setValue(entry.getValue() + value);
-                    }
-                }
-            }
-		}
-
-		if (_sumAllPlotDividor > 0) {
-			for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
-				entry.setValue((entry.getValue() * 100) / _sumAllPlotDividor);
-			}
-		}
-
-        if (_sumAllEvenementialPlotDividor > 0) {
-            for (Entry<Tag, Integer> entry : _sumAllEvenementialPlot.entrySet()) {
-                entry.setValue((entry.getValue() * 100) / _sumAllEvenementialPlotDividor);
-            }
-        }
-
         _maxPip = _gn.getNbPlayers() * _gn.getPipMax();
         int realMinPip = _gn.getNbPlayers() * _gn.getPipMin();
 		_minPip = ((_maxPip - realMinPip) / 2) + realMinPip;//Heuristique pour que R2P soit plus facile derrière.
-
 
         _currentPip = 0;
 
@@ -221,12 +180,7 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void selectPlot(Plot plot) {
-        if (plot.getIsEvenemential()) {
-            _selectedEvenementialPlotList.add(plot);
-        }
-        else {
-            _selectedPlotList.add(plot);
-        }
+        _selectedPlotList.add(plot);
 		_allPlotList.remove(plot);
 	}
 
@@ -250,9 +204,7 @@ public class SelectIntrigueProcessing {
 		if (selectedPlot == null) {
 			return false;
 		}
-        // si l'intrigue est évenementielle, ajouter au bon endroit
 		selectPlot(selectedPlot);
 		return (_currentPip < _minPip);
 	}
-
 }
