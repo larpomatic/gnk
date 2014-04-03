@@ -9,9 +9,12 @@ import java.util.Set;
 
 import org.gnk.gn.Gn;
 import org.gnk.roletoperso.Role;
+import org.gnk.roletoperso.RoleHasTag;
 import org.gnk.tag.Tag;
+import org.gnk.tag.TagService;
 
 public class SelectIntrigueProcessing {
+
 	private Gn _gn;
     private Set<Plot> _selectedEvenementialPlotList;
 	private Set<Plot> _selectedPlotList;
@@ -60,6 +63,7 @@ public class SelectIntrigueProcessing {
 		_allPlotList.removeAll(_lockedPlotList);
 		_selectedPlotList.addAll(_lockedPlotList);
 		selectIntrigue();
+        selectEvenementialIntrigues();
 	}
 
 	public Set<Plot> getSelectedPlots() {
@@ -83,6 +87,11 @@ public class SelectIntrigueProcessing {
 		while (executeRound()) {
 		}
 	}
+
+    private void selectEvenementialIntrigues() {
+        while (selectBestEvenemential()) {
+        }
+    }
 
 	private int evaluateGn(boolean flush) {
 		int result = 0;
@@ -180,9 +189,40 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void selectPlot(Plot plot) {
-        _selectedPlotList.add(plot);
+        if (plot.getIsEvenemential()) {
+            _selectedEvenementialPlotList.add(plot);
+        }
+        else {
+            _selectedPlotList.add(plot);
+        }
 		_allPlotList.remove(plot);
 	}
+
+    private boolean selectBestEvenemential() {
+        Plot bestPlot = null;
+        if (_allPlotList.size() == 0) {
+            return false;
+        }
+        TagService tagService= new TagService();
+        Map<Tag, Boolean> emptyMap = new HashMap<Tag, Boolean>();
+        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+        Integer bestRankTag = 0;
+        for (Plot plot : _allPlotList) {
+            Set<PlotHasTag> plotHasTags = plot.getExtTags();
+            if (plotHasTags != null) {
+                for (PlotHasTag plotHasTag : plotHasTags) {
+                    challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
+                }
+            }
+            int rankTag = tagService.getTagsMatching(_valueEvenemential, challengerTagList, emptyMap);
+            if (rankTag >= bestRankTag) {
+                bestRankTag = rankTag;
+                bestPlot = plot;
+            }
+        }
+        selectPlot(bestPlot);
+        return true;
+    }
 
 	private boolean executeRound() {
 		Plot selectedPlot = null;
@@ -192,14 +232,16 @@ public class SelectIntrigueProcessing {
 		}
 		evaluateGn(true);
 		for (Plot plot : _allPlotList) {
-			if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
-				Integer tmpValue = evaluateGnWithPlot(plot);
-				if (newValue == null || tmpValue > newValue) {
-					selectedPlot = plot;
-					newValue = tmpValue;
-				}
-			}
-			evaluateGn(true);
+            if (!plot.getIsEvenemential()) {
+                if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
+                    Integer tmpValue = evaluateGnWithPlot(plot);
+                    if (newValue == null || tmpValue > newValue) {
+                        selectedPlot = plot;
+                        newValue = tmpValue;
+                    }
+                }
+                evaluateGn(true);
+            }
 		}
 		if (selectedPlot == null) {
 			return false;

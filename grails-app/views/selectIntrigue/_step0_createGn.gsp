@@ -1,7 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.gn.Gn" %>
 
-
 <style type="text/css">
 input {
     text-align: right;

@@ -40,37 +40,27 @@
         </g:each>
         </tbody>
     </table>
-    <table class="table table-bordered">
+    <table class="table table-bordered evenementialTable">
         <thead>
         <tr>
             <th><g:message code="selectintrigue.evenementialPlotName"
                            default="Plot name"/></th>
-
-            %{--<th width="25"><g:img dir="images/selectIntrigue"--}%
-                                  %{--file="locked.png"/></th>--}%
-            %{--<th width="25"><g:img dir="images/selectIntrigue"--}%
-                                  %{--file="forbidden.png"/></th>--}%
-
             <th><g:img dir="images/selectIntrigue"
                                   file="validate.png"/></th>
         </tr>
         </thead>
         <tbody>
         <g:each in="${evenementialPlotInstanceList}" status="i" var="evenementialPlotInstance">
-            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
-                <td><g:link controller="redactIntrigue" action="edit"
-                            id="${evenementialPlotInstance.id}" target="_blank">
-                    ${fieldValue(bean: evenementialPlotInstance, field: "name")}
-                </g:link></td>
-
-                %{--<g:radioGroup name="plot_status_${evenementialPlotInstance.id}" values="[1, 2, 3]"--}%
-                              %{--value="${((Gn)gnInstance).getLockedPlotSet().contains(evenementialPlotInstance) ? "1" : (((Gn)gnInstance).getBannedPlotSet().contains(evenementialPlotInstance) ? "2" : "3")}">--}%
+            <tr>
                 <td>
-                        %{--${it.radio}--}%
-                <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
-                    </td>
-                %{--</g:radioGroup>--}%
+                    <g:link controller="redactIntrigue" action="edit"
+                            id="${evenementialPlotInstance.id}" target="_blank">
+                            ${fieldValue(bean: evenementialPlotInstance, field: "name")}
+                    </g:link>
+                </td>
+                <td>
+                    <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
+                </td>
             </tr>
         </g:each>
 
