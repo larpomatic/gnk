@@ -56,6 +56,9 @@ class TagService {
                     }
                 }
                 for (Tag refTag : refTagList.keySet()) {
+                    if (refTag == challengerTag.getKey()) {
+                        return (challengerTag.getValue() + refTagList.get(refTag)) * 100;
+                    }
                     TagRelation tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
                     TagRelation tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
                     int lockSignOfChallengerTag = tagIsLocked(challengerTag) ? 1 : tagIsBanned(challengerTag) ? -1 : 0;
@@ -71,18 +74,18 @@ class TagService {
                             return Integer.MIN_VALUE;
                         }
                         if (tagRelation1 != null) {
-                            weight = tagRelation1.getterWeight();
+                            weight += tagRelation1.getterWeight();
                             divider++;
                         }
                         if (tagRelation2 != null) {
-                            weight = tagRelation2.getWeight();
+                            weight += tagRelation2.getWeight();
                             divider++;
                         }
                         if (divider != 0) {
-                            Integer roleHasTagWeight = challengerTag.getValue();
-                            Integer characterTagWeight = refTagList.get(refTag);
+                            Integer challengerTagWeight = challengerTag.getValue();
+                            Integer refTagWeight = refTagList.get(refTag);
                             int factor = weight / divider;
-                            rankTag += (roleHasTagWeight + characterTagWeight) * factor;
+                            rankTag += (challengerTagWeight + refTagWeight) * factor;
                         }
                     }
                 }
