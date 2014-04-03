@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<g:resource dir="css" file="selectIntrigue.css" />
+<link rel="stylesheet" href="<g:resource dir="css" file="selectIntrigue.css" />" type="text/css">
 <meta name="layout" content="main">
 <g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}" />
 <title><g:message code="gn.edition" /></title>

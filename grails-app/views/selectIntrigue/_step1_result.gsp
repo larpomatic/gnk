@@ -40,7 +40,7 @@
         </g:each>
         </tbody>
     </table>
-    <table class="table table-bordered evenementialTable">
+    <table class="table table-bordered evenemential-table">
         <thead>
         <tr>
             <th><g:message code="selectintrigue.evenementialPlotName"

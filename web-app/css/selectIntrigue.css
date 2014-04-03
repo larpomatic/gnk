@@ -20,6 +20,6 @@ th,td {
     width: 95pt;
 }
 
-.evenementialTable tr:nth-child(n+10){
+.evenemential-table > tbody > tr:nth-child(n+11){
     display: none;
 }
