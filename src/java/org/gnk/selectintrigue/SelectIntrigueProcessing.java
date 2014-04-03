@@ -1,11 +1,7 @@
 package org.gnk.selectintrigue;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.gnk.gn.Gn;
 import org.gnk.roletoperso.Role;
@@ -62,8 +58,8 @@ public class SelectIntrigueProcessing {
 		_allPlotList.removeAll(_bannedPlotList);
 		_allPlotList.removeAll(_lockedPlotList);
 		_selectedPlotList.addAll(_lockedPlotList);
-		selectIntrigue();
         selectEvenementialIntrigues();
+		selectIntrigue();
 	}
 
 	public Set<Plot> getSelectedPlots() {
@@ -87,11 +83,6 @@ public class SelectIntrigueProcessing {
 		while (executeRound()) {
 		}
 	}
-
-    private void selectEvenementialIntrigues() {
-        while (selectBestEvenemential()) {
-        }
-    }
 
 	private int evaluateGn(boolean flush) {
 		int result = 0;
@@ -189,42 +180,55 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void selectPlot(Plot plot) {
-        if (plot.getIsEvenemential()) {
-            _selectedEvenementialPlotList.add(plot);
-        }
-        else {
+        if (!plot.getIsEvenemential()) {
             _selectedPlotList.add(plot);
         }
-		_allPlotList.remove(plot);
+        _allPlotList.remove(plot);
 	}
 
-    private boolean selectBestEvenemential() {
-        Plot bestPlot = null;
+    private boolean selectEvenementialIntrigues() {
         if (_allPlotList.size() == 0) {
             return false;
         }
-        TagService tagService= new TagService();
+        ArrayList<Plot> evenementialPlots = new ArrayList<Plot>();
+        HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
+        TagService tagService = new TagService();
         Map<Tag, Boolean> emptyMap = new HashMap<Tag, Boolean>();
         Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
-        Integer bestRankTag = 0;
         for (Plot plot : _allPlotList) {
-            Set<PlotHasTag> plotHasTags = plot.getExtTags();
-            if (plotHasTags != null) {
-                for (PlotHasTag plotHasTag : plotHasTags) {
-                    challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
+            if (plot.getIsEvenemential()) {
+                evenementialPlots.add(plot);
+                Set<PlotHasTag> plotHasTags = plot.getExtTags();
+                if (plotHasTags != null) {
+                    for (PlotHasTag plotHasTag : plotHasTags) {
+                        challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
+                    }
                 }
-            }
-            int rankTag = tagService.getTagsMatching(_valueEvenemential, challengerTagList, emptyMap);
-            if (rankTag >= bestRankTag) {
-                bestRankTag = rankTag;
-                bestPlot = plot;
+                int rankTag = tagService.getTagsMatching(_valueEvenemential, challengerTagList, emptyMap);
+                rankMap.put(plot.getId(), rankTag);
             }
         }
-        selectPlot(bestPlot);
+        Collections.sort(evenementialPlots, new customEvenementialPlotComparator(rankMap));
+        _selectedEvenementialPlotList.addAll(evenementialPlots);
         return true;
     }
 
-	private boolean executeRound() {
+    private class customEvenementialPlotComparator implements Comparator<Plot> {
+        private HashMap<Integer, Integer> _rankMap = new HashMap<Integer, Integer>();
+
+        public customEvenementialPlotComparator(HashMap<Integer, Integer> rankMap) {
+            _rankMap = rankMap;
+        }
+
+        public int compare(Plot plot1, Plot plot2)
+        {
+            Integer rank1 = _rankMap.get(plot1.getId());
+            Integer rank2 = _rankMap.get(plot2.getId());
+            return Integer.compare(rank1, rank2);
+        }
+    }
+
+    private boolean executeRound() {
 		Plot selectedPlot = null;
 		Integer newValue = null;
 		if (_allPlotList.isEmpty()) {
