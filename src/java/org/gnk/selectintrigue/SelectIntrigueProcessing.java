@@ -107,7 +107,7 @@ public class SelectIntrigueProcessing {
 																	// forme de
 																	// %age
 			}
-			int inter = _gn.getGnTags().get(entry.getKey()) - entry.getValue();
+			int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
 			result -= inter * inter;
 		}
 		return result;
@@ -193,7 +193,6 @@ public class SelectIntrigueProcessing {
         ArrayList<Plot> evenementialPlots = new ArrayList<Plot>();
         HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
         TagService tagService = new TagService();
-        Map<Tag, Boolean> emptyMap = new HashMap<Tag, Boolean>();
         Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
         for (Plot plot : _allPlotList) {
             if (plot.getIsEvenemential()) {
@@ -204,7 +203,7 @@ public class SelectIntrigueProcessing {
                         challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
                     }
                 }
-                int rankTag = tagService.getTagsMatching(_valueEvenemential, challengerTagList, emptyMap);
+                int rankTag = tagService.getTagsDifferenceToObjective(_valueEvenemential, challengerTagList);
                 rankMap.put(plot.getId(), rankTag);
             }
         }

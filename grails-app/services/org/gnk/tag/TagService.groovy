@@ -57,7 +57,7 @@ class TagService {
                 }
                 for (Tag refTag : refTagList.keySet()) {
                     if (refTag == challengerTag.getKey()) {
-                        return (challengerTag.getValue() + refTagList.get(refTag)) * 100;
+                        return (challengerTag.getValue() * refTagList.get(refTag)) * 100;
                     }
                     TagRelation tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
                     TagRelation tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
@@ -85,11 +85,30 @@ class TagService {
                             Integer challengerTagWeight = challengerTag.getValue();
                             Integer refTagWeight = refTagList.get(refTag);
                             int factor = weight / divider;
-                            rankTag += (challengerTagWeight + refTagWeight) * factor;
+                            rankTag += (challengerTagWeight * refTagWeight) * factor;
                         }
                     }
                 }
             }
+        }
+        return rankTag;
+    }
+
+    /**
+     * Returns the difference between the ponderations of weighted tags of two lists. In other terms the distance to reach the objective
+     *
+     * @param  refTagList  The weighted tag list of the reference object (the objective to reach)
+     * @param  challengerTagList The weighted tag list of the object whose we want to test the compatibility with the reference object
+     * @return the difference between the ponderations of weighted tags of two lists.
+     * @see    org.gnk.selectintrigue.SelectIntrigueProcessing
+     */
+    public int getTagsDifferenceToObjective(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList) {
+        Integer rankTag = 0;
+        for (Tag refTag : refTagList.keySet()) {
+            Integer challengerTagWeight = challengerTagList.get(refTag);
+            if (challengerTagWeight == null)
+                challengerTagWeight = 0;
+            rankTag -= Math.pow(Math.abs(refTagList.get(refTag) - challengerTagWeight), 2);
         }
         return rankTag;
     }
