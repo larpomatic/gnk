@@ -32,7 +32,6 @@ class SelectIntrigueController {
 		List<List<String>> statisticResultList = new ArrayList<List<String>>()
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
-            new GNKDataContainerService().ReadDTD(gnInstance)
 			if ((params.screenStep as Integer) == 1) {
 				String gnDTD = params.gnDTD
 				gnInstance.dtd = gnDTD
@@ -86,7 +85,9 @@ class SelectIntrigueController {
 					String weightResult = entry.getValue().toString() + "%"
 					insertNewStatValue(tagName, weightObjective, weightResult, statisticResultList)
 				}
-			}
+			} else {
+                new GNKDataContainerService().ReadDTD(gnInstance)
+            }
 		}
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
         if (gnInstance && gnInstance.bannedPlotSet)

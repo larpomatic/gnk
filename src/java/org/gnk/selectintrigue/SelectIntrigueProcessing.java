@@ -18,7 +18,6 @@ public class SelectIntrigueProcessing {
 	private Set<Plot> _bannedPlotList;
 	private Set<Plot> _allPlotList;
 	private Map<Tag, Integer> _value;
-    private Map<Tag, Integer> _valueEvenemential;
 	private Set<Tag> _bannedTagList;
 
 	private Integer _minPip;
@@ -35,13 +34,9 @@ public class SelectIntrigueProcessing {
 		_bannedPlotList = bannedList;
 		_allPlotList = new HashSet<Plot>();
 		_value = new HashMap<Tag, Integer>(parGn.getGnTags().size());
-        _valueEvenemential = new HashMap<Tag, Integer>(parGn.getEvenementialTags().size());
 		for (Tag tag : parGn.getGnTags().keySet()) {
 			_value.put(tag, 0);
 		}
-        for (Tag tag : parGn.getEvenementialTags().keySet()) {
-            _valueEvenemential.put(tag, 0);
-        }
 		setBannedTagList();
 		for (Plot plot : parAllPlotList) {
 			if (plotIsCompatible(plot)) {
@@ -128,12 +123,12 @@ public class SelectIntrigueProcessing {
 		// GN
 		_bannedTagList = new HashSet<Tag>();
 		for (Entry<Tag, Integer> plotTagEntry : _gn.getGnTags().entrySet()) {
-			if (plotTagEntry.getValue() < 0) {
+			if (plotTagEntry.getValue() <= TagService.BANNED) {
 				_bannedTagList.add(plotTagEntry.getKey());
 			}
 		}
         for (Entry<Tag, Integer> plotTagEntry : _gn.getEvenementialTags().entrySet()) {
-            if (plotTagEntry.getValue() < 0) {
+            if (plotTagEntry.getValue() < TagService.BANNED) {
                 _bannedTagList.add(plotTagEntry.getKey());
             }
         }
@@ -203,7 +198,7 @@ public class SelectIntrigueProcessing {
                         challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
                     }
                 }
-                int rankTag = tagService.getTagsDifferenceToObjective(_valueEvenemential, challengerTagList);
+                int rankTag = tagService.getTagsDifferenceToObjective(_gn.getEvenementialTags(), challengerTagList);
                 rankMap.put(plot.getId(), rankTag);
             }
         }
