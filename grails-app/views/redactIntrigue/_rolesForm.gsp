@@ -17,7 +17,7 @@
         <div class="tab-pane active" id="newRole">
             <g:form name="newRoleForm" url="[controller: 'role', action: 'save']">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                <table>
+                <table style="margin:auto">
                     <tr>
                         <td><label for="roleCode"><g:message
                                 code="redactintrigue.role.roleCode" default="Role code"/>

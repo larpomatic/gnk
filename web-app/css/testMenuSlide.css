@@ -1,0 +1,194 @@
+#article27{
+    overflow:hidden;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size:0.9em;
+    border:3px solid white;
+}
+/*wrapper*/
+/*position+top+height: hack pour eviter
+que la page scroll
+*/
+#article27 #demoWrap{width:5820px;}
+
+/*ul li*/
+#article27 #demoWrap ul{
+    height:35px;
+}
+#article27 #demoWrap ul .wrapLi{
+    position:relative;
+    float:left;
+    width: 60px;
+    list-style:none;
+    margin: 0px 10px;
+    padding:6px 5px 6px 5px;
+    background:#353A40;
+    background:-webkit-linear-gradient(#464c54,#22272b);
+    background:-moz-linear-gradient(#464c54,#22272b);
+    background:-o-linear-gradient(#464c54,#22272b);
+    background:linear-gradient(#464c54,#22272b);
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -webkit-box-shadow:0px 0px 4px #1b1e22;
+    -moz-box-shadow:0px 0px 4px #1b1e22;
+    box-shadow:0px 0px 4px #1b1e22;
+}
+/* init lights : off */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut de light 1
+*/
+#article27 #demoWrap ul .wrapLi::after,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1)::after {
+    content:"";
+    position:absolute;
+    top:65px;
+    left:33px;
+    width: 4px;
+    height: 4px;
+    background:black;
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+}
+
+/* init lien */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut du lien 1
+*/
+#article27 #demoWrap ul .wrapLi .wrapLink,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1) .wrapLink {
+    display: block;
+    width: 60px;
+    color:#777;
+    font-weight:bold;
+    text-align:center;
+    text-decoration:none;
+    text-shadow:1px 1px 0px rgba(0,0,0,0.5);
+    -webkit-transition:color 0.25s ease;
+    -moz-transition:color 0.25s ease;
+    -o-transition:color 0.25s ease;
+    transition:color 0.25s ease;
+}
+
+/* hover lien */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut du lien 1
+*/
+#article27 #demoWrap ul .wrapLi .wrapLink:hover,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1) .wrapLink:hover {
+    color:white;
+}
+
+/* fleche */
+#article27 #demoWrap #fleche{
+    width: 0px;
+    height: 0px;
+    border-bottom:10px solid #1b1e22;
+    border-right:10px solid transparent;
+    border-left:10px solid transparent;
+    margin-left: 60px;
+    /*deplacement*/
+    -webkit-transition:margin-left 1s ease-out;
+    -moz-transition:margin-left 1s ease-out;
+    -o-transition:margin-left 1s ease-out;
+    transition:margin-left 1s ease-out;
+}
+
+/* :target */
+/* lien1 */
+#article27 #demoWrap #wrap1:target #textes{margin-left:0px;}
+#article27 #demoWrap #wrap1:target #fleche{margin-left:60px;}
+/* lien2 */
+#article27 #demoWrap #wrap2:target #textes{margin-left:-1164px;}
+#article27 #demoWrap #wrap2:target #fleche{margin-left:150px;}
+/* lien3 */
+#article27 #demoWrap #wrap3:target #textes{margin-left:-2328px;}
+#article27 #demoWrap #wrap3:target #fleche{margin-left:240px;}
+/* lien4 */
+#article27 #demoWrap #wrap4:target #textes{margin-left:-3492px;}
+#article27 #demoWrap #wrap4:target #fleche{margin-left:330px;}
+/* lien5 */
+#article27 #demoWrap #wrap5:target #textes{margin-left:-4656px;}
+#article27 #demoWrap #wrap5:target #fleche{margin-left:420px;}
+
+/* liens modifiés par :target */
+/* PLUS: init lien1 */
+#article27 #demoWrap ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap1:target ul .wrapLi .wrapLink[href="#wrap1"],
+#article27 #demoWrap #wrap2:target ul .wrapLi .wrapLink[href="#wrap2"],
+#article27 #demoWrap #wrap3:target ul .wrapLi .wrapLink[href="#wrap3"],
+#article27 #demoWrap #wrap4:target ul .wrapLi .wrapLink[href="#wrap4"],
+#article27 #demoWrap #wrap5:target ul .wrapLi .wrapLink[href="#wrap5"]{
+    color:white;
+}
+
+/* lights modif */
+/* PLUS: init light 1 */
+#article27 #demoWrap ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap1:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(2)::after,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(3)::after,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(4)::after,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(5)::after {
+    background:white;
+    -webkit-box-shadow:0px 0px 4px #fff;
+    -moz-box-shadow:0px 0px 4px #fff;
+    box-shadow:0px 0px 4px #fff;
+}
+
+
+/* couleur du rond dans lien*/
+#article27 #demoWrap #wrap1:target ul .wrapLi .wrapLink[href="#wrap1"] span,
+#article27 #demoWrap #wrap2:target ul .wrapLi .wrapLink[href="#wrap2"] span,
+#article27 #demoWrap #wrap3:target ul .wrapLi .wrapLink[href="#wrap3"] span,
+#article27 #demoWrap #wrap4:target ul .wrapLi .wrapLink[href="#wrap4"] span,
+#article27 #demoWrap #wrap5:target ul .wrapLi .wrapLink[href="#wrap5"] span {
+    background:rgba(151,151,151,0.7);
+}
+
+/* div textes */
+#article27 #demoWrap #textes{
+    clear:left;
+    width:5820px;
+    height:700px;
+    margin-top:6px;
+    background:#292E34;
+    background:-webkit-linear-gradient(#333941,#21262a);
+    background:-moz-linear-gradient(#333941,#21262a);
+    background:-o-linear-gradient(#333941,#21262a);
+    background:linear-gradient(#333941,#21262a);
+    border-top:1px solid rgba(255,255,255,0.4);
+    -webkit-box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
+    box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
+    -webkit-transition:margin-left 1s ease-out;
+    -moz-transition:margin-left 1s ease-out;
+    -o-transition:margin-left 1s ease-out;
+    transition:margin-left 1s ease-out;
+}
+/*texte*/
+#article27 #demoWrap #textes .container {
+    width:1164px;
+    height:700px;
+    float:left;
+    padding-top:30px;
+    text-align:center;
+    font-size:1.2em;
+    color:#999999;
+    text-shadow:0px -1px 0px rgba(0,0,0,0.5);
+}

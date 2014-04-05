@@ -11,7 +11,7 @@
 	<g:hiddenField name="version" value="${plotInstance?.version}" />
 	<fieldset class="form">
 		<g:hiddenField name="screenStep" value="0" />
-		<table>
+		<table style="margin:auto">
 			<tr>
 				<td><label for="plotName"> <g:message
 							code="redactintrigue.generalDescription.plotName"
@@ -148,7 +148,7 @@
 			</div>
 		</div>
 	</fieldset>
-	<fieldset class="buttons">
+	<fieldset class="buttons text-center">
 		<g:actionSubmit class="save" action="update"
 			value="${message(code: 'default.button.update.label', default: 'Update')}" />
 		<g:actionSubmit class="delete" action="delete"
