@@ -24,38 +24,38 @@ function bgenScroll() {
                             <div id="background">
                                 <ul class="wrapUl">
                                     <li class="wrapLi"><a class="wrapLink" href="#wrap1" onclick="bgenScroll();">
-                                        Rédaction
-                                    </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap2" onclick="bgenScroll();">
                                         Roles
                                     </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
+                                    <li class="wrapLi"><a class="wrapLink" href="#wrap2" onclick="bgenScroll();">
                                         Lieux
                                     </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
+                                    <li class="wrapLi"><a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
                                         Objets
                                     </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
+                                    <li class="wrapLi"><a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
                                         Relations
+                                    </a></li>
+                                    <li class="wrapLi"><a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
+                                        Rédaction
                                     </a></li>
                                 </ul>
                                 <div id="fleche"></div>
                                 <div id="textes">
                                     <div class="container">
-                                        <g:render template="generalDescriptionForm" />
-                                    </div>
-                                    <div class="container">
                                         <g:render template="rolesForm" />
                                     </div>
                                     <div class="container">
-                                        Lieux.
+                                        Lieux
                                     </div>
                                     <div class="container">
-                                        Objets.
+                                        Objets
                                     </div>
                                     <div class="container">
-                                        Relations.
+                                        Relations
                                         <g:render template="relationsForm" />
+                                    </div>
+                                    <div class="container">
+                                        <g:render template="generalDescriptionForm" />
                                     </div>
                                 </div>
                             </div>

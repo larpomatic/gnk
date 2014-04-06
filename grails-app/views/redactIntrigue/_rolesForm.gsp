@@ -4,12 +4,17 @@
 <div class="tabbable tabs-left">
 
     <ul class="nav nav-tabs" style="height:400pt;width:175pt;overflow-y: auto;overflow-x: hidden;">
-        <li class="active"><a href="#newRole" data-toggle="tab">Ajouter
-        un nouveau rôle</a></li>
+        <li class="active">
+            <a href="#newRole" data-toggle="tab">
+            Nouveau rôle
+            </a>
+        </li>
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <li class=""><a href="#role_${role.id}" data-toggle="tab">
-                ${role.code}
-            </a></li>
+            <li class="">
+                <a href="#role_${role.id}" data-toggle="tab">
+                    ${role.code}
+                </a>
+            </li>
         </g:each>
     </ul>
 
@@ -98,13 +103,14 @@
                 <g:submitButton name="Insert" value="Insert"/>
             </g:form>
         </div>
+
         <g:each in="${plotInstance.roles}" status="i4" var="role">
             <div class="tab-pane" id="role_${role.id}">
 
                 <g:form name="updateRole_${role.id}" url="[controller: 'role', action: 'update']">
                     <g:hiddenField name="id" value="${role.id}"/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                    <table>
+                    <table style="margin:auto">
                         <tr>
                             <td><label for="roleCode"><g:message
                                     code="redactintrigue.role.roleCode" default="Role code"/>

@@ -11,7 +11,7 @@ que la page scroll
 #article27 #demoWrap{width:5820px;}
 
 /*ul li*/
-#article27 #demoWrap ul{
+#article27 #demoWrap .wrapUl {
     height:35px;
 }
 #article27 #demoWrap ul .wrapLi{
@@ -184,7 +184,7 @@ remise par défaut du lien 1
 /*texte*/
 #article27 #demoWrap #textes .container {
     width:1164px;
-    height:700px;
+    height:670px;
     float:left;
     padding-top:30px;
     text-align:center;

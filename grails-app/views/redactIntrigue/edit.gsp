@@ -67,7 +67,7 @@ th,td {
 				<g:if test="${screenStep == 0}">
 					%{--<g:render template="generalDescriptionForm" />--}%
                     <g:render template="testMenuSlide" />
-                    <g:render template="testMenuModal" />
+                    %{--<g:render template="testMenuModal" />--}%
 				</g:if>
 				<g:if test="${screenStep == 1}">
 					<g:render template="rolesForm" />
@@ -76,19 +76,19 @@ th,td {
 					<g:render template="relationsForm" />
 				</g:if>
 				<g:if test="${screenStep == 3}">
-					<g:render template="placesForm" />
+					%{--<g:render template="placesForm" />--}%
 				</g:if>
 				<g:if test="${screenStep == 4}">
-					<g:render template="objectForm" />
+					%{--<g:render template="objectForm" />--}%
 				</g:if>
 				<g:if test="${screenStep == 5}">
-					<g:render template="textualCluesForm" />
+					%{--<g:render template="textualCluesForm" />--}%
 				</g:if>
 				<g:if test="${screenStep == 6}">
-					<g:render template="pastScenesForm" />
+					%{--<g:render template="pastScenesForm" />--}%
 				</g:if>
 				<g:if test="${screenStep == 7}">
-					<g:render template="eventsForm" />
+					%{--<g:render template="eventsForm" />--}%
 				</g:if>
                 <g:if test="${screenStep == 8}">   <!-- FIXME TO Remove -->
                     <g:render template="richTextEditor" />
