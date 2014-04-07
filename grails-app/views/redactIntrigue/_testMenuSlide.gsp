@@ -23,18 +23,30 @@ function bgenScroll() {
                         <div id="wrap5">
                             <div id="background">
                                 <ul class="wrapUl">
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap1" onclick="bgenScroll();">
-                                        Roles
-                                    </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap2" onclick="bgenScroll();">
-                                        Lieux
-                                    </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
-                                        Objets
-                                    </a></li>
-                                    <li class="wrapLi"><a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
-                                        Relations
-                                    </a></li>
+                                    <li class="wrapLi">
+                                        <a class="wrapLink" href="#wrap1" onclick="bgenScroll();">
+                                            <span>Roles</span>
+                                        </a>
+                                        <span class="badge badge-inverse">1</span>
+                                    </li>
+                                    <li class="wrapLi">
+                                        <a class="wrapLink" href="#wrap2" onclick="bgenScroll();">
+                                            <span>Lieux</span>
+                                        </a>
+                                        <span class="badge badge-inverse">3</span>
+                                    </li>
+                                    <li class="wrapLi">
+                                        <a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
+                                            <span>Objets</span>
+                                        </a>
+                                        <span class="badge badge-inverse">12</span>
+                                    </li>
+                                    <li class="wrapLi">
+                                        <a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
+                                            <span>Relations</span>
+                                        </a>
+                                        <span class="badge badge-inverse">0</span>
+                                    </li>
                                     <li class="wrapLi"><a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
                                         Rédaction
                                     </a></li>

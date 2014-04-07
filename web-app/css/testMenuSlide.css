@@ -153,12 +153,22 @@ remise par défaut du lien 1
 
 
 /* couleur du rond dans lien*/
-#article27 #demoWrap #wrap1:target ul .wrapLi .wrapLink[href="#wrap1"] span,
-#article27 #demoWrap #wrap2:target ul .wrapLi .wrapLink[href="#wrap2"] span,
-#article27 #demoWrap #wrap3:target ul .wrapLi .wrapLink[href="#wrap3"] span,
-#article27 #demoWrap #wrap4:target ul .wrapLi .wrapLink[href="#wrap4"] span,
-#article27 #demoWrap #wrap5:target ul .wrapLi .wrapLink[href="#wrap5"] span {
-    background:rgba(151,151,151,0.7);
+/*#article27 #demoWrap #wrap1:target ul .wrapLi .wrapLink[href="#wrap1"] span,*/
+/*#article27 #demoWrap #wrap2:target ul .wrapLi .wrapLink[href="#wrap2"] span,*/
+/*#article27 #demoWrap #wrap3:target ul .wrapLi .wrapLink[href="#wrap3"] span,*/
+/*#article27 #demoWrap #wrap4:target ul .wrapLi .wrapLink[href="#wrap4"] span,*/
+/*#article27 #demoWrap #wrap5:target ul .wrapLi .wrapLink[href="#wrap5"] span {*/
+    /*background:rgba(151,151,151,0.7);*/
+/*}*/
+
+span.badge {
+    position: absolute;
+    margin-top: -18px;
+    margin-left: 65px;
+    font-size: 10px;
+    height: 13px;
+    padding: 2px 2px 4px;
+    border-radius: 0 5px 5px 0;
 }
 
 /* div textes */
