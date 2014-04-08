@@ -18,13 +18,14 @@
 	<body>
         <div class="gnk">
             <g:render template="/navbar"/>
+            <g:javascript library="application"/>
+            <r:layoutResources />
             <div class="page-body container">
                 <g:layoutBody/>
             </div>
             <g:render template="/footer" />
             <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-            <g:javascript library="application"/>
-            <r:layoutResources />
+
         </div>
 	</body>
 </html>

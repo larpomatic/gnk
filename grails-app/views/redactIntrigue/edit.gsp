@@ -19,6 +19,8 @@ th,td {
 </head>
 <body>
 
+<g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
+<g:javascript src="redactIntrigue/redactIntrigue.js"/>
 	%{--<div class="navbar navbar-inverse">--}%
 		%{--<div class="navbar-inner">--}%
 			%{--<a class="brand" href="#"> ${message(code: 'navbar.redactIntrigue')} :--}%

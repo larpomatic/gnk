@@ -202,3 +202,18 @@ span.badge {
     color:#999999;
     text-shadow:0px -1px 0px rgba(0,0,0,0.5);
 }
+
+li.leftMenuList {
+    position: relative;
+}
+
+li.leftMenuList button {
+    display: inline-block;
+    top: 6px;
+    right: -40px;
+    min-width: inherit;
+    z-index: 55555;
+    position: absolute;
+    -webkit-transition: right 1s; /* For Safari 3.1 to 6.0 */
+    transition: right 1s;
+}

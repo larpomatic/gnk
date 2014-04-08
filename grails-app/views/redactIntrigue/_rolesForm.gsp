@@ -4,16 +4,20 @@
 <div class="tabbable tabs-left">
 
     <ul class="nav nav-tabs" style="height:400pt;width:175pt;overflow-y: auto;overflow-x: hidden;">
-        <li class="active">
-            <a href="#newRole" data-toggle="tab">
+        <li class="active leftMenuList">
+            <a href="#newRole" data-toggle="tab" class="addRole">
             Nouveau rôle
             </a>
         </li>
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <li class="">
+            <li class="leftMenuList tt">
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle ${role.code}?"
+                        data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role">
+                    <i class="icon-remove pull-right"></i>
+                </button>
             </li>
         </g:each>
     </ul>
@@ -190,10 +194,10 @@
                         </div>
                     </div>
                     <g:submitButton name="Update" value="Update"/>
-                    <g:actionSubmit class="delete" controller="role" action="delete"
-                                    value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                                    formnovalidate=""
-                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+                    %{--<g:actionSubmit class="delete" controller="role" action="delete"--}%
+                                    %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
+                                    %{--formnovalidate=""--}%
+                                    %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
                 </g:form>
             </div>
         </g:each>

@@ -96,11 +96,16 @@ class RoleController {
 
 	def delete (Long id) {
 		Role role = Role.get(id)
-		if (role) {
-			//deleteRoleHasRoleTag(role)
+        boolean isDelete = false;
+        if (role) {
+            //deleteRoleHasRoleTag(role)
 
-			role.delete(flush: true)
-		}
-		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+            role.delete(flush: true)
+            isDelete = true;
+        }
+        render(contentType: "application/json") {
+            object(isdelete: isDelete)
+        }
+//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
 	}
 }
