@@ -2,20 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-th,td {
-	padding: 0.3em;
-	margin: 0.2em;
-}
 
-.tab-pane.active {
-	height: 350pt;
-}
-</style>
 <meta name="layout" content="main">
 <g:set var="entityName"
 	value="${message(code: 'plot.label', default: 'Plot')}" />
 <title><g:message code="default.edit.label" args="[entityName]" /></title>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">
 </head>
 <body>
 

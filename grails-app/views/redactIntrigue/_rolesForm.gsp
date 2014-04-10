@@ -14,7 +14,7 @@
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle ${role.code}?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer ce rôle?"
                         data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role">
                     <i class="icon-remove pull-right"></i>
                 </button>
@@ -35,6 +35,18 @@
                                                      id="roleCode" value="" required=""/></td>
                     </tr>
                     <tr>
+                        <td><label for="rolePipi"><g:message
+                                code="redactintrigue.role.rolePipi" default="PIPI"/>
+                        </label></td>
+                        <td><g:field type="number" name="rolePipi" id="rolePipi" value=""
+                                     required=""/></td>
+                        <td><label for="rolePipr"><g:message
+                                code="redactintrigue.role.rolePipr" default="PIPR"/>
+                        </label></td>
+                        <td><g:field type="number" name="rolePipr" id="rolePipr" value=""
+                                     required=""/></td>
+                    </tr>
+                    <tr>
                         <td><label for="roleTags"><g:message
                                 code="redactintrigue.generalDescription.tags"
                                 default="Tags"/>
@@ -48,16 +60,24 @@
                                       keys="${['PJ', 'PNJ', 'PHJ']}" required=""/></td>
                     </tr>
                     <tr>
-                        <td><label for="rolePipi"><g:message
-                                code="redactintrigue.role.rolePipi" default="PIPI"/>
-                        </label></td>
-                        <td><g:field type="number" name="rolePipi" id="rolePipi" value=""
-                                     required=""/></td>
-                        <td><label for="rolePipr"><g:message
-                                code="redactintrigue.role.rolePipr" default="PIPR"/>
-                        </label></td>
-                        <td><g:field type="number" name="rolePipr" id="rolePipr" value=""
-                                     required=""/></td>
+                        <td>
+                            <label for="rolePastScene">
+                                <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
+                            </label>
+                        </td>
+                        <td>
+                            <g:select name="rolePastScene" id="rolePastScene" from="${['PastScene1', 'PastScene2', 'PastScene3']}"
+                                      keys="${['PastScene1', 'PastScene2', 'PastScene3']}" required=""/>
+                        </td>
+                        <td>
+                            <label for="roleEvent">
+                                <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
+                            </label>
+                        </td>
+                        <td>
+                            <g:select name="roleEvent" id="roleEvent" from="${['Evenement1', 'Evenement2', 'Evenement3']}"
+                                      keys="${['Evenement1', 'Evenement2', 'Evenement3']}" required=""/>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4"><label for="roleDescription"><g:message
@@ -82,22 +102,27 @@
 
                     <div class="modal-body">
 
-                        <table>
+                        %{--<table>--}%
+                        <ul>
                             <g:each in="${roleTagList}" status="i2" var="roleTagInstance">
-                                <g:if test="${i2 % 3 == 0}">
-                                    <tr>
-                                </g:if>
-                                <td><label for="roleTags_${roleTagInstance.id}"><g:checkBox
-                                        name="roleTags_${roleTagInstance.id}"
-                                        id="roleTags_${roleTagInstance.id}"
-                                        checked="false"/> ${fieldValue(bean: roleTagInstance, field: "name")}</label>
-                                </td>
-                                <g:if test="${(i2 + 1) % 3 == 0}">
-                                    </tr>
-                                </g:if>
+                                %{--<g:if test="${i2 % 3 == 0}">--}%
+                                    %{--<tr>--}%
+                                %{--</g:if>--}%
+                                %{--<td>--}%
+                                <li class="modalLi">
+                                    <label for="roleTags_${roleTagInstance.id}">
+                                        <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
+                                        checked="false"/>
+                                        ${fieldValue(bean: roleTagInstance, field: "name")}
+                                    </label>
+                                </li>
+                                %{--</td>--}%
+                                %{--<g:if test="${(i2 + 1) % 3 == 0}">--}%
+                                    %{--</tr>--}%
+                                %{--</g:if>--}%
                             </g:each>
-
-                        </table>
+                        </ul>
+                        %{--</table>--}%
                     </div>
 
                     <div class="modal-footer">
@@ -123,6 +148,18 @@
                                                          id="roleCode" value="${role.code}" required=""/></td>
                         </tr>
                         <tr>
+                            <td><label for="rolePipi"><g:message
+                                    code="redactintrigue.role.rolePipi" default="PIPI"/>
+                            </label></td>
+                            <td><g:field name="rolePipi" id="rolePipi" type="number" value="${role.pipi}"
+                                         required=""/></td>
+                            <td><label for="rolePipr"><g:message
+                                    code="redactintrigue.role.rolePipr" default="PIPR"/>
+                            </label></td>
+                            <td><g:field type="number" name="rolePipr" id="rolePipr" value="${role.pipr}"
+                                         required=""/></td>
+                        </tr>
+                        <tr>
                             <td><label for="roleTags"><g:message
                                     code="redactintrigue.generalDescription.tags"
                                     default="Tags"/>
@@ -136,16 +173,24 @@
                                           keys="${['PJ', 'PNJ', 'PHJ']}" value="${role.type}" required=""/></td>
                         </tr>
                         <tr>
-                            <td><label for="rolePipi"><g:message
-                                    code="redactintrigue.role.rolePipi" default="PIPI"/>
-                            </label></td>
-                            <td><g:field name="rolePipi" id="rolePipi" type="number" value="${role.pipi}"
-                                         required=""/></td>
-                            <td><label for="rolePipr"><g:message
-                                    code="redactintrigue.role.rolePipr" default="PIPR"/>
-                            </label></td>
-                            <td><g:field type="number" name="rolePipr" id="rolePipr" value="${role.pipr}"
-                                         required=""/></td>
+                            <td>
+                                <label for="rolePastScene">
+                                    <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
+                                </label>
+                            </td>
+                            <td>
+                                <g:select name="rolePastScene" id="rolePastScene" from="${['PastScene1', 'PastScene2', 'PastScene3']}"
+                                          keys="${['PastScene1', 'PastScene2', 'PastScene3']}" required=""/>
+                            </td>
+                            <td>
+                                <label for="roleEvent">
+                                    <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
+                                </label>
+                            </td>
+                            <td>
+                                <g:select name="roleEvent" id="roleEvent" from="${['Evenement1', 'Evenement2', 'Evenement3']}"
+                                          keys="${['Evenement1', 'Evenement2', 'Evenement3']}" required=""/>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="4"><label for="roleDescription"><g:message
@@ -171,22 +216,25 @@
 
                         <div class="modal-body">
 
-                            <table>
+                            %{--<table>--}%
                                 <g:each in="${roleTagList}" status="i3" var="roleTagInstance">
-                                    <g:if test="${i3 % 3 == 0}">
-                                        <tr>
-                                    </g:if>
-                                    <td><label><g:checkBox
+                                    %{--<g:if test="${i3 % 3 == 0}">--}%
+                                        %{--<tr>--}%
+                                    %{--</g:if>--}%
+                                    %{--<td>--}%
+                                    <li class="modalLi">
+                                        <label><g:checkBox
                                             name="roleTags_${roleTagInstance.id}"
                                             id="roleTags_${roleTagInstance.id}"
                                             checked="${role.hasRoleTag(roleTagInstance)}"/> ${fieldValue(bean: roleTagInstance, field: "name")}</label>
-                                    </td>
-                                    <g:if test="${(i3 + 1) % 3 == 0}">
-                                        </tr>
-                                    </g:if>
+                                    %{--</td>--}%
+                                    </li>
+                                    %{--<g:if test="${(i3 + 1) % 3 == 0}">--}%
+                                        %{--</tr>--}%
+                                    %{--</g:if>--}%
                                 </g:each>
 
-                            </table>
+                            %{--</table>--}%
                         </div>
 
                         <div class="modal-footer">

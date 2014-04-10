@@ -1,0 +1,96 @@
+#edit-plot th,td {
+    padding: 0.3em;
+    margin: 0.2em;
+    height: 50px;
+}
+
+#edit-plot .tab-pane.active {
+    /*height: 350pt;*/
+}
+
+#edit-plot #textes {
+    background: url(../images/redactIntrigue/roles/lines.png) repeat;
+}
+
+/*#edit-plot body,*/
+#edit-plot input[type='text'],
+#edit-plot input[type='number'],
+#edit-plot textarea
+/*#edit-plot a,*/
+/*#edit-plot label,*/
+/*#edit-plot select,*/
+/*#edit-plot option*/
+/*#edit-plot div,*/
+/*#edit-plot span:not(.badge)*/
+{
+    font-family: 'Shadows Into Light', cursive !important;
+    font-size: 24px !important;
+}
+
+#edit-plot input[type='text'],
+#edit-plot input[type='number'] {
+    border: 0;
+    outline: none;
+    letter-spacing: 3px;
+    background: url(../images/redactIntrigue/roles/dots.png) repeat;
+    font-size: 18px;
+    width: 300px;
+    height: 40px;
+    margin: -14px 0 0 0;
+    color: #18326d;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+     box-shadow: none;
+}
+
+#edit-plot textarea {
+    line-height: 1.7;
+    width: 99%;
+    height: 200px;
+    margin: -14px 0 40px 0;
+    background: url(../images/redactIntrigue/roles/dots.png) repeat;
+    font-family: 'Shadows Into Light', cursive;
+    font-size: 18px;
+    color: #18326d;
+    letter-spacing: 3px;
+    border: 0;
+    resize: none;
+    outline: 0;
+}
+
+#edit-plot label {
+    cursor: default;
+    font-size: 18px;
+}
+
+#edit-plot textarea:hover,
+#edit-plot input[type='text']:hover,
+#edit-plot input[type='number']:hover,
+#edit-plot textarea:active,
+#edit-plot input[type='text']:active,
+#edit-plot input[type='number']:active,
+#edit-plot textarea:focus,
+#edit-plot input[type='text']:focus,
+#edit-plot input[type='number']:focus
+/*#edit-plot button:focus,*/
+/*#edit-plot button:active,*/
+/*#edit-plot button:hover*/
+{
+    outline:none !important;
+    -webkit-appearance:none;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    border: none;
+}
+
+#edit-plot .modalLi {
+    list-style-type: none;
+}
+
+@font-face {
+    font-family: 'Shadows Into Light';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Shadows Into Light'), local('ShadowsIntoLight'), url("http://themes.googleusercontent.com/static/fonts/shadowsintolight/v4/clhLqOv7MXn459PTh0gXYHW1xglZCgocDnD_teV2lMU.woff") format('woff');
+}

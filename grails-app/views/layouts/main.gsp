@@ -14,6 +14,8 @@
 		<g:layoutHead/>
 		<r:layoutResources />
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+
+        %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
 	</head>
 	<body>
         <div class="gnk">

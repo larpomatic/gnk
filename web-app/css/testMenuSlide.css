@@ -1,7 +1,7 @@
 #article27{
     overflow:hidden;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size:0.9em;
+    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+    /*font-size:0.9em;*/
     border:3px solid white;
 }
 /*wrapper*/
@@ -17,7 +17,7 @@ que la page scroll
 #article27 #demoWrap ul .wrapLi{
     position:relative;
     float:left;
-    width: 60px;
+    width: 85px;
     list-style:none;
     margin: 0px 10px;
     padding:6px 5px 6px 5px;
@@ -46,7 +46,7 @@ remise par défaut de light 1
     content:"";
     position:absolute;
     top:65px;
-    left:33px;
+    left:48px;
     width: 4px;
     height: 4px;
     background:black;
@@ -69,7 +69,7 @@ remise par défaut du lien 1
 #article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1) .wrapLink,
 #article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1) .wrapLink {
     display: block;
-    width: 60px;
+    /*width: 50px;*/
     color:#777;
     font-weight:bold;
     text-align:center;
@@ -101,7 +101,7 @@ remise par défaut du lien 1
     border-bottom:10px solid #1b1e22;
     border-right:10px solid transparent;
     border-left:10px solid transparent;
-    margin-left: 60px;
+    margin-left: 100px;
     /*deplacement*/
     -webkit-transition:margin-left 1s ease-out;
     -moz-transition:margin-left 1s ease-out;
@@ -112,19 +112,19 @@ remise par défaut du lien 1
 /* :target */
 /* lien1 */
 #article27 #demoWrap #wrap1:target #textes{margin-left:0px;}
-#article27 #demoWrap #wrap1:target #fleche{margin-left:60px;}
+#article27 #demoWrap #wrap1:target #fleche{margin-left:50px;}
 /* lien2 */
 #article27 #demoWrap #wrap2:target #textes{margin-left:-1164px;}
-#article27 #demoWrap #wrap2:target #fleche{margin-left:150px;}
+#article27 #demoWrap #wrap2:target #fleche{margin-left:165px;}
 /* lien3 */
 #article27 #demoWrap #wrap3:target #textes{margin-left:-2328px;}
-#article27 #demoWrap #wrap3:target #fleche{margin-left:240px;}
+#article27 #demoWrap #wrap3:target #fleche{margin-left:280px;}
 /* lien4 */
 #article27 #demoWrap #wrap4:target #textes{margin-left:-3492px;}
-#article27 #demoWrap #wrap4:target #fleche{margin-left:330px;}
+#article27 #demoWrap #wrap4:target #fleche{margin-left:395px;}
 /* lien5 */
 #article27 #demoWrap #wrap5:target #textes{margin-left:-4656px;}
-#article27 #demoWrap #wrap5:target #fleche{margin-left:420px;}
+#article27 #demoWrap #wrap5:target #fleche{margin-left:510px;}
 
 /* liens modifiés par :target */
 /* PLUS: init lien1 */
@@ -145,10 +145,10 @@ remise par défaut du lien 1
 #article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(3)::after,
 #article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(4)::after,
 #article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(5)::after {
-    background:white;
-    -webkit-box-shadow:0px 0px 4px #fff;
-    -moz-box-shadow:0px 0px 4px #fff;
-    box-shadow:0px 0px 4px #fff;
+    background: blue;
+    -webkit-box-shadow: 0px 0px 4px blue;
+    -moz-box-shadow: 0px 0px 4px blue;
+    box-shadow: 0px 0px 4px blue;
 }
 
 
@@ -164,28 +164,29 @@ remise par défaut du lien 1
 span.badge {
     position: absolute;
     margin-top: -18px;
-    margin-left: 65px;
+    margin-left: 90px;
     font-size: 10px;
     height: 13px;
     padding: 2px 2px 4px;
     border-radius: 0 5px 5px 0;
+    font-family: "Helvetica Neue", sans-serif !important;
 }
 
 /* div textes */
 #article27 #demoWrap #textes{
     clear:left;
     width:5820px;
-    height:700px;
+    height:900px;
     margin-top:6px;
-    background:#292E34;
-    background:-webkit-linear-gradient(#333941,#21262a);
-    background:-moz-linear-gradient(#333941,#21262a);
-    background:-o-linear-gradient(#333941,#21262a);
-    background:linear-gradient(#333941,#21262a);
+    /*background:#292E34;*/
+    /*background:-webkit-linear-gradient(#333941,#21262a);*/
+    /*background:-moz-linear-gradient(#333941,#21262a);*/
+    /*background:-o-linear-gradient(#333941,#21262a);*/
+    /*background:linear-gradient(#333941,#21262a);*/
     border-top:1px solid rgba(255,255,255,0.4);
-    -webkit-box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
-    -moz-box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
-    box-shadow:0px -6px 0px #1b1e22,0 -7px 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
+    box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
     -webkit-transition:margin-left 1s ease-out;
     -moz-transition:margin-left 1s ease-out;
     -o-transition:margin-left 1s ease-out;
@@ -194,13 +195,13 @@ span.badge {
 /*texte*/
 #article27 #demoWrap #textes .container {
     width:1164px;
-    height:670px;
+    /*height:600px;*/
     float:left;
     padding-top:30px;
     text-align:center;
     font-size:1.2em;
     color:#999999;
-    text-shadow:0px -1px 0px rgba(0,0,0,0.5);
+    /*text-shadow:0px -1px 0px rgba(0,0,0,0.5);*/
 }
 
 li.leftMenuList {
@@ -216,4 +217,8 @@ li.leftMenuList button {
     position: absolute;
     -webkit-transition: right 1s; /* For Safari 3.1 to 6.0 */
     transition: right 1s;
+}
+
+.wrapUl {
+    margin-left: 0px;
 }
