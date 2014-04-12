@@ -15,7 +15,8 @@
 /*#edit-plot body,*/
 #edit-plot input[type='text'],
 #edit-plot input[type='number'],
-#edit-plot textarea
+#edit-plot textarea,
+#edit-plot select
 /*#edit-plot a,*/
 /*#edit-plot label,*/
 /*#edit-plot select,*/
@@ -28,7 +29,8 @@
 }
 
 #edit-plot input[type='text'],
-#edit-plot input[type='number'] {
+#edit-plot input[type='number'],
+#edit-plot select {
     border: 0;
     outline: none;
     letter-spacing: 3px;
@@ -45,9 +47,9 @@
 
 #edit-plot textarea {
     line-height: 1.7;
-    width: 99%;
+    width: 96%;
     height: 200px;
-    margin: -14px 0 40px 0;
+    margin: -22px 0 40px 0;
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
     font-family: 'Shadows Into Light', cursive;
     font-size: 18px;
@@ -56,6 +58,9 @@
     border: 0;
     resize: none;
     outline: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 #edit-plot label {
@@ -64,12 +69,16 @@
 }
 
 #edit-plot textarea:hover,
+/*#edit-plot select:hover,*/
+/*#edit-plot option:hover,*/
 #edit-plot input[type='text']:hover,
 #edit-plot input[type='number']:hover,
 #edit-plot textarea:active,
 #edit-plot input[type='text']:active,
 #edit-plot input[type='number']:active,
 #edit-plot textarea:focus,
+/*#edit-plot select:focus,*/
+/*#edit-plot option:focus,*/
 #edit-plot input[type='text']:focus,
 #edit-plot input[type='number']:focus
 /*#edit-plot button:focus,*/
@@ -86,6 +95,16 @@
 
 #edit-plot .modalLi {
     list-style-type: none;
+}
+
+[class*="span"] {
+    margin-left: 0 !important;
+}
+
+.formRow {
+    height: 48px;
+    margin-top: 32px;
+    margin-left: 0 !important;
 }
 
 @font-face {

@@ -17,7 +17,9 @@ class RoleController {
 	def update(Long id) {
 		Role role = Role.get(id)
 		if (role) {
-			saveOrUpdate(role, false)
+            render(contentType: "application/json") {
+                object(isupdate: saveOrUpdate(role, false))
+            }
 		}
 	}
 
@@ -75,7 +77,8 @@ class RoleController {
 			params.updateRoleResult = newRole.myInsert();
 		else
 			params.updateRoleResult = !!(newRole.save(flush: true))
-		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+        return true;
 	}
 
 	def deleteRoleHasRoleTag (Role role) {

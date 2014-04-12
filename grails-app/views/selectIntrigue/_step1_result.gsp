@@ -63,9 +63,16 @@
                 </td>
             </tr>
         </g:each>
-
+        <tr>
+            <td colspan="2">
+                <button type="button" class="moreEvenemential btn btn-primary">
+                    Afficher plus d'intrigues évenementielles
+                </button>
+            </td>
+        </tr>
         </tbody>
     </table>
+
     <!-- Banned -->
     <table class="table table-bordered">
         <thead>

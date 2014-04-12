@@ -21,6 +21,7 @@
         <div class="gnk">
             <g:render template="/navbar"/>
             <g:javascript library="application"/>
+            <g:javascript src="handlebars-v1.3.0.js"/>
             <r:layoutResources />
             <div class="page-body container">
                 <g:layoutBody/>

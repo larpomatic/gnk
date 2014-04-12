@@ -48,7 +48,7 @@
                                         <span class="badge badge-inverse">0</span>
                                     </li>
                                     <li class="wrapLi"><a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
-                                        Rédaction
+                                        Intrigue
                                     </a></li>
                                 </ul>
 

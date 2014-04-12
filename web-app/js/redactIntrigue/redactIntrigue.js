@@ -19,15 +19,12 @@ $(function(){
         button.css("right", "0px");
     });
 
-//    $(".leftMenuList i").click(function() {
-//       $(".leftMenuList.tt").click();
-//    });
-
     function removeRole(object) {
         var liObject = object.parent();
         $.ajax({
             type: "POST",
             url: object.attr("data-url"),
+            dataType: "json",
             success: function(data) {
                 if (data.object.isdelete) {
                     liObject.remove();
@@ -42,4 +39,27 @@ $(function(){
             }
         })
     }
+
+    $('.updateRole').click(function() {
+        var roleId = $(this).attr("data-id");
+        var form = $('form[name="updateRole_' + roleId + '"]');
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    console.log("ok");
+                    
+                }
+                else {
+                    console.log("nonok");
+                }
+            },
+            error: function() {
+                //error
+            }
+        })
+    });
 });
