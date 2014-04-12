@@ -167,6 +167,7 @@ public class SelectIntrigueProcessing {
         assert (roleSet != null);
         if (roleSet == null)
             return false;
+        // Need to include PJG HERE
         for (Role role : roleSet) {
             if (role.isPJ())
                 roleList.add(role);

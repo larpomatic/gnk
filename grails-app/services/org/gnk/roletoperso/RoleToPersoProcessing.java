@@ -20,6 +20,8 @@ public class RoleToPersoProcessing {
     private Gn gn;
     private OrderedRoleSet gnRoleSetToProcess;
     private Set<Role> gnNPCRoleSet;
+    private Set<Role> gnTPJRoleSet;
+    private Set<Role> gnPJGRoleSet;
     private Map<Role, String> unAttribuedRoleWithSettedSex;
 
 
@@ -42,7 +44,11 @@ public class RoleToPersoProcessing {
         LOG.info("\t<Algo>");
         initRoles();
         initCharacters();
+        // add rôle TOUS
+        addTPJ();
         associateRolesToCharacters();
+        // add rôle OTHER
+        addPJG();
         LOG.info("\t</Algo>");
 
     }
@@ -61,20 +67,6 @@ public class RoleToPersoProcessing {
             Set<Character> bannedCauseBanTagCharacters = new HashSet<Character>();
             Integer correspondenceRank = null;
             Character bestCharRanked = null;
-            for (Character character : characterSet) {
-                int characterNbPIP = character.getNbPIP();
-                if (characterNbPIP < gn.getPipMin()) {
-                    if (roleIsCompatibleNoPIP(role, character) && characterNbPIP + role.getPIPTotal() < gn.getPipMax()) {
-                        Integer rank = getRoleRank(character, role, lockedBannedTagForCharacters.get(character));
-                        if (rank == Integer.MIN_VALUE)
-                            bannedCauseBanTagCharacters.add(character);
-                        else if (bestCharRanked == null || correspondenceRank == null || rank > correspondenceRank) {
-                            correspondenceRank = rank;
-                            bestCharRanked = character;
-                        }
-                    }
-                }
-            }
             if (bestCharRanked == null) {
                 Character lowerCharacter = null;
                 int lowerCharacterNbPIP = 0;
@@ -441,6 +433,8 @@ public class RoleToPersoProcessing {
         LOG.info("\t\t<Roles initialisation>");
         gnRoleSetToProcess = new OrderedRoleSet();
         gnNPCRoleSet = new HashSet<Role>();
+        gnTPJRoleSet = new HashSet<Role>();
+        gnPJGRoleSet = new HashSet<Role>();
 
         assert (gn != null);
         if (gn == null) {
@@ -465,7 +459,14 @@ public class RoleToPersoProcessing {
                 if (role.isPJ()) {
                     roles.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
+                } else if (role.isTPJ()) {
+                    gnTPJRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is TPJ and not added to role set to process");
+                } else if (role.isPJG()) {
+                    gnPJGRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
                 } else {
+
                     gnNPCRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PNJ and not added to role set to process");
                 }
@@ -553,6 +554,31 @@ public class RoleToPersoProcessing {
             LOG.info("\t\t\t</Sexualization of character if implied by locked roles>");
         }
         LOG.info("\t\t</Characters initialisation>");
+    }
+
+    /*
+        Function to add all roles TPJ to all characters of the plot
+     */
+    private void addTPJ () {
+        for (Role role : gnTPJRoleSet) {
+            for (Character character : gn.getCharacterSet()) {
+                character.addRole(role);
+            }
+        }
+    }
+
+    /*
+        Function to add all roles PJG to all characters of the plot
+     */
+    private void addPJG () {
+        for (Role role : gnPJGRoleSet) {
+            for (Character character : gn.getCharacterSet()) {
+                if (character.getPlotSet().contains(role.getPlot()))
+                    continue;
+                else
+                    character.addRole(role);
+            }
+        }
     }
 
     private class OrderedRoleSet extends TreeSet<Role> {
