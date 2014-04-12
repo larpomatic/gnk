@@ -20,8 +20,8 @@ public class RoleToPersoProcessing {
     private Gn gn;
     private OrderedRoleSet gnRoleSetToProcess;
     private Set<Role> gnNPCRoleSet;
-    private Set<Role> gnTPJRoleSet;
-    private Set<Role> gnPJGRoleSet;
+    public Set<Role> gnTPJRoleSet;
+    public Set<Role> gnPJGRoleSet;
     private Map<Role, String> unAttribuedRoleWithSettedSex;
 
 
