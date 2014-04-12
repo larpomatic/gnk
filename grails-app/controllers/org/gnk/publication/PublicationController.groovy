@@ -394,7 +394,7 @@ class PublicationController {
         {
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
-            wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles().toString())
+            wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             StringBuilder tags = new StringBuilder()
             boolean first = true
