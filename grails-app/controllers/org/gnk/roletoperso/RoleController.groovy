@@ -11,7 +11,12 @@ class RoleController {
 	}
 
 	def save () {
-		saveOrUpdate(new Role(params), true)
+        Role role = new Role(params);
+        Boolean res = saveOrUpdate(role, true);
+        role = Role.findAllWhere("code": role.getCode()).first();
+        render(contentType: "application/json") {
+            object(iscreate: res, id: role.getId() as String, name: role.getCode())
+        }
 	}
 
 	def update(Long id) {
@@ -27,7 +32,6 @@ class RoleController {
 		if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
-			
 		} else {
 			return false
 		}

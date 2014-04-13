@@ -201,7 +201,7 @@ li.leftMenuList button {
     top: 6px;
     right: -40px;
     min-width: inherit;
-    z-index: 55555;
+    z-index: 555;
     position: absolute;
     -webkit-transition: right 1s; /* For Safari 3.1 to 6.0 */
     transition: right 1s;

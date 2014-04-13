@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <g:hiddenField name="screenStep" value="1"/>
 
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-left roleScreen">
 
     <ul class="nav nav-tabs" style="height:400pt;width:175pt;overflow-y: auto;overflow-x: hidden;">
         <li class="active leftMenuList">
@@ -24,7 +24,8 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newRole">
-            <g:form name="newRoleForm" url="[controller: 'role', action: 'save']">
+            <form name="newRoleForm" data-url="<g:createLink controller="Role" action="Save"/>">
+            %{--<g:form name="newRoleForm" url="[controller: 'role', action: 'save']">--}%
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div style="margin:auto">
                     <div class="row formRow">
@@ -127,8 +128,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <g:submitButton name="Insert" value="Insert" class="btn btn-primary"/>
-            </g:form>
+                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
+                %{--<g:submitButton name="Insert" value="Insert" class="btn btn-primary"/>--}%
+            </form>
         </div>
 
         <g:each in="${plotInstance.roles}" status="i4" var="role">

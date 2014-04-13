@@ -198,26 +198,26 @@ public class SelectIntrigueProcessing {
 	}
 
     private boolean selectEvenementialIntrigues() {
-        if (_allPlotList.size() == 0) {
-            return false;
-        }
-        ArrayList<Plot> evenementialPlots = new ArrayList<Plot>();
-        HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
-        TagService tagService = new TagService();
-        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
-        for (Plot plot : _allEvenementialPlotList) {
-            evenementialPlots.add(plot);
-            Set<PlotHasTag> plotHasTags = plot.getExtTags();
-            if (plotHasTags != null) {
-                for (PlotHasTag plotHasTag : plotHasTags) {
-                    challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
-                }
-            }
-            int rankTag = tagService.getTagsDifferenceToObjective(_gn.getEvenementialTags(), challengerTagList);
-            rankMap.put(plot.getId(), rankTag);
-        }
-        Collections.sort(evenementialPlots, new customEvenementialPlotComparator(rankMap));
-        _selectedEvenementialPlotList.addAll(evenementialPlots);
+//        if (_allPlotList.size() == 0) {
+//            return false;
+//        }
+//        ArrayList<Plot> evenementialPlots = new ArrayList<Plot>();
+//        HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
+//        TagService tagService = new TagService();
+//        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+//        for (Plot plot : _allEvenementialPlotList) {
+//            evenementialPlots.add(plot);
+//            Set<PlotHasTag> plotHasTags = plot.getExtTags();
+//            if (plotHasTags != null) {
+//                for (PlotHasTag plotHasTag : plotHasTags) {
+//                    challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
+//                }
+//            }
+//            int rankTag = tagService.getTagsDifferenceToObjective(_gn.getEvenementialTags(), challengerTagList);
+//            rankMap.put(plot.getId(), rankTag);
+//        }
+//        Collections.sort(evenementialPlots, new customEvenementialPlotComparator(rankMap));
+//        _selectedEvenementialPlotList.addAll(evenementialPlots);
         return true;
     }
 
