@@ -54,39 +54,40 @@
 		%{--</div>--}%
 	%{--</div>--}%
 
-	<div id="edit-plot" class="content scaffold-list" role="main">
+	<div id="edit-plot" class="content scaffold-list">
 		<h1>
 			<g:message code="default.edit.label" args="[entityName]" />
 		</h1>
-				<g:if test="${screenStep == 0}">
+        <g:render template="testMenuSlide" />
+				%{--<g:if test="${screenStep == 0}">--}%
 					%{--<g:render template="generalDescriptionForm" />--}%
-                    <g:render template="testMenuSlide" />
+                    %{----}%
                     %{--<g:render template="testMenuModal" />--}%
-				</g:if>
-				<g:if test="${screenStep == 1}">
-					<g:render template="rolesForm" />
-				</g:if>
-				<g:if test="${screenStep == 2}">
-					<g:render template="relationsForm" />
-				</g:if>
-				<g:if test="${screenStep == 3}">
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 1}">--}%
+					%{--<g:render template="rolesForm" />--}%
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 2}">--}%
+					%{--<g:render template="relationsForm" />--}%
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 3}">--}%
 					%{--<g:render template="placesForm" />--}%
-				</g:if>
-				<g:if test="${screenStep == 4}">
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 4}">--}%
 					%{--<g:render template="objectForm" />--}%
-				</g:if>
-				<g:if test="${screenStep == 5}">
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 5}">--}%
 					%{--<g:render template="textualCluesForm" />--}%
-				</g:if>
-				<g:if test="${screenStep == 6}">
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 6}">--}%
 					%{--<g:render template="pastScenesForm" />--}%
-				</g:if>
-				<g:if test="${screenStep == 7}">
+				%{--</g:if>--}%
+				%{--<g:if test="${screenStep == 7}">--}%
 					%{--<g:render template="eventsForm" />--}%
-				</g:if>
-                <g:if test="${screenStep == 8}">   <!-- FIXME TO Remove -->
-                    <g:render template="richTextEditor" />
-                </g:if>
+				%{--</g:if>--}%
+                %{--<g:if test="${screenStep == 8}">   <!-- FIXME TO Remove -->--}%
+                    %{--<g:render template="richTextEditor" />--}%
+                %{--</g:if>--}%
 			
 	</div>
 </body>

@@ -77,22 +77,20 @@
                     </div>
                     <div class="row formRow">
                         <div class="span1">
-                            <label for="rolePastScene">
+                            <label>
                                 <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
                             </label>
                         </div>
                         <div class="span4">
-                            <g:select name="rolePastScene" id="rolePastScene" from="${['PastScene1', 'PastScene2', 'PastScene3']}"
-                                      keys="${['PastScene1', 'PastScene2', 'PastScene3']}" required=""/>
+                            <a href="#rolePastScenesModal" class="btn" data-toggle="modal">Choisir les past scenes</a>
                         </div>
                         <div class="span1">
-                            <label for="roleEvent">
+                            <label>
                                 <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
                             </label>
                         </div>
                         <div class="span4">
-                            <g:select name="roleEvent" id="roleEvent" from="${['Evenement1', 'Evenement2', 'Evenement3']}"
-                                      keys="${['Evenement1', 'Evenement2', 'Evenement3']}" required=""/>
+                            <a href="#roleEventsModal" class="btn" data-toggle="modal">Choisir les evenements</a>
                         </div>
                     </div>
                     <div class="row formRow text-center">
@@ -103,6 +101,40 @@
                     <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
                 </div>
 
+                <div id="roleEventsModal" class="modal hide fade" tabindex="-1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+
+                        <h3>Evenements</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul>
+
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+                <div id="rolePastScenesModal" class="modal hide fade" tabindex="-1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+
+                        <h3>Past Scenes</h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul>
+
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
                 <div id="roleTagsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -190,22 +222,20 @@
                         </div>
                         <div class="row formRow">
                             <div class="span1">
-                                <label for="rolePastScene">
+                                <label>
                                     <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
                                 </label>
                             </div>
                             <div class="span4">
-                                <g:select name="rolePastScene" id="rolePastScene" from="${['PastScene1', 'PastScene2', 'PastScene3']}"
-                                          keys="${['PastScene1', 'PastScene2', 'PastScene3']}" required=""/>
+                                <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">Choisir les past scenes</a>
                             </div>
                             <div class="span1">
-                                <label for="roleEvent">
+                                <label>
                                     <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
                                 </label>
                             </div>
                             <div class="span4">
-                                <g:select name="roleEvent" id="roleEvent" from="${['Evenement1', 'Evenement2', 'Evenement3']}"
-                                          keys="${['Evenement1', 'Evenement2', 'Evenement3']}" required=""/>
+                                <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">Choisir les evenements</a>
                             </div>
                         </div>
                         <div class="row formRow text-center">
@@ -214,6 +244,41 @@
                             </label>
                         </div>
                         <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
+                    </div>
+
+                    <div id="roleEventsModal_${role.id}" class="modal hide fade" tabindex="-1">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+
+                            <h3>Evenements</h3>
+                        </div>
+
+                        <div class="modal-body">
+                            <ul>
+
+                            </ul>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                    <div id="rolePastScenesModal_${role.id}" class="modal hide fade" tabindex="-1">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+
+                            <h3>Past Scenes</h3>
+                        </div>
+
+                        <div class="modal-body">
+                            <ul>
+
+                            </ul>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal">Ok</button>
+                        </div>
                     </div>
 
                     <div id="roleTagsModal_${role.id}" class="modal hide fade" tabindex="-1">

@@ -37,6 +37,8 @@ $(function(){
             success: function(data) {
                 if (data.object.isdelete) {
                     liObject.remove();
+                    var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
+                    $('.roleLi .badge').html(nbRoles);
                     $('.addRole').trigger("click");
                     createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
                 }
@@ -80,19 +82,21 @@ $(function(){
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                if (data.object.iscreate) {
+                if (data.iscreate) {
                     createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiItem'];
                     var context = {
-                        roleId: String(data.object.id),
-                        roleName: data.object.name
+                        roleId: String(data.role.id),
+                        roleName: data.role.code
                     };
                     var html = template(context);
                     $('.roleScreen > ul').append(html);
                     initConfirm();
                     initDeleteButton();
                     emptyForm();
-                    // TODO créer un autre template pour générer le nouveau panel
+                    createNewRolePanel(data);
+                    var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
+                    $('.roleLi .badge').html(nbRoles);
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
@@ -105,8 +109,38 @@ $(function(){
     });
 
     function emptyForm() {
-        $('form[name="newRoleForm"] input').val("");
+        $('form[name="newRoleForm"] input[type="text"]').val("");
+        $('form[name="newRoleForm"] input[type="number"]').val("");
         $('form[name="newRoleForm"] textarea').val("");
         $('form[name="newRoleForm"] input[type="checkbox"]').attr('checked', false);
+        $('form[name="newRoleForm"] #roleType option[value="PJ"]').attr("selected", "selected");
+
+    }
+
+    function createNewRolePanel(data) {
+        var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
+        var context = {
+            role: data.role,
+            roleTagList: data.roleTagList
+        };
+        var html = template(context);
+        $('.roleScreen > .tab-content').append(html);
+        $('#role_' + data.role.id + ' #roleType option[value="'+ data.role.type +'"]').attr("selected", "selected");
+        for (var key in data.role.tagList) {
+            $('#roleTagsModal_' + data.role.id + " #roleTags_" + data.role.tagList[key]).attr('checked', 'checked');
+        }
     }
 });
+
+function bgenScroll() {
+    if (window.pageYOffset != null) {
+        st = window.pageYOffset + '';
+    }
+    if (document.body.scrollWidth != null) {
+        if (document.body.scrollTop) {
+            st = document.body.scrollTop;
+        }
+        st = document.documentElement.scrollTop;
+    }
+    setTimeout('window.scroll(0,st)', 10);
+}

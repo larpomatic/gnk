@@ -1,5 +1,7 @@
 package org.gnk.roletoperso
 
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
@@ -14,10 +16,49 @@ class RoleController {
         Role role = new Role(params);
         Boolean res = saveOrUpdate(role, true);
         role = Role.findAllWhere("code": role.getCode()).first();
+        def roleTagList = new TagService().getRoleTagQuery();
+        def jsonTagList = buildTagList(roleTagList);
+        def jsonRole = buildJson(role, roleTagList);
+        final JSONObject object = new JSONObject();
+        object.put("iscreate", res);
+        object.put("role", jsonRole);
+        object.put("roleTagList", jsonTagList);
         render(contentType: "application/json") {
-            object(iscreate: res, id: role.getId() as String, name: role.getCode())
+            object
         }
 	}
+
+    def buildTagList(def roleTagList) {
+        JSONArray jsonTagList = new JSONArray();
+        for (roleTag in roleTagList) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", roleTag.getId());
+            jsonTag.put("name", roleTag.getName());
+            jsonTagList.add(jsonTag);
+        }
+        return jsonTagList;
+    }
+
+    def buildJson(Role role, roleTagList) {
+        JSONObject jsonRole = new JSONObject();
+        jsonRole.put("code", role.getCode());
+        jsonRole.put("id", role.getId());
+        jsonRole.put("plotId", role.getPlot().getId());
+        jsonRole.put("pipi", role.getPipi());
+        jsonRole.put("pipr", role.getPipr());
+        jsonRole.put("type", role.getType());
+        jsonRole.put("description", role.getDescription());
+        JSONArray jsonTagList = new JSONArray();
+        for (Tag roleTag in roleTagList) {
+            if (role.hasRoleTag(roleTag)) {
+//                JSONObject jsonTag = new JSONObject();
+//                jsonTag.put("tag", roleTag.getId());
+                jsonTagList.add(roleTag.getId());
+            }
+        }
+        jsonRole.put("tagList", jsonTagList);
+        return jsonRole;
+    }
 
 	def update(Long id) {
 		Role role = Role.get(id)
