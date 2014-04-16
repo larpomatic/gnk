@@ -67,6 +67,20 @@ public class RoleToPersoProcessing {
             Set<Character> bannedCauseBanTagCharacters = new HashSet<Character>();
             Integer correspondenceRank = null;
             Character bestCharRanked = null;
+            for (Character character : characterSet) {
+                int characterNbPIP = character.getNbPIP();
+                if (characterNbPIP < gn.getPipMin()) {
+                    if (roleIsCompatibleNoPIP(role, character) && characterNbPIP + role.getPIPTotal() < gn.getPipMax()) {
+                        Integer rank = getRoleRank(character, role, lockedBannedTagForCharacters.get(character));
+                        if (rank == Integer.MIN_VALUE)
+                            bannedCauseBanTagCharacters.add(character);
+                        else if (bestCharRanked == null || correspondenceRank == null || rank > correspondenceRank) {
+                            correspondenceRank = rank;
+                            bestCharRanked = character;
+                        }
+                    }
+                }
+            }
             if (bestCharRanked == null) {
                 Character lowerCharacter = null;
                 int lowerCharacterNbPIP = 0;
