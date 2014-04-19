@@ -14,55 +14,73 @@
                 <ul class="wrapUl">
                     <li class="wrapLi roleLi">
                         <a class="wrapLink" href="#wrap1" onclick="bgenScroll();">
-                            <span>Roles</span>
+                            <span>
+                                <g:message code="redactintrigue.tabs.roles" default="Roles"/>
+                            </span>
                         </a>
                         <span class="badge badge-inverse">${plotInstance.roles.size()}</span>
                     </li>
                     <li class="wrapLi placeLi">
                         <a class="wrapLink" href="#wrap2" onclick="bgenScroll();">
-                            <span>Lieux</span>
+                            <span>
+                                <g:message code="redactintrigue.tabs.places" default="Places"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">3</span>
+                        <span class="badge badge-inverse">4</span>
                     </li>
                     <li class="wrapLi resourceLi">
                         <a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
-                            <span>Objets</span>
+                            <span>
+                                <g:message code="redactintrigue.tabs.objects" default="Objects"/>
+                            </span>
                         </a>
                         <span class="badge badge-inverse">12</span>
                     </li>
                     <li class="wrapLi relationLi">
                         <a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
-                            <span>Relations</span>
+                            <span>
+                                <g:message code="redactintrigue.tabs.relations" default="Relations"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">0</span>
+                        <span class="badge badge-inverse">47</span>
                     </li>
                     <li class="wrapLi cluesLi">
                         <a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
-                            Indices
+                            <span>
+                                <g:message code="redactintrigue.tabs.textualClues" default="Clues"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">0</span>
+                        <span class="badge badge-inverse">2</span>
                     </li>
                     <li class="wrapLi pastScenesLi">
                         <a class="wrapLink" href="#wrap6" onclick="bgenScroll();">
-                            PastScenes
+                            <span>
+                                <g:message code="redactintrigue.tabs.pastScenes" default="Past Scenes"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">0</span>
+                        <span class="badge badge-inverse">${plotInstance.pastescenes.size()}</span>
                     </li>
                     <li class="wrapLi eventsLi">
                         <a class="wrapLink" href="#wrap7" onclick="bgenScroll();">
-                            Evenements
+                            <span>
+                                <g:message code="redactintrigue.tabs.events" default="Events"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">0</span>
+                        <span class="badge badge-inverse">${plotInstance.events.size()}</span>
                     </li>
                     <li class="wrapLi universLi">
                         <a class="wrapLink" href="#wrap8" onclick="bgenScroll();">
-                            Univers
+                            <span>
+                                <g:message code="redactintrigue.tabs.univers" default="Univers"/>
+                            </span>
                         </a>
-                        <span class="badge badge-inverse">0</span>
+                        <span class="badge badge-inverse">${plotInstance.plotHasUniverses.size()}</span>
                     </li>
                     <li class="wrapLi plotLi">
                         <a class="wrapLink" href="#wrap9" onclick="bgenScroll();">
-                            Intrigue
+                            <span>
+                                <g:message code="redactintrigue.tabs.plot" default="Plot"/>
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -83,24 +101,23 @@
                     </div>
 
                     <div class="container">
-                        Relations
                         <g:render template="relationsForm"/>
                     </div>
 
                     <div class="container">
-                        Indices
+                        <g:render template="cluesForm"/>
                     </div>
 
                     <div class="container">
-                        Past Scenes
+                        <g:render template="pastScenesForm"/>
                     </div>
 
                     <div class="container">
-                        Evenements
+                        <g:render template="eventsForm"/>
                     </div>
 
                     <div class="container">
-                        Univers
+                        <g:render template="universForm"/>
                     </div>
 
                     <div class="container">

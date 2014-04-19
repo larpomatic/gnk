@@ -44,7 +44,7 @@
         <thead>
         <tr>
             <th><g:message code="selectintrigue.evenementialPlotName"
-                           default="Plot name"/></th>
+                           default="Evenemential plot name"/></th>
             <th><g:img dir="images/selectIntrigue"
                                   file="validate.png"/></th>
         </tr>
@@ -66,7 +66,7 @@
         <tr>
             <td colspan="2">
                 <button type="button" class="moreEvenemential btn btn-primary">
-                    Afficher plus d'intrigues évenementielles
+                    <g:message code="selectintrigue.step1.moreEvenemential" default="Display more evenementials plots"/>
                 </button>
             </td>
         </tr>

@@ -1,8 +1,8 @@
 <div class="tabbable tabs-left placeScreen">
-    <ul class="nav nav-tabs" style="height:400pt;width:175pt;overflow-y: auto;overflow-x: hidden;">
+    <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
             <a href="#newPlace" data-toggle="tab" class="addPlace">
-                Nouveau lieu
+                <g:message code="redactintrigue.place.addPlace" default="New place"/>
             </a>
         </li>
 
@@ -11,11 +11,11 @@
     <div class="tab-content">
         <div class="tab-pane active" id="newPlace">
             <form name="newPlaceForm" data-url="">
-                <div style="margin:auto">
+                %{--<div style="margin:auto">--}%
                     <div class="row formRow">
                         <div class="span1">
                             <label for="placeCode">
-                                <g:message code="redactintrigue.place.placeCode" default="code lieu"/>
+                                <g:message code="redactintrigue.place.placeCode" default="Name"/>
                             </label>
                         </div>
                         <div class="span4">
@@ -27,7 +27,9 @@
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#placeTagsModal" class="btn" data-toggle="modal">Choisir les tags</a>
+                            <a href="#placeTagsModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
+                            </a>
                         </div>
                     </div>
                     <div class="row formRow">
@@ -37,30 +39,35 @@
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#placePastScenesModal" class="btn" data-toggle="modal">Choisir les past scenes</a>
+                            <a href="#placePastScenesModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.place.choosePastscenes" default="Choose past scenes"/>
+                            </a>
                         </div>
                         <div class="span1">
                             <label>
-                                <g:message code="redactintrigue.place.placeEvent" default="Evenement"/>
+                                <g:message code="redactintrigue.place.placeEvent" default="Events"/>
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#placeEventsModal" class="btn" data-toggle="modal">Choisir les evenements</a>
+                            <a href="#placeEventsModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.place.chooseEvents" default="Choose events"/>
+                            </a>
                         </div>
                     </div>
                     <div class="row formRow text-center">
                         <label for="placeDescription">
-                            <g:message code="redactintrigue.place.placeDescription" default="Commentaire"/>
+                            <g:message code="redactintrigue.place.placeDescription" default="Description"/>
                         </label>
                     </div>
                     <g:textArea name="placeDescription" id="placeDescription" value="" rows="5" cols="100"/>
-                </div>
+                %{--</div>--}%
 
                 <div id="placeEventsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>Evenements</h3>
+                        <h3>
+                            <g:message code="redactintrigue.place.placeEvent" default="Events"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">
@@ -76,8 +83,9 @@
                 <div id="placePastScenesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>Past Scenes</h3>
+                        <h3>
+                            <g:message code="redactintrigue.place.placePastScene" default="Past Scenes"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">
@@ -94,7 +102,9 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
 
-                        <h3 id="myModalLabel">Tags</h3>
+                        <h3 id="myModalLabel">
+                            <g:message code="redactintrigue.place.tags" default="Tags"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">

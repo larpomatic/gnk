@@ -5,13 +5,16 @@
 
 <meta name="layout" content="main">
 <g:set var="entityName"
-	value="${message(code: 'plot.label', default: 'Plot')}" />
+	value="${plotInstance.name}" />
 <title><g:message code="default.edit.label" args="[entityName]" /></title>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">
 </head>
 <body>
 
 <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
+<g:javascript src="redactIntrigue/bootstrap-datetimepicker.min.js"/>
+<g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
 <g:javascript src="redactIntrigue/redactIntrigue.js"/>
 	%{--<div class="navbar navbar-inverse">--}%
 		%{--<div class="navbar-inner">--}%

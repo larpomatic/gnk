@@ -97,14 +97,33 @@
     list-style-type: none;
 }
 
-[class*="span"] {
+#edit-plot [class*="span"] {
     margin-left: 0 !important;
 }
 
-.formRow {
+#edit-plot .formRow {
     height: 48px;
     margin-top: 32px;
     margin-left: 0 !important;
+}
+
+#edit-plot .numbersField {
+    width: 150px !important;
+}
+
+#edit-plot .leftUl {
+    height:400pt;
+    width:175pt;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#edit-plot .leftMenuList input {
+    margin-top: 6px;
+}
+
+#edit-plot .inputLargeWidth {
+    width: 95% !important;
 }
 
 @font-face {

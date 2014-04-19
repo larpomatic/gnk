@@ -130,6 +130,11 @@ $(function(){
             $('#roleTagsModal_' + data.role.id + " #roleTags_" + data.role.tagList[key]).attr('checked', 'checked');
         }
     }
+
+    $('.datetimepicker').datetimepicker({
+        language: 'fr',
+        pickSeconds: false
+    });
 });
 
 function bgenScroll() {
@@ -143,4 +148,10 @@ function bgenScroll() {
         st = document.documentElement.scrollTop;
     }
     setTimeout('window.scroll(0,st)', 10);
+}
+
+function toggle(checkboxID, toggleID) {
+    var checkbox = document.getElementById(checkboxID);
+    var toggle = document.getElementById(toggleID);
+    updateToggle = toggle.disabled = !checkbox.checked;
 }

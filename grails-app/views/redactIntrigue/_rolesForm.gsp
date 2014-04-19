@@ -3,14 +3,14 @@
 
 <div class="tabbable tabs-left roleScreen">
 
-    <ul class="nav nav-tabs" style="height:400pt;width:175pt;overflow-y: auto;overflow-x: hidden;">
+    <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
             <a href="#newRole" data-toggle="tab" class="addRole">
-            Nouveau rôle
+                <g:message code="redactintrigue.role.addRole" default="New role"/>
             </a>
         </li>
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <li class="leftMenuList tt">
+            <li class="leftMenuList">
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
@@ -27,11 +27,11 @@
             <form name="newRoleForm" data-url="<g:createLink controller="Role" action="Save"/>">
             %{--<g:form name="newRoleForm" url="[controller: 'role', action: 'save']">--}%
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                <div style="margin:auto">
+                %{--<div style="margin:auto">--}%
                     <div class="row formRow">
                         <div class="span1">
                             <label for="roleCode">
-                                <g:message code="redactintrigue.role.roleCode" default="Role code"/>
+                                <g:message code="redactintrigue.role.roleCode" default="Name"/>
                             </label>
                         </div>
                         <div class="span4">
@@ -63,7 +63,9 @@
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#roleTagsModal" class="btn" data-toggle="modal">Choisir les tags</a>
+                            <a href="#roleTagsModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
+                            </a>
                         </div>
                         <div class="span1">
                             <label for="roleType">
@@ -82,15 +84,19 @@
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#rolePastScenesModal" class="btn" data-toggle="modal">Choisir les past scenes</a>
+                            <a href="#rolePastScenesModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.choosePastScenes" default="Choose past scenes"/>
+                            </a>
                         </div>
                         <div class="span1">
                             <label>
-                                <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
+                                <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                             </label>
                         </div>
                         <div class="span4">
-                            <a href="#roleEventsModal" class="btn" data-toggle="modal">Choisir les evenements</a>
+                            <a href="#roleEventsModal" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
+                            </a>
                         </div>
                     </div>
                     <div class="row formRow text-center">
@@ -99,13 +105,14 @@
                         </label>
                     </div>
                     <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
-                </div>
+                %{--</div>--}%
 
                 <div id="roleEventsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>Evenements</h3>
+                        <h3>
+                            <g:message code="redactintrigue.role.roleEvent" default="Events"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">
@@ -121,8 +128,9 @@
                 <div id="rolePastScenesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>Past Scenes</h3>
+                        <h3>
+                            <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">
@@ -138,8 +146,9 @@
                 <div id="roleTagsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3 id="myModalLabel">Tags</h3>
+                        <h3 id="myModalLabel">
+                            <g:message code="redactintrigue.role.tags" default="Tags"/>
+                        </h3>
                     </div>
 
                     <div class="modal-body">
@@ -172,11 +181,11 @@
                     <g:hiddenField name="id" value="${role.id}"/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
 
-                    <div style="margin:auto">
+                    %{--<div style="margin:auto">--}%
                         <div class="row formRow">
                             <div class="span1">
                                 <label for="roleCode">
-                                    <g:message code="redactintrigue.role.roleCode" default="Role code"/>
+                                    <g:message code="redactintrigue.role.roleCode" default="Name"/>
                                 </label>
                             </div>
                             <div class="span4">
@@ -208,7 +217,9 @@
                                 </label>
                             </div>
                             <div class="span4">
-                                <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">Choisir les tags</a>
+                                <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
+                                    <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
+                                </a>
                             </div>
                             <div class="span1">
                                 <label for="roleType">
@@ -227,15 +238,19 @@
                                 </label>
                             </div>
                             <div class="span4">
-                                <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">Choisir les past scenes</a>
+                                <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">
+                                    <g:message code="redactintrigue.role.choosePastScenes" default="Choose past Scene"/>
+                                </a>
                             </div>
                             <div class="span1">
                                 <label>
-                                    <g:message code="redactintrigue.role.roleEvent" default="Evenement"/>
+                                    <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                                 </label>
                             </div>
                             <div class="span4">
-                                <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">Choisir les evenements</a>
+                                <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">
+                                    <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
+                                </a>
                             </div>
                         </div>
                         <div class="row formRow text-center">
@@ -244,13 +259,14 @@
                             </label>
                         </div>
                         <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
-                    </div>
+                    %{--</div>--}%
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-
-                            <h3>Evenements</h3>
+                            <h3>
+                                <g:message code="redactintrigue.role.roleEvent" default="Events"/>
+                            </h3>
                         </div>
 
                         <div class="modal-body">
@@ -266,8 +282,9 @@
                     <div id="rolePastScenesModal_${role.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-
-                            <h3>Past Scenes</h3>
+                            <h3>
+                                <g:message code="redactintrigue.role.rolePastScene" default="Past Scenes"/>
+                            </h3>
                         </div>
 
                         <div class="modal-body">
@@ -284,8 +301,9 @@
                     <div id="roleTagsModal_${role.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
-
-                            <h3 id="myModalLabel${role.id}">Tags</h3>
+                            <h3 id="myModalLabel${role.id}">
+                                <g:message code="redactintrigue.role.tags" default="Tags"/>
+                            </h3>
                         </div>
 
                         <div class="modal-body">
