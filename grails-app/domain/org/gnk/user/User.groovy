@@ -19,9 +19,12 @@ class User {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
-	
+
+    def rights = [0,0,0]
+
 	Date lastUpdated
 	Date dateCreated
+    def lastConnection
 
 	String firstname
 	String lastname

@@ -7,7 +7,9 @@ import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
 import org.gnk.tag.Univers
 import org.gnk.user.User
+import org.springframework.security.access.annotation.Secured
 
+@Secured(['ROLE_USER'])
 class RedactIntrigueController {
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	

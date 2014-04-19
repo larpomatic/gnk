@@ -1,7 +1,6 @@
 <html>
 <head>
-	<meta name='layout' content='main'/>
-	<title><g:message code="springSecurity.login.title"/></title>
+    <meta name="layout" content="main"/>
 	<style type='text/css' media='screen'>
 	#login {
 		margin: 15px 0px;
@@ -100,7 +99,7 @@
 			</p>
 
 			<p>
-				<label for='password'><g:message code="springSecurity.login.password.label"/>:</label>
+                <label for='password'><g:message code="springSecurity.login.password.label"/>:</label>
 				<input type='password' class='text_' name='j_password' id='password'/>
 			</p>
 

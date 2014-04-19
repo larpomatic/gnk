@@ -155,5 +155,9 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'org.gnk.user.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gnk.user.UserSecRole'
 grails.plugins.springsecurity.authority.className = 'org.gnk.user.SecRole'
+grails.plugin.springsecurity.interceptUrlMap = [
+        '*/gnk/login/auth':             ['permitAll'],
+        '*/gnk/*':             ['isFullyAuthenticated()'],
+        ]
 
 grails.plugins.twitterbootstrap.fixtaglib=true

@@ -41,10 +41,22 @@ class BootStrap {
 
         // ROLE
         SecRole adminRole = SecRole.findByAuthority("ROLE_ADMIN") ?: new SecRole(authority: "ROLE_ADMIN").save(failOnError: true)
-        SecRole.findByAuthority("ROLE_USER") ?: new SecRole(authority: "ROLE_USER").save(failOnError: true)
+        SecRole userRole = SecRole.findByAuthority("ROLE_USER") ?: new SecRole(authority: "ROLE_USER").save(failOnError: true)
 
         // USER
         User admin = User.findByUsername("admin@gnk.com");
+        User user  = User.findByUsername("user@gnk.com");
+
+        if (!user) {
+            user = new User()
+            user.username = "user@gnk.com"
+            user.firstname = "Nico"
+            user.lastname = "Sotty"
+            user.password = "1"
+            user.enabled = true
+
+            user.save(failOnError: true)
+        }
 
         if (!admin) {
             admin = new User();
@@ -60,6 +72,10 @@ class BootStrap {
 
         if (!admin.getAuthorities().contains(adminRole)) {
             UserSecRole.create admin, adminRole
+        }
+        if (!user.getAuthorities().contains(userRole)) {
+            UserSecRole.create(user, userRole, true)
+
         }
 
     }

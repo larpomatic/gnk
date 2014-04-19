@@ -1,4 +1,7 @@
 import grails.converters.JSON
+import org.codehaus.groovy.grails.web.metaclass.GetParamsDynamicProperty
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.user.User
 
 import javax.servlet.http.HttpServletResponse
 
@@ -29,7 +32,11 @@ class LoginController {
 	 */
 	def index = {
 		if (springSecurityService.isLoggedIn()) {
-			redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+            User currentuser = (User) springSecurityService.getCurrentUser()
+            print currentuser.lastConnection
+            session.setAttribute("user", currentuser);
+            redirect (controller: "home", action: "index")
+			//redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}
 		else {
 			redirect action: 'auth', params: params
@@ -40,14 +47,11 @@ class LoginController {
 	 * Show the login page.
 	 */
 	def auth = {
-
 		def config = SpringSecurityUtils.securityConfig
-
 		if (springSecurityService.isLoggedIn()) {
 			redirect uri: config.successHandler.defaultTargetUrl
 			return
 		}
-
 		String view = 'auth'
 		String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
 		render view: view, model: [postUrl: postUrl,
