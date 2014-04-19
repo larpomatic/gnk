@@ -1,7 +1,7 @@
 package org.gnk.resplacetime
 import org.gnk.tag.Univers
 
-class GenericTextualClueHasUnivers {
+class GenericRessourceHasIngameClue {
 
     Integer id
     Integer version
