@@ -147,7 +147,7 @@ class RedactIntrigueController {
 			if (it.key.startsWith("universes_")) {
 				PlotHasUnivers plotHasUnivers = new PlotHasUnivers()
 				plotHasUnivers.univers = Univers.get((it.key - "universes_") as Integer);
-				plotHasUnivers.weight = 100
+				plotHasUnivers.weight = TagService.LOCKED
 				plotHasUnivers.plot = plotInstance
 				plotInstance.plotHasUniverses.add(plotHasUnivers)
 			}

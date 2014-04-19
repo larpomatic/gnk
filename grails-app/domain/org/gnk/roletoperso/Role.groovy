@@ -4,6 +4,7 @@ import groovy.sql.Sql
 import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 import org.gnk.utils.Sex
 
 class Role implements Comparable {
@@ -68,7 +69,7 @@ class Role implements Comparable {
             RoleHasTag roleHasTag = new RoleHasTag()
             Tag roleTag = roleHasTagIter.tag
             roleHasTag.tag = roleTag
-            roleHasTag.weight = 100 //FIXME
+            roleHasTag.weight = TagService.LOCKED //FIXME
             roleHasTag.role = role
             role.roleHasTags.add(roleHasTag)
         }
@@ -121,16 +122,16 @@ class Role implements Comparable {
             Tag tag = rolehasTag.tag
 
             if (tag.name.equals("Homme")) {
-                if (rolehasTag.getterWeight() >= 100)
+                if (rolehasTag.getterWeight() >= TagService.LOCKED)
                     return Sex.MALE
-                if (rolehasTag.getterWeight() <= -100)
+                if (rolehasTag.getterWeight() <= TagService.BANNED)
                     return Sex.FEMALE
             }
 
             if (tag.name.equals("Femme")) {
-                if (rolehasTag.getterWeight() >= 100)
+                if (rolehasTag.getterWeight() >= TagService.LOCKED)
                     return Sex.FEMALE
-                if (rolehasTag.getterWeight() <= -100)
+                if (rolehasTag.getterWeight() <= TagService.BANNED)
                     return Sex.MALE
             }
         }
