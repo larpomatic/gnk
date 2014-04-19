@@ -17,7 +17,7 @@ class GenericTextualClue {
     static transients = ["DTDId"]
     Integer DTDId;
 
-    static hasMany = [ extUnivers: GenericTextualClueHasUnivers ]
+//    static hasMany = [ ]
 
 //    static belongsTo = [ possessedByRole: Role, fromRole: Role, toRole: Role, textualClueTag: TextualClueTag ] // Dump20131114-version 2.1
     static belongsTo = [ possessedByRole: Role, fromRole: Role, toRole: Role ]

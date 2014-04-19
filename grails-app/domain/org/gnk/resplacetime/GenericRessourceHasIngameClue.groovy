@@ -1,5 +1,4 @@
 package org.gnk.resplacetime
-import org.gnk.tag.Univers
 
 class GenericRessourceHasIngameClue {
 
@@ -8,12 +7,18 @@ class GenericRessourceHasIngameClue {
 
     Date lastUpdated
 	Date dateCreated
-	String adaptedText
+    String title
+	String descritpion
 
-	static belongsTo = [ genericTextualClue: GenericTextualClue, univers: Univers ]
+	static belongsTo = [ genericRessource: GenericResource ]
+
+    static constraints = {
+        title (maxSize: 75)
+//        description (nullable: true)
+    }
 
     static mapping = {
-        adaptedText type: 'text'
+        descritpion type: 'text'
         id type:'integer'
         version type: 'integer'
     }
