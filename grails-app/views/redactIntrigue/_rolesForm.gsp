@@ -15,7 +15,7 @@
                     ${role.code}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer ce rôle?"
-                        data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role">
+                        data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>
             </li>
