@@ -1,9 +1,9 @@
 <script>
 
     //On set le content au chargement
-    window.onload = function () {
-        document.getElementById("richTextEditor").innerHTML = "Et c'est alors que&nbsp;<span class=\"label label-success\" contenteditable=\"false\">Han Solo</span>&nbsp;entra sur la&nbsp;<span class=\"label label-warning\" contenteditable=\"false\">Death Star</span>&nbsp;armé d'une&nbsp;<span class=\"label label-important\" contenteditable=\"false\">Pokéball</span>&nbsp;pour tuer&nbsp;<span class=\"label label-success\" contenteditable=\"false\">Dark Vador</span>."
-    } //FIXME
+//    window.onload = function () {
+//        document.getElementById("richTextEditor").innerHTML = "Et c'est alors que&nbsp;<span class=\"label label-success\" contenteditable=\"false\">Han Solo</span>&nbsp;entra sur la&nbsp;<span class=\"label label-warning\" contenteditable=\"false\">Death Star</span>&nbsp;armé d'une&nbsp;<span class=\"label label-important\" contenteditable=\"false\">Pokéball</span>&nbsp;pour tuer&nbsp;<span class=\"label label-success\" contenteditable=\"false\">Dark Vador</span>."
+//    } //FIXME
 
     //Function to insert text in div editable for the description rich editor
     function pasteHtmlAtCaret(html) {

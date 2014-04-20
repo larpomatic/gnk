@@ -20,6 +20,9 @@ th,td {
     width: 95pt;
 }
 
-.evenemential-table > tbody > tr:not(:last-child):nth-child(n+6){
+/*.evenemential-table > tbody > tr:not(:last-child):nth-child(n+6){*/     /* test pour 5 */
+    /*display: none;*/
+/*}*/
+.evenemential-table > tbody > tr:not(:last-child):nth-child(n+2) {    /* test pour 1 */
     display: none;
 }
