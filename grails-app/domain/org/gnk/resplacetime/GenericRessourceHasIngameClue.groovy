@@ -8,9 +8,9 @@ class GenericRessourceHasIngameClue {
     Date lastUpdated
 	Date dateCreated
     String title
-	String descritpion
+	String description
 
-	static belongsTo = [ genericRessource: GenericResource ]
+	static belongsTo = [ genericResource: GenericResource ]
 
     static constraints = {
         title (maxSize: 75)
@@ -18,7 +18,7 @@ class GenericRessourceHasIngameClue {
     }
 
     static mapping = {
-        descritpion type: 'text'
+        description type: 'text'
         id type:'integer'
         version type: 'integer'
     }

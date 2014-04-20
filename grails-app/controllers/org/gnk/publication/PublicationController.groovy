@@ -66,6 +66,10 @@ class PublicationController {
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des Intrigues du GN")
         createPlotTable()
 
+        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des pitchs des Intrigues du GN")
+        createPitchTable()
+
+
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse de l'événementiel du GN")
         createEventsTable()
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des lieux du GN")
@@ -376,6 +380,31 @@ class PublicationController {
 
            // todo : wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "J'ai sur moi...")
         }
+    }
+
+    // Création du tableau de synthèse des pitch des intrigues
+    def createPitchTable() {
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+
+        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
+        wordWriter.addTableCell(tableRow, "Pitch ORGA")
+        wordWriter.addTableCell(tableRow, "Pitch PNJ")
+        wordWriter.addTableCell(tableRow, "Pitch PJ")
+
+        table.getContent().add(tableRow);
+
+        for (Plot p : gn.selectedPlotSet)
+        {
+            Tr tableRowPlot = wordWriter.factory.createTr()
+            wordWriter.addTableCell(tableRowPlot, p.name)
+            wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
+            wordWriter.addTableCell(tableRowPlot, p.pitchPnj)
+            wordWriter.addTableCell(tableRowPlot, p.pitchPj)
+            table.getContent().add(tableRowPlot);
+        }
+        wordWriter.addBorders(table)
+        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
     }
 
     // Création du tableau de synthèse des intrigues
