@@ -1,7 +1,8 @@
 package org.gnk.roletoperso
 
 import org.gnk.selectintrigue.Plot;
-import org.gnk.tag.Tag;
+import org.gnk.tag.Tag
+import org.gnk.tag.TagService;
 import org.gnk.user.User;
 
 class RoleController {
@@ -65,7 +66,7 @@ class RoleController {
 				RoleHasTag roleHasTag = new RoleHasTag()
 				Tag roleTag = Tag.get((it.key - "roleTags_") as Integer);
 				roleHasTag.tag = roleTag
-				roleHasTag.weight = 100
+				roleHasTag.weight = TagService.LOCKED
 				roleHasTag.role = newRole
 				newRole.roleHasTags.add(roleHasTag)
 			}
