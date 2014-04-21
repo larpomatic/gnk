@@ -261,7 +261,6 @@
                             </label>
                         </div>
                         <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
-                    %{--</div>--}%
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">
