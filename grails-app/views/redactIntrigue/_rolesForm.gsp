@@ -149,12 +149,14 @@
                         <h3 id="myModalLabel">
                             <g:message code="redactintrigue.role.tags" default="Tags"/>
                         </h3>
+                        <input class="input-medium search-query" data-content="roleTagsCreate"
+                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                     </div>
 
                     <div class="modal-body">
-                        <ul>
+                        <ul class="roleTagsCreate">
                             <g:each in="${roleTagList}" status="i2" var="roleTagInstance">
-                                <li class="modalLi">
+                                <li class="modalLi" data-name="${roleTagInstance.name.toLowerCase()}">
                                     <label for="roleTags_${roleTagInstance.id}">
                                         <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
                                         checked="false"/>
@@ -304,17 +306,21 @@
                             <h3 id="myModalLabel${role.id}">
                                 <g:message code="redactintrigue.role.tags" default="Tags"/>
                             </h3>
+                            <input class="input-medium search-query" data-content="roleTags${role.id}"
+                                   placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                         </div>
 
                         <div class="modal-body">
-                            <g:each in="${roleTagList}" status="i3" var="roleTagInstance">
-                                <li class="modalLi">
-                                    <label>
-                                        <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
-                                        checked="${role.hasRoleTag(roleTagInstance)}"/> ${fieldValue(bean: roleTagInstance, field: "name")}
-                                    </label>
-                                </li>
-                            </g:each>
+                            <ul class="roleTags${role.id}">
+                                <g:each in="${roleTagList}" status="i3" var="roleTagInstance">
+                                    <li class="modalLi" data-name="${roleTagInstance.name.toLowerCase()}">
+                                        <label>
+                                            <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
+                                            checked="${role.hasRoleTag(roleTagInstance)}"/> ${fieldValue(bean: roleTagInstance, field: "name")}
+                                        </label>
+                                    </li>
+                                </g:each>
+                            </ul>
                         </div>
 
                         <div class="modal-footer">

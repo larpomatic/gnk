@@ -4,25 +4,14 @@
     height: 50px;
 }
 
-#edit-plot .tab-pane.active {
-    /*height: 350pt;*/
-}
-
 #edit-plot #textes {
     background: url(../images/redactIntrigue/roles/lines.png) repeat;
 }
 
-/*#edit-plot body,*/
 #edit-plot input[type='text'],
 #edit-plot input[type='number'],
 #edit-plot textarea,
 #edit-plot select
-/*#edit-plot a,*/
-/*#edit-plot label,*/
-/*#edit-plot select,*/
-/*#edit-plot option*/
-/*#edit-plot div,*/
-/*#edit-plot span:not(.badge)*/
 {
     font-family: 'Shadows Into Light', cursive !important;
     font-size: 24px !important;
@@ -69,21 +58,14 @@
 }
 
 #edit-plot textarea:hover,
-/*#edit-plot select:hover,*/
-/*#edit-plot option:hover,*/
 #edit-plot input[type='text']:hover,
 #edit-plot input[type='number']:hover,
 #edit-plot textarea:active,
 #edit-plot input[type='text']:active,
 #edit-plot input[type='number']:active,
 #edit-plot textarea:focus,
-/*#edit-plot select:focus,*/
-/*#edit-plot option:focus,*/
 #edit-plot input[type='text']:focus,
 #edit-plot input[type='number']:focus
-/*#edit-plot button:focus,*/
-/*#edit-plot button:active,*/
-/*#edit-plot button:hover*/
 {
     outline:none !important;
     -webkit-appearance:none;
@@ -125,6 +107,15 @@
 
 #edit-plot .inputLargeWidth {
     width: 95% !important;
+}
+
+#edit-plot .search-query {
+    outline: none;
+    border: solid 1px grey;
+}
+
+#edit-plot h3 {
+    border-bottom: none;
 }
 
 @font-face {

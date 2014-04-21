@@ -3,6 +3,8 @@ $(function(){
 
     initDeleteButton();
 
+    initSearchBoxes();
+
     // modifie un role dans la base
     $('.updateRole').click(function() {
         var roleId = $(this).attr("data-id");
@@ -48,6 +50,7 @@ $(function(){
                     initDeleteButton();
                     emptyForm();
                     createNewRolePanel(data);
+                    initSearchBoxes();
                     appendEntity("role", data.role.code, "success", "");
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
@@ -77,7 +80,25 @@ $(function(){
             $(this).val('');
         }
     });
+
+
+
 });
+
+//Recherche de tags
+function initSearchBoxes() {
+    $('.search-query').keyup(function() {
+        var content = $(this).attr("data-content");
+        var value = $(this).val();
+        if (value == "") {
+            $('.' + content + ' li').show();
+        }
+        else {
+            $('.' + content + ' li').hide();
+            $('.' + content + ' li[data-name*="'+value+'"]').show();
+        }
+    });
+}
 
 //vide le formulaire d'ajout de role
 function emptyForm() {
@@ -142,6 +163,9 @@ function toggle(checkboxID, toggleID) {
 
 // créé un tab-pane du nouveau role
 function createNewRolePanel(data) {
+    Handlebars.registerHelper('toLowerCase', function(value) {
+        return new Handlebars.SafeString(value.toLowerCase());
+    });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
     var context = {
         role: data.role,

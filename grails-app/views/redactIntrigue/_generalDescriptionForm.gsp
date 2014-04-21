@@ -4,17 +4,20 @@
     <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
             <a href="#" data-toggle="tab">
-                Nouveaux éléments
+                <g:message code="redactintrigue.generalDescription.newElements" default="New elements"/>
             </a>
         </li>
         <li class="leftMenuList">
-            <input data-entity="resource" data-label="important" type="text" placeholder="Créer un objet"/>
+            <input data-entity="resource" data-label="important" type="text"
+                   placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create object"/>"/>
         </li>
         <li class="leftMenuList">
-            <input data-entity="place" data-label="warning" type="text" placeholder="Créer un lieu"/>
+            <input data-entity="place" data-label="warning" type="text"
+                   placeholder="<g:message code="redactintrigue.generalDescription.newPlace" default="Create place"/>"/>
         </li>
         <li class="leftMenuList">
-            <input data-entity="role" data-label="success" type="text" placeholder="Créer un rôle"/>
+            <input data-entity="role" data-label="success" type="text"
+                   placeholder="<g:message code="redactintrigue.generalDescription.newRole" default="Create role"/>"/>
         </li>
     </ul>
 
@@ -27,7 +30,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="name">
-                            <g:message code="redactintrigue.generalDescription.plotName" default="Plot's Name"/>
+                            <g:message code="redactintrigue.generalDescription.plotName" default="Name"/>
                         </label>
                     </div>
 
@@ -44,7 +47,9 @@
                     </div>
 
                     <div class="span4">
-                        <a href="#universesModal" class="btn" data-toggle="modal">Choisir les univers</a>
+                        <a href="#universesModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.generalDescription.chooseUniverses" default="Chooses universes"/>
+                        </a>
                     </div>
 
                     <div class="span1">
@@ -54,7 +59,9 @@
                     </div>
 
                     <div class="span4">
-                        <a href="#tagsModal" class="btn" data-toggle="modal">Choisir les tags</a>
+                        <a href="#tagsModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.generalDescription.chooseTags" default="Chooses tags"/>
+                        </a>
                     </div>
                 </div>
 
@@ -102,19 +109,12 @@
                 <div id="universesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>Univers</h3>
+                        <h3><g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/></h3>
                     </div>
 
                     <div class="modal-body">
-
-                        %{--<table>--}%
                         <ul>
                             <g:each in="${universList}" status="i" var="universInstance">
-                            %{--<g:if test="${i % 3 == 0}">--}%
-                            %{--<tr>--}%
-                            %{--</g:if>--}%
-                            %{--<td>--}%
                                 <li class="modalLi">
                                     <label for="universes_${universInstance.id}">
                                         <g:checkBox name="universes_${universInstance.id}"
@@ -123,14 +123,8 @@
                                         ${fieldValue(bean: universInstance, field: "name")}
                                     </label>
                                 </li>
-                            %{--</td>--}%
-                            %{--<g:if test="${(i+1) % 3 == 0}">--}%
-                            %{--</tr>--}%
-                            %{--</g:if>--}%
                             </g:each>
                         </ul>
-
-                        %{--</table>--}%
                     </div>
 
                     <div class="modal-footer">
@@ -141,20 +135,15 @@
                 <div id="tagsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
                         <h3>Tags</h3>
+                        <input class="input-medium search-query" data-content="plotTags"
+                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                     </div>
 
                     <div class="modal-body">
-
-                        %{--<table>--}%
-                        <ul>
+                        <ul class="plotTags">
                             <g:each in="${plotTagList}" status="i" var="plotTagInstance">
-                                <li class="modalLi">
-                                %{--<g:if test="${i % 3 == 0}">--}%
-                                    %{--<tr>--}%
-                                %{--</g:if>--}%
-                                %{--<td>--}%
+                                <li class="modalLi" data-name="${plotTagInstance.name.toLowerCase()}">
                                     <label for="tags_${plotTagInstance.id}" style="float: left"><g:checkBox
                                         name="tags_${plotTagInstance.id}"
                                         id="tags_${plotTagInstance.id}"
@@ -176,16 +165,9 @@
                                     <script>
                                         toggle('tags_${plotTagInstance?.id}', 'weight_tags_${plotTagInstance?.id}')
                                     </script>
-
-                                %{--</td>--}%
-                                %{--<g:if test="${(i + 1) % 3 == 0}">--}%
-                                    %{--</tr>--}%
-                                %{--</g:if>--}%
                                 </li>
                             </g:each>
-                    </ul>
-
-                        %{--</table>--}%
+                        </ul>
                     </div>
 
                     <div class="modal-footer">
