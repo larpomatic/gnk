@@ -145,7 +145,7 @@ public class SelectIntrigueProcessing {
 		}
 	}
 
-	private boolean plotIsCompatible(Plot plot) {
+	public boolean plotIsCompatible(Plot plot) {
 		// FIXME handle isPublic
         if (plot.getIsDraft())
             return false;

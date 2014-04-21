@@ -32,7 +32,9 @@ class SelectIntrigueController {
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
             new GNKDataContainerService().ReadDTD(gnInstance)
+            print("toot")
 			if ((params.screenStep as Integer) == 1) {
+                print("tata")
 				String gnDTD = params.gnDTD
 				gnInstance.dtd = gnDTD
                 new GNKDataContainerService().ReadDTD(gnInstance)
@@ -302,4 +304,8 @@ class SelectIntrigueController {
 		flash.message = message(code: 'default.deleted.message', args: [message(code: 'gn.label', default: 'GN'), id])
 		redirect(action: "list")
 	}
+
+    def toto() {
+        return true
+    }
 }

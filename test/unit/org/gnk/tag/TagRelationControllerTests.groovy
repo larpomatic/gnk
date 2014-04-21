@@ -6,30 +6,30 @@ import grails.test.mixin.TestFor
 @Mock(TagRelation)
 class TagRelationControllerTests {
 
-    def populateValidParams(params) {
-        assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-    }
-
-    void testIndex() {
-        controller.index()
-        assert "/tagRelation/list" == response.redirectedUrl
-    }
-
-    void testList() {
-
-        def model = controller.list()
-
-        assert model.tagRelationInstanceList.size() == 0
-        assert model.tagRelationInstanceTotal == 0
-    }
-
-    void testCreate() {
-        def model = controller.create()
-
-        assert model.tagRelationInstance != null
-    }
+//    def populateValidParams(params) {
+//        assert params != null
+//        // TODO: Populate valid properties like...
+//        //params["name"] = 'someValidName'
+//    }
+//
+//    void testIndex() {
+//        controller.index()
+//        assert "/tagRelation/list" == response.redirectedUrl
+//    }
+//
+//    void testList() {
+//
+//        def model = controller.list()
+//
+//        assert model.tagRelationInstanceList.size() == 0
+//        assert model.tagRelationInstanceTotal == 0
+//    }
+//
+//    void testCreate() {
+//        def model = controller.create()
+//
+//        assert model.tagRelationInstance != null
+//    }
 
     void testSave() {
         /*
@@ -106,7 +106,7 @@ class TagRelationControllerTests {
 
         assert tagRelation.save() == true
 
-        // test invalid parameters in update
+        // testTests invalid parameters in update
         params.id = tagRelation.id
         //TODO: add invalid values to params object
 
@@ -123,7 +123,7 @@ class TagRelationControllerTests {
         assert response.redirectedUrl == "/tagRelation/show/$tagRelation.id"
         assert flash.message != null
 
-        //test outdated version number
+        //testTests outdated version number
         response.reset()
         tagRelation.clearErrors()
 

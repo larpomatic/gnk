@@ -108,7 +108,7 @@ class RoleControllerTests {
 
         assert role.save() != null
 
-        // test invalid parameters in update
+        // testTests invalid parameters in update
         params.id = role.id
         //TODO: add invalid values to params object
 
@@ -125,7 +125,7 @@ class RoleControllerTests {
         assert response.redirectedUrl == "/role/show/$role.id"
         assert flash.message != null
 
-        //test outdated version number
+        //testTests outdated version number
         response.reset()
         role.clearErrors()
 
