@@ -162,6 +162,7 @@ class PlotXMLReaderService {
 
         genericResourceList.each { Node GENERIC_RESOURCE ->
             GenericResource genericResource = genericResourceReader.getGenericResourceFromNode(GENERIC_RESOURCE, dataContainer)
+            genericResource.plot = plotRes;
             if (genericResource.getDTDId() >= 0)
                 dataContainer.genericResourceMap.put(genericResource.getDTDId(), genericResource)
         }

@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag

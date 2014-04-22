@@ -10,6 +10,8 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.Resource
+import org.gnk.resplacetime.GenericRessourceHasIngameClue
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
@@ -67,8 +69,7 @@ class PublicationController {
         createPlotTable()
 
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des pitchs des Intrigues du GN")
-        createPitchTable()
-
+        createPitchTableOrga()
 
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse de l'événementiel du GN")
         createEventsTable()
@@ -76,6 +77,9 @@ class PublicationController {
         createPlaceTable()
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse logistique du GN")
         createResTable()
+
+        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des Ingame Clues")
+        createICTableOrga()
 
         mainPart.addStyledParagraphOfText("Heading1", "Événementiel Détaillé")
         createDetailedEventsTable()
@@ -166,20 +170,23 @@ class PublicationController {
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
         {
-            Tr tableRowRes = wordWriter.factory.createTr()
+            if (genericResource.genericRessourceHasIngameClue == null)// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
+            {
+                Tr tableRowRes = wordWriter.factory.createTr()
 
-            if (genericResource.selectedResource)
-                wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.name)
-            else
-                wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
+                if (genericResource.selectedResource)
+                    wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.name)
+                else
+                    wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
 
-            wordWriter.addTableCell(tableRowRes, genericResource.code)
+                wordWriter.addTableCell(tableRowRes, genericResource.code)
 
-            if (genericResource.selectedResource)
-                wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.description)
-            else
-                wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
-            table.getContent().add(tableRowRes);
+                if (genericResource.selectedResource)
+                    wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.description)
+                else
+                    wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
+                table.getContent().add(tableRowRes);
+            }
         }
         wordWriter.addBorders(table)
 
@@ -276,10 +283,18 @@ class PublicationController {
             br.setType(STBrType.PAGE)
             wordWriter.wordMLPackage.getMainDocumentPart().addObject(br)
             wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", c.firstname + " " + c.lastname)
+
+            String typePerso
+            if (c.isPJ()) { typePerso = "PJ" }
+            else if (c.isPNJ()) { typePerso = "PNJ" }
+            else  { typePerso = "PHJ" }
+            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Pitch")
+            createPitchTablePerso(typePerso)
+
             wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Sexe du personnage : " + sex)
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Type de personnage : " + c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
+            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
 
@@ -382,15 +397,31 @@ class PublicationController {
         }
     }
 
-    // Création du tableau de synthèse des pitch des intrigues
-    def createPitchTable() {
+    //Créatiion du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
+    def createPitchTablePerso(String typePerso) {
+        if (typePerso == "PJ")
+        {
+            for (Plot p : gn.selectedPlotSet)
+            {
+                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchPj)
+            }
+        }
+        else if (typePerso == "PNJ" || typePerso == "PHJ")
+        {
+            for (Plot p : gn.selectedPlotSet)
+            {
+                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchPnj)
+            }
+        }
+    }
+
+    // Création du tableau de synthèse des pitch des intrigues pour les Orga
+    def createPitchTableOrga() {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
         wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-        wordWriter.addTableCell(tableRow, "Pitch ORGA")
-        wordWriter.addTableCell(tableRow, "Pitch PNJ")
-        wordWriter.addTableCell(tableRow, "Pitch PJ")
+        wordWriter.addTableCell(tableRow, "Pitch Orga")
 
         table.getContent().add(tableRow);
 
@@ -399,9 +430,59 @@ class PublicationController {
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
-            wordWriter.addTableCell(tableRowPlot, p.pitchPnj)
-            wordWriter.addTableCell(tableRowPlot, p.pitchPj)
             table.getContent().add(tableRowPlot);
+        }
+        wordWriter.addBorders(table)
+        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+    }
+
+    // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
+    def createICTableOrga() {
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+
+        wordWriter.addTableCell(tableRow, "Titre")
+        wordWriter.addTableCell(tableRow, "Description")
+
+        table.getContent().add(tableRow);
+
+
+        for (GenericResource genericResource : gnk.genericResourceMap.values())
+        {
+            // construction du substitutionPublication
+            HashMap<String, Role> rolesNames = new HashMap<>()
+
+
+
+            for (Character c : gn.characterSet)
+            {
+                for (Role r : c.selectedRoles)
+                {
+                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+            for (Character c : gn.nonPlayerCharSet)
+            {
+                for (Role r : c.selectedRoles)
+                {
+                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+            // Fin construction du substitutionPublication
+
+            if (genericResource.genericRessourceHasIngameClue != null) // Si la générique ressource est un ingame clue alors je l'affiche
+            {
+                GenericRessourceHasIngameClue ic = genericResource.genericRessourceHasIngameClue // Prendre l'IC de la  générique ressource
+                Tr tableRowPlot = wordWriter.factory.createTr()
+                ic.title = substitutionPublication.replaceAll(ic.title)
+                ic.description = substitutionPublication.replaceAll(ic.description)
+                wordWriter.addTableCell(tableRowPlot, ic.title)
+                wordWriter.addTableCell(tableRowPlot, ic.description)
+                table.getContent().add(tableRowPlot);
+            }
         }
         wordWriter.addBorders(table)
         wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
@@ -492,6 +573,9 @@ class PublicationController {
             }
         }
         p.description = substitutionPublication.replaceAll(p.description)
+        p.pitchPnj = substitutionPublication.replaceAll(p.pitchPnj)
+        p.pitchPj = substitutionPublication.replaceAll(p.pitchPj)
+        p.pitchOrga = substitutionPublication.replaceAll(p.pitchOrga)
     }
 
     // Création du tableau de répartition des rôles pour toutes les intrigues
