@@ -10,8 +10,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.Resource
-import org.gnk.resplacetime.GenericRessourceHasIngameClue
+import org.gnk.resplacetime.GenericResourceHasIngameClue
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
@@ -170,7 +169,7 @@ class PublicationController {
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
         {
-            if (genericResource.genericRessourceHasIngameClue == null)// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
+            if (genericResource.genericResourceHasIngameClue == null)// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
             {
                 Tr tableRowRes = wordWriter.factory.createTr()
 
@@ -473,9 +472,9 @@ class PublicationController {
             substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
             // Fin construction du substitutionPublication
 
-            if (genericResource.genericRessourceHasIngameClue != null) // Si la générique ressource est un ingame clue alors je l'affiche
+            if (genericResource.genericResourceHasIngameClue != null) // Si la générique ressource est un ingame clue alors je l'affiche
             {
-                GenericRessourceHasIngameClue ic = genericResource.genericRessourceHasIngameClue // Prendre l'IC de la  générique ressource
+                GenericResourceHasIngameClue ic = genericResource.genericResourceHasIngameClue // Prendre l'IC de la  générique ressource
                 Tr tableRowPlot = wordWriter.factory.createTr()
                 ic.title = substitutionPublication.replaceAll(ic.title)
                 ic.description = substitutionPublication.replaceAll(ic.description)

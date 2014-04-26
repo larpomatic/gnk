@@ -14,7 +14,7 @@ class GenericResource {
 	String code
 	String comment
  static belongsTo = [plot: Plot]
-    GenericRessourceHasIngameClue genericRessourceHasIngameClue;
+    GenericResourceHasIngameClue genericResourceHasIngameClue;
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]

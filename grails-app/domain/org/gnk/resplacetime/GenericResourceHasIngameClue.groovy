@@ -1,6 +1,6 @@
 package org.gnk.resplacetime
 
-class GenericRessourceHasIngameClue {
+class GenericResourceHasIngameClue {
 
     Integer id
     Integer version
