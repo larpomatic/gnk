@@ -26,7 +26,7 @@ public class SelectIntrigueProcessing {
 	private Integer _maxPip;
 	private Integer _currentPip;
 
-	// FIXME Handle Mainstream and Evenemential
+	// FIXME Handle Mainstream
 
 	public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
 		_gn = parGn;
@@ -41,6 +41,7 @@ public class SelectIntrigueProcessing {
 			_value.put(tag, 0);
 		}
 		setBannedTagList();
+        // on ajoute les intrigues compatibles à leur listes respectives
 		for (Plot plot : parAllPlotList) {
 			if (plotIsCompatible(plot)) {
                 if (plot.getIsEvenemential()) {
@@ -127,8 +128,7 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void setBannedTagList() {
-		// On interdit les plots qui possede un tag pondere negativement dans le
-		// GN
+        // on ajoute les tags dans la liste des bannis
 		_bannedTagList = new HashSet<Tag>();
         _bannedEvenementialTagList = new HashSet<Tag>();
 		for (Entry<Tag, Integer> plotTagEntry : _gn.getGnTags().entrySet()) {
@@ -220,6 +220,7 @@ public class SelectIntrigueProcessing {
         _selectedEvenementialPlotList.addAll(evenementialPlots);
         return true;
     }
+
 
     private class customEvenementialPlotComparator implements Comparator<Plot> {
         private HashMap<Integer, Integer> _rankMap = new HashMap<Integer, Integer>();
