@@ -66,48 +66,46 @@ class createGnTests {
         fillInputById("name", "testSelenium")
         Random r = new Random()
         int tmp = r.nextInt(10)
-        fillInputById("gnPIPMin", tmp.toString())
-        tmp = r.nextInt(10)
-        fillInputById("gnPIPMax", tmp.toString())
-        tmp = r.nextInt(500)
-        fillInputById("gnDuration", tmp.toString())
-        tmp = r.nextInt(200)
-        fillInputById("gnNbPlayers", tmp.toString())
-        tmp = r.nextInt(200)
-        fillInputById("gnNbWomen", tmp.toString())
-        tmp = 200 - tmp
-        fillInputById("gnNbMen", tmp.toString())
+        fillInputById("gnPIPMin", "5")
+
+        fillInputById("gnPIPMax", "50")
+
+        fillInputById("gnDuration", "10")
+
+        fillInputById("gnNbPlayers", "8")
+
+        fillInputById("gnNbWomen", "2")
+
+        fillInputById("gnNbMen", "3")
         we = driver.findElement(By.id("gnDate"))
         we.sendKeys("2014-04-12")
         we = driver.findElement(By.id("gnDateHour"))
         we.sendKeys("11:06")
-        we = driver.findElement(By.id("t0Date"))
-        we.sendKeys("2014-04-13")
-        we = driver.findElement(By.id("t0Hour"))
-        we.sendKeys("11:10")
         we = driver.findElements(By.className("btn")).get(2) // tags
         we.click()
         we = driver.findElement(By.id("tags_1")).click()
         we = driver.findElement(By.id("tags_2")).click()
         we = driver.findElement(By.id("tags_3")).click()
-        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElement(By.cssSelector("#tagsModal .close")).click() // close
+        we = driver.findElement(By.id("t0Hour"))
+        we.sendKeys("11:10")
         we = driver.findElements(By.className("btn")).get(3) // tagsEvenmential
         we.click()
         we = driver.findElement(By.id("tagsEvenemential_1")).click()
         we = driver.findElement(By.id("tagsEvenemential_2")).click()
-        we = driver.findElement(By.id("tagsEvenemential_3")).click()
-        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElement(By.id("tagsEvenemential_6")).click()
+        we = driver.findElement(By.cssSelector("#tagsEvenementialModal .close")).click() // close
+        we = driver.findElement(By.id("t0Date"))
+        we.sendKeys("2014-04-13")
         we = driver.findElements(By.className("btn")).get(4) // tagsMainstream
         we.click()
-        we = driver.findElement(By.className("close")).click()
         we = driver.findElement(By.id("tagsMainstream_1")).click()
         we = driver.findElement(By.id("tagsMainstream_2")).click()
-        we = driver.findElement(By.id("tagsMainstream_3")).click()
-        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElement(By.id("tagsMainstream_7")).click()
+        we = driver.findElement(By.cssSelector("#tagsMainstreamModal .close")).click() // close
         we = driver.findElements(By.className("btn-primary")).first() // Update button
         we.click()
-//        we = driver.findElement(By.id("selected_evenemential")).click()
-//        we = driver.findElements(By.className("btn")).get(3)
-//        we.click()
+        we = driver.findElement(By.cssSelector("#roleToPersoFrom [type=\"submit\"]")).click()
+        we = driver.findElement(By.cssSelector("input[value=\"Substitution\"]")).click()
     }
 }
