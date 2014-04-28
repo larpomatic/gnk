@@ -3,8 +3,31 @@ package org.gnk.selectintrigue
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import org.gnk.gn.Gn
+import org.gnk.naming.Firstname
+import org.gnk.naming.FirstnameHasTag
+import org.gnk.naming.Name
+import org.gnk.naming.NameHasTag
+import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlace
+import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.resplacetime.GenericResource
+import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.Pastscene
+import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.Resource
+import org.gnk.resplacetime.ResourceHasTag
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasEvent
+import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.roletoperso.RoleHasPastscene
+import org.gnk.roletoperso.RoleHasRelationWithRole
+import org.gnk.roletoperso.RoleHasTag
+import org.gnk.roletoperso.RoleRelationType
 import org.gnk.tag.Tag
+import org.gnk.tag.TagFamily
 import org.gnk.tag.Univers
+import org.gnk.user.User
 
 import java.text.SimpleDateFormat
 
@@ -12,7 +35,9 @@ import java.text.SimpleDateFormat
  * Created by pico on 15/04/2014.
  */
 @TestFor(SelectIntrigueController)
-@Mock([Tag, Plot, Gn, Univers])
+@Mock([Tag, Plot, Gn, Univers, User, TagFamily, GenericPlaceHasTag, GenericPlace, Pastscene, GenericPlaceHasTag, GenericResourceHasTag, GenericResource, GenericPlace,
+Place, PlaceHasTag, Resource, ResourceHasTag, Firstname, FirstnameHasTag, Name, NameHasTag, PlotHasTag, Role, RoleHasTag, Event, RoleHasEvent,
+RoleRelationType, RoleHasPastscene, RoleHasRelationWithRole, RoleHasEventHasGenericResource])
 class SelectIntrigueControllerTests {
 
     Gn gn = null
@@ -21,7 +46,8 @@ class SelectIntrigueControllerTests {
 
         def gnInstance = new Gn()
         SimpleDateFormat adf = new SimpleDateFormat("yyyy-MM-dd")
-
+        gnInstance.name = "name"
+        gnInstance.dtd = new File("/Users/pico/projets/prc-gn/gnk/test/unit/org/gnk/selectintrigue/gn.xml").text
         gnInstance.date = adf.parse("2014-04-12")
         SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
         Calendar calHour = Calendar.getInstance();
@@ -65,38 +91,33 @@ class SelectIntrigueControllerTests {
         return gnInstance
     }
 
-    void testToto() {
-
-        assert true == controller.toto()
-        //Assert.assertEquals(true, SelectIntrigueController.toto());
-    }
-
-    void "test toto return true"() {
+    void "test show gn"() {
 
         given:
-        SelectIntrigueController s = new SelectIntrigueController()
+        Gn gn = createGn()
+        gn.save(failOnError: true)
 
         when:
-        def res = s.toto()
+        def res = controller.show(gn.id)
 
         then:
-        res == true
+        res.gnInstance.id == gn.id
     }
 
     void "test selectIntrigue"() {
 
-//        Long testId = 2
-//        Gn i = createGn()
-//        Long id = i.getId()
-//        controller.selectIntrigue(id)
-
         given:
-        Gn gn = createGn().save()
-        SelectIntrigueController s = new SelectIntrigueController()
-        params.put("ScreenStep", 1)
+        Gn gn = createGn()
+        gn.save(failOnError: true)
+        controller.params.put("ScreenStep", 1)
+        controller.params.put("gnDTD", "just for test")
 
         when:
-        s.selectIntrigue((Long) gn.getId())
+        def res = controller.selectIntrigue(gn.id)
+
+        then:
+        res.gnInstance == gn.id
+        res.gnInstance.dtd == "just for test"
 
     }
 }

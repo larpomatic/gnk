@@ -42,6 +42,7 @@ class testTests {
         while (count != 0)
         {
             int i = r.nextInt(n)
+            print lwe.get(i)
             lwe.get(i).click()
         }
     }
@@ -77,10 +78,6 @@ class testTests {
         tmp = 200 - tmp
         fillInputById("gnNbMen", tmp.toString())
         we = driver.findElement(By.id("gnDate"))
-//      SimpleDateFormat adf = new SimpleDateFormat("yyyy-MM-dd")
-//      Date date = adf.parse("2014-04-12")
-//      SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//      Timer timer = sdf.parse("11:06")
         we.sendKeys("2014-04-12")
         we = driver.findElement(By.id("gnDateHour"))
         we.sendKeys("11:06")
@@ -90,7 +87,7 @@ class testTests {
         we.sendKeys("11:10")
         we = driver.findElements(By.className("btn")).get(2)
         we.click()
-        //checkRandomBox()
+        checkRandomBox()
         we = driver.findElements(By.className("btn-primary")).first()
         we.click()
     }
