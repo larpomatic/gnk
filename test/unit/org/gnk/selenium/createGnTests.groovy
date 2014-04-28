@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
  * Created by pico on 16/04/2014.
  */
 @TestFor(SelectIntrigueController)
-class testTests {
+class createGnTests {
 
     WebDriver driver = new FirefoxDriver()
 
@@ -85,10 +85,29 @@ class testTests {
         we.sendKeys("2014-04-13")
         we = driver.findElement(By.id("t0Hour"))
         we.sendKeys("11:10")
-        we = driver.findElements(By.className("btn")).get(2)
+        we = driver.findElements(By.className("btn")).get(2) // tags
         we.click()
-        checkRandomBox()
-        we = driver.findElements(By.className("btn-primary")).first()
+        we = driver.findElement(By.id("tags_1")).click()
+        we = driver.findElement(By.id("tags_2")).click()
+        we = driver.findElement(By.id("tags_3")).click()
+        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElements(By.className("btn")).get(3) // tagsEvenmential
         we.click()
+        we = driver.findElement(By.id("tagsEvenemential_1")).click()
+        we = driver.findElement(By.id("tagsEvenemential_2")).click()
+        we = driver.findElement(By.id("tagsEvenemential_3")).click()
+        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElements(By.className("btn")).get(4) // tagsMainstream
+        we.click()
+        we = driver.findElement(By.className("close")).click()
+        we = driver.findElement(By.id("tagsMainstream_1")).click()
+        we = driver.findElement(By.id("tagsMainstream_2")).click()
+        we = driver.findElement(By.id("tagsMainstream_3")).click()
+        we = driver.findElement(By.className("close")).click() // close
+        we = driver.findElements(By.className("btn-primary")).first() // Update button
+        we.click()
+//        we = driver.findElement(By.id("selected_evenemential")).click()
+//        we = driver.findElements(By.className("btn")).get(3)
+//        we.click()
     }
 }

@@ -106,7 +106,7 @@ class TagRelationControllerTests {
 
         assert tagRelation.save() == true
 
-        // testTests invalid parameters in update
+        // createGnTests invalid parameters in update
         params.id = tagRelation.id
         //TODO: add invalid values to params object
 
@@ -123,7 +123,7 @@ class TagRelationControllerTests {
         assert response.redirectedUrl == "/tagRelation/show/$tagRelation.id"
         assert flash.message != null
 
-        //testTests outdated version number
+        //createGnTests outdated version number
         response.reset()
         tagRelation.clearErrors()
 

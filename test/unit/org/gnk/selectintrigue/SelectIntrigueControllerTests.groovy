@@ -111,6 +111,13 @@ class SelectIntrigueControllerTests {
         gn.save(failOnError: true)
         controller.params.put("ScreenStep", 1)
         controller.params.put("gnDTD", "just for test")
+        def screenStep = params.put("ScreenStep", 1)
+        List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
+        List<Univers> universList = new Univers().list()
+        Set<Plot> selectedPlotInstanceList = new HashSet<Plot>()
+        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
+        List<List<String>> statisticResultList = new ArrayList<List<String>>()
 
         when:
         def res = controller.selectIntrigue(gn.id)
@@ -118,6 +125,31 @@ class SelectIntrigueControllerTests {
         then:
         res.gnInstance == gn.id
         res.gnInstance.dtd == "just for test"
+        gn: res.gnInstance
+        screenStep: res.screenStep
+        universList: res.universList
+        plotInstanceList: res.selectedPlotInstanceList
+        evenementialPlotInstanceList: res.selectedEvenementialPlotInstanceList
+        bannedPlotInstanceList: res.gnInstance?.bannedPlotSet
+        nonTreatedPlots: res.nonTreatedPlots
+        statisticResultList: res.statisticResultList
 
     }
+
+//    void "test plotIsCompatible"() {
+//
+//        given:
+//        Plot plot = new Plot().save()
+//        Gn parGn = createGn().save()
+//        List<Plot> parAllPlotList = Plot.findAllWhere(isDraft: false)
+//        Set<Plot> bannedList = Plot.findAllWhere(isDraft: false)
+//        Set<Plot> lockedPlot = Plot.findAllWhere(isDraft: false)
+//
+//        when:
+//        def res =  new SelectIntrigueProcessing(parGn, parAllPlotList, bannedList, lockedPlot)
+//
+//        then:
+//
+//
+//    }
 }
