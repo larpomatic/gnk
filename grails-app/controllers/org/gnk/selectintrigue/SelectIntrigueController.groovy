@@ -312,8 +312,4 @@ class SelectIntrigueController {
 		flash.message = message(code: 'default.deleted.message', args: [message(code: 'gn.label', default: 'GN'), id])
 		redirect(action: "list")
 	}
-
-    def toto() {
-        return true
-    }
 }
