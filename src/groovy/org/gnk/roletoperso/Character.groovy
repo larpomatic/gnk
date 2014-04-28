@@ -19,6 +19,7 @@ class Character {
 
     private List<Role> lockedRoles = []
     private List<Role> selectedRoles = []
+    private List<Role> selectedPJG = []
     private List<Role> bannedRoles = []
     private List<Role> specificRoles = []
 
@@ -96,6 +97,10 @@ class Character {
         return selectedRoles
     }
 
+    public List<Role> getSelectedPJG() {
+        return selectedPJG;
+    }
+
     public List<Role> getSpecificRoles() {
         return specificRoles
     }
@@ -116,6 +121,8 @@ class Character {
         bannedRoles.remove(role)
             if (!selectedRoles.contains(role))
                 selectedRoles.add(role)
+            if ((role.isPJG()) && (!selectedPJG.contains(role)))
+                selectedPJG.add(role)
             if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role)))
                 specificRoles.add(role)
     }

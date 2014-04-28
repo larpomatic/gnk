@@ -110,6 +110,42 @@
                 </td>
             </tr>
         </g:each>
+        <!-- Start NJA Work Step0 -->
+        <g:each in="${((Character) character).getSelectedPJG()}" status="roleIter" var="role">
+            <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'} warning">
+
+                <td>
+                    <a href="#"
+                       title="${((Role) role).description}">${((Role) role).code}</a>
+                </td>
+                <td><g:link controller="redactIntrigue" action="edit"
+                            id="${((Role) role).plot?.id}" target="_blank">
+                    ${((Role) role).plot?.name}
+                </g:link></td>
+                <g:if test="${((Character) character).roleIsLocked(((Role) role))}">
+                    <g:set var="selectedRadioButtonLock" value="${1}"/>
+                </g:if>
+                <g:else>
+                    <g:set var="selectedRadioButtonLock" value="${3}"/>
+                </g:else>
+                <g:radioGroup
+                        name="role_status_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                        values="[1, 2, 3]"
+                        value="${selectedRadioButtonLock}">
+                    <td align="center">
+                        ${it.radio}
+                    </td>
+                </g:radioGroup>
+                <td align="center">
+                    <g:select style="width: 140px"
+                              name="lock_on_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                              id="lock_on_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                              from="${characterListToDropDownLock}"
+                              keys="${characterListToDropDownLock}"/>
+                </td>
+            </tr>
+        </g:each>
+        <!-- End NJA Work Step0 -->
         </tbody>
     </table>
 </div>
@@ -299,102 +335,69 @@
 
                 <div style="overflow: auto; height:500px;">
 
-                    <g:render template="relationSummary" model="['gnInstance':gnInstance, 'characterList':characterList]"></g:render>
+                    <g:render template="relationSummary"
+                              model="['gnInstance': gnInstance, 'characterList': characterList]"></g:render>
                 </div>
             </div>
         </div>
     </div>
 </g:if>
-<div class="row-fluid">
-<div class="span6">
-    <div class="accordion" id="accordionAll">
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse"
-               data-parent="#accordionAll"
-               href="#collapseAll">
-                Rôles communs à tous les personnages
-            </a>
-        </div>
 
-        <div id="collapseAll" class="accordion-body collapse">
-            <div class="accordion-inner">
-                <div style="overflow: auto; max-height:150px;">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th><g:message code="roletoperso.roleCode"
-                                           default="Role code"/></th>
-                            <th><g:message code="selectintrigue.plotName"
-                                           default="Plot name"/></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <g:each in="${allList}" var="allrole">
-                            <tr>
-                                <td>
-                                    <a href="#" title="${((Role) allrole).description}">${((Role) allrole).code}</a>
-                                </td>
-                                <td>
-                                    <g:link controller="redactIntrigue" action="edit" id="${((Role) allrole).plot?.id}" target="_blank">
-                                        ${((Role) allrole).plot?.name}
-                                    </g:link>
-                                 </td>
-                            </tr>
-                        </g:each>
-                        </tbody>
-                    </table>
+<g:if test="${characterList.size() % 2 == 0}">
+    <div class="row-fluid">
+</g:if>
+<div class="span6">
+    <br/>
+    <div class="panel panel-default">
+        <div class="accordion" id="accordionAll">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse"
+                       data-parent="#accordionAll"
+                       href="#collapseAll">
+                        Rôles communs à tous les personnages
+                    </a>
+                </div>
+
+                <div id="collapseAll" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div style="overflow: auto; max-height:150px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th><g:message code="roletoperso.roleCode"
+                                                   default="Role code"/></th>
+                                    <th><g:message code="selectintrigue.plotName"
+                                                   default="Plot name"/></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <g:each in="${allList}" var="allrole">
+                                    <tr>
+                                        <td>
+                                            <a href="#"
+                                               title="${((Role) allrole).description}">${((Role) allrole).code}</a>
+                                        </td>
+                                        <td>
+                                            <g:link controller="redactIntrigue" action="edit"
+                                                    id="${((Role) allrole).plot?.id}" target="_blank">
+                                                ${((Role) allrole).plot?.name}
+                                            </g:link>
+                                        </td>
+                                    </tr>
+                                </g:each>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-<div class="span6">
-<div class="accordion" id="accordionOth">
-    <div class="accordion-group">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse"
-               data-parent="#accordionOth"
-               href="#collapseOth">
-                Rôles pour tous les personnages n'ayant pas encore de rôle
-            </a>
-        </div>
-
-        <div id="collapseOth" class="accordion-body collapse">
-            <div class="accordion-inner">
-                <div style="overflow: auto; max-height:150px;">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th><g:message code="roletoperso.roleCode"
-                                           default="Role code"/></th>
-                            <th><g:message code="selectintrigue.plotName"
-                                           default="Plot name"/></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <g:each in="${otherList}" var="orole">
-                            <tr>
-                                <td>
-                                    <a href="#" title="${((Role) orole).description}">${((Role) orole).code}</a>
-                                </td>
-                                <td>
-                                    <g:link controller="redactIntrigue" action="edit" id="${((Role) orole).plot?.id}" target="_blank">
-                                        ${((Role) orole).plot?.name}
-                                    </g:link>
-                                </td>
-                            </tr>
-                        </g:each>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<g:if test="${characterList.size() % 2 == 0}">
     </div>
-</div>
-</div>
-</div>
+</g:if>
 <br/>
 </div>
 

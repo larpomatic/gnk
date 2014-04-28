@@ -207,9 +207,9 @@ class PublicationController {
                 wordWriter.addTableCell(tableRowRes, p.name)
                 if (e.genericPlace)
                     if (e.genericPlace.selectedPlace)
-                            wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
-                        else
-                            wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
+                        wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
+                    else
+                        wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
                 else
                     wordWriter.addTableCell(tableRowRes, e. "[Lieu générique]")
 
@@ -354,27 +354,27 @@ class PublicationController {
             wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Ce personnage est : ")
             for (Role r : c.getSelectedRoles())
             {
-              for (RoleHasTag roleHasTag : r.roleHasTags)
-              {
-                  if ((roleHasTag.tag.name.equals("Homme")) || (roleHasTag.tag.name.equals("homme")) || (roleHasTag.tag.name.equals("Femme")) || (roleHasTag.tag.name.equals("femme")))
-                    continue
-                  String qualificatif = "";
-                  if (roleHasTag.weight < 0)
-                      qualificatif = "Surtout pas"
-                  if (roleHasTag.weight > 0 && roleHasTag.weight <= 29)
-                      qualificatif = "Un peu"
-                  if (roleHasTag.weight > 29 && roleHasTag.weight <= 59)
-                      qualificatif = "Assez"
-                  if (roleHasTag.weight > 59 && roleHasTag.weight <= 89)
-                      qualificatif = "Vraiment"
-                  if (roleHasTag.weight > 89)
-                      qualificatif = "Très"
-                  wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
-              }
+                for (RoleHasTag roleHasTag : r.roleHasTags)
+                {
+                    if ((roleHasTag.tag.name.equals("Homme")) || (roleHasTag.tag.name.equals("homme")) || (roleHasTag.tag.name.equals("Femme")) || (roleHasTag.tag.name.equals("femme")))
+                        continue
+                    String qualificatif = "";
+                    if (roleHasTag.weight < 0)
+                        qualificatif = "Surtout pas"
+                    if (roleHasTag.weight > 0 && roleHasTag.weight <= 29)
+                        qualificatif = "Un peu"
+                    if (roleHasTag.weight > 29 && roleHasTag.weight <= 59)
+                        qualificatif = "Assez"
+                    if (roleHasTag.weight > 59 && roleHasTag.weight <= 89)
+                        qualificatif = "Vraiment"
+                    if (roleHasTag.weight > 89)
+                        qualificatif = "Très"
+                    wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
+                }
             }
-           // todo: Relations wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mes relations")
+            // todo: Relations wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mes relations")
 
-           // todo : wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "J'ai sur moi...")
+            // todo : wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "J'ai sur moi...")
         }
     }
 
@@ -493,20 +493,31 @@ class PublicationController {
                 }
 
                 String characterName = ""
-                gn.characterSet.each { character ->
-                    character.selectedRoles.each { role ->
-                        if (role.DTDId == r.DTDId)
-                            characterName = character.firstname + " " + character.lastname
+                if (r.isTPJ() == false) {
+                    gn.characterSet.each { character ->
+                        character.selectedRoles.each { role ->
+                            if (role.DTDId == r.DTDId) {
+                                if (characterName == "")
+                                    characterName += character.firstname + " " + character.lastname
+                                else
+                                    characterName += ", " + character.firstname + " " + character.lastname
+                            }
+                        }
+                    }
+
+                    gn.nonPlayerCharSet.each { character ->
+                        character.selectedRoles.each { role ->
+                            if (role.DTDId == r.DTDId) {
+                                if (characterName == "")
+                                    characterName += character.firstname + " " + character.lastname
+                                else
+                                    characterName += ", " + character.firstname + " " + character.lastname
+                            }
+                        }
                     }
                 }
-
-                gn.nonPlayerCharSet.each { character ->
-                    character.selectedRoles.each { role ->
-                        if (role.DTDId == r.DTDId)
-                            characterName = character.firstname + " " + character.lastname
-                    }
-                }
-
+                else
+                    characterName = "Tous les personnages joués"
                 if (characterName.equals(""))
                     print "Erreur : nom du personnage non trouvé"
                 wordWriter.addTableCell(tableRowPlot, characterName)
