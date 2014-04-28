@@ -32,7 +32,6 @@ class SelectIntrigueController {
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
             new GNKDataContainerService().ReadDTD(gnInstance)
-            print("toot")
 			if ((params.screenStep as Integer) == 1) {
 				String gnDTD = params.gnDTD
 				gnInstance.dtd = gnDTD
