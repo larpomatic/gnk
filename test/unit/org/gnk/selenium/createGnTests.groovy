@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select
 
 import java.sql.Time
 import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by pico on 16/04/2014.
@@ -39,64 +40,54 @@ class createGnTests {
         int n = lwe.size()
         Random r = new Random()
         int count = r.nextInt(n)
-        while (count != 0)
-        {
+        while (count != 0) {
             int i = r.nextInt(n)
             print lwe.get(i)
             lwe.get(i).click()
         }
     }
 
-//    void checkRandomDropdownlist(String id)
-//    {
-//        WebElement we = driver.findElement(By.id(id))
-//        List<WebElement> options = driver.findElement(By.)
-//        Random r = new Random()
-//        int count = r.nextInt()
-//        options.get(count).click()
-//    }
+    void checkRandomDropdownlist(String id) {
+        WebElement we = driver.findElement(By.id(id))
+        List<WebElement> options = driver.findElement(By.cssSelector("[type='checkbox']"))
+        Random r = new Random()
+        int count = r.nextInt()
+        options.get(count).click()
+    }
 
     void testGnCreation() {
 
         driver.get("http://localhost:8090/gnk/")
         WebElement we = driver.findElement(By.cssSelector(".how-to a")) // [type='checkbox']
         we.click()
+        // -------- BEGIN EDIT GN --------
         we = driver.findElement(By.linkText("Création/Edition"))
         we.click()
+
         fillInputById("name", "testSelenium")
-        Random r = new Random()
-        int tmp = r.nextInt(10)
         fillInputById("gnPIPMin", "5")
-
         fillInputById("gnPIPMax", "50")
-
         fillInputById("gnDuration", "10")
-
         fillInputById("gnNbPlayers", "8")
-
         fillInputById("gnNbWomen", "2")
-
         fillInputById("gnNbMen", "3")
-        we = driver.findElement(By.id("gnDate"))
-        we.sendKeys("2014-04-12")
-        we = driver.findElement(By.id("gnDateHour"))
-        we.sendKeys("11:06")
+        fillInputById("gnDate", "2014-04-12")
+        fillInputById("gnDateHour", "11:06")
+
         we = driver.findElements(By.className("btn")).get(2) // tags
         we.click()
         we = driver.findElement(By.id("tags_1")).click()
         we = driver.findElement(By.id("tags_2")).click()
         we = driver.findElement(By.id("tags_3")).click()
         we = driver.findElement(By.cssSelector("#tagsModal .close")).click() // close
-        we = driver.findElement(By.id("t0Hour"))
-        we.sendKeys("11:10")
+        fillInputById("t0Hour", "11:10")
         we = driver.findElements(By.className("btn")).get(3) // tagsEvenmential
         we.click()
         we = driver.findElement(By.id("tagsEvenemential_1")).click()
         we = driver.findElement(By.id("tagsEvenemential_2")).click()
         we = driver.findElement(By.id("tagsEvenemential_6")).click()
         we = driver.findElement(By.cssSelector("#tagsEvenementialModal .close")).click() // close
-        we = driver.findElement(By.id("t0Date"))
-        we.sendKeys("2014-04-13")
+        fillInputById("t0Date", "2014-04-13")
         we = driver.findElements(By.className("btn")).get(4) // tagsMainstream
         we.click()
         we = driver.findElement(By.id("tagsMainstream_1")).click()
@@ -105,7 +96,18 @@ class createGnTests {
         we = driver.findElement(By.cssSelector("#tagsMainstreamModal .close")).click() // close
         we = driver.findElements(By.className("btn-primary")).first() // Update button
         we.click()
+        // -------- END EDIT GN --------
+        // -------- BEGIN ROLE2PERSO --------
         we = driver.findElement(By.cssSelector("#roleToPersoFrom [type=\"submit\"]")).click()
+        // -------- END ROLE2PERSO
+        // -------- BEGIN SUBSTITUTION ---------
         we = driver.findElement(By.cssSelector("input[value=\"Substitution\"]")).click()
+        we = driver.findElement(By.id("runSubCharactersButton")).click() // characters
+        we = driver.findElement(By.linkText("Ressources")).click()
+        we = driver.findElement(By.id("runSubResourcesButton")).click()
+        we = driver.findElement(By.linkText("Lieux")).click()
+        we = driver.findElement(By.id("runSubPlacesButton")).click()
+        we = driver.findElement(By.id("validateSubButton"))
+        // --------  END SUBSTITUTION ---------
     }
 }

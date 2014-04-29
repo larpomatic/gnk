@@ -118,6 +118,7 @@ class SelectIntrigueControllerTests {
         Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
         List<List<String>> statisticResultList = new ArrayList<List<String>>()
+        Set<Plot> bannedList = Plot.findAllWhere(isDraft: false)
 
         when:
         def res = controller.selectIntrigue(gn.id)
@@ -126,14 +127,35 @@ class SelectIntrigueControllerTests {
         res.gnInstance == gn.id
         res.gnInstance.dtd == "just for test"
         gn: res.gnInstance
-        screenStep: res.screenStep
-        universList: res.universList
-        plotInstanceList: res.selectedPlotInstanceList
-        evenementialPlotInstanceList: res.selectedEvenementialPlotInstanceList
-        bannedPlotInstanceList: res.gnInstance?.bannedPlotSet
-        nonTreatedPlots: res.nonTreatedPlots
-        statisticResultList: res.statisticResultList
+        screenStep == res.screenStep
+        universList == [res.universList]
+        res.selectedPlotInstanceList == selectedPlotInstanceList
+        res.selectedEvenementialPlotInstanceList == selectedEvenementialPlotInstanceList
+        res.gnInstance?.bannedPlotSet == bannedList
+        nonTreatedPlots == res.nonTreatedPlots
+        statisticResultList == res.statisticResultList
 
+    }
+
+    void "test edit Gn"() {
+
+        given:
+        Gn gn = createGn()
+        gn.save(failOnError: true)
+        List<Univers> universList = new Univers().list()
+
+        when:
+        def res = controller.edit(gn.id)
+
+        then:
+        res.gnInstance.id == gn.id
+        res.gnInstance == gn
+        res.universList == universList
+    }
+
+    void "test formatParams"() {
+
+        
     }
 
 //    void "test plotIsCompatible"() {
