@@ -48,11 +48,9 @@ class RoleToPersoController {
             Plot mainstreamPlot = Plot.findById(mainstreamId);
             gn.setSelectedMainstream(mainstreamPlot);
         }
-        else {
-            int evenementialId = params.selectedEvenemential as int;
-            Plot evenementialPlot = Plot.findById(evenementialId);
-            gn.setSelectedEvenemential(evenementialPlot);
-        }
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.setSelectedEvenemential(evenementialPlot);
 
         params.each {
             final String key = it.key as String

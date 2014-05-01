@@ -39,8 +39,6 @@
         </g:each>
         </tbody>
     </table>
-
-    <g:if test="${!gnInstance.isMainstream}">
     %{--Evenemential table--}%
     <table class="table table-bordered evenemential-table">
         <thead>
@@ -74,8 +72,8 @@
         </tr>
         </tbody>
     </table>
-    </g:if>
-    <g:else>
+
+    <g:if test="${gnInstance.isMainstream}">
     %{--Mainstream table--}%
     <table class="table table-bordered mainstream-table">
         <thead>
@@ -109,7 +107,7 @@
         </tr>
         </tbody>
     </table>
-    </g:else>
+    </g:if>
     <!-- Banned -->
     <table class="table table-bordered">
         <thead>

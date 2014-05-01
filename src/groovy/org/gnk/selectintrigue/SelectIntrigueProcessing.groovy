@@ -55,7 +55,7 @@ public class SelectIntrigueProcessing {
         // on ajoute les intrigues compatibles à leur listes respectives
         for (Plot plot : parAllPlotList) {
             if (plotIsCompatible(plot)) {
-                if (!(_gn.getIsMainstream()) && plot.getIsEvenemential()) {
+                if (plot.getIsEvenemential()) {
                     _allEvenementialPlotList.add(plot);
                 } else {
                     _allPlotList.add(plot);
@@ -78,9 +78,7 @@ public class SelectIntrigueProcessing {
         if (_gn.getIsMainstream()) {
             selectEvenementailAndMainstreamPlots(_allMainstreamPlotList, _gn.getMainstreamTags(), _selectedMainstreamPlotList);
         }
-        else {
-            selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
-        }
+        selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
         selectIntrigue();
     }
 
@@ -176,6 +174,9 @@ public class SelectIntrigueProcessing {
 //        String userName = (String) session.getAttribute("USER_NAME");
 
 //        User currentUser = springSecurityService.getCurrentUser();
+//        if (!currentUser) {
+//            return false;
+//        }
 //        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
 //            return false;
 //        }
