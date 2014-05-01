@@ -28,6 +28,7 @@ class SelectIntrigueController {
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
 		Set<Plot> selectedPlotInstanceList = new HashSet<Plot>()
         Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
+        Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
 		List<List<String>> statisticResultList = new ArrayList<List<String>>()
 		if (id >= 0) {
@@ -63,6 +64,7 @@ class SelectIntrigueController {
 				SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
 				selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
+                selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
 				gnInstance.selectedPlotSet = selectedPlotInstanceList;
 				gnInstance.bannedPlotSet = bannedPlot;
 				gnInstance.lockedPlotSet = lockedPlot;
@@ -98,6 +100,7 @@ class SelectIntrigueController {
                 universList: Univers.list(),
                 plotInstanceList: selectedPlotInstanceList,
                 evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
+                mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
                 bannedPlotInstanceList: gnInstance?.bannedPlotSet,
                 nonTreatedPlots: nonTreatedPlots ,
                 statisticResultList: statisticResultList]
@@ -208,8 +211,8 @@ class SelectIntrigueController {
 		if (params.gnStep) {
 			gnInstance.step = params.gnStep
 		}
-		if (params.isMainstream) {
-			gnInstance.isMainstream = Boolean.parseBoolean(params.isMainstream)
+		if (params.gnArchitechture) {
+			gnInstance.isMainstream = Boolean.parseBoolean(params.gnArchitechture)
 		}
 		if (params.t0Date) {
 			gnInstance.t0Date = sdf.parse(params.t0Date)

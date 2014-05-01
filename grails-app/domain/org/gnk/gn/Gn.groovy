@@ -61,7 +61,8 @@ class Gn {
         "nonPlayerCharSet",
         "firstnameSet",
         "lastnameSet",
-        "selectedEvenemential"
+        "selectedEvenemential",
+        "selectedMainstream"
 	]
 
 	Date t0Date
@@ -74,6 +75,7 @@ class Gn {
 	Set<User> authors
 	Set<Plot> selectedPlotSet
     Plot selectedEvenemential
+    Plot selectedMainstream
 	Set<Plot> lockedPlotSet
 	Set<Plot> bannedPlotSet
     Set<Character> characterSet

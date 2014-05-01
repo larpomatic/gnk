@@ -40,10 +40,10 @@ select {
             <tr>
                 <td colspan="4" style="text-align: center;"><div
                         style="margin-bottom: 10px;">
-                    <a href="#tagsModal" role="button" class="btn" data-toggle="modal">Choisir
-                    l'ambiance du GN</a> <a href="#tagsEvenementialModal" role="button"
+                    <a href="#tagsModal" class="btn" data-toggle="modal">Choisir
+                    l'ambiance du GN</a> <a href="#tagsEvenementialModal"
                                             class="btn" data-toggle="modal">Choisir l'ambiance
-                        évennementielle</a> <a href="#tagsMainstreamModal" role="button"
+                        évennementielle</a> <a href="#tagsMainstreamModal"
                                                class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
                 </div></td>
             </tr>

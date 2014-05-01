@@ -1,5 +1,4 @@
 <%@ page import="org.gnk.gn.Gn; org.gnk.selectintrigue.Plot" %>
-<g:javascript src="selectIntrigue/selectIntrigue.js"/>
 <h3>
     <g:message code="selectintrigue.step1.name"
                default="SelectIntrigue result"/>
@@ -40,6 +39,9 @@
         </g:each>
         </tbody>
     </table>
+
+    <g:if test="${!gnInstance.isMainstream}">
+    %{--Evenemential table--}%
     <table class="table table-bordered evenemential-table">
         <thead>
         <tr>
@@ -72,7 +74,42 @@
         </tr>
         </tbody>
     </table>
-
+    </g:if>
+    <g:else>
+    %{--Mainstream table--}%
+    <table class="table table-bordered mainstream-table">
+        <thead>
+        <tr>
+            <th><g:message code="selectintrigue.mainstreamPlotsName"
+                           default="Mainstream plot name"/></th>
+            <th><g:img dir="images/selectIntrigue"
+                       file="validate.png"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${mainstreamPlotInstanceList}" status="i" var="mainstreamPlotInstance">
+            <tr>
+                <td>
+                    <g:link controller="redactIntrigue" action="edit"
+                            id="${mainstreamPlotInstance.id}" target="_blank">
+                        ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
+                    </g:link>
+                </td>
+                <td>
+                    <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}" class="radioMainstream"/>
+                </td>
+            </tr>
+        </g:each>
+        <tr>
+            <td colspan="2">
+                <button type="button" class="moreMainstream btn btn-primary">
+                    <g:message code="selectintrigue.step1.moreMainstream" default="Display more mainstreams plots"/>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </g:else>
     <!-- Banned -->
     <table class="table table-bordered">
         <thead>
@@ -189,6 +226,7 @@
 <g:form method="post" controller="roleToPerso" name="roleToPersoFrom">
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value=""/>
+    <g:hiddenField name="selectedMainstream" class="selectedMainstream" value=""/>
     <div class="form-actions">
         <g:actionSubmit class="btn btn-primary" action="roleToPerso" value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
     </div>
