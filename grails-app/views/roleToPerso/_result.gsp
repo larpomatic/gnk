@@ -324,7 +324,7 @@
     </div>
 </g:if>
 </g:each>
-<g:if test="${false}">
+<g:if test="${true}">
     <div class="row-fluid">
         <div class="span12" id="Relations">
             <div class="panel panel-default">
