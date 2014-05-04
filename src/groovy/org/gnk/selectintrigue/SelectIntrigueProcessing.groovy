@@ -1,66 +1,55 @@
 package org.gnk.selectintrigue;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.gnk.gn.Gn;
 import org.gnk.roletoperso.Role;
+import org.gnk.roletoperso.RoleHasTag;
 import org.gnk.tag.Tag;
+import org.gnk.tag.TagService;
 
 public class SelectIntrigueProcessing {
+
 	private Gn _gn;
+    private Set<Plot> _selectedEvenementialPlotList;
 	private Set<Plot> _selectedPlotList;
 	private Set<Plot> _lockedPlotList;
 	private Set<Plot> _bannedPlotList;
 	private Set<Plot> _allPlotList;
+    private Set<Plot> _allEvenementialPlotList;
 	private Map<Tag, Integer> _value;
 	private Set<Tag> _bannedTagList;
-
-	private Map<Tag, Integer> _sumAllPlot;
-	private int _sumAllPlotDividor = 0;
+    private Set<Tag> _bannedEvenementialTagList;
 
 	private Integer _minPip;
 	private Integer _maxPip;
 	private Integer _currentPip;
 
-	// FIXME Handle Mainstream and Evenemential
+	// FIXME Handle Mainstream
 
 	public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
 		_gn = parGn;
 		_selectedPlotList = new HashSet<Plot>();
+        _selectedEvenementialPlotList = new HashSet<Plot>();
 		_lockedPlotList = lockedPlot;
 		_bannedPlotList = bannedList;
 		_allPlotList = new HashSet<Plot>();
+        _allEvenementialPlotList = new HashSet<Plot>();
 		_value = new HashMap<Tag, Integer>(parGn.getGnTags().size());
-		_sumAllPlot = new HashMap<Tag, Integer>(parGn.getGnTags().size());
 		for (Tag tag : parGn.getGnTags().keySet()) {
 			_value.put(tag, 0);
-			_sumAllPlot.put(tag, 0);
 		}
 		setBannedTagList();
+        // on ajoute les intrigues compatibles à leur listes respectives
 		for (Plot plot : parAllPlotList) {
 			if (plotIsCompatible(plot)) {
-				_allPlotList.add(plot);
-			}
-		}
-
-		for (Plot plot : _allPlotList) {
-			for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
-				if (plot.hasPlotTag(entry.getKey())) {
-					int value = plot.getSumPipRoles() * plot.getTagWeight(entry.getKey());
-					_sumAllPlotDividor += value;
-					entry.setValue(entry.getValue() + value);
-				}
-			}
-		}
-
-		if (_sumAllPlotDividor > 0) {
-			for (Entry<Tag, Integer> entry : _sumAllPlot.entrySet()) {
-				entry.setValue((entry.getValue() * 100) / _sumAllPlotDividor);
+                if (plot.getIsEvenemential()) {
+                    _allEvenementialPlotList.add(plot);
+                }
+                else {
+                    _allPlotList.add(plot);
+                }
 			}
 		}
 
@@ -68,18 +57,22 @@ public class SelectIntrigueProcessing {
         int realMinPip = _gn.getNbPlayers() * _gn.getPipMin();
 		_minPip = ((_maxPip - realMinPip) / 2) + realMinPip;//Heuristique pour que R2P soit plus facile derrière.
 
-
         _currentPip = 0;
 
 		_allPlotList.removeAll(_bannedPlotList);
 		_allPlotList.removeAll(_lockedPlotList);
 		_selectedPlotList.addAll(_lockedPlotList);
+        selectEvenementialIntrigues();
 		selectIntrigue();
 	}
 
 	public Set<Plot> getSelectedPlots() {
 		return _selectedPlotList;
 	}
+
+    public Set<Plot> getSelectedEvenementialPlotList() {
+        return _selectedEvenementialPlotList;
+    }
 
 	public int getPipByPlayer() {
 		return _gn.getNbPlayers() > 0 ? _currentPip / _gn.getNbPlayers() : 0;
@@ -118,7 +111,7 @@ public class SelectIntrigueProcessing {
 																	// forme de
 																	// %age
 			}
-			int inter = _gn.getGnTags().get(entry.getKey()) - entry.getValue();
+			int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
 			result -= inter * inter;
 		}
 		return result;
@@ -135,14 +128,19 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void setBannedTagList() {
-		// On interdit les plots qui possede un tag pondere negativement dans le
-		// GN
+        // on ajoute les tags dans la liste des bannis
 		_bannedTagList = new HashSet<Tag>();
+        _bannedEvenementialTagList = new HashSet<Tag>();
 		for (Entry<Tag, Integer> plotTagEntry : _gn.getGnTags().entrySet()) {
-			if (plotTagEntry.getValue() < 0) {
+			if (plotTagEntry.getValue() <= TagService.BANNED) {
 				_bannedTagList.add(plotTagEntry.getKey());
 			}
 		}
+        for (Entry<Tag, Integer> plotTagEntry : _gn.getEvenementialTags().entrySet()) {
+            if (plotTagEntry.getValue() < TagService.BANNED) {
+                _bannedEvenementialTagList.add(plotTagEntry.getKey());
+            }
+        }
 	}
 
 	private boolean plotIsCompatible(Plot plot) {
@@ -152,11 +150,20 @@ public class SelectIntrigueProcessing {
 		if (!(plot.hasUnivers(_gn.getUnivers())) && !(plot.isUniversGeneric())) {
 			return false;
 		}
-		for (Tag bannedPlotTag : _bannedTagList) {
-			if (plot.hasPlotTag(bannedPlotTag)) {
-				return false;
-			}
-		}
+        if (plot.getIsEvenemential()) {
+            for (Tag bannedEvenementialPlotTag : _bannedEvenementialTagList) {
+                if (plot.hasPlotTag(bannedEvenementialPlotTag)) {
+                    return false;
+                }
+            }
+        }
+        else {
+            for (Tag bannedPlotTag : _bannedTagList) {
+                if (plot.hasPlotTag(bannedPlotTag)) {
+                    return false;
+                }
+            }
+        }
 		if (!sexFilter(plot))
 			return false;
 
@@ -186,11 +193,51 @@ public class SelectIntrigueProcessing {
 	}
 
 	private void selectPlot(Plot plot) {
-		_selectedPlotList.add(plot);
-		_allPlotList.remove(plot);
+        _selectedPlotList.add(plot);
+        _allPlotList.remove(plot);
 	}
 
-	private boolean executeRound() {
+    private boolean selectEvenementialIntrigues() {
+        if (_allPlotList.size() == 0) {
+            return false;
+        }
+        ArrayList<Plot> evenementialPlots = new ArrayList<Plot>();
+        HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
+        TagService tagService = new TagService();
+        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+        for (Plot plot : _allEvenementialPlotList) {
+            evenementialPlots.add(plot);
+            Set<PlotHasTag> plotHasTags = plot.getExtTags();
+            if (plotHasTags != null) {
+                for (PlotHasTag plotHasTag : plotHasTags) {
+                    challengerTagList.put(plotHasTag.getTag(), plotHasTag.getWeight());
+                }
+            }
+            int rankTag = tagService.getTagsDifferenceToObjective(_gn.getEvenementialTags(), challengerTagList);
+            rankMap.put(plot.getId(), rankTag);
+        }
+        Collections.sort(evenementialPlots, new customEvenementialPlotComparator(rankMap));
+        _selectedEvenementialPlotList.addAll(evenementialPlots);
+        return true;
+    }
+
+
+    private class customEvenementialPlotComparator implements Comparator<Plot> {
+        private HashMap<Integer, Integer> _rankMap = new HashMap<Integer, Integer>();
+
+        public customEvenementialPlotComparator(HashMap<Integer, Integer> rankMap) {
+            _rankMap = rankMap;
+        }
+
+        public int compare(Plot plot1, Plot plot2)
+        {
+            Integer rank1 = _rankMap.get(plot1.getId());
+            Integer rank2 = _rankMap.get(plot2.getId());
+            return Integer.compare(rank1, rank2);
+        }
+    }
+
+    private boolean executeRound() {
 		Plot selectedPlot = null;
 		Integer newValue = null;
 		if (_allPlotList.isEmpty()) {
@@ -198,14 +245,14 @@ public class SelectIntrigueProcessing {
 		}
 		evaluateGn(true);
 		for (Plot plot : _allPlotList) {
-			if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
-				Integer tmpValue = evaluateGnWithPlot(plot);
-				if (newValue == null || tmpValue > newValue) {
-					selectedPlot = plot;
-					newValue = tmpValue;
-				}
-			}
-			evaluateGn(true);
+            if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
+                Integer tmpValue = evaluateGnWithPlot(plot);
+                if (newValue == null || tmpValue > newValue) {
+                    selectedPlot = plot;
+                    newValue = tmpValue;
+                }
+            }
+            evaluateGn(true);
 		}
 		if (selectedPlot == null) {
 			return false;
@@ -213,5 +260,4 @@ public class SelectIntrigueProcessing {
 		selectPlot(selectedPlot);
 		return (_currentPip < _minPip);
 	}
-
 }

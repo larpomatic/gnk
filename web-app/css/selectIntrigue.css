@@ -1,0 +1,28 @@
+th,td {
+    padding: 0.3em;
+    padding-left: 0.5em;
+    margin: 0.3em;
+}
+
+.tab-pane.active {
+    height: 350pt;
+}
+
+.time
+{
+    width: 55pt;
+    margin-left: 0pt;
+}
+
+.date
+{
+    margin-right: 0pt;
+    width: 95pt;
+}
+
+/*.evenemential-table > tbody > tr:not(:last-child):nth-child(n+6){*/     /* test pour 5 */
+    /*display: none;*/
+/*}*/
+.evenemential-table > tbody > tr:not(:last-child):nth-child(n+2) {    /* test pour 1 */
+    display: none;
+}

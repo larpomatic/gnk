@@ -5,20 +5,21 @@
 		updateToggle = toggle.disabled = !checkbox.checked;
 	}
 </script>
-		 <div id="${idPopup}" class="modal hide fade" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		 <div id="${idPopup}" class="modal hide fade" tabindex="-1">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">×</button>
+				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3 id="myModalLabel">${namePopup }</h3>
 			</div>
 			<div class="modal-body">
-				<table>
+				%{--<table>--}%
+                <ul>
 					<g:each in="${tagList}" status="i" var="tagInstance">
-						<g:if test="${i % 3 == 0}">
-							<tr>
-						</g:if>
-						<td><label for="${tagPrefix }${tagInstance?.id}" style="float: left"><g:checkBox
+						%{--<g:if test="${i % 3 == 0}">--}%
+							%{--<tr>--}%
+						%{--</g:if>--}%
+						%{--<td>--}%
+                        <li style="list-style:none">
+						<label for="${tagPrefix }${tagInstance?.id}" style="float: left"><g:checkBox
 									name="${tagPrefix }${tagInstance?.id}"
 									id="${tagPrefix }${tagInstance?.id}"
 									checked="${myOwner?.hasTag(tagInstance, tagListName)}"
@@ -34,15 +35,17 @@
 									<script>
 										toggle('${tagPrefix }${tagInstance?.id}', '${weightTagPrefix}${tagInstance?.id}')
 									</script>
-						</td>
-						<g:if test="${(i+1) % 3 == 0}">
-							</tr>
-						</g:if>
+                        </li>
+						%{--</td>--}%
+						%{--<g:if test="${(i+1) % 3 == 0}">--}%
+							%{--</tr>--}%
+						%{--</g:if>--}%
 					</g:each>
+            </ul>
 
-				</table>
+				%{--</table>--}%
 			</div>
 			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Ok</button>
+				<button class="btn" data-dismiss="modal">Ok</button>
 			</div>
 		</div>

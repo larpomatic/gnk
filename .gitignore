@@ -45,3 +45,6 @@
 # IDE
 *.iml
 *.idea
+application.properties
+
+web-app/word/
