@@ -15,6 +15,7 @@ class GenericResourceXMLWriterService {
 
         genericResourceElt.appendChild(getGenericResourceTagsElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourceCommentElement(doc, genericResource));
+//        genericResourceElt.appendChild(getGenericResourceIngameClueElement(doc, genericResource));
 
         return genericResourceElt;
     }
@@ -35,6 +36,21 @@ class GenericResourceXMLWriterService {
         rootElt.setAttribute("owner_role_id", role.DTDId.toString())
 
         return rootElt
+    }
+
+    private Element getGenericResourceIngameClueElement(Document doc, GenericResource genericResource) {
+        Element ICElt = doc.createElement("INGAME_CLUE")
+
+        if (genericResource.isIngameClue()) {
+            CDATASection ICTitle = doc.createCDATASection("TITLE")
+            CDATASection ICDesc = doc.createCDATASection("DESCRIPTION")
+            ICTitle.setData(genericResource.genericResourceHasIngameClue.title)
+            ICDesc.setData(genericResource.genericResourceHasIngameClue.description)
+            ICElt.appendChild(ICTitle)
+            ICElt.appendChild(ICDesc)
+        }
+
+        return ICElt
     }
 
     private Element getGenericResourceTagsElement(Document doc, GenericResource genericResource) {

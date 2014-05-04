@@ -10,7 +10,6 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.GenericResourceHasIngameClue
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
@@ -472,14 +471,13 @@ class PublicationController {
             substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
             // Fin construction du substitutionPublication
 
-            if (genericResource.genericResourceHasIngameClue != null) // Si la générique ressource est un ingame clue alors je l'affiche
+            if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
-                GenericResourceHasIngameClue ic = genericResource.genericResourceHasIngameClue // Prendre l'IC de la  générique ressource
                 Tr tableRowPlot = wordWriter.factory.createTr()
-                ic.title = substitutionPublication.replaceAll(ic.title)
-                ic.description = substitutionPublication.replaceAll(ic.description)
-                wordWriter.addTableCell(tableRowPlot, ic.title)
-                wordWriter.addTableCell(tableRowPlot, ic.description)
+                genericResource.title = substitutionPublication.replaceAll(genericResource.title)
+                genericResource.description = substitutionPublication.replaceAll(genericResource.description)
+                wordWriter.addTableCell(tableRowPlot, genericResource.title)
+                wordWriter.addTableCell(tableRowPlot, genericResource.description)
                 table.getContent().add(tableRowPlot);
             }
         }

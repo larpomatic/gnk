@@ -23,6 +23,9 @@ class GenericResourceXMLReaderService {
         // TAGS reader
         ReadTagsNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
+        // INGAME_CLUE reader
+//        ReadIngameClueNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
         return genericResourceRes
     }
 /* !Exposed Methods */
@@ -49,6 +52,15 @@ class GenericResourceXMLReaderService {
 
         return genericResourceRes
     }
+
+//    private void ReadIngameClueNode(Node GENERIC_RESOURCE, GenericResource genericResourceRes, GNKDataContainerService dataContainer) {
+//        assert (GENERIC_RESOURCE.INGAME_CLUE.size() <= 1)
+//        if (GENERIC_RESOURCE.INGAME_CLUE.size() > 0) {
+//            String title = GENERIC_RESOURCE.TITLE[0].text()
+//            String description = GENERIC_RESOURCE.DESCRITPION[0].text()
+//            genericResourceRes.genericResourceHasIngameClue = new GenericResourceHasIngameClue(genericResourceRes, title, description)
+//        }
+//    }
 
     private void ReadTagsNode(Node GENERIC_RESOURCE, GenericResource genericResourceRes, GNKDataContainerService dataContainer) {
         assert (GENERIC_RESOURCE.TAGS.size() <= 1)

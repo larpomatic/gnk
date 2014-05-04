@@ -2,7 +2,6 @@ package org.gnk.tag
 
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.resplacetime.ResourceHasTag
-import org.gnk.resplacetime.TextualClueTag
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.PlotHasTag
 
@@ -20,7 +19,6 @@ class Tag {
 	static hasMany = [ extPlaceTags: PlaceHasTag,
                        extResourceTags: ResourceHasTag,
                        extPlotTags: PlotHasTag,
-                       textualClueTag: TextualClueTag,
                        extRoleTags: RoleHasTag ]
 
 	static constraints = {
