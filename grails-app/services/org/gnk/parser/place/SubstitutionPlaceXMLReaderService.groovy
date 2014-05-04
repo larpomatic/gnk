@@ -27,15 +27,25 @@ class SubstitutionPlaceXMLReaderService {
             assert (genericPlace != null)
             if (genericPlace != null)
                 genericPlaceNode.each { placeNode ->
+
                     String placeStatus = placeNode.attribute("status") as String
+                    Integer placeId = placeNode.attribute("place_id") as Integer
+                    place = dataContainer.placeMap.get(placeId)
+                    assert (place != null)
 
                     if (placeStatus.equals(selectedStatus)) {
-                        Integer placeId = placeNode.attribute("place_id") as Integer
-                        place = dataContainer.placeMap.get(placeId)
-
-                        assert (place != null)
                         place.genericPlace = genericPlace
+                        genericPlace.selectedPlace = place
+                    } else if (placeStatus.equals("proposed")) {
+                        if (genericPlace.proposedPlaces == null)
+                            genericPlace.proposedPlaces = new ArrayList<Place>()
+                        genericPlace.proposedPlaces.add(place)
+                    } else if (placeStatus.equals("banned")) {
+                        if (genericPlace.bannedPlaces == null)
+                            genericPlace.bannedPlaces = new ArrayList<Place>()
+                        genericPlace.bannedPlaces.add(place);
                     }
+
                 }
         }
     }
