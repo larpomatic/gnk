@@ -1,7 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.gn.Gn" %>
 
-
 <style type="text/css">
 input {
     text-align: right;
@@ -25,7 +24,7 @@ select {
         <g:hiddenField name="gnStep" value="selectIntrigue"/>
         <table>
             <tr>
-                <td><label for="gnName"><g:message
+                <td><label for="name"><g:message
                         code="selectintrigue.step0.gnName" default="GN Name"/>
                 </label></td>
                 <td><g:textField name="name" value="${gnInstance?.name}"

@@ -1,6 +1,7 @@
 package org.gnk.roletoperso
 
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class RoleHasTag {
 
@@ -41,10 +42,10 @@ class RoleHasTag {
     }
 
     public boolean tagIsLocked() {
-        return weight == 100;
+        return weight == TagService.LOCKED;
     }
 
     public boolean tagIsBanned() {
-        return weight == 100;
+        return weight == TagService.BANNED;
     }
 }

@@ -6,6 +6,7 @@ import org.gnk.gn.Gn;
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
+import org.gnk.tag.TagService;
 
 import java.util.*;
 
@@ -220,11 +221,11 @@ public class RoleToPersoProcessing {
     }
 
     private boolean tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == 100;
+        return valuedTag.getValue() == TagService.LOCKED;
     }
 
     private boolean tagIsBanned(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == -100;
+        return valuedTag.getValue() == TagService.BANNED;
     }
 
     private int getRankTag(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
@@ -286,7 +287,7 @@ public class RoleToPersoProcessing {
                 challengerTagList.put(rolehasTag.getterTag(), rolehasTag.getterWeight());
             }
         }
-        rankTag = getRankTag(character.getTags(), challengerTagList, characterLockedBannedTags);
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
@@ -294,7 +295,7 @@ public class RoleToPersoProcessing {
             if (!character.isNeutralGender() && challengerTag.getKey().getName().equals("Femme")) {
                 final int rankForSex = challengerTag.getValue() * (100 * (character.isWomen() ? 1 : -1)) * 100;
                 rankTag += rankForSex;
-                if (rankForSex == -100 * 100 * 100) {
+                if (rankForSex == -100 * 100 * TagService.LOCKED) {
                     LOG.debug(new StringBuilder("Role ").append(role.getterCode()).append(" has been banned form P")
                             .append(character.getDTDId().toString()).append(" because of sex of the character ").toString());
                     return Integer.MIN_VALUE;
@@ -303,7 +304,7 @@ public class RoleToPersoProcessing {
             if (!character.isNeutralGender() && challengerTag.getKey().getName().equals("Homme")) {
                 final int rankForSex = challengerTag.getValue() * (100 * (character.isMen() ? 1 : -1)) * 100;
                 rankTag += rankForSex;
-                if (rankForSex == -100 * 100 * 100) {
+                if (rankForSex == -100 * 100 * TagService.LOCKED) {
                     LOG.debug(new StringBuilder("Role ").append(role.getterCode()).append(" has been banned form P")
                             .append(character.getDTDId().toString()).append(" because of sex of the character ").toString());
                     return Integer.MIN_VALUE;

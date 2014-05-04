@@ -44,5 +44,7 @@
 
 # IDE
 *.iml
-.idea
+
+*.idea
 application.properties
+

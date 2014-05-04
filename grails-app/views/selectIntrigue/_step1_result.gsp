@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.gn.Gn; org.gnk.selectintrigue.Plot" %>
+<g:javascript src="selectIntrigue/selectIntrigue.js"/>
 <h3>
     <g:message code="selectintrigue.step1.name"
                default="SelectIntrigue result"/>
@@ -13,11 +14,11 @@
         <tr>
             <th><g:message code="selectintrigue.plotName"
                            default="Plot name"/></th>
-            <th width="25"><g:img dir="images/selectIntrigue"
+            <th><g:img dir="images/selectIntrigue"
                                   file="locked.png"/></th>
-            <th width="25"><g:img dir="images/selectIntrigue"
+            <th><g:img dir="images/selectIntrigue"
                                   file="forbidden.png"/></th>
-            <th width="25"><g:img dir="images/selectIntrigue"
+            <th><g:img dir="images/selectIntrigue"
                                   file="validate.png"/></th>
         </tr>
         </thead>
@@ -31,7 +32,7 @@
                 </g:link></td>
                 <g:radioGroup name="plot_status_${plotInstance.id}" values="[1, 2, 3]"
                               value="${((Gn)gnInstance).getLockedPlotSet().contains(plotInstance) ? "1" : (((Gn)gnInstance).getBannedPlotSet().contains(plotInstance) ? "2" : "3")}">
-                    <td align="center">
+                    <td>
                         ${it.radio}
                     </td>
                 </g:radioGroup>
@@ -39,14 +40,46 @@
         </g:each>
         </tbody>
     </table>
+    <table class="table table-bordered evenemential-table">
+        <thead>
+        <tr>
+            <th><g:message code="selectintrigue.evenementialPlotName"
+                           default="Evenemential plot name"/></th>
+            <th><g:img dir="images/selectIntrigue"
+                                  file="validate.png"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${evenementialPlotInstanceList}" status="i" var="evenementialPlotInstance">
+            <tr>
+                <td>
+                    <g:link controller="redactIntrigue" action="edit"
+                            id="${evenementialPlotInstance.id}" target="_blank">
+                            ${fieldValue(bean: evenementialPlotInstance, field: "name")}
+                    </g:link>
+                </td>
+                <td>
+                    <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
+                </td>
+            </tr>
+        </g:each>
+        <tr>
+            <td colspan="2">
+                <button type="button" class="moreEvenemential btn btn-primary">
+                    <g:message code="selectintrigue.step1.moreEvenemential" default="Display more evenementials plots"/>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- Banned -->
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th><g:message code="selectintrigue.plotName"
+            <th><g:message code="selectintrigue.bannedPlotName"
                            default="Plot name"/></th>
-            <th width="25"><g:img dir="images/selectIntrigue"
+            <th><g:img dir="images/selectIntrigue"
                                   file="forbidden.png"/></th>
 
         </tr>
@@ -59,7 +92,7 @@
                             id="${plotInstance.id}" target="_blank">
                     ${fieldValue(bean: plotInstance, field: "name")}
                 </g:link></td>
-                <td align="center">
+                <td>
                     <g:checkBox name="keepBanned_${plotInstance.id}" checked="true"/>
                 </td>
             </tr>
@@ -84,7 +117,7 @@
                 <tr>
                     <th><g:message code="selectintrigue.plotName"
                                    default="Plot name"/></th>
-                    <th width="25"><g:img dir="images/selectIntrigue"
+                    <th><g:img dir="images/selectIntrigue"
                                           file="locked.png"/></th>
 
                 </tr>
@@ -97,7 +130,7 @@
                                     id="${plotInstance.id}" target="_blank">
                             ${fieldValue(bean: plotInstance, field: "name")}
                         </g:link></td>
-                        <td align="center">
+                        <td>
                             <g:checkBox name="toLock_${plotInstance.id}" checked="false"/>
                         </td>
                     </tr>
@@ -153,8 +186,9 @@
                     value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
 </g:form>
 </fieldset>
-<g:form method="post" controller="roleToPerso">
+<g:form method="post" controller="roleToPerso" name="roleToPersoFrom">
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
+    <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value=""/>
     <div class="form-actions">
         <g:actionSubmit class="btn btn-primary" action="roleToPerso" value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
     </div>
