@@ -53,8 +53,10 @@ class Character {
             return
         }
         String formattedType = type.toUpperCase()
-        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))
-        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))) {
+        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")
+                || formattedType.equals("TPJ") || formattedType.equals("PJG"))
+        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")
+        || formattedType.equals("PJG") || formattedType.equals("TPJ"))) {
             this.type = "PHJ"
             return
         }
