@@ -14,17 +14,22 @@
 		<g:layoutHead/>
 		<r:layoutResources />
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+
+        %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
 	</head>
 	<body>
         <div class="gnk">
             <g:render template="/navbar"/>
+            <g:javascript src="handlebars-v1.3.0.js"/>
+            <g:javascript src="lodash.js"/>
+            <g:javascript library="application"/>
+            <r:layoutResources />
             <div class="page-body container">
                 <g:layoutBody/>
             </div>
             <g:render template="/footer" />
             <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-            <g:javascript library="application"/>
-            <r:layoutResources />
+
         </div>
 	</body>
 </html>
