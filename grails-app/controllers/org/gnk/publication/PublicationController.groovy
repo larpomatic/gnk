@@ -175,7 +175,7 @@ class PublicationController {
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
         {
-            if (genericResource.genericResourceHasIngameClue == null)// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
+            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
             {
                 Tr tableRowRes = wordWriter.factory.createTr()
 
