@@ -16,7 +16,7 @@ select {
     <g:message code="default.edit.label" args="[entityName]"/>
 </legend>
 
-<g:form method="post">
+<g:form method="post" class="gnSubmitForm">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
     <g:hiddenField name="version" value="${gnInstance?.version}"/>
     <fieldset class="form">
@@ -106,8 +106,14 @@ select {
                            value="${gnInstance?.nbWomen}" type="number"></td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
+                <td>
+                    <label for="gnPIPCore">
+                        <g:message code="selectintrigue.step0.gnPIPCore" default="PIP Max"/>
+                    </label>
+                </td>
+                <td>
+                    <input id="gnPIPCore" name="gnPIPCore" value="${gnInstance?.pipCore}" type="number">
+                </td>
 
                 <td><label for="gnNbMen"><g:message
                         code="selectintrigue.step0.gnNbMen" default="Minimal men number"/></label></td>

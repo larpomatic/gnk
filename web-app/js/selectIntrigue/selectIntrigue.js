@@ -20,8 +20,7 @@ $(function(){
         $('input[name="plot_status_'+ id +'"][value="3"]').attr("disabled", "disabled");
     });
 
-    $(".radioEvenemential").first().prop("checked", true);
-    $(".radioMainstream").first().click();
+    initRadioPlots();
 
     $('.selectedEvenemential').val($(".radioEvenemential").first().val());
     $('.selectedMainstream').val($(".radioMainstream").first().val());
@@ -51,6 +50,37 @@ $(function(){
     $('.banTag').click(function() {
         $('input', $(this).parent().next()).val(-101);
     });
+
+    $('.gnSubmitForm').submit(function() {
+        $('input').removeClass("redBorder");
+        var $gnPIPMin = $('#gnPIPMin');
+        var $gnPIPCore = $('#gnPIPCore');
+        var $gnPIPMax = $('#gnPIPMax');
+        if (parseInt($gnPIPMin.val()) >= parseInt($gnPIPMax.val())) {
+           $gnPIPMin.addClass("redBorder");
+           createNotification("danger", "Erreur !", "PIPMin doit être strictement inférieur à PIPMax.");
+           return false;
+        }
+        if (parseInt($gnPIPCore.val()) >= parseInt($gnPIPMax.val())) {
+            $gnPIPCore.addClass("redBorder");
+            createNotification("danger", "Erreur !", "PIPCore doit être strictement inférieur à PIPMax.");
+            return false;
+        }
+        if (parseInt($gnPIPCore.val()) < parseInt($gnPIPMin.val())) {
+            $gnPIPCore.addClass("redBorder");
+            createNotification("danger", "Erreur !", "PIPCore doit être supérieur ou égal à PIPMin.");
+            return false;
+        }
+        return true;
+    });
+
+    $('.roleToPersoFrom').submit(function() {
+        if ($('input[name*="plot_status_"][value="2"]:checked').size() > 0) {
+            createNotification("warning", "Attention !", "Vous devez d'abord relancer le gn pour comptabiliser vos intrigues éliminées.");
+            return false;
+        }
+        return true;
+    });
 });
 
 function toggle(checkboxID, toggleID) {
@@ -69,3 +99,11 @@ function toggle(checkboxID, toggleID) {
     }
 }
 
+function initRadioPlots() {
+    if ($('input[name="selected_evenemential"]:checked').size() == 0) {
+        $(".radioEvenemential").first().prop("checked", true);
+    }
+    if ($('input[name="selected_mainstream"]:checked').size() == 0) {
+        $(".radioMainstream").first().click();
+    }
+}

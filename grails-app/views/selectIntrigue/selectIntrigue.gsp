@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="<g:resource dir="css" file="selectIntrigue.css" />" type="text/css">
 <meta name="layout" content="main">
 <g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}" />
 <title><g:message code="gn.edition" /></title>
+<link rel="stylesheet" href="<g:resource dir="css" file="selectIntrigue.css" />" type="text/css">
 </head>
 <body>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>

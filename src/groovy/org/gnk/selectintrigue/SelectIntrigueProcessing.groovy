@@ -208,7 +208,6 @@ public class SelectIntrigueProcessing {
         if (!sexFilter(plot))
             return false;
 
-
         final Set<Role> roleList = new HashSet<Role>();
 
         Set<Role> roleSet = plot.getterRoles();
@@ -221,10 +220,17 @@ public class SelectIntrigueProcessing {
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
+        Boolean isPipCoreOk = false;
         for (Role role : roleList) {
             if ((role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
+            if (role.getPipi() >= _gn.getPipCore()) {
+                isPipCoreOk = true;
+            }
+        }
+        if (!isPipCoreOk) {
+            return false;
         }
         return true;
     }

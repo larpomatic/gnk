@@ -30,7 +30,9 @@ class SelectIntrigueController {
         Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
         Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
-		List<List<String>> statisticResultList = new ArrayList<List<String>>()
+		List<List<String>> statisticResultList = new ArrayList<List<String>>();
+        Integer evenementialId = 0;
+        Integer mainstreamId = 0;
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
 			if ((params.screenStep as Integer) == 1) {
@@ -39,7 +41,6 @@ class SelectIntrigueController {
                 new GNKDataContainerService().ReadDTD(gnInstance)
 				HashSet<Plot> bannedPlot = new HashSet<Plot>();
 				HashSet<Plot> lockedPlot = new HashSet<Plot>();
-
 				params.each {
 					if (it.key.startsWith("plot_status_") && it.value != "3") {
 						// Locked = 1, Banned= 2, Selected = 3
@@ -58,6 +59,12 @@ class SelectIntrigueController {
                         final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
                         lockedPlot.add(plotToLock);
                         bannedPlot.remove(plotToLock);
+                    }
+                    else if (it.key.startsWith("selected_evenemential")) {
+                        evenementialId = it.value as Integer;
+                    }
+                    else if (it.key.startsWith("selected_mainstream")) {
+                        mainstreamId = it.value as Integer;
                     }
 				}
 
@@ -103,7 +110,9 @@ class SelectIntrigueController {
                 mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
                 bannedPlotInstanceList: gnInstance?.bannedPlotSet,
                 nonTreatedPlots: nonTreatedPlots ,
-                statisticResultList: statisticResultList]
+                statisticResultList: statisticResultList,
+                evenementialId: evenementialId,
+                mainstreamId: mainstreamId]
 	}
 
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
@@ -236,7 +245,6 @@ class SelectIntrigueController {
 		if (params.gnPIPMax) {
 			gnInstance.pipMax = params.gnPIPMax as Integer
 		}
-        //TODO Remove PipCore definitively or update if used one day
 		if (params.gnPIPCore) {
 			gnInstance.pipCore = params.gnPIPCore as Integer
 		} else {

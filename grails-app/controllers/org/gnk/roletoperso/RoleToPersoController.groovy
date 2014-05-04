@@ -42,15 +42,18 @@ class RoleToPersoController {
             character1.getBannedRoles().clear()
         }
 
-
         if (gn.getIsMainstream()) {
-            int mainstreamId = params.selectedMainstream as int;
-            Plot mainstreamPlot = Plot.findById(mainstreamId);
-            gn.setSelectedMainstream(mainstreamPlot);
+            if (params.selectedMainstream) {
+                int mainstreamId = params.selectedMainstream as int;
+                Plot mainstreamPlot = Plot.findById(mainstreamId);
+                gn.setSelectedMainstream(mainstreamPlot);
+            }
         }
-        int evenementialId = params.selectedEvenemential as int;
-        Plot evenementialPlot = Plot.findById(evenementialId);
-        gn.setSelectedEvenemential(evenementialPlot);
+        if (params.selectedEvenemential) {
+            int evenementialId = params.selectedEvenemential as int;
+            Plot evenementialPlot = Plot.findById(evenementialId);
+            gn.setSelectedEvenemential(evenementialPlot);
+        }
 
         params.each {
             final String key = it.key as String

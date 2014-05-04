@@ -59,7 +59,13 @@
                     </g:link>
                 </td>
                 <td>
-                    <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
+                    <g:if test="${evenementialPlotInstance.id.equals(evenementialId)}">
+                        <g:radio name="selected_evenemential" checked="true" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
+                    </g:if>
+                    <g:else>
+                        <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}" class="radioEvenemential"/>
+                    </g:else>
+
                 </td>
             </tr>
         </g:each>
@@ -94,7 +100,12 @@
                     </g:link>
                 </td>
                 <td>
-                    <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}" class="radioMainstream"/>
+                    <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
+                        <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}" class="radioMainstream"/>
+                    </g:if>
+                    <g:else>
+                        <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}" class="radioMainstream"/>
+                    </g:else>
                 </td>
             </tr>
         </g:each>
@@ -221,7 +232,7 @@
                     value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
 </g:form>
 </fieldset>
-<g:form method="post" controller="roleToPerso" name="roleToPersoFrom">
+<g:form method="post" controller="roleToPerso" name="roleToPersoFrom" class="roleToPersoFrom">
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value=""/>
     <g:hiddenField name="selectedMainstream" class="selectedMainstream" value=""/>
