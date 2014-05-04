@@ -41,7 +41,14 @@ class PublicationController {
         gnk.ReadDTD(getGn.dtd)
         gn = gnk.gn
 
-        File output = new File("${request.getSession().getServletContext().getRealPath("/")}word/${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if( !folder.exists() ) {
+            folder.mkdirs()
+        }
+
+        File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
+
         WordprocessingMLPackage word = createPublication()
         word.save(output)
 
@@ -211,7 +218,7 @@ class PublicationController {
                     else
                         wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
                 else
-                    wordWriter.addTableCell(tableRowRes, e. "[Lieu générique]")
+                    wordWriter.addTableCell(tableRowRes, "[Lieu générique]")
 
                 substituteEvent(p, e)
                 wordWriter.addTableCell(tableRowRes, e.description)

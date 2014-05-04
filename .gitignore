@@ -48,3 +48,4 @@
 *.idea
 application.properties
 
+web-app/word/
