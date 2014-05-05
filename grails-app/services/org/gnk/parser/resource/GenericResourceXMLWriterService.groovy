@@ -15,6 +15,8 @@ class GenericResourceXMLWriterService {
 
         genericResourceElt.appendChild(getGenericResourceTagsElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourceCommentElement(doc, genericResource));
+//        genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
+//        genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
 
         return genericResourceElt;
     }
@@ -36,6 +38,7 @@ class GenericResourceXMLWriterService {
 
         return rootElt
     }
+
 
     private Element getGenericResourceTagsElement(Document doc, GenericResource genericResource) {
         Element tagsElt = doc.createElement("TAGS");

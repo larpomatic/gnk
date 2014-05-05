@@ -10,7 +10,6 @@ import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
-import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
