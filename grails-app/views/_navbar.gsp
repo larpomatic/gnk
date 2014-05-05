@@ -13,7 +13,7 @@
                     <g:link controller="selectIntrigue" action="list"><g:message code="navbar.selectintrigue"/></g:link>
                 </li>
                 <li>
-                    <g:link controller="user" action="profil"><g:message code="navbar.profil"/></g:link>
+                    <g:link controller="user" action="profil"><g:message code="navbar.configuration"/></g:link>
                 </li>
                 <li>
                     <g:if env="development">

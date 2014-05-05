@@ -1,77 +1,44 @@
 <%--
   Created by IntelliJ IDEA.
   User: Nico
-  Date: 29/03/14
-  Time: 18:33
+  Date: 20/04/14
+  Time: 12:44
 --%>
 
 <%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Profil Utilisateur</title>
+    <title>Gestion Utilisateur</title>
 </head>
 
 <body>
-<br/>
-<br/>
-<ul class="nav nav-pills">
-    <li class="active"><g:link controller="user" action="profil"><g:message code="navbar.profil"/></g:link></li>
-    <g:hasRights lvlright="${right.USEROPEN.value()}">
-        <li><g:link controller="adminUser" action="list"><g:message code="navbar.gestion_user"/></g:link></li>
-    </g:hasRights>
-</ul>
 
 <div role="main">
-    <h3>Votre Profil</h3>
+<h3>Profil</h3>
+Lastname: "${user.lastname}" <br/>
+Firstname: "${user.firstname}" <br/>
+Email: "${user.username}" <br/>
+Password: "${user.username}" <br/>
 
-    <div class="row">
-        <g:form method="post" controller="user" action="modifyProfil">
-            <form>
-                <div class="col-lg-6">
-                    Lastname: ${currentuser.lastname} <br/>
-
-                    <div class="input-group">
-                        <input type="text" name="lastnamemodif" class="form-control"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Modify</button>
-                        </span>
-                    </div>
-                </div>
-            </form>
-        </g:form>
-    </div><!-- /.row -->
-    <div class="row">
-        <div class="col-lg-6">
-            Firstname: ${currentuser.firstname} <br/> <br/>
-        </div><!-- /.col-lg-6 -->
-        <div class="col-lg-6">
-            <div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
-                </span>
-            </div><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
-    </div><!-- /.row -->
-
-Email: ${currentuser.username} <br/>
-    Password:
-    <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
-        Right: ${currentuser.gright} <br/>
-    </g:hasRights>
-    Last Connexion : "${currentuser.lastConnexion}"
+<g:hasRights lvlright="${right.RIGHTSHOW.value()}">
+    Rights: ${user.gright} <br/>
+</g:hasRights>
+<g:link class="btn btn-warning" controller="adminUser" action="statistic" id="${user.id}">
+    <g:message code="default.statistique"/>
+</g:link>
+<g:hasRights lvlright="${right.RIGHTMODIF.value()}">
     <h3>Rights</h3>
-    <g:form controller="user" class="form-group" action="modifperm" method="post">
+    <g:form controller="adminUser" class="form-group" action="changeperm" id="${user.id}" method="post">
         <table class="table">
             <thead>
             <tr>
                 <th></th>
                 <th>Mon Profil</th>
-                <th>Profil</th>
+                <th>Utilisateurs</th>
                 <th>Mes Intrigues</th>
                 <th>Intrigues</th>
-                <th>Mes Gn</th>
+                <th>My Gn</th>
                 <th>Gn</th>
                 <th>Référentiel</th>
                 <th>Gestion Droits</th>
@@ -113,6 +80,7 @@ Email: ${currentuser.username} <br/>
         </table>
         <button type="submit" class="btn btn-default">Submit</button>
     </g:form>
-</div>
+    </div>
+</g:hasRights>
 </body>
 </html>

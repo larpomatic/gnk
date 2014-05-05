@@ -50,6 +50,7 @@ grails.project.dependency.resolution = {
         runtime ":hibernate:$grailsVersion"
         runtime ":jquery:1.8.3"
         runtime ":resources:1.1.6"
+        compile ":cookie-session:2.0.14"
 
 
 
@@ -67,5 +68,6 @@ grails.project.dependency.resolution = {
         compile ':twitter-bootstrap:2.3.2'
         compile ':spring-security-core:1.2.7.3'
         //compile ':spring-security-core:2.0-RC2'
+        compile ':webxml:1.4.1'
     }
 }

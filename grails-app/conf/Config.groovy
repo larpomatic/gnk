@@ -157,7 +157,15 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'org.gnk.user.
 grails.plugins.springsecurity.authority.className = 'org.gnk.user.SecRole'
 grails.plugin.springsecurity.interceptUrlMap = [
         '*/gnk/login/auth':             ['permitAll'],
-        '*/gnk/*':             ['isFullyAuthenticated()'],
+       // '*/gnk/*':             ['isFullyAuthenticated()'],
         ]
 
 grails.plugins.twitterbootstrap.fixtaglib=true
+
+grails.plugin.springsecurity.rememberMe.cookieName='gnk_cookie'
+grails.plugin.springsecurity.rememberMe.alwaysRemember=false //if true uses remember me even if no chkbox is in the form
+grails.plugin.springsecurity.rememberMe.tokenValiditySeconds=31*24*60*60
+grails.plugin.springsecurity.rememberMe.parameter='_spring_security_remember_me'
+grails.plugin.springsecurity.rememberMe.key='gnk' // should be unique per application
+grails.plugin.springsecurity.rememberMe.useSecureCookie=false
+grails.plugin.springsecurity.rememberMe.persistent=false //don't want to save to db instead of cookie

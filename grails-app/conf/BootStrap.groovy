@@ -46,6 +46,7 @@ class BootStrap {
         // USER
         User admin = User.findByUsername("admin@gnk.com");
         User user  = User.findByUsername("user@gnk.com");
+        User user1 = User.findByUsername("user1@gnk.com")
 
         if (!user) {
             user = new User()
@@ -54,8 +55,23 @@ class BootStrap {
             user.lastname = "Sotty"
             user.password = "1"
             user.enabled = true
-
+            user.gright = 1
+            user.countConnexion = 0
+            user.lastConnexion = new Date()
             user.save(failOnError: true)
+        }
+
+        if (!user1) {
+            user1 = new User()
+            user1.username = "user1@gnk.com"
+            user1.firstname = "Nico"
+            user1.lastname = "Sotty"
+            user1.password = "2"
+            user1.enabled = true
+            user1.gright = 0
+            user1.lastConnexion = new Date()
+            user1.countConnexion = 0
+            user1.save(failOnError: true)
         }
 
         if (!admin) {
@@ -66,7 +82,9 @@ class BootStrap {
             admin.lastname = "Doe"
             admin.password = "admin"
             admin.enabled = true
-
+            admin.gright = 131072
+            admin.countConnexion = 0
+            admin.lastConnexion = new Date()
             admin.save(failOnError: true)
 		}
 
@@ -75,9 +93,10 @@ class BootStrap {
         }
         if (!user.getAuthorities().contains(userRole)) {
             UserSecRole.create(user, userRole, true)
-
         }
-
+        if (!user1.getAuthorities().contains(userRole)) {
+            UserSecRole.create(user1, userRole, true)
+        }
     }
 
     def destroy = {}

@@ -12,7 +12,7 @@ import org.gnk.gn.Gn;
 import org.gnk.tag.Univers;
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
-@Secured(['ROLE_USER'])
+@Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class SelectIntrigueController {
 
 	def index() {
