@@ -1,7 +1,6 @@
 <html>
 <head>
-	<meta name='layout' content='main'/>
-	<title><g:message code="springSecurity.login.title"/></title>
+    <meta name="layout" content="main"/>
 	<style type='text/css' media='screen'>
 	#login {
 		margin: 15px 0px;
@@ -92,15 +91,14 @@
 		<g:if test='${flash.message}'>
 			<div class='login_message'>${flash.message}</div>
 		</g:if>
-
-		<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
+		<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='on'>
 			<p>
 				<label for='username'><g:message code="springSecurity.login.username.label"/>:</label>
 				<input type='text' class='text_' name='j_username' id='username'/>
 			</p>
 
 			<p>
-				<label for='password'><g:message code="springSecurity.login.password.label"/>:</label>
+                <label for='password'><g:message code="springSecurity.login.password.label"/>:</label>
 				<input type='password' class='text_' name='j_password' id='password'/>
 			</p>
 
