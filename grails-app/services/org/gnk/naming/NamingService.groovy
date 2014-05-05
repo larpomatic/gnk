@@ -52,8 +52,8 @@ class NamingService
 				// tri sur les tags du personnage
 				LinkedList<NameAndWeight> fnweight = WeightFNcalcul (tmp, fnlist)
                 //LinkedList<NameAndWeight> fnweight = WeightFNcalcul2 (tmp, fnlist, tagForNamingList.get(persoList.indexOf(tmp)))
-                print tmp.tag
-                print "******************************  END FN  *************************************"
+                //print tmp.tag
+                //print "******************************  END FN  *************************************"
 				if (fnweight.empty)
 					fnweight = getRandomFirstname(fnlist)
 

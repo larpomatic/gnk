@@ -8,7 +8,7 @@ function updateCharsJSONUser(charsJSON) {
 
         //Lock & Ban Tags
         var tagArray = character.tags;
-        for (var n in charArray) {
+        for (var n in tagArray) {
             var tag = tagArray[n];
             var lockTagInput = charElement.children(".charTags").eq(0).children("ul").eq(0).children("li").eq(n).children(".lockTag").eq(0);
             var banTagInput = charElement.children(".charTags").eq(0).children("ul").eq(0).children("li").eq(n).children(".banTag").eq(0);

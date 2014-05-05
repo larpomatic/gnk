@@ -1,31 +1,28 @@
 package org.gnk.tag
 
-import java.util.List
-import org.gnk.tag.Tag
-
 class TagService {
 
     public static final int LOCKED = 101;
     public static final int BANNED = -101;
 
-	def serviceMethod() {
-	}
+    def serviceMethod() {
+    }
 
-	def List<Tag> getPlotTagQuery() {
-		def result = Tag.withCriteria{
-			tagFamily { eq ("relevantPlot", true) }
-		}
+    def List<Tag> getPlotTagQuery() {
+        def result = Tag.withCriteria{
+            tagFamily { eq ("relevantPlot", true) }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	def List<Tag> getRoleTagQuery() {
-		def result = Tag.withCriteria{
-			tagFamily { eq ("relevantPlot", true) }
-		}
+    def List<Tag> getRoleTagQuery() {
+        def result = Tag.withCriteria{
+            tagFamily { eq ("relevantPlot", true) }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
         return valuedTag.getValue() == TagService.LOCKED;
@@ -39,11 +36,11 @@ class TagService {
      * Returns the matching score of two lists of weighted tags.
      * This function consider the matching between tags of each list and the matching throw the relations between tags
      *
-     * @param  refTagList  The weighted tag list of the reference object (like a character for R2P)
-     * @param  challengerTagList The weighted tag list of the object whose we want to test the compatibility with the reference object (like a role in R2P)
-     * @param  refLockedBannedTags The list of tags that are locked or banned form the reference object (True for locked, False for banned)
+     * @param refTagList The weighted tag list of the reference object (like a character for R2P)
+     * @param challengerTagList The weighted tag list of the object whose we want to test the compatibility with the reference object (like a role in R2P)
+     * @param refLockedBannedTags The list of tags that are locked or banned form the reference object (True for locked, False for banned)
      * @return the matching score between the challenger object and the reference object ; Integer.MIN_VALUE if the challenger object break a ban if put with reference object
-     * @see    org.gnk.roletoperso.RoleToPersoProcessing().getRoleRank()
+     * @see org.gnk.roletoperso.RoleToPersoProcessing().getRoleRank()
      */
     public int getTagsMatching(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
         Integer rankTag = 0;
@@ -94,14 +91,14 @@ class TagService {
         return rankTag;
     }
 
-    /**
-     * Returns the difference between the ponderations of weighted tags of two lists. In other terms the distance to reach the objective
-     *
-     * @param  refTagList  The weighted tag list of the reference object (the objective to reach)
-     * @param  challengerTagList The weighted tag list of the object whose we want to test the compatibility with the reference object
-     * @return the difference between the ponderations of weighted tags of two lists.
-     * @see    org.gnk.selectintrigue.SelectIntrigueProcessing
-     */
+/**
+ * Returns the difference between the ponderations of weighted tags of two lists. In other terms the distance to reach the objective
+ *
+ * @param refTagList The weighted tag list of the reference object (the objective to reach)
+ * @param challengerTagList The weighted tag list of the object whose we want to test the compatibility with the reference object
+ * @return the difference between the ponderations of weighted tags of two lists.
+ * @see org.gnk.selectintrigue.SelectIntrigueProcessing
+ */
     public int getTagsDifferenceToObjective(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList) {
         Integer rankTag = 0;
         for (Tag refTag : refTagList.keySet()) {
@@ -109,7 +106,6 @@ class TagService {
             if (challengerTagWeight == null)
                 challengerTagWeight = 0;
             rankTag -= Math.pow(Math.abs(refTagList.get(refTag) - challengerTagWeight), 2);
-
         }
         return rankTag;
     }
