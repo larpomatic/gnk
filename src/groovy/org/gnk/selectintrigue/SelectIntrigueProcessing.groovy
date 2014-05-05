@@ -116,10 +116,10 @@ public class SelectIntrigueProcessing {
                 entry.setValue(0);
             }
             for (Plot plot : _selectedPlotList) {
-                _currentPip += plot.getSumPipRoles();
+                _currentPip += plot.getSumPipRoles(_gn.nbPlayers);
                 for (Entry<Tag, Integer> entry : _value.entrySet()) {
                     if (plot.hasPlotTag(entry.getKey())) {
-                        entry.setValue(entry.getValue() + plot.getSumPipRoles() * plot.getTagWeight(entry.getKey()));
+                        entry.setValue(entry.getValue() + plot.getSumPipRoles(_gn.nbPlayers) * plot.getTagWeight(entry.getKey()));
                     }
                 }
             }
@@ -296,7 +296,7 @@ public class SelectIntrigueProcessing {
         }
         evaluateGn(true);
         for (Plot plot : _allPlotList) {
-            if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
+            if ((plot.getSumPipRoles(_gn.nbPlayers) <= (_maxPip - _currentPip))) {
                 Integer tmpValue = evaluateGnWithPlot(plot);
                 if (newValue == null || tmpValue > newValue) {
                     selectedPlot = plot;
