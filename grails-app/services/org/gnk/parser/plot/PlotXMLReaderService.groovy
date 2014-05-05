@@ -37,6 +37,17 @@ class PlotXMLReaderService {
             plotRes.description =  PLOT.DESCRIPTION[0].text()
         }
 
+        // Les 3 différents pitchs
+        if (PLOT.PITCH_ORGA.size() > 0) {
+            plotRes.pitchOrga =  PLOT.PITCH_ORGA[0].text()
+        }
+        if (PLOT.PITCH_PJ.size() > 0) {
+            plotRes.pitchPj =  PLOT.PITCH_PJ[0].text()
+        }
+        if (PLOT.PITCH_PNJ.size() > 0) {
+            plotRes.pitchPnj =  PLOT.PITCH_PNJ[0].text()
+        }
+
         // GENERIC_PLACES reader
         ReadGenericPlacesNode(PLOT, plotRes, dataContainer)
         // PAST_SCENES reader
@@ -45,6 +56,7 @@ class PlotXMLReaderService {
         ReadGenericResourcesNode(PLOT, plotRes, dataContainer)
         // TODO: TEXTUAL_CLUES reader
         // ReadTextualCluesNode(PLOT, plotRes, dataContainer)
+
         // EVENTS reader
         ReadEventsNode(PLOT, plotRes, dataContainer)
 

@@ -21,6 +21,7 @@ class IntegrationHandler {
     public JSONObject namingIntegration(JSONObject charJsonObject) {
         String universe = charJsonObject.get("universe")
         LinkedList<PersoForNaming> charForNamingList = []
+        LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList = []
 
         // CharForNamingList construction from json
         for(characterJson in charJsonObject.characters) {
@@ -33,14 +34,22 @@ class IntegrationHandler {
 
             // Tags
             List<Tag> tagList = []
+            Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
             for(tagJson in characterJson.tags) {
                 Tag tag = new Tag()
+                org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
                 tag.value = tagJson.value
                 tag.type = tagJson.family
                 tag.weight = tagJson.weight as Integer
+                ntag.name = tagJson.value
+                ntag = org.gnk.tag.Tag.createCriteria().list{
+                    maxResults(1)
+                    eq ('name', tagJson.value)
+                    }[0]
 
                 tagList.add(tag)
+                persoTagList.put(ntag, tag.weight)
             }
             charForNaming.tag = tagList
 
@@ -76,6 +85,7 @@ class IntegrationHandler {
             charForNaming.family = []
 
             charForNamingList.add(charForNaming)
+            tagForNamingList.add(persoTagList)
         }
 
         // NAMING CALL
@@ -91,7 +101,7 @@ class IntegrationHandler {
         //if (Environment.current == Environment.PRODUCTION)
         //{
             // Naming call
-            charForNamingList = namingService.namingMethod(charForNamingList)
+            charForNamingList = namingService.namingMethod(charForNamingList/*, tagForNamingList*/)
         //}
 
         /*for(el in charForNamingList) {
