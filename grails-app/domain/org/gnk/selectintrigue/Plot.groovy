@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
@@ -30,6 +31,10 @@ class Plot {
 	String name
   //  float plotVersion
 
+    String pitchOrga
+    String pitchPj
+    String pitchPnj
+
 	Boolean isEvenemential
 	Boolean isMainstream
 	Boolean isPublic
@@ -54,10 +59,16 @@ class Plot {
 
 	static constraints = {
         name maxSize: 45
+        pitchOrga (nullable: true)
+        pitchPj (nullable: true)
+        pitchPnj (nullable: true)
     }
 	
 	static mapping = {
         autoTimestamp true
+        pitchOrga type: 'text'
+        pitchPj type: 'text'
+        pitchPnj type: 'text'
 		description type: 'text'
         id type:'integer'
         version type: 'integer'

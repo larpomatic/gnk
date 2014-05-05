@@ -471,17 +471,16 @@ public class RoleToPersoProcessing {
                 continue;
             }
             for (Role role : roleSet) {
-                if (role.isPJ()) {
-                    roles.add(role);
-                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
-                } else if (role.isTPJ()) {
+                if (role.isTPJ()) {
                     gnTPJRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is TPJ and not added to role set to process");
                 } else if (role.isPJG()) {
                     gnPJGRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
+                } else if (role.isPJ()) {
+                    roles.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
                 } else {
-
                     gnNPCRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PNJ and not added to role set to process");
                 }

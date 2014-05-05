@@ -7,7 +7,6 @@ import org.gnk.parser.resource.GenericResourceXMLWriterService
 import org.gnk.parser.role.RoleXMLWriterService
 import org.gnk.parser.textualclue.GenericTextualClueXMLWriterService
 import org.gnk.resplacetime.Event
-import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -34,7 +33,7 @@ class PlotXMLWriterService {
         plotElt.appendChild(getEventsElement(doc, plot));
         plotElt.appendChild(getGenericPlacesElement(doc, plot));
         plotElt.appendChild(getGenericResourcesElement(doc, plot));
-        plotElt.appendChild(getTextualCluesElement(doc, plot));
+//        plotElt.appendChild(getTextualCluesElement(doc, plot));
 
         return plotElt;
     }
@@ -157,21 +156,21 @@ class PlotXMLWriterService {
         return genericResourcesElt;
     }
 
-    private Element getTextualCluesElement(Document doc, Plot plot) {
-        Element textualCluesElt = doc.createElement("TEXTUAL_CLUES");
-
-        if (plot.roles) {
-            for (Role role : plot.roles) {
-                if (role.genericTextualCluesForPossededByRoleId) {
-                    final GenericTextualClueXMLWriterService genericTextualClueXMLWriter = new GenericTextualClueXMLWriterService()
-                    for (GenericTextualClue genericTextualClue : role.genericTextualCluesForPossededByRoleId) {
-                        textualCluesElt.appendChild(genericTextualClueXMLWriter.getGenericTextualClueElement(doc, genericTextualClue))
-                    }
-                }
-            }
-        }
-
-        return textualCluesElt;
-    }
+//    private Element getTextualCluesElement(Document doc, Plot plot) {
+//        Element textualCluesElt = doc.createElement("TEXTUAL_CLUES");
+//
+//        if (plot.roles) {
+//            for (Role role : plot.roles) {
+//                if (role.genericTextualCluesForPossededByRoleId) {
+//                    final GenericTextualClueXMLWriterService genericTextualClueXMLWriter = new GenericTextualClueXMLWriterService()
+//                    for (GenericTextualClue genericTextualClue : role.genericTextualCluesForPossededByRoleId) {
+//                        textualCluesElt.appendChild(genericTextualClueXMLWriter.getGenericTextualClueElement(doc, genericTextualClue))
+//                    }
+//                }
+//            }
+//        }
+//
+//        return textualCluesElt;
+//    }
     /* !Construction Methods */
 }

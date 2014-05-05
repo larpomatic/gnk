@@ -11,7 +11,6 @@ import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
-import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.selectintrigue.Plot
@@ -162,28 +161,29 @@ class PlotXMLReaderService {
 
         genericResourceList.each { Node GENERIC_RESOURCE ->
             GenericResource genericResource = genericResourceReader.getGenericResourceFromNode(GENERIC_RESOURCE, dataContainer)
+            genericResource.plot = plotRes;
             if (genericResource.getDTDId() >= 0)
                 dataContainer.genericResourceMap.put(genericResource.getDTDId(), genericResource)
         }
     }
 
-    private void ReadTextualCluesNode(Node PLOT, Plot plotRes, GNKDataContainerService dataContainer) {
-        assert (PLOT.TEXTUAL_CLUES.size() <= 1)
-        if (PLOT.TEXTUAL_CLUES.size() <= 0)
-            return
-
-        GenericTextualClueXMLReaderService textualClueReader = new GenericTextualClueXMLReaderService()
-
-        if (!PLOT.GENERIC_RESOURCES[0])
-            return
-        NodeList textualClueList = PLOT.GENERIC_RESOURCES[0].GENERIC_RESOURCE
-
-        textualClueList.each { Node GENERIC_RESOURCE ->
-            GenericTextualClue textualClue = textualClueReader.getTextualClueFromNode(GENERIC_RESOURCE, dataContainer)
-            if (textualClue.getDTDId() >= 0)
-                dataContainer.genericTextualClueMap.put(textualClue.getDTDId(), textualClue)
-        }
-    }
+//    private void ReadTextualCluesNode(Node PLOT, Plot plotRes, GNKDataContainerService dataContainer) {
+//        assert (PLOT.TEXTUAL_CLUES.size() <= 1)
+//        if (PLOT.TEXTUAL_CLUES.size() <= 0)
+//            return
+//
+//        GenericTextualClueXMLReaderService textualClueReader = new GenericTextualClueXMLReaderService()
+//
+//        if (!PLOT.GENERIC_RESOURCES[0])
+//            return
+//        NodeList textualClueList = PLOT.GENERIC_RESOURCES[0].GENERIC_RESOURCE
+//
+//        textualClueList.each { Node GENERIC_RESOURCE ->
+//            GenericTextualClue textualClue = textualClueReader.getTextualClueFromNode(GENERIC_RESOURCE, dataContainer)
+//            if (textualClue.getDTDId() >= 0)
+//                dataContainer.genericTextualClueMap.put(textualClue.getDTDId(), textualClue)
+//        }
+//    }
 
     private void ReadEventsNode(Node PLOT, Plot plotRes, GNKDataContainerService dataContainer) {
         assert (PLOT.EVENTS.size() <= 1)
