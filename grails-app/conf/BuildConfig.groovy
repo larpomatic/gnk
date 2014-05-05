@@ -44,6 +44,10 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'org.docx4j:docx4j:2.7.1'
+
+        test 'org.seleniumhq.selenium:selenium-java:2.41.0'
+        test 'org.seleniumhq.selenium:selenium-firefox-driver:2.41.0'
+        test 'org.seleniumhq.selenium:selenium-chrome-driver:2.41.0'
     }
 
     plugins {

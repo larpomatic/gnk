@@ -110,7 +110,7 @@ class RoleControllerTests {
 
         assert role.save() != null
 
-        // createGnTests invalid parameters in update
+        // CreateGnTests invalid parameters in update
         params.id = role.id
         //TODO: add invalid values to params object
 
@@ -127,7 +127,7 @@ class RoleControllerTests {
         assert response.redirectedUrl == "/role/show/$role.id"
         assert flash.message != null
 
-        //createGnTests outdated version number
+        //CreateGnTests outdated version number
         response.reset()
         role.clearErrors()
 
