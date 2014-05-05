@@ -26,3 +26,45 @@ th,td {
 .evenemential-table > tbody > tr:not(:last-child):nth-child(n+2) {    /* test pour 1 */
     display: none;
 }
+/*.mainstream-table > tbody > tr:not(:last-child):nth-child(n+6){*/     /* test pour 5 */
+/*display: none;*/
+/*}*/
+.mainstream-table > tbody > tr:not(:last-child):nth-child(n+2) {    /* test pour 1 */
+    display: none;
+}
+
+.search-query {
+    outline: none;
+    border: solid 1px grey;
+    text-align: left;
+}
+
+.modal-header h3 {
+    border-bottom: none;
+}
+
+.modal-body li {
+    list-style-type: none;
+}
+
+.modal {
+    text-align: center;
+}
+
+.modal .tagWeight {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.modal .tagWeight input {
+    margin-right: 0;
+}
+
+.modal .banTag,
+.modal .chooseTag {
+    outline: none;
+}
+
+.redBorder {
+    border: 1px solid red !important;
+}

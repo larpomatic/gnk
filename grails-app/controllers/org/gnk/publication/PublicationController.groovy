@@ -1,4 +1,7 @@
 package org.gnk.publication
+
+import grails.converters.JSON
+import org.apache.catalina.filters.SetCharacterEncodingFilter
 import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
@@ -7,6 +10,7 @@ import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
+import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
@@ -16,14 +20,20 @@ import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
+import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class PublicationController {
+    final int COLUMN_NUMBER_PERSO = 8
+    final int COLUMN_NUMBER_JOUEUR = 9
     private WordWriter wordWriter
     private GNKDataContainerService gnk
     private Gn gn
     private SubstitutionPublication substitutionPublication
 
     def index() {}
+
+
 
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
@@ -727,4 +737,263 @@ class PublicationController {
 
     }
 
+    // Methode permettant d'exporter personnage.CSV pour casting
+    def publicationCSV = {
+        // Récupération de l'ID du GN
+        //Integer id =  request.JSON.gnId
+        Integer id = params.gnId as Integer
+        String csvType = params.csvType as String
+
+        Gn getGn = null
+        if (!id.equals(null))
+            getGn = Gn.get(id)
+        if (getGn.equals(null))
+        {
+            print "Error : GN not found"
+            return
+        }
+        gnk = new GNKDataContainerService()
+        gnk.ReadDTD(getGn.dtd)
+        gn = gnk.gn
+
+        int numberQuestionMax = 5;
+        // On récupère la liste des personnages joueurs
+        Set<Character> realCharacterList = getPJList(gn.characterSet)
+        // On regarde combien de fois chaque tag apparait
+        HashMap<Integer, Integer> tagOccurence = orderTagByOccurence(realCharacterList)
+        // On récupère uniquement la liste des tag qui vont nous servir, les numberQuestionMax plus présent
+        ArrayList<Tag> tagListRetainForQuestion = getListOfTagName(tagOccurence, numberQuestionMax)
+        // Transforme les values des tags en valeurs comprises entre 0 et 9
+        ArrayList<ArrayList<String>> csvFileArrayBadValues = null
+        ArrayList<ArrayList<String>> csvFilArrayCorrectValues = null
+
+        if (csvType == "personnage") {
+            // On transforme toutes les info en tableau à double entrée crtières x personnages
+            csvFileArrayBadValues = getCSVContentWith(tagListRetainForQuestion, realCharacterList, gn)
+            csvFilArrayCorrectValues = adaptValuesforCSV(csvFileArrayBadValues)
+
+        } else if (csvType == "joueur") {
+            csvFileArrayBadValues = getCSVContentForJoueurWith(tagListRetainForQuestion, realCharacterList, gn)
+            csvFilArrayCorrectValues = csvFileArrayBadValues
+        }
+
+        // On transforme le tableau en string pour CSV
+        String csvContent = getCSVStringFromArray(csvFilArrayCorrectValues)
+
+        String fileName = "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}-${csvType}.csv"
+
+        String path = "${request.getSession().getServletContext().getRealPath("/")}word/${fileName}"
+        File output = new File(path)
+
+        output << csvContent
+
+
+        response.setContentType("text/csv")
+        response.setHeader("Content-disposition", "filename=${fileName}")
+        response.outputStream << output.newInputStream()
+
+        //output0.eachLine {line->println(gnkXML)}
+    }
+
+    private String getRelatedPlayWithChara(Character chara, Gn gn) {
+        String ret = ""
+        chara.getRelatedCharactersExceptBijectives(gn).each { related ->
+            related.value.each { relation ->
+                ret = ret.concat(related.key.firstname + " " + related.key.lastname +", ")
+            }
+        }
+        if (ret.length() > 0) {
+            ret = ret.substring(0, ret.length() -2)
+        }
+        return ret
+    }
+
+    // Passe les value des tag en valuers comprises entre 0 et 9
+    private ArrayList<ArrayList<String>> adaptValuesforCSV(ArrayList<ArrayList<String>> tabOfPlayer) {
+        int colAge = COLUMN_NUMBER_PERSO - 1
+        // Traitement de la column Age on réduit 0-100 sur 0-9
+        for (int j = 1; j < tabOfPlayer.size(); j++) {
+            ArrayList<String> currentPla2 = tabOfPlayer.get(j)
+            int ageValue = currentPla2.get(colAge).toInteger()
+            int newAgeValue = ((ageValue / 100) * 9)
+            tabOfPlayer.get(j).set(colAge,/* "("+ageValue+")" +*/(newAgeValue))
+        }
+
+        // Traitement des column trait de carac
+        for (int i = COLUMN_NUMBER_PERSO; i < tabOfPlayer.get(0).size(); i++) {
+            // Pour chaque column on extrait le max et min
+            int maxValue = 1
+            int minValue = -1
+            for (int j = 1; j < tabOfPlayer.size(); j++) {
+                ArrayList<String> currentPla = tabOfPlayer.get(j)
+                // On extrait du tableau les valeurs min et max
+                int value = currentPla.get(i).toInteger()
+                if (value > maxValue) {
+                    maxValue = value
+                } else if (value < minValue) {
+                    minValue = value
+                }
+            }
+            // Maitneant qu'on a les max et min, on met en fonction
+            for (int j = 1; j < tabOfPlayer.size(); j++) {
+                ArrayList<String> currentPla2 = tabOfPlayer.get(j)
+                int value2 = currentPla2.get(i).toInteger()
+                int newValue = 4
+                if (value2 < 0) {
+                    newValue = (4-((value2 / minValue) * 4))
+                } else if (value2 > 0) {
+                    newValue = ((value2 / maxValue) * 4 + 5)
+                } else { // value == 0
+                    // On laisse 4
+                }
+                tabOfPlayer.get(j).set(i, /*"("+value2+")" +*/(newValue))
+            }
+        }
+        return tabOfPlayer
+    }
+
+    // Converti tableau de joeur avec caractéristique en string pour CSV
+    private String getCSVStringFromArray(ArrayList<ArrayList<String>> tabOfPlayer) {
+        String ret = ""
+        // Converti le tableau en string de CSV
+        for (int i = 0; i < tabOfPlayer.size(); i++) {
+            ArrayList<String> currentPla = tabOfPlayer.get(i)
+            for (int j = 0; j < currentPla.size(); j++) {
+                String val = currentPla.get(j)
+                ret = ret.concat(val + ";")
+            }
+            ret = ret.concat("\n")
+        }
+        return ret
+    }
+
+    // Utilise toutes les données pour faire le fichier personnage.csv
+    private ArrayList<ArrayList<String>> getCSVContentForJoueurWith(ArrayList<Tag> consideredTag, Set<Character> charList, Gn gn) {
+        // On ajoute les colonnes pour chaque
+        println("Taille : " + consideredTag.size())
+
+        ArrayList<ArrayList<String>> tabOfPlayer = new ArrayList<>()
+        ArrayList<String> topTitle = new ArrayList<String>(Arrays.asList("Prénom", "Nom","Sexe","Session avec","Session sans","Joue avec","Joue sans","Joueur interdit","Age"))
+        for (int i = 0; i < consideredTag.size(); i++) {
+            topTitle.add(i + COLUMN_NUMBER_JOUEUR, consideredTag.get(i).name)
+        }
+
+        tabOfPlayer.add(0, topTitle)
+
+            ArrayList<String> currentPlayer = new ArrayList<>()
+            currentPlayer.add(0, "Votre prénom")// Prénom
+            currentPlayer.add(1, "Votre nom") // Nom
+            currentPlayer.add(2, "M pour Masculin, F pour Féminin et N pour Neutre") // Sexe
+            currentPlayer.add(3, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session avec
+            currentPlayer.add(4, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session sans
+            currentPlayer.add(5, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue Avec
+            currentPlayer.add(6, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue sans
+            currentPlayer.add(7, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joueur interdit
+            currentPlayer.add(8, "Valeur entre 0 et 9 : 0 = jeune, 4 = adulte, 9 = vieux") // Age
+            for (int i = 0; i < consideredTag.size(); i++) {
+                currentPlayer.add(i + COLUMN_NUMBER_JOUEUR, "Valeur entre 0 et 9 : 0 = pas du tout, 4 = neutre, 9 = beaucoup")
+            }
+            tabOfPlayer.add(currentPlayer)
+
+
+        return tabOfPlayer
+    }
+
+    // Utilise toutes les données pour faire le fichier personnage.csv
+    private ArrayList<ArrayList<String>> getCSVContentWith(ArrayList<Tag> consideredTag, Set<Character> charList, Gn gn) {
+        // On ajoute les colonnes pour chaque
+        println("Taille : " + consideredTag.size())
+
+        ArrayList<ArrayList<String>> tabOfPlayer = new ArrayList<>()
+        ArrayList<String> topTitle = new ArrayList<String>(Arrays.asList("Prénom", "Nom","Sexe","Joue avec","Joue sans","Joueur prefere","Joueur facultatif","Age"))
+        for (int i = 0; i < consideredTag.size(); i++) {
+            topTitle.add(i + COLUMN_NUMBER_PERSO, consideredTag.get(i).name)
+        }
+
+        tabOfPlayer.add(0, topTitle)
+
+        // Pour chaque personnes, on rempli le tableau
+        charList.each { chara ->
+            ArrayList<String> currentPlayer = new ArrayList<>()
+            currentPlayer.add(0, chara.firstname)// Prénom
+            currentPlayer.add(1, chara.lastname) // Nom
+            currentPlayer.add(2, chara.gender) // Sexe
+            currentPlayer.add(3, getRelatedPlayWithChara(chara, gn)) // Joue avec
+            currentPlayer.add(4, "") // Joue sans
+            currentPlayer.add(5, "") // Joueur prefere
+            currentPlayer.add(6, "") // Joueur  facultatif
+            currentPlayer.add(7, "" + chara.getCharacterAproximateAge()) // Age
+
+            boolean foundTag = false
+            // Tag spécifiques
+            for (int i = 0; i < consideredTag.size(); i++) {
+                foundTag = false
+                chara.tags.each { charaTag ->
+                    if (!foundTag && (consideredTag.get(i).name == charaTag.key.name)) {
+                        currentPlayer.add(i + COLUMN_NUMBER_PERSO, charaTag.value)
+                        foundTag = true
+                    }
+                }
+                if (!foundTag)
+                    currentPlayer.add(i + COLUMN_NUMBER_PERSO, "0")
+            }
+            tabOfPlayer.add(currentPlayer)
+        }
+
+        return tabOfPlayer
+    }
+
+    // Utilise la liste des tag et de leur occurence pour ne garder que les plus important
+    private ArrayList<Tag> getListOfTagName(HashMap<Integer, Integer> tagOccurence, int numberQuestionMax) {
+        ArrayList<Tag> selectedTagList = new ArrayList<>()
+        int i = numberQuestionMax;
+        tagOccurence.each { hmap ->
+            Tag t = Tag.findById(hmap.key)
+            i--;
+            if (i >= 0) {
+                selectedTagList.push(t)
+            }
+        }
+        return selectedTagList
+    }
+
+    // Utilise la liste des personnages pour en extraire les tag et les classer par ordre d'importance d'apparition
+    private HashMap<Integer, Integer> orderTagByOccurence(Set<Character> charSet){
+
+        HashMap<Integer /*tag id*/, Integer /* occurence */> returnedList = new HashMap<>()
+        // Pour chaque personnage
+        charSet.each { chara->
+            // Pour chacun de ces tags on regarde combien de fois il est déjà apparu dans les personnages
+            chara.tags.each { tag ->
+                if(tag.key.tagFamily.value == "Trait de personnalité") {
+                    if (returnedList.get(tag.key.id) == null) {
+                        returnedList.put(tag.key.id, 1)
+                    } else {
+                        int nb = returnedList.get(tag.key.id).intValue()
+                        nb += 1
+                        returnedList.remove(tag.key.id)
+                        returnedList.put(tag.key.id, new Integer(nb))
+                    }
+                }
+            }
+        }
+        // Trie la liste par occurence
+        returnedList = returnedList.sort {a, b -> b.value <=> a.value}
+        // debug display
+        returnedList.each { hmap ->
+            Tag t = Tag.findById(hmap.key)
+            //println(t.name + " ---> " + hmap.value)
+        }
+        return returnedList
+    }
+
+    // Récupère la liste des PJ uniquement
+    private Set<Character> getPJList(Set<Character> allPersoList) {
+        Set<Character> returnedSet = new HashSet<>()
+        allPersoList.each { chara ->
+            if (chara.isPJ())
+                returnedSet.add(chara)
+        }
+        return returnedSet
+    }
 }

@@ -1,8 +1,5 @@
 package org.gnk.tag
 
-import java.util.List
-import org.gnk.tag.Tag
-
 class TagService {
 
     public static final int LOCKED = 101;
