@@ -335,6 +335,7 @@ class Character {
         tags.each { tag ->
             if (tag.key.tagFamily.id == 3) { // Age
                 number += 1
+               println("age :" + tag.key.name + "(" + tag.value)
                 sum += getAgeForTagAge(tag.key, tag.value)
             }
         }
@@ -352,6 +353,7 @@ class Character {
         if (number == 0) {
             return 40
         } else {
+            println("FINAL AGE: " +(sum/number))
             return sum / number
         }
     }
@@ -367,18 +369,18 @@ class Character {
                 fixAge = 50
             } else if (t.id == 32) { //Jeune adulte 30
                 fixAge = 30
-            } else if (t.name == 31) { // Très jeune 15
+            } else if (t.id == 31) { // Très jeune 15
                 fixAge = 15
             }
             age = (fixAge * value) + (fixAge * 100) // Donne une valeur entre 0 et age * 200
 
-            if (t.getterName() == 34) { // 80
+            if (t.id == 34) { // 80
                 age = 100 * age / (fixAge * 200)
-            } else if (t.getterName() == 33) { // 50
+            } else if (t.id == 33) { // 50
                 age = 100 * age / (fixAge * 200)//(30 * age / (fixAge * 200)) + 40
-            } else if (t.getterName() == 32) { // 30
+            } else if (t.id == 32) { // 30
                 age = 30//(30 * age / (fixAge * 200)) + 20
-            } else if (t.getterName() == 31) { // 15
+            } else if (t.id == 31) { // 15
                 age = 100 * age / (fixAge * 200)
                 age = (100 - age)
             }
