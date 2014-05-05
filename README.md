@@ -32,12 +32,12 @@ NB: If you change your JDK version, re-upgrade grails too.
   <li>Launch unitTests:</li>
   
 	$ grails test-app
-  <li>or</li>
+or
   
 	$ grails test-app *Class
-  <li>or</li>
+or
   
-	$ grails test-app TestClass
+	$ grails test-app MyTestClass
 
   <li>Launch Selenium Tests (IHM):</li>
 
