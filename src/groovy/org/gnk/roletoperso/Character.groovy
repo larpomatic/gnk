@@ -22,7 +22,7 @@ class Character {
     private List<Role> selectedPJG = []
     private List<Role> bannedRoles = []
     private List<Role> specificRoles = []
-
+    private List<Integer> plotid_role = []
     // Substitution
     List<Firstname> proposedFirstnames
     List<Firstname> bannedFirstnames
@@ -98,6 +98,10 @@ class Character {
         return selectedRoles
     }
 
+    public List<Integer> getplotid_role() {
+        return plotid_role
+    }
+
     public List<Role> getSelectedPJG() {
         return selectedPJG;
     }
@@ -124,8 +128,11 @@ class Character {
                 selectedRoles.add(role)
             if ((role.isPJG()) && (!selectedPJG.contains(role)))
                 selectedPJG.add(role)
-            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role)))
-                specificRoles.add(role)
+            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
+                specificRoles.add(role);
+                plotid_role.add(role.plotId);
+            }
+
     }
 
     public lockRole(Role role) {

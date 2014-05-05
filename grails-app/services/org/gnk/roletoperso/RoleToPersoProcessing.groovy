@@ -594,7 +594,8 @@ public class RoleToPersoProcessing {
     private void addPJG () {
         for (Role role : gnPJGRoleSet) {
             for (Character character : gn.getCharacterSet()) {
-                if (character.getPlotSet().contains(role.getPlot()))
+                List<Role> roles = character.getSpecificRoles();
+                if (character.getplotid_role().contains(role.getPlot().getId()))
                     continue;
                 else
                     character.addRole(role);
