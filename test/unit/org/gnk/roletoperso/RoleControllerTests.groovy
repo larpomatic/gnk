@@ -1,9 +1,11 @@
 package org.gnk.roletoperso
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import org.gnk.gn.Gn
+import org.gnk.selectintrigue.Plot
 
 @TestFor(RoleController)
-@Mock(Role)
+@Mock([Role, Gn, Plot])
 class RoleControllerTests {
 
     def populateValidParams(params) {

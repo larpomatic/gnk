@@ -1,0 +1,244 @@
+#article27{
+    overflow:hidden;
+    border:3px solid white;
+}
+
+#article27 #demoWrap{width:10476px;}
+
+/*ul li*/
+#article27 #demoWrap .wrapUl {
+    height:35px;
+}
+#article27 #demoWrap ul .wrapLi{
+    position:relative;
+    float:left;
+    width: 85px;
+    list-style:none;
+    margin: 0px 10px;
+    padding:6px 5px 6px 5px;
+    background:#353A40;
+    background:-webkit-linear-gradient(#464c54,#22272b);
+    background:-moz-linear-gradient(#464c54,#22272b);
+    background:-o-linear-gradient(#464c54,#22272b);
+    background:linear-gradient(#464c54,#22272b);
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius:5px;
+    -webkit-box-shadow:0px 0px 4px #1b1e22;
+    -moz-box-shadow:0px 0px 4px #1b1e22;
+    box-shadow:0px 0px 4px #1b1e22;
+}
+/* init lights : off */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut de light 1
+*/
+#article27 #demoWrap ul .wrapLi::after,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap6:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap7:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap8:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap9:target ul .wrapLi:nth-child(1)::after {
+    content:"";
+    position:absolute;
+    top:65px;
+    left:48px;
+    width: 4px;
+    height: 4px;
+    background:black;
+    -webkit-border-radius:2px;
+    -moz-border-radius:2px;
+    border-radius:2px;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+}
+
+/* init lien */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut du lien 1
+*/
+#article27 #demoWrap ul .wrapLi .wrapLink,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap6:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap7:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap8:target ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap9:target ul .wrapLi:nth-child(1) .wrapLink {
+    display: block;
+    color:#777;
+    font-weight:bold;
+    text-align:center;
+    text-decoration:none;
+    text-shadow:1px 1px 0px rgba(0,0,0,0.5);
+    -webkit-transition:color 0.25s ease;
+    -moz-transition:color 0.25s ease;
+    -o-transition:color 0.25s ease;
+    transition:color 0.25s ease;
+}
+
+/* hover lien */
+/*
+PLUS: lors de chaque :target sur lien 2,3,4
+remise par défaut du lien 1
+*/
+#article27 #demoWrap ul .wrapLi .wrapLink:hover,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap6:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap7:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap8:target ul .wrapLi:nth-child(1) .wrapLink:hover,
+#article27 #demoWrap #wrap9:target ul .wrapLi:nth-child(1) .wrapLink:hover {
+    color:white;
+}
+
+/* fleche */
+#article27 #demoWrap #fleche{
+    width: 0px;
+    height: 0px;
+    border-bottom:10px solid #1b1e22;
+    border-right:10px solid transparent;
+    border-left:10px solid transparent;
+    margin-left: 50px;
+    /*deplacement*/
+    -webkit-transition:margin-left 1s ease-out;
+    -moz-transition:margin-left 1s ease-out;
+    -o-transition:margin-left 1s ease-out;
+    transition:margin-left 1s ease-out;
+}
+
+/* :target */
+/* lien1 */
+#article27 #demoWrap #wrap1:target #textes{margin-left:0px;}
+#article27 #demoWrap #wrap1:target #fleche{margin-left:50px;}
+/* lien2 */
+#article27 #demoWrap #wrap2:target #textes{margin-left:-1164px;}
+#article27 #demoWrap #wrap2:target #fleche{margin-left:165px;}
+/* lien3 */
+#article27 #demoWrap #wrap3:target #textes{margin-left:-2328px;}
+#article27 #demoWrap #wrap3:target #fleche{margin-left:280px;}
+/* lien4 */
+#article27 #demoWrap #wrap4:target #textes{margin-left:-3492px;}
+#article27 #demoWrap #wrap4:target #fleche{margin-left:395px;}
+/* lien5 */
+#article27 #demoWrap #wrap5:target #textes{margin-left:-4656px;}
+#article27 #demoWrap #wrap5:target #fleche{margin-left:510px;}
+/* lien6 */
+#article27 #demoWrap #wrap6:target #textes{margin-left:-5820px;}
+#article27 #demoWrap #wrap6:target #fleche{margin-left:625px;}
+/* lien7 */
+#article27 #demoWrap #wrap7:target #textes{margin-left:-6984px;}
+#article27 #demoWrap #wrap7:target #fleche{margin-left:740px;}
+/* lien8 */
+#article27 #demoWrap #wrap8:target #textes{margin-left:-8148px;}
+#article27 #demoWrap #wrap8:target #fleche{margin-left:855px;}
+/* lien9 */
+#article27 #demoWrap #wrap9:target #textes{margin-left:-9312px;}
+#article27 #demoWrap #wrap9:target #fleche{margin-left:970px;}
+
+/* liens modifiés par :target */
+/* PLUS: init lien1 */
+#article27 #demoWrap ul .wrapLi:nth-child(1) .wrapLink,
+#article27 #demoWrap #wrap1:target ul .wrapLi .wrapLink[href="#wrap1"],
+#article27 #demoWrap #wrap2:target ul .wrapLi .wrapLink[href="#wrap2"],
+#article27 #demoWrap #wrap3:target ul .wrapLi .wrapLink[href="#wrap3"],
+#article27 #demoWrap #wrap4:target ul .wrapLi .wrapLink[href="#wrap4"],
+#article27 #demoWrap #wrap5:target ul .wrapLi .wrapLink[href="#wrap5"],
+#article27 #demoWrap #wrap6:target ul .wrapLi .wrapLink[href="#wrap6"],
+#article27 #demoWrap #wrap7:target ul .wrapLi .wrapLink[href="#wrap7"],
+#article27 #demoWrap #wrap8:target ul .wrapLi .wrapLink[href="#wrap8"],
+#article27 #demoWrap #wrap9:target ul .wrapLi .wrapLink[href="#wrap9"]{
+    color:white;
+}
+
+/* lights modif */
+/* PLUS: init light 1 */
+#article27 #demoWrap ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap1:target ul .wrapLi:nth-child(1)::after,
+#article27 #demoWrap #wrap2:target ul .wrapLi:nth-child(2)::after,
+#article27 #demoWrap #wrap3:target ul .wrapLi:nth-child(3)::after,
+#article27 #demoWrap #wrap4:target ul .wrapLi:nth-child(4)::after,
+#article27 #demoWrap #wrap5:target ul .wrapLi:nth-child(5)::after,
+#article27 #demoWrap #wrap6:target ul .wrapLi:nth-child(6)::after,
+#article27 #demoWrap #wrap7:target ul .wrapLi:nth-child(7)::after,
+#article27 #demoWrap #wrap8:target ul .wrapLi:nth-child(8)::after,
+#article27 #demoWrap #wrap9:target ul .wrapLi:nth-child(9)::after {
+    background: blue;
+    -webkit-box-shadow: 0px 0px 4px blue;
+    -moz-box-shadow: 0px 0px 4px blue;
+    box-shadow: 0px 0px 4px blue;
+}
+
+span.badge {
+    position: absolute;
+    margin-top: -18px;
+    margin-left: 90px;
+    font-size: 10px;
+    height: 13px;
+    padding: 2px 2px 4px;
+    border-radius: 0 5px 5px 0;
+    font-family: "Helvetica Neue", sans-serif !important;
+}
+
+/* div textes */
+#article27 #demoWrap #textes{
+    clear:left;
+    width:10476px;
+    height:900px;
+    margin-top:6px;
+    border-top:1px solid rgba(255,255,255,0.4);
+    -webkit-box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
+    box-shadow:0px -6px 0px #999999,0 -7px 3px rgba(0,0,0,0.5);
+    -webkit-transition:margin-left 1s ease-out;
+    -moz-transition:margin-left 1s ease-out;
+    -o-transition:margin-left 1s ease-out;
+    transition:margin-left 1s ease-out;
+}
+
+/*texte*/
+#article27 #demoWrap #textes .container {
+    width:1164px;
+    float:left;
+    padding-top:30px;
+    text-align:center;
+    font-size:1.2em;
+    color:#999999;
+}
+
+li.leftMenuList {
+    position: relative;
+    height: 40px;
+    margin: 0;
+}
+
+li.leftMenuList:first-child {
+    margin-top: 11px;
+}
+
+li.leftMenuList a {
+    height: 22px;
+}
+
+li.leftMenuList button {
+    display: inline-block;
+    top: 6px;
+    right: -40px;
+    min-width: inherit;
+    z-index: 555;
+    position: absolute;
+    -webkit-transition: right 1s; /* For Safari 3.1 to 6.0 */
+    transition: right 1s;
+}
+
+.wrapUl {
+    margin-left: 0px;
+}
