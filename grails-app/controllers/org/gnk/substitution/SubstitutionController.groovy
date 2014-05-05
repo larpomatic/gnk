@@ -14,6 +14,7 @@ class SubstitutionController {
     def index() {
         InputHandler inputHandler = new InputHandler()
         final gnIdStr = params.gnId
+
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
@@ -123,6 +124,7 @@ class SubstitutionController {
 
             // Go to publication
             redirect(controller: "publication", action: "publication", params: [gnId: gnDbId])
+
         }
     }
 }
