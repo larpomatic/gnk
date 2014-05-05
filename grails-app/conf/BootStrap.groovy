@@ -55,77 +55,77 @@ class BootStrap {
         User user7 = User.findByUsername("mehdibest91@gmail.com")
 
         if (!user7){
-            user = new  User()
-            user.username = "mehdibest91@gmail.com"
-            user.firstname = "Mehdi"
-            user.lastname = "Baless"
-            user.password = "mehdi"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user7 = new  User()
+            user7.username = "mehdibest91@gmail.com"
+            user7.firstname = "Mehdi"
+            user7.lastname = "Baless"
+            user7.password = "mehdi"
+            user7.enabled = true
+            user7.gright = 2097151
+            user7.countConnexion = 0
+            user7.lastConnexion = new Date()
+            user7.save(failOnError: true)
         }
         if (!user6){
-            user = new  User()
-            user.username = "alex-belingard@live.fr"
-            user.firstname = "Alexandre"
-            user.lastname = "Belingard"
-            user.password = "test"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user6 = new  User()
+            user6.username = "alex-belingard@live.fr"
+            user6.firstname = "Alexandre"
+            user6.lastname = "Belingard"
+            user6.password = "test"
+            user6.enabled = true
+            user6.gright = 2097151
+            user6.countConnexion = 0
+            user6.lastConnexion = new Date()
+            user6.save(failOnError: true)
         }
         if (!user5){
-            user = new  User()
-            user.username = "pico.2607@gmail.com"
-            user.firstname = "Pierre"
-            user.lastname = "Coppee"
-            user.password = "gnk"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user5 = new  User()
+            user5.username = "pico.2607@gmail.com"
+            user5.firstname = "Pierre"
+            user5.lastname = "Coppee"
+            user5.password = "gnk"
+            user5.enabled = true
+            user5.gright = 2097151
+            user5.countConnexion = 0
+            user5.lastConnexion = new Date()
+            user5.save(failOnError: true)
         }
 
         if (!user4){
-            user = new  User()
-            user.username = "jacnic@epita.fr"
-            user.firstname = "Nicolas"
-            user.lastname = "Jaccoud"
-            user.password = "jacnic"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user4 = new  User()
+            user4.username = "jacnic@epita.fr"
+            user4.firstname = "Nicolas"
+            user4.lastname = "Jaccoud"
+            user4.password = "jacnic"
+            user4.enabled = true
+            user4.gright = 2097151
+            user4.countConnexion = 0
+            user4.lastConnexion = new Date()
+            user4.save(failOnError: true)
         }
         if (!user3){
-            user = new  User()
-            user.username = "v@v.fr"
-            user.firstname = "Vincent"
-            user.lastname = "Larroque"
-            user.password = "lol"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user3 = new  User()
+            user3.username = "v@v.fr"
+            user3.firstname = "Vincent"
+            user3.lastname = "Larroque"
+            user3.password = "lol"
+            user3.enabled = true
+            user3.gright = 2097151
+            user3.countConnexion = 0
+            user3.lastConnexion = new Date()
+            user3.save(failOnError: true)
         }
         if (!user2){
-            user = new  User()
-            user.username = "said.essaki@gmail.com"
-            user.firstname = "Said"
-            user.lastname = "Essaki"
-            user.password = "root"
-            user.enabled = true
-            user.gright = 1
-            user.countConnexion = 0
-            user.lastConnexion = new Date()
-            user.save(failOnError: true)
+            user2 = new  User()
+            user2.username = "said.essaki@gmail.com"
+            user2.firstname = "Said"
+            user2.lastname = "Essaki"
+            user2.password = "root"
+            user2.enabled = true
+            user2.gright = 2097151
+            user2.countConnexion = 0
+            user2.lastConnexion = new Date()
+            user2.save(failOnError: true)
         }
 
         if (!user) {
