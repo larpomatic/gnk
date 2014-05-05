@@ -6,13 +6,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.firefox.FirefoxDriver
-import org.openqa.selenium.support.ui.Select
-
-import java.sql.Time
-import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by pico on 16/04/2014.
@@ -54,14 +48,6 @@ class createGnTests {
             print lwe.get(i)
             lwe.get(i).click()
         }
-    }
-
-    void checkRandomDropdownlist(String id) {
-        WebElement we = driver.findElement(By.id(id))
-        List<WebElement> options = driver.findElement(By.cssSelector("[type='checkbox']"))
-        Random r = new Random()
-        int count = r.nextInt()
-        options.get(count).click()
     }
 
     void testGnCreation() {
