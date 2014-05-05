@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.selectintrigue.Plot
 
 class GenericResource {
 
@@ -12,6 +13,12 @@ class GenericResource {
 
 	String code
 	String comment
+
+    // Ingame Clue :
+    String title
+    String description
+
+ static belongsTo = [plot: Plot]
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]
@@ -25,14 +32,62 @@ class GenericResource {
 	static hasMany = [ extTags: GenericResourceHasTag,
 	                   roleHasEventHasRessources: RoleHasEventHasGenericResource]
 
-	static constraints = {
-		code (blank: false, maxSize: 45, unique: true)
-		comment (nullable: true)
-	}
+    static constraints(def it = null) {
+        title(maxSize: 75)
+        code(blank: false, maxSize: 45, unique: true)
+        comment(nullable: true)
+        title(nullable: true)
+        descritpion(nullable: true)
+    }
 
     static mapping = {
         comment type: 'text'
+        description type: 'text'
         id type:'integer'
         version type: 'integer'
     }
+
+    boolean isIngameClue()
+    {
+        return ((this.title != null) || (this.description != null))
+    }
 }
+
+
+/*
+GenericRessourceHasIngameClue.groovy :
+
+
+package org.gnk.resplacetime
+
+class GenericResourceHasIngameClue {
+
+    Integer id
+    Integer version
+
+    Date lastUpdated
+	Date dateCreated
+    String title
+	String description
+
+	static belongsTo = [ genericResource: GenericResource ]
+
+    static constraints = {
+        title (maxSize: 75)
+//        description (nullable: true)
+    }
+
+    static mapping = {
+        description type: 'text'
+        id type:'integer'
+        version type: 'integer'
+    }
+
+    GenericResourceHasIngameClue(GenericResource genericResource, String title, String description) {
+        this.genericResource = genericResource
+        this.title = title
+        this.description = description
+    }
+}
+
+ */

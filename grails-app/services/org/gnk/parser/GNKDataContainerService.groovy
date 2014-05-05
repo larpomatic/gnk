@@ -32,7 +32,7 @@ class GNKDataContainerService {
     Map<Integer, Name> nameMap
     Map<Integer, GenericResource> genericResourceMap
     Map<Integer, GenericPlace> genericPlaceMap
-    Map<Integer, GenericTextualClue> genericTextualClueMap
+//    Map<Integer, GenericTextualClue> genericTextualClueMap
     Gn gn
 
     /* Exposed Methods */
@@ -73,7 +73,7 @@ class GNKDataContainerService {
         Node GN_DATA = GNK.GN_DATA[0]
         genericResourceMap = new HashMap<>()
         genericPlaceMap = new HashMap<>()
-        genericTextualClueMap = new HashMap<>()
+//        genericTextualClueMap = new HashMap<>()
 
         // PLACES reader
         readPlaces(GN_DATA)

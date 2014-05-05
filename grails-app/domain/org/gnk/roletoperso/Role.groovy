@@ -1,7 +1,6 @@
 package org.gnk.roletoperso
 
 import groovy.sql.Sql
-import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
@@ -24,10 +23,7 @@ class Role implements Comparable {
 
     Integer DTDId;
 
-    static hasMany = [genericTextualCluesForFromRoleId: GenericTextualClue,
-            genericTextualCluesForPossededByRoleId: GenericTextualClue,
-            genericTextualCluesForToRoleId: GenericTextualClue,
-            roleHasEvents: RoleHasEvent,
+    static hasMany = [roleHasEvents: RoleHasEvent,
             roleHasPastscenes: RoleHasPastscene,
             roleHasRelationWithRolesForRole1Id: RoleHasRelationWithRole,
             roleHasRelationWithRolesForRole2Id: RoleHasRelationWithRole,
