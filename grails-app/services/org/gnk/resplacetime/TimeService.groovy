@@ -12,6 +12,9 @@ class TimeService {
         if (pastscene.relativeDateValue && pastscene.relativeDateUnit) {
             // Instantiates the calendar.
             Calendar calendar = Calendar.getInstance()
+
+            // Computes the date of the event beginning
+
             Integer deltaTime = - pastscene.relativeDateValue
             SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm")
 
@@ -47,6 +50,7 @@ class TimeService {
                 calendar.add(Calendar.YEAR, deltaTime * 100)
 
             // The computed date is transformed in string format
+            calendar.add(Calendar.MINUTE, 5 - calendar.get(Calendar.MINUTE) % 5)
             Date relativeDate = calendar.getTime()
             String relativeDateString = format.format(relativeDate)
 
@@ -71,17 +75,19 @@ class TimeService {
         // Instantiates the calendar.
         Calendar calendar = Calendar.getInstance()
         calendar.setTime(gnBeginDate)
+        int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
 
         // Computes the date of the event beginning
-        Float deltaTime = (gnDuration * event.timing / 100) * 60
-		calendar.add(Calendar.MINUTE, Math.round(deltaTime))
+        Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
+        //println("MIN " + Math.round(deltaTime))
+		calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
 		Date beginDate = calendar.getTime()
 
         // The computed date is transformed in string format
         Date absoluteDate = calendar.getTime()
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm")
         String absoluteDateString = format.format(absoluteDate)
-
+        //println("date " + absoluteDateString)
         // Sets Event absolute date in Event object
         if (!event.absoluteYear)
             event.absoluteYear = absoluteDateString.substring(0, 4).toInteger()
