@@ -51,7 +51,14 @@ class PublicationController {
         gnk.ReadDTD(getGn.dtd)
         gn = gnk.gn
 
-        File output = new File("${request.getSession().getServletContext().getRealPath("/")}word/${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if( !folder.exists() ) {
+            folder.mkdirs()
+        }
+
+        File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
+
         WordprocessingMLPackage word = createPublication()
         word.save(output)
 
@@ -221,7 +228,7 @@ class PublicationController {
                     else
                         wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
                 else
-                    wordWriter.addTableCell(tableRowRes, e. "[Lieu générique]")
+                    wordWriter.addTableCell(tableRowRes, "[Lieu générique]")
 
                 substituteEvent(p, e)
                 wordWriter.addTableCell(tableRowRes, e.description)
@@ -404,7 +411,7 @@ class PublicationController {
         {
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
-            wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles().toString())
+            wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             StringBuilder tags = new StringBuilder()
             boolean first = true
@@ -503,20 +510,31 @@ class PublicationController {
                 }
 
                 String characterName = ""
-                gn.characterSet.each { character ->
-                    character.selectedRoles.each { role ->
-                        if (role.DTDId == r.DTDId)
-                            characterName = character.firstname + " " + character.lastname
+                if (r.isTPJ() == false) {
+                    gn.characterSet.each { character ->
+                        character.selectedRoles.each { role ->
+                            if (role.DTDId == r.DTDId) {
+                                if (characterName == "")
+                                    characterName += character.firstname + " " + character.lastname
+                                else
+                                    characterName += ", " + character.firstname + " " + character.lastname
+                            }
+                        }
+                    }
+
+                    gn.nonPlayerCharSet.each { character ->
+                        character.selectedRoles.each { role ->
+                            if (role.DTDId == r.DTDId) {
+                                if (characterName == "")
+                                    characterName += character.firstname + " " + character.lastname
+                                else
+                                    characterName += ", " + character.firstname + " " + character.lastname
+                            }
+                        }
                     }
                 }
-
-                gn.nonPlayerCharSet.each { character ->
-                    character.selectedRoles.each { role ->
-                        if (role.DTDId == r.DTDId)
-                            characterName = character.firstname + " " + character.lastname
-                    }
-                }
-
+                else
+                    characterName = "Tous les personnages joués"
                 if (characterName.equals(""))
                     print "Erreur : nom du personnage non trouvé"
                 wordWriter.addTableCell(tableRowPlot, characterName)

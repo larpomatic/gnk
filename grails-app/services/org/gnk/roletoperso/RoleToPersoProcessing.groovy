@@ -6,6 +6,7 @@ import org.gnk.gn.Gn;
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
+import org.gnk.tag.TagService;
 
 import java.util.*;
 
@@ -20,6 +21,8 @@ public class RoleToPersoProcessing {
     private Gn gn;
     private OrderedRoleSet gnRoleSetToProcess;
     private Set<Role> gnNPCRoleSet;
+    public Set<Role> gnTPJRoleSet;
+    public Set<Role> gnPJGRoleSet;
     private Map<Role, String> unAttribuedRoleWithSettedSex;
 
 
@@ -42,7 +45,11 @@ public class RoleToPersoProcessing {
         LOG.info("\t<Algo>");
         initRoles();
         initCharacters();
+        // add rôle TOUS
+        addTPJ();
         associateRolesToCharacters();
+        // add rôle OTHER
+        addPJG();
         LOG.info("\t</Algo>");
 
     }
@@ -214,11 +221,11 @@ public class RoleToPersoProcessing {
     }
 
     private boolean tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == 100;
+        return valuedTag.getValue() == TagService.LOCKED;
     }
 
     private boolean tagIsBanned(Map.Entry<Tag, Integer> valuedTag) {
-        return valuedTag.getValue() == -100;
+        return valuedTag.getValue() == TagService.BANNED;
     }
 
     private int getRankTag(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
@@ -280,7 +287,7 @@ public class RoleToPersoProcessing {
                 challengerTagList.put(rolehasTag.getterTag(), rolehasTag.getterWeight());
             }
         }
-        rankTag = getRankTag(character.getTags(), challengerTagList, characterLockedBannedTags);
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
@@ -288,7 +295,7 @@ public class RoleToPersoProcessing {
             if (!character.isNeutralGender() && challengerTag.getKey().getName().equals("Femme")) {
                 final int rankForSex = challengerTag.getValue() * (100 * (character.isWomen() ? 1 : -1)) * 100;
                 rankTag += rankForSex;
-                if (rankForSex == -100 * 100 * 100) {
+                if (rankForSex == -100 * 100 * TagService.LOCKED) {
                     LOG.debug(new StringBuilder("Role ").append(role.getterCode()).append(" has been banned form P")
                             .append(character.getDTDId().toString()).append(" because of sex of the character ").toString());
                     return Integer.MIN_VALUE;
@@ -297,7 +304,7 @@ public class RoleToPersoProcessing {
             if (!character.isNeutralGender() && challengerTag.getKey().getName().equals("Homme")) {
                 final int rankForSex = challengerTag.getValue() * (100 * (character.isMen() ? 1 : -1)) * 100;
                 rankTag += rankForSex;
-                if (rankForSex == -100 * 100 * 100) {
+                if (rankForSex == -100 * 100 * TagService.LOCKED) {
                     LOG.debug(new StringBuilder("Role ").append(role.getterCode()).append(" has been banned form P")
                             .append(character.getDTDId().toString()).append(" because of sex of the character ").toString());
                     return Integer.MIN_VALUE;
@@ -441,6 +448,8 @@ public class RoleToPersoProcessing {
         LOG.info("\t\t<Roles initialisation>");
         gnRoleSetToProcess = new OrderedRoleSet();
         gnNPCRoleSet = new HashSet<Role>();
+        gnTPJRoleSet = new HashSet<Role>();
+        gnPJGRoleSet = new HashSet<Role>();
 
         assert (gn != null);
         if (gn == null) {
@@ -465,7 +474,14 @@ public class RoleToPersoProcessing {
                 if (role.isPJ()) {
                     roles.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
+                } else if (role.isTPJ()) {
+                    gnTPJRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is TPJ and not added to role set to process");
+                } else if (role.isPJG()) {
+                    gnPJGRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
                 } else {
+
                     gnNPCRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PNJ and not added to role set to process");
                 }
@@ -553,6 +569,31 @@ public class RoleToPersoProcessing {
             LOG.info("\t\t\t</Sexualization of character if implied by locked roles>");
         }
         LOG.info("\t\t</Characters initialisation>");
+    }
+
+    /*
+        Function to add all roles TPJ to all characters of the plot
+     */
+    private void addTPJ () {
+        for (Role role : gnTPJRoleSet) {
+            for (Character character : gn.getCharacterSet()) {
+                character.addRole(role);
+            }
+        }
+    }
+
+    /*
+        Function to add all roles PJG to all characters of the plot
+     */
+    private void addPJG () {
+        for (Role role : gnPJGRoleSet) {
+            for (Character character : gn.getCharacterSet()) {
+                if (character.getPlotSet().contains(role.getPlot()))
+                    continue;
+                else
+                    character.addRole(role);
+            }
+        }
     }
 
     private class OrderedRoleSet extends TreeSet<Role> {

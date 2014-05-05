@@ -1,7 +1,10 @@
 package org.gnk.roletoperso
 
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot;
-import org.gnk.tag.Tag;
+import org.gnk.tag.Tag
+import org.gnk.tag.TagService;
 import org.gnk.user.User;
 
 class RoleController {
@@ -10,13 +13,59 @@ class RoleController {
 	}
 
 	def save () {
-		saveOrUpdate(new Role(params), true)
+        Role role = new Role(params);
+        Boolean res = saveOrUpdate(role, true);
+        role = Role.findAllWhere("code": role.getCode()).first();
+        def roleTagList = new TagService().getRoleTagQuery();
+        def jsonTagList = buildTagList(roleTagList);
+        def jsonRole = buildJson(role, roleTagList);
+        final JSONObject object = new JSONObject();
+        object.put("iscreate", res);
+        object.put("role", jsonRole);
+        object.put("roleTagList", jsonTagList);
+        render(contentType: "application/json") {
+            object
+        }
 	}
+
+    def buildTagList(def roleTagList) {
+        JSONArray jsonTagList = new JSONArray();
+        for (roleTag in roleTagList) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", roleTag.getId());
+            jsonTag.put("name", roleTag.getName());
+            jsonTagList.add(jsonTag);
+        }
+        return jsonTagList;
+    }
+
+    def buildJson(Role role, roleTagList) {
+        JSONObject jsonRole = new JSONObject();
+        jsonRole.put("code", role.getCode());
+        jsonRole.put("id", role.getId());
+        jsonRole.put("plotId", role.getPlot().getId());
+        jsonRole.put("pipi", role.getPipi());
+        jsonRole.put("pipr", role.getPipr());
+        jsonRole.put("type", role.getType());
+        jsonRole.put("description", role.getDescription());
+        JSONArray jsonTagList = new JSONArray();
+        for (Tag roleTag in roleTagList) {
+            if (role.hasRoleTag(roleTag)) {
+//                JSONObject jsonTag = new JSONObject();
+//                jsonTag.put("tag", roleTag.getId());
+                jsonTagList.add(roleTag.getId());
+            }
+        }
+        jsonRole.put("tagList", jsonTagList);
+        return jsonRole;
+    }
 
 	def update(Long id) {
 		Role role = Role.get(id)
 		if (role) {
-			saveOrUpdate(role, false)
+            render(contentType: "application/json") {
+                object(isupdate: saveOrUpdate(role, false))
+            }
 		}
 	}
 
@@ -24,7 +73,6 @@ class RoleController {
 		if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
-			
 		} else {
 			return false
 		}
@@ -65,7 +113,7 @@ class RoleController {
 				RoleHasTag roleHasTag = new RoleHasTag()
 				Tag roleTag = Tag.get((it.key - "roleTags_") as Integer);
 				roleHasTag.tag = roleTag
-				roleHasTag.weight = 100
+				roleHasTag.weight = TagService.LOCKED
 				roleHasTag.role = newRole
 				newRole.roleHasTags.add(roleHasTag)
 			}
@@ -74,7 +122,8 @@ class RoleController {
 			params.updateRoleResult = newRole.myInsert();
 		else
 			params.updateRoleResult = !!(newRole.save(flush: true))
-		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+        return true;
 	}
 
 	def deleteRoleHasRoleTag (Role role) {
@@ -95,11 +144,16 @@ class RoleController {
 
 	def delete (Long id) {
 		Role role = Role.get(id)
-		if (role) {
-			//deleteRoleHasRoleTag(role)
+        boolean isDelete = false;
+        if (role) {
+            //deleteRoleHasRoleTag(role)
 
-			role.delete(flush: true)
-		}
-		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+            role.delete(flush: true)
+            isDelete = true;
+        }
+        render(contentType: "application/json") {
+            object(isdelete: isDelete)
+        }
+//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
 	}
 }

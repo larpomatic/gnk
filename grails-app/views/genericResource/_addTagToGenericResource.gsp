@@ -26,9 +26,9 @@
 				
 				<div class="span6">
 					Poids (%) :
-					<input class="span1" id="weight_select" name="weight" value="100" min=-100 max=100 type="number">
+					<input class="span1" id="weight_select" name="weight" value="100" min=-101 max=101 type="number">
 					<div></div>
-					Valeur entre -100% (incompatibilité absolue) et 100% (l'un découle de l'autre) 
+					Valeur entre -101% (incompatibilité absolue) et 101% (l'un découle de l'autre)
 				</div>
    			</div>
   			<g:actionSubmit class="btn btn-primary" action="addTagToResource" value="${message(code: 'default.add')}" />

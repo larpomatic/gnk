@@ -26,11 +26,11 @@ class TagRelation {
     }
 
     public boolean isLocked() {
-        return weight == 100;
+        return weight == TagService.LOCKED;
     }
 
     public boolean isBanned() {
-        return weight == -100;
+        return weight == TagService.BANNED;
     }
 
 }

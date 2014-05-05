@@ -151,7 +151,7 @@ class RoleXMLReaderService {
         if (ROLE.attribute("pipi") != "null" && (ROLE.attribute("pipi") as String).isInteger())
             roleRes.pipi = ROLE.attribute("pipi") as Integer
 
-        if (ROLE.attribute("code") != "null")
+        if (ROLE.attribute("type") != "null")
             roleRes.type = ROLE.attribute("type")
 
         return roleRes

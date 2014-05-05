@@ -88,13 +88,22 @@ class Plot {
 		return 0;
 	}
 	
-	public int getSumPipRoles(){
+	public int getSumPipRoles(int nbPlayer){
+        int count = 0;
+        int nbPJG_PIP = 0;
 		if (!sumPipRolesBuffer){
 			sumPipRolesBuffer = 0;
 			for(Role role : getRoles()) {
-                if (role.isPJ())
-				    sumPipRolesBuffer += role.getPipi() + role.getPipr();
+                if (role.isPJ()) {
+                    sumPipRolesBuffer += role.getPipi() + role.getPipr();
+                    count++
+                }
+                if (role.isTPJ())
+                    sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
+                if (role.isPJG())
+                    nbPJG_PIP = role.getPipr() + role.getPipi();
 			}
+            sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
 		}
 		return sumPipRolesBuffer;
 	}

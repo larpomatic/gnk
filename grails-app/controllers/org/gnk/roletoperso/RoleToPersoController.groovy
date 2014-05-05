@@ -1,5 +1,6 @@
 package org.gnk.roletoperso
 
+import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
@@ -32,6 +33,11 @@ class RoleToPersoController {
         if (gn == null) {
             redirect(action: "list", params: params)
         }
+
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.setSelectedEvenemential(evenementialPlot);
+
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
         for (Character character1 : gn.getterCharacterSet()) {
@@ -122,7 +128,8 @@ class RoleToPersoController {
         for (Character c : gn.characterSet) {
             characterListToDropDownLock.add(c.DTDId);
         }
-        [gnInstance: gn, characterList: gn.characterSet, characterListToDropDownLock: characterListToDropDownLock]
+
+        [gnInstance: gn, characterList: gn.characterSet, allList: algo.gnTPJRoleSet, characterListToDropDownLock: characterListToDropDownLock]
     }
 
     def management(Long id) {

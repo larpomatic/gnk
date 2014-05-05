@@ -94,3 +94,24 @@ p:first-letter {
     box-shadow: 0 0 10px rgba(0,0,0,.5);
     border-radius: 2px;
 }
+
+.notificationBox {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    border: solid;
+    margin-right:-250px;
+    width: 500px;
+    right: 50%;
+    margin-top: 15px;
+}
+
+.notificationBox p:first-letter {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    float: inherit;
+    vertical-align: inherit;
+    padding-right: inherit;
+    font-weight: inherit;
+}

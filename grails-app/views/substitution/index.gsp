@@ -18,14 +18,14 @@
     <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publicationCSV')}" method="POST">
         <input type="hidden" value="${gnInfo.dbId}" name="gnId"/>
         <input type="hidden" value="personnage" name="csvType" />
-        <button id="" class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER PERSONNAGE.CSV</button>
+        <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER PERSONNAGE.CSV</button>
     </form>
     </div>
     <div class="span3">
     <form id="exportJoueurCSVSubButton" action="${g.createLink(controller:'publication', action:'publicationCSV')}" method="POST">
         <input type="hidden" value="${gnInfo.dbId}" name="gnId"/>
         <input type="hidden" value="joueur" name="csvType" />
-        <button id="" class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER JOUEUR.CSV</button>
+        <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER JOUEUR.CSV</button>
     </form>
     </div>
 </div>

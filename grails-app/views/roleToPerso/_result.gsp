@@ -76,7 +76,7 @@
         </tr>
         </thead>
         <tbody>
-        <g:each in="${((Character) character).selectedRoles}" status="roleIter" var="role">
+        <g:each in="${((Character) character).specificRoles}" status="roleIter" var="role">
             <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
 
                 <td>
@@ -110,6 +110,42 @@
                 </td>
             </tr>
         </g:each>
+        <!-- Start NJA Work Step0 -->
+        <g:each in="${((Character) character).getSelectedPJG()}" status="roleIter" var="role">
+            <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'} warning">
+
+                <td>
+                    <a href="#"
+                       title="${((Role) role).description}">${((Role) role).code}</a>
+                </td>
+                <td><g:link controller="redactIntrigue" action="edit"
+                            id="${((Role) role).plot?.id}" target="_blank">
+                    ${((Role) role).plot?.name}
+                </g:link></td>
+                <g:if test="${((Character) character).roleIsLocked(((Role) role))}">
+                    <g:set var="selectedRadioButtonLock" value="${1}"/>
+                </g:if>
+                <g:else>
+                    <g:set var="selectedRadioButtonLock" value="${3}"/>
+                </g:else>
+                <g:radioGroup
+                        name="role_status_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                        values="[1, 2, 3]"
+                        value="${selectedRadioButtonLock}">
+                    <td align="center">
+                        ${it.radio}
+                    </td>
+                </g:radioGroup>
+                <td align="center">
+                    <g:select style="width: 140px"
+                              name="lock_on_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                              id="lock_on_${((Character) character).DTDId}_${((Plot) ((Role) role).plot).DTDId}_${((Role) role).DTDId}"
+                              from="${characterListToDropDownLock}"
+                              keys="${characterListToDropDownLock}"/>
+                </td>
+            </tr>
+        </g:each>
+        <!-- End NJA Work Step0 -->
         </tbody>
     </table>
 </div>
@@ -288,23 +324,81 @@
     </div>
 </g:if>
 </g:each>
-<g:if test="${false}">
-<div class="row-fluid">
-    <div class="span12" id="Relations">
-        <div class="panel panel-default">
-            <div class="panel-heading" style="margin-top: 20px">
-                <g:message code="roletoperso.allRelationsSummary"
-                           default="All relations between characters summary"/>
+<g:if test="${true}">
+    <div class="row-fluid">
+        <div class="span12" id="Relations">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="margin-top: 20px">
+                    <g:message code="roletoperso.allRelationsSummary"
+                               default="All relations between characters summary"/>
+                </div>
+
+                <div style="overflow: auto; height:500px;">
+
+                    <g:render template="relationSummary"
+                              model="['gnInstance': gnInstance, 'characterList': characterList]"></g:render>
+                </div>
             </div>
+        </div>
+    </div>
+</g:if>
 
-            <div style="overflow: auto; height:500px;">
+<g:if test="${characterList.size() % 2 == 0}">
+    <div class="row-fluid">
+</g:if>
+<div class="span6">
+    <br/>
+    <div class="panel panel-default">
+        <div class="accordion" id="accordionAll">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse"
+                       data-parent="#accordionAll"
+                       href="#collapseAll">
+                        Rôles communs à tous les personnages
+                    </a>
+                </div>
 
-                <g:render template="relationSummary" model="['gnInstance':gnInstance, 'characterList':characterList]"></g:render>
+                <div id="collapseAll" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div style="overflow: auto; max-height:150px;">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th><g:message code="roletoperso.roleCode"
+                                                   default="Role code"/></th>
+                                    <th><g:message code="selectintrigue.plotName"
+                                                   default="Plot name"/></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <g:each in="${allList}" var="allrole">
+                                    <tr>
+                                        <td>
+                                            <a href="#"
+                                               title="${((Role) allrole).description}">${((Role) allrole).code}</a>
+                                        </td>
+                                        <td>
+                                            <g:link controller="redactIntrigue" action="edit"
+                                                    id="${((Role) allrole).plot?.id}" target="_blank">
+                                                ${((Role) allrole).plot?.name}
+                                            </g:link>
+                                        </td>
+                                    </tr>
+                                </g:each>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-                </g:if>
+<g:if test="${characterList.size() % 2 == 0}">
+    </div>
+</g:if>
+<br/>
 </div>
 
 
