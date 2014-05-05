@@ -167,7 +167,8 @@ class Role implements Comparable {
     }
 
     public boolean isPJ() {
-        return (type != null && type.toUpperCase().equals("PJ"))
+        return (type != null &&
+                (type.toUpperCase().equals("PJ") || type.toUpperCase().equals("TPJ") || type.toUpperCase().equals("PJG")));
     }
 
     // Check if the role is Tout Personnage Joueur (cf balise TOUS)
