@@ -153,9 +153,17 @@ class SelectIntrigueControllerTests {
         res.universList == universList
     }
 
-    void "test formatParams"() {
+    void "test plot is compatible"() {
 
-        
+        given:
+        Plot plot = new Plot()
+
+
+        when:
+        def res = new SelectIntrigueProcessing().plotIsCompatible()
+
+        then:
+        res == false
     }
 
 //    void "test plotIsCompatible"() {
