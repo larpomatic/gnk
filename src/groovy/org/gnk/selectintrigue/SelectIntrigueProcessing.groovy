@@ -96,10 +96,10 @@ public class SelectIntrigueProcessing {
 				entry.setValue(0);
 			}
 			for (Plot plot : _selectedPlotList) {
-				_currentPip += plot.getSumPipRoles();
+				_currentPip += plot.getSumPipRoles(_gn.getNbPlayers());
 				for (Entry<Tag, Integer> entry : _value.entrySet()) {
 					if (plot.hasPlotTag(entry.getKey())) {
-						entry.setValue(entry.getValue() + plot.getSumPipRoles() * plot.getTagWeight(entry.getKey()));
+						entry.setValue(entry.getValue() + plot.getSumPipRoles(_gn.getNbPlayers()) * plot.getTagWeight(entry.getKey()));
 					}
 				}
 			}
@@ -145,6 +145,8 @@ public class SelectIntrigueProcessing {
 
 	public boolean plotIsCompatible(Plot plot) {
 		// FIXME handle isPublic
+        // Var for TPJ roles PIP
+        int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
 		if (!(plot.hasUnivers(_gn.getUnivers())) && !(plot.isUniversGeneric())) {
@@ -174,14 +176,17 @@ public class SelectIntrigueProcessing {
         assert (roleSet != null);
         if (roleSet == null)
             return false;
+        // Need to include PJG HERE
         for (Role role : roleSet) {
-            if (role.isPJ())
+            if (role.isPJ() || role.isPJG())
                 roleList.add(role);
+            if (role.isTPJ())
+                nbTPS_PIP = role.getPipi() + role.getPipr();
         }
 		if (roleList.size() > _gn.getNbPlayers())
 			return false;
 		for (Role role : roleList) {
-			if ((role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
+			if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
 				return false;
 			}
 		}
@@ -245,7 +250,7 @@ public class SelectIntrigueProcessing {
 		}
 		evaluateGn(true);
 		for (Plot plot : _allPlotList) {
-            if ((plot.getSumPipRoles() <= (_maxPip - _currentPip))) {
+            if ((plot.getSumPipRoles(_gn.nbPlayers) <= (_maxPip - _currentPip))) {
                 Integer tmpValue = evaluateGnWithPlot(plot);
                 if (newValue == null || tmpValue > newValue) {
                     selectedPlot = plot;

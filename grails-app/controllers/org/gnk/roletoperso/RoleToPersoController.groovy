@@ -128,7 +128,8 @@ class RoleToPersoController {
         for (Character c : gn.characterSet) {
             characterListToDropDownLock.add(c.DTDId);
         }
-        [gnInstance: gn, characterList: gn.characterSet, characterListToDropDownLock: characterListToDropDownLock]
+
+        [gnInstance: gn, characterList: gn.characterSet, allList: algo.gnTPJRoleSet, characterListToDropDownLock: characterListToDropDownLock]
     }
 
     def management(Long id) {
