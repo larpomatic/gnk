@@ -328,4 +328,61 @@ class Character {
         return ""
     }
 
+    public int getCharacterAproximateAge() {
+        int sum = 0;
+        int number = 0;
+        println("name === " +firstname + " " + getDTDId());
+        tags.each { tag ->
+            if (tag.key.tagFamily.id == 3) { // Age
+                number += 1
+                sum += getAgeForTagAge(tag.key, tag.value)
+            }
+        }
+        for (Role role : selectedRoles) {
+            for (RoleHasRelationWithRole roleHasRelation : role.getRoleHasRelationWithRolesForRole1Id()) {
+                roleHasRelation.getterRole2().DTDId
+            }
+        }
+
+        getRelationsExceptBijectives().each { related ->
+            related.key.getterRole1().DTDId
+            related.key.getterRole2().DTDId
+            println(firstname + " -> (" +related.key.getterRole1().DTDId+ "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
+        }
+        if (number == 0) {
+            return 40
+        } else {
+            return sum / number
+        }
+    }
+
+    public static int getAgeForTagAge(Tag t, int value) {
+        int age = 0
+
+        if (t.tagFamily.id == 3) { // Âge
+            int fixAge = 0
+            if (t.id == 34) { //Vieux 80
+                fixAge = 80
+            } else if (t.id == 33) { //Âge mur 50
+                fixAge = 50
+            } else if (t.id == 32) { //Jeune adulte 30
+                fixAge = 30
+            } else if (t.name == 31) { // Très jeune 15
+                fixAge = 15
+            }
+            age = (fixAge * value) + (fixAge * 100) // Donne une valeur entre 0 et age * 200
+
+            if (t.getterName() == 34) { // 80
+                age = 100 * age / (fixAge * 200)
+            } else if (t.getterName() == 33) { // 50
+                age = 100 * age / (fixAge * 200)//(30 * age / (fixAge * 200)) + 40
+            } else if (t.getterName() == 32) { // 30
+                age = 30//(30 * age / (fixAge * 200)) + 20
+            } else if (t.getterName() == 31) { // 15
+                age = 100 * age / (fixAge * 200)
+                age = (100 - age)
+            }
+        }
+        return age
+    }
 }
