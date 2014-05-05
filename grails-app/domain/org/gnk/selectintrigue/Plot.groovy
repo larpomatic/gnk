@@ -12,8 +12,8 @@ class Plot {
     Integer id
     Integer version
 
-	Date lastUpdated
-	Date dateCreated
+    Date lastUpdated
+    Date dateCreated
     private static List<Tag> tagList
     public static List getTagList() {
         tagList = new ArrayList<Tag>()
@@ -27,38 +27,38 @@ class Plot {
     }
 
 
-	String name
-  //  float plotVersion
+    String name
+    //  float plotVersion
 
-	Boolean isEvenemential
-	Boolean isMainstream
-	Boolean isPublic
-	Boolean isDraft
-	Date creationDate
-	Date updatedDate
-	String description
-	User user
+    Boolean isEvenemential
+    Boolean isMainstream
+    Boolean isPublic
+    Boolean isDraft
+    Date creationDate
+    Date updatedDate
+    String description
+    User user
 
-	static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId"]
+    static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId"]
 
-	Integer sumPipRolesBuffer;
+    Integer sumPipRolesBuffer;
     Integer DTDId;
 
-	static hasMany = [ events: Event,
-                       extTags: PlotHasTag,
-                       plotHasUniverses: PlotHasUnivers,
-                       roles: Role,
-                       pastescenes: Pastscene]
+    static hasMany = [ events: Event,
+            extTags: PlotHasTag,
+            plotHasUniverses: PlotHasUnivers,
+            roles: Role,
+            pastescenes: Pastscene]
 
-	static belongsTo = User
+    static belongsTo = User
 
-	static constraints = {
+    static constraints = {
         name maxSize: 45
     }
-	
-	static mapping = {
+
+    static mapping = {
         autoTimestamp true
-		description type: 'text'
+        description type: 'text'
         id type:'integer'
         version type: 'integer'
         events cascade: 'all-delete-orphan'
@@ -66,7 +66,7 @@ class Plot {
         roles cascade: 'all-delete-orphan'
         extTags cascade: 'all-delete-orphan'
         pastescenes cascade: 'all-delete-orphan'
-	}
+    }
 
     public Set<Role> getterRoles (){
         return roles;
@@ -80,79 +80,70 @@ class Plot {
         role.plot = this
     }
 
-	public int getTagWeight (Tag plotTag){
-		for(PlotHasTag plotHasPlotTag : extTags) {
-			if (plotHasPlotTag.tag == plotTag)
-				return plotHasPlotTag.weight
-		}
-		return 0;
-	}
-	
-	public int getSumPipRoles(int nbPlayer){
-        int count = 0;
-        int nbPJG_PIP = 0;
-		if (!sumPipRolesBuffer){
-			sumPipRolesBuffer = 0;
-			for(Role role : getRoles()) {
-                if (role.isPJ()) {
+    public int getTagWeight (Tag plotTag){
+        for(PlotHasTag plotHasPlotTag : extTags) {
+            if (plotHasPlotTag.tag == plotTag)
+                return plotHasPlotTag.weight
+        }
+        return 0;
+    }
+
+    public int getSumPipRoles(){
+        if (!sumPipRolesBuffer){
+            sumPipRolesBuffer = 0;
+            for(Role role : getRoles()) {
+                if (role.isPJ())
                     sumPipRolesBuffer += role.getPipi() + role.getPipr();
-                    count++
-                }
-                if (role.isTPJ())
-                    sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
-                if (role.isPJG())
-                    nbPJG_PIP = role.getPipr() + role.getPipi();
-			}
-            sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
-		}
-		return sumPipRolesBuffer;
-	}
+            }
+        }
+        return sumPipRolesBuffer;
+    }
 
-	public boolean hasPlotTag(Tag parPlotTag) {
-		for (PlotHasTag plotHasPlotTag : extTags) {
-			if (plotHasPlotTag.tag == parPlotTag) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public boolean hasPlotTag(Tag parPlotTag) {
+        for (PlotHasTag plotHasPlotTag : extTags) {
+            if (plotHasPlotTag.tag == parPlotTag) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public boolean hasUnivers(Univers parUnivers) {
-		for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
-			if (plotHasUnivers.univers == parUnivers) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean isUniversGeneric() {
-		int i = 0;
-		for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
-			i++;
-		}
-		return i == 0;
-	}
-	
-	public int getNbMinMen () {
-		int number = 0;
-		for (Role role : getRoles()) {
-			if (role.isPJ() && role.isMen()) {
-				number++;
-			}
-		}
-		return number;
-	}
-	
-	public int getNbMinWomen () {
-		int number = 0;
-		for (Role role : getRoles()) {
-			if (role.isPJ() && role.isWomen()) {
-				number++;
-			}
-		}
-		return number;
-	}
+    public boolean hasUnivers(Univers parUnivers) {
+        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
+            if (plotHasUnivers.univers == parUnivers) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUniversGeneric() {
+        int i = 0;
+        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
+            i++;
+        }
+        return i == 0;
+    }
+
+    public int getNbMinMen () {
+        int number = 0;
+        for (Role role : getRoles()) {
+            if (role.isPJ() && role.isMen()) {
+                number++;
+            }
+        }
+        return number;
+    }
+
+    public int getNbMinWomen () {
+        int number = 0;
+        for (Role role : getRoles()) {
+            if (role.isPJ() && role.isWomen()) {
+                number++;
+            }
+        }
+        return number;
+    }
 
     Integer getterId() {
         return id;
