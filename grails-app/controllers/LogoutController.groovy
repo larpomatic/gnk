@@ -13,7 +13,6 @@ class LogoutController {
 	def index = {
 
 		// TODO put any pre-logout code here
-        print "logout"
         Cookie[] cookies = request.getCookies()
         Cookie cookie = cookies.find { it.name == "prcgn" }
 

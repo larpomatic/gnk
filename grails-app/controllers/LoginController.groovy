@@ -52,8 +52,6 @@ class LoginController {
             if (cookie){
                     String username = cookieService.cookieusern(cookie.getValue())
                     String password = cookieService.cookiepassword(cookie.getValue())
-                print password
-                print username
                     User user = User.findByUsername(username)
                     if(password != null && password.equals(user.password)){
                         session.setAttribute("user", user)
