@@ -23,6 +23,12 @@ class GenericResourceXMLReaderService {
         // TAGS reader
         ReadTagsNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
+        // TITLE (INGAME_CLUE) reader
+//        ReadTitleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        // DESCRIPTION (INGAME_CLUE) reader
+//        ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
         return genericResourceRes
     }
 /* !Exposed Methods */
@@ -48,6 +54,20 @@ class GenericResourceXMLReaderService {
         //  genericResourceRes.DTDId = GENERIC_RESOURCE.attribute("id") as Integer
 
         return genericResourceRes
+    }
+
+    private void ReadTitleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.TITLE.size() <= 1)
+        if (RESOURCE.TITLE.size() > 0) {
+            resourceRes.title=  RESOURCE.TITLE[0].text()
+        }
+    }
+
+    private void ReadDescriptionNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.DESCRIPTION.size() <= 1)
+        if (RESOURCE.DESCRIPTION.size() > 0) {
+            resourceRes.description=  RESOURCE.DESCRIPTION[0].text()
+        }
     }
 
     private void ReadTagsNode(Node GENERIC_RESOURCE, GenericResource genericResourceRes, GNKDataContainerService dataContainer) {

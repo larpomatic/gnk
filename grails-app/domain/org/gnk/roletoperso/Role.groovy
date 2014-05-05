@@ -1,7 +1,6 @@
 package org.gnk.roletoperso
 
 import groovy.sql.Sql
-import org.gnk.resplacetime.GenericTextualClue
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
@@ -24,10 +23,7 @@ class Role implements Comparable {
 
     Integer DTDId;
 
-    static hasMany = [genericTextualCluesForFromRoleId: GenericTextualClue,
-            genericTextualCluesForPossededByRoleId: GenericTextualClue,
-            genericTextualCluesForToRoleId: GenericTextualClue,
-            roleHasEvents: RoleHasEvent,
+    static hasMany = [roleHasEvents: RoleHasEvent,
             roleHasPastscenes: RoleHasPastscene,
             roleHasRelationWithRolesForRole1Id: RoleHasRelationWithRole,
             roleHasRelationWithRolesForRole2Id: RoleHasRelationWithRole,
@@ -43,7 +39,7 @@ class Role implements Comparable {
 
     static constraints = {
         code maxSize: 45
-        type maxSize: 3
+        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG"]
     }
 
     static mapping = {
@@ -167,7 +163,18 @@ class Role implements Comparable {
     }
 
     public boolean isPJ() {
-        return (type != null && type.toUpperCase().equals("PJ"))
+        return (type != null &&
+                (type.toUpperCase().equals("PJ") || type.toUpperCase().equals("TPJ") || type.toUpperCase().equals("PJG")));
+    }
+
+    // Check if the role is Tout Personnage Joueur (cf balise TOUS)
+    public boolean isTPJ() {
+        return (type != null && type.toUpperCase().equals("TPJ"))
+    }
+
+    // Check if the role is Personnage Joueur Générique (cf balise OTHER)
+    public boolean isPJG() {
+        return (type != null && type.toUpperCase().equals("PJG"))
     }
 
     public int getPIPTotal() {

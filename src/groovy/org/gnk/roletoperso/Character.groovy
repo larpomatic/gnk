@@ -19,7 +19,9 @@ class Character {
 
     private List<Role> lockedRoles = []
     private List<Role> selectedRoles = []
+    private List<Role> selectedPJG = []
     private List<Role> bannedRoles = []
+    private List<Role> specificRoles = []
 
     // Substitution
     List<Firstname> proposedFirstnames
@@ -52,7 +54,8 @@ class Character {
         }
         String formattedType = type.toUpperCase()
         assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))
-        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))) {
+        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")))
+        {
             this.type = "PHJ"
             return
         }
@@ -95,6 +98,18 @@ class Character {
         return selectedRoles
     }
 
+    public List<Role> getSelectedPJG() {
+        return selectedPJG;
+    }
+
+    public List<Role> getSpecificRoles() {
+        return specificRoles
+    }
+
+    public List<Role> getGenericRoles() {
+        return this.genericRoles
+    }
+
     public List<Role> getBannedRoles() {
         return bannedRoles
     }
@@ -105,8 +120,12 @@ class Character {
 
     public addRole(Role role) {
         bannedRoles.remove(role)
-        if (!selectedRoles.contains(role))
-            selectedRoles.add(role)
+            if (!selectedRoles.contains(role))
+                selectedRoles.add(role)
+            if ((role.isPJG()) && (!selectedPJG.contains(role)))
+                selectedPJG.add(role)
+            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role)))
+                specificRoles.add(role)
     }
 
     public lockRole(Role role) {

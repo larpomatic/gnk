@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
@@ -30,6 +31,10 @@ class Plot {
 	String name
   //  float plotVersion
 
+    String pitchOrga
+    String pitchPj
+    String pitchPnj
+
 	Boolean isEvenemential
 	Boolean isMainstream
 	Boolean isPublic
@@ -54,10 +59,16 @@ class Plot {
 
 	static constraints = {
         name maxSize: 45
+        pitchOrga (nullable: true)
+        pitchPj (nullable: true)
+        pitchPnj (nullable: true)
     }
 	
 	static mapping = {
         autoTimestamp true
+        pitchOrga type: 'text'
+        pitchPj type: 'text'
+        pitchPnj type: 'text'
 		description type: 'text'
         id type:'integer'
         version type: 'integer'
@@ -88,13 +99,22 @@ class Plot {
 		return 0;
 	}
 	
-	public int getSumPipRoles(){
+	public int getSumPipRoles(int nbPlayer){
+        int count = 0;
+        int nbPJG_PIP = 0;
 		if (!sumPipRolesBuffer){
 			sumPipRolesBuffer = 0;
 			for(Role role : getRoles()) {
-                if (role.isPJ())
-				    sumPipRolesBuffer += role.getPipi() + role.getPipr();
+                if (role.isPJ()) {
+                    sumPipRolesBuffer += role.getPipi() + role.getPipr();
+                    count++
+                }
+                if (role.isTPJ())
+                    sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
+                if (role.isPJG())
+                    nbPJG_PIP = role.getPipr() + role.getPipi();
 			}
+            sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
 		}
 		return sumPipRolesBuffer;
 	}
