@@ -137,6 +137,7 @@ function appendEntity(entity, value, label, flag) {
     };
     var html = template(context);
     $('.' + entity + 'Selector').append(html);
+    createNotification("info", "ajout réussi.", "Votre entité a bien été ajoutée, vous pourrez la compléter ultérieurement.");
 }
 
 //evite de descendre quand on clique sur un bouton du menu

@@ -9,7 +9,6 @@
         <div id="wrap6">
         <div id="wrap7">
         <div id="wrap8">
-        <div id="wrap9">
             <div id="background">
                 <ul class="wrapUl">
                     <li class="wrapLi roleLi">
@@ -68,16 +67,8 @@
                         </a>
                         <span class="badge badge-inverse">${plotInstance.events.size()}</span>
                     </li>
-                    <li class="wrapLi universLi">
-                        <a class="wrapLink" href="#wrap8" onclick="bgenScroll();">
-                            <span>
-                                <g:message code="redactintrigue.tabs.univers" default="Univers"/>
-                            </span>
-                        </a>
-                        <span class="badge badge-inverse">${plotInstance.plotHasUniverses.size()}</span>
-                    </li>
                     <li class="wrapLi plotLi">
-                        <a class="wrapLink" href="#wrap9" onclick="bgenScroll();">
+                        <a class="wrapLink" href="#wrap8" onclick="bgenScroll();">
                             <span>
                                 <g:message code="redactintrigue.tabs.plot" default="Plot"/>
                             </span>
@@ -117,15 +108,10 @@
                     </div>
 
                     <div class="container">
-                        <g:render template="universForm"/>
-                    </div>
-
-                    <div class="container">
                         <g:render template="generalDescriptionForm"/>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
         </div>
         </div>
