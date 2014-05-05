@@ -10,6 +10,7 @@ import org.w3c.dom.Element
 class GenericResourceXMLWriterService {
 
     /* Exposed Methods */
+
     def Element getGenericResourceElement(Document doc, GenericResource genericResource, Role role) {
         Element genericResourceElt = getGenericResourceRootElement(doc, genericResource, role);
 
@@ -25,19 +26,20 @@ class GenericResourceXMLWriterService {
     /* !Exposed Methods */
 
     /* Construction Methods */
-    private Element getGenericResourceRootElement(Document doc, GenericResource genericResource, Role role)
-    {
+
+    private Element getGenericResourceRootElement(Document doc, GenericResource genericResource, Role role) {
         Element rootElt = doc.createElement("GENERIC_RESOURCE")
 
         if (!genericResource.DTDId)
             genericResource.DTDId = genericResource.id
         rootElt.setAttribute("id", genericResource.DTDId.toString())
         rootElt.setAttribute("code", genericResource.code)
-        if (role.DTDId == null || role.DTDId < 0)
-            role.DTDId = role.id
-        assert (role.DTDId != null && role.DTDId >= 0)
-        rootElt.setAttribute("owner_role_id", role.DTDId.toString())
-
+        if (role != null) {
+            if (role.DTDId == null || role.DTDId < 0)
+                role.DTDId = role.id
+            assert (role.DTDId != null && role.DTDId >= 0)
+            rootElt.setAttribute("owner_role_id", role.DTDId.toString())
+        }
         return rootElt
     }
 
