@@ -41,7 +41,7 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${universInstance?.genericTextualClueHasUniverses}">
+				<!--<g:if test="${universInstance?.genericTextualClueHasUniverses}">
 				<li class="fieldcontain">
 					<span id="genericTextualClueHasUniverses-label" class="property-label"><g:message code="univers.genericTextualClueHasUniverses.label" default="Generic Textual Clue Has Universes" /></span>
 					
@@ -50,7 +50,7 @@
 						</g:each>
 					
 				</li>
-				</g:if>
+				</g:if>-->
 			
 				<g:if test="${universInstance?.lastUpdated}">
 				<li class="fieldcontain">

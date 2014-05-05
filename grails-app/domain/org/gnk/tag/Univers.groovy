@@ -1,6 +1,5 @@
 package org.gnk.tag
 
-import org.gnk.resplacetime.GenericTextualClueHasUnivers
 import org.gnk.resplacetime.PlaceHasUnivers
 import org.gnk.resplacetime.ResourceHasUnivers
 import org.gnk.selectintrigue.PlotHasUnivers
@@ -14,8 +13,7 @@ class Univers {
 	Date dateCreated
 	String name
 
-	static hasMany = [ genericTextualClueHasUniverses: GenericTextualClueHasUnivers,
-	                   placeHasUniverses: PlaceHasUnivers,
+	static hasMany = [ placeHasUniverses: PlaceHasUnivers,
 	                   plotHasUniverses: PlotHasUnivers,
 	                   resourceHasUniverses: ResourceHasUnivers ]
 

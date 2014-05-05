@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
@@ -30,14 +31,18 @@ class Plot {
     String name
     //  float plotVersion
 
-    Boolean isEvenemential
-    Boolean isMainstream
-    Boolean isPublic
-    Boolean isDraft
-    Date creationDate
-    Date updatedDate
-    String description
-    User user
+    String pitchOrga
+    String pitchPj
+    String pitchPnj
+
+	Boolean isEvenemential
+	Boolean isMainstream
+	Boolean isPublic
+	Boolean isDraft
+	Date creationDate
+	Date updatedDate
+	String description
+	User user
 
     static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId"]
 
@@ -54,11 +59,17 @@ class Plot {
 
     static constraints = {
         name maxSize: 45
+        pitchOrga (nullable: true)
+        pitchPj (nullable: true)
+        pitchPnj (nullable: true)
     }
 
     static mapping = {
         autoTimestamp true
-        description type: 'text'
+        pitchOrga type: 'text'
+        pitchPj type: 'text'
+        pitchPnj type: 'text'
+		description type: 'text'
         id type:'integer'
         version type: 'integer'
         events cascade: 'all-delete-orphan'
