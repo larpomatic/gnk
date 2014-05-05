@@ -156,42 +156,69 @@ class InputHandler {
         // Iterate generic resources
         for(plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
-            for(org.gnk.roletoperso.Role role : plot.roles) {
-                if (role.roleHasEvents) {
-                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
-                        if (roleHasEvent.roleHasEventHasGenericResources) {
-                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-                                GenericResource genericResource = roleHasEventHasGenericResource.genericResource
 
-                                Resource resource = new Resource()
-                                // Id
-                                resource.id = genericResource.DTDId
-                                // Plot id
-                                resource.plotId = plotId
-                                // Code
-                                resource.code = genericResource.code
-                                // Comment
-                                resource.comment = genericResource.comment
+            for (GenericResource genericResource : plot.genericResources) {
+                Resource resource = new Resource()
+                // Id
+                resource.id = genericResource.DTDId
+                // Plot id
+                resource.plotId = plotId
+                // Code
+                resource.code = genericResource.code
+                // Comment
+                resource.comment = genericResource.comment
 
-                                // TagList
-                                resource.tagList = []
-                                if (genericResource.extTags) {
-                                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
-                                        Tag tagData = new Tag()
+                // TagList
+                resource.tagList = []
+                if (genericResource.extTags) {
+                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
+                        Tag tagData = new Tag()
 
-                                        tagData.value = genericResourceHasTag.tag.name
-                                        tagData.family = genericResourceHasTag.tag.tagFamily.value
-                                        tagData.weight = genericResourceHasTag.weight as Integer
+                        tagData.value = genericResourceHasTag.tag.name
+                        tagData.family = genericResourceHasTag.tag.tagFamily.value
+                        tagData.weight = genericResourceHasTag.weight as Integer
 
-                                        resource.tagList.add(tagData)
-                                    }
-                                }
-                                resourceList.add(resource)
-                            }
-                        }
+                        resource.tagList.add(tagData)
                     }
                 }
+                resourceList.add(resource)
             }
+//            for(org.gnk.roletoperso.Role role : plot.roles) {
+//                if (role.roleHasEvents) {
+//                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
+//                        if (roleHasEvent.roleHasEventHasGenericResources) {
+//                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
+//                                GenericResource genericResource = roleHasEventHasGenericResource.genericResource
+//
+//                                Resource resource = new Resource()
+//                                // Id
+//                                resource.id = genericResource.DTDId
+//                                // Plot id
+//                                resource.plotId = plotId
+//                                // Code
+//                                resource.code = genericResource.code
+//                                // Comment
+//                                resource.comment = genericResource.comment
+//
+//                                // TagList
+//                                resource.tagList = []
+//                                if (genericResource.extTags) {
+//                                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
+//                                        Tag tagData = new Tag()
+//
+//                                        tagData.value = genericResourceHasTag.tag.name
+//                                        tagData.family = genericResourceHasTag.tag.tagFamily.value
+//                                        tagData.weight = genericResourceHasTag.weight as Integer
+//
+//                                        resource.tagList.add(tagData)
+//                                    }
+//                                }
+//                                resourceList.add(resource)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 

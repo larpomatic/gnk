@@ -263,17 +263,10 @@ class OutputHandler {
     private GenericResource findGenericResourceInGN(Gn gnInst, Integer genericResourceGnPlotId, Integer genericResourceGnId) {
         for(plot in gnInst.selectedPlotSet) {
             if (plot.DTDId == genericResourceGnPlotId) {
-                for(Role role : plot.roles) {
-                    if (role.roleHasEvents) {
-                        for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
-                            if (roleHasEvent.roleHasEventHasGenericResources) {
-                                for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-                                    if (roleHasEventHasGenericResource.genericResource.DTDId == genericResourceGnId) {
-                                        return roleHasEventHasGenericResource.genericResource
-                                    }
-                                }
-                            }
-                        }
+
+                for (GenericResource genericResource : plot.genericResources) {
+                    if (genericResource.DTDId == genericResourceGnId) {
+                        return genericResource;
                     }
                 }
             }

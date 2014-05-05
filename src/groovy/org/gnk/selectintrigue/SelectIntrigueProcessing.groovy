@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.gnk.gn.Gn;
 import org.gnk.roletoperso.Role;
+import org.gnk.roletoperso.Character;
 import org.gnk.roletoperso.RoleHasTag;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagService;
@@ -84,7 +85,7 @@ public class SelectIntrigueProcessing {
 
         //Handle Pipcore
 //        for (Character player : _gn.characterSet()) {
-//            for (Role role : player.getRoles()) {
+//            for (Role role : player.getSelectedRoles()) {
 //
 //            }
 //        }

@@ -20,19 +20,10 @@ class SubstitutionResourceXMLWriterService {
 
         // Iterate generic resources
         for(plot in selectedPlotSet) {
-            for(Role role : plot.roles) {
-                if (role.roleHasEvents) {
-                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
-                        if (roleHasEvent.roleHasEventHasGenericResources) {
-                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-                                resourcesE.appendChild(getGenericResourceElement(doc, roleHasEventHasGenericResource.genericResource, plot))
-                            }
-                        }
-                    }
-                }
+            for (GenericResource genericResource : plot.genericResources) {
+                resourcesE.appendChild(getGenericResourceElement(doc, genericResource, plot));
             }
         }
-
         return resourcesE
     }
     /* !Exposed Methods */
