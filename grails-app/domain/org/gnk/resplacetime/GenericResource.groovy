@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.selectintrigue.Plot
 
 class GenericResource {
 
@@ -12,6 +13,8 @@ class GenericResource {
 
 	String code
 	String comment
+ static belongsTo = [plot: Plot]
+    GenericResourceHasIngameClue genericResourceHasIngameClue;
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]
