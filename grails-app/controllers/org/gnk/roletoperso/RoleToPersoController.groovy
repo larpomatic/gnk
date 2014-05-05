@@ -42,20 +42,21 @@ class RoleToPersoController {
             character1.getBannedRoles().clear()
         }
 
+        int mainstreamId = 0;
         if (gn.getIsMainstream()) {
             if (params.selectedMainstream) {
-                int mainstreamId = params.selectedMainstream as int;
+                mainstreamId = params.selectedMainstream as int;
                 Plot mainstreamPlot = Plot.findById(mainstreamId);
                 gn.addPlot(mainstreamPlot);
 //                gn.setSelectedMainstream(mainstreamPlot);
             }
         }
-        if (params.selectedEvenemential) {
-            int evenementialId = params.selectedEvenemential as int;
-            Plot evenementialPlot = Plot.findById(evenementialId);
-            gn.addPlot(evenementialPlot);
+//        if (params.selectedEvenemential) {
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.addPlot(evenementialPlot);
 //            gn.setSelectedEvenemential(evenementialPlot);
-        }
+//        }
 
         params.each {
             final String key = it.key as String
@@ -140,7 +141,12 @@ class RoleToPersoController {
             characterListToDropDownLock.add(c.DTDId);
         }
 
-        [gnInstance: gn, characterList: gn.characterSet, allList: algo.gnTPJRoleSet, characterListToDropDownLock: characterListToDropDownLock]
+        [gnInstance: gn,
+                characterList: gn.characterSet,
+                allList: algo.gnTPJRoleSet,
+                characterListToDropDownLock: characterListToDropDownLock,
+                evenementialId: evenementialId,
+                mainstreamId: mainstreamId]
     }
 
     def management(Long id) {
