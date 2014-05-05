@@ -180,7 +180,7 @@ public class SelectIntrigueProcessing {
 //        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
 //            return false;
 //        }
-
+        int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
         if (!(plot.hasUnivers(_gn.getUnivers())) && !(plot.isUniversGeneric())) {
@@ -215,14 +215,16 @@ public class SelectIntrigueProcessing {
         if (roleSet == null)
             return false;
         for (Role role : roleSet) {
-            if (role.isPJ())
+            if (role.isPJ() || role.isPJG())
                 roleList.add(role);
+            if (role.isTPJ())
+                nbTPS_PIP = role.getPipi() + role.getPipr();
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
         Boolean isPipCoreOk = false;
         for (Role role : roleList) {
-            if ((role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
+            if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
             if (role.getPipi() >= _gn.getPipCore()) {

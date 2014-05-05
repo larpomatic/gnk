@@ -60,9 +60,7 @@ class Gn {
         "characterSet",
         "nonPlayerCharSet",
         "firstnameSet",
-        "lastnameSet",
-        "selectedEvenemential",
-        "selectedMainstream"
+        "lastnameSet"
 	]
 
 	Date t0Date
@@ -74,8 +72,6 @@ class Gn {
 	int pipCore
 	Set<User> authors
 	Set<Plot> selectedPlotSet
-    Plot selectedEvenemential
-    Plot selectedMainstream
 	Set<Plot> lockedPlotSet
 	Set<Plot> bannedPlotSet
     Set<Character> characterSet
@@ -107,6 +103,10 @@ class Gn {
 		id type:'integer'
 		version type: 'integer'
 	}
+
+    public boolean addPlot(Plot plot) {
+        selectedPlotSet.add(plot);
+    }
 
 	public boolean hasTag(Tag parTag, String tagListName = "BaseTags") {
 		if (tagListName == "EvenementialTags") {
