@@ -54,10 +54,10 @@ public class SelectIntrigueProcessing {
         setBannedTagList();
         // on ajoute les intrigues compatibles à leur listes respectives
         for (Plot plot : parAllPlotList) {
-            if (plotIsCompatible(plot)) {
-                if (plot.getIsEvenemential()) {
-                    _allEvenementialPlotList.add(plot);
-                } else {
+            if (plot.getIsEvenemential()) {
+                _allEvenementialPlotList.add(plot);
+            } else {
+                if (plotIsCompatible(plot)) {
                     _allPlotList.add(plot);
                     if (_gn.getIsMainstream() && plot.getIsMainstream()) {
                         _allMainstreamPlotList.add(plot);
