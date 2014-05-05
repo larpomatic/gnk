@@ -480,7 +480,14 @@ public class RoleToPersoProcessing {
                 } else if (role.isPJ()) {
                     roles.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
+                } else if (role.isTPJ()) {
+                    gnTPJRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is TPJ and not added to role set to process");
+                } else if (role.isPJG()) {
+                    gnPJGRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
                 } else {
+
                     gnNPCRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PNJ and not added to role set to process");
                 }
@@ -587,7 +594,7 @@ public class RoleToPersoProcessing {
     private void addPJG () {
         for (Role role : gnPJGRoleSet) {
             for (Character character : gn.getCharacterSet()) {
-                if (character.getPlotSet().contains(role.getPlot()))
+                if (character.getplotid_role().contains(role.getPlot().getId()))
                     continue;
                 else
                     character.addRole(role);

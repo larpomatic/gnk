@@ -6,6 +6,18 @@ function updateCharsJSONUser(charsJSON) {
         // Character HTML element
         var charElement =  $("#" + character.htmlId);
 
+        //Lock & Ban Tags
+        var tagArray = character.tags;
+        for (var n in tagArray) {
+            var tag = tagArray[n];
+            var lockTagInput = charElement.children(".charTags").eq(0).children("ul").eq(0).children("li").eq(n).children(".lockTag").eq(0);
+            var banTagInput = charElement.children(".charTags").eq(0).children("ul").eq(0).children("li").eq(n).children(".banTag").eq(0);
+            if (lockTagInput.is(":checked") && !banTagInput.is(":checked"))
+                tag.weight = 101;
+            else if (!lockTagInput.is(":checked") && banTagInput.is(":checked"))
+                tag.weight = -101;
+        }
+
         // Update firstname
         var firstnameSelect = charElement.children(".firstname").eq(0).children("select").eq(0);
         var isEmpty = firstnameSelect.attr("isEmpty");
@@ -62,6 +74,9 @@ function updateCharsView(charsJSON)
     for (var key in charArray) {
         var character = charArray[key];
 
+        for(var tag in character.tagList) {
+            tag.weight = 101
+        }
         // Character HTML Element
         var charElement =  $("#" + character.htmlId);
 

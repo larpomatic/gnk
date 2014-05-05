@@ -27,6 +27,25 @@ class PlotXMLWriterService {
         plotDescription.appendChild(doc.createTextNode(plot.description));
         plotElt.appendChild(plotDescription);
 
+        // Les 3 pitchs
+        if (plot.pitchOrga != null) {
+            Element plotPitchOrga = doc.createElement("PITCH_ORGA");
+            plotPitchOrga.appendChild(doc.createTextNode(plot.pitchOrga));
+            plotElt.appendChild(plotPitchOrga);
+        }
+
+        if (plot.pitchPnj != null) {
+        Element plotPitchPnj = doc.createElement("PITCH_PNJ");
+        plotPitchPnj.appendChild(doc.createTextNode(plot.pitchPnj));
+        plotElt.appendChild(plotPitchPnj);
+        }
+
+        if (plot.pitchPj != null) {
+        Element plotPitchPj = doc.createElement("PITCH_PJ");
+        plotPitchPj.appendChild(doc.createTextNode(plot.pitchPj));
+        plotElt.appendChild(plotPitchPj);
+        }
+
         plotElt.appendChild(getTagsElement(doc, plot));
         plotElt.appendChild(getRolesElement(doc, plot));
         plotElt.appendChild(getPastscenesElement(doc, plot));

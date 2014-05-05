@@ -15,8 +15,10 @@ class GenericResourceXMLWriterService {
 
         genericResourceElt.appendChild(getGenericResourceTagsElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourceCommentElement(doc, genericResource));
-//        genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
-//        genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
+        if (genericResource.isIngameClue()) {
+            genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
+            genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
+        }
 
         return genericResourceElt;
     }
@@ -66,5 +68,31 @@ class GenericResourceXMLWriterService {
         }
 
         return commentElt
+    }
+
+    // Ingame clue Title et description
+    private Element getGenericResourceTitleElement(Document doc, GenericResource genericResource) {
+        Element titleElt = doc.createElement("TITLE")
+
+        if (genericResource.title) {
+            CDATASection titleData = doc.createCDATASection("TITLE")
+            titleData.setData(genericResource.title)
+            titleElt.appendChild(titleData)
+        }
+
+        return titleElt
+    }
+
+
+    private Element getGenericResourceDescriptionElement(Document doc, GenericResource genericResource) {
+        Element descriptionElt = doc.createElement("DESCRIPTION")
+
+        if (genericResource.description) {
+            CDATASection descriptionData = doc.createCDATASection("DESCRIPTION")
+            descriptionData.setData(genericResource.description)
+            descriptionElt.appendChild(descriptionData)
+        }
+
+        return descriptionElt
     }
 }

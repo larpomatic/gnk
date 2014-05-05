@@ -22,7 +22,7 @@ class Character {
     private List<Role> selectedPJG = []
     private List<Role> bannedRoles = []
     private List<Role> specificRoles = []
-
+    private List<Integer> plotid_role = []
     // Substitution
     List<Firstname> proposedFirstnames
     List<Firstname> bannedFirstnames
@@ -98,6 +98,10 @@ class Character {
         return selectedRoles
     }
 
+    public List<Integer> getplotid_role() {
+        return plotid_role
+    }
+
     public List<Role> getSelectedPJG() {
         return selectedPJG;
     }
@@ -124,8 +128,11 @@ class Character {
                 selectedRoles.add(role)
             if ((role.isPJG()) && (!selectedPJG.contains(role)))
                 selectedPJG.add(role)
-            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role)))
-                specificRoles.add(role)
+            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
+                specificRoles.add(role);
+                plotid_role.add(role.plotId);
+            }
+
     }
 
     public lockRole(Role role) {
@@ -328,4 +335,63 @@ class Character {
         return ""
     }
 
+    public int getCharacterAproximateAge() {
+        int sum = 0;
+        int number = 0;
+        println("name === " +firstname + " " + getDTDId());
+        tags.each { tag ->
+            if (tag.key.tagFamily.id == 3) { // Age
+                number += 1
+               println("age :" + tag.key.name + "(" + tag.value)
+                sum += getAgeForTagAge(tag.key, tag.value)
+            }
+        }
+        for (Role role : selectedRoles) {
+            for (RoleHasRelationWithRole roleHasRelation : role.getRoleHasRelationWithRolesForRole1Id()) {
+                roleHasRelation.getterRole2().DTDId
+            }
+        }
+
+        getRelationsExceptBijectives().each { related ->
+            related.key.getterRole1().DTDId
+            related.key.getterRole2().DTDId
+            println(firstname + " -> (" +related.key.getterRole1().DTDId+ "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
+        }
+        if (number == 0) {
+            return 40
+        } else {
+            println("FINAL AGE: " +(sum/number))
+            return sum / number
+        }
+    }
+
+    public static int getAgeForTagAge(Tag t, int value) {
+        int age = 0
+
+        if (t.tagFamily.id == 3) { // Âge
+            int fixAge = 0
+            if (t.id == 34) { //Vieux 80
+                fixAge = 80
+            } else if (t.id == 33) { //Âge mur 50
+                fixAge = 50
+            } else if (t.id == 32) { //Jeune adulte 30
+                fixAge = 30
+            } else if (t.id == 31) { // Très jeune 15
+                fixAge = 15
+            }
+            age = (fixAge * value) + (fixAge * 100) // Donne une valeur entre 0 et age * 200
+
+            if (t.id == 34) { // 80
+                age = 100 * age / (fixAge * 200)
+            } else if (t.id == 33) { // 50
+                age = 100 * age / (fixAge * 200)//(30 * age / (fixAge * 200)) + 40
+            } else if (t.id == 32) { // 30
+                age = 30//(30 * age / (fixAge * 200)) + 20
+            } else if (t.id == 31) { // 15
+                age = 100 * age / (fixAge * 200)
+                age = (100 - age)
+            }
+        }
+        return age
+    }
 }

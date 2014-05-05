@@ -9,6 +9,20 @@ if (typeof jQuery !== 'undefined') {
 
 	})(jQuery);
 
+    $(function() {
+        $('.search-query').keyup(function() {
+            var content = $(this).attr("data-content");
+            var value = $(this).val();
+            if (value == "") {
+                $('.' + content + ' li').show();
+            }
+            else {
+                $('.' + content + ' li').hide();
+                $('.' + content + ' li[data-name*="'+value+'"]').show();
+            }
+        });
+    });
+
     function createNotification(classe, title, description) { //classe = error, danger, info, success
         var template = Handlebars.templates['templates/notification'];
         var context = {

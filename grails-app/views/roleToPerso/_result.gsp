@@ -401,7 +401,8 @@
 <br/>
 </div>
 
-
+<g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
+<g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
 
 <g:actionSubmit class="btn btn-primary" action="roleToPerso"
                 value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>

@@ -34,10 +34,6 @@ class RoleToPersoController {
             redirect(action: "list", params: params)
         }
 
-        int evenementialId = params.selectedEvenemential as int;
-        Plot evenementialPlot = Plot.findById(evenementialId);
-        gn.setSelectedEvenemential(evenementialPlot);
-
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
         for (Character character1 : gn.getterCharacterSet()) {
@@ -45,6 +41,22 @@ class RoleToPersoController {
             character1.getLockedRoles().clear()
             character1.getBannedRoles().clear()
         }
+
+        int mainstreamId = 0;
+        if (gn.getIsMainstream()) {
+            if (params.selectedMainstream) {
+                mainstreamId = params.selectedMainstream as int;
+                Plot mainstreamPlot = Plot.findById(mainstreamId);
+                gn.addPlot(mainstreamPlot);
+//                gn.setSelectedMainstream(mainstreamPlot);
+            }
+        }
+//        if (params.selectedEvenemential) {
+        int evenementialId = params.selectedEvenemential as int;
+        Plot evenementialPlot = Plot.findById(evenementialId);
+        gn.addPlot(evenementialPlot);
+//            gn.setSelectedEvenemential(evenementialPlot);
+//        }
 
         params.each {
             final String key = it.key as String
@@ -129,7 +141,12 @@ class RoleToPersoController {
             characterListToDropDownLock.add(c.DTDId);
         }
 
-        [gnInstance: gn, characterList: gn.characterSet, allList: algo.gnTPJRoleSet, characterListToDropDownLock: characterListToDropDownLock]
+        [gnInstance: gn,
+                characterList: gn.characterSet,
+                allList: algo.gnTPJRoleSet,
+                characterListToDropDownLock: characterListToDropDownLock,
+                evenementialId: evenementialId,
+                mainstreamId: mainstreamId]
     }
 
     def management(Long id) {

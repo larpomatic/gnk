@@ -49,7 +49,7 @@ class GenericResource {
 
     boolean isIngameClue()
     {
-        return ((this.title != null) || (this.description != null))
+        return ((this.title != null) || (this.description != null)) && ((!this.title.isEmpty()) || (!this.description.isEmpty()))
     }
 }
 

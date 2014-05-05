@@ -24,10 +24,10 @@ class GenericResourceXMLReaderService {
         ReadTagsNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
         // TITLE (INGAME_CLUE) reader
-//        ReadTitleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+        ReadTitleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
         // DESCRIPTION (INGAME_CLUE) reader
-//        ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+        ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
         return genericResourceRes
     }
