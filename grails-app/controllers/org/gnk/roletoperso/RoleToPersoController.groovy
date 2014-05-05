@@ -34,16 +34,27 @@ class RoleToPersoController {
             redirect(action: "list", params: params)
         }
 
-        int evenementialId = params.selectedEvenemential as int;
-        Plot evenementialPlot = Plot.findById(evenementialId);
-        gn.setSelectedEvenemential(evenementialPlot);
-
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
         for (Character character1 : gn.getterCharacterSet()) {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()
             character1.getBannedRoles().clear()
+        }
+
+        if (gn.getIsMainstream()) {
+            if (params.selectedMainstream) {
+                int mainstreamId = params.selectedMainstream as int;
+                Plot mainstreamPlot = Plot.findById(mainstreamId);
+                gn.addPlot(mainstreamPlot);
+//                gn.setSelectedMainstream(mainstreamPlot);
+            }
+        }
+        if (params.selectedEvenemential) {
+            int evenementialId = params.selectedEvenemential as int;
+            Plot evenementialPlot = Plot.findById(evenementialId);
+            gn.addPlot(evenementialPlot);
+//            gn.setSelectedEvenemential(evenementialPlot);
         }
 
         params.each {

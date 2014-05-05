@@ -16,7 +16,7 @@ select {
     <g:message code="default.edit.label" args="[entityName]"/>
 </legend>
 
-<g:form method="post">
+<g:form method="post" class="gnSubmitForm">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
     <g:hiddenField name="version" value="${gnInstance?.version}"/>
     <fieldset class="form">
@@ -40,10 +40,10 @@ select {
             <tr>
                 <td colspan="4" style="text-align: center;"><div
                         style="margin-bottom: 10px;">
-                    <a href="#tagsModal" role="button" class="btn" data-toggle="modal">Choisir
-                    l'ambiance du GN</a> <a href="#tagsEvenementialModal" role="button"
+                    <a href="#tagsModal" class="btn" data-toggle="modal">Choisir
+                    l'ambiance du GN</a> <a href="#tagsEvenementialModal"
                                             class="btn" data-toggle="modal">Choisir l'ambiance
-                        évennementielle</a> <a href="#tagsMainstreamModal" role="button"
+                        évennementielle</a> <a href="#tagsMainstreamModal"
                                                class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
                 </div></td>
             </tr>
@@ -106,8 +106,14 @@ select {
                            value="${gnInstance?.nbWomen}" type="number"></td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
+                <td>
+                    <label for="gnPIPCore">
+                        <g:message code="selectintrigue.step0.gnPIPCore" default="PIP Max"/>
+                    </label>
+                </td>
+                <td>
+                    <input id="gnPIPCore" name="gnPIPCore" value="${gnInstance?.pipCore}" type="number">
+                </td>
 
                 <td><label for="gnNbMen"><g:message
                         code="selectintrigue.step0.gnNbMen" default="Minimal men number"/></label></td>
