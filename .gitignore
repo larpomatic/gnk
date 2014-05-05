@@ -46,6 +46,9 @@
 *.iml
 
 *.idea
+.idea
 application.properties
 
 web-app/word/
+
+*.xml

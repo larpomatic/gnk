@@ -1,7 +1,9 @@
 package org.gnk.naming
 
 import 	com.gnk.substitution.Tag
+import org.springframework.security.access.annotation.Secured
 
+@Secured(['ROLE_ADMIN'])
 class NamingTestController {
 	
 	NamingService namingService
