@@ -23,8 +23,11 @@ class GenericResourceXMLReaderService {
         // TAGS reader
         ReadTagsNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
-        // INGAME_CLUE reader
-//        ReadIngameClueNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+        // TITLE (INGAME_CLUE) reader
+//        ReadTitleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        // DESCRIPTION (INGAME_CLUE) reader
+//        ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
         return genericResourceRes
     }
@@ -53,14 +56,19 @@ class GenericResourceXMLReaderService {
         return genericResourceRes
     }
 
-//    private void ReadIngameClueNode(Node GENERIC_RESOURCE, GenericResource genericResourceRes, GNKDataContainerService dataContainer) {
-//        assert (GENERIC_RESOURCE.INGAME_CLUE.size() <= 1)
-//        if (GENERIC_RESOURCE.INGAME_CLUE.size() > 0) {
-//            String title = GENERIC_RESOURCE.TITLE[0].text()
-//            String description = GENERIC_RESOURCE.DESCRITPION[0].text()
-//            genericResourceRes.genericResourceHasIngameClue = new GenericResourceHasIngameClue(genericResourceRes, title, description)
-//        }
-//    }
+    private void ReadTitleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.TITLE.size() <= 1)
+        if (RESOURCE.TITLE.size() > 0) {
+            resourceRes.title=  RESOURCE.TITLE[0].text()
+        }
+    }
+
+    private void ReadDescriptionNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.DESCRIPTION.size() <= 1)
+        if (RESOURCE.DESCRIPTION.size() > 0) {
+            resourceRes.description=  RESOURCE.DESCRIPTION[0].text()
+        }
+    }
 
     private void ReadTagsNode(Node GENERIC_RESOURCE, GenericResource genericResourceRes, GNKDataContainerService dataContainer) {
         assert (GENERIC_RESOURCE.TAGS.size() <= 1)
