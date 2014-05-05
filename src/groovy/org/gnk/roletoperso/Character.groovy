@@ -53,10 +53,9 @@ class Character {
             return
         }
         String formattedType = type.toUpperCase()
-        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")
-                || formattedType.equals("TPJ") || formattedType.equals("PJG"))
-        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")
-        || formattedType.equals("PJG") || formattedType.equals("TPJ"))) {
+        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))
+        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")))
+        {
             this.type = "PHJ"
             return
         }
@@ -252,7 +251,6 @@ class Character {
         }
         return result;
     }
-
 
     public Map<Character, String> getRelatedCharactersExceptBijectivesLabel(Gn gnInstance) {
         final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
