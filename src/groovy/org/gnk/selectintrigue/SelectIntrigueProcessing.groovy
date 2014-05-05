@@ -80,6 +80,14 @@ public class SelectIntrigueProcessing {
         }
         selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
         selectIntrigue();
+
+
+        //Handle Pipcore
+//        for (Character player : _gn.characterSet()) {
+//            for (Role role : player.getRoles()) {
+//
+//            }
+//        }
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -222,18 +230,18 @@ public class SelectIntrigueProcessing {
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
-        Boolean isPipCoreOk = false;
+//        Boolean isPipCoreOk = false;
         for (Role role : roleList) {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-            if (role.getPipi() >= _gn.getPipCore()) {
-                isPipCoreOk = true;
-            }
+//            if (role.getPipi() >= _gn.getPipCore()) {
+//                isPipCoreOk = true;
+//            }
         }
-        if (!isPipCoreOk) {
-            return false;
-        }
+//        if (!isPipCoreOk) {
+//            return false;
+//        }
         return true;
     }
 

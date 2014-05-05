@@ -53,7 +53,8 @@ class Plot {
             extTags: PlotHasTag,
             plotHasUniverses: PlotHasUnivers,
             roles: Role,
-            pastescenes: Pastscene]
+            pastescenes: Pastscene,
+            genericResources: GenericResource]
 
     static belongsTo = User
 
