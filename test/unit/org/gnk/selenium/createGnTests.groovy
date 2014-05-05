@@ -3,8 +3,10 @@ package org.gnk.selenium
 import grails.test.mixin.TestFor
 import org.gnk.selectintrigue.SelectIntrigueController
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.support.ui.Select
 
@@ -31,6 +33,13 @@ class createGnTests {
 
         WebElement we = driver.findElement(By.id(id))
         we.sendKeys(value)
+    }
+
+    // Fill a integer field declared by is ID
+    void fillIntegerInputById(String id, String value) {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver
+        js.executeScript("javascript:document.getElementById(\"" + id + "\").value=" + value + ";")
     }
 
     // Check all the boxes of a page
@@ -65,12 +74,12 @@ class createGnTests {
         we.click()
 
         fillInputById("name", "testSelenium")
-        fillInputById("gnPIPMin", "5")
-        fillInputById("gnPIPMax", "50")
-        fillInputById("gnDuration", "10")
-        fillInputById("gnNbPlayers", "8")
-        fillInputById("gnNbWomen", "2")
-        fillInputById("gnNbMen", "3")
+        fillIntegerInputById("gnPIPMin", "5")
+        fillIntegerInputById("gnPIPMax", "50")
+        fillIntegerInputById("gnDuration", "10")
+        fillIntegerInputById("gnNbPlayers", "8")
+        fillIntegerInputById("gnNbWomen", "2")
+        fillIntegerInputById("gnNbMen", "3")
         fillInputById("gnDate", "2014-04-12")
         fillInputById("gnDateHour", "11:06")
 
@@ -107,7 +116,11 @@ class createGnTests {
         we = driver.findElement(By.id("runSubResourcesButton")).click()
         we = driver.findElement(By.linkText("Lieux")).click()
         we = driver.findElement(By.id("runSubPlacesButton")).click()
-        we = driver.findElement(By.id("validateSubButton"))
+        while (driver.findElement(By.id("charsPercentage")).getText() != "100 %")
+        {
+            Thread.sleep(1000)
+        }
+        we = driver.findElement(By.id("validateSubButton")).click()
         // --------  END SUBSTITUTION ---------
     }
 }
