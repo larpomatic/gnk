@@ -177,16 +177,6 @@ class Role implements Comparable {
         return (type != null && type.toUpperCase().equals("PJG"))
     }
 
-    // Check if the role is Tout Personnage Joueur (cf balise TOUS)
-    public boolean isTPJ() {
-        return (type != null && type.toUpperCase().equals("TPJ"))
-    }
-
-    // Check if the role is Personnage Joueur Générique (cf balise OTHER)
-    public boolean isPJG() {
-        return (type != null && type.toUpperCase().equals("PJG"))
-    }
-
     public int getPIPTotal() {
         return pipr + pipi;
     }
