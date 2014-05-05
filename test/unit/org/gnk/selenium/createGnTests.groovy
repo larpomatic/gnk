@@ -12,13 +12,16 @@ import org.openqa.selenium.firefox.FirefoxDriver
  * Created by pico on 16/04/2014.
  */
 @TestFor(SelectIntrigueController)
-class createGnTests {
+class CreateGnTests {
 
     WebDriver driver = new FirefoxDriver()
 
     void testClickToCreateGn() {
         driver.get("http://localhost:8090/gnk/")
-        WebElement we = driver.findElement(By.cssSelector(".how-to a"))
+        WebElement we = driver.findElement(By.id("username")).sendKeys("pico.2607@gmail.com")
+        we = driver.findElement(By.id("password")).sendKeys("gnk")
+        we = driver.findElement(By.id("submit")).click()
+        we = driver.findElement(By.cssSelector(".how-to a"))
         we.click()
     }
 
@@ -53,8 +56,12 @@ class createGnTests {
     void testGnCreation() {
 
         driver.get("http://localhost:8090/gnk/")
-        WebElement we = driver.findElement(By.cssSelector(".how-to a")) // [type='checkbox']
+        WebElement we = driver.findElement(By.id("username")).sendKeys("pico.2607@gmail.com")
+        we = driver.findElement(By.id("password")).sendKeys("gnk")
+        we = driver.findElement(By.id("submit")).click()
+        we = driver.findElement(By.cssSelector(".how-to a")) // [type='checkbox']
         we.click()
+
         // -------- BEGIN EDIT GN --------
         we = driver.findElement(By.linkText("Création/Edition"))
         we.click()
