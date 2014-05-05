@@ -62,7 +62,7 @@
     $(document).ready(function() {
         // Export CSV
         $("#exportPersoCSVSubButton").submit(function(){
-            return true;
+            //return true;
             var isCharsReady = prepareCharsJSONForValidation(charsJSON);
             var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
             var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
