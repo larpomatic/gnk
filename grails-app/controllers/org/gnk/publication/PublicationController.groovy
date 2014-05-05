@@ -169,7 +169,7 @@ class PublicationController {
 
         wordWriter.addTableCell(tableRow, "Nom de la ressource")
         wordWriter.addTableCell(tableRow, "Type")
-        wordWriter.addTableCell(tableRow, "Description")
+        wordWriter.addTableCell(tableRow, "Commentaire")
 
         table.getContent().add(tableRow);
 
@@ -293,7 +293,7 @@ class PublicationController {
             if (c.isPJ()) { typePerso = "PJ" }
             else if (c.isPNJ()) { typePerso = "PNJ" }
             else  { typePerso = "PHJ" }
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Pitch")
+            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Introduction")
             createPitchTablePerso(typePerso)
 
             wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Présentation")
@@ -446,6 +446,9 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
+        wordWriter.addTableCell(tableRow, "Nom de l'ingame clue")
+        wordWriter.addTableCell(tableRow, "Type")
+        wordWriter.addTableCell(tableRow, "Commentaire")
         wordWriter.addTableCell(tableRow, "Titre")
         wordWriter.addTableCell(tableRow, "Description")
 
@@ -483,6 +486,9 @@ class PublicationController {
                 Tr tableRowPlot = wordWriter.factory.createTr()
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
+                wordWriter.addTableCell(tableRowPlot, genericResource.selectedResource.name)
+                wordWriter.addTableCell(tableRowPlot, genericResource.code)
+                wordWriter.addTableCell(tableRowPlot, genericResource.comment)
                 wordWriter.addTableCell(tableRowPlot, genericResource.title)
                 wordWriter.addTableCell(tableRowPlot, genericResource.description)
                 table.getContent().add(tableRowPlot);
