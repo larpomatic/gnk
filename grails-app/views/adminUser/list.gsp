@@ -32,16 +32,16 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Email</th>
-            <th>Prénom</th>
-            <th>Nom de Famille</th>
+            <th><g:message code="default.profil.email"/></th>
+            <th><g:message code="default.profil.firstname"/></th>
+            <th><g:message code="default.profil.lastname"/></th>
             <g:hasRights lvlright="${right.USERMODIFY.value()}">
-            <th>Action</th>
+            <th></th>
             </g:hasRights>
             <g:hasRights lvlright="${right.USERCLOSE.value()}">
-                <th>Désactiver Compte</th>
+                <th><g:message code="default.button.lock.label"/>/<g:message code="default.button.unlock.label"/></th>
             </g:hasRights>
-            <th>Statut</th>
+            <th><g:message code="default.button.state.label"/></th>
         </tr>
         </thead>
         <tbody>

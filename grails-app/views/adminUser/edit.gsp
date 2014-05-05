@@ -28,23 +28,23 @@ Password: "${user.username}" <br/>
     <g:message code="default.statistique"/>
 </g:link>
 <g:hasRights lvlright="${right.RIGHTMODIF.value()}">
-    <h3>Rights</h3>
+    <h3><g:message code="default.profil.right"/>:</h3>
     <g:form controller="adminUser" class="form-group" action="changeperm" id="${user.id}" method="post">
         <table class="table">
             <thead>
             <tr>
                 <th></th>
-                <th>Mon Profil</th>
-                <th>Utilisateurs</th>
-                <th>Mes Intrigues</th>
-                <th>Intrigues</th>
-                <th>My Gn</th>
-                <th>Gn</th>
-                <th>Référentiel</th>
-                <th>Gestion Droits</th>
+                <th><g:message code="default.title.my.profil"/></th>
+                <th><g:message code="default.title.user"/></th>
+                <th><g:message code="default.title.my.intrigue"/></th>
+                <th><g:message code="default.title.intrigue"/></th>
+                <th><g:message code="default.title.my.gn"/></th>
+                <th><g:message code="default.title.gn"/></th>
+                <th><g:message code="default.title.referentiel"/></th>
+                <th><g:message code="default.title.manageRight"/></th>
             </tr>
             <tr>
-                <td>Open</td>
+                <td><g:message code="default.action.open"/></td>
                 <td><g:checkBox name="checkbox0" value="${lb.get(0)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox1" value="${lb.get(1)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox2" value="${lb.get(2)}"></g:checkBox></td>
@@ -55,7 +55,7 @@ Password: "${user.username}" <br/>
                 <td><g:checkBox name="checkbox21" value="${lb.get(21)}"></g:checkBox></td>
             </tr>
             <tr>
-                <td>Change</td>
+                <td><g:message code="default.action.modify"/></td>
                 <td><g:checkBox name="checkbox6" value="${lb.get(6)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox7" value="${lb.get(7)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox8" value="${lb.get(8)}"></g:checkBox></td>
@@ -66,7 +66,7 @@ Password: "${user.username}" <br/>
                 <td><g:checkBox name="checkbox22" value="${lb.get(22)}"></g:checkBox></td>
             </tr>
             <tr>
-                <td>Delete</td>
+                <td><g:message code="default.action.delete"/></td>
                 <td><g:checkBox name="checkbox12" value="${lb.get(12)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox13" value="${lb.get(13)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox14" value="${lb.get(14)}"></g:checkBox></td>

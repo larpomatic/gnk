@@ -15,11 +15,12 @@
 <body>
 
 <div role="main">
-<h3>Statistique Utilisateur</h3>
-Utilisateur: ${user.firstname} ${user.lastname} <br/>
-Dernière connexion: ${user.lastConnexion} <br/>
-Nombre d'intrigue public: ${countPublicPlot} <br/>
-Nombre d'intrigue privée: ${countPrivatePlot} <br/>
-Nombre de connexion: ${user.countConnexion}
+<h3><g:message code="default.title.statistic.user"/></h3>
+
+<g:message code="default.title.user"/>: ${user.firstname} ${user.lastname} <br/>
+<g:message code="default.title.lastConnection"/>: ${user.lastConnexion} <br/>
+<g:message code="default.title.nbIntrigPub"/>: ${countPublicPlot} <br/>
+<g:message code="default.title.nbIntrigPri"/>: ${countPrivatePlot} <br/>
+<g:message code="default.title.nbConnection"/>: ${user.countConnexion}
 </body>
 </html>
