@@ -93,4 +93,40 @@ class TagService {
         }
         return rankTag;
     }
+
+    public int getTagsMatchingWithoutRelation(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
+        Integer rankTag = 0;
+        if (challengerTagList != null) {
+            for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
+                Boolean tagIsLockedOrBannedForRef = refLockedBannedTags.get(challengerTag.getKey());
+                if (tagIsLockedOrBannedForRef != null) {
+                    if ((tagIsLocked(challengerTag) && !tagIsLockedOrBannedForRef) || (tagIsBanned(challengerTag) && tagIsLockedOrBannedForRef)) {
+                        return Integer.MIN_VALUE;
+                    }
+                }
+                for (Tag refTag : refTagList.keySet()) {
+                    if (refTag == challengerTag.getKey()) {
+                        if (tagIsLocked(challengerTag) || tagIsLocked(challengerTag)){
+                            rankTag += (challengerTag.getValue() * refTagList.get(refTag)) * 100;
+                        }
+                        else{
+                            rankTag += (challengerTag.getValue() * refTagList.get(refTag));
+                        }
+                        print "GOOD"
+                        break;
+                    }
+                    //print"-----------"
+                    if (refTag.name.toString().equals("french")){
+                        print("reftag ==> ")
+                        print(refTag)
+                    }
+                    /*if (challengerTag.getKey().toString().equals("french")){
+                        print("challengerTag ==> ")
+                        print(challengerTag.getKey())
+                    }*/
+                }
+            }
+        }
+        return rankTag;
+    }
 }
