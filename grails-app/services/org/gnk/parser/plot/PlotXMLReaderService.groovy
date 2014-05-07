@@ -25,6 +25,7 @@ class PlotXMLReaderService {
     }
 
     /* Exposed Methods */
+
     def Plot getPlotFromNode(Node PLOT, GNKDataContainerService dataContainer) {
         // PLOT reader
         Plot plotRes = ReadPlotRootNode(PLOT, dataContainer)
@@ -34,18 +35,18 @@ class PlotXMLReaderService {
 
         // DESCRIPTION reader
         if (PLOT.DESCRIPTION.size() > 0) {
-            plotRes.description =  PLOT.DESCRIPTION[0].text()
+            plotRes.description = PLOT.DESCRIPTION[0].text()
         }
 
         // Les 3 différents pitchs
         if (PLOT.PITCH_ORGA.size() > 0) {
-            plotRes.pitchOrga =  PLOT.PITCH_ORGA[0].text()
+            plotRes.pitchOrga = PLOT.PITCH_ORGA[0].text()
         }
         if (PLOT.PITCH_PJ.size() > 0) {
-            plotRes.pitchPj =  PLOT.PITCH_PJ[0].text()
+            plotRes.pitchPj = PLOT.PITCH_PJ[0].text()
         }
         if (PLOT.PITCH_PNJ.size() > 0) {
-            plotRes.pitchPnj =  PLOT.PITCH_PNJ[0].text()
+            plotRes.pitchPnj = PLOT.PITCH_PNJ[0].text()
         }
 
         // GENERIC_PLACES reader
@@ -72,7 +73,8 @@ class PlotXMLReaderService {
 /* !Exposed Methods */
 
     /* Construction Methods */
-    private Plot ReadPlotRootNode (Node PLOT, GNKDataContainerService dataContainer) {
+
+    private Plot ReadPlotRootNode(Node PLOT, GNKDataContainerService dataContainer) {
         Plot plotRes = null
         String plotTitle = null
 
@@ -108,8 +110,7 @@ class PlotXMLReaderService {
         NodeList TAGLIST = TAGS.TAG
 
         TagXMLReaderService tagReader = new TagXMLReaderService()
-        for (int i = 0; i < TAGLIST.size(); i++)
-        {
+        for (int i = 0; i < TAGLIST.size(); i++) {
             Node TAG = TAGLIST.get(i)
 
             PlotHasTag plotHasTag = new PlotHasTag(plotRes, tagReader.getTagFromNode(TAG, dataContainer), tagReader.getTagWeight(TAG, dataContainer))
@@ -127,7 +128,7 @@ class PlotXMLReaderService {
 
         RoleXMLReaderService roleReader = new RoleXMLReaderService()
         // add each role to plot roles.
-        roleReader.getRolesFromNode(ROLES, plotRes, dataContainer).each {Role role ->
+        roleReader.getRolesFromNode(ROLES, plotRes, dataContainer).each { Role role ->
             plotRes.addARole(role)
         };
 
@@ -150,14 +151,14 @@ class PlotXMLReaderService {
     }
 
     private void ReadPastScenesNode(Node PLOT, Plot plotRes, GNKDataContainerService dataContainer) {
-            assert (PLOT.PAST_SCENES.size() <= 1)
+        assert (PLOT.PAST_SCENES.size() <= 1)
         if (PLOT.PAST_SCENES.size() <= 0)
             return
 
         PastSceneXMLReaderService pastReader = new PastSceneXMLReaderService()
 
         // add each pastscenes to plotres pastscenes.
-        pastReader.getPastScenesFromNode(PLOT.PAST_SCENES[0], plotRes, dataContainer).each {Pastscene pastRes ->
+        pastReader.getPastScenesFromNode(PLOT.PAST_SCENES[0], plotRes, dataContainer).each { Pastscene pastRes ->
             plotRes.addToPastescenes(pastRes)
         };
     }
@@ -174,6 +175,10 @@ class PlotXMLReaderService {
         genericResourceList.each { Node GENERIC_RESOURCE ->
             GenericResource genericResource = genericResourceReader.getGenericResourceFromNode(GENERIC_RESOURCE, dataContainer)
             genericResource.plot = plotRes;
+            if (!plotRes.genericResources) {
+                plotRes.genericResources = new ArrayList<GenericResource>();
+            }
+            plotRes.genericResources.add(genericResource);
             if (genericResource.getDTDId() >= 0)
                 dataContainer.genericResourceMap.put(genericResource.getDTDId(), genericResource)
         }
