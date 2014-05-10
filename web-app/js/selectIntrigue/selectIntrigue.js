@@ -40,6 +40,9 @@ $(function(){
         $('.mainstream-table tr:not(:last-child):nth-child(n+'+nb+')').css("display", "none");
     });
 
+    $('.radioEvenemential:checked').closest("tr").prependTo(".evenemential-table tbody");
+    $('.radioMainstream:checked').closest("tr").prependTo(".mainstream-table tbody");
+
     $('.modal-body li').each(function() {
         toggle($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
     });

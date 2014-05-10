@@ -81,7 +81,15 @@ $(function(){
         }
     });
 
+    initializeTextEditor();
 
+    $('.savePlotForm').submit(function() {
+//        initializeTextEditor();
+        var description = $('#plotRichTextEditor').html();
+        description = transformDescription(description);
+//        var escaped = $("div.someClass").text(someHtmlString).html();
+        $('input[type="hidden"][name="plotDescription"]').val(description);
+    });
 
 });
 
@@ -213,4 +221,97 @@ function initDeleteButton() {
         var button = $(this).next();
         button.css("right", "0px");
     });
+}
+
+
+//Function to insert text in div editable for the description rich editor
+function pasteHtmlAtCaret(html) {
+    var sel, range;
+    if (window.getSelection) {
+        // IE9 and non-IE
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+
+            // Range.createContextualFragment() would be useful here but is
+            // only relatively recently standardized and is not supported in
+            // some browsers (IE9, for one)
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ((node = el.firstChild)) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+
+            // Preserve the selection
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    } else if (document.selection && document.selection.type != "Control") {
+        // IE < 9
+        document.selection.createRange().pasteHTML(html);
+    }
+}
+
+//Dernière position du curseur dans l'éditeur
+var carretPos = null;
+
+//On sauvegarde la position du curseur lorsque l'éditeur perd le focus
+function saveCarretPos(editorName) {
+    var caretOffset = 0;
+    var element = document.getElementById(editorName);
+    var doc = element.ownerDocument || element.document;
+    var win = doc.defaultView || doc.parentWindow;
+    var sel;
+    if (typeof win.getSelection != "undefined") {
+        var range = win.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if ((sel = doc.selection) && sel.type != "Control") {
+        var textRange = sel.createRange();
+        var preCaretTextRange = doc.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    carretPos = window.getSelection().getRangeAt(0); //caretOffset;
+    focusedNode = document.activeElement;
+    document.getElementById("printHere").innerText = carretPos;
+
+}
+
+// Avant d'insert l'objet on remet le curseur à l'endroit sauvegardé
+function setCarretPos() {
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(carretPos);
+}
+
+function initializeTextEditor() {
+    $('.richTextEditor').each(function() {
+        var description = $(this).html();
+        description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
+        description = description.replace(/&lt;n:/g, '<span class="label label-important" contenteditable="false">');
+        description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
+        description = description.replace(/&gt;/g, '</span>');
+        $(this).html(description);
+    });
+}
+
+function transformDescription(description) {
+    description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
+    description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<n:');
+    description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
+    description = description.replace(/<\/span>/g, '>');
+    description = description.replace(/&nbsp;/g, ' ');
+    return description;
 }

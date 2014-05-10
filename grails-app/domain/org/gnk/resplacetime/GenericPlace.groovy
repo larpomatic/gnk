@@ -1,5 +1,7 @@
 package org.gnk.resplacetime
 
+import org.gnk.selectintrigue.Plot
+
 class GenericPlace {
 
     Integer id
@@ -17,6 +19,8 @@ class GenericPlace {
     List<Place> proposedPlaces
     List<Place> bannedPlaces
     Place selectedPlace
+
+    static belongsTo = [plot: Plot]
 
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,

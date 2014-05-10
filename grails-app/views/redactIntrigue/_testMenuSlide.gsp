@@ -25,7 +25,7 @@
                                 <g:message code="redactintrigue.tabs.places" default="Places"/>
                             </span>
                         </a>
-                        <span class="badge badge-inverse">4</span>
+                        <span class="badge badge-inverse">${plotInstance.genericPlaces.size()}</span>
                     </li>
                     <li class="wrapLi resourceLi">
                         <a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
@@ -33,7 +33,7 @@
                                 <g:message code="redactintrigue.tabs.objects" default="Objects"/>
                             </span>
                         </a>
-                        <span class="badge badge-inverse">12</span>
+                        <span class="badge badge-inverse">${plotInstance.genericResources.size()}</span>
                     </li>
                     <li class="wrapLi relationLi">
                         <a class="wrapLink" href="#wrap4" onclick="bgenScroll();">
@@ -41,7 +41,7 @@
                                 <g:message code="redactintrigue.tabs.relations" default="Relations"/>
                             </span>
                         </a>
-                        <span class="badge badge-inverse">47</span>
+                        <span class="badge badge-inverse">0</span>
                     </li>
                     <li class="wrapLi cluesLi">
                         <a class="wrapLink" href="#wrap5" onclick="bgenScroll();">
@@ -49,7 +49,7 @@
                                 <g:message code="redactintrigue.tabs.textualClues" default="Clues"/>
                             </span>
                         </a>
-                        <span class="badge badge-inverse">2</span>
+                        <span class="badge badge-inverse">0</span>
                     </li>
                     <li class="wrapLi pastScenesLi">
                         <a class="wrapLink" href="#wrap6" onclick="bgenScroll();">

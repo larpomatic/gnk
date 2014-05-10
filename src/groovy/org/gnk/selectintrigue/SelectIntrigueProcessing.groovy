@@ -1,8 +1,9 @@
 package org.gnk.selectintrigue
 
-//import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 
-import org.gnk.user.User;
+//import org.gnk.user.User
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -33,8 +34,6 @@ public class SelectIntrigueProcessing {
     private Integer _minPip;
     private Integer _maxPip;
     private Integer _currentPip;
-
-//    def springSecurityService;
 
     // FIXME Handle Mainstream
 
@@ -84,11 +83,15 @@ public class SelectIntrigueProcessing {
 
 
         //Handle Pipcore
-//        for (Character player : _gn.characterSet()) {
+//        HashMap<Character, Integer> characterPips = new HashMap<Character, Integer>();
+//        for (Character player : _gn.characterSet) {
+//            Integer pipPlayer = 0;
 //            for (Role role : player.getSelectedRoles()) {
-//
+//                pipPlayer += role.getPipr() + role.getPipi();
 //            }
+//            characterPips.put(player, pipPlayer);
 //        }
+//        int test = 0;
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -179,16 +182,15 @@ public class SelectIntrigueProcessing {
 
     private boolean plotIsCompatible(Plot plot) {
         // FIXME
-//        HttpSession session = request.getSession();
-//        String userName = (String) session.getAttribute("USER_NAME");
-
-//        User currentUser = springSecurityService.getCurrentUser();
-//        if (!currentUser) {
-//            return false;
-//        }
-//        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
-//            return false;
-//        }
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
+        if (currentUser == null) {
+            return false;
+        }
+        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
+            return false;
+        }
         int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
@@ -236,7 +238,7 @@ public class SelectIntrigueProcessing {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-//            if (role.getPipi() >= _gn.getPipCore()) {
+//            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
 //                isPipCoreOk = true;
 //            }
         }

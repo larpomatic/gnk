@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
@@ -54,7 +55,8 @@ class Plot {
             plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
-            genericResources: GenericResource]
+            genericResources: GenericResource,
+            genericPlaces: GenericPlace]
 
     static belongsTo = User
 
