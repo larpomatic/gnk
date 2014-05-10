@@ -87,7 +87,13 @@ class RedactIntrigueController {
 			screen = params.screenStep 
 			screen = (screen - 48)	 
 		}
-		[plotInstance: plotInstance, plotTagList: new TagService().getPlotTagQuery(), universList: Univers.list(), roleTagList: new TagService().getRoleTagQuery(), screenStep: screen]
+		[plotInstance: plotInstance,
+                plotTagList: new TagService().getPlotTagQuery(),
+                universList: Univers.list(),
+                roleTagList: new TagService().getRoleTagQuery(),
+                resourceTagList: new TagService().getResourceTagQuery(),
+                placeTagList: new TagService().getPlaceTagQuery(),
+                screenStep: screen]
 	}
 
 	def update(Long id, Long version) {

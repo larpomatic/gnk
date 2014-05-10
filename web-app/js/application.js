@@ -12,7 +12,7 @@ if (typeof jQuery !== 'undefined') {
     $(function() {
         $('.search-query').keyup(function() {
             var content = $(this).attr("data-content");
-            var value = $(this).val();
+            var value = $(this).val().toLowerCase();
             if (value == "") {
                 $('.' + content + ' li').show();
             }

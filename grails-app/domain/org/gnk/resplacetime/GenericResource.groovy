@@ -2,6 +2,7 @@ package org.gnk.resplacetime
 
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
+import org.gnk.tag.Tag
 
 class GenericResource {
 
@@ -45,6 +46,15 @@ class GenericResource {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+    }
+
+    public boolean hasGenericResourceTag(Tag parGenericResourceTag) {
+        for (GenericResourceHasTag genericResourceHasPlaceTag : extTags) {
+            if (genericResourceHasPlaceTag.tag == parGenericResourceTag) {
+                return true;
+            }
+        }
+        return false;
     }
 
     boolean isIngameClue()

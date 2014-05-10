@@ -97,7 +97,7 @@ $(function(){
 function initSearchBoxes() {
     $('.search-query').keyup(function() {
         var content = $(this).attr("data-content");
-        var value = $(this).val();
+        var value = $(this).val().toLowerCase();
         if (value == "") {
             $('.' + content + ' li').show();
         }
@@ -130,6 +130,12 @@ function initConfirm() {
             var objectButton = $(this).closest("div.popover").prev()
             if (objectButton.attr("data-object") == "role") {
                 removeRole(objectButton);
+            }
+            if (objectButton.attr("data-object") == "resource") {
+//                removeResource(objectButton);
+            }
+            if (objectButton.attr("data-object") == "place") {
+//                removePlace(objectButton);
             }
         }
     });

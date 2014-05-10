@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.gnk.selectintrigue.Plot
+import org.gnk.tag.Tag
 
 class GenericPlace {
 
@@ -37,4 +38,12 @@ class GenericPlace {
         version type: 'integer'
     }
 
+    public boolean hasGenericPlaceTag(Tag parGenericPlaceTag) {
+        for (GenericPlaceHasTag genericPlaceHasPlaceTag : extTags) {
+            if (genericPlaceHasPlaceTag.tag == parGenericPlaceTag) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

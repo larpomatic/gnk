@@ -12,15 +12,27 @@ class TagService {
         def result = Tag.withCriteria{
             tagFamily { eq ("relevantPlot", true) }
         }
-
         return result;
     }
 
     def List<Tag> getRoleTagQuery() {
         def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
+            tagFamily { eq ("relevantRole", true) }
         }
+        return result;
+    }
 
+    def List<Tag> getResourceTagQuery() {
+        def result = Tag.withCriteria{
+            tagFamily { eq ("relevantResource", true) }
+        }
+        return result;
+    }
+
+    def List<Tag> getPlaceTagQuery() {
+        def result = Tag.withCriteria{
+            tagFamily { eq ("value", "> Lieu Superficie") }
+        }
         return result;
     }
 
