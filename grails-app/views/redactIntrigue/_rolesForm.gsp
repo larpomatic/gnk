@@ -113,11 +113,22 @@
                         <h3>
                             <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                         </h3>
+                        <input class="input-medium search-query" data-content="roleEvent"
+                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                     </div>
 
                     <div class="modal-body">
-                        <ul>
-
+                        <ul class="roleEvent">
+                            <g:each in="${plotInstance.events}" var="event">
+                                <g:each in="${event.roleHasEvents}" var="roleHasEvent">
+                                    <li class="modalLi" data-name="${roleHasEvent.title.toLowerCase()}">
+                                        <label>
+                                            <g:checkBox name="roleEvent_${roleHasEvent.id}" id="roleEvent_${roleHasEvent.id}"/>
+                                            ${fieldValue(bean: roleHasEvent, field: "title")}
+                                        </label>
+                                    </li>
+                                </g:each>
+                            </g:each>
                         </ul>
                     </div>
 
@@ -131,11 +142,22 @@
                         <h3>
                             <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
                         </h3>
+                        <input class="input-medium search-query" data-content="rolePastScene"
+                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                     </div>
 
                     <div class="modal-body">
-                        <ul>
-
+                        <ul class="rolePastScene">
+                            <g:each in="${plotInstance.pastescenes}" var="pastscenes">
+                                <g:each in="${pastscenes.roleHasPastscenes}" var="roleHasPastScene">
+                                    <li class="modalLi" data-name="${roleHasPastScene.title.toLowerCase()}">
+                                        <label>
+                                            <g:checkBox name="rolePastScene_${roleHasPastScene.id}" id="rolePastScene_${roleHasPastScene.id}"/>
+                                            ${fieldValue(bean: roleHasPastScene, field: "title")}
+                                        </label>
+                                    </li>
+                                </g:each>
+                            </g:each>
                         </ul>
                     </div>
 
@@ -268,11 +290,23 @@
                             <h3>
                                 <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                             </h3>
+                            <input class="input-medium search-query" data-content="roleEvent${role.id}"
+                                   placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                         </div>
 
                         <div class="modal-body">
-                            <ul>
-
+                            <ul class="roleEvent${role.id}">
+                                <g:each in="${plotInstance.events}" var="event">
+                                    <g:each in="${event.roleHasEvents}" var="roleHasEvent">
+                                        <li class="modalLi" data-name="${roleHasEvent.title.toLowerCase()}">
+                                            <label>
+                                                <g:checkBox name="roleEvent_${roleHasEvent.id}" id="roleEvent_${roleHasEvent.id}"
+                                                            checked="${role.roleHasEvents.contains(roleHasEvent)}"/>
+                                                ${fieldValue(bean: roleHasEvent, field: "title")}
+                                            </label>
+                                        </li>
+                                    </g:each>
+                                </g:each>
                             </ul>
                         </div>
 
@@ -286,11 +320,23 @@
                             <h3>
                                 <g:message code="redactintrigue.role.rolePastScene" default="Past Scenes"/>
                             </h3>
+                            <input class="input-medium search-query" data-content="rolePastScene${role.id}"
+                                        placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
                         </div>
 
                         <div class="modal-body">
-                            <ul>
-
+                            <ul class="rolePastScene${role.id}">
+                                <g:each in="${plotInstance.pastescenes}" var="pastscenes">
+                                    <g:each in="${pastscenes.roleHasPastscenes}" var="roleHasPastScene">
+                                        <li class="modalLi" data-name="${roleHasPastScene.title.toLowerCase()}">
+                                            <label>
+                                                <g:checkBox name="rolePastScene_${roleHasPastScene.id}" id="rolePastScene_${roleHasPastScene.id}"
+                                                            checked="${role.roleHasPastscenes.contains(roleHasPastScene)}"/>
+                                                ${fieldValue(bean: roleHasPastScene, field: "title")}
+                                            </label>
+                                        </li>
+                                    </g:each>
+                                </g:each>
                             </ul>
                         </div>
 
