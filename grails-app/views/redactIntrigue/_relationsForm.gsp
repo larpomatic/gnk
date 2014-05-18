@@ -32,6 +32,14 @@
                             <g:select name="relationType" id="relationType" from="${['Filiation', 'Parent', 'Fratrie', 'Amour']}"
                                       keys="${['Filiation', 'Parent', 'Fratrie', 'Amour']}" required=""/>
                         </div>
+                        <div class="span1">
+                            <label for="relationHidden">
+                                <g:message code="redactintrigue.relation.hidden" default="Hidden"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:checkBox name="relationHidden" id="relationHidden"/>
+                        </div>
                     </div>
                     <div class="row formRow">
                         <div class="span1">

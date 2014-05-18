@@ -22,6 +22,9 @@ $(function(){
 
     initRadioPlots();
 
+    //Si il n'y a pas d'intrigue mainstream sur un gn mainstream alors on alerte l'utilisateur
+    notifyNoMainstream();
+
     $('.selectedEvenemential').val($(".radioEvenemential").first().val());
     $('.selectedMainstream').val($(".radioMainstream").first().val());
 
@@ -108,5 +111,11 @@ function initRadioPlots() {
     }
     if ($('input[name="selected_mainstream"]:checked').size() == 0) {
         $(".radioMainstream").first().click();
+    }
+}
+
+function notifyNoMainstream() {
+    if (($('.mainstream-table:visible').size() != 0) && ($('.mainstream-table tbody tr:not(:last-child)').size() == 0)) {
+        createNotification("warning", "Attention !", "Aucune intrigue mainstream n'a été trouvée.");
     }
 }

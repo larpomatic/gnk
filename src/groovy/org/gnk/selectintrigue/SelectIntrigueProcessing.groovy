@@ -92,6 +92,9 @@ public class SelectIntrigueProcessing {
 //            characterPips.put(player, pipPlayer);
 //        }
 //        int test = 0;
+        if (pipCoreCharacter <= _gn.characterSet.size()) {
+            //Do something
+        }
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -180,6 +183,8 @@ public class SelectIntrigueProcessing {
         }
     }
 
+    private boolean pipCoreCharacter = 0;
+
     private boolean plotIsCompatible(Plot plot) {
         // FIXME
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -233,18 +238,14 @@ public class SelectIntrigueProcessing {
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
-//        Boolean isPipCoreOk = false;
         for (Role role : roleList) {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-//            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
-//                isPipCoreOk = true;
-//            }
+            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
+                pipCoreCharacter += 1;
+            }
         }
-//        if (!isPipCoreOk) {
-//            return false;
-//        }
         return true;
     }
 
