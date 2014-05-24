@@ -1,3 +1,4 @@
+<%@ page import="org.gnk.resplacetime.Event" %>
 <div class="tabbable tabs-left eventScreen">
     <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
@@ -5,7 +6,7 @@
                 <g:message code="redactintrigue.event.addEvent" default="New event"/>
             </a>
         </li>
-        <g:each in="${plotInstance.events}" status="i5" var="event">
+        <g:each in="${Event.findAllByPlot(plotInstance, [sort:'timing',order:'asc'])}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">
                     ${event.name}
@@ -21,6 +22,7 @@
         <div class="tab-pane active" id="newEvent">
             <form name="newEventForm" data-url="">
                 %{--<div style="margin:auto">--}%
+                <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="EventName">
@@ -28,25 +30,25 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="EventName" id="EventName" value="" required=""/>
                     </div>
 
-                    <div class="span1">
-                        <label for="eventDatetime">
-                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
-                        </label>
-                    </div>
+                    %{--<div class="span1">--}%
+                        %{--<label for="eventDatetime">--}%
+                            %{--<g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
 
-                    <div class="span4">
-                        <div class="input-append date datetimepicker">
-                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime" name="eventDatetime"/>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>
-                    </div>
+                    %{--<div class="span4">--}%
+                        %{--<div class="input-append date datetimepicker">--}%
+                            %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime" name="eventDatetime"/>--}%
+                            %{--<span class="add-on">--}%
+                                %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
+                                %{--</i>--}%
+                            %{--</span>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
                 </div>
                 <div class="row formRow">
                     <div class="span1">
@@ -72,7 +74,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration"/>
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
                         </label>
                     </div>
 
@@ -81,7 +83,7 @@
                     </div>
                     <div class="span1">
                         <label for="EventTiming">
-                            <g:message code="redactintrigue.event.eventTiming" default="Timing"/>
+                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
                         </label>
                     </div>
 
@@ -118,7 +120,17 @@
                         <g:message code="redactintrigue.event.eventDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="eventDescription" id="eventDescription" value="" rows="5" cols="100"/>
+
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="eventRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
+                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
+                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+
+                    </div>
+                </div>
                 %{--</div>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
             </form>
@@ -128,6 +140,7 @@
         <div class="tab-pane" id="event_${event.id}">
             <form name="updateEvent_${event.id}" data-url="<g:createLink controller="Event" action="Update" id="${event.id}"/>">
                 <g:hiddenField name="id" value="${event.id}"/>
+                <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
 
                     %{--<div style="margin:auto">--}%
@@ -138,26 +151,26 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="EventName" id="EventName" value="${event.name}" required=""/>
                     </div>
 
-                    <div class="span1">
-                        <label for="eventDatetime">
-                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
-                        </label>
-                    </div>
+                    %{--<div class="span1">--}%
+                        %{--<label for="eventDatetime">--}%
+                            %{--<g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
 
-                    <div class="span4">
-                        <div class="input-append date datetimepicker">
-                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime${event.id}" name="eventDatetime"
-                                   value="${event.absoluteDay}/${event.absoluteMonth}/${event.absoluteYear} ${event.absoluteHour}:${event.absoluteMinute}"/>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>
-                    </div>
+                    %{--<div class="span4">--}%
+                        %{--<div class="input-append date datetimepicker">--}%
+                            %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime${event.id}" name="eventDatetime"--}%
+                                   %{--value="${event.absoluteDay}/${event.absoluteMonth}/${event.absoluteYear} ${event.absoluteHour}:${event.absoluteMinute}"/>--}%
+                            %{--<span class="add-on">--}%
+                                %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
+                                %{--</i>--}%
+                            %{--</span>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
                 </div>
                 <div class="row formRow">
                     <div class="span1">
@@ -183,7 +196,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration"/>
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
                         </label>
                     </div>
 
@@ -192,7 +205,7 @@
                     </div>
                     <div class="span1">
                         <label for="EventTiming">
-                            <g:message code="redactintrigue.event.eventTiming" default="Timing"/>
+                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
                         </label>
                     </div>
 
@@ -229,7 +242,17 @@
                         <g:message code="redactintrigue.event.eventDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="eventDescription" id="eventDescription" value="${event.description}" rows="5" cols="100"/>
+
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="eventRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
+                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
+                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+                        ${event.description.encodeAsHTML()}
+                    </div>
+                </div>
                 %{--</div>--}%
                 <input type="button" name="Update" data-id="${event.id}" value="Update" class="btn btn-primary updateEvent"/>
             </form>

@@ -34,7 +34,7 @@
                                 <g:message code="redactintrigue.role.roleCode" default="Name"/>
                             </label>
                         </div>
-                        <div class="span4">
+                        <div class="span8">
                             <g:textField name="roleCode" id="roleCode" value="" required=""/>
                         </div>
                     </div>
@@ -212,7 +212,7 @@
                                     <g:message code="redactintrigue.role.roleCode" default="Name"/>
                                 </label>
                             </div>
-                            <div class="span4">
+                            <div class="span8">
                                 <g:textField name="roleCode" id="roleCode" value="${role.code}" required=""/>
                             </div>
                         </div>

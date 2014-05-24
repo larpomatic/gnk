@@ -5,6 +5,9 @@ $(function(){
 
     initSearchBoxes();
 
+    // ajout du nombre de relation
+    $('.numberRelation').html($('.RelationRow').size());
+
     // modifie un role dans la base
     $('.updateRole').click(function() {
         var roleId = $(this).attr("data-id");
@@ -71,26 +74,34 @@ $(function(){
         pickSeconds: false
     });
 
+    // empeche les dropdown de se fermer lorsqu'on focus un input
+    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+        e.stopPropagation();
+    });
+
     //permet d'ajouter rapidement un objet, lieu ou role
-    $(".leftMenuList input").keypress(function(e) {
+    $(".leftMenuList input, .inputOther").keypress(function(e) {
         if(e.which == 13) {
             var entity = $(this).attr("data-entity");
             var badgeWarning = '<i class="icon-warning-sign"></i>';
             appendEntity(entity, $(this).val(), $(this).attr("data-label"), badgeWarning);
             $(this).val('');
+            return false;
         }
     });
 
     initializeTextEditor();
 
-    $('.savePlotForm').submit(function() {
-//        initializeTextEditor();
-        var description = $('#plotRichTextEditor').html();
+    // on ajoute la description d'un plot dans le champ hidden correspondant
+    $('.saveForm').submit(function() {
+        var description = $('.richTextEditor', this).html();
         description = transformDescription(description);
-//        var escaped = $("div.someClass").text(someHtmlString).html();
-        $('input[type="hidden"][name="plotDescription"]').val(description);
+        $('.descriptionContent', this).val(description);
     });
 
+    $('.btnFullScreen').click(function() {
+        $(this).parent().parent().toggleClass("fullScreenOpen");
+    });
 });
 
 //Recherche de tags
@@ -150,7 +161,8 @@ function appendEntity(entity, value, label, flag) {
         flag: flag
     };
     var html = template(context);
-    $('.' + entity + 'Selector').append(html);
+    $(html).insertBefore('.' + entity + 'Selector li:last-child');
+//    $('.' + entity + 'Selector').append(html);
     createNotification("info", "ajout réussi.", "Votre entité a bien été ajoutée, vous pourrez la compléter ultérieurement.");
 }
 
@@ -302,20 +314,22 @@ function setCarretPos() {
     sel.addRange(carretPos);
 }
 
+// on remplace les balise de la description par des span html
 function initializeTextEditor() {
     $('.richTextEditor').each(function() {
         var description = $(this).html();
         description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
-        description = description.replace(/&lt;n:/g, '<span class="label label-important" contenteditable="false">');
+        description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
         description = description.replace(/&gt;/g, '</span>');
         $(this).html(description);
     });
 }
 
+// on remplace les span html dans une description par des balises
 function transformDescription(description) {
     description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
-    description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<n:');
+    description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');

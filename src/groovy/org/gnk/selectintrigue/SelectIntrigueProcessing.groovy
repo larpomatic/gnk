@@ -92,9 +92,9 @@ public class SelectIntrigueProcessing {
 //            characterPips.put(player, pipPlayer);
 //        }
 //        int test = 0;
-        if (pipCoreCharacter <= _gn.characterSet.size()) {
-            //Do something
-        }
+//        if (pipCoreCharacter <= _gn.characterSet.size()) {
+//            //Do something
+//        }
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -126,6 +126,7 @@ public class SelectIntrigueProcessing {
     private int evaluateGn(boolean flush) {
         int result = 0;
         _currentPip = 0;
+        int nbRolePipCoreok = 0;
         if (flush) {
             for (Entry<Tag, Integer> entry : _value.entrySet()) {
                 entry.setValue(0);
@@ -137,6 +138,7 @@ public class SelectIntrigueProcessing {
                         entry.setValue(entry.getValue() + plot.getSumPipRoles(_gn.nbPlayers) * plot.getTagWeight(entry.getKey()));
                     }
                 }
+                nbRolePipCoreok += plot.getNbRoleOverPipcore(_gn.pipCore);
             }
         }
         for (Entry<Tag, Integer> entry : _value.entrySet()) {
@@ -149,6 +151,8 @@ public class SelectIntrigueProcessing {
             int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
             result -= inter * inter;
         }
+        int bonusMalusPipcore = _gn.nbPlayers - nbRolePipCoreok;
+        //appliquer le bonus/malus en fonction de currentPip ?
         return result;
     }
 
@@ -183,7 +187,7 @@ public class SelectIntrigueProcessing {
         }
     }
 
-    private boolean pipCoreCharacter = 0;
+//    private boolean pipCoreCharacter = 0;
 
     private boolean plotIsCompatible(Plot plot) {
         // FIXME
@@ -242,9 +246,9 @@ public class SelectIntrigueProcessing {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
-                pipCoreCharacter += 1;
-            }
+//            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
+//                pipCoreCharacter += 1;
+//            }
         }
         return true;
     }

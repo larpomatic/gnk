@@ -41,7 +41,7 @@
                                 <g:message code="redactintrigue.tabs.relations" default="Relations"/>
                             </span>
                         </a>
-                        <span class="badge badge-inverse">?</span>
+                        <span class="badge badge-inverse numberRelation">?</span>
                     </li>
                     <li class="wrapLi cluesLi">
                         <a class="wrapLink" href="#wrap5" onclick="bgenScroll();">

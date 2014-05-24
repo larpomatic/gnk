@@ -118,6 +118,59 @@
     border-bottom: none;
 }
 
+#edit-plot #roleOther,
+#edit-plot #placeOther,
+#edit-plot #resourceOther {
+    border: solid 1px !important;
+    height: 22px !important;
+    font-size: 15px !important;
+    margin-top: 5px !important;
+    color: black !important;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    width: inherit !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+#edit-plot .leftMenuList a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#edit-plot .span8 input {
+    width: 100%;
+}
+
+.fullScreenOpen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../images/redactIntrigue/roles/lines.png) repeat;
+    z-index: 99999999;
+    padding: 15px;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.fullScreenOpen .richTextEditor {
+    margin: 20px;
+    height: 85% !important;
+}
+
+.btnFullScreen {
+    background: url(../images/redactIntrigue/fullScreenButton.png) no-repeat;
+    background-size: 100%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.fullScreenOpen .btnFullScreen {
+    background: url(../images/redactIntrigue/reverseFullScreen.png) no-repeat;
+    background-size: 100%;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

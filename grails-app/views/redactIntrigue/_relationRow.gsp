@@ -1,4 +1,4 @@
-<tr>
+<tr class="RelationRow">
 	<td><g:if test="${isRole1}">
 			${roleHasRelationWithRoles.role2.code}
 		</g:if> <g:if test="${isRole1 == false}">

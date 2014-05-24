@@ -29,7 +29,7 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="resourceCode" id="resourceCode" value="" required=""/>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
                             </label>
                         </div>
 
-                        <div class="span4">
+                        <div class="span8">
                             <g:textField name="resourceCode" id="resourceCode" value="${resource.code}" required=""/>
                         </div>
                     </div>

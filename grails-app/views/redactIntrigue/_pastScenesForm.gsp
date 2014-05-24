@@ -21,6 +21,7 @@
     <div class="tab-content">
         <div class="tab-pane active" id="newPastScene">
             <form name="newPastSceneForm" data-url="">
+                <g:hiddenField name="pastSceneDescription" class="descriptionContent" value=""/>
                 %{--<div style="margin:auto">--}%
                 <div class="row formRow">
                     <div class="span1">
@@ -29,7 +30,7 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="pastSceneTitle" id="pastSceneTitle" value="" required=""/>
                     </div>
                 </div>
@@ -90,7 +91,17 @@
                         <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="pastSceneDescription" id="pastSceneDescription" value="" rows="5" cols="100"/>
+
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="pastSceneRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
+                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
+                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+
+                    </div>
+                </div>
                 %{--</div>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
             </form>
@@ -100,6 +111,7 @@
             <div class="tab-pane" id="pastScene_${pastScene.id}">
                 <form name="updatePastScene_${pastScene.id}" data-url="<g:createLink controller="PastScene" action="Update" id="${pastScene.id}"/>">
                     <g:hiddenField name="id" value="${pastScene.id}"/>
+                    <g:hiddenField name="pastSceneDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
 
                         %{--<div style="margin:auto">--}%
@@ -110,7 +122,7 @@
                             </label>
                         </div>
 
-                        <div class="span4">
+                        <div class="span8">
                             <g:textField name="pastSceneTitle" id="pastSceneTitle" value="${pastScene.title}" required=""/>
                         </div>
                     </div>
@@ -125,7 +137,7 @@
                         <div class="span4">
                             <div class="input-append date datetimepicker">
                                 <input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime${pastScene.id}" name="pastSceneDatetime"
-                                value="${pastScene.absoluteDay}/${pastScene.absoluteMonth}/${pastScene.absoluteYear} ${pastScene.absoluteHour}:${pastScene.absoluteMinute}"/>
+                                value="${pastScene.dateDay}/${pastScene.dateMonth}/${pastScene.dateYear} ${pastScene.dateHour}:${pastScene.dateMinute}"/>
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar">
                                     </i>
@@ -172,7 +184,17 @@
                             <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>
                         </label>
                     </div>
-                    <g:textArea name="pastSceneDescription" id="pastSceneDescription" value="${pastScene.description}" rows="5" cols="100"/>
+
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="pastSceneRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
+                             style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
+                             -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+                            ${pastScene.description.encodeAsHTML()}
+                        </div>
+                    </div>
                     %{--</div>--}%
                     <input type="button" name="Update" data-id="${pastScene.id}" value="Update" class="btn btn-primary updatePastScene"/>
                 </form>

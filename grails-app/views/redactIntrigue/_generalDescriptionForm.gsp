@@ -23,11 +23,11 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newEvent">
-            <g:form method="post" class="savePlotForm">
+            <g:form method="post" class="saveForm">
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
-                <g:hiddenField name="plotDescription" value=""/>
+                <g:hiddenField name="plotDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="name">
@@ -107,60 +107,16 @@
                             %{--cols="100"/>--}%
                 %{--<g:render template="richTextEditor" model="['description':${plotInstance.description}]"/>--}%
 
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
 
-                <!-- navbar des différentes catégories d'objets insérables -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                        Personnage <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu roleSelector">
-                        <g:each in="${plotInstance.roles}" status="i5" var="role">
-                            <li data-id="${role.id}">
-                                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-success&quot; contenteditable=&quot;false&quot;>${role.code}</span>'); return false;">
-                                    ${role.code}
-                                </a>
-                            </li>
-                        </g:each>
-                    </ul>
+                    <!-- Editor -->
+                    <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
+                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
+                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+                        ${plotInstance.description.encodeAsHTML()}
+                    </div>
                 </div>
-
-                <div class="btn-group">
-                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                        Lieu <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu placeSelector">
-                        <g:each in="${plotInstance.genericPlaces}" status="i5" var="genericPlace">
-                            <li>
-                                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-warning&quot; contenteditable=&quot;false&quot;>${genericPlace.code}</span>'); return false;">
-                                    ${genericPlace.code}
-                                </a>
-                            </li>
-                        </g:each>
-                    </ul>
-                </div>
-
-                <div class="btn-group">
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                        Objet <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu resourceSelector">
-                        <g:each in="${plotInstance.genericResources}" status="i5" var="genericResource">
-                            <li>
-                                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-important&quot; contenteditable=&quot;false&quot;>${genericResource.code}</span>'); return false;">
-                                    ${genericResource.code}
-                                </a>
-                            </li>
-                        </g:each>
-                    </ul>
-                </div>
-
-                <!-- Editor -->
-                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-                     style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                     -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
-                    ${plotInstance.description.encodeAsHTML()}
-                </div>
-
 
                 <div id="universesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
