@@ -121,8 +121,8 @@
                     </div>
 
                     <div class="span4">
-                        <g:select name="pastScenePlace" id="pastScenePlace" from="${['Lieu1', 'Lieu2', 'Lieu3']}"
-                                  keys="${['Lieu1', 'Lieu2', 'Lieu3']}" required=""/>
+                        <g:select name="pastScenePlace" id="pastScenePlace" from="${plotInstance.genericPlaces}"
+                                  optionKey="id" required="" optionValue="code" noSelection="${['null':'']}"/>
                     </div>
                     <div class="span1">
                         <label for="pastScenePredecessor">
@@ -131,8 +131,8 @@
                     </div>
 
                     <div class="span4">
-                        <g:select name="pastScenePredecessor" id="pastScenePredecessor" from="${['PastScene1', 'PastScene2', 'PastScene3']}"
-                                  keys="${['PastScene1', 'PastScene2', 'PastScene3']}" required=""/>
+                        <g:select name="pastScenePredecessor" id="pastScenePredecessor" from="${plotInstance.pastescenes}"
+                                  optionKey="id"  required="" optionValue="title" noSelection="${['null':'']}"/>
                     </div>
                 </div>
 

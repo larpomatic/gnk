@@ -100,8 +100,8 @@
                     </div>
 
                     <div class="span4">
-                        <g:select name="eventPlace" id="eventPlace" from="${['Lieu1', 'Lieu2', 'Lieu3']}"
-                                  keys="${['Lieu1', 'Lieu2', 'Lieu3']}" required=""/>
+                        <g:select name="eventPlace" id="eventPlace" from="${plotInstance.genericPlaces}"
+                                  optionKey="id" required="" optionValue="code" noSelection="${['null':'']}"/>
                     </div>
 
                     <div class="span1">
@@ -111,8 +111,8 @@
                     </div>
 
                     <div class="span4">
-                        <g:select name="eventPredecessor" id="eventPredecessor" from="${['Evenement1', 'Evenement2', 'Evenement3']}"
-                                  keys="${['Evenement1', 'Evenement2', 'Evenement3']}" required=""/>
+                        <g:select name="eventPredecessor" id="eventPredecessor" from="${plotInstance.events}"
+                                  optionKey="id"  required="" optionValue="name" noSelection="${['null':'']}"/>
                     </div>
                 </div>
 
