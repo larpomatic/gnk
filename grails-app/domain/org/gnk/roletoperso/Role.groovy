@@ -2,6 +2,7 @@ package org.gnk.roletoperso
 
 import groovy.sql.Sql
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
@@ -207,4 +208,11 @@ class Role implements Comparable {
         return roleHasEvent;
     }
 
+    public getRoleHasPastScene(Pastscene pastscene) {
+        RoleHasPastscene roleHasPastscene = RoleHasPastscene.createCriteria().get {
+            like("role", this)
+            like("pastscene", pastscene)
+        }
+        return roleHasPastscene;
+    }
 }

@@ -13,8 +13,9 @@
 #edit-plot textarea,
 #edit-plot select
 {
-    font-family: 'Shadows Into Light', cursive !important;
+    /*font-family: 'Shadows Into Light', cursive !important;*/
     font-size: 24px !important;
+    font-family: 'Gudea', sans-serif !important;
 }
 
 #edit-plot input[type='text'],
@@ -40,7 +41,8 @@
     height: 200px;
     margin: -22px 0 40px 0;
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
-    font-family: 'Shadows Into Light', cursive;
+    /*font-family: 'Shadows Into Light', cursive;*/
+    font-family: 'Gudea', sans-serif;
     font-size: 18px;
     color: #18326d;
     letter-spacing: 3px;

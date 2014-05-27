@@ -119,15 +119,15 @@
 
                     <div class="modal-body">
                         <ul class="roleEvent">
-                            <div class="accordion" id="accordion">
+                            <div class="accordion" id="accordionEvent">
                                 <g:each in="${plotInstance.events}" var="event">
                                     <div class="accordion-group">
                                         <div class="accordion-heading">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse${event.id}">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent" href="#collapseEvent${event.id}">
                                                 ${event.name}
                                             </a>
                                         </div>
-                                        <div id="collapse${event.id}" class="accordion-body collapse">
+                                        <div id="collapseEvent${event.id}" class="accordion-body collapse">
                                             <div class="accordion-inner">
                                                 <div class="formRow">
                                                     <div class="span1">
@@ -161,28 +161,47 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <div id="rolePastScenesModal" class="modal hide fade" tabindex="-1">
+                <div id="rolePastScenesModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>
                             <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
                         </h3>
-                        <input class="input-medium search-query" data-content="rolePastScene"
-                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                        %{--<input class="input-medium search-query" data-content="rolePastScene"--}%
+                               %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                     </div>
 
                     <div class="modal-body">
                         <ul class="rolePastScene">
-                            <g:each in="${plotInstance.pastescenes}" var="pastscenes">
-                                <g:each in="${pastscenes.roleHasPastscenes}" var="roleHasPastScene">
-                                    <li class="modalLi" data-name="${roleHasPastScene.title.toLowerCase()}">
-                                        <label>
-                                            <g:checkBox name="rolePastScene_${roleHasPastScene.id}" id="rolePastScene_${roleHasPastScene.id}"/>
-                                            ${fieldValue(bean: roleHasPastScene, field: "title")}
-                                        </label>
-                                    </li>
+                            <div class="accordion" id="accordionPastScene">
+                                <g:each in="${plotInstance.pastescenes}" var="pastscene">
+                                    <div class="accordion-group">
+                                        <div class="accordion-heading">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene${pastscene.id}">
+                                                ${pastscene.title}
+                                            </a>
+                                        </div>
+                                        <div id="collapsePastScene${pastscene.id}" class="accordion-body collapse">
+                                            <div class="accordion-inner">
+                                                <div class="formRow">
+                                                    <div class="span1">
+                                                        <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                    </div>
+                                                    <div class="span8">
+                                                        <g:textField name="roleHasPastSceneTitle" value=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="row formRow text-center">
+                                                    <label for="roleDescription">
+                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                    </label>
+                                                </div>
+                                                <g:textArea name="roleHasPastSceneDescription" value="" rows="5" cols="100"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </g:each>
-                            </g:each>
+                            </div>
                         </ul>
                     </div>
 
@@ -321,15 +340,15 @@
 
                         <div class="modal-body">
                             <ul class="roleEvent${role.id}">
-                                <div class="accordion" id="accordion${role.id}">
+                                <div class="accordion" id="accordionEvent${role.id}">
                                     <g:each in="${plotInstance.events}" var="event">
                                         <div class="accordion-group">
                                             <div class="accordion-heading">
-                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion${role.id}" href="#collapse${role.id}-${event.id}">
+                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}" href="#collapseEvent${role.id}-${event.id}">
                                                     ${event.name}
                                                 </a>
                                             </div>
-                                            <div id="collapse${role.id}-${event.id}" class="accordion-body collapse">
+                                            <div id="collapseEvent${role.id}-${event.id}" class="accordion-body collapse">
                                                 <div class="accordion-inner">
                                                     <div class="formRow">
                                                         <div class="span1">
@@ -363,29 +382,47 @@
                             <button class="btn" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
-                    <div id="rolePastScenesModal_${role.id}" class="modal hide fade" tabindex="-1">
+                    <div id="rolePastScenesModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>
                                 <g:message code="redactintrigue.role.rolePastScene" default="Past Scenes"/>
                             </h3>
-                            <input class="input-medium search-query" data-content="rolePastScene${role.id}"
-                                        placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            %{--<input class="input-medium search-query" data-content="rolePastScene${role.id}"--}%
+                                        %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                         </div>
 
                         <div class="modal-body">
                             <ul class="rolePastScene${role.id}">
-                                <g:each in="${plotInstance.pastescenes}" var="pastscenes">
-                                    <g:each in="${pastscenes.roleHasPastscenes}" var="roleHasPastScene">
-                                        <li class="modalLi" data-name="${roleHasPastScene.title.toLowerCase()}">
-                                            <label>
-                                                <g:checkBox name="rolePastScene_${roleHasPastScene.id}" id="rolePastScene_${roleHasPastScene.id}"
-                                                            checked="${role.roleHasPastscenes.contains(roleHasPastScene)}"/>
-                                                ${fieldValue(bean: roleHasPastScene, field: "title")}
-                                            </label>
-                                        </li>
+                                <div class="accordion" id="accordionPastScene${role.id}">
+                                    <g:each in="${plotInstance.pastescenes}" var="pastscene">
+                                        <div class="accordion-group">
+                                            <div class="accordion-heading">
+                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}" href="#collapsePastScene${role.id}-${pastscene.id}">
+                                                    ${pastscene.title}
+                                                </a>
+                                            </div>
+                                            <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">
+                                                <div class="accordion-inner">
+                                                    <div class="formRow">
+                                                        <div class="span1">
+                                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                        </div>
+                                                        <div class="span8">
+                                                            <g:textField name="roleHasPastSceneTitle${role.getRoleHasPastScene(pastscene)?.id}" value="${role.getRoleHasPastScene(pastscene)?.title}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row formRow text-center">
+                                                        <label for="roleDescription">
+                                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                        </label>
+                                                    </div>
+                                                    <g:textArea name="roleHasPastSceneDescription${role.getRoleHasPastScene(pastscene)?.id}" value="${role.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </g:each>
-                                </g:each>
+                                </div>
                             </ul>
                         </div>
 
