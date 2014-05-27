@@ -171,6 +171,15 @@
     background-size: 100%;
 }
 
+.pastSceneRelativeTimeUnit {
+    cursor: pointer;
+}
+
+#edit-plot .largeModal {
+    width: 1000px;
+    margin-left: -500px;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

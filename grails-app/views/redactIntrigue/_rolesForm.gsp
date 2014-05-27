@@ -107,28 +107,53 @@
                     <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
                 %{--</div>--}%
 
-                <div id="roleEventsModal" class="modal hide fade" tabindex="-1">
+                <div id="roleEventsModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>
                             <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                         </h3>
-                        <input class="input-medium search-query" data-content="roleEvent"
-                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                        %{--<input class="input-medium search-query" data-content="roleEvent"--}%
+                               %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                     </div>
 
                     <div class="modal-body">
                         <ul class="roleEvent">
-                            <g:each in="${plotInstance.events}" var="event">
-                                <g:each in="${event.roleHasEvents}" var="roleHasEvent">
-                                    <li class="modalLi" data-name="${roleHasEvent.title.toLowerCase()}">
-                                        <label>
-                                            <g:checkBox name="roleEvent_${roleHasEvent.id}" id="roleEvent_${roleHasEvent.id}"/>
-                                            ${fieldValue(bean: roleHasEvent, field: "title")}
-                                        </label>
-                                    </li>
+                            <div class="accordion" id="accordion">
+                                <g:each in="${plotInstance.events}" var="event">
+                                    <div class="accordion-group">
+                                        <div class="accordion-heading">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse${event.id}">
+                                                ${event.name}
+                                            </a>
+                                        </div>
+                                        <div id="collapse${event.id}" class="accordion-body collapse">
+                                            <div class="accordion-inner">
+                                                <div class="formRow">
+                                                    <div class="span1">
+                                                        <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                    </div>
+                                                    <div class="span4">
+                                                        <g:textField name="roleHasEventTitle" value=""/>
+                                                    </div>
+                                                    <div class="span1">
+                                                        <g:message code="redactintrigue.role.roleAnnonced" default="Is Annonced"/>
+                                                    </div>
+                                                    <div class="span4">
+                                                        <g:checkBox name="roleHasEventannounced" checked=""/>
+                                                    </div>
+                                                </div>
+                                                <div class="row formRow text-center">
+                                                    <label for="roleDescription">
+                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                    </label>
+                                                </div>
+                                                <g:textArea name="roleHasEventDescription" value="" rows="5" cols="100"/>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </g:each>
-                            </g:each>
+                            </div>
                         </ul>
                     </div>
 
@@ -284,29 +309,53 @@
                         </div>
                         <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
 
-                    <div id="roleEventsModal_${role.id}" class="modal hide fade" tabindex="-1">
+                    <div id="roleEventsModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>
                                 <g:message code="redactintrigue.role.roleEvent" default="Events"/>
                             </h3>
-                            <input class="input-medium search-query" data-content="roleEvent${role.id}"
-                                   placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            %{--<input class="input-medium search-query" data-content="roleEvent${role.id}"--}%
+                                   %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                         </div>
 
                         <div class="modal-body">
                             <ul class="roleEvent${role.id}">
-                                <g:each in="${plotInstance.events}" var="event">
-                                    <g:each in="${event.roleHasEvents}" var="roleHasEvent">
-                                        <li class="modalLi" data-name="${roleHasEvent.title.toLowerCase()}">
-                                            <label>
-                                                <g:checkBox name="roleEvent_${roleHasEvent.id}" id="roleEvent_${roleHasEvent.id}"
-                                                            checked="${role.roleHasEvents.contains(roleHasEvent)}"/>
-                                                ${fieldValue(bean: roleHasEvent, field: "title")}
-                                            </label>
-                                        </li>
+                                <div class="accordion" id="accordion${role.id}">
+                                    <g:each in="${plotInstance.events}" var="event">
+                                        <div class="accordion-group">
+                                            <div class="accordion-heading">
+                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion${role.id}" href="#collapse${role.id}-${event.id}">
+                                                    ${event.name}
+                                                </a>
+                                            </div>
+                                            <div id="collapse${role.id}-${event.id}" class="accordion-body collapse">
+                                                <div class="accordion-inner">
+                                                    <div class="formRow">
+                                                        <div class="span1">
+                                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                        </div>
+                                                        <div class="span4">
+                                                            <g:textField name="roleHasEventTitle${role.getRoleHasEvent(event)?.id}" value="${role.getRoleHasEvent(event)?.title}"/>
+                                                        </div>
+                                                        <div class="span1">
+                                                            <g:message code="redactintrigue.role.roleAnnonced" default="Is Annonced"/>
+                                                        </div>
+                                                        <div class="span4">
+                                                            <g:checkBox name="roleHasEventannounced${role.getRoleHasEvent(event)?.id}" checked="${role.getRoleHasEvent(event)?.isAnnounced}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row formRow text-center">
+                                                        <label for="roleDescription">
+                                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                        </label>
+                                                    </div>
+                                                    <g:textArea name="roleHasEventDescription${role.getRoleHasEvent(event)?.id}" value="${role.getRoleHasEvent(event)?.description}" rows="5" cols="100"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </g:each>
-                                </g:each>
+                                </div>
                             </ul>
                         </div>
 

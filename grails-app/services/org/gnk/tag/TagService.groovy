@@ -31,7 +31,7 @@ class TagService {
 
     def List<Tag> getPlaceTagQuery() {
         def result = Tag.withCriteria{
-            tagFamily { eq ("value", "> Lieu Superficie") }
+            tagFamily { eq ("relevantPlace", true) }
         }
         return result;
     }

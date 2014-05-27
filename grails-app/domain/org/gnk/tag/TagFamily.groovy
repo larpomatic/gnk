@@ -10,6 +10,7 @@ class TagFamily {
 	String value
 	boolean relevantPlot
 	boolean relevantRole
+    boolean relevantPlace
     boolean relevantResource
 
     static hasMany = [ tags: Tag ]

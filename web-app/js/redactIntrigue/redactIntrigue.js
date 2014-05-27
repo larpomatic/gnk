@@ -99,8 +99,26 @@ $(function(){
         $('.descriptionContent', this).val(description);
     });
 
+    // mode plein ecran
     $('.btnFullScreen').click(function() {
         $(this).parent().parent().toggleClass("fullScreenOpen");
+    });
+
+    //bascule en mode temps relatif sur les pastscenes
+    $('.relativeButton').click(function() {
+        $('.pastSceneRelative', $(this).parent().parent()).removeClass("hidden");
+        $('.pastSceneAbsolute', $(this).parent().parent()).addClass('hidden');
+    });
+
+    //bascule en mode temps absolu sur les pastscenes
+    $('.absoluteButton').click(function() {
+        $('.pastSceneAbsolute', $(this).parent().parent()).removeClass("hidden");
+        $('.pastSceneRelative', $(this).parent().parent()).addClass('hidden');
+    });
+
+    //change l'unité de temps sur les pastScenes
+    $('.pastSceneRelativeTimeUnit').click(function() {
+        $(".relativeTimeMessage", $(this).parent().parent().prev()).html($(this).html());
     });
 });
 

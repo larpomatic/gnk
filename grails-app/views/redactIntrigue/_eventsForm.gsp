@@ -30,25 +30,19 @@
                         </label>
                     </div>
 
-                    <div class="span8">
+                    <div class="span4">
                         <g:textField name="EventName" id="EventName" value="" required=""/>
                     </div>
 
-                    %{--<div class="span1">--}%
-                        %{--<label for="eventDatetime">--}%
-                            %{--<g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>--}%
-                        %{--</label>--}%
-                    %{--</div>--}%
+                    <div class="span1">
+                        <label for="EventDuration">
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                        </label>
+                    </div>
 
-                    %{--<div class="span4">--}%
-                        %{--<div class="input-append date datetimepicker">--}%
-                            %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime" name="eventDatetime"/>--}%
-                            %{--<span class="add-on">--}%
-                                %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
-                                %{--</i>--}%
-                            %{--</span>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
+                    <div class="span4">
+                        <g:field type="number" name="EventDuration" id="EventDuration" value="" required=""/>
+                    </div>
                 </div>
                 <div class="row formRow">
                     <div class="span1">
@@ -73,14 +67,21 @@
                 </div>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                        <label for="eventDatetime">
+                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventDuration" id="EventDuration" value="" required=""/>
+                        <div class="input-append date datetimepicker">
+                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime" name="eventDatetime"/>
+                            <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                </i>
+                            </span>
+                        </div>
                     </div>
+
                     <div class="span1">
                         <label for="EventTiming">
                             <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
@@ -151,26 +152,19 @@
                         </label>
                     </div>
 
-                    <div class="span8">
+                    <div class="span4">
                         <g:textField name="EventName" id="EventName" value="${event.name}" required=""/>
                     </div>
+                    <div class="span1">
+                        <label for="EventDuration">
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                        </label>
+                    </div>
 
-                    %{--<div class="span1">--}%
-                        %{--<label for="eventDatetime">--}%
-                            %{--<g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>--}%
-                        %{--</label>--}%
-                    %{--</div>--}%
+                    <div class="span4">
+                        <g:field type="number" name="EventDuration" id="EventDuration" value="${event.duration}" required=""/>
+                    </div>
 
-                    %{--<div class="span4">--}%
-                        %{--<div class="input-append date datetimepicker">--}%
-                            %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime${event.id}" name="eventDatetime"--}%
-                                   %{--value="${event.absoluteDay}/${event.absoluteMonth}/${event.absoluteYear} ${event.absoluteHour}:${event.absoluteMinute}"/>--}%
-                            %{--<span class="add-on">--}%
-                                %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
-                                %{--</i>--}%
-                            %{--</span>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
                 </div>
                 <div class="row formRow">
                     <div class="span1">
@@ -195,14 +189,22 @@
                 </div>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                        <label for="eventDatetime${event.id}">
+                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventDuration" id="EventDuration" value="${event.duration}" required=""/>
+                        <div class="input-append date datetimepicker">
+                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime${event.id}" name="eventDatetime"
+                                   value="${event.absoluteDay}/${event.absoluteMonth}/${event.absoluteYear} ${event.absoluteHour}:${event.absoluteMinute}"/>
+                            <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                                </i>
+                            </span>
+                        </div>
                     </div>
+
                     <div class="span1">
                         <label for="EventTiming">
                             <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>

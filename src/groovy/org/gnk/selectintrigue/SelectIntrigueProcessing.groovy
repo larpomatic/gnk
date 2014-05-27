@@ -152,7 +152,11 @@ public class SelectIntrigueProcessing {
             result -= inter * inter;
         }
         int bonusMalusPipcore = _gn.nbPlayers - nbRolePipCoreok;
-        //appliquer le bonus/malus en fonction de currentPip ?
+        if (bonusMalusPipcore < 0)
+            bonusMalusPipcore = 0;
+
+        int remainPipPercent = ((_gn.getPipMin() - _currentPip) * 100)/_gn.getPipMin();
+        result -= (bonusMalusPipcore * result * remainPipPercent) / 100;
         return result;
     }
 

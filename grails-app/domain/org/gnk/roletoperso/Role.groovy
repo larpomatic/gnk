@@ -1,6 +1,7 @@
 package org.gnk.roletoperso
 
 import groovy.sql.Sql
+import org.gnk.resplacetime.Event
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
@@ -196,6 +197,14 @@ class Role implements Comparable {
 
     String getterCode() {
         return code;
+    }
+
+    public getRoleHasEvent(Event event) {
+        RoleHasEvent roleHasEvent = RoleHasEvent.createCriteria().get {
+            like("role", this)
+            like("event", event)
+        }
+        return roleHasEvent;
     }
 
 }
