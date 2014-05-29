@@ -2,6 +2,7 @@ package org.gnk.roletoperso
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.resplacetime.Event
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
@@ -14,11 +15,12 @@ class RoleController {
 
 	def save () {
         Role role = new Role(params);
+        Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role, true);
         role = Role.findAllWhere("code": role.getCode()).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
-        def jsonRole = buildJson(role, roleTagList);
+        def jsonRole = buildJson(role, roleTagList, plot);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("role", jsonRole);
@@ -39,7 +41,7 @@ class RoleController {
         return jsonTagList;
     }
 
-    def buildJson(Role role, roleTagList) {
+    def buildJson(Role role, roleTagList, Plot plot) {
         JSONObject jsonRole = new JSONObject();
         jsonRole.put("code", role.getCode());
         jsonRole.put("id", role.getId());
@@ -51,12 +53,29 @@ class RoleController {
         JSONArray jsonTagList = new JSONArray();
         for (Tag roleTag in roleTagList) {
             if (role.hasRoleTag(roleTag)) {
-//                JSONObject jsonTag = new JSONObject();
-//                jsonTag.put("tag", roleTag.getId());
                 jsonTagList.add(roleTag.getId());
             }
         }
         jsonRole.put("tagList", jsonTagList);
+        JSONArray jsonEventList = new JSONArray();
+        for (Event event in plot.events) {
+            RoleHasEvent roleHasEvent = role.getRoleHasEvent(event);
+            JSONObject jsonEvent = new JSONObject();
+            if (roleHasEvent) {
+                jsonEvent.put("title", roleHasEvent.title);
+                jsonEvent.put("description", roleHasEvent.description);
+                jsonEvent.put("isAnnounced", roleHasEvent.isAnnounced);
+            }
+            else {
+                jsonEvent.put("title", "");
+                jsonEvent.put("description", "");
+                jsonEvent.put("isAnnounced", "");
+            }
+            jsonEvent.put("eventId", event.id);
+            jsonEvent.put("eventName", event.name);
+            jsonEventList.add(jsonEvent);
+        }
+        jsonRole.put("eventList", jsonEventList);
         return jsonRole;
     }
 
@@ -101,30 +120,68 @@ class RoleController {
 		} else {
 			return false
 		}
-
 		//deleteRoleHasRoleTag(newRole)
 		if(newRole.roleHasTags) {
 			newRole.roleHasTags.clear();
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
-		params.each {
-			if (it.key.startsWith("roleTags_")) {
-				RoleHasTag roleHasTag = new RoleHasTag()
-				Tag roleTag = Tag.get((it.key - "roleTags_") as Integer);
-				roleHasTag.tag = roleTag
-				roleHasTag.weight = TagService.LOCKED
-				roleHasTag.role = newRole
-				newRole.roleHasTags.add(roleHasTag)
-			}
-		}
+        if(newRole.roleHasEvents) {
+            newRole.roleHasEvents.clear();
+        } else {
+            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
+        }
 		if (isNew)
 			params.updateRoleResult = newRole.myInsert();
 		else
-			params.updateRoleResult = !!(newRole.save(flush: true))
-//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
+			params.updateRoleResult = !!(newRole.save(flush: true));
+
+        newRole = Role.findAllWhere("code": newRole.getCode()).first();
+        params.each {
+            if (it.key.startsWith("roleTags_")) {
+                RoleHasTag roleHasTag = new RoleHasTag();
+                Tag roleTag = Tag.get((it.key - "roleTags_") as Integer);
+                roleHasTag.tag = roleTag
+                roleHasTag.weight = TagService.LOCKED
+                roleHasTag.role = newRole
+                newRole.roleHasTags.add(roleHasTag)
+            }
+            else if (it.key.startsWith("roleHasEventTitle")) {
+                Event event = Event.get((it.key - "roleHasEventTitle") as Integer);
+                RoleHasEvent roleHasEvent = createRoleHasEvent(newRole, event);
+                newRole.addToRoleHasEvents(roleHasEvent);
+            }
+        }
+        newRole.save(flush: true);
         return true;
 	}
+
+    def createRoleHasEvent(Role newRole, Event event) {
+        RoleHasEvent roleHasEvent = RoleHasEvent.createCriteria().get {
+            like("role.id", newRole.id)
+            like("event", event)
+        };
+        if (!roleHasEvent) {
+            roleHasEvent = new RoleHasEvent();
+        }
+        roleHasEvent.title = params.get("roleHasEventTitle" + event.id);
+        if (params.get("roleHasEventannounced" + event.id) != null)
+            roleHasEvent.isAnnounced = true;
+        else
+            roleHasEvent.isAnnounced = false;
+        roleHasEvent.description = params.get("roleHasEventDescription" + event.id);
+        roleHasEvent.dateCreated = new Date();
+        roleHasEvent.lastUpdated = new Date();
+        roleHasEvent.version = 1;
+        roleHasEvent.comment = "";
+        roleHasEvent.event = event;
+        roleHasEvent.role = newRole;
+        roleHasEvent.evenementialDescription = "";
+        roleHasEvent.save(flush: true);
+        event.addToRoleHasEvents(roleHasEvent);
+        event.save();
+        return roleHasEvent;
+    }
 
 	def deleteRoleHasRoleTag (Role role) {
 		if (!role.roleHasRoleTags)
@@ -154,6 +211,5 @@ class RoleController {
         render(contentType: "application/json") {
             object(isdelete: isDelete)
         }
-//		redirect(controller: "redactIntrigue", action: "edit", id: params.plotId, params: [screenStep: 1])
 	}
 }
