@@ -3,6 +3,7 @@ package org.gnk.roletoperso
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
@@ -76,6 +77,23 @@ class RoleController {
             jsonEventList.add(jsonEvent);
         }
         jsonRole.put("eventList", jsonEventList);
+        JSONArray jsonPastsceneList = new JSONArray();
+        for (Pastscene pastscene in plot.pastescenes) {
+            RoleHasPastscene roleHasPastscene = role.getRoleHasPastScene(pastscene);
+            JSONObject jsonPastscene = new JSONObject();
+            if (roleHasPastscene) {
+                jsonPastscene.put("title", roleHasPastscene.title);
+                jsonPastscene.put("description", roleHasPastscene.description);
+            }
+            else {
+                jsonPastscene.put("title", "");
+                jsonPastscene.put("description", "");
+            }
+            jsonPastscene.put("pastsceneId", pastscene.id);
+            jsonPastscene.put("pastsceneTitle", pastscene.title);
+            jsonPastsceneList.add(jsonPastscene);
+        }
+        jsonRole.put("pastsceneList", jsonPastsceneList);
         return jsonRole;
     }
 
@@ -131,6 +149,11 @@ class RoleController {
         } else {
             newRole.roleHasEvents = new HashSet<RoleHasEvent>()
         }
+        if(newRole.roleHasPastscenes) {
+            newRole.roleHasPastscenes.clear();
+        } else {
+            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
+        }
 		if (isNew)
 			params.updateRoleResult = newRole.myInsert();
 		else
@@ -150,6 +173,11 @@ class RoleController {
                 Event event = Event.get((it.key - "roleHasEventTitle") as Integer);
                 RoleHasEvent roleHasEvent = createRoleHasEvent(newRole, event);
                 newRole.addToRoleHasEvents(roleHasEvent);
+            }
+            else if (it.key.startsWith("roleHasPastSceneTitle")) {
+                Pastscene pastscene = Pastscene.get((it.key - "roleHasPastSceneTitle") as Integer);
+                RoleHasPastscene roleHasPastscene = createRoleHasPastscene(newRole, pastscene);
+                newRole.addToRoleHasPastscenes(roleHasPastscene);
             }
         }
         newRole.save(flush: true);
@@ -181,6 +209,27 @@ class RoleController {
         event.addToRoleHasEvents(roleHasEvent);
         event.save();
         return roleHasEvent;
+    }
+
+    def createRoleHasPastscene(Role newRole, Pastscene pastscene) {
+        RoleHasPastscene roleHasPastscene = RoleHasPastscene.createCriteria().get {
+            like("role.id", newRole.id)
+            like("pastscene", pastscene)
+        };
+        if (!roleHasPastscene) {
+            roleHasPastscene = new RoleHasPastscene();
+        }
+        roleHasPastscene.title = params.get("roleHasPastSceneTitle" + pastscene.id);
+        roleHasPastscene.description = params.get("roleHasPastSceneDescription" + pastscene.id);
+        roleHasPastscene.dateCreated = new Date();
+        roleHasPastscene.lastUpdated = new Date();
+        roleHasPastscene.version = 1;
+        roleHasPastscene.pastscene = pastscene;
+        roleHasPastscene.role = newRole;
+        roleHasPastscene.save(flush: true);
+        pastscene.addToRoleHasPastscenes(roleHasPastscene);
+        pastscene.save();
+        return roleHasPastscene;
     }
 
 	def deleteRoleHasRoleTag (Role role) {

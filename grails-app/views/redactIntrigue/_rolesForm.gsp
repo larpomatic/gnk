@@ -25,87 +25,84 @@
     <div class="tab-content">
         <div class="tab-pane active" id="newRole">
             <form name="newRoleForm" data-url="<g:createLink controller="Role" action="Save"/>">
-            %{--<g:form name="newRoleForm" url="[controller: 'role', action: 'save']">--}%
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                %{--<div style="margin:auto">--}%
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label for="roleCode">
-                                <g:message code="redactintrigue.role.roleCode" default="Name"/>
-                            </label>
-                        </div>
-                        <div class="span8">
-                            <g:textField name="roleCode" id="roleCode" value="" required=""/>
-                        </div>
-                    </div>
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label for="rolePipi">
-                                <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <g:field type="number" name="rolePipi" id="rolePipi" value="" required=""/>
-                        </div>
-                        <div class="span1">
-                            <label for="rolePipr">
-                                <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <g:field type="number" name="rolePipr" id="rolePipr" value="" required=""/>
-                        </div>
-                    </div>
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#roleTagsModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
-                            </a>
-                        </div>
-                        <div class="span1">
-                            <label for="roleType">
-                                <g:message code="redactintrigue.role.roleType" default="Type"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
-                                      keys="${['PJ', 'PNJ', 'PHJ']}" required=""/>
-                        </div>
-                    </div>
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#rolePastScenesModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.role.choosePastScenes" default="Choose past scenes"/>
-                            </a>
-                        </div>
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.role.roleEvent" default="Events"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#roleEventsModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row formRow text-center">
-                        <label for="roleDescription">
-                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="roleCode">
+                            <g:message code="redactintrigue.role.roleCode" default="Name"/>
                         </label>
                     </div>
-                    <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
-                %{--</div>--}%
+                    <div class="span8">
+                        <g:textField name="roleCode" id="roleCode" value="" required=""/>
+                    </div>
+                </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="rolePipi">
+                            <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:field type="number" name="rolePipi" id="rolePipi" value="" required=""/>
+                    </div>
+                    <div class="span1">
+                        <label for="rolePipr">
+                            <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:field type="number" name="rolePipr" id="rolePipr" value="" required=""/>
+                    </div>
+                </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#roleTagsModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
+                        </a>
+                    </div>
+                    <div class="span1">
+                        <label for="roleType">
+                            <g:message code="redactintrigue.role.roleType" default="Type"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
+                                  keys="${['PJ', 'PNJ', 'PHJ']}" required=""/>
+                    </div>
+                </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#rolePastScenesModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.role.choosePastScenes" default="Choose past scenes"/>
+                        </a>
+                    </div>
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.role.roleEvent" default="Events"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#roleEventsModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="row formRow text-center">
+                    <label for="roleDescription">
+                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                    </label>
+                </div>
+                <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
 
                 <div id="roleEventsModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
@@ -163,42 +160,38 @@
                         <h3>
                             <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
                         </h3>
-                        %{--<input class="input-medium search-query" data-content="rolePastScene"--}%
-                               %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                     </div>
 
                     <div class="modal-body">
-                        <ul class="rolePastScene">
-                            <div class="accordion" id="accordionPastScene">
-                                <g:each in="${plotInstance.pastescenes}" var="pastscene">
-                                    <div class="accordion-group">
-                                        <div class="accordion-heading">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene${pastscene.id}">
-                                                ${pastscene.title}
-                                            </a>
-                                        </div>
-                                        <div id="collapsePastScene${pastscene.id}" class="accordion-body collapse">
-                                            <div class="accordion-inner">
-                                                <div class="formRow">
-                                                    <div class="span1">
-                                                        <g:message code="redactintrigue.role.roleTitle" default="Title"/>
-                                                    </div>
-                                                    <div class="span8">
-                                                        <g:textField name="roleHasPastSceneTitle" value=""/>
-                                                    </div>
+                        <div class="accordion" id="accordionPastScene">
+                            <g:each in="${plotInstance.pastescenes}" var="pastscene">
+                                <div class="accordion-group">
+                                    <div class="accordion-heading">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene${pastscene.id}">
+                                            ${pastscene.title}
+                                        </a>
+                                    </div>
+                                    <div id="collapsePastScene${pastscene.id}" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <div class="formRow">
+                                                <div class="span1">
+                                                    <g:message code="redactintrigue.role.roleTitle" default="Title"/>
                                                 </div>
-                                                <div class="row formRow text-center">
-                                                    <label for="roleDescription">
-                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
-                                                    </label>
+                                                <div class="span8">
+                                                    <g:textField name="roleHasPastSceneTitle${pastscene.id}" value=""/>
                                                 </div>
-                                                <g:textArea name="roleHasPastSceneDescription" value="" rows="5" cols="100"/>
                                             </div>
+                                            <div class="row formRow text-center">
+                                                <label for="roleDescription">
+                                                    <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                </label>
+                                            </div>
+                                            <g:textArea name="roleHasPastSceneDescription${pastscene.id}" value="" rows="5" cols="100"/>
                                         </div>
                                     </div>
-                                </g:each>
-                            </div>
-                        </ul>
+                                </div>
+                            </g:each>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -234,95 +227,91 @@
                     </div>
                 </div>
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
-                %{--<g:submitButton name="Insert" value="Insert" class="btn btn-primary"/>--}%
             </form>
         </div>
 
         <g:each in="${plotInstance.roles}" status="i4" var="role">
             <div class="tab-pane" id="role_${role.id}">
                 <form name="updateRole_${role.id}" data-url="<g:createLink controller="Role" action="Update" id="${role.id}"/>">
-                %{--<g:form name="updateRole_${role.id}" data-url="<g:createLink controller='Role' action='Update' id='${role.id}' />">--}%
                     <g:hiddenField name="id" value="${role.id}"/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-
-                    %{--<div style="margin:auto">--}%
-                        <div class="row formRow">
-                            <div class="span1">
-                                <label for="roleCode">
-                                    <g:message code="redactintrigue.role.roleCode" default="Name"/>
-                                </label>
-                            </div>
-                            <div class="span8">
-                                <g:textField name="roleCode" id="roleCode" value="${role.code}" required=""/>
-                            </div>
-                        </div>
-                        <div class="row formRow">
-                            <div class="span1">
-                                <label for="rolePipi">
-                                    <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <g:field type="number" name="rolePipi" id="rolePipi" value="${role.pipi}" required=""/>
-                            </div>
-                            <div class="span1">
-                                <label for="rolePipr">
-                                    <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <g:field type="number" name="rolePipr" id="rolePipr" value="${role.pipr}" required=""/>
-                            </div>
-                        </div>
-                        <div class="row formRow">
-                            <div class="span1">
-                                <label>
-                                    <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
-                                    <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
-                                </a>
-                            </div>
-                            <div class="span1">
-                                <label for="roleType">
-                                    <g:message code="redactintrigue.role.roleType" default="Type"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
-                                          keys="${['PJ', 'PNJ', 'PHJ']}" value="${role.type}" required=""/>
-                            </div>
-                        </div>
-                        <div class="row formRow">
-                            <div class="span1">
-                                <label>
-                                    <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">
-                                    <g:message code="redactintrigue.role.choosePastScenes" default="Choose past Scene"/>
-                                </a>
-                            </div>
-                            <div class="span1">
-                                <label>
-                                    <g:message code="redactintrigue.role.roleEvent" default="Events"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">
-                                    <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row formRow text-center">
-                            <label for="roleDescription">
-                                <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label for="roleCode">
+                                <g:message code="redactintrigue.role.roleCode" default="Name"/>
                             </label>
                         </div>
-                        <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
+                        <div class="span8">
+                            <g:textField name="roleCode" id="roleCode" value="${role.code}" required=""/>
+                        </div>
+                    </div>
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label for="rolePipi">
+                                <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:field type="number" name="rolePipi" id="rolePipi" value="${role.pipi}" required=""/>
+                        </div>
+                        <div class="span1">
+                            <label for="rolePipr">
+                                <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:field type="number" name="rolePipr" id="rolePipr" value="${role.pipr}" required=""/>
+                        </div>
+                    </div>
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label>
+                                <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
+                            </a>
+                        </div>
+                        <div class="span1">
+                            <label for="roleType">
+                                <g:message code="redactintrigue.role.roleType" default="Type"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
+                                      keys="${['PJ', 'PNJ', 'PHJ']}" value="${role.type}" required=""/>
+                        </div>
+                    </div>
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label>
+                                <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.choosePastScenes" default="Choose past Scene"/>
+                            </a>
+                        </div>
+                        <div class="span1">
+                            <label>
+                                <g:message code="redactintrigue.role.roleEvent" default="Events"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row formRow text-center">
+                        <label for="roleDescription">
+                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                        </label>
+                    </div>
+                    <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">
@@ -384,42 +373,38 @@
                             <h3>
                                 <g:message code="redactintrigue.role.rolePastScene" default="Past Scenes"/>
                             </h3>
-                            %{--<input class="input-medium search-query" data-content="rolePastScene${role.id}"--}%
-                                        %{--placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>--}%
                         </div>
 
                         <div class="modal-body">
-                            <ul class="rolePastScene${role.id}">
-                                <div class="accordion" id="accordionPastScene${role.id}">
-                                    <g:each in="${plotInstance.pastescenes}" var="pastscene">
-                                        <div class="accordion-group">
-                                            <div class="accordion-heading">
-                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}" href="#collapsePastScene${role.id}-${pastscene.id}">
-                                                    ${pastscene.title}
-                                                </a>
-                                            </div>
-                                            <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">
-                                                <div class="accordion-inner">
-                                                    <div class="formRow">
-                                                        <div class="span1">
-                                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
-                                                        </div>
-                                                        <div class="span8">
-                                                            <g:textField name="roleHasPastSceneTitle${role.getRoleHasPastScene(pastscene)?.id}" value="${role.getRoleHasPastScene(pastscene)?.title}"/>
-                                                        </div>
+                            <div class="accordion" id="accordionPastScene${role.id}">
+                                <g:each in="${plotInstance.pastescenes}" var="pastscene">
+                                    <div class="accordion-group">
+                                        <div class="accordion-heading">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}" href="#collapsePastScene${role.id}-${pastscene.id}">
+                                                ${pastscene.title}
+                                            </a>
+                                        </div>
+                                        <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">
+                                            <div class="accordion-inner">
+                                                <div class="formRow">
+                                                    <div class="span1">
+                                                        <g:message code="redactintrigue.role.roleTitle" default="Title"/>
                                                     </div>
-                                                    <div class="row formRow text-center">
-                                                        <label for="roleDescription">
-                                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
-                                                        </label>
+                                                    <div class="span8">
+                                                        <g:textField name="roleHasPastSceneTitle${pastscene.id}" value="${role.getRoleHasPastScene(pastscene)?.title}"/>
                                                     </div>
-                                                    <g:textArea name="roleHasPastSceneDescription${role.getRoleHasPastScene(pastscene)?.id}" value="${role.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
                                                 </div>
+                                                <div class="row formRow text-center">
+                                                    <label for="roleDescription">
+                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                    </label>
+                                                </div>
+                                                <g:textArea name="roleHasPastSceneDescription${pastscene.id}" value="${role.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
                                             </div>
                                         </div>
-                                    </g:each>
-                                </div>
-                            </ul>
+                                    </div>
+                                </g:each>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -455,12 +440,6 @@
                         </div>
                     </div>
                     <input type="button" name="Update" data-id="${role.id}" value="Update" class="btn btn-primary updateRole"/>
-                    %{--<g:submitButton name="Update" value="Update" class="btn btn-primary updateRole"/>--}%
-                    %{--<g:actionSubmit class="delete" controller="role" action="delete"--}%
-                                    %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
-                                    %{--formnovalidate=""--}%
-                                    %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
-                %{--</g:form>--}%
                 </form>
             </div>
         </g:each>
