@@ -20,7 +20,7 @@ NB: If you change your JDK version, re-upgrade grails too.
     CREATE USER 'gnk'@'localhost';
     GRANT ALL PRIVILEGES ON gnkdb.* TO 'gnk'@'localhost';
     FLUSH PRIVILEGES;
-  <li>download schema and database data from [db](db) folder</li>
+  <li>download schema and database data from [db](https://drive.google.com/?tab=mo&authuser=0#folders/0B6A65ZZaY3ccLWpmQU4tVmhNQ0k) folder</li>
   <li>import it into your newly created database</li>
   
     $ mysql -u gnk gnkdb < dump20140122.sql
