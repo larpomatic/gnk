@@ -33,6 +33,8 @@ class Event {
 
 	static constraints = {
 		name (blank: false, maxSize: 45)
+        eventPredecessor (nullable: true)
+        genericPlace (nullable: true)
 		timing ()
 		duration (min: 1)
 		isPublic ()

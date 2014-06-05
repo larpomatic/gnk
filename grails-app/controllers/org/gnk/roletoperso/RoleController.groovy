@@ -193,10 +193,7 @@ class RoleController {
             roleHasEvent = new RoleHasEvent();
         }
         roleHasEvent.title = params.get("roleHasEventTitle" + event.id);
-        if (params.get("roleHasEventannounced" + event.id) != null)
-            roleHasEvent.isAnnounced = true;
-        else
-            roleHasEvent.isAnnounced = false;
+        roleHasEvent.isAnnounced = params.get("roleHasEventannounced" + event.id) != null;
         roleHasEvent.description = params.get("roleHasEventDescription" + event.id);
         roleHasEvent.dateCreated = new Date();
         roleHasEvent.lastUpdated = new Date();

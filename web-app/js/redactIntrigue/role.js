@@ -33,7 +33,7 @@ $(function(){
             success: function(data) {
                 if (data.iscreate) {
                     createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
-                    var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiItem'];
+                    var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiRole'];
                     var context = {
                         roleId: String(data.role.id),
                         roleName: data.role.code
@@ -42,10 +42,10 @@ $(function(){
                     $('.roleScreen > ul').append(html);
                     initConfirm();
                     initDeleteButton();
-                    emptyForm();
+                    emptyRoleForm();
                     createNewRolePanel(data);
                     initSearchBoxes();
-                    appendEntity("role", data.role.code, "success", "");
+                    appendEntity("event", data.role.code, "success", "");
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
                 }
@@ -88,7 +88,7 @@ function removeRole(object) {
 }
 
 //vide le formulaire d'ajout de role
-function emptyForm() {
+function emptyRoleForm() {
     $('form[name="newRoleForm"] input[type="text"]').val("");
     $('form[name="newRoleForm"] input[type="number"]').val("");
     $('form[name="newRoleForm"] textarea').val("");

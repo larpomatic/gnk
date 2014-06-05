@@ -33,7 +33,7 @@ $(function(){
     initializeTextEditor();
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
-    $('.saveForm').submit(function() {
+    $('.savePlotForm').submit(function() {
         var description = $('.richTextEditor', this).html();
         description = transformDescription(description);
         $('.descriptionContent', this).val(description);
@@ -90,12 +90,16 @@ function initConfirm() {
             if (objectButton.attr("data-object") == "role") {
                 removeRole(objectButton);
             }
+            if (objectButton.attr("data-object") == "event") {
+                removeEvent(objectButton);
+            }
             if (objectButton.attr("data-object") == "resource") {
 //                removeResource(objectButton);
             }
             if (objectButton.attr("data-object") == "place") {
 //                removePlace(objectButton);
             }
+            return false;
         }
     });
 }

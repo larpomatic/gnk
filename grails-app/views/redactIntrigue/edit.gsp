@@ -17,6 +17,7 @@
 <g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
 <g:javascript src="redactIntrigue/redactIntrigue.js"/>
 <g:javascript src="redactIntrigue/role.js"/>
+<g:javascript src="redactIntrigue/event.js"/>
 	%{--<div class="navbar navbar-inverse">--}%
 		%{--<div class="navbar-inner">--}%
 			%{--<a class="brand" href="#"> ${message(code: 'navbar.redactIntrigue')} :--}%

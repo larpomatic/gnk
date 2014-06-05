@@ -23,7 +23,7 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newEvent">
-            <g:form method="post" class="saveForm">
+            <g:form method="post" class="savePlotForm">
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>

@@ -1,0 +1,31 @@
+<div class="accordion-group">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent" href="#collapseEvent{{ eventId }}">
+            {{ eventName }}
+        </a>
+    </div>
+    <div id="collapseEvent{{ eventId }}" class="accordion-body collapse">
+        <div class="accordion-inner">
+            <div class="formRow">
+                <div class="span1">
+                    Titre
+                </div>
+                <div class="span4">
+                    <input type="text" name="roleHasEventTitle{{ eventId }}" value="" id="roleHasEventTitle{{ eventId }}">
+                </div>
+                <div class="span1">
+                    Est annoncé
+                </div>
+                <div class="span4">
+                    <input type="checkbox" name="roleHasEventannounced{{ eventId }}" id="roleHasEventannounced{{ eventId }}">
+                </div>
+            </div>
+            <div class="row formRow text-center">
+                <label for="roleDescription">
+                    Description
+                </label>
+            </div>
+            <textarea name="roleHasEventDescription{{ eventId }}" rows="5" cols="100" id="roleHasEventDescription{{ eventId }}"></textarea>
+        </div>
+    </div>
+</div>

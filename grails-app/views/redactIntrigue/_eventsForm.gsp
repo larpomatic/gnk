@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.resplacetime.Event" %>
+<%@ page import="org.gnk.selectintrigue.Plot; org.gnk.resplacetime.Event" %>
 <div class="tabbable tabs-left eventScreen">
     <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
@@ -6,12 +6,13 @@
                 <g:message code="redactintrigue.event.addEvent" default="New event"/>
             </a>
         </li>
-        <g:each in="${Event.findAllByPlot(plotInstance, [sort:'timing',order:'asc'])}" status="i5" var="event">
+        %{--<g:each in="${Event.findAllByPlot(plotInstance, [sort:'timing',order:'asc'])}" status="i5" var="event">--}%
+        <g:each in="${plotInstance.events}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">
                     ${event.name}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cet évenement?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cet évènement?"
                         data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>
@@ -20,28 +21,28 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="newEvent">
-            <form name="newEventForm" data-url="">
-                %{--<div style="margin:auto">--}%
+            <form name="newEventForm" data-url="<g:createLink controller="Event" action="Save"/>">
                 <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
+                <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="EventName">
+                        <label for="eventName">
                             <g:message code="redactintrigue.event.eventName" default="Name"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <g:textField name="EventName" id="EventName" value="" required=""/>
+                        <g:textField name="eventName" id="eventName" value="" required=""/>
                     </div>
 
                     <div class="span1">
-                        <label for="EventDuration">
+                        <label for="eventDuration">
                             <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventDuration" id="EventDuration" value="" required=""/>
+                        <g:field type="number" name="eventDuration" id="eventDuration" value="" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -83,13 +84,13 @@
                     </div>
 
                     <div class="span1">
-                        <label for="EventTiming">
+                        <label for="eventTiming">
                             <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventTiming" id="EventTiming" value="" required=""/>
+                        <g:field type="number" name="eventTiming" id="eventTiming" value="" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -132,7 +133,6 @@
 
                     </div>
                 </div>
-                %{--</div>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
             </form>
         </div>

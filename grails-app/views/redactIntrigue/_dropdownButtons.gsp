@@ -31,7 +31,7 @@
             </li>
         </g:each>
         <li>
-            <input data-entity="place" data-label="success" type="text" class="inputOther" id="placeOther"
+            <input data-entity="place" data-label="warning" type="text" class="inputOther" id="placeOther"
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
@@ -50,7 +50,7 @@
             </li>
         </g:each>
         <li>
-            <input data-entity="resource" data-label="success" type="text" class="inputOther" id="resourceOther"
+            <input data-entity="resource" data-label="important" type="text" class="inputOther" id="resourceOther"
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
