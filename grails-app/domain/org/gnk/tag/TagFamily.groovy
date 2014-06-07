@@ -11,6 +11,9 @@ class TagFamily {
 	boolean relevantPlot
 	boolean relevantRole
     boolean relevantResource
+    boolean relevantPlace
+    boolean relevantFirstname
+    boolean relevantLastname
 
     static hasMany = [ tags: Tag ]
 

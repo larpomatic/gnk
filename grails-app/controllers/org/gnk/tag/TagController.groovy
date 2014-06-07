@@ -106,7 +106,7 @@ class TagController {
     }
 
     private void isTagApplicable(Tag tagInstance) {
-		// FIXME Changement de base
+		// FIXME Changement de Base
 		/*
         if (params.isPlotTag) {
             PlotTag plotTag = new PlotTag()
@@ -237,7 +237,7 @@ class TagController {
             redirect(action: "list")
             return
         }
-		// FIXME Changement de base
+		// FIXME Changement de Base
 		/*
         try {
             tagInstance.delete(flush: true)

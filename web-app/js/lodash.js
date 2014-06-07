@@ -158,7 +158,7 @@
     /*--------------------------------------------------------------------------*/
 
     /**
-     * The base implementation of `_.indexOf` without support for binary searches
+     * The Base implementation of `_.indexOf` without support for binary searches
      * or `fromIndex` constraints.
      *
      * @private
@@ -696,7 +696,7 @@
         /*--------------------------------------------------------------------------*/
 
         /**
-         * The base implementation of `_.bind` that creates the bound function and
+         * The Base implementation of `_.bind` that creates the bound function and
          * sets its meta data.
          *
          * @private
@@ -733,7 +733,7 @@
         }
 
         /**
-         * The base implementation of `_.clone` without argument juggling or support
+         * The Base implementation of `_.clone` without argument juggling or support
          * for `thisArg` binding.
          *
          * @private
@@ -825,7 +825,7 @@
         }
 
         /**
-         * The base implementation of `_.create` without support for assigning
+         * The Base implementation of `_.create` without support for assigning
          * properties to the created object.
          *
          * @private
@@ -851,7 +851,7 @@
         }
 
         /**
-         * The base implementation of `_.createCallback` without support for creating
+         * The Base implementation of `_.createCallback` without support for creating
          * "_.pluck" or "_.where" style callbacks.
          *
          * @private
@@ -908,7 +908,7 @@
         }
 
         /**
-         * The base implementation of `createWrapper` that creates the wrapper and
+         * The Base implementation of `createWrapper` that creates the wrapper and
          * sets its meta data.
          *
          * @private
@@ -961,7 +961,7 @@
         }
 
         /**
-         * The base implementation of `_.difference` that accepts a single array
+         * The Base implementation of `_.difference` that accepts a single array
          * of values to exclude.
          *
          * @private
@@ -998,7 +998,7 @@
         }
 
         /**
-         * The base implementation of `_.flatten` without support for callback
+         * The Base implementation of `_.flatten` without support for callback
          * shorthands or `thisArg` binding.
          *
          * @private
@@ -1038,7 +1038,7 @@
         }
 
         /**
-         * The base implementation of `_.isEqual`, without support for `thisArg` binding,
+         * The Base implementation of `_.isEqual`, without support for `thisArg` binding,
          * that allows partial "_.where" style comparisons.
          *
          * @private
@@ -1213,7 +1213,7 @@
         }
 
         /**
-         * The base implementation of `_.merge` without argument juggling or support
+         * The Base implementation of `_.merge` without argument juggling or support
          * for `thisArg` binding.
          *
          * @private
@@ -1278,7 +1278,7 @@
         }
 
         /**
-         * The base implementation of `_.random` without argument juggling or support
+         * The Base implementation of `_.random` without argument juggling or support
          * for returning floating-point numbers.
          *
          * @private
@@ -1291,7 +1291,7 @@
         }
 
         /**
-         * The base implementation of `_.uniq` without support for callback shorthands
+         * The Base implementation of `_.uniq` without support for callback shorthands
          * or `thisArg` binding.
          *
          * @private

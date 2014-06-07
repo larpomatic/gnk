@@ -3,12 +3,16 @@ import org.gnk.tag.TagFamily
 import org.gnk.user.SecRole
 import org.gnk.user.User
 import org.gnk.user.UserSecRole
+import org.gnk.utils.Base
 
 class BootStrap {
 	
 	SpringSecurityService springSecurityService
 
     def init = { servletContext ->
+
+//       Base b = new Base()
+//        b.tranfert()
 
         // TAG FAMILY
         if (!TagFamily.findByValue("Age")) {
