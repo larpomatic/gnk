@@ -201,18 +201,24 @@ class Role implements Comparable {
     }
 
     public getRoleHasEvent(Event event) {
-        RoleHasEvent roleHasEvent = RoleHasEvent.createCriteria().get {
+        List<RoleHasEvent> roleHasEvents = RoleHasEvent.createCriteria().list {
             like("role", this)
             like("event", event)
         }
-        return roleHasEvent;
+        if (roleHasEvents.size() == 0) {
+            return null;
+        }
+        return roleHasEvents.first();
     }
 
     public getRoleHasPastScene(Pastscene pastscene) {
-        RoleHasPastscene roleHasPastscene = RoleHasPastscene.createCriteria().get {
+        List<RoleHasPastscene> roleHasPastscenes = RoleHasPastscene.createCriteria().list {
             like("role", this)
             like("pastscene", pastscene)
         }
-        return roleHasPastscene;
+        if (roleHasPastscenes.size() == 0) {
+            return null;
+        }
+        return roleHasPastscenes.first();
     }
 }

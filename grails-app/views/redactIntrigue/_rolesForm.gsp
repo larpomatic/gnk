@@ -339,7 +339,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="span4">
-                                                        <g:textField name="roleHasEventTitle${event.id}" value="${role.getRoleHasEvent(event)?.title}"/>
+                                                        <g:textField name="roleHasEventTitle${event.id}" value="${role?.getRoleHasEvent(event)?.title}"/>
                                                     </div>
                                                     <div class="span1">
                                                         <label>
@@ -347,7 +347,7 @@
                                                         </label>
                                                     </div>
                                                     <div class="span4">
-                                                        <g:checkBox name="roleHasEventannounced${event.id}" checked="${role.getRoleHasEvent(event)?.isAnnounced}"/>
+                                                        <g:checkBox name="roleHasEventannounced${event.id}" checked="${role?.getRoleHasEvent(event)?.isAnnounced}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row formRow text-center">
@@ -391,7 +391,7 @@
                                                         <g:message code="redactintrigue.role.roleTitle" default="Title"/>
                                                     </div>
                                                     <div class="span8">
-                                                        <g:textField name="roleHasPastSceneTitle${pastscene.id}" value="${role.getRoleHasPastScene(pastscene)?.title}"/>
+                                                        <g:textField name="roleHasPastSceneTitle${pastscene.id}" value="${role?.getRoleHasPastScene(pastscene)?.title}"/>
                                                     </div>
                                                 </div>
                                                 <div class="row formRow text-center">
@@ -399,7 +399,7 @@
                                                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                                                     </label>
                                                 </div>
-                                                <g:textArea name="roleHasPastSceneDescription${pastscene.id}" value="${role.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
+                                                <g:textArea name="roleHasPastSceneDescription${pastscene.id}" value="${role?.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
                                             </div>
                                         </div>
                                     </div>

@@ -130,7 +130,7 @@ class Character {
                 selectedPJG.add(role)
             if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
                 specificRoles.add(role);
-                plotid_role.add(role.plotId);
+                plotid_role.add(role.plotId as Integer);
             }
 
     }
