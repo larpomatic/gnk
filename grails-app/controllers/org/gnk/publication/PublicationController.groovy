@@ -4,6 +4,7 @@ import grails.converters.JSON
 import org.apache.catalina.filters.SetCharacterEncodingFilter
 import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
@@ -75,7 +76,13 @@ class PublicationController {
         wordWriter.alterStyleSheet()
 
         mainPart.addStyledParagraphOfText("Title", gn.name)
+        mainPart.addStyledParagraphOfText("Subtitle", createSubTile())
+
         mainPart.addStyledParagraphOfText("Heading1", "Synthèse pour les organisateurs")
+
+        // HDU-MEF4
+        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des pitchs des Intrigues du GN")
+        createPitchOrga(mainPart)
 
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des personnages du GN")
         createPlayersTable()
@@ -83,18 +90,17 @@ class PublicationController {
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des Intrigues du GN")
         createPlotTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des pitchs des Intrigues du GN")
-        createPitchTableOrga()
-
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse de l'événementiel du GN")
         createEventsTable()
+
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse des lieux du GN")
         createPlaceTable()
+
         mainPart.addStyledParagraphOfText("Heading2", "Synthèse logistique du GN")
         createResTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des Ingame Clues")
-        createICTableOrga()
+        mainPart.addStyledParagraphOfText("Heading2", "Liste des Ingames Clues")
+        createICTableOrga(mainPart)
 
         mainPart.addStyledParagraphOfText("Heading1", "Événementiel Détaillé")
         createDetailedEventsTable()
@@ -111,32 +117,151 @@ class PublicationController {
         return wordWriter.wordMLPackage
     }
 
+    def String createSubTile(){
+        String subtitle = "Version "+((gn.version<10)?"0."+gn.version:gn.version.toString().subSequence(0,gn.version.toString().size()-1)+"."+gn.version.toString().subSequence(gn.version.toString().size()-1,gn.version.toString().size()))+" créé à "
+        subtitle += getPrintableDate(gn.dateCreated)
+        subtitle += ((gn.lastUpdated == gn.dateCreated)?"":" et modifié à "+getPrintableDate(gn.lastUpdated))
+        return subtitle
+    }
+
     // Création du tableau de synthèse des personnages pour les organisateurs
     def createPlayersTable() {
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Nom du personnage")
-        wordWriter.addTableCell(tableRow, "Nombre de PIP")
+        // HDU-MEF2
+        wordWriter.addTableCell(tableRow, "Prenom - Nom")
+        wordWriter.addTableCell(tableRow, "Nb PIP Total")
         wordWriter.addTableCell(tableRow, "Type")
         wordWriter.addTableCell(tableRow, "Sexe")
+        wordWriter.addTableCell(tableRow, "Age")
+        wordWriter.addTableCell(tableRow, "Role(s)")
         //wordWriter.addTableCell(tableRow, "Description")
 
         table.getContent().add(tableRow);
 
-        for (Character c : gn.characterSet + gn.nonPlayerCharSet)
+        HashSet<Character> lchar = new HashSet<Character>()
+        for (Character c : gn.characterSet)
+            lchar.add(c.lastname + c.firstname)
+        def listPJ = lchar.toList().sort()
+        //affichage des PJ dans l'ordre aplhabétique (Nom puis prénom)
+        for (String cname : listPJ)
         {
-            Tr tableRowCharacter = wordWriter.factory.createTr()
+            for (Character c : gn.characterSet)
+            {
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    Tr tableRowCharacter = wordWriter.factory.createTr()
 
-            wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
-            wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-            wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
+                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
-            wordWriter.addTableCell(tableRowCharacter, c.gender)
-            //wordWriter.addTableCell(tableRowCharacter, "TODO :  Description of the characters ?")
-            table.getContent().add(tableRowCharacter);
+                    wordWriter.addTableCell(tableRowCharacter, c.gender)
+                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    String resRoles = "Aucun Rôle"
+                    for (Role r : c.selectedRoles)
+                    {
+                        if (resRoles == "Aucun Rôle")
+                            resRoles = r.code + " : " + r.description
+                        else
+                            resRoles += "\n" + r.code + " : " +  r.description
+                    }
+                    wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    table.getContent().add(tableRowCharacter)
+                    break;
+                }
+            }
         }
+
+
+        //affichage des PNJ dans l'ordre aplhabétique (Nom puis prénom)
+        lchar = new HashSet<Character>()
+        for (Character c : gn.nonPlayerCharSet)
+        {
+            if (c.isPNJ())
+                lchar.add(c.lastname + c.firstname)
+        }
+        def listPNJ = lchar.toList().sort()
+        for (String cname : listPNJ)
+        {
+            for (Character c : gn.nonPlayerCharSet)
+            {
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    Tr tableRowCharacter = wordWriter.factory.createTr()
+
+                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
+
+                    wordWriter.addTableCell(tableRowCharacter, c.gender)
+                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    String resRoles = "Aucun Rôle"
+                    for (Role r : c.selectedRoles)
+                    {
+                        if (resRoles == "Aucun Rôle")
+                            resRoles = r.code + " : " + r.description
+                        else
+                            resRoles += "\n" + r.code + " : " +  r.description
+                    }
+                    wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    table.getContent().add(tableRowCharacter)
+                    break;
+                }
+            }
+        }
+
+        //affichage des PHJ dans l'ordre aplhabétique (Nom puis prénom)
+        lchar = new HashSet<Character>()
+        for (Character c : gn.nonPlayerCharSet)
+        {
+            if (c.isPHJ())
+                lchar.add(c.lastname + c.firstname)
+        }
+        def listPHJ = lchar.toList().sort()
+        for (String cname : listPHJ)
+        {
+            for (Character c : gn.nonPlayerCharSet)
+            {
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    Tr tableRowCharacter = wordWriter.factory.createTr()
+
+                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
+
+                    wordWriter.addTableCell(tableRowCharacter, c.gender)
+                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    String resRoles = "Aucun Rôle"
+                    for (Role r : c.selectedRoles)
+                    {
+                        if (resRoles == "Aucun Rôle")
+                            resRoles = r.code + " : " + r.description
+                        else
+                            resRoles += "\n" + r.code + " : " +  r.description
+                    }
+                    wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    table.getContent().add(tableRowCharacter)
+                    break;
+                }
+            }
+        }
+
+//        for (Character c : gn.characterSet + gn.nonPlayerCharSet)
+//        {
+//            Tr tableRowCharacter = wordWriter.factory.createTr()
+//
+//            wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+//            wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
+//            wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
+//
+//            wordWriter.addTableCell(tableRowCharacter, c.gender)
+//            //wordWriter.addTableCell(tableRowCharacter, "TODO :  Description of the characters ?")
+//            table.getContent().add(tableRowCharacter);
+//        }
 
         wordWriter.addBorders(table)
 
@@ -228,7 +353,8 @@ class PublicationController {
             for (Event e : p.events)
             {
                 Tr tableRowRes = wordWriter.factory.createTr()
-                wordWriter.addTableCell(tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+                //wordWriter.addTableCell(tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+                wordWriter.addTableCell(tableRowRes, "Le " + ((e.absoluteDay < 10)?"0":"") + e.absoluteDay + " à " + ((e.absoluteHour < 10)?"0":"")+ e.absoluteHour + "h" + ((e.absoluteMinute < 10)?"0":"") + e.absoluteMinute)
                 wordWriter.addTableCell(tableRowRes, e.name)
                 wordWriter.addTableCell(tableRowRes, p.name)
                 if (e.genericPlace)
@@ -313,8 +439,10 @@ class PublicationController {
 
             //Todo: Ajouter les relations entre les personnages
 
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mon histoire")
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Bonjour, mon nom est " + c.firstname + " " + c.lastname + ".")
+            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mon Histoire")
+
+            // HDU-MEF1
+            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Je m'appelle " + c.firstname + " " + c.lastname + ".")
             wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Voici mon histoire :")
 
             Map<Integer, RoleHasPastscene> roleHasPastsceneList = new TreeMap<>()
@@ -431,38 +559,119 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des pitch des intrigues pour les Orga
-    def createPitchTableOrga() {
+    def createPitchOrga(def mainPart) {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-        wordWriter.addTableCell(tableRow, "Pitch Orga")
+        // HDU-MEF5
+        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".")
+        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.")
 
-        table.getContent().add(tableRow);
+        // Comptage PJ
+        int NbPJ = gn.characterSet.size()
+        String msgCharacters = "Ce GN accueille "+ NbPJ +" Personnage"+((NbPJ > 1)?"s":"")+" Joueur"+((NbPJ > 1)?"s":"")+" (PJ dont "
+        String tmpGender = ""
+        int nbMale = 0,nbFemale = 0,nbNoGender = 0
+        for (int i = 0; i < NbPJ; i++) {
+            org.gnk.roletoperso.Character tmpCharacter = gn.characterSet.asList()[i]
+            tmpGender = tmpCharacter.type
+            if (tmpGender == "PJ")
+            {
+                tmpGender = tmpCharacter.gender
+                if ( tmpGender == "M")
+                    nbMale++
+                else if (tmpGender == "F")
+                    nbFemale++
+                else
+                    nbNoGender++
+            }
+        }
+        if (nbFemale > 0)
+            msgCharacters += nbFemale +" fille"+ ((nbFemale > 1)?"s":"")
+        if (nbFemale > 0 && nbMale > 0)
+            msgCharacters += " et "
+        if (nbMale > 0)
+            msgCharacters += nbMale +" garçon"+ ((nbMale > 1)?"s":"")
+        msgCharacters += ") et nécessite "
+
+        //Comptage PNJ
+        int NbNJ = gn.nonPlayerCharSet.size()
+        tmpGender = "";nbMale = 0;nbFemale = 0;nbNoGender = 0
+        int NbPNJ =0
+        for (int i = 0; i < NbNJ; i++) {
+            org.gnk.roletoperso.Character tmpCharacter = gn.nonPlayerCharSet.asList()[i]
+            tmpGender = tmpCharacter.type
+            if (tmpGender == "PNJ")
+            {
+                NbPNJ++
+                tmpGender = tmpCharacter.gender
+                if ( tmpGender == "M")
+                    nbMale++;
+                else if (tmpGender == "F")
+                    nbFemale++;
+                else
+                    nbNoGender++;
+            }
+        }
+
+        msgCharacters += NbPNJ+" Personnage"+((NbPNJ > 1)?"s":"")+" Non Joueur"+((NbPNJ > 1)?"s":"")+" (PNJ)  " + ((nbNoGender==NbPNJ)?"":"(")
+        if (nbFemale > 0)
+            msgCharacters += nbFemale +" fille"+ ((nbFemale > 1)?"s":"")
+        if (nbFemale > 0 && nbMale > 0)
+            msgCharacters += " et "
+        if (nbMale > 0)
+            msgCharacters += nbMale +" garçon"+ ((nbMale > 1)?"s":"")
+        msgCharacters += ((nbNoGender==NbPNJ)?". ":"). ")
+
+        //Comptage PHJ
+        int NbPHJ = 0
+        for (int i = 0; i < NbNJ; i++) {
+            org.gnk.roletoperso.Character tmpCharacter = gn.nonPlayerCharSet.asList()[i]
+            tmpGender = tmpCharacter.type
+            if (tmpGender == "PHJ")
+            {
+                NbPHJ++
+                tmpGender = tmpCharacter.gender
+                if ( tmpGender == "M")
+                    nbMale++;
+                else if (tmpGender == "F")
+                    nbFemale++;
+                else
+                    nbNoGender++;
+            }
+        }
+        msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). (dans ce document, le timing a été calculé pour un jeu commençant à "
+        msgCharacters += gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+
+        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(msgCharacters)
+
+
+
+
+//        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
+//        wordWriter.addTableCell(tableRow, "Pitch Orga")
+
+//        table.getContent().add(tableRow);
 
         for (Plot p : gn.selectedPlotSet)
         {
-            Tr tableRowPlot = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlot, p.name)
-            wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
-            table.getContent().add(tableRowPlot);
+            if (p.pitchOrga != null)
+            {
+//                Tr tableRowPlot = wordWriter.factory.createTr()
+                mainPart.addStyledParagraphOfText("Heading3", p.name)
+//                wordWriter.addTableCell(tableRowPlot, p.name)
+                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchOrga)
+//                wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
+//                table.getContent().add(tableRowPlot);
+            }
+
         }
         wordWriter.addBorders(table)
         wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
     }
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
-    def createICTableOrga() {
-        Tbl table = wordWriter.factory.createTbl()
-        Tr tableRow = wordWriter.factory.createTr()
-
-        wordWriter.addTableCell(tableRow, "Nom de l'ingame clue")
-        wordWriter.addTableCell(tableRow, "Type")
-        wordWriter.addTableCell(tableRow, "Commentaire")
-        wordWriter.addTableCell(tableRow, "Titre")
-        wordWriter.addTableCell(tableRow, "Description")
-
-        table.getContent().add(tableRow);
+    def createICTableOrga(MainDocumentPart mainPart) {
 
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
@@ -493,19 +702,28 @@ class PublicationController {
 
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
-                Tr tableRowPlot = wordWriter.factory.createTr()
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-                wordWriter.addTableCell(tableRowPlot, genericResource.selectedResource.name)
-                wordWriter.addTableCell(tableRowPlot, genericResource.code)
-                wordWriter.addTableCell(tableRowPlot, genericResource.comment)
-                wordWriter.addTableCell(tableRowPlot, genericResource.title)
-                wordWriter.addTableCell(tableRowPlot, genericResource.description)
-                table.getContent().add(tableRowPlot);
+                mainPart.addStyledParagraphOfText("Heading3", genericResource.code + " - " + genericResource.title)
+                mainPart.addStyledParagraphOfText("Heading4", "Descritpion")
+                mainPart.addParagraphOfText(/*type*/"" + " - " + genericResource.selectedResource.name + " - Ingame CLue")
+                mainPart.addParagraphOfText(/*Nom de l'intrigue*/"")
+                mainPart.addParagraphOfText("Détenu au début du jeu par : "+/*role_has_ingame_clue ou ressource*/"")
+                mainPart.addParagraphOfText(genericResource.comment)
+                mainPart.addStyledParagraphOfText("Heading4", "Contenu")
+                mainPart.addParagraphOfText(/*Champs titre*/"")
+                mainPart.addParagraphOfText(genericResource.description)
+
+
+//                genericResource.title = substitutionPublication.replaceAll(genericResource.title)
+//                genericResource.description = substitutionPublication.replaceAll(genericResource.description)
+//                wordWriter.addTableCell(tableRowPlot, genericResource.selectedResource.name)
+//                wordWriter.addTableCell(tableRowPlot, genericResource.code)
+//                wordWriter.addTableCell(tableRowPlot, genericResource.comment)
+//                wordWriter.addTableCell(tableRowPlot, genericResource.title)
+//                wordWriter.addTableCell(tableRowPlot, genericResource.description)
             }
         }
-        wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
     }
 
     // Création du tableau de synthèse des intrigues
@@ -514,7 +732,9 @@ class PublicationController {
         Tr tableRow = wordWriter.factory.createTr()
 
         wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-        wordWriter.addTableCell(tableRow, "Nombre de PIP total")
+
+        // HDU-MEF3
+        wordWriter.addTableCell(tableRow, "Nb PIP")
         wordWriter.addTableCell(tableRow, "Tags associés")
         wordWriter.addTableCell(tableRow, "Résumé/Description")
 
@@ -720,7 +940,8 @@ class PublicationController {
             Tr tableRowEvent = wordWriter.factory.createTr()
             //wordWriter.addTableCell(tableRowEvent, e.timing.toString())
             //Todo: Indiquer l'horaire absolu (pour le moment le parser correspondant n'existe pas donc les champs absolus sont nuls
-            wordWriter.addTableCell(tableRowEvent, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+            //wordWriter.addTableCell(tableRowEvent, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+            wordWriter.addTableCell(tableRowEvent, "Le " + ((e.absoluteDay < 10)?"0":"") + e.absoluteDay + " à " + ((e.absoluteHour < 10)?"0":"")+ e.absoluteHour + "h" + ((e.absoluteMinute < 10)?"0":"") + e.absoluteMinute)
             wordWriter.addTableCell(tableRowEvent, e.name)
             if (e.genericPlace && e.genericPlace.proposedPlaces && e.genericPlace.proposedPlaces.size() > 0)
                 wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name)
@@ -880,20 +1101,20 @@ class PublicationController {
 
         tabOfPlayer.add(0, topTitle)
 
-            ArrayList<String> currentPlayer = new ArrayList<>()
-            currentPlayer.add(0, "Votre prénom")// Prénom
-            currentPlayer.add(1, "Votre nom") // Nom
-            currentPlayer.add(2, "M pour Masculin, F pour Féminin et N pour Neutre") // Sexe
-            currentPlayer.add(3, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session avec
-            currentPlayer.add(4, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session sans
-            currentPlayer.add(5, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue Avec
-            currentPlayer.add(6, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue sans
-            currentPlayer.add(7, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joueur interdit
-            currentPlayer.add(8, "Valeur entre 0 et 9 : 0 = jeune, 4 = adulte, 9 = vieux") // Age
-            for (int i = 0; i < consideredTag.size(); i++) {
-                currentPlayer.add(i + COLUMN_NUMBER_JOUEUR, "Valeur entre 0 et 9 : 0 = pas du tout, 4 = neutre, 9 = beaucoup")
-            }
-            tabOfPlayer.add(currentPlayer)
+        ArrayList<String> currentPlayer = new ArrayList<>()
+        currentPlayer.add(0, "Votre prénom")// Prénom
+        currentPlayer.add(1, "Votre nom") // Nom
+        currentPlayer.add(2, "M pour Masculin, F pour Féminin et N pour Neutre") // Sexe
+        currentPlayer.add(3, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session avec
+        currentPlayer.add(4, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Session sans
+        currentPlayer.add(5, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue Avec
+        currentPlayer.add(6, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joue sans
+        currentPlayer.add(7, "Le format de la liste est le suivant : Prénom1 Nom1, Prénom2 Nom2") // Joueur interdit
+        currentPlayer.add(8, "Valeur entre 0 et 9 : 0 = jeune, 4 = adulte, 9 = vieux") // Age
+        for (int i = 0; i < consideredTag.size(); i++) {
+            currentPlayer.add(i + COLUMN_NUMBER_JOUEUR, "Valeur entre 0 et 9 : 0 = pas du tout, 4 = neutre, 9 = beaucoup")
+        }
+        tabOfPlayer.add(currentPlayer)
 
 
         return tabOfPlayer
@@ -995,5 +1216,13 @@ class PublicationController {
                 returnedSet.add(chara)
         }
         return returnedSet
+    }
+
+    private String getPrintableDate(Date date)
+    {
+        if (date != null && date.cdate != null)
+            return date.cdate.hours+"h"+(date.cdate.minutes > 10 ? date.cdate.minutes:"0"+date.cdate.minutes)+" le "+(date.cdate.dayOfMonth > 10 ? date.cdate.dayOfMonth:"0"+date.cdate.dayOfMonth)+"/"+(date.cdate.month > 10 ? date.cdate.month:"0"+date.cdate.month)+"/"+date.cdate.year
+        else
+            return date.hours+"h"+(date.minutes > 10 ? date.minutes:"0"+date.minutes)+" le "+(date.day > 10 ? date.day:"0"+date.day)+"/"+(date.month > 10 ? date.month:"0"+date.month)+"/"+((date.year < 2000)?(date.year+1900).toString():date.year.toString())
     }
 }
