@@ -146,10 +146,7 @@
                     <g:render template="dropdownButtons" />
 
                     <!-- Editor -->
-                    <div id="pastSceneRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
-
+                    <div id="pastSceneRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
@@ -286,9 +283,7 @@
                         <g:render template="dropdownButtons" />
 
                         <!-- Editor -->
-                        <div id="pastSceneRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-                             style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                             -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+                        <div id="pastSceneRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                             ${pastScene.description.encodeAsHTML()}
                         </div>
                     </div>

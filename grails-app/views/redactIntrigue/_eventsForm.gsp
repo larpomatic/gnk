@@ -126,10 +126,7 @@
                     <g:render template="dropdownButtons" />
 
                     <!-- Editor -->
-                    <div id="eventRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
-
+                    <div id="eventRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
@@ -248,9 +245,7 @@
                     <g:render template="dropdownButtons" />
 
                     <!-- Editor -->
-                    <div id="eventRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-                         style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+                    <div id="eventRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                         ${event.description.encodeAsHTML()}
                     </div>
                 </div>
