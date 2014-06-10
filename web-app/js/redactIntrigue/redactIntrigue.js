@@ -208,6 +208,7 @@ function setCarretPos() {
 function initializeTextEditor() {
     $('.richTextEditor').each(function() {
         var description = $(this).html();
+//        description = description.replace(/\n/g, '<br>'); TODO supprimer les \n de debut
         description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
         description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
@@ -218,6 +219,9 @@ function initializeTextEditor() {
 
 // on remplace les span html dans une description par des balises
 function transformDescription(description) {
+    description = description.replace(/<div>/g, '\n');
+    description = description.replace(/<\/div>/g, '\n');
+    description = description.replace(/<br>/g, '\n');
     description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
     description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');

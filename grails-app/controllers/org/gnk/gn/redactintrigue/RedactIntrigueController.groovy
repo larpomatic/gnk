@@ -129,15 +129,15 @@ class RedactIntrigueController {
 		
 		Set<PlotHasUnivers> toRemoveUnivers = new HashSet<PlotHasUnivers>(plotInstance.plotHasUniverses)
 		
-				while (!(toRemoveUnivers.empty))
-				{
-					PlotHasUnivers plotHasUnivers = toRemoveUnivers.findAll().first()
-					toRemoveUnivers.remove(plotHasUnivers)
-					plotInstance.plotHasUniverses.remove(plotHasUnivers);
-					plotHasUnivers.univers.plotHasUniverses.remove(plotHasUnivers)
-					plotHasUnivers.delete(flush: true)
-					
-				}
+        while (!(toRemoveUnivers.empty))
+        {
+            PlotHasUnivers plotHasUnivers = toRemoveUnivers.findAll().first()
+            toRemoveUnivers.remove(plotHasUnivers)
+            plotInstance.plotHasUniverses.remove(plotHasUnivers);
+            plotHasUnivers.univers.plotHasUniverses.remove(plotHasUnivers)
+            plotHasUnivers.delete(flush: true)
+
+        }
 		
 		params.each {
 			if (it.key.startsWith("tags_")) {
