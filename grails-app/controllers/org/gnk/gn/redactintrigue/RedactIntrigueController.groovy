@@ -138,7 +138,7 @@ class RedactIntrigueController {
             plotHasUnivers.delete(flush: true)
 
         }
-		
+	    
 		params.each {
 			if (it.key.startsWith("tags_")) {
 				PlotHasTag plotHasPlotTag = new PlotHasTag()
