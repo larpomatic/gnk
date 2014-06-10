@@ -6,7 +6,6 @@
                 <g:message code="redactintrigue.event.addEvent" default="New event"/>
             </a>
         </li>
-        %{--<g:each in="${Event.findAllByPlot(plotInstance, [sort:'timing',order:'asc'])}" status="i5" var="event">--}%
         <g:each in="${plotInstance.events}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">

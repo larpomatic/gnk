@@ -117,11 +117,11 @@
                             <g:each in="${plotInstance.events}" var="event">
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent" href="#collapseEvent${event.id}">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent" href="#collapseEvent-${event.id}">
                                             ${event.name}
                                         </a>
                                     </div>
-                                    <div id="collapseEvent${event.id}" class="accordion-body collapse">
+                                    <div id="collapseEvent-${event.id}" class="accordion-body collapse">
                                         <div class="accordion-inner">
                                             <div class="formRow">
                                                 <div class="span1">
@@ -167,11 +167,11 @@
                             <g:each in="${plotInstance.pastescenes}" var="pastscene">
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene${pastscene.id}">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene-${pastscene.id}">
                                             ${pastscene.title}
                                         </a>
                                     </div>
-                                    <div id="collapsePastScene${pastscene.id}" class="accordion-body collapse">
+                                    <div id="collapsePastScene-${pastscene.id}" class="accordion-body collapse">
                                         <div class="accordion-inner">
                                             <div class="formRow">
                                                 <div class="span1">

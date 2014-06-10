@@ -89,7 +89,12 @@ function removeEvent(object) {
                 $('.eventsLi .badge').html(nbEvents);
                 $('.addEvent').trigger("click");
                 $('input[name="placeEvent_' + data.eventId + '"]', 'ul[class*="placeEvent"]').parent().remove();
-                $('.roleScreen div[id="collapseEvent' + data.eventId + '"]').parent().remove();
+                $('.roleScreen div[id="collapseEvent-' + data.eventId + '"]').parent().remove();
+                $('.roleScreen div[id*="roleEventsModal"] .accordion').each(function() {
+                    var roleId = $(this).attr("id");
+                    roleId = roleId.replace("accordionEvent", "");
+                    $('.roleScreen div[id="collapseEvent' + roleId + "-" + data.eventId + '"]').parent().remove();
+                });
                 $('select[name="eventPredecessor"] option[value="' + data.eventId + '"]').remove();
                 createNotification("success", "Supression réussie.", "Votre évènement a bien été supprimé.");
             }
@@ -144,11 +149,16 @@ function createNewEventPanel(data) {
         '<input type="checkbox" name="placeEvent_' + data.event.id + '" id="placeEvent_' + data.event.id + '">' +
         data.event.name +
         '</li>');
-    template = Handlebars.templates['templates/redactIntrigue/addEventInRole'];
-    context = {
-        eventId: data.event.id,
-        eventName: data.event.name
-    };
-    html = template(context);
-    $('.roleScreen div[id*="roleEventsModal"] .accordion').append(html);
+    $('.roleScreen div[id*="roleEventsModal"] .accordion').each(function() {
+        var roleId = $(this).attr("id");
+        roleId = roleId.replace("accordionEvent", "");
+        template = Handlebars.templates['templates/redactIntrigue/addEventInRole'];
+        context = {
+            eventId: data.event.id,
+            eventName: data.event.name,
+            roleId: roleId
+        };
+        html = template(context);
+        $(this).append(html);
+    });
 }

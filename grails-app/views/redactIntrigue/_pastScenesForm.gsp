@@ -10,7 +10,7 @@
                 <a href="#pastScene_${pastScene.id}" data-toggle="tab">
                     ${pastScene.title}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cet scène passée?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cette scène passée?"
                         data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>
@@ -20,9 +20,9 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newPastScene">
-            <form name="newPastSceneForm" data-url="">
+            <form name="newPastSceneForm" data-url="<g:createLink controller="PastScene" action="Save"/>">
                 <g:hiddenField name="pastSceneDescription" class="descriptionContent" value=""/>
-                %{--<div style="margin:auto">--}%
+                <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="pastSceneTitle">
@@ -63,7 +63,8 @@
                     </div>
                     <div class="span4 pastSceneRelative">
                         <div class="input-append">
-                            <g:field type="number" name="pastSceneRelative" id="pastSceneRelative" value="" required=""/>
+                            <g:field type="number" name="pastSceneRelative" id="pastSceneRelative" value=""/>
+                            <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value=""/>
                             <div class="btn-group">
                                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                                     <span class="relativeTimeMessage">
@@ -73,27 +74,27 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="pastSceneRelativeTimeUnit">
+                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="Y">
                                             <g:message code="redactintrigue.pastScene.pastSceneYear" default="Year"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="pastSceneRelativeTimeUnit">
+                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="M">
                                             <g:message code="redactintrigue.pastScene.pastSceneMonth" default="Month"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="pastSceneRelativeTimeUnit">
+                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="d">
                                             <g:message code="redactintrigue.pastScene.pastSceneDay" default="Day"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="pastSceneRelativeTimeUnit">
+                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="h">
                                             <g:message code="redactintrigue.pastScene.pastSceneHour" default="Hour"/>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="pastSceneRelativeTimeUnit">
+                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="m">
                                             <g:message code="redactintrigue.pastScene.pastSceneMinute" default="Minute"/>
                                         </a>
                                     </li>
@@ -110,7 +111,6 @@
                             <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
                         </button>
                     </div>
-
                 </div>
 
                 <div class="row formRow">
@@ -152,7 +152,6 @@
 
                     </div>
                 </div>
-                %{--</div>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
             </form>
         </div>
@@ -195,7 +194,7 @@
                         <div class="span4 pastSceneAbsolute hidden">
                             <div class="input-append date datetimepicker">
                                 <input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime${pastScene.id}" name="pastSceneDatetime"
-                                value="${pastScene.dateDay}/${pastScene.dateMonth}/${pastScene.dateYear} ${pastScene.dateHour}:${pastScene.dateMinute}"/>
+                                value="${pastScene.absoluteDay}/${pastScene.absoluteMonth}/${pastScene.absoluteYear} ${pastScene.absoluteHour}:${pastScene.absoluteMinute}"/>
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar">
                                     </i>
@@ -204,37 +203,38 @@
                         </div>
                         <div class="span4 pastSceneRelative">
                             <div class="input-append">
-                                <g:field type="number" name="pastSceneRelative" id="pastSceneRelative${pastScene.id}" value="${pastScene.timingRelative}" required=""/>
+                                <g:field type="number" name="pastSceneRelative" id="pastSceneRelative${pastScene.id}" value="${pastScene.timingRelative}"/>
+                                <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="${pastScene.unitTimingRelative}"/>
                                 <div class="btn-group">
                                     <button class="btn dropdown-toggle" data-toggle="dropdown">
                                         <span class="relativeTimeMessage">
-                                            ${pastScene.unitTimingRelative}
+                                            <g:timeUnit unit="${pastScene.unitTimingRelative}" />
                                         </span>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="pastSceneRelativeTimeUnit">
+                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="Y">
                                                 <g:message code="redactintrigue.pastScene.pastSceneYear" default="Year"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="pastSceneRelativeTimeUnit">
+                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="M">
                                                 <g:message code="redactintrigue.pastScene.pastSceneMonth" default="Month"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="pastSceneRelativeTimeUnit">
+                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="d">
                                                 <g:message code="redactintrigue.pastScene.pastSceneDay" default="Day"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="pastSceneRelativeTimeUnit">
+                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="h">
                                                 <g:message code="redactintrigue.pastScene.pastSceneHour" default="Hour"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="pastSceneRelativeTimeUnit">
+                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="m">
                                                 <g:message code="redactintrigue.pastScene.pastSceneMinute" default="Minute"/>
                                             </a>
                                         </li>
@@ -251,8 +251,6 @@
                                 <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
                             </button>
                         </div>
-
-
                     </div>
 
                     <div class="row formRow">
@@ -294,7 +292,6 @@
                             ${pastScene.description.encodeAsHTML()}
                         </div>
                     </div>
-                    %{--</div>--}%
                     <input type="button" name="Update" data-id="${pastScene.id}" value="Update" class="btn btn-primary updatePastScene"/>
                 </form>
             </div>
