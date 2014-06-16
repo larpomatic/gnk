@@ -131,12 +131,13 @@ class PublicationController {
         Tr tableRow = wordWriter.factory.createTr()
 
         // HDU-MEF2
-        wordWriter.addTableCell(tableRow, "Prenom - Nom")
+        wordWriter.addTableCell(tableRow, "NOM - Prenom")
         wordWriter.addTableCell(tableRow, "Nb PIP Total")
         wordWriter.addTableCell(tableRow, "Type")
         wordWriter.addTableCell(tableRow, "Sexe")
         wordWriter.addTableCell(tableRow, "Age")
         wordWriter.addTableCell(tableRow, "Role(s)")
+        wordWriter.addTableCell(tableRow, "Indication(s) personnage")
         //wordWriter.addTableCell(tableRow, "Description")
 
         table.getContent().add(tableRow);
@@ -145,6 +146,7 @@ class PublicationController {
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
         def listPJ = lchar.toList().sort()
+
         //affichage des PJ dans l'ordre aplhabétique (Nom puis prénom)
         for (String cname : listPJ)
         {
@@ -154,21 +156,30 @@ class PublicationController {
                 {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
                     wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
                     wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
                     String resRoles = "Aucun Rôle"
+                    String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
                     {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
                             resRoles += "\n" + r.code + " : " +  r.description
+                        for (RoleHasTag rht : r.roleHasTags)
+                        {
+                            if (resTag == "Aucune indication")
+                                resTag = rht.tag.name + " (" + rht.weight + "%)"
+                            else
+                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                        }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    wordWriter.addTableCell(tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -192,21 +203,30 @@ class PublicationController {
                 {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
                     wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
                     wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
                     String resRoles = "Aucun Rôle"
+                    String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
                     {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
                             resRoles += "\n" + r.code + " : " +  r.description
+                        for (RoleHasTag rht : r.roleHasTags)
+                        {
+                            if (resTag == "Aucune indication")
+                                resTag = rht.tag.name + " (" + rht.weight + "%)"
+                            else
+                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                        }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    wordWriter.addTableCell(tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -229,21 +249,30 @@ class PublicationController {
                 {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
+                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
                     wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
                     wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
                     String resRoles = "Aucun Rôle"
+                    String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
                     {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
                             resRoles += "\n" + r.code + " : " +  r.description
+                        for (RoleHasTag rht : r.roleHasTags)
+                        {
+                            if (resTag == "Aucune indication")
+                                resTag = rht.tag.name + " (" + rht.weight + "%)"
+                            else
+                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                        }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
+                    wordWriter.addTableCell(tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -735,8 +764,9 @@ class PublicationController {
 
         // HDU-MEF3
         wordWriter.addTableCell(tableRow, "Nb PIP")
-        wordWriter.addTableCell(tableRow, "Tags associés")
+        wordWriter.addTableCell(tableRow, "Indication(s) Intrigue")
         wordWriter.addTableCell(tableRow, "Résumé/Description")
+
 
         table.getContent().add(tableRow);
 
@@ -746,15 +776,23 @@ class PublicationController {
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
-            StringBuilder tags = new StringBuilder()
+            String tags = ""
+            if (p.isEvenemential)
+                tags += "Evènementiel"
+            if (p.isEvenemential.and(p.isMainstream))
+                tags += " - "
+            if (p.isMainstream)
+                tags += "Mainstream"
+            if (p.isEvenemential.or(p.isMainstream))
+                tags += " : "
             boolean first = true
             for (PlotHasTag plotHasTag : p.extTags)
             {
-                if (first)
-                    tags.append(plotHasTag.tag.name + "(" + plotHasTag.weight + "%)")
+                if (!first)
+                    tags += ";"
                 else
-                    tags.append("; " + plotHasTag.tag.name + "(" + plotHasTag.weight + "%)")
-                first = false
+                    first = false
+                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%) "
             }
             wordWriter.addTableCell(tableRowPlot, tags.toString())
 
