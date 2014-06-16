@@ -13,8 +13,11 @@ import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
+import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
@@ -169,13 +172,13 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += "\n" + r.code + " : " +  r.description
+                            resRoles += ";" + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -216,13 +219,13 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += "\n" + r.code + " : " +  r.description
+                            resRoles += ";" + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -262,13 +265,13 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += "\n" + r.code + " : " +  r.description
+                            resRoles += ";" + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "\n" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -305,6 +308,7 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Nom du lieu")
         wordWriter.addTableCell(tableRow, "Type du lieu")
         wordWriter.addTableCell(tableRow, "Description")
+        wordWriter.addTableCell(tableRow, "Indication(s) lieu")
 
         table.getContent().add(tableRow)
 
@@ -317,6 +321,13 @@ class PublicationController {
             else
                 wordWriter.addTableCell(tableRowPlace, "[Pas de type de lieu]")
             wordWriter.addTableCell(tableRowPlace, p.description)
+            String resTag = ""
+            for (PlaceHasTag pht : p.extTags)
+            {
+                resTag += pht.tag.name + "(" + pht.weight + "%); "
+            }
+            wordWriter.addTableCell(tableRowPlace, resTag)
+
 
             table.getContent().add(tableRowPlace)
         }
@@ -333,7 +344,9 @@ class PublicationController {
 
         wordWriter.addTableCell(tableRow, "Nom de la ressource")
         wordWriter.addTableCell(tableRow, "Type")
+        wordWriter.addTableCell(tableRow, "Description")
         wordWriter.addTableCell(tableRow, "Commentaire")
+        wordWriter.addTableCell(tableRow, "Indication(s) Ressource")
 
         table.getContent().add(tableRow);
 
@@ -354,6 +367,16 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.description)
                 else
                     wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
+
+                wordWriter.addTableCell(tableRowRes, genericResource.comment)
+
+                String resTag = ""
+                for (GenericResourceHasTag grht : genericResource.extTags)
+                {
+                    resTag += grht.tag.name + "(" +grht.weight +"%); "
+                }
+                wordWriter.addTableCell(tableRowRes, resTag)
+
                 table.getContent().add(tableRowRes);
             }
         }
@@ -397,7 +420,7 @@ class PublicationController {
                 substituteEvent(p, e)
                 wordWriter.addTableCell(tableRowRes, e.description)
 
-                String characters = ""
+                String charactersAndRessources = ""
                 for (Role r : p.roles)
                 {
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet)
@@ -405,12 +428,16 @@ class PublicationController {
                         for (Role r2 : c.selectedRoles)
                         {
                             if (r.getDTDId().equals(r2.getDTDId()))
-                                characters += c.firstname + " " + c.lastname + ", "
+                                charactersAndRessources += c.firstname + " " + c.lastname + ", "
                         }
                     }
                 }
-                if (characters)
-                    wordWriter.addTableCell(tableRowRes, characters)
+                for (GenericResource gR : e.plot.genericResources)
+                {
+                    charactersAndRessources += gR.selectedResource.name + ", "
+                }
+                if (charactersAndRessources)
+                    wordWriter.addTableCell(tableRowRes, charactersAndRessources)
                 else
                     wordWriter.addTableCell(tableRowRes, " ")
                 table.getContent().add(tableRowRes);
