@@ -103,10 +103,6 @@
                         <g:message code="redactintrigue.generalDescription.plotDescription" default="Plot Description"/>
                     </label>
                 </div>
-                %{--<g:textArea name="plotDescription" id="plotDescription" value="${plotInstance.description}" rows="5"--}%
-                            %{--cols="100"/>--}%
-                %{--<g:render template="richTextEditor" model="['description':${plotInstance.description}]"/>--}%
-
                 <div class="fullScreenEditable">
                     <g:render template="dropdownButtons" />
 

@@ -45,7 +45,7 @@ $(function(){
                     emptyRoleForm();
                     createNewRolePanel(data);
                     initSearchBoxes();
-                    appendEntity("event", data.role.code, "success", "");
+                    appendEntity("role", data.role.code, "success", "", data.role.id);
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
                 }
@@ -64,7 +64,7 @@ $(function(){
 // supprime un role dans la base
 function removeRole(object) {
     var liObject = object.parent();
-    $('.roleSelector [data-id="' + object.attr("data-id") + '"]').remove();
+    $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
     $.ajax({
         type: "POST",
         url: object.attr("data-url"),
@@ -75,6 +75,7 @@ function removeRole(object) {
                 var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
                 $('.roleLi .badge').html(nbRoles);
                 $('.addRole').trigger("click");
+                //Supprimer dans les editeurs de texte TODO
                 createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
             }
             else {

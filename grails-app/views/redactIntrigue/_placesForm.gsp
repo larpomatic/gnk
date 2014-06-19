@@ -20,57 +20,56 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newPlace">
-            <form name="newPlaceForm" data-url="">
-                %{--<div style="margin:auto">--}%
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label for="placeCode">
-                                <g:message code="redactintrigue.place.placeCode" default="Name"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <g:textField name="placeCode" id="placeCode" value="" required=""/>
-                        </div>
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#placeTagsModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.place.placePastScene" default="Past Scene"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#placePastScenesModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.place.choosePastscenes" default="Choose past scenes"/>
-                            </a>
-                        </div>
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.place.placeEvent" default="Events"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <a href="#placeEventsModal" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.place.chooseEvents" default="Choose events"/>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row formRow text-center">
-                        <label for="placeDescription">
-                            <g:message code="redactintrigue.place.placeDescription" default="Description"/>
+            <form name="newPlaceForm" data-url="<g:createLink controller="GenericPlace" action="Save"/>">
+                <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="placeCode">
+                            <g:message code="redactintrigue.place.placeCode" default="Name"/>
                         </label>
                     </div>
-                    <g:textArea name="placeDescription" id="placeDescription" value="" rows="5" cols="100"/>
-                %{--</div>--}%
+                    <div class="span4">
+                        <g:textField name="placeCode" id="placeCode" value="" required=""/>
+                    </div>
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#placeTagsModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.place.placePastScene" default="Past Scene"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#placePastScenesModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.place.choosePastscenes" default="Choose past scenes"/>
+                        </a>
+                    </div>
+                    <div class="span1">
+                        <label>
+                            <g:message code="redactintrigue.place.placeEvent" default="Events"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <a href="#placeEventsModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.place.chooseEvents" default="Choose events"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="row formRow text-center">
+                    <label for="placeDescription">
+                        <g:message code="redactintrigue.place.placeDescription" default="Description"/>
+                    </label>
+                </div>
+                <g:textArea name="placeDescription" id="placeDescription" value="" rows="5" cols="100"/>
 
                 <div id="placeEventsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
@@ -129,7 +128,6 @@
                 <div id="placeTagsModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-
                         <h3 id="myModalLabel">
                             <g:message code="redactintrigue.place.tags" default="Tags"/>
                         </h3>
@@ -163,7 +161,6 @@
                 <form name="updatePlace_${place.id}" data-url="<g:createLink controller="GenericPlace" action="Update" id="${place.id}"/>">
                     <g:hiddenField name="id" value="${place.id}"/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                    %{--<div style="margin:auto">--}%
                     <div class="row formRow">
                         <div class="span1">
                             <label for="placeCode">
@@ -212,7 +209,6 @@
                         </label>
                     </div>
                     <g:textArea name="placeDescription" id="placeDescription" value="${place.comment}" rows="5" cols="100"/>
-                    %{--</div>--}%
 
                     <div id="placeEventsModal_${place.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">

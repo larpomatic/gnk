@@ -80,7 +80,7 @@ function initConfirm() {
                 removePastScene(objectButton);
             }
             if (objectButton.attr("data-object") == "place") {
-//                removePlace(objectButton);
+                removePlace(objectButton);
             }
             return false;
         }
@@ -88,12 +88,13 @@ function initConfirm() {
 }
 
 // ajoute une entité dans la vue intrigue
-function appendEntity(entity, value, label, flag) {
+function appendEntity(entity, value, label, flag, id) {
     var template = Handlebars.templates['templates/redactIntrigue/addEntityLiElement'];
     var context = {
         entityName: value,
         entityLabel: label,
-        flag: flag
+        flag: flag,
+        id: id
     };
     var html = template(context);
     $(html).insertBefore('.' + entity + 'Selector li:last-child');
