@@ -120,4 +120,6 @@ function createNewGenericPlacePanel(data) {
             $('#placePastScenesModal_' + data.genericPlace.id + " #placePastScene_" + data.genericPlace.pastsceneList[key2].pastsceneId).attr('checked', 'checked');
         }
     }
+    $('select[name="pastScenePlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
+    $('select[name="eventPlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
 }

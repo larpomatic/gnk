@@ -82,6 +82,9 @@ function initConfirm() {
             if (objectButton.attr("data-object") == "place") {
                 removePlace(objectButton);
             }
+            if (objectButton.attr("data-object") == "resource") {
+                removeResource(objectButton);
+            }
             return false;
         }
     });

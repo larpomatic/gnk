@@ -1,6 +1,11 @@
 package org.gnk.resplacetime
 
-import org.springframework.dao.DataIntegrityViolationException
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.selectintrigue.Plot
+import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class GenericResourceController {
 
@@ -20,14 +25,95 @@ class GenericResourceController {
     }
 
     def save() {
-        def genericResourceInstance = new GenericResource(params)
-        if (!genericResourceInstance.save(flush: true)) {
-            render(view: "create", model: [genericResourceInstance: genericResourceInstance])
-            return
+        GenericResource genericResource = new GenericResource(params)
+        Boolean res = saveOrUpdate(genericResource, true);
+        genericResource = GenericResource.findAllWhere("code": genericResource.getCode()).first();
+        def resourceTagList = new TagService().getResourceTagQuery();
+        def jsonTagList = buildTagList(resourceTagList);
+        def jsonGenericResource = buildJson(genericResource, resourceTagList);
+        final JSONObject object = new JSONObject();
+        object.put("iscreate", res);
+        object.put("genericResource", jsonGenericResource);
+        object.put("genericResourceTagList", jsonTagList);
+        render(contentType: "application/json") {
+            object
         }
+    }
 
-        flash.messageInfo = message(code: 'adminRef.genericResource.info.create', args: [genericResourceInstance.code])
-        redirect(action: "list")
+    def buildTagList(def genericResourceTagList) {
+        JSONArray jsonTagList = new JSONArray();
+        for (genericResourceTag in genericResourceTagList) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", genericResourceTag.getId());
+            jsonTag.put("name", genericResourceTag.getName());
+            jsonTagList.add(jsonTag);
+        }
+        return jsonTagList;
+    }
+
+    def buildJson(GenericResource genericResource, resourceTagList) {
+        JSONObject jsonGenericResource = new JSONObject();
+        jsonGenericResource.put("code", genericResource.getCode());
+        jsonGenericResource.put("id", genericResource.getId());
+        jsonGenericResource.put("plotId", genericResource.getPlot().getId());
+        jsonGenericResource.put("comment", genericResource.getComment());
+        JSONArray jsonTagList = new JSONArray();
+        for (Tag genericResourceTag in resourceTagList) {
+            if (genericResource.hasGenericResourceTag(genericResourceTag)) {
+                jsonTagList.add(genericResourceTag.getId());
+            }
+        }
+        jsonGenericResource.put("tagList", jsonTagList);
+        return jsonGenericResource;
+    }
+
+    def saveOrUpdate(GenericResource newGenericResource, boolean isNew) {
+        if (params.containsKey("plotId")) {
+            Plot plot = Plot.get(params.plotId as Integer)
+            newGenericResource.plot = plot
+        } else {
+            return false
+        }
+        if (params.containsKey("resourceCode")) {
+            newGenericResource.code = params.resourceCode
+        } else {
+            return false
+        }
+        if (params.containsKey("resourceDescription")) {
+            newGenericResource.comment = params.resourceDescription
+        } else {
+            return false
+        }
+        if(newGenericResource.extTags) {
+            newGenericResource.extTags.clear();
+        } else {
+            newGenericResource.extTags = new HashSet<GenericResourceHasTag>()
+        }
+        if(newGenericResource.roleHasEventHasRessources) {
+            newGenericResource.roleHasEventHasRessources.clear();
+        } else {
+            newGenericResource.roleHasEventHasRessources = new HashSet<RoleHasEventHasGenericResource>()
+        }
+        newGenericResource.version = 1;
+        newGenericResource.dateCreated = new Date();
+        newGenericResource.lastUpdated = new Date();
+        newGenericResource.title = "";
+        newGenericResource.description = "";
+        newGenericResource.save(flush: true);
+        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
+
+        params.each {
+            if (it.key.startsWith("resourceTags_")) {
+                GenericResourceHasTag genericResourceHasTag = new GenericResourceHasTag();
+                Tag genericResourceTag = Tag.get((it.key - "resourceTags_") as Integer);
+                genericResourceHasTag.tag = genericResourceTag
+                genericResourceHasTag.weight = TagService.LOCKED
+                genericResourceHasTag.genericResource = newGenericResource
+                newGenericResource.extTags.add(genericResourceHasTag)
+            }
+        }
+        newGenericResource.save(flush: true);
+        return true;
     }
 
     def show(Long id) {
@@ -52,75 +138,48 @@ class GenericResourceController {
         [genericResourceInstance: genericResourceInstance]
     }
 
-    def update(Long id, Long version) {
-        def genericResourceInstance = GenericResource.get(id)
-        if (!genericResourceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (genericResourceInstance.version > version) {
-                genericResourceInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'genericResource.label', default: 'GenericResource')] as Object[],
-                          "Another user has updated this GenericResource while you were editing")
-                render(view: "edit", model: [genericResourceInstance: genericResourceInstance])
-                return
+    def update(Long id) {
+        GenericResource genericResource = GenericResource.get(id)
+        if (genericResource) {
+            render(contentType: "application/json") {
+                object(isupdate: saveOrUpdate(genericResource, false))
             }
         }
-
-        genericResourceInstance.properties = params
-
-        if (!genericResourceInstance.save(flush: true)) {
-            render(view: "edit", model: [genericResourceInstance: genericResourceInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), genericResourceInstance.id])
-        redirect(action: "show", id: genericResourceInstance.id)
     }
 
     def delete(Long id) {
-        def genericResourceInstance = GenericResource.get(id)
-        if (!genericResourceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
-            redirect(action: "list")
-            return
+        GenericResource genericResource = GenericResource.get(id)
+        boolean isDelete = false;
+        if (genericResource) {
+            genericResource.delete(flush: true)
+            isDelete = true;
         }
-
-        try {
-            genericResourceInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
-            redirect(action: "show", id: id)
+        render(contentType: "application/json") {
+            object(isdelete: isDelete)
         }
     }
 
-    def deleteResource()
-    {
-        def genericResourceInstance = GenericResource.get(params.id)
-
-        if (!genericResourceInstance) {
-
-            flash.message = message(code: 'Erreur : Suppression échouée de la ressource !')
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            genericResourceInstance.delete(flush: true)
-            flash.messageInfo = message(code: 'adminRef.genericResource.info.delete', args: [genericResourceInstance.code])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), params.id])
-            redirect(action: "show", id: id)
-        }
-
-
-    }
+//    def deleteResource()
+//    {
+//        def genericResourceInstance = GenericResource.get(params.id)
+//
+//        if (!genericResourceInstance) {
+//
+//            flash.message = message(code: 'Erreur : Suppression échouée de la ressource !')
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        try {
+//            genericResourceInstance.delete(flush: true)
+//            flash.messageInfo = message(code: 'adminRef.genericResource.info.delete', args: [genericResourceInstance.code])
+//            redirect(action: "list")
+//        }
+//        catch (DataIntegrityViolationException e) {
+//            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), params.id])
+//            redirect(action: "show", id: id)
+//        }
+//
+//
+//    }
 }

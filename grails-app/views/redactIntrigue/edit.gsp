@@ -19,6 +19,7 @@
 <g:javascript src="redactIntrigue/event.js"/>
 <g:javascript src="redactIntrigue/pastScene.js"/>
 <g:javascript src="redactIntrigue/genericPlace.js"/>
+<g:javascript src="redactIntrigue/genericResource.js"/>
 	<div id="edit-plot" class="content scaffold-list">
 		<h1>
 			<g:message code="default.edit.label" args="[entityName]" />

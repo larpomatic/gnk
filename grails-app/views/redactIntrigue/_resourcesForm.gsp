@@ -20,8 +20,8 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="newResource">
-            <form name="newResourceForm" data-url="">
-                %{--<div style="margin:auto">--}%
+            <form name="newResourceForm" data-url="<g:createLink controller="GenericResource" action="Save"/>">
+                <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceCode">
@@ -66,7 +66,6 @@
                     </label>
                 </div>
                 <g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100"/>
-                %{--</div>--}%
 
                 <div id="resourceCluesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
@@ -125,7 +124,6 @@
                 <form name="updateResource_${resource.id}" data-url="<g:createLink controller="GenericResource" action="Update" id="${resource.id}"/>">
                     <g:hiddenField name="id" value="${resource.id}"/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                    %{--<div style="margin:auto">--}%
                     <div class="row formRow">
                         <div class="span1">
                             <label for="resourceCode">
@@ -170,7 +168,6 @@
                         </label>
                     </div>
                     <g:textArea name="resourceDescription" id="resourceDescription" value="${resource.comment}" rows="5" cols="100"/>
-                    %{--</div>--}%
 
                     <div id="resourceCluesModal_${resource.id}" class="modal hide fade" tabindex="-1">
                         <div class="modal-header">
@@ -204,7 +201,7 @@
                         </div>
 
                         <div class="modal-body">
-                            <ul class="resourceTags">
+                            <ul class="resourceTags${resource.id}">
                                 <g:each in="${resourceTagList}" var="resourceTagInstance">
                                     <li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">
                                         <label>
