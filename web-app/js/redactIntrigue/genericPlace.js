@@ -53,6 +53,10 @@ function updatePlace() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre lieu a bien été modifié.");
+                    $('.placeScreen .leftMenuList a[href="#place_' + data.object.id + '"]').html(data.object.name);
+                    $('.placeSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                    $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="pastScenePlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");

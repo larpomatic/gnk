@@ -103,16 +103,26 @@ class GenericPlaceController {
             return false
         }
         if(newGenericPlace.extTags) {
+            HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();
+            GenericPlaceHasTag.deleteAll(genericPlaceHasTag);
         } else {
             newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>()
         }
         if(newGenericPlace.events) {
+            for (Event event in newGenericPlace.events) {
+                event.genericPlace = null;
+                event.save(flush:true);
+            }
             newGenericPlace.events.clear();
         } else {
             newGenericPlace.events = new HashSet<Event>()
         }
         if(newGenericPlace.pastscenes) {
+            for (Pastscene pastscene in newGenericPlace.pastscenes) {
+                pastscene.genericPlace = null;
+                pastscene.save(flush:true);
+            }
             newGenericPlace.pastscenes.clear();
         } else {
             newGenericPlace.pastscenes = new HashSet<Pastscene>()
@@ -171,7 +181,9 @@ class GenericPlaceController {
         GenericPlace genericPlace = GenericPlace.get(id)
         if (genericPlace) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(genericPlace, false))
+                object(isupdate: saveOrUpdate(genericPlace, false),
+                        id: genericPlace.id,
+                        name: genericPlace.code)
             }
         }
     }
