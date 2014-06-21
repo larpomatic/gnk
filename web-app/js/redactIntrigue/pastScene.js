@@ -1,31 +1,7 @@
 $(function(){
     initPastSceneRelative();
 
-    // modifie une scène passée dans la base
-    $('.updatePastScene').click(function() {
-        var pastsceneId = $(this).attr("data-id");
-        var form = $('form[name="updatePastScene_' + pastsceneId + '"]');
-        var description = $('.richTextEditor', form).html();
-        description = transformDescription(description);
-        $('.descriptionContent', form).val(description);
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
-                }
-                else {
-                    createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
-            }
-        })
-    });
+    updatePastScene();
 
     //ajoute une nouvelle scène passée dans la base
     $('.insertPastScene').click(function() {
@@ -63,6 +39,7 @@ $(function(){
                     });
                     var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1;
                     $('.pastScenesLi .badge').html(nbPastScenes);
+                    updatePastScene();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre scène passée n'a pas pu être ajoutée, une erreur s'est produite.");
@@ -74,6 +51,34 @@ $(function(){
         })
     });
 });
+
+function updatePastScene() {
+    // modifie une scène passée dans la base
+    $('.updatePastScene').click(function() {
+        var pastsceneId = $(this).attr("data-id");
+        var form = $('form[name="updatePastScene_' + pastsceneId + '"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
+                }
+                else {
+                    createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
+            }
+        })
+    });
+}
 
 function initPastSceneRelative() {
     //change l'unité de temps sur les pastScenes

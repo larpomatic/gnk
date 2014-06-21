@@ -24,7 +24,7 @@
     </button>
     <ul class="dropdown-menu placeSelector">
         <g:each in="${plotInstance.genericPlaces}" status="i5" var="genericPlace">
-            <li>
+            <li data-id="${genericPlace.id}">
                 <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-warning&quot; contenteditable=&quot;false&quot;>${genericPlace.code}</span>'); return false;">
                     ${genericPlace.code}
                 </a>
@@ -43,7 +43,7 @@
     </button>
     <ul class="dropdown-menu resourceSelector">
         <g:each in="${plotInstance.genericResources}" status="i5" var="genericResource">
-            <li>
+            <li data-id="${genericResource.id}">
                 <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-important&quot; contenteditable=&quot;false&quot;>${genericResource.code}</span>'); return false;">
                     ${genericResource.code}
                 </a>

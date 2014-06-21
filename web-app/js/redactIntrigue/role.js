@@ -1,26 +1,5 @@
 $(function(){
-    // modifie un role dans la base
-    $('.updateRole').click(function() {
-        var roleId = $(this).attr("data-id");
-        var form = $('form[name="updateRole_' + roleId + '"]');
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
-                }
-                else {
-                    createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-            }
-        })
-    });
+    updateRole();
 
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
@@ -48,6 +27,7 @@ $(function(){
                     appendEntity("role", data.role.code, "success", "", data.role.id);
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
+                    updateRole();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
@@ -60,6 +40,30 @@ $(function(){
     });
 });
 
+function updateRole() {
+    // modifie un role dans la base
+    $('.updateRole').click(function() {
+        var roleId = $(this).attr("data-id");
+        var form = $('form[name="updateRole_' + roleId + '"]');
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                }
+                else {
+                    createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+            }
+        })
+    });
+}
 
 // supprime un role dans la base
 function removeRole(object) {

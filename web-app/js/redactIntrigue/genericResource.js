@@ -1,26 +1,5 @@
 $(function(){
-    // modifie un objet dans la base
-    $('.updateResource').click(function() {
-        var genericResourceId = $(this).attr("data-id");
-        var form = $('form[name="updateResource_' + genericResourceId + '"]');
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre objet a bien été modifié.");
-                }
-                else {
-                    createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
-            }
-        })
-    });
+    updateResource();
 
     //ajoute un nouvel objet dans la base
     $('.insertResource').click(function() {
@@ -48,6 +27,7 @@ $(function(){
                     appendEntity("resource", data.genericResource.code, "warning", "", data.genericResource.id);
                     var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
                     $('.resourceLi .badge').html(nbGenericResources);
+                    updateResource();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre objet n'a pas pu être ajouté, une erreur s'est produite.");
@@ -60,6 +40,32 @@ $(function(){
     });
 });
 
+// modifie un objet dans la base
+function updateResource() {
+    $('.updateResource').click(function() {
+        var genericResourceId = $(this).attr("data-id");
+        var form = $('form[name="updateResource_' + genericResourceId + '"]');
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre objet a bien été modifié.");
+                    $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
+                    $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                }
+                else {
+                    createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
+            }
+        })
+    });
+}
 
 // supprime un objet dans la base
 function removeResource(object) {

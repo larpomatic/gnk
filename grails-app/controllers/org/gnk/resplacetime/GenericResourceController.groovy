@@ -85,12 +85,16 @@ class GenericResourceController {
             return false
         }
         if(newGenericResource.extTags) {
+            HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;
             newGenericResource.extTags.clear();
+            GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
             newGenericResource.extTags = new HashSet<GenericResourceHasTag>()
         }
         if(newGenericResource.roleHasEventHasRessources) {
+            HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
             newGenericResource.roleHasEventHasRessources.clear();
+            RoleHasEventHasGenericResource.deleteAll(genericResourceHasRoleHasEvents);
         } else {
             newGenericResource.roleHasEventHasRessources = new HashSet<RoleHasEventHasGenericResource>()
         }
@@ -142,7 +146,9 @@ class GenericResourceController {
         GenericResource genericResource = GenericResource.get(id)
         if (genericResource) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(genericResource, false))
+                object(isupdate: saveOrUpdate(genericResource, false),
+                       id: genericResource.id,
+                       name: genericResource.code)
             }
         }
     }

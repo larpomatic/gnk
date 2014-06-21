@@ -1,26 +1,5 @@
 $(function(){
-    // modifie un lieu dans la base
-    $('.updatePlace').click(function() {
-        var genericPlaceId = $(this).attr("data-id");
-        var form = $('form[name="updatePlace_' + genericPlaceId + '"]');
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre lieu a bien été modifié.");
-                }
-                else {
-                    createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
-            }
-        })
-    });
+    updatePlace();
 
     //ajoute un nouveau lieu dans la base
     $('.insertPlace').click(function() {
@@ -48,6 +27,7 @@ $(function(){
                     appendEntity("place", data.genericPlace.code, "warning", "", data.genericPlace.id);
                     var nbGenericPlaces = parseInt($('.placeLi .badge').html()) + 1;
                     $('.placeLi .badge').html(nbGenericPlaces);
+                    updatePlace();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre lieu n'a pas pu être ajouté, une erreur s'est produite.");
@@ -60,6 +40,30 @@ $(function(){
     });
 });
 
+function updatePlace() {
+    // modifie un lieu dans la base
+    $('.updatePlace').click(function() {
+        var genericPlaceId = $(this).attr("data-id");
+        var form = $('form[name="updatePlace_' + genericPlaceId + '"]');
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre lieu a bien été modifié.");
+                }
+                else {
+                    createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
+            }
+        })
+    });
+}
 
 // supprime un lieu dans la base
 function removePlace(object) {

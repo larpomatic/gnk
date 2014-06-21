@@ -1,30 +1,5 @@
 $(function(){
-    // modifie un event dans la base
-    $('.updateEvent').click(function() {
-        var eventId = $(this).attr("data-id");
-        var form = $('form[name="updateEvent_' + eventId + '"]');
-        var description = $('.richTextEditor', form).html();
-        description = transformDescription(description);
-        $('.descriptionContent', form).val(description);
-//        form = $('form[name="newEventForm"]');
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
-                }
-                else {
-                    createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
-            }
-        })
-    });
+    updateEvent();
 
     //ajoute un nouvel évènement dans la base
     $('.insertEvent').click(function() {
@@ -62,6 +37,7 @@ $(function(){
                     });
                     var nbEvents = parseInt($('.eventsLi .badge').html()) + 1;
                     $('.eventsLi .badge').html(nbEvents);
+                    updateEvent();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre évènement n'a pas pu être ajouté, une erreur s'est produite.");
@@ -74,6 +50,34 @@ $(function(){
     });
 });
 
+function updateEvent() {
+    // modifie un event dans la base
+    $('.updateEvent').click(function() {
+        var eventId = $(this).attr("data-id");
+        var form = $('form[name="updateEvent_' + eventId + '"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
+        //        form = $('form[name="newEventForm"]');
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
+                }
+                else {
+                    createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
+            }
+        })
+    });
+}
 
 // supprime un event dans la base
 function removeEvent(object) {
