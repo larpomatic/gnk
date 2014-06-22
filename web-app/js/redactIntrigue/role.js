@@ -56,6 +56,11 @@ function updateRole() {
                     $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                    $('.richTextEditor span.label-success').each(function() {
+                        if ($(this).html() == data.object.oldname) {
+                            $(this).html(data.object.name);
+                        }
+                    });
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
@@ -71,7 +76,7 @@ function updateRole() {
 // supprime un role dans la base
 function removeRole(object) {
     var liObject = object.parent();
-    $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+    var name = $.trim($("a", liObject).html());
     $.ajax({
         type: "POST",
         url: object.attr("data-url"),
@@ -82,7 +87,12 @@ function removeRole(object) {
                 var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
                 $('.roleLi .badge').html(nbRoles);
                 $('.addRole').trigger("click");
-                //Supprimer dans les editeurs de texte TODO
+                $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                $('.richTextEditor span.label-success').each(function() {
+                    if ($(this).html() == name) {
+                        $(this).remove();
+                    }
+                });
                 createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
             }
             else {

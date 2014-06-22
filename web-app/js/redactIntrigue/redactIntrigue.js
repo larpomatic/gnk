@@ -212,7 +212,15 @@ function setCarretPos() {
 function initializeTextEditor() {
     $('.richTextEditor').each(function() {
         var description = $(this).html();
-//        description = description.replace(/\n/g, '<br>'); TODO supprimer les \n de debut
+        while (description.length != 0 && (description[0] == '\n' ||
+            description[0] == ' ' || description[0] == '\r')) {
+            description = description.substring(1, description.length)
+        }
+        while (description.length != 0 && (description[description.length - 1] == '\n' ||
+            description[description.length - 1] == ' ' || description[description.length - 1] == '\r')) {
+            description = description.substring(0, description.length - 1)
+        }
+        description = description.replace(/\n/g, '<br>');
         description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
         description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');

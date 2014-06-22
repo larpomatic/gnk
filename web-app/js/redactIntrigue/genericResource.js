@@ -24,7 +24,7 @@ $(function(){
                     emptyGenericResourceForm();
                     createNewGenericResourcePanel(data);
                     initSearchBoxes();
-                    appendEntity("resource", data.genericResource.code, "warning", "", data.genericResource.id);
+                    appendEntity("resource", data.genericResource.code, "important", "", data.genericResource.id);
                     var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
                     $('.resourceLi .badge').html(nbGenericResources);
                     updateResource();
@@ -55,6 +55,11 @@ function updateResource() {
                     createNotification("success", "Modifications réussies.", "Votre objet a bien été modifié.");
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                    $('.richTextEditor span.label-important').each(function() {
+                        if ($(this).html() == data.object.oldname) {
+                            $(this).html(data.object.name);
+                        }
+                    });
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
@@ -70,7 +75,7 @@ function updateResource() {
 // supprime un objet dans la base
 function removeResource(object) {
     var liObject = object.parent();
-    $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+    var name = $.trim($("a", liObject).html());
     $.ajax({
         type: "POST",
         url: object.attr("data-url"),
@@ -81,6 +86,12 @@ function removeResource(object) {
                 var nbGenericResources = parseInt($('.resourceLi .badge').html()) - 1;
                 $('.resourceLi .badge').html(nbGenericResources);
                 $('.addResource').trigger("click");
+                $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                $('.richTextEditor span.label-important').each(function() {
+                   if ($(this).html() == name) {
+                       $(this).remove();
+                   }
+                });
                 createNotification("success", "Supression réussie.", "Votre objet a bien été supprimé.");
             }
             else {

@@ -99,11 +99,13 @@ class RoleController {
 
 	def update(Long id) {
 		Role role = Role.get(id)
+        String oldname = role.code;
 		if (role) {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(role, false),
                         id: role.id,
-                        name: role.code)
+                        name: role.code,
+                        oldname: oldname)
             }
 		}
 	}

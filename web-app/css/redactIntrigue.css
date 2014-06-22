@@ -171,6 +171,7 @@
     font-size: 22px;
     line-height: 40px;
     margin-top: 5px;
+    min-height: 200px;
     padding: 5px;
     overflow: auto;
     outline: none;

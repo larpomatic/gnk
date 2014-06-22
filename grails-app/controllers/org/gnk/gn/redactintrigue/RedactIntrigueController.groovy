@@ -116,34 +116,50 @@ class RedactIntrigueController {
 
 		plotInstance.properties = params
 		plotInstance.description = params.plotDescription
-		Set<PlotHasTag> toRemove = new HashSet<PlotHasTag>(plotInstance.extTags)
-
-		while (!(toRemove.empty))
-		{
-			PlotHasTag plotHasPlotTag = toRemove.first()
-			toRemove.remove(plotHasPlotTag)
-			plotInstance.extTags.remove(plotHasPlotTag);
-			plotHasPlotTag.delete(flush: true)
-			
-		}
-		
-		Set<PlotHasUnivers> toRemoveUnivers = new HashSet<PlotHasUnivers>(plotInstance.plotHasUniverses)
-		
-        while (!(toRemoveUnivers.empty))
-        {
-            PlotHasUnivers plotHasUnivers = toRemoveUnivers.findAll().first()
-            toRemoveUnivers.remove(plotHasUnivers)
-            plotInstance.plotHasUniverses.remove(plotHasUnivers);
-            plotHasUnivers.univers.plotHasUniverses.remove(plotHasUnivers)
-            plotHasUnivers.delete(flush: true)
-
+//		Set<PlotHasTag> toRemove = new HashSet<PlotHasTag>(plotInstance.extTags)
+//
+//		while (!(toRemove.empty))
+//		{
+//			PlotHasTag plotHasPlotTag = toRemove.first()
+//			toRemove.remove(plotHasPlotTag)
+//			plotInstance.extTags.remove(plotHasPlotTag);
+//			plotHasPlotTag.delete(flush: true)
+//		}
+        if (plotInstance.extTags) {
+            HashSet<PlotHasTag> plotHasTags = plotInstance.extTags;
+            PlotHasTag.deleteAll(plotHasTags);
+            plotInstance.extTags.clear();
         }
+        else {
+            plotInstance.extTags = new HashSet<PlotHasTag>();
+        }
+		
+//		Set<PlotHasUnivers> toRemoveUnivers = new HashSet<PlotHasUnivers>(plotInstance.plotHasUniverses)
+		
+//        while (!(toRemoveUnivers.empty))
+//        {
+        if (plotInstance.plotHasUniverses) {
+            HashSet<PlotHasUnivers> plotHasUniverses = plotInstance.plotHasUniverses;
+            PlotHasUnivers.deleteAll(plotHasUniverses);
+            plotInstance.plotHasUniverses.clear();
+        }
+        else {
+            plotInstance.plotHasUniverses = new HashSet<PlotHasUnivers>();
+        }
+//            PlotHasUnivers plotHasUnivers = toRemoveUnivers.findAll().first()
+//            toRemoveUnivers.remove(plotHasUnivers)
+//            plotInstance.plotHasUniverses.remove(plotHasUnivers);
+//            plotHasUnivers.univers.plotHasUniverses.remove(plotHasUnivers)
+//            plotHasUnivers.delete(flush: true);
+//        }
+
+        plotInstance.save(flush: true);
 
 		params.each {
 			if (it.key.startsWith("tags_")) {
-				PlotHasTag plotHasPlotTag = new PlotHasTag()
+				PlotHasTag plotHasPlotTag = new PlotHasTag();
 				Tag plotTag = Tag.get((it.key - "tags_") as Integer);
-				plotHasPlotTag.tag = plotTag
+				plotHasPlotTag.tag = plotTag;
 				String weight = params.get("weight_tags_" + plotTag.id);
 				plotHasPlotTag.weight = weight as Integer
 				plotHasPlotTag.plot = plotInstance

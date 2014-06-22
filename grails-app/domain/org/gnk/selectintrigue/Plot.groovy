@@ -76,9 +76,9 @@ class Plot {
         id type:'integer'
         version type: 'integer'
         events cascade: 'all-delete-orphan'
-        plotHasUniverses cascade: 'all-delete-orphan'
+//        plotHasUniverses cascade: 'all-delete-orphan'
         roles cascade: 'all-delete-orphan'
-        extTags cascade: 'all-delete-orphan'
+//        extTags cascade: 'all-delete-orphan'
         pastescenes cascade: 'all-delete-orphan'
     }
 

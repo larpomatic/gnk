@@ -57,6 +57,11 @@ function updatePlace() {
                     $('.placeSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="pastScenePlace"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('.richTextEditor span.label-warning').each(function() {
+                        if ($(this).html() == data.object.oldname) {
+                            $(this).html(data.object.name);
+                        }
+                    });
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
@@ -72,7 +77,7 @@ function updatePlace() {
 // supprime un lieu dans la base
 function removePlace(object) {
     var liObject = object.parent();
-    $('.placeSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+    var name = $.trim($("a", liObject).html());
     $.ajax({
         type: "POST",
         url: object.attr("data-url"),
@@ -83,6 +88,12 @@ function removePlace(object) {
                 var nbGenericPlaces = parseInt($('.placeLi .badge').html()) - 1;
                 $('.placeLi .badge').html(nbGenericPlaces);
                 $('.addPlace').trigger("click");
+                $('.placeSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                $('.richTextEditor span.label-warning').each(function() {
+                    if ($(this).html() == name) {
+                        $(this).remove();
+                    }
+                });
                 createNotification("success", "Supression réussie.", "Votre lieu a bien été supprimé.");
             }
             else {

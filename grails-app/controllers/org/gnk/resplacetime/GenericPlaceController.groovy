@@ -178,12 +178,14 @@ class GenericPlaceController {
     }
 
     def update(Long id) {
-        GenericPlace genericPlace = GenericPlace.get(id)
+        GenericPlace genericPlace = GenericPlace.get(id);
+        String oldname = genericPlace.code;
         if (genericPlace) {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(genericPlace, false),
                         id: genericPlace.id,
-                        name: genericPlace.code)
+                        name: genericPlace.code,
+                        oldname: oldname)
             }
         }
     }

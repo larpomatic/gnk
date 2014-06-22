@@ -143,12 +143,14 @@ class GenericResourceController {
     }
 
     def update(Long id) {
-        GenericResource genericResource = GenericResource.get(id)
+        GenericResource genericResource = GenericResource.get(id);
+        String oldname = genericResource.code;
         if (genericResource) {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(genericResource, false),
                        id: genericResource.id,
-                       name: genericResource.code)
+                       name: genericResource.code,
+                       oldname: oldname)
             }
         }
     }
