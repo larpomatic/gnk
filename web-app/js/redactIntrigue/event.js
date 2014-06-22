@@ -67,6 +67,9 @@ function updateEvent() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
+                    $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('.roleScreen a[data-eventId="' + data.object.id + '"]').html(data.object.name);
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");

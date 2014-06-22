@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="span4">
-                        <g:textField name="EventName" id="EventName" value="${event.name}" required=""/>
+                        <g:textField name="eventName" id="EventName" value="${event.name}" required=""/>
                     </div>
                     <div class="span1">
                         <label for="EventDuration">
@@ -158,7 +158,7 @@
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventDuration" id="EventDuration" value="${event.duration}" required=""/>
+                        <g:field type="number" name="eventDuration" id="EventDuration" value="${event.duration}" required=""/>
                     </div>
 
                 </div>
@@ -208,7 +208,7 @@
                     </div>
 
                     <div class="span4">
-                        <g:field type="number" name="EventTiming" id="EventTiming" value="${event.timing}" required=""/>
+                        <g:field type="number" name="eventTiming" id="EventTiming" value="${event.timing}" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">

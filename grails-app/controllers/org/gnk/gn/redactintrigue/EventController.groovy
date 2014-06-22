@@ -56,7 +56,9 @@ class EventController {
         Event event = Event.get(id)
         if (event) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(event))
+                object(isupdate: saveOrUpdate(event),
+                        id: event.id,
+                        name: event.name)
             }
         }
     }
@@ -110,11 +112,17 @@ class EventController {
                 newEvent.genericPlace = genericPlace;
             }
         }
+        else {
+            newEvent.genericPlace = null;
+        }
         if (params.containsKey("eventPredecessor") && params.eventPredecessor != null && params.eventPredecessor != "" && params.eventPredecessor != "null") {
             Event eventPredecessor = Event.findById(params.eventPredecessor as Integer);
             if (eventPredecessor) {
                 newEvent.eventPredecessor = eventPredecessor;
             }
+        }
+        else {
+            newEvent.eventPredecessor = null;
         }
         newEvent.version = 1;
         newEvent.dateCreated = new Date();

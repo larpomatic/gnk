@@ -117,7 +117,8 @@
                             <g:each in="${plotInstance.events}" var="event">
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent" href="#collapseEvent-${event.id}">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent"
+                                           href="#collapseEvent-${event.id}" data-eventId="${event.id}">
                                             ${event.name}
                                         </a>
                                     </div>
@@ -167,7 +168,8 @@
                             <g:each in="${plotInstance.pastescenes}" var="pastscene">
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
-                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene" href="#collapsePastScene-${pastscene.id}">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene"
+                                           href="#collapsePastScene-${pastscene.id}" data-pastsceneId="${pastscene.id}">
                                             ${pastscene.title}
                                         </a>
                                     </div>
@@ -326,7 +328,8 @@
                                 <g:each in="${plotInstance.events}" var="event">
                                     <div class="accordion-group">
                                         <div class="accordion-heading">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}" href="#collapseEvent${role.id}-${event.id}">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}"
+                                               href="#collapseEvent${role.id}-${event.id}" data-eventId="${event.id}">
                                                 ${event.name}
                                             </a>
                                         </div>
@@ -380,7 +383,8 @@
                                 <g:each in="${plotInstance.pastescenes}" var="pastscene">
                                     <div class="accordion-group">
                                         <div class="accordion-heading">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}" href="#collapsePastScene${role.id}-${pastscene.id}">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
+                                               href="#collapsePastScene${role.id}-${pastscene.id}" data-pastsceneId="${pastscene.id}">
                                                 ${pastscene.title}
                                             </a>
                                         </div>

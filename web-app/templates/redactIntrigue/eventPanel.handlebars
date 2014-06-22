@@ -12,7 +12,7 @@
         </div>
 
         <div class="span4">
-            <input type="text" name="EventName" id="EventName" value="{{ event.name }}" required=""/>
+            <input type="text" name="eventName" id="EventName" value="{{ event.name }}" required=""/>
         </div>
         <div class="span1">
             <label for="EventDuration">
@@ -21,7 +21,7 @@
         </div>
 
         <div class="span4">
-            <input type="number" name="EventDuration" id="EventDuration" value="{{ event.duration }}" required=""/>
+            <input type="number" name="eventDuration" id="EventDuration" value="{{ event.duration }}" required=""/>
         </div>
 
     </div>
@@ -79,7 +79,7 @@
         </div>
 
         <div class="span4">
-            <input type="number" name="EventTiming" id="EventTiming" value="{{ event.timing }}" required=""/>
+            <input type="number" name="eventTiming" id="EventTiming" value="{{ event.timing }}" required=""/>
         </div>
     </div>
     <div class="row formRow">
@@ -117,9 +117,7 @@
     <div class="fullScreenEditable">
 
         <!-- Editor -->
-        <div id="eventRichTextEditor{{ event.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))"
-             style="margin-top:15px; padding:5px; height:200px; overflow:auto; border:solid 1px #808080; -moz-border-radius:20px 0;
-                         -webkit-border-radius:20px 0; border-radius:20px 0; margin-bottom: 10px;">
+        <div id="eventRichTextEditor{{ event.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
             {{ encodeAsHtml event.description }}
         </div>
     </div>

@@ -56,7 +56,9 @@ class PastSceneController {
         Pastscene pastscene = Pastscene.get(id)
         if (pastscene) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(pastscene))
+                object(isupdate: saveOrUpdate(pastscene),
+                        id: pastscene.id,
+                        name: pastscene.title)
             }
         }
     }
