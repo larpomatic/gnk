@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.selectintrigue.Plot"%>
 <g:hiddenField name="screenStep" value="1" />
 
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-left relationScreen">
 
 	<ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">

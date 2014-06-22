@@ -53,6 +53,9 @@ function updateRole() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                    $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
+                    $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
+                    $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");

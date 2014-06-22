@@ -101,7 +101,9 @@ class RoleController {
 		Role role = Role.get(id)
 		if (role) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(role, false))
+                object(isupdate: saveOrUpdate(role, false),
+                        id: role.id,
+                        name: role.code)
             }
 		}
 	}
@@ -140,17 +142,23 @@ class RoleController {
 		}
 		//deleteRoleHasRoleTag(newRole)
 		if(newRole.roleHasTags) {
-			newRole.roleHasTags.clear();
+            HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
+            newRole.roleHasTags.clear();
+            RoleHasTag.deleteAll(roleHasTags);
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
         if(newRole.roleHasEvents) {
+            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
             newRole.roleHasEvents.clear();
+            RoleHasEvent.deleteAll(roleHasEvents);
         } else {
             newRole.roleHasEvents = new HashSet<RoleHasEvent>()
         }
         if(newRole.roleHasPastscenes) {
+            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
             newRole.roleHasPastscenes.clear();
+            RoleHasPastscene.deleteAll(roleHasPastscenes);
         } else {
             newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
         }
