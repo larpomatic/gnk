@@ -150,7 +150,6 @@ class RoleToPersoController {
 
         JSONArray json_array = new JSONArray();
         Set<Character> characters = gn.characterSet.clone();
-        // test sans clone
         characters.addAll(gn.nonPlayerCharSet);
         for (Character c : characters) {
             JSONObject json_object = new JSONObject();
@@ -165,8 +164,8 @@ class RoleToPersoController {
                     if ((lien1 != null) && (lien1.isEmpty() == false))
                     {
                         JSONObject json_adjacencies_obj = new JSONObject();
-                        json_adjacencies_obj.put("nodeTo", "CHAR-" + c2.getDTDId());
-                        json_adjacencies_obj.put("nodeFrom", "CHAR-" + c.getDTDId());
+                        json_adjacencies_obj.put("nodeTo", "CHAR" + c2.getDTDId());
+                        json_adjacencies_obj.put("nodeFrom", "CHAR" + c.getDTDId());
                         JSONObject json_data = new JSONObject();
                         json_data.put("lien", lien1);
                         if ((lien2 != null) && (lien2.isEmpty() == false))
@@ -183,63 +182,10 @@ class RoleToPersoController {
             json_colortype.put("\$type", "circle");
             json_object.put("data", json_colortype);
 
-            json_object.put("id", "CHAR-" + c.getDTDId());
-            json_object.put("name", "CHAR-" + c.getDTDId());
+            json_object.put("id", "CHAR" + c.getDTDId());
+            json_object.put("name", "CHAR" + c.getDTDId());
             json_array.add(json_object);
         }
-
-       // Noed NicoJ
-        //JSONObject json_object = new JSONObject();
-
-        //JSONArray json_adjacencies = new JSONArray();
-
-        //JSONObject json_adjacencies_obj = new JSONObject();
-        //json_adjacencies_obj.put("nodeTo", "AlexB");
-        //json_adjacencies_obj.put("nodeFrom", "NicoJ");
-        //JSONObject json_data = new JSONObject();
-        //json_data.put("lien", "SIGL");
-        //json_data.put("lien2", "GN");
-        //json_adjacencies_obj.put("data", json_data);
-        //json_adjacencies.add(json_adjacencies_obj);
-
-        //json_object.put("adjacencies", json_adjacencies);
-
-        //JSONObject json_colortype = new JSONObject();
-        //json_colortype.put("\$color", "#83548B");
-        //json_colortype.put("\$type", "circle");
-        //json_object.put("data", json_colortype);
-
-        //json_object.put("id", "NicoJ");
-        //json_object.put("name", "NicoJ");
-
-        //json_array.add(json_object);
-
-        // Noeud AlexB
-        //JSONObject json_object2 = new JSONObject();
-
-        //JSONArray json_adj = new JSONArray();
-
-        /*JSONObject json_adj_obj = new JSONObject();
-        json_adj_obj.put("nodeTo", "NicoJ");
-        json_adj_obj.put("nodeFrom", "AlexB");
-        JSONObject json_data2 = new JSONObject();
-        json_data2.put("lien", "GN");
-        json_data2.put("lien2", "SIGL");
-        json_adj_obj.put("data", json_data2);
-        json_adj.add(json_adj_obj);
-
-        json_object2.put("adjacencies", json_adj);
-
-
-        JSONObject json_col = new JSONObject();
-        json_col.put("\$color", "#83548B");
-        json_col.put("\$type", "circle");
-        json_object2.put("data", json_col);
-
-        json_object2.put("id", "AlexB");
-        json_object2.put("name", "AlexB");
-
-        json_array.add(json_object2);*/
 
         json_relation = json_array.toString();
 
