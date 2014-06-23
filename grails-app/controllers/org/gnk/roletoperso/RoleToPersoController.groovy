@@ -1,5 +1,9 @@
 package org.gnk.roletoperso
 
+import org.apache.poi.poifs.filesystem.Entry
+import org.bouncycastle.asn1.cms.CMSAttributes
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
@@ -141,11 +145,111 @@ class RoleToPersoController {
             characterListToDropDownLock.add(c.DTDId);
         }
 
+        String json_relation = "";
+
+
+        JSONArray json_array = new JSONArray();
+        Set<Character> characters = gn.characterSet.clone();
+        // test sans clone
+        characters.addAll(gn.nonPlayerCharSet);
+        for (Character c : characters) {
+            JSONObject json_object = new JSONObject();
+
+            JSONArray json_adjacencies = new JSONArray();
+
+            for (Character c2 : characters) {
+                if (c != c2)
+                {
+                    String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
+                    String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
+                    if ((lien1 != null) && (lien1.isEmpty() == false))
+                    {
+                        JSONObject json_adjacencies_obj = new JSONObject();
+                        json_adjacencies_obj.put("nodeTo", "CHAR-" + c2.getDTDId());
+                        json_adjacencies_obj.put("nodeFrom", "CHAR-" + c.getDTDId());
+                        JSONObject json_data = new JSONObject();
+                        json_data.put("lien", lien1);
+                        if ((lien2 != null) && (lien2.isEmpty() == false))
+                            json_data.put("lien2", lien2);
+                        json_adjacencies_obj.put("data", json_data);
+                        json_adjacencies.add(json_adjacencies_obj);
+                    }
+                }
+            }
+            json_object.put("adjacencies", json_adjacencies);
+
+            JSONObject json_colortype = new JSONObject();
+            json_colortype.put("\$color", "#83548B");
+            json_colortype.put("\$type", "circle");
+            json_object.put("data", json_colortype);
+
+            json_object.put("id", "CHAR-" + c.getDTDId());
+            json_object.put("name", "CHAR-" + c.getDTDId());
+            json_array.add(json_object);
+        }
+
+       // Noed NicoJ
+        //JSONObject json_object = new JSONObject();
+
+        //JSONArray json_adjacencies = new JSONArray();
+
+        //JSONObject json_adjacencies_obj = new JSONObject();
+        //json_adjacencies_obj.put("nodeTo", "AlexB");
+        //json_adjacencies_obj.put("nodeFrom", "NicoJ");
+        //JSONObject json_data = new JSONObject();
+        //json_data.put("lien", "SIGL");
+        //json_data.put("lien2", "GN");
+        //json_adjacencies_obj.put("data", json_data);
+        //json_adjacencies.add(json_adjacencies_obj);
+
+        //json_object.put("adjacencies", json_adjacencies);
+
+        //JSONObject json_colortype = new JSONObject();
+        //json_colortype.put("\$color", "#83548B");
+        //json_colortype.put("\$type", "circle");
+        //json_object.put("data", json_colortype);
+
+        //json_object.put("id", "NicoJ");
+        //json_object.put("name", "NicoJ");
+
+        //json_array.add(json_object);
+
+        // Noeud AlexB
+        //JSONObject json_object2 = new JSONObject();
+
+        //JSONArray json_adj = new JSONArray();
+
+        /*JSONObject json_adj_obj = new JSONObject();
+        json_adj_obj.put("nodeTo", "NicoJ");
+        json_adj_obj.put("nodeFrom", "AlexB");
+        JSONObject json_data2 = new JSONObject();
+        json_data2.put("lien", "GN");
+        json_data2.put("lien2", "SIGL");
+        json_adj_obj.put("data", json_data2);
+        json_adj.add(json_adj_obj);
+
+        json_object2.put("adjacencies", json_adj);
+
+
+        JSONObject json_col = new JSONObject();
+        json_col.put("\$color", "#83548B");
+        json_col.put("\$type", "circle");
+        json_object2.put("data", json_col);
+
+        json_object2.put("id", "AlexB");
+        json_object2.put("name", "AlexB");
+
+        json_array.add(json_object2);*/
+
+        json_relation = json_array.toString();
+
         [gnInstance: gn,
                 characterList: gn.characterSet,
                 allList: algo.gnTPJRoleSet,
+                PHJList: gn.nonPlayerCharSet,
                 characterListToDropDownLock: characterListToDropDownLock,
                 evenementialId: evenementialId,
+                relationjson: json_relation,
                 mainstreamId: mainstreamId]
     }
 
@@ -184,5 +288,46 @@ class RoleToPersoController {
     def deleteFromList(Long id) {
         characterService.removeCharacter(params.selectedCharacterId as int)
         redirect(action: "list")
+    }
+
+    def merge (String char_to, String char_from, String gn_id) {
+        int id_from = Integer.parseInt(char_from);
+        int id_to = Integer.parseInt(char_to.split("-")[1]);
+        int id_gn = Integer.parseInt(gn_id);
+
+        Character c_from = null;
+        Character c_to = null;
+
+        Gn gn = Gn.get(id_gn);
+        assert (gn != null)
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+        Set<Character> charnotplay = gn.getterNonPlayerCharSet();
+        for (Character c in charnotplay)
+        {
+            if (c.DTDId == id_from)
+            {
+                c_from = c;
+            }
+            else if (c.DTDId == id_to)
+            {
+                c_to = c;
+            }
+            if ((c_to != null) && (c_from != null))
+            {
+                break;
+            }
+        }
+        c_to.lockedRoles.addAll(c_from.lockedRoles);
+        c_to.selectedRoles.addAll(c_from.selectedRoles);
+        c_to.selectedPJG.addAll(c_from.selectedPJG);
+        c_to.bannedRoles.addAll(c_from.bannedRoles);
+        c_to.specificRoles.addAll(c_from.specificRoles);
+        c_to.addplotid_role(c_from.getplotid_role());
+        charnotplay.remove(c_from);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        gn.save();
+        return render(contentType: "application/json") { object(test: id_from)};
     }
 }

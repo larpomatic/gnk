@@ -100,6 +100,7 @@ class Plot {
     }
 
 	public int getSumPipRoles(int nbPlayer){
+        assert (nbPlayer != null);
         int count = 0;
         int nbPJG_PIP = 0;
 		if (!sumPipRolesBuffer){

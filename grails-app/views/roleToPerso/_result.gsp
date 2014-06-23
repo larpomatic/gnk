@@ -324,6 +324,8 @@
     </div>
 </g:if>
 </g:each>
+
+
 <g:if test="${true}">
     <div class="row-fluid">
         <div class="span12" id="Relations">
@@ -333,21 +335,29 @@
                                default="All relations between characters summary"/>
                 </div>
 
-                <div style="overflow: auto; height:500px;">
+                <div style="overflow: auto; height:500px;" id="container">
+                    <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
+                    <div id="infovis">
+                    </div>
+                    <div id="right-container">
 
-                    <g:render template="relationSummary"
-                              model="['gnInstance': gnInstance, 'characterList': characterList]"></g:render>
+                        <div id="inner-details"></div>
+
+                    </div>
+                    <g:render template="relationSummary2"></g:render>
                 </div>
             </div>
         </div>
     </div>
 </g:if>
 
+
 <g:if test="${characterList.size() % 2 == 0}">
     <div class="row-fluid">
 </g:if>
 <div class="span6">
     <br/>
+
     <div class="panel panel-default">
         <div class="accordion" id="accordionAll">
             <div class="accordion-group">
@@ -355,7 +365,8 @@
                     <a class="accordion-toggle" data-toggle="collapse"
                        data-parent="#accordionAll"
                        href="#collapseAll">
-                        Rôles communs à tous les personnages
+                        <g:message code="roletoperso.gestionTPJ"
+                                   default="Common roles for all characters"/>
                     </a>
                 </div>
 
@@ -400,6 +411,84 @@
 </g:if>
 <br/>
 </div>
+<div class="accordion" id="accordionPNJ">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordionPNJ"
+               href="#collapsePNJ">
+                <g:message code="roletoperso.gestionPHJ"
+                           default="Management of offside characters"/>
+            </a>
+        </div>
+
+        <div id="collapsePNJ" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th><g:message code="roletoperso.roleCode"
+                                       default="Role code"/></th>
+                        <th><g:message code="selectintrigue.plotName"
+                                       default="Plot name"/></th>
+                        <th><g:message code="roletoperso.sexe"
+                                      default="Sex"/></th>
+                        <th><g:message code="roletoperso.action"
+                                       default="Actions"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${PHJList}" var="PHJ">
+                        <g:if test="${((Character) PHJ).isPHJ() == true}">
+                        <tr id="${"line" + ((Character) PHJ).getDTDId()}">
+                            <td>CHAR-${((Character) PHJ).getDTDId()}</td>
+                            <td>"Test"</td>
+                            <td>${((Character) PHJ).getGender()}</td>
+                            <td>
+                                <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn fusion_modale" data-toggle="modal">
+                                    <g:message code="roletoperso.fusion" default="Merge"></g:message>
+                                </a>
+                        </tr>
+                        </g:if>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="fusionModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="fusionModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="fusionModalLabel">Fusion de Personnages Non Joués et Hors Jeu</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="span5">
+                <h4 id="modalPHJ1">Personnage 1</h4>
+            </div>
+            <div class="span2"></div>
+            <div class="span5">
+                <select id="modaloption" class="form-control">
+                    <option value="" disabled selected style='display:none;'>Fusionner avec ...</option>
+                    <g:each in="${PHJList}" var="player">
+                        <g:if test="${((Character) player).isPHJ() == true}">
+                            <option value="${'CHAR-' + ((Character) player).getDTDId()}" id="${'CHAR-' + ((Character) player).getDTDId()}" class="optionschar hidden">CHAR-${((Character) player).getDTDId()}</option>
+                        </g:if>
+                    </g:each>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Annuler</button>
+        <a id="merge" type="button" href="#" class="btn btn-primary" data-gn="${gnInstance?.id}" data-url="${createLink(controller: "RoleToPerso", action: "Merge")}">
+            <g:message code="roletoperso.fusion" default="Merge"></g:message>
+        </a>
+    </div>
+</div>
 
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
@@ -415,3 +504,44 @@
                         value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
     </div>
 </g:form>
+
+<script>
+    $(".fusion_modale").click(function() {
+        var id_p1 = $(this).attr("data-id");
+        $("#modalPHJ1").html("CHAR-" + id_p1);
+        var selected = false;
+        var option_name = "#CHAR-" + id_p1;
+        $(".optionschar").each(function() {
+            if (($(this).attr("id") == option_name) && (selected == false))
+            {
+                selected = true;
+                $("#modaloption").val($(this).attr("value"));
+            }
+            $(this).removeClass("hidden");
+        });
+        $(option_name).addClass("hidden");
+        $("#merge").attr("data-id", $(this).attr("data-id"));
+    });
+
+    $("#merge").click(function() {
+        var from_char = $(this).attr("data-id");
+        var opt = document.getElementById("modaloption");
+        var selected_char = opt[opt.selectedIndex].value;
+        var gn_id = $(this).attr("data-gn");
+        $.ajax({
+            type: 'POST',
+            url: $("#merge").attr("data-url"),
+            dataType: "json",
+            data: {char_to: selected_char, char_from: from_char, gn_id: gn_id},
+            timeout: 3000,
+            success: function(data) {
+                console.log('ok');
+                var remove_id = "line" + data.object.test;
+                $("tr#"+remove_id).remove();
+                $("#fusionModal").modal('hide');
+            },
+            error: function() {
+                alert('La requête n\'a pas abouti'); }
+        });
+    });
+</script>
