@@ -325,33 +325,6 @@
 </g:if>
 </g:each>
 
-
-<g:if test="${true}">
-    <div class="row-fluid">
-        <div class="span12" id="Relations">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="margin-top: 20px">
-                    <g:message code="roletoperso.allRelationsSummary"
-                               default="All relations between characters summary"/>
-                </div>
-
-                <div style="overflow: auto; height:500px;" id="container">
-                    <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
-                    <div id="infovis">
-                    </div>
-                    <div id="right-container">
-
-                        <div id="inner-details"></div>
-
-                    </div>
-                    <g:render template="relationSummary2"></g:render>
-                </div>
-            </div>
-        </div>
-    </div>
-</g:if>
-
-
 <g:if test="${characterList.size() % 2 == 0}">
     <div class="row-fluid">
 </g:if>
@@ -410,6 +383,30 @@
     </div>
 </g:if>
 <br/>
+
+<g:if test="${true}">
+    <div class="row-fluid">
+        <div class="span12" id="Relations">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="margin-top: 20px">
+                    <g:message code="roletoperso.allRelationsSummary"
+                               default="All relations between characters summary"/>
+                </div>
+
+                <div style="overflow: auto; height:500px;" id="container">
+                    <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
+                    <div id="infovis">
+                    </div>
+                    <div id="right-container">
+                        <div id="inner-details"></div>
+                    </div>
+                    <g:render template="relationSummary2"></g:render>
+                </div>
+            </div>
+        </div>
+    </div>
+</g:if>
+
 </div>
 <div class="accordion" id="accordionPNJ">
     <div class="accordion-group">
@@ -432,23 +429,23 @@
                         <th><g:message code="selectintrigue.plotName"
                                        default="Plot name"/></th>
                         <th><g:message code="roletoperso.sexe"
-                                      default="Sex"/></th>
+                                       default="Sex"/></th>
                         <th><g:message code="roletoperso.action"
                                        default="Actions"/></th>
                     </tr>
                     </thead>
                     <tbody>
                     <g:each in="${PHJList}" var="PHJ">
-                        <g:if test="${((Character) PHJ).isPHJ() == true}">
-                        <tr id="${"line" + ((Character) PHJ).getDTDId()}">
-                            <td>CHAR-${((Character) PHJ).getDTDId()}</td>
-                            <td>"Test"</td>
-                            <td>${((Character) PHJ).getGender()}</td>
-                            <td>
-                                <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn fusion_modale" data-toggle="modal">
-                                    <g:message code="roletoperso.fusion" default="Merge"></g:message>
-                                </a>
-                        </tr>
+                        <g:if test="${(((Character) PHJ).isPHJ() == true) || (((Character) PHJ).isPNJ() == true)}">
+                            <tr id="${"line" + ((Character) PHJ).getDTDId()}">
+                                <td>CHAR-${((Character) PHJ).getDTDId()}</td>
+                                <td>"Test"</td>
+                                <td>${((Character) PHJ).getGender()}</td>
+                                <td>
+                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn fusion_modale" data-toggle="modal">
+                                        <g:message code="roletoperso.fusion" default="Merge"></g:message>
+                                    </a>
+                            </tr>
                         </g:if>
                     </g:each>
                     </tbody>
