@@ -156,7 +156,7 @@ public class SelectIntrigueProcessing {
             bonusMalusPipcore = 0;
 
         int remainPipPercent = ((_gn.getPipMin() - _currentPip) * 100)/_gn.getPipMin();
-        result -= (bonusMalusPipcore * result * remainPipPercent) / 100;
+        result -= (bonusMalusPipcore * result * 2 * remainPipPercent) / 100;
         return result;
     }
 

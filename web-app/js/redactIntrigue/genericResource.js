@@ -76,32 +76,44 @@ function updateResource() {
 function removeResource(object) {
     var liObject = object.parent();
     var name = $.trim($("a", liObject).html());
-    $.ajax({
-        type: "POST",
-        url: object.attr("data-url"),
-        dataType: "json",
-        success: function(data) {
-            if (data.object.isdelete) {
-                liObject.remove();
-                var nbGenericResources = parseInt($('.resourceLi .badge').html()) - 1;
-                $('.resourceLi .badge').html(nbGenericResources);
-                $('.addResource').trigger("click");
-                $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
-                $('.richTextEditor span.label-important').each(function() {
-                   if ($(this).html() == name) {
-                       $(this).remove();
-                   }
-                });
-                createNotification("success", "Supression réussie.", "Votre objet a bien été supprimé.");
-            }
-            else {
+    var isResourcePresentInDescriptions = false;
+    $('.richTextEditor span.label-important').each(function() {
+        if ($(this).html() == name) {
+            isResourcePresentInDescriptions = true;
+        }
+    });
+    if (isResourcePresentInDescriptions) {
+        createNotification("danger", "suppression impossible.", "Votre objet est utilisé dans certaines descriptions."
+            + " Veuillez supprimer l'utilisation de cet objet dans les descriptions avant de supprimer l'entité objet.");
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: object.attr("data-url"),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isdelete) {
+                    liObject.remove();
+                    var nbGenericResources = parseInt($('.resourceLi .badge').html()) - 1;
+                    $('.resourceLi .badge').html(nbGenericResources);
+                    $('.addResource').trigger("click");
+                    $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                    $('.richTextEditor span.label-important').each(function() {
+                       if ($(this).html() == name) {
+                           $(this).remove();
+                       }
+                    });
+                    createNotification("success", "Supression réussie.", "Votre objet a bien été supprimé.");
+                }
+                else {
+                    createNotification("danger", "suppression échouée.", "Votre objet n'a pas pu être supprimé, une erreur s'est produite.");
+                }
+            },
+            error: function() {
                 createNotification("danger", "suppression échouée.", "Votre objet n'a pas pu être supprimé, une erreur s'est produite.");
             }
-        },
-        error: function() {
-            createNotification("danger", "suppression échouée.", "Votre objet n'a pas pu être supprimé, une erreur s'est produite.");
-        }
-    })
+        });
+    }
 }
 
 //vide le formulaire d'ajout d'objet

@@ -77,32 +77,44 @@ function updateRole() {
 function removeRole(object) {
     var liObject = object.parent();
     var name = $.trim($("a", liObject).html());
-    $.ajax({
-        type: "POST",
-        url: object.attr("data-url"),
-        dataType: "json",
-        success: function(data) {
-            if (data.object.isdelete) {
-                liObject.remove();
-                var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
-                $('.roleLi .badge').html(nbRoles);
-                $('.addRole').trigger("click");
-                $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
-                $('.richTextEditor span.label-success').each(function() {
-                    if ($(this).html() == name) {
-                        $(this).remove();
-                    }
-                });
-                createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
-            }
-            else {
+    var isRolePresentInDescriptions = false;
+    $('.richTextEditor span.label-success').each(function() {
+        if ($(this).html() == name) {
+            isRolePresentInDescriptions = true;
+        }
+    });
+    if (isRolePresentInDescriptions) {
+        createNotification("danger", "suppression impossible.", "Votre rôle est utilisé dans certaines descriptions."
+            + " Veuillez supprimer l'utilisation de ce rôle dans les descriptions avant de supprimer l'entité rôle.");
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: object.attr("data-url"),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isdelete) {
+                    liObject.remove();
+                    var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
+                    $('.roleLi .badge').html(nbRoles);
+                    $('.addRole').trigger("click");
+                    $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                    $('.richTextEditor span.label-success').each(function() {
+                        if ($(this).html() == name) {
+                            $(this).remove();
+                        }
+                    });
+                    createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
+                }
+                else {
+                    createNotification("danger", "suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
+                }
+            },
+            error: function() {
                 createNotification("danger", "suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
             }
-        },
-        error: function() {
-            createNotification("danger", "suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
-        }
-    })
+        });
+    }
 }
 
 //vide le formulaire d'ajout de role

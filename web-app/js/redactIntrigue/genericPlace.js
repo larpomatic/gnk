@@ -78,32 +78,44 @@ function updatePlace() {
 function removePlace(object) {
     var liObject = object.parent();
     var name = $.trim($("a", liObject).html());
-    $.ajax({
-        type: "POST",
-        url: object.attr("data-url"),
-        dataType: "json",
-        success: function(data) {
-            if (data.object.isdelete) {
-                liObject.remove();
-                var nbGenericPlaces = parseInt($('.placeLi .badge').html()) - 1;
-                $('.placeLi .badge').html(nbGenericPlaces);
-                $('.addPlace').trigger("click");
-                $('.placeSelector li[data-id="' + object.attr("data-id") + '"]').remove();
-                $('.richTextEditor span.label-warning').each(function() {
-                    if ($(this).html() == name) {
-                        $(this).remove();
-                    }
-                });
-                createNotification("success", "Supression réussie.", "Votre lieu a bien été supprimé.");
-            }
-            else {
+    var isPlacePresentInDescriptions = false;
+    $('.richTextEditor span.label-warning').each(function() {
+        if ($(this).html() == name) {
+            isPlacePresentInDescriptions = true;
+        }
+    });
+    if (isPlacePresentInDescriptions) {
+        createNotification("danger", "suppression impossible.", "Votre lieu est utilisé dans certaines descriptions."
+            + " Veuillez supprimer l'utilisation de ce lieu dans les descriptions avant de supprimer l'entité lieu.");
+    }
+    else {
+        $.ajax({
+            type: "POST",
+            url: object.attr("data-url"),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isdelete) {
+                    liObject.remove();
+                    var nbGenericPlaces = parseInt($('.placeLi .badge').html()) - 1;
+                    $('.placeLi .badge').html(nbGenericPlaces);
+                    $('.addPlace').trigger("click");
+                    $('.placeSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                    $('.richTextEditor span.label-warning').each(function() {
+                        if ($(this).html() == name) {
+                            $(this).remove();
+                        }
+                    });
+                    createNotification("success", "Supression réussie.", "Votre lieu a bien été supprimé.");
+                }
+                else {
+                    createNotification("danger", "suppression échouée.", "Votre lieu n'a pas pu être supprimé, une erreur s'est produite.");
+                }
+            },
+            error: function() {
                 createNotification("danger", "suppression échouée.", "Votre lieu n'a pas pu être supprimé, une erreur s'est produite.");
             }
-        },
-        error: function() {
-            createNotification("danger", "suppression échouée.", "Votre lieu n'a pas pu être supprimé, une erreur s'est produite.");
-        }
-    })
+        });
+    }
 }
 
 //vide le formulaire d'ajout de lieu
