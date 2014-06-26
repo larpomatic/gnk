@@ -58,7 +58,6 @@ function updateEvent() {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
-        //        form = $('form[name="newEventForm"]');
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),

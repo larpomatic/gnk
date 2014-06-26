@@ -129,16 +129,16 @@ function createNewGenericPlacePanel(data) {
     for (var key in data.genericPlace.tagList) {
         $('#placeTagsModal_' + data.genericPlace.id + " #placeTags_" + data.genericPlace.tagList[key]).attr('checked', 'checked');
     }
-    for (var key1 in data.genericPlace.eventList) {
-        if (data.genericPlace.eventList[key1].eventCheck) {
-            $('#placeEventsModal_' + data.genericPlace.id + " #placeEvent_" + data.genericPlace.eventList[key1].eventId).attr('checked', 'checked');
-        }
-    }
-    for (var key2 in data.genericPlace.pastsceneList) {
-        if (data.genericPlace.pastsceneList[key2].pastsceneCheck) {
-            $('#placePastScenesModal_' + data.genericPlace.id + " #placePastScene_" + data.genericPlace.pastsceneList[key2].pastsceneId).attr('checked', 'checked');
-        }
-    }
+//    for (var key1 in data.genericPlace.eventList) {
+//        if (data.genericPlace.eventList[key1].eventCheck) {
+//            $('#placeEventsModal_' + data.genericPlace.id + " #placeEvent_" + data.genericPlace.eventList[key1].eventId).attr('checked', 'checked');
+//        }
+//    }
+//    for (var key2 in data.genericPlace.pastsceneList) {
+//        if (data.genericPlace.pastsceneList[key2].pastsceneCheck) {
+//            $('#placePastScenesModal_' + data.genericPlace.id + " #placePastScene_" + data.genericPlace.pastsceneList[key2].pastsceneId).attr('checked', 'checked');
+//        }
+//    }
     $('select[name="pastScenePlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
     $('select[name="eventPlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
 }

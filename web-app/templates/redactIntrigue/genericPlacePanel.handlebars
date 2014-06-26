@@ -24,28 +24,28 @@
                     </a>
                 </div>
             </div>
-            <div class="row formRow">
-                <div class="span1">
-                    <label>
-                        Scènes passées
-                    </label>
-                </div>
-                <div class="span4">
-                    <a href="#placePastScenesModal_{{ genericPlace.id }}" class="btn" data-toggle="modal">
-                        Choisir les scènes passées
-                    </a>
-                </div>
-                <div class="span1">
-                    <label>
-                       Evènements
-                    </label>
-                </div>
-                <div class="span4">
-                    <a href="#placeEventsModal_{{ genericPlace.id }}" class="btn" data-toggle="modal">
-                        Choisir les évènements
-                    </a>
-                </div>
-            </div>
+            <!--<div class="row formRow">-->
+                <!--<div class="span1">-->
+                    <!--<label>-->
+                        <!--Scènes passées-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="span4">-->
+                    <!--<a href="#placePastScenesModal_{{ genericPlace.id }}" class="btn" data-toggle="modal">-->
+                        <!--Voir les scènes passées-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<div class="span1">-->
+                    <!--<label>-->
+                       <!--Evènements-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="span4">-->
+                    <!--<a href="#placeEventsModal_{{ genericPlace.id }}" class="btn" data-toggle="modal">-->
+                        <!--Voir les évènements-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="row formRow text-center">
                 <label for="placeDescription">
                     Description
@@ -53,60 +53,60 @@
             </div>
             <textarea name="placeDescription" id="placeDescription" rows="5" cols="100">{{{ genericPlace.comment }}}</textarea>
         </div>
-        <div id="placeEventsModal_{{ genericPlace.id }}" class="modal hide fade largeModal" tabindex="-1">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-                <h3>
-                    Evènements
-                </h3>
-                <input class="input-medium search-query" data-content="placeEvent{{ genericPlace.id }}"
-                       placeholder="Rechercher..."/>
-            </div>
+        <!--<div id="placeEventsModal_{{ genericPlace.id }}" class="modal hide fade largeModal" tabindex="-1">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal">×</button>-->
+                <!--<h3>-->
+                    <!--Evènements-->
+                <!--</h3>-->
+                <!--<input class="input-medium search-query" data-content="placeEvent{{ genericPlace.id }}"-->
+                       <!--placeholder="Rechercher..."/>-->
+            <!--</div>-->
 
-            <div class="modal-body">
-                <ul class="placeEvent{{ genericPlace.id }}">
-                    {{#each genericPlace.eventList}}
-                        <li class="modalLi" data-name="{{toLowerCase eventName }}">
-                            <label>
-                                <input type="checkbox" name="placeEvent_{{ eventId }}" id="placeEvent_{{ eventId }}"/>
-                                {{ eventName }}
-                            </label>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
+            <!--<div class="modal-body">-->
+                <!--<ul class="placeEvent{{ genericPlace.id }}">-->
+                    <!--{{#each genericPlace.eventList}}-->
+                        <!--<li class="modalLi" data-name="{{toLowerCase eventName }}">-->
+                            <!--<label>-->
+                                <!--&lt;!&ndash;<input type="checkbox" name="placeEvent_{{ eventId }}" id="placeEvent_{{ eventId }}"/>&ndash;&gt;-->
+                                <!--{{ eventName }}-->
+                            <!--</label>-->
+                        <!--</li>-->
+                    <!--{{/each}}-->
+                <!--</ul>-->
+            <!--</div>-->
 
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Ok</button>
-            </div>
-        </div>
-        <div id="placePastScenesModal_{{ genericPlace.id }}" class="modal hide fade largeModal" tabindex="-1">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-                <h3>
-                    Scènes passées
-                </h3>
-                <input class="input-medium search-query" data-content="placePastScene{{ genericPlace.id }}"
-                       placeholder="Rechercher..."/>
-            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button class="btn" data-dismiss="modal">Ok</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div id="placePastScenesModal_{{ genericPlace.id }}" class="modal hide fade largeModal" tabindex="-1">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal">×</button>-->
+                <!--<h3>-->
+                    <!--Scènes passées-->
+                <!--</h3>-->
+                <!--<input class="input-medium search-query" data-content="placePastScene{{ genericPlace.id }}"-->
+                       <!--placeholder="Rechercher..."/>-->
+            <!--</div>-->
 
-            <div class="modal-body">
-                <ul class="placePastScene{{ genericPlace.id }}">
-                    {{#each genericPlace.pastsceneList}}
-                        <li class="modalLi" data-name="{{toLowerCase pastsceneTitle }}">
-                            <label>
-                                <input type="checkbox" name="placePastScene_{{ pastsceneId }}" id="placePastScene_{{ pastsceneId }}"/>
-                                {{ pastsceneTitle }}
-                            </label>
-                        </li>
-                    {{/each}}
-                </ul>
-            </div>
+            <!--<div class="modal-body">-->
+                <!--<ul class="placePastScene{{ genericPlace.id }}">-->
+                    <!--{{#each genericPlace.pastsceneList}}-->
+                        <!--<li class="modalLi" data-name="{{toLowerCase pastsceneTitle }}">-->
+                            <!--<label>-->
+                                <!--&lt;!&ndash;<input type="checkbox" name="placePastScene_{{ pastsceneId }}" id="placePastScene_{{ pastsceneId }}"/>&ndash;&gt;-->
+                                <!--{{ pastsceneTitle }}-->
+                            <!--</label>-->
+                        <!--</li>-->
+                    <!--{{/each}}-->
+                <!--</ul>-->
+            <!--</div>-->
 
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Ok</button>
-            </div>
-        </div>
+            <!--<div class="modal-footer">-->
+                <!--<button class="btn" data-dismiss="modal">Ok</button>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div id="placeTagsModal_{{ genericPlace.id }}" class="modal hide fade" tabindex="-1">
             <div class="modal-header">

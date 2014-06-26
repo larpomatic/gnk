@@ -64,24 +64,24 @@ class GenericPlaceController {
             }
         }
         jsonGenericPlace.put("tagList", jsonTagList);
-        JSONArray jsonEventList = new JSONArray();
-        for (Event event in plot.events) {
-            JSONObject jsonEvent = new JSONObject();
-            jsonEvent.put("eventId", event.id);
-            jsonEvent.put("eventName", event.name);
-            jsonEvent.put("eventCheck", genericPlace.events.contains(event));
-            jsonEventList.add(jsonEvent);
-        }
-        jsonGenericPlace.put("eventList", jsonEventList);
-        JSONArray jsonPastsceneList = new JSONArray();
-        for (Pastscene pastscene in plot.pastescenes) {
-            JSONObject jsonPastscene = new JSONObject();
-            jsonPastscene.put("pastsceneId", pastscene.id);
-            jsonPastscene.put("pastsceneTitle", pastscene.title);
-            jsonPastscene.put("pastsceneCheck", genericPlace.pastscenes.contains(pastscene));
-            jsonPastsceneList.add(jsonPastscene);
-        }
-        jsonGenericPlace.put("pastsceneList", jsonPastsceneList);
+//        JSONArray jsonEventList = new JSONArray();
+//        for (Event event in genericPlace.events) {
+//            JSONObject jsonEvent = new JSONObject();
+//            jsonEvent.put("eventId", event.id);
+//            jsonEvent.put("eventName", event.name);
+//            jsonEvent.put("eventCheck", genericPlace.events.contains(event));
+//            jsonEventList.add(jsonEvent);
+//        }
+//        jsonGenericPlace.put("eventList", jsonEventList);
+//        JSONArray jsonPastsceneList = new JSONArray();
+//        for (Pastscene pastscene in genericPlace.pastscenes) {
+//            JSONObject jsonPastscene = new JSONObject();
+//            jsonPastscene.put("pastsceneId", pastscene.id);
+//            jsonPastscene.put("pastsceneTitle", pastscene.title);
+//            jsonPastscene.put("pastsceneCheck", genericPlace.pastscenes.contains(pastscene));
+//            jsonPastsceneList.add(jsonPastscene);
+//        }
+//        jsonGenericPlace.put("pastsceneList", jsonPastsceneList);
         return jsonGenericPlace;
     }
 
@@ -109,24 +109,24 @@ class GenericPlaceController {
         } else {
             newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>()
         }
-        if(newGenericPlace.events) {
-            for (Event event in newGenericPlace.events) {
-                event.genericPlace = null;
-                event.save(flush:true);
-            }
-            newGenericPlace.events.clear();
-        } else {
-            newGenericPlace.events = new HashSet<Event>()
-        }
-        if(newGenericPlace.pastscenes) {
-            for (Pastscene pastscene in newGenericPlace.pastscenes) {
-                pastscene.genericPlace = null;
-                pastscene.save(flush:true);
-            }
-            newGenericPlace.pastscenes.clear();
-        } else {
-            newGenericPlace.pastscenes = new HashSet<Pastscene>()
-        }
+//        if(newGenericPlace.events) {
+//            for (Event event in newGenericPlace.events) {
+//                event.genericPlace = null;
+//                event.save(flush:true);
+//            }
+//            newGenericPlace.events.clear();
+//        } else {
+//            newGenericPlace.events = new HashSet<Event>()
+//        }
+//        if(newGenericPlace.pastscenes) {
+//            for (Pastscene pastscene in newGenericPlace.pastscenes) {
+//                pastscene.genericPlace = null;
+//                pastscene.save(flush:true);
+//            }
+//            newGenericPlace.pastscenes.clear();
+//        } else {
+//            newGenericPlace.pastscenes = new HashSet<Pastscene>()
+//        }
 
         newGenericPlace.save(flush: true);
         newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode()).first();
@@ -140,18 +140,18 @@ class GenericPlaceController {
                 genericPlaceHasTag.genericPlace = newGenericPlace
                 newGenericPlace.extTags.add(genericPlaceHasTag)
             }
-            else if (it.key.startsWith("placeEvent_")) {
-                Event event = Event.get((it.key - "placeEvent_") as Integer);
-                event.genericPlace = newGenericPlace;
-                event.save(flush: true);
-                newGenericPlace.events.add(event);
-            }
-            else if (it.key.startsWith("placePastScene_")) {
-                Pastscene pastscene = Pastscene.get((it.key - "placePastScene_") as Integer);
-                pastscene.genericPlace = newGenericPlace;
-                pastscene.save(flush: true);
-                newGenericPlace.pastscenes.add(pastscene);
-            }
+//            else if (it.key.startsWith("placeEvent_")) {
+//                Event event = Event.get((it.key - "placeEvent_") as Integer);
+//                event.genericPlace = newGenericPlace;
+//                event.save(flush: true);
+//                newGenericPlace.events.add(event);
+//            }
+//            else if (it.key.startsWith("placePastScene_")) {
+//                Pastscene pastscene = Pastscene.get((it.key - "placePastScene_") as Integer);
+//                pastscene.genericPlace = newGenericPlace;
+//                pastscene.save(flush: true);
+//                newGenericPlace.pastscenes.add(pastscene);
+//            }
         }
         newGenericPlace.save(flush: true);
         return true;
