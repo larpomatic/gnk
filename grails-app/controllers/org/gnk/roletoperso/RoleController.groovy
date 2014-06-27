@@ -7,7 +7,6 @@ import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
-import org.gnk.user.User;
 
 class RoleController {
 

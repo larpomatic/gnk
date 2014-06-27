@@ -6,7 +6,7 @@ $(function(){
     initSearchBoxes();
 
     // ajout du nombre de relation
-    $('.numberRelation').html($('.RelationRow').size());
+    $('.numberRelation').html($('.relationScreen .accordion-group').size());
 
     // charge les datetimepickers
     $('.datetimepicker').datetimepicker({
@@ -84,6 +84,9 @@ function initConfirm() {
             }
             if (objectButton.attr("data-object") == "resource") {
                 removeResource(objectButton);
+            }
+            if (objectButton.attr("data-object") == "relation") {
+//                removeRelation(objectButton);
             }
             return false;
         }

@@ -10,9 +10,12 @@ class RoleHasRelationWithRole {
 	Integer weight
 	Boolean isBijective
     Boolean isExclusive
+    Boolean isHidden
     String description
 
-	static belongsTo = [role1: Role, role2:Role, roleRelationType: RoleRelationType]
+	static belongsTo = [role1: Role, role2: Role, roleRelationType: RoleRelationType]
+
+    static transients = ["isHidden"] // TODO To remove after getting the database
 
     static mapping = {
         id type:'integer'

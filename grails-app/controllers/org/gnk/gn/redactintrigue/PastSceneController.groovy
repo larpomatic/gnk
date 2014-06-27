@@ -87,36 +87,36 @@ class PastSceneController {
         }
         if (params.containsKey("pastSceneRelativeUnit")) {
             newPastscene.unitTimingRelative = params.pastSceneRelativeUnit
-            switch (params.pastSceneRelativeUnit) {
-                case "Y":
-                    newPastscene.dateYear = newPastscene.timingRelative;
-                    break;
-                case "y":
-                    newPastscene.dateYear = newPastscene.timingRelative;
-                    break;
-                case "M":
-                    newPastscene.dateMonth = newPastscene.timingRelative;
-                    break;
-                case "d":
-                    newPastscene.dateDay = newPastscene.timingRelative;
-                    break;
-                case "D":
-                    newPastscene.dateDay = newPastscene.timingRelative;
-                    break;
-                case "h":
-                    newPastscene.dateHour = newPastscene.timingRelative;
-                    break;
-                case "H":
-                    newPastscene.dateHour = newPastscene.timingRelative;
-                    break;
-                case "m":
-                    newPastscene.dateMinute = newPastscene.timingRelative;
-                    break;
-                default :
-                    newPastscene.unitTimingRelative = "Y";
-                    newPastscene.dateYear = newPastscene.timingRelative;
-                    break;
-            }
+//            switch (params.pastSceneRelativeUnit) {
+//                case "Y":
+//                    newPastscene.dateYear = newPastscene.timingRelative;
+//                    break;
+//                case "y":
+//                    newPastscene.dateYear = newPastscene.timingRelative;
+//                    break;
+//                case "M":
+//                    newPastscene.dateMonth = newPastscene.timingRelative;
+//                    break;
+//                case "d":
+//                    newPastscene.dateDay = newPastscene.timingRelative;
+//                    break;
+//                case "D":
+//                    newPastscene.dateDay = newPastscene.timingRelative;
+//                    break;
+//                case "h":
+//                    newPastscene.dateHour = newPastscene.timingRelative;
+//                    break;
+//                case "H":
+//                    newPastscene.dateHour = newPastscene.timingRelative;
+//                    break;
+//                case "m":
+//                    newPastscene.dateMinute = newPastscene.timingRelative;
+//                    break;
+//                default :
+//                    newPastscene.unitTimingRelative = "Y";
+//                    newPastscene.dateYear = newPastscene.timingRelative;
+//                    break;
+//            }
         } else {
             return false
         }
@@ -132,11 +132,11 @@ class PastSceneController {
         }
         Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
         if (calendar) { // TODO !, données non persistante donc à traiter autrement
-//            newPastscene.absoluteYear = calendar.get(Calendar.YEAR);
-//            newPastscene.absoluteMonth = calendar.get(Calendar.MONTH);
-//            newPastscene.absoluteDay = calendar.get(Calendar.DAY_OF_MONTH);
-//            newPastscene.absoluteHour = calendar.get(Calendar.HOUR);
-//            newPastscene.absoluteMinute = calendar.get(Calendar.MINUTE);
+//            newPastscene.dateYear = calendar.get(Calendar.YEAR);
+//            newPastscene.dateMonth = calendar.get(Calendar.MONTH);
+//            newPastscene.dateDay = calendar.get(Calendar.DAY_OF_MONTH);
+//            newPastscene.dateHour = calendar.get(Calendar.HOUR);
+//            newPastscene.dateMinute = calendar.get(Calendar.MINUTE);
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);

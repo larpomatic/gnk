@@ -1,5 +1,6 @@
 package org.gnk.gn.redactintrigue
 
+import org.gnk.roletoperso.RoleRelationType
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.selectintrigue.PlotHasUnivers
@@ -93,6 +94,7 @@ class RedactIntrigueController {
                 roleTagList: new TagService().getRoleTagQuery(),
                 resourceTagList: new TagService().getResourceTagQuery(),
                 placeTagList: new TagService().getPlaceTagQuery(),
+                relationTypes: RoleRelationType.list(),
                 screenStep: screen]
 	}
 

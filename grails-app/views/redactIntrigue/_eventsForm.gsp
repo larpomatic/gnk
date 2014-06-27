@@ -140,7 +140,6 @@
                 <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
 
-                    %{--<div style="margin:auto">--}%
                 <div class="row formRow">
                     <div class="span1">
                         <label for="EventName">
@@ -249,7 +248,6 @@
                         ${event.description.encodeAsHTML()}
                     </div>
                 </div>
-                %{--</div>--}%
                 <input type="button" name="Update" data-id="${event.id}" value="Update" class="btn btn-primary updateEvent"/>
             </form>
         </div>
