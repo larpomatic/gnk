@@ -30,6 +30,11 @@ class GnXMLWriterService {
         StreamResult result = new StreamResult(writer);
         TransformerFactory tf = TransformerFactory.newInstance();
         tf.newTransformer().transform(domSource, result);
+        // TMP to SEE
+        FileWriter fw = new FileWriter("../test.txt", true);
+        BufferedWriter output = new BufferedWriter(fw);
+        output.write(writer.toString());
+        output.close();
         return writer.toString();
     }
 
@@ -281,7 +286,7 @@ class GnXMLWriterService {
 
         tagE.setAttribute("db_id", tag.id.toString())
         tagE.setAttribute("value", tag.name)
-        tagE.setAttribute("type", tag.tagFamily.value)
+///        tagE.setAttribute("type", tag.tagFamily.value)
         tagE.setAttribute("weight", weight.toString())
         tagE.setAttribute("status", "")
 

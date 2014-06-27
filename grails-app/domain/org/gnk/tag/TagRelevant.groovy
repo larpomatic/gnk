@@ -1,19 +1,19 @@
 package org.gnk.tag
 
-class Tag {
+class TagRelevant {
 
     Integer id
     Integer version
+    boolean relevantPlot
+    boolean relevantRole
+    boolean relevantResource
+    boolean relevantPlace
+    boolean relevantFirstname
+    boolean relevantLastname
 
-    Date lastUpdated
-    Date dateCreated
-    String name
-    Tag parent
-
-    static hasMany = [parentId: Tag]
+    static belongsTo = [ tag: Tag ]
 
     static constraints = {
-        name maxSize: 45
     }
 
     @Override
@@ -24,9 +24,5 @@ class Tag {
     static mapping = {
         id type: 'integer'
         version type: 'integer'
-    }
-
-    String getterName() {
-        return name;
     }
 }

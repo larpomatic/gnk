@@ -5,7 +5,7 @@ $(function(){
 
     initSearchBoxes();
 
-    // modifie un role dans la base
+    // modifie un role dans la Base
     $('.updateRole').click(function() {
         var roleId = $(this).attr("data-id");
         var form = $('form[name="updateRole_' + roleId + '"]');
@@ -28,7 +28,7 @@ $(function(){
         })
     });
 
-    //ajoute un nouveau role dans la base
+    //ajoute un nouveau role dans la Base
     $('.insertRole').click(function() {
         var form = $('form[name="newRoleForm"]');
         $.ajax({
@@ -180,7 +180,7 @@ function createNewRolePanel(data) {
     }
 }
 
-// supprime un role dans la base
+// supprime un role dans la Base
 function removeRole(object) {
     var liObject = object.parent();
     $('.roleSelector [data-id="' + object.attr("data-id") + '"]').remove();
