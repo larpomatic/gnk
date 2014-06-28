@@ -8,7 +8,7 @@ import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 
-// Cette classe a pour but de vérifier la cohérence de la base, c'est à dire voir les doublons, les liens cassés, etc.
+// Cette classe a pour but de vérifier la cohérence de la Base, c'est à dire voir les doublons, les liens cassés, etc.
 class DbCoherenceController {
 
     List<Query> queryList
@@ -51,7 +51,7 @@ class DbCoherenceController {
             }
 
         } catch (NoSuchFileException e) {
-            System.out.println("Fichier non trouvé : chargement de la liste par défaut des requêtes de cohérence de la base");
+            System.out.println("Fichier non trouvé : chargement de la liste par défaut des requêtes de cohérence de la Base");
             defaultQueryList(queryList)
             e.printStackTrace();
 
@@ -60,7 +60,7 @@ class DbCoherenceController {
         }
     }
 
-    // Méthode qui remplit la liste de requêtes de base pour vérifier la cohérence de la base (utilisez plutôt le fichier CoherenceQueries.csv dans web-app)
+    // Méthode qui remplit la liste de requêtes de Base pour vérifier la cohérence de la Base (utilisez plutôt le fichier CoherenceQueries.csv dans web-app)
     // Cette méthode est appelée quand le fichier n'est pas trouvé
     private defaultQueryList(ArrayList<Query> queryList) {
         queryList.add(new Query("Tables 'Tag' et 'TAG Family'", "Dans la table 'Tag', les Tag_family.ID n’existant pas dans la table 'Tag_family'", "SELECT tag.id, tag.last_updated, tag.date_created, tag.version, tag.name, tag.tag_family_id " +

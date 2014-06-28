@@ -1,5 +1,7 @@
 package org.gnk.tag
 
+import java.util.List
+
 class TagService {
 
     public static final int LOCKED = 101;
@@ -9,31 +11,81 @@ class TagService {
     }
 
     def List<Tag> getPlotTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
+        def family = TagRelevant.withCriteria{
+            eq ("relevantPlot", true)
         }
-        return result;
-    }
 
-    def List<Tag> getRoleTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantRole", true) }
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                Tag tag = t.tag
+                Set<Tag> sonsTag = tag.parentId;
+                result.addAll(sonsTag);
+            }
+
         }
+
         return result;
     }
 
     def List<Tag> getResourceTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantResource", true) }
+        def family = TagRelevant.withCriteria{
+            eq ("relevantResource", true)
         }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                Tag tag = t.tag
+                Set<Tag> sonsTag = tag.parentId;
+                result.addAll(sonsTag);
+            }
+
+        }
+
         return result;
     }
 
     def List<Tag> getPlaceTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlace", true) }
+        def family = TagRelevant.withCriteria{
+            eq ("relevantPlace", true)
         }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                Tag tag = t.tag
+                Set<Tag> sonsTag = tag.parentId;
+                result.addAll(sonsTag);
+            }
+
+        }
+
         return result;
+    }
+
+    def List<Tag> getRoleTagQuery() {
+        def family = TagRelevant.withCriteria{
+            eq ("relevantRole", true)
+        }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                Tag tag = t.tag
+                Set<Tag> sonsTag = tag.parentId;
+                result.addAll(sonsTag);
+            }
+        }
+        return result
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {

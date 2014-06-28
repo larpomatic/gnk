@@ -159,7 +159,7 @@ var __module5__ = (function() {
   return __exports__;
 })();
 
-// handlebars/base.js
+// handlebars/Base.js
 var __module2__ = (function(__dependency1__, __dependency2__) {
   "use strict";
   var __exports__ = {};
@@ -1255,7 +1255,7 @@ var __module9__ = (function() {
   return __exports__;
 })();
 
-// handlebars/compiler/base.js
+// handlebars/compiler/Base.js
 var __module8__ = (function(__dependency1__, __dependency2__) {
   "use strict";
   var __exports__ = {};

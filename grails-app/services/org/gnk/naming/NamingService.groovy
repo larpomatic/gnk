@@ -47,8 +47,27 @@ class NamingService
 			if (tmp.is_selectedFirstName)
 			{
 				NameAndWeight maxname
-
                 LinkedList<Firstname> fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
+
+                for (Tag persotag : tmp.tag )
+				{
+				    //if (persotag.type.equals("Sexe"))
+				        //print persotag.weight;
+				    if (persotag.type.equals("Sexe"))
+				    {
+				        if (persotag.weight.equals(-101))
+				            if (tmp.getgender() == "F" || tmp.getgender() == "H")
+				                fnlist = tmp.getgender() == "F" ? fnlistHomme : fnlistFemme
+				            else
+				                fnlist = persotag.value.equals("Femme") ? fnlistHomme : fnlistFemme
+				        else if (tmp.getgender() == "N")
+				            fnlist = persotag.value.equals("Homme") ? fnlistHomme : fnlistFemme
+				        else
+				            fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
+				        break;
+				    }
+				}
+
 				// tri sur les tags du personnage
 				LinkedList<NameAndWeight> fnweight = WeightFNcalcul (tmp, fnlist)
                 //LinkedList<NameAndWeight> fnweight = WeightFNcalcul2 (tmp, fnlist, tagForNamingList.get(persoList.indexOf(tmp)))
@@ -66,7 +85,7 @@ class NamingService
 						if (maxname.weight < nw.weight)
 							maxname = nw
 					}
-					if (!usedFirstName.contains(maxname.name))
+					if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
 						tmp.selectedFirstnames.add(maxname.name)
 					fnweight.remove(maxname)
 					
@@ -111,7 +130,7 @@ class NamingService
 						}
                         if (tmp.bannedNames.contains(maxname.name))
                             continue
-						if (!usedName.contains(maxname.name))
+						if (!usedName.contains(maxname.name) && !tmp.selectedNames.add(maxname.name))
 							tmp.selectedNames.add(maxname.name)
 						nweight.remove(maxname)
 						
@@ -130,7 +149,7 @@ class NamingService
 
 	
 	/* Methode en prive */
-	// recuperer les prenoms de la base de donnees en fonction du genre (+ les neutre)
+	// recuperer les prenoms de la Base de donnees en fonction du genre (+ les neutre)
 	private LinkedList<Firstname> getFirstNamebyGender2 (String gender)
 	{
 		LinkedList<Firstname> fnlist
@@ -158,7 +177,7 @@ class NamingService
         return fnlist
     }
 	
-	// recuperer les noms de la base de donnees en fonction du tag
+	// recuperer les noms de la Base de donnees en fonction du tag
 	private LinkedList<Name> getNamebyTag2 (LinkedList<PersoForNaming> persoList, LinkedList linguistique)
 	{
 		LinkedList<Name> nlist = new LinkedList<Name>()
@@ -246,7 +265,7 @@ class NamingService
 					// Verifie la valeur du tag
 					if (fntag.tag.name.equals(persotag.value)){
                         if (persotag.weight.equals(101) || persotag.weight.equals(-101))
-                            firstn.weight += (fntag.weight * persotag.weight) * 100
+                            firstn.weight += (fntag.weight * persotag.weight) * 1000
                         else
                             firstn.weight += (fntag.weight * persotag.weight)
                         break;
@@ -254,7 +273,7 @@ class NamingService
 				}
 			}
 			// Si les poids ont matche, on ajoute a la liste retournee
-			if (firstn.weight > 0)
+			//if (firstn.weight > 0)
 				fnweight.add(firstn)
 		}
 			
@@ -299,15 +318,18 @@ class NamingService
 				for (Tag persotag : tmp.tag )
 				{
 					// Verifie la valeur du tag
-					if ( ntag.tag.name.equals(persotag.value))
-                    {
-						name.weight += (ntag.weight * persotag.weight)
+                    if (ntag.tag.name.equals(persotag.value)){
+                        if (persotag.weight.equals(101) || persotag.weight.equals(-101))
+                            name.weight += (ntag.weight * persotag.weight) * 1000
+                        else
+                            name.weight += (ntag.weight * persotag.weight)
+                        break;
                     }
 				}
 			}
 			
 			// Si les poids ont matche, on ajoute a la liste retournee
-			if (name.weight > 0)
+			//if (name.weight > 0)
                 nweight.add(name)
 		}
 		

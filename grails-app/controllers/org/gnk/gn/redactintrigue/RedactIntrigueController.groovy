@@ -198,7 +198,7 @@ class RedactIntrigueController {
 			redirect(action: "list")
 			return
 		}
-		// FIXME Changement de base
+		// FIXME Changement de Base
 		//try {
 			plotInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'plot.label', default: 'Plot'), id])

@@ -12,17 +12,17 @@ class TagXMLReaderService {
 
     def Tag getTagFromNode(Node TAG) {
         String tagFamilyValue = null
-        TagFamily tagFamily = null
+        Tag tagFamily = null
         String tagName = null
         Tag tagRes = null
 
         if (TAG.attribute("type") != "null") {
             tagFamilyValue = TAG.attribute("type")
-            tagFamily = TagFamily.findByValue(tagFamilyValue)
+            tagFamily = Tag.findByName(tagFamilyValue)
         }
 
         if (tagFamily == null)
-            tagFamily = new TagFamily(value: tagFamilyValue)
+            tagFamily = new Tag(name: tagFamilyValue)
 
         if (TAG.attribute("value") != "null") {
             tagName = TAG.attribute("value")

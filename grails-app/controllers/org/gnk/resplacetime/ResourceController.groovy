@@ -310,7 +310,7 @@ class ResourceController {
             redirect(action: "list")
             return
         }
-		//FIXME Changement de base
+		//FIXME Changement de Base
 		/*
         try {
             resourceInstance.delete(flush: true)
