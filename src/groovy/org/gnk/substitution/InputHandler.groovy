@@ -81,7 +81,7 @@ class InputHandler {
         for (el in gnInst.gnTags) {
             Tag tagData = new Tag()
             tagData.value = el.key.name
-            tagData.family = el.key.tagFamily.value
+            tagData.family = el.key.tag.value
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
