@@ -101,7 +101,7 @@ function removeRole(object) {
                     liObject.remove();
                     $('select[name="relationFrom"] option[value="' + object.attr("data-id") + '"]').remove();
                     $('select[name="relationTo"] option[value="' + object.attr("data-id") + '"]').remove();
-                    $('.relationScreen .leftMenuList a[href="#roleRelation_' + object.attr("data-id") + '"]]').parent().remove();
+                    $('.relationScreen .leftMenuList a[href="#roleRelation_' + object.attr("data-id") + '"]').parent().remove();
                     $('.relationScreen #roleRelation_' + object.attr("data-id")).remove();
                     $('.relationScreen .accordion-group[data-roleTo="' + object.attr("data-id") + '"]').remove();
                     var nbRoles = parseInt($('.roleLi .badge').html()) - 1;

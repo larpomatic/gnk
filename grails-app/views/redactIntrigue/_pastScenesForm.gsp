@@ -191,7 +191,7 @@
                         <div class="span4 pastSceneAbsolute hidden">
                             <div class="input-append date datetimepicker">
                                 <input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime${pastScene.id}" name="pastSceneDatetime"
-                                value="${pastScene.absoluteDay}/${pastScene.absoluteMonth}/${pastScene.absoluteYear} ${pastScene.absoluteHour}:${pastScene.absoluteMinute}"/>
+                                value="${pastScene.dateDay}/${pastScene.dateMonth}/${pastScene.dateYear} ${pastScene.dateHour}:${pastScene.dateMinute}"/>
                                 <span class="add-on">
                                     <i data-time-icon="icon-time" data-date-icon="icon-calendar">
                                     </i>

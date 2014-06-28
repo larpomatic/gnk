@@ -30,18 +30,8 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="eventName" id="eventName" value="" required=""/>
-                    </div>
-
-                    <div class="span1">
-                        <label for="eventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
-                        </label>
-                    </div>
-
-                    <div class="span4">
-                        <g:field type="number" name="eventDuration" id="eventDuration" value="" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -67,19 +57,13 @@
                 </div>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="eventDatetime">
-                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
+                        <label for="eventDuration">
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <div class="input-append date datetimepicker">
-                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime" name="eventDatetime"/>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>
+                        <g:field type="number" name="eventDuration" id="eventDuration" value="" required=""/>
                     </div>
 
                     <div class="span1">
@@ -147,19 +131,9 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span8">
                         <g:textField name="eventName" id="EventName" value="${event.name}" required=""/>
                     </div>
-                    <div class="span1">
-                        <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
-                        </label>
-                    </div>
-
-                    <div class="span4">
-                        <g:field type="number" name="eventDuration" id="EventDuration" value="${event.duration}" required=""/>
-                    </div>
-
                 </div>
                 <div class="row formRow">
                     <div class="span1">
@@ -184,20 +158,13 @@
                 </div>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="eventDatetime${event.id}">
-                            <g:message code="redactintrigue.event.eventDatetime" default="Date and Time"/>
+                        <label for="EventDuration">
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <div class="input-append date datetimepicker">
-                            <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime${event.id}" name="eventDatetime"
-                                   value="${event.absoluteDay}/${event.absoluteMonth}/${event.absoluteYear} ${event.absoluteHour}:${event.absoluteMinute}"/>
-                            <span class="add-on">
-                                <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                                </i>
-                            </span>
-                        </div>
+                        <g:field type="number" name="eventDuration" id="EventDuration" value="${event.duration}" required=""/>
                     </div>
 
                     <div class="span1">

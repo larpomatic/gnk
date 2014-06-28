@@ -37,11 +37,11 @@ class PastSceneController {
         jsonPastScene.put("description", pastscene.getDescription());
         jsonPastScene.put("timingRelative", pastscene.getTimingRelative());
         jsonPastScene.put("unitTimingRelative", pastscene.getUnitTimingRelative());
-        jsonPastScene.put("absoluteYear", pastscene.getAbsoluteYear());
-        jsonPastScene.put("absoluteMonth", pastscene.getAbsoluteMonth());
-        jsonPastScene.put("absoluteDay", pastscene.getAbsoluteDay());
-        jsonPastScene.put("absoluteHour", pastscene.getAbsoluteHour());
-        jsonPastScene.put("absoluteMinute", pastscene.getAbsoluteMinute());
+        jsonPastScene.put("absoluteYear", pastscene.getDateYear());
+        jsonPastScene.put("absoluteMonth", pastscene.getDateMonth());
+        jsonPastScene.put("absoluteDay", pastscene.getDateDay());
+        jsonPastScene.put("absoluteHour", pastscene.getDateHour());
+        jsonPastScene.put("absoluteMinute", pastscene.getDateMinute());
         if (pastscene.getPastscenePredecessor()) {
             jsonPastScene.put("pastscenePredecessor", pastscene.getPastscenePredecessor().getTitle());
             jsonPastScene.put("pastscenePredecessorId", pastscene.getPastscenePredecessor().getId());
@@ -75,50 +75,16 @@ class PastSceneController {
         } else {
             return false
         }
-        newPastscene.dateYear = 0;
-        newPastscene.dateMonth = 0;
-        newPastscene.dateDay = 0;
-        newPastscene.dateHour = 0;
-        newPastscene.dateMinute = 0;
-        if (params.containsKey("pastSceneRelative")) {
+//        newPastscene.dateYear = 0;
+//        newPastscene.dateMonth = 0;
+//        newPastscene.dateDay = 0;
+//        newPastscene.dateHour = 0;
+//        newPastscene.dateMinute = 0;
+        if (params.containsKey("pastSceneRelative") && params.pastSceneRelative != "") {
             newPastscene.timingRelative = params.pastSceneRelative as Integer
-        } else {
-            return false
         }
         if (params.containsKey("pastSceneRelativeUnit")) {
             newPastscene.unitTimingRelative = params.pastSceneRelativeUnit
-//            switch (params.pastSceneRelativeUnit) {
-//                case "Y":
-//                    newPastscene.dateYear = newPastscene.timingRelative;
-//                    break;
-//                case "y":
-//                    newPastscene.dateYear = newPastscene.timingRelative;
-//                    break;
-//                case "M":
-//                    newPastscene.dateMonth = newPastscene.timingRelative;
-//                    break;
-//                case "d":
-//                    newPastscene.dateDay = newPastscene.timingRelative;
-//                    break;
-//                case "D":
-//                    newPastscene.dateDay = newPastscene.timingRelative;
-//                    break;
-//                case "h":
-//                    newPastscene.dateHour = newPastscene.timingRelative;
-//                    break;
-//                case "H":
-//                    newPastscene.dateHour = newPastscene.timingRelative;
-//                    break;
-//                case "m":
-//                    newPastscene.dateMinute = newPastscene.timingRelative;
-//                    break;
-//                default :
-//                    newPastscene.unitTimingRelative = "Y";
-//                    newPastscene.dateYear = newPastscene.timingRelative;
-//                    break;
-//            }
-        } else {
-            return false
         }
         if (params.containsKey("pastScenePublic")) {
             newPastscene.isPublic = true;
@@ -131,12 +97,12 @@ class PastSceneController {
             return false
         }
         Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
-        if (calendar) { // TODO !, données non persistante donc à traiter autrement
-//            newPastscene.dateYear = calendar.get(Calendar.YEAR);
-//            newPastscene.dateMonth = calendar.get(Calendar.MONTH);
-//            newPastscene.dateDay = calendar.get(Calendar.DAY_OF_MONTH);
-//            newPastscene.dateHour = calendar.get(Calendar.HOUR);
-//            newPastscene.dateMinute = calendar.get(Calendar.MINUTE);
+        if (calendar) {
+            newPastscene.dateYear = calendar.get(Calendar.YEAR);
+            newPastscene.dateMonth = calendar.get(Calendar.MONTH);
+            newPastscene.dateDay = calendar.get(Calendar.DAY_OF_MONTH);
+            newPastscene.dateHour = calendar.get(Calendar.HOUR);
+            newPastscene.dateMinute = calendar.get(Calendar.MINUTE);
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);

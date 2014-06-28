@@ -11,19 +11,9 @@
             </label>
         </div>
 
-        <div class="span4">
+        <div class="span8">
             <input type="text" name="eventName" id="EventName" value="{{ event.name }}" required=""/>
         </div>
-        <div class="span1">
-            <label for="EventDuration">
-                Durée (min)
-            </label>
-        </div>
-
-        <div class="span4">
-            <input type="number" name="eventDuration" id="EventDuration" value="{{ event.duration }}" required=""/>
-        </div>
-
     </div>
     <div class="row formRow">
         <div class="span1">
@@ -56,20 +46,13 @@
     </div>
     <div class="row formRow">
         <div class="span1">
-            <label for="eventDatetime{{ event.id }}">
-                Date et heure
+            <label for="EventDuration">
+                Durée (min)
             </label>
         </div>
 
         <div class="span4">
-            <div class="input-append date datetimepicker">
-                <input data-format="dd/MM/yyyy hh:mm" type="text" id="eventDatetime{{ event.id }}" name="eventDatetime"
-                       value="{{ event.absoluteDay }}/{{ event.absoluteMonth }}/{{ event.absoluteYear }} {{ event.absoluteHour }}:{{ event.absoluteMinute }}"/>
-                    <span class="add-on">
-                        <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                        </i>
-                    </span>
-            </div>
+            <input type="number" name="eventDuration" id="EventDuration" value="{{ event.duration }}" required=""/>
         </div>
 
         <div class="span1">
