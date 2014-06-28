@@ -30,21 +30,21 @@ class TagController {
 		[ tagInstanceList: resultList ]
     }
 	
-	def listFrom(String tagFamily) {
-		TagFamily family
-		List<Tag> result = []
-		
-		/* Get the TagFamily */
-		family = TagFamily.createCriteria().get {
-			eq ('value', tagFamily)
-		}
-		/* Get all Tags corresponding to the TagFamily */
-		result = Tag.createCriteria().list {
-			eq ('tagFamily', TagFamily)
-		}
-			
-		result
-	}
+//	def listFrom(String tagFamily) {
+//		TagFamily family
+//		List<Tag> result = []
+//
+//		/* Get the TagFamily */
+//		family = TagFamily.createCriteria().get {
+//			eq ('value', tagFamily)
+//		}
+//		/* Get all Tags corresponding to the TagFamily */
+//		result = Tag.createCriteria().list {
+//			eq ('tagFamily', TagFamily)
+//		}
+//
+//		result
+//	}
 
     def create() {
 		
@@ -81,19 +81,19 @@ class TagController {
 			}
 		}
 
-		TagFamily tagFamilyInstance = null;
-		tagFamilyInstance = TagFamily.get(tagFamilyId)
-		
-		if (tagFamilyInstance.equals(null))
-		{
-			print "Family not found"
-			flash.message = message(code: 'Erreur : Cette famille n\'existe pas !')
-            redirect(action: "list")
-            return
-		}
-
-		// Creates the relation between the tag and the family
-		tagInstance.tagFamily = tagFamilyInstance
+//		TagFamily tagFamilyInstance = null;
+//		tagFamilyInstance = TagFamily.get(tagFamilyId)
+//
+//		if (tagFamilyInstance.equals(null))
+//		{
+//			print "Family not found"
+//			flash.message = message(code: 'Erreur : Cette famille n\'existe pas !')
+//            redirect(action: "list")
+//            return
+//		}
+//
+//		// Creates the relation between the tag and the family
+//		tagInstance.tagFamily = tagFamilyInstance
 		
         if (!tagInstance.save(flush: true)) {
             render(view: "create", model: [tagInstance: tagInstance])
@@ -136,16 +136,16 @@ class TagController {
 				return
 		}
 
-		TagFamily tagFamilyInstance = null;
-		Tag tagInstance = null;
-		for (TagFamily tagFamily : TagFamily.list())
-		{
-			if (tagFamily.id == params.TagFamily_select.toInteger())
-			{
-				tagFamilyInstance = tagFamily
-				break
-			}
-		}
+//		TagFamily tagFamilyInstance = null;
+//		Tag tagInstance = null;
+//		for (TagFamily tagFamily : TagFamily.list())
+//		{
+//			if (tagFamily.id == params.TagFamily_select.toInteger())
+//			{
+//				tagFamilyInstance = tagFamily
+//				break
+//			}
+//		}
 		
 		for (Tag tag : Tag.list())
 		{
@@ -250,50 +250,50 @@ class TagController {
         }*/
     }
 	
-	def deleteFamily(Long idTag, Long idFamily) {
-		TagFamily tagFamilyInstance = null;
-		Tag tagInstance = null;
-		for (TagFamily tagFamily : TagFamily.list())
-		{
-			if (tagFamily.id == idFamily)
-			{
-				tagFamilyInstance = tagFamily
-				break
-			}
-		}
-		
-		for (Tag tag : Tag.list())
-		{
-			if (tag.id == idTag)
-			{
-				tagInstance = tag
-				break
-			}
-		}
-		
-		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
-		{
-			print "Family or Tag not found"
-			flash.message = message(code: 'Erreur : Famille ou tag incorrecte !')
-			redirect(action: "list")
-			return
-		}
-		
-		if (tagInstance.tagFamily.id.equals(idFamily) )
-		{
-			tagInstance.tagFamily = null
-            tagFamilyInstance.removeFromTags(tagInstance)
-            tagFamilyInstance.save(flush: true)
-			tagInstance.save()
-			flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.delete', args: [tagInstance.name, tagFamilyInstance.value])
-			
-			redirect(action: "list")
-			return
-		}
-		
-		print("The family was not deleted. Possible error ?")
-		redirect(action: "list")
-	}
+//	def deleteFamily(Long idTag, Long idFamily) {
+//		TagFamily tagFamilyInstance = null;
+//		Tag tagInstance = null;
+//		for (TagFamily tagFamily : TagFamily.list())
+//		{
+//			if (tagFamily.id == idFamily)
+//			{
+//				tagFamilyInstance = tagFamily
+//				break
+//			}
+//		}
+//
+//		for (Tag tag : Tag.list())
+//		{
+//			if (tag.id == idTag)
+//			{
+//				tagInstance = tag
+//				break
+//			}
+//		}
+//
+//		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
+//		{
+//			print "Family or Tag not found"
+//			flash.message = message(code: 'Erreur : Famille ou tag incorrecte !')
+//			redirect(action: "list")
+//			return
+//		}
+//
+//		if (tagInstance.tagFamily.id.equals(idFamily) )
+//		{
+//			tagInstance.tagFamily = null
+//            tagFamilyInstance.removeFromTags(tagInstance)
+//            tagFamilyInstance.save(flush: true)
+//			tagInstance.save()
+//			flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.delete', args: [tagInstance.name, tagFamilyInstance.value])
+//
+//			redirect(action: "list")
+//			return
+//		}
+//
+//		print("The family was not deleted. Possible error ?")
+//		redirect(action: "list")
+//	}
 	
 	def deleteTag(Long idTag) {
 

@@ -1,6 +1,6 @@
 import grails.plugins.springsecurity.SpringSecurityService
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
+//import org.gnk.tag.TagFamily
 import org.gnk.user.SecRole
 import org.gnk.user.User
 import org.gnk.user.UserSecRole

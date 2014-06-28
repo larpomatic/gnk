@@ -5,7 +5,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
+//import org.gnk.tag.TagFamily
 import org.gnk.tag.Univers
 import org.gnk.user.User
 

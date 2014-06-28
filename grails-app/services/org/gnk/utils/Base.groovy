@@ -2,7 +2,7 @@ package org.gnk.utils
 
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
+//import org.gnk.tag.TagFamily
 import org.gnk.tag.TagRelevant
 
 /**

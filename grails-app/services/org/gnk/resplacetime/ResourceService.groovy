@@ -65,7 +65,7 @@ class ResourceService {
         if (tagTypeList) {
             for (org.gnk.tag.Tag tagType : tagTypeList)
             {
-                resourceHasTagList = tagType.extResourceTags
+//                resourceHasTagList = tagType.extResourceTags
                 for (ResourceHasTag resourceHasTag : resourceHasTagList) {
                     ReferentialResource referentialResource = new ReferentialResource()
                     referentialResource.name = resourceHasTag.resource.name

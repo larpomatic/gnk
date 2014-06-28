@@ -27,7 +27,7 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.selectintrigue.PlotHasUnivers
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
+//import org.gnk.tag.TagFamily
 import org.gnk.tag.Univers
 
 /**
@@ -229,21 +229,21 @@ class GNKImportationService {
     private Tag getTag(Tag tag){
         Tag tagBDD = null
 
-        TagFamily tagFamily = TagFamily.findByValue(tag.tagFamily.value)
-        if (tagFamily)  {
-            tagFamily.relevantPlot = tag.tagFamily.relevantPlot
-            tagFamily.relevantResource = tag.tagFamily.relevantResource
-            tagFamily.relevantRole = tag.tagFamily.relevantRole
-            tag.tagFamily = tagFamily
-            tagBDD = Tag.findByNameAndTagFamily(tag.name, tagFamily)
-        }
-        else
+//        TagFamily tagFamily = TagFamily.findByValue(tag.tagFamily.value)
+//        if (tagFamily)  {
+//            tagFamily.relevantPlot = tag.tagFamily.relevantPlot
+//            tagFamily.relevantResource = tag.tagFamily.relevantResource
+//            tagFamily.relevantRole = tag.tagFamily.relevantRole
+//            tag.tagFamily = tagFamily
+//            tagBDD = Tag.findByNameAndTagFamily(tag.name, tagFamily)
+//        }
+//        else
             tagBDD = Tag.findByName(tag.name)
 
         if (!tagBDD)
             tagBDD = tag
 
-        tagBDD.tagFamily = tagFamily
+//        tagBDD.tagFamily = tagFamily
 
         return tagBDD
     }
