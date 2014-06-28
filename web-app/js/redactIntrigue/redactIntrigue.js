@@ -86,7 +86,7 @@ function initConfirm() {
                 removeResource(objectButton);
             }
             if (objectButton.attr("data-object") == "relation") {
-//                removeRelation(objectButton);
+                removeRelation(objectButton);
             }
             return false;
         }

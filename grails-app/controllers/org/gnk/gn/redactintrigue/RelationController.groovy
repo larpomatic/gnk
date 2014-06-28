@@ -1,11 +1,9 @@
 package org.gnk.gn.redactintrigue
 
-import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleRelationType
-import org.gnk.selectintrigue.Plot;
 
 class RelationController {
 
@@ -15,11 +13,11 @@ class RelationController {
     def save () {
         RoleHasRelationWithRole relation = new RoleHasRelationWithRole(params);
         Boolean res = saveOrUpdate(relation, true);
-//        relation = RoleHasRelationWithRole.findAllWhere("code": role.getCode()).first();
         def jsonRelation = buildJson(relation);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("relation", jsonRelation);
+        object.put("isupdate", res);
         render(contentType: "application/json") {
             object
         }
@@ -45,9 +43,13 @@ class RelationController {
     def update(Long id) {
         RoleHasRelationWithRole relation = RoleHasRelationWithRole.get(id);
         if (relation) {
+            Boolean isupdate = saveOrUpdate(relation, true);
+            def jsonRelation = buildJson(relation);
+            final JSONObject object = new JSONObject();
+            object.put("isupdate", isupdate);
+            object.put("relation", jsonRelation);
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(relation, false),
-                        id: relation.id)
+                object
             }
         }
     }
@@ -87,7 +89,7 @@ class RelationController {
             newRelation.isHidden = false;
         }
         if (params.containsKey("relationWeight")) {
-            newRelation.weight = params.relationWeight;
+            newRelation.weight = params.relationWeight as Integer;
         } else {
             return false
         }
@@ -108,7 +110,7 @@ class RelationController {
             isDelete = true;
         }
         render(contentType: "application/json") {
-            object(isdelete: isDelete)
+            object(isdelete: isDelete, oldId: id)
         }
     }
 }

@@ -19,6 +19,7 @@ $(function(){
                     };
                     var html = template(context);
                     $('.roleScreen > ul').append(html);
+                    updateRoleRelation(data);
                     initConfirm();
                     initDeleteButton();
                     emptyRoleForm();
@@ -55,6 +56,9 @@ function updateRole() {
                     createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
                     $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"]').html('Vers: ' + data.object.name);
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
                         if ($(this).html() == data.object.oldname) {
@@ -95,6 +99,11 @@ function removeRole(object) {
             success: function(data) {
                 if (data.object.isdelete) {
                     liObject.remove();
+                    $('select[name="relationFrom"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('select[name="relationTo"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('.relationScreen .leftMenuList a[href="#roleRelation_' + object.attr("data-id") + '"]]').parent().remove();
+                    $('.relationScreen #roleRelation_' + object.attr("data-id")).remove();
+                    $('.relationScreen .accordion-group[data-roleTo="' + object.attr("data-id") + '"]').remove();
                     var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
                     $('.roleLi .badge').html(nbRoles);
                     $('.addRole').trigger("click");
@@ -104,6 +113,7 @@ function removeRole(object) {
                             $(this).remove();
                         }
                     });
+                    $('.numberRelation').html($('.relationScreen .accordion-group').size());
                     createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
                 }
                 else {
@@ -142,4 +152,18 @@ function createNewRolePanel(data) {
     for (var key in data.role.tagList) {
         $('#roleTagsModal_' + data.role.id + " #roleTags_" + data.role.tagList[key]).attr('checked', 'checked');
     }
+}
+
+function updateRoleRelation(data) {
+    var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiRoleRelation'];
+    var context = {
+        roleId: String(data.role.id),
+        roleName: data.role.code
+    };
+    var html = template(context);
+    $('.relationScreen > ul').append(html);
+    $('select[name="relationFrom"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
+    $('select[name="relationTo"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
+    $('.relationScreen .tab-content').append('<div class="tab-pane" id="roleRelation_'+data.role.id+'">'
+    + '<div class="accordion" id="accordionRelation'+data.role.id+'"></div></div>');
 }

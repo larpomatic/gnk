@@ -102,13 +102,13 @@
             <div class="tab-pane" id="roleRelation_${role.id}">
                 <div class="accordion" id="accordionRelation${role.id}">
                     <g:each in="${role.roleHasRelationWithRolesForRole1Id}" var="relationFrom">
-                        <div class="accordion-group">
+                        <div class="accordion-group" data-relation="${relationFrom.id}" data-roleTo="${relationFrom.role2.id}">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionRelation${role.id}"
                                    href="#collapseRelation${role.id}-${relationFrom.id}">
                                     ${relationFrom.roleRelationType.name}
                                 </a>
-                                <span class="text-center">
+                                <span class="text-center" data-roleId="${relationFrom.role2.id}">
                                     <g:message code="redactintrigue.relation.to" default="To"/>: ${relationFrom.role2.code}
                                 </span>
                                 <span class="text-right">
@@ -133,13 +133,13 @@
                     </g:each>
                     <g:each in="${role.roleHasRelationWithRolesForRole2Id}" var="relationTo">
                         <g:if test="${relationTo.isBijective}">
-                            <div class="accordion-group">
+                            <div class="accordion-group" data-relation="${relationTo.id}" data-roleTo="${relationTo.role1.id}">
                                 <div class="accordion-heading">
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionRelation${role.id}"
                                        href="#collapseRelation${role.id}-${relationTo.id}">
                                         ${relationTo.roleRelationType.name}
                                     </a>
-                                    <span class="text-center">
+                                    <span class="text-center" data-roleId="${relationTo.role1.id}">
                                         <g:message code="redactintrigue.relation.to" default="To"/>: ${relationTo.role1.code}
                                     </span>
                                     <span class="text-right">

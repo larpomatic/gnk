@@ -1,4 +1,4 @@
-<form name="updateRelation_${relationFrom.id}" data-url="<g:createLink controller="Relation" action="Update" id="${relationFrom.id}"/>">
+<form name="updateRelation${role.id}_${relationFrom.id}" data-url="<g:createLink controller="Relation" action="Update" id="${relationFrom.id}"/>">
     <g:if test="${isRole1}">
         <g:hiddenField name="relationFrom" value="${role.id}"/>
     </g:if>
@@ -74,5 +74,14 @@
         </label>
     </div>
     <g:textArea name="relationDescription" id="relationDescription" value="${relationFrom.description}" rows="5" cols="100"/>
-    <input type="button" name="Update" data-id="${relationFrom.id}" value="Update" class="btn btn-primary updateRelation"/>
+    <g:if test="${isRole1}">
+        <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role1?.id}"
+               data-oldRoleToId="${relationFrom.role2?.id}" value="Update" class="btn btn-primary updateRelation"
+               data-wasBijective="${relationFrom.isBijective}"/>
+    </g:if>
+    <g:else>
+        <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role2?.id}"
+               data-oldRoleToId="${relationFrom.role1?.id}" value="Update" class="btn btn-primary updateRelation"
+               data-wasBijective="${relationFrom.isBijective}"/>
+    </g:else>
 </form>

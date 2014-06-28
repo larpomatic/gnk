@@ -96,6 +96,8 @@ function removePlace(object) {
             success: function(data) {
                 if (data.object.isdelete) {
                     liObject.remove();
+                    $('select[name="pastScenePlace"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('select[name="eventPlace"] option[value="' + object.attr("data-id") + '"]').remove();
                     var nbGenericPlaces = parseInt($('.placeLi .badge').html()) - 1;
                     $('.placeLi .badge').html(nbGenericPlaces);
                     $('.addPlace').trigger("click");
