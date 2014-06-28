@@ -17,7 +17,7 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role, true);
-        role = Role.findAllWhere("code": role.getCode()).first();
+        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, roleTagList, plot);

@@ -27,7 +27,7 @@ class GenericResourceController {
     def save() {
         GenericResource genericResource = new GenericResource(params)
         Boolean res = saveOrUpdate(genericResource, true);
-        genericResource = GenericResource.findAllWhere("code": genericResource.getCode()).first();
+        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
         def jsonGenericResource = buildJson(genericResource, resourceTagList);

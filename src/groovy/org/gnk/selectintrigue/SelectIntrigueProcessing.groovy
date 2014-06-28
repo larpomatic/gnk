@@ -35,8 +35,6 @@ public class SelectIntrigueProcessing {
     private Integer _maxPip;
     private Integer _currentPip;
 
-    // FIXME Handle Mainstream
-
     public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
         _gn = parGn;
         _selectedPlotList = new HashSet<Plot>();
@@ -80,21 +78,6 @@ public class SelectIntrigueProcessing {
         }
         selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
         selectIntrigue();
-
-
-        //Handle Pipcore
-//        HashMap<Character, Integer> characterPips = new HashMap<Character, Integer>();
-//        for (Character player : _gn.characterSet) {
-//            Integer pipPlayer = 0;
-//            for (Role role : player.getSelectedRoles()) {
-//                pipPlayer += role.getPipr() + role.getPipi();
-//            }
-//            characterPips.put(player, pipPlayer);
-//        }
-//        int test = 0;
-//        if (pipCoreCharacter <= _gn.characterSet.size()) {
-//            //Do something
-//        }
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -191,10 +174,7 @@ public class SelectIntrigueProcessing {
         }
     }
 
-//    private boolean pipCoreCharacter = 0;
-
     private boolean plotIsCompatible(Plot plot) {
-        // FIXME
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
         org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
@@ -250,9 +230,6 @@ public class SelectIntrigueProcessing {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-//            if (role.getPipi() + role.getPipr() >= _gn.getPipCore()) {
-//                pipCoreCharacter += 1;
-//            }
         }
         return true;
     }

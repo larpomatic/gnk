@@ -18,7 +18,7 @@ class PastSceneController {
     def save () {
         Pastscene pastscene = new Pastscene();
         Boolean res = saveOrUpdate(pastscene);
-        pastscene = Pastscene.findAllWhere("title": params.pastSceneTitle).first();
+//        pastscene = Pastscene.findAllWhere("title": params.pastSceneTitle).first();
         def jsonPastScene = buildJson(pastscene);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);

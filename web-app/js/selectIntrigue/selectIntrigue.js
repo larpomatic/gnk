@@ -72,9 +72,9 @@ $(function(){
             createNotification("danger", "Erreur !", "PIPCore doit être strictement inférieur à PIPMax.");
             return false;
         }
-        if (parseInt($gnPIPCore.val()) < parseInt($gnPIPMin.val())) {
+        if (parseInt($gnPIPCore.val()) > parseInt($gnPIPMin.val())) {
             $gnPIPCore.addClass("redBorder");
-            createNotification("danger", "Erreur !", "PIPCore doit être supérieur ou égal à PIPMin.");
+            createNotification("danger", "Erreur !", "PIPCore doit être inférieur ou égal à PIPMin.");
             return false;
         }
         return true;

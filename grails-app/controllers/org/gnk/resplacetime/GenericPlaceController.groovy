@@ -27,7 +27,7 @@ class GenericPlaceController {
         GenericPlace genericPlace = new GenericPlace(params)
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(genericPlace, true);
-        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
+        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": plot).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
         def jsonGenericPlace = buildJson(genericPlace, placeTagList, plot);

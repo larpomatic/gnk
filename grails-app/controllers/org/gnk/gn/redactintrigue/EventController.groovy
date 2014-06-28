@@ -18,7 +18,7 @@ class EventController {
     def save () {
         Event event = new Event();
         Boolean res = saveOrUpdate(event);
-        event = Event.findAllWhere("name": params.eventName).first();
+//        event = Event.findAllWhere("name": params.eventName).first();
         def jsonEvent = buildJson(event);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
