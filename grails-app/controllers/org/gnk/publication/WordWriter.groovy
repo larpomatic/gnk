@@ -1,5 +1,6 @@
 package org.gnk.publication
 
+import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart
 import org.docx4j.wml.CTBorder
@@ -27,12 +28,64 @@ import org.docx4j.wml.UnderlineEnumeration
 class WordWriter {
     public WordprocessingMLPackage wordMLPackage
     public ObjectFactory factory
+    public def mainPart
+    public boolean defaultTemplate
 
-    public WordWriter(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
-        this.factory = factory
-        this.wordMLPackage = wordMLPackage
+    public WordWriter(String universName) {
+        defaultTemplate = false
+        this.factory = Context.getWmlObjectFactory()
+        if (universName == "Harry Potter Anglais Fantastique (Univers)")
+        {
+            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]HARRY POTTER.docx"))
+        }
+        else if (universName.equalsIgnoreCase("Trône de Fer / Game of Thrones"))
+        {
+            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]GAME OF THRONE.docx"))
+        }
+        else
+        {
+            try{
+                this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]DEFAULT.docx"))
+            } catch (Exception e){
+                defaultTemplate = true
+                this.wordMLPackage = WordprocessingMLPackage.createPackage()
+                alterStyleSheet()
+            }
+        }
+        mainPart = wordMLPackage.getMainDocumentPart()
     }
 
+    def void addParagraphOfText(String text)
+    {
+        mainPart.addParagraphOfText(text)
+    }
+
+    def void addObject(Object o)
+    {
+        mainPart.addObject(o)
+    }
+
+    def void addStyledParagraphOfText(String style, String text)
+    {
+        if (defaultTemplate)
+        {
+            if (style == "T")
+                style = "Title"
+            else if (style == "ST")
+                style = "Subtitle"
+            else if (style == "T1")
+                style = "Heading1"
+            else if (style == "T2")
+                style = "Heading2"
+            else if (style == "T3")
+                style = "Heading3"
+            else if (style == "T4")
+                style = "Heading4"
+            else if (style == "T5")
+                style = "Heading5"
+        }
+        this.mainPart.addStyledParagraphOfText(style, text)
+    }
     def void addBorders(Tbl table) {
         table.setTblPr(new TblPr());
         CTBorder border = new CTBorder();

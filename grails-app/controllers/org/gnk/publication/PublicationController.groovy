@@ -63,8 +63,9 @@ class PublicationController {
 
         File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
 
-        WordprocessingMLPackage word = createPublication()
-        word.save(output)
+        wordWriter = new WordWriter(gn.univers.name)
+        wordWriter.wordMLPackage = createPublication()
+        wordWriter.wordMLPackage.save(output)
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
@@ -72,49 +73,45 @@ class PublicationController {
     }
 
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication() {
-        wordWriter = new WordWriter(WordprocessingMLPackage.createPackage(), Context.getWmlObjectFactory())
-        def mainPart = wordWriter.wordMLPackage.getMainDocumentPart()
+    public WordprocessingMLPackage createPublication(String templateWord) {
         // Custom styling for the output document
-        wordWriter.alterStyleSheet()
 
-        mainPart.addStyledParagraphOfText("Title", gn.name)
-        mainPart.addStyledParagraphOfText("Subtitle", createSubTile())
-
-        mainPart.addStyledParagraphOfText("Heading1", "Synthèse pour les organisateurs")
+        wordWriter.addStyledParagraphOfText("T", gn.name)
+        wordWriter.addStyledParagraphOfText("ST", createSubTile())
+        wordWriter.addStyledParagraphOfText("T1", "Synthèse pour les organisateurs")
 
         // HDU-MEF4
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des pitchs des Intrigues du GN")
-        createPitchOrga(mainPart)
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des pitchs des Intrigues du GN")
+        createPitchOrga()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des personnages du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
         createPlayersTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des Intrigues du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
         createPlotTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse de l'événementiel du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse de l'événementiel du GN")
         createEventsTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse des lieux du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux du GN")
         createPlaceTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Synthèse logistique du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
         createResTable()
 
-        mainPart.addStyledParagraphOfText("Heading2", "Liste des Ingames Clues")
-        createICTableOrga(mainPart)
+        wordWriter.addStyledParagraphOfText("T2", "Liste des Ingames Clues")
+        createICTableOrga()
 
-        mainPart.addStyledParagraphOfText("Heading1", "Événementiel Détaillé")
+        wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
         createDetailedEventsTable()
-        mainPart.addStyledParagraphOfText("Heading1", "Logistique détaillée")
+        wordWriter.addStyledParagraphOfText("T1", "Logistique détaillée")
 
-        mainPart.addStyledParagraphOfText("Heading1", "Implications Personnages par intrigue")
+        wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
 
-        mainPart.addStyledParagraphOfText("Heading1", "Dossiers Personnages")
-        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Vous trouverez ci dessous les dossiers personnages à imprimer et à distribuer aux joueurs")
-        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("-----------------------------------------------------------------------------------------")
+        wordWriter.addStyledParagraphOfText("T1", "Dossiers Personnages")
+        wordWriter.addParagraphOfText("Vous trouverez ci dessous les dossiers personnages à imprimer et à distribuer aux joueurs")
+        wordWriter.addParagraphOfText("-----------------------------------------------------------------------------------------")
         createCharactersFiles();
 
         return wordWriter.wordMLPackage
@@ -297,7 +294,7 @@ class PublicationController {
 
         wordWriter.addBorders(table)
 
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+        wordWriter.addObject(table);
     }
 
     // Création du tableau de la synthèse des lieux du GN
@@ -333,7 +330,7 @@ class PublicationController {
         }
 
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table)
+        wordWriter.addObject(table)
     }
 
     // Création du tableau de la synthèse des ressources
@@ -382,7 +379,7 @@ class PublicationController {
         }
         wordWriter.addBorders(table)
 
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table)
+        wordWriter.addObject(table)
     }
 
     // Création du tableau détaillé des évènements
@@ -445,7 +442,7 @@ class PublicationController {
         }
 
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table)
+        wordWriter.addObject(table)
     }
 
     // Substitution du titre, de la description, etc pour un évènement donné
@@ -478,28 +475,28 @@ class PublicationController {
         {
             Br br = wordWriter.factory.createBr()
             br.setType(STBrType.PAGE)
-            wordWriter.wordMLPackage.getMainDocumentPart().addObject(br)
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", c.firstname + " " + c.lastname)
+            wordWriter.addObject(br)
+            wordWriter.addStyledParagraphOfText("T2", c.firstname + " " + c.lastname)
 
             String typePerso
             if (c.isPJ()) { typePerso = "PJ" }
             else if (c.isPNJ()) { typePerso = "PNJ" }
             else  { typePerso = "PHJ" }
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Introduction")
+            wordWriter.addStyledParagraphOfText("T3", "Introduction")
             createPitchTablePerso(typePerso)
 
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Présentation")
+            wordWriter.addStyledParagraphOfText("T3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Sexe du personnage : " + sex)
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Type de personnage : " + typePerso )
+            wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
+            wordWriter.addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
 
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mon Histoire")
+            wordWriter.addStyledParagraphOfText("T3", "Mon Histoire")
 
             // HDU-MEF1
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Je m'appelle " + c.firstname + " " + c.lastname + ".")
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Voici mon histoire :")
+            wordWriter.addParagraphOfText("Je m'appelle " + c.firstname + " " + c.lastname + ".")
+            wordWriter.addParagraphOfText("Voici mon histoire :")
 
             Map<Integer, RoleHasPastscene> roleHasPastsceneList = new TreeMap<>()
 
@@ -550,8 +547,8 @@ class PublicationController {
                 {
                     unit = "mois"
                 }
-                wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
-                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(roleHasPastscene.description)
+                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+                wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 
             boolean hasTags = false
@@ -568,8 +565,8 @@ class PublicationController {
             if (!hasTags)
                 continue
 
-            wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conseils d'interprétation");
-            wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Ce personnage est : ")
+            wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
+            wordWriter.addParagraphOfText("Ce personnage est : ")
             for (Role r : c.getSelectedRoles())
             {
                 for (RoleHasTag roleHasTag : r.roleHasTags)
@@ -587,12 +584,12 @@ class PublicationController {
                         qualificatif = "Vraiment"
                     if (roleHasTag.weight > 89)
                         qualificatif = "Très"
-                    wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
+                    wordWriter.addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
                 }
             }
-            // todo: Relations wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Mes relations")
+            // todo: Relations wordWriter.addStyledParagraphOfText("T3", "Mes relations")
 
-            // todo : wordWriter.wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "J'ai sur moi...")
+            // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
 
@@ -602,26 +599,26 @@ class PublicationController {
         {
             for (Plot p : gn.selectedPlotSet)
             {
-                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchPj)
+                wordWriter.addParagraphOfText(p.pitchPj)
             }
         }
         else if (typePerso == "PNJ" || typePerso == "PHJ")
         {
             for (Plot p : gn.selectedPlotSet)
             {
-                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchPnj)
+                wordWriter.addParagraphOfText(p.pitchPnj)
             }
         }
     }
 
     // Création du tableau de synthèse des pitch des intrigues pour les Orga
-    def createPitchOrga(def mainPart) {
+    def createPitchOrga() {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
         // HDU-MEF5
-        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".")
-        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText("Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.")
+        wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".")
+        wordWriter.addParagraphOfText("Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.")
 
         // Comptage PJ
         int NbPJ = gn.characterSet.size()
@@ -699,7 +696,7 @@ class PublicationController {
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). (dans ce document, le timing a été calculé pour un jeu commençant à "
         msgCharacters += gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
 
-        wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(msgCharacters)
+        wordWriter.addParagraphOfText(msgCharacters)
 
 
 
@@ -714,20 +711,20 @@ class PublicationController {
             if (p.pitchOrga != null)
             {
 //                Tr tableRowPlot = wordWriter.factory.createTr()
-                mainPart.addStyledParagraphOfText("Heading3", p.name)
+                wordWriter.addStyledParagraphOfText("T3", p.name)
 //                wordWriter.addTableCell(tableRowPlot, p.name)
-                wordWriter.wordMLPackage.getMainDocumentPart().addParagraphOfText(p.pitchOrga)
+                wordWriter.addParagraphOfText(p.pitchOrga)
 //                wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
 //                table.getContent().add(tableRowPlot);
             }
 
         }
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+        wordWriter.addObject(table);
     }
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
-    def createICTableOrga(MainDocumentPart mainPart) {
+    def createICTableOrga() {
 
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
@@ -760,15 +757,15 @@ class PublicationController {
             {
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-                mainPart.addStyledParagraphOfText("Heading3", genericResource.code + " - " + genericResource.title)
-                mainPart.addStyledParagraphOfText("Heading4", "Descritpion")
-                mainPart.addParagraphOfText(/*type*/"" + " - " + genericResource.selectedResource.name + " - Ingame CLue")
-                mainPart.addParagraphOfText(/*Nom de l'intrigue*/"")
-                mainPart.addParagraphOfText("Détenu au début du jeu par : "+/*role_has_ingame_clue ou ressource*/"")
-                mainPart.addParagraphOfText(genericResource.comment)
-                mainPart.addStyledParagraphOfText("Heading4", "Contenu")
-                mainPart.addParagraphOfText(/*Champs titre*/"")
-                mainPart.addParagraphOfText(genericResource.description)
+                wordWriter.addStyledParagraphOfText("T3", genericResource.code + " - " + genericResource.title)
+                wordWriter.addStyledParagraphOfText("T4", "Descritpion")
+                wordWriter.addParagraphOfText(/*type*/"" + " - " + genericResource.selectedResource.name + " - Ingame CLue")
+                wordWriter.addParagraphOfText(/*Nom de l'intrigue*/"")
+                wordWriter.addParagraphOfText("Détenu au début du jeu par : "+/*role_has_ingame_clue ou ressource*/"")
+                wordWriter.addParagraphOfText(genericResource.comment)
+                wordWriter.addStyledParagraphOfText("T4", "Contenu")
+                wordWriter.addParagraphOfText(/*Champs titre*/"")
+                wordWriter.addParagraphOfText(genericResource.description)
 
 
 //                genericResource.title = substitutionPublication.replaceAll(genericResource.title)
@@ -831,7 +828,7 @@ class PublicationController {
         }
 
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+        wordWriter.addObject(table);
     }
 
     // Handles the substitution of each role, object or place for a plot description and each roles inside this plot
@@ -950,7 +947,7 @@ class PublicationController {
         }
 
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+        wordWriter.addObject(table);
 
     }
 
@@ -1018,7 +1015,7 @@ class PublicationController {
         }
 
         wordWriter.addBorders(table)
-        wordWriter.wordMLPackage.getMainDocumentPart().addObject(table);
+        wordWriter.addObject(table);
 
 
     }
