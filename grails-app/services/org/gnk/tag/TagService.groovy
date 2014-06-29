@@ -10,6 +10,17 @@ class TagService {
     def serviceMethod() {
     }
 
+    def findChildren(Tag t)
+    {
+        def tags = Tag.findAllByParentId(t.id)
+        def tagsTmp = tags
+        for (Tag tag: tagsTmp)
+        {
+            tags.addAll(findChildren(tag))
+        }
+        return tags
+    }
+
     def List<Tag> getPlotTagQuery() {
         def family = TagRelevant.withCriteria{
             eq ("relevantPlot", true)
@@ -20,11 +31,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t));
             }
-
         }
 
         return result;
@@ -40,11 +48,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t));
             }
-
         }
 
         return result;
@@ -60,11 +65,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t));
             }
-
         }
 
         return result;
@@ -80,9 +82,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t));
             }
         }
         return result

@@ -87,7 +87,7 @@ class PlotXMLWriterService {
             for (PlotHasTag plotHasPlotTag : plot.extTags) {
                 Element tag = doc.createElement("TAG");
                 tag.setAttribute("value", plotHasPlotTag.tag.name)
-//                tag.setAttribute("type", plotHasPlotTag.tag.tagFamily.value)
+                tag.setAttribute("type", plotHasPlotTag.tag.parent.name)
                 tag.setAttribute("weight", plotHasPlotTag.weight.toString())
                 tagsElt.appendChild(tag)
             }

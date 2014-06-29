@@ -39,7 +39,7 @@ class GenericPlaceXMLWriterService {
             for (GenericPlaceHasTag genericPlaceHasTag : genericPlace.extTags) {
                 Element tag = doc.createElement("TAG");
                 tag.setAttribute("value", genericPlaceHasTag.tag.name)
-//                tag.setAttribute("type", genericPlaceHasTag.tag.tagFamily.value)
+                tag.setAttribute("type", genericPlaceHasTag.tag.parent.name)
                 tag.setAttribute("weight", genericPlaceHasTag.weight.toString())
                 tagsElt.appendChild(tag)
             }

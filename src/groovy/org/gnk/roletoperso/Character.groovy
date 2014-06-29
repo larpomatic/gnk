@@ -340,7 +340,7 @@ class Character {
         int number = 0;
         println("name === " +firstname + " " + getDTDId());
         tags.each { tag ->
-            if (tag.key.tagFamily.id == 3) { // Age
+            if (tag.key.parentId == 3) { // Age
                 number += 1
                println("age :" + tag.key.name + "(" + tag.value)
                 sum += getAgeForTagAge(tag.key, tag.value)
@@ -368,7 +368,7 @@ class Character {
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0
 
-        if (t.tagFamily.id == 3) { // Âge
+        if (t.parentId == 3) { // Âge
             int fixAge = 0
             if (t.id == 34) { //Vieux 80
                 fixAge = 80

@@ -81,7 +81,7 @@ class InputHandler {
         for (el in gnInst.gnTags) {
             Tag tagData = new Tag()
             tagData.value = el.key.name
-            tagData.family = el.key.tag.value
+            tagData.family = el.key.parent.name
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
@@ -106,7 +106,7 @@ class InputHandler {
             for (el in character.getTags()) {
                 Tag tagData = new Tag()
                 tagData.value = el.key.name
-                tagData.family = el.key.tagFamily.value
+                tagData.family = el.key.parent.name
                 tagData.weight = el.value
                 characterData.tagList.add(tagData)
             }
@@ -134,7 +134,7 @@ class InputHandler {
             for (el in character.getTags()) {
                 Tag tagData = new Tag()
                 tagData.value = el.key.name
-                tagData.family = el.key.tagFamily.value
+                tagData.family = el.key.parent.name
                 tagData.weight = el.value
                 characterData.tagList.add(tagData)
             }
@@ -175,7 +175,7 @@ class InputHandler {
                         Tag tagData = new Tag()
 
                         tagData.value = genericResourceHasTag.tag.name
-                        tagData.family = genericResourceHasTag.tag.tagFamily.value
+                        tagData.family = genericResourceHasTag.tag.parent.name
                         tagData.weight = genericResourceHasTag.weight as Integer
 
                         resource.tagList.add(tagData)
@@ -270,7 +270,7 @@ class InputHandler {
                 Tag tagData = new Tag()
 
                 tagData.value = genericPlaceHasTag.tag.name
-                tagData.family = genericPlaceHasTag.tag.tagFamily.value
+                tagData.family = genericPlaceHasTag.tag.parent.name
                 tagData.weight = genericPlaceHasTag.weight as Integer
 
                 place.tagList.add(tagData)
