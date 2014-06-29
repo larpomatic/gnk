@@ -57,7 +57,13 @@ class WordWriter {
 
     def void addParagraphOfText(String text)
     {
-        mainPart.addParagraphOfText(text)
+        if (text != null)
+        {
+            String[] lines = text.split("\n")
+            for (String line : lines)
+                this.mainPart.addParagraphOfText(line)
+        }
+        //mainPart.addParagraphOfText(text)
     }
 
     def void addObject(Object o)
@@ -84,7 +90,12 @@ class WordWriter {
             else if (style == "T5")
                 style = "Heading5"
         }
-        this.mainPart.addStyledParagraphOfText(style, text)
+
+        String[] lines = text.split("\n")
+        for (String line : lines)
+            this.mainPart.addStyledParagraphOfText(style, line)
+
+        //this.mainPart.addStyledParagraphOfText(style, text)
     }
     def void addBorders(Tbl table) {
         table.setTblPr(new TblPr());
@@ -104,9 +115,17 @@ class WordWriter {
         table.getTblPr().setTblBorders(borders);
     }
 
+//    def addTableCell(Tr tableRow, String content) {
+//        Tc tableCell = factory.createTc();
+//        tableCell.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+//        tableRow.getContent().add(tableCell);
+//    }
+
     def addTableCell(Tr tableRow, String content) {
         Tc tableCell = factory.createTc();
-        tableCell.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
+        String[] lines = content.split("\n")
+        for (String line : lines)
+            tableCell.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(line));
         tableRow.getContent().add(tableCell);
     }
 

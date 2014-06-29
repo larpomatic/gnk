@@ -1,19 +1,13 @@
 package org.gnk.publication
 
-import grails.converters.JSON
-import org.apache.catalina.filters.SetCharacterEncodingFilter
-import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
-import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
-import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
@@ -25,7 +19,6 @@ import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-import org.gnk.tag.TagService
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -104,7 +97,8 @@ class PublicationController {
 
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
         createDetailedEventsTable()
-        wordWriter.addStyledParagraphOfText("T1", "Logistique détaillée")
+
+//        wordWriter.addStyledParagraphOfText("T1", "Logistique détaillée")
 
         wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
@@ -349,8 +343,8 @@ class PublicationController {
 
         for (GenericResource genericResource : gnk.genericResourceMap.values())
         {
-            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
-            {
+//            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
+//            {
                 Tr tableRowRes = wordWriter.factory.createTr()
 
                 if (genericResource.selectedResource)
@@ -375,14 +369,14 @@ class PublicationController {
                 wordWriter.addTableCell(tableRowRes, resTag)
 
                 table.getContent().add(tableRowRes);
-            }
+//            }
         }
         wordWriter.addBorders(table)
 
         wordWriter.addObject(table)
     }
 
-    // Création du tableau détaillé des évènements
+    // Création du tableau Synthèse des personnages du GN des évènements
     def createDetailedEventsTable()
     {
         Tbl table = wordWriter.factory.createTbl()
