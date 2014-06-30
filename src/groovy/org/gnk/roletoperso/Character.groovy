@@ -353,8 +353,6 @@ class Character {
         }
 
         getRelationsExceptBijectives().each { related ->
-            related.key.getterRole1().DTDId
-            related.key.getterRole2().DTDId
             println(firstname + " -> (" +related.key.getterRole1().DTDId+ "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
         }
         if (number == 0) {
