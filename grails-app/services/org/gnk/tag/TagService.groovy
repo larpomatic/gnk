@@ -9,14 +9,15 @@ class TagService {
     }
 
     def findChildren(Tag t) {
-        def tags = Tag.findAllWhere(id: t.id)
-        if (tags != null)
-        {
-            def tagsTmp = tags
-            for (Tag tag : tagsTmp) {
-                tags.addAll(findChildren(tag))
-            }
+        def tags = Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
         }
+        print(tags)
         return tags
     }
 
