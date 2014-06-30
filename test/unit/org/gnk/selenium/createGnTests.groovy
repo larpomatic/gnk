@@ -111,7 +111,7 @@ class CreateGnTests {
         we = driver.findElement(By.id("runSubPlacesButton")).click()
         while (driver.findElement(By.id("charsPercentage")).getText() != "100 %")
         {
-            Thread.sleep(1000)
+            Thread.sleep(2000)
         }
         we = driver.findElement(By.id("validateSubButton")).click()
         // --------  END SUBSTITUTION ---------

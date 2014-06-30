@@ -17,7 +17,6 @@ class TagService {
         for (Tag tag : tagsTmp) {
             tags.addAll(findChildren(tag))
         }
-        print(tags)
         return tags
     }
 
