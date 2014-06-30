@@ -1,14 +1,14 @@
 package org.gnk.roletoperso
 
-import org.apache.poi.poifs.filesystem.Entry
-import org.bouncycastle.asn1.cms.CMSAttributes
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.tag.TagService
 import org.gnk.tag.Univers
+import org.gnk.tag.Tag
 
 class RoleToPersoController {
 
@@ -200,14 +200,37 @@ class RoleToPersoController {
 
         json_relation = json_array.toString();
 
+        ArrayList<String> values = new ArrayList<>();
+        for (Character c in gn.characterSet)
+        {
+            Map<Tag, Integer> test = c.getTags();
+            Set<Tag> tags = test.keySet();
+            TagService tagservice = new TagService();
+            for (Tag tag1 in tags)
+            {
+                for (Tag tag2 in tags)
+                {
+                    if (tag1 != tag2)
+                    {
+                        String val = "" + c.getDTDId();
+                        val += "#" + tag1.id + "#" + tag1.name + "#" + test.get(tag1);
+                        val += "#" + tag2.id + "#" + tag2.name + "#" + test.get(tag2);
+                        val += "#" + tagservice.getTagMatching(tag1, 0, tag2, 0);
+                        values.add(val);
+                    }
+                }
+            }
+        }
+
         [gnInstance: gn,
-                characterList: gn.characterSet,
-                allList: algo.gnTPJRoleSet,
-                PHJList: gn.nonPlayerCharSet,
-                characterListToDropDownLock: characterListToDropDownLock,
-                evenementialId: evenementialId,
-                relationjson: json_relation,
-                mainstreamId: mainstreamId]
+         characterList: gn.characterSet,
+         allList: algo.gnTPJRoleSet,
+         PHJList: gn.nonPlayerCharSet,
+         characterListToDropDownLock: characterListToDropDownLock,
+         evenementialId: evenementialId,
+         relationjson: json_relation,
+         tagcompatibility: values,
+         mainstreamId: mainstreamId]
     }
 
     def management(Long id) {
