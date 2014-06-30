@@ -1,8 +1,9 @@
 package org.gnk.selectintrigue
 
-//import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 
-import org.gnk.user.User;
+//import org.gnk.user.User
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -33,10 +34,6 @@ public class SelectIntrigueProcessing {
     private Integer _minPip;
     private Integer _maxPip;
     private Integer _currentPip;
-
-//    def springSecurityService;
-
-    // FIXME Handle Mainstream
 
     public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
         _gn = parGn;
@@ -81,14 +78,6 @@ public class SelectIntrigueProcessing {
         }
         selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
         selectIntrigue();
-
-
-        //Handle Pipcore
-//        for (Character player : _gn.characterSet()) {
-//            for (Role role : player.getSelectedRoles()) {
-//
-//            }
-//        }
     }
 
     public Set<Plot> getSelectedPlots() {
@@ -120,6 +109,7 @@ public class SelectIntrigueProcessing {
     private int evaluateGn(boolean flush) {
         int result = 0;
         _currentPip = 0;
+        int nbRolePipCoreok = 0;
         if (flush) {
             for (Entry<Tag, Integer> entry : _value.entrySet()) {
                 entry.setValue(0);
@@ -131,6 +121,7 @@ public class SelectIntrigueProcessing {
                         entry.setValue(entry.getValue() + plot.getSumPipRoles(_gn.nbPlayers) * plot.getTagWeight(entry.getKey()));
                     }
                 }
+                nbRolePipCoreok += plot.getNbRoleOverPipcore(_gn.pipCore);
             }
         }
         for (Entry<Tag, Integer> entry : _value.entrySet()) {
@@ -142,6 +133,19 @@ public class SelectIntrigueProcessing {
             }
             int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
             result -= inter * inter;
+        }
+        //Nombre de role ayant au moins Pipcore pipes qu'il reste à trouver
+        int bonusMalusPipcore = _gn.nbPlayers - nbRolePipCoreok;
+        if (bonusMalusPipcore < 0)
+            bonusMalusPipcore = 0;
+
+        // on récupère un pourcentage, plus le pourcentage est faible, plus l'impact sur result est grand
+        int remainPipPercent = (((_gn.getPipMin() * _gn.getNbPlayers()) - _currentPip) * 100)/(_gn.getPipMin() * _gn.getNbPlayers());
+        if (remainPipPercent < 0) {
+            remainPipPercent = 0;
+        }
+        if (result != 0) {
+            result -= (bonusMalusPipcore * result * 10 *  (100 - remainPipPercent)) / result;
         }
         return result;
     }
@@ -178,17 +182,15 @@ public class SelectIntrigueProcessing {
     }
 
     private boolean plotIsCompatible(Plot plot) {
-        // FIXME
-//        HttpSession session = request.getSession();
-//        String userName = (String) session.getAttribute("USER_NAME");
-
-//        User currentUser = springSecurityService.getCurrentUser();
-//        if (!currentUser) {
-//            return false;
-//        }
-//        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
-//            return false;
-//        }
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
+        if (currentUser == null) {
+            return false;
+        }
+        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
+            return false;
+        }
         int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
@@ -231,18 +233,11 @@ public class SelectIntrigueProcessing {
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
-//        Boolean isPipCoreOk = false;
         for (Role role : roleList) {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
             }
-//            if (role.getPipi() >= _gn.getPipCore()) {
-//                isPipCoreOk = true;
-//            }
         }
-//        if (!isPipCoreOk) {
-//            return false;
-//        }
         return true;
     }
 
