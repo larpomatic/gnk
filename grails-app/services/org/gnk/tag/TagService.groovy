@@ -8,20 +8,83 @@ class TagService {
     def serviceMethod() {
     }
 
+    def findChildren(Tag t) {
+        def tags = Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
+        }
+        return tags
+    }
+
     def List<Tag> getPlotTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
+        def family = TagRelevant.withCriteria{
+            eq ("relevantPlot", true)
+        }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                result.addAll(findChildren(t.tag));
+            }
+        }
+
+        return result;
+    }
+
+    def List<Tag> getResourceTagQuery() {
+        def family = TagRelevant.withCriteria{
+            eq ("relevantResource", true)
+        }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                result.addAll(findChildren(t.tag));
+            }
+        }
+
+        return result;
+    }
+
+    def List<Tag> getPlaceTagQuery() {
+        def family = TagRelevant.withCriteria{
+            eq ("relevantPlace", true)
+        }
+
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                result.addAll(findChildren(t.tag));
+            }
         }
 
         return result;
     }
 
     def List<Tag> getRoleTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
+        def family = TagRelevant.withCriteria{
+            eq ("relevantRole", true)
         }
 
-        return result;
+        ArrayList<Tag> result = new ArrayList<>()
+        for (TagRelevant t: family)
+        {
+            if (t.tagId != null)
+            {
+                result.addAll(findChildren(t.tag));
+            }
+        }
+        return result
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {

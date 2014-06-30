@@ -75,7 +75,7 @@ class PlaceService {
                     for (PlaceHasTag anotherTagOfResource : placeHasTag.place.extTags)
                     {
                         Tag tag = new Tag()
-                        tag.type = anotherTagOfResource.tag.tagFamily.value
+                        tag.type = anotherTagOfResource.tag.parent.name
                         tag.value = anotherTagOfResource.tag.name
                         tag.weight = anotherTagOfResource.weight
 

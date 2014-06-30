@@ -28,5 +28,19 @@ NB: If you change your JDK version, re-upgrade grails too.
   
     $ grails run-app
   <li>Navigate to [http://localhost:8090/gnk](http://localhost:8090/gnk)</li>
+
+  <li>Launch unitTests:</li>
+  
+	$ grails test-app
+or
+  
+	$ grails test-app *Class
+or
+  
+	$ grails test-app MyTestClass
+
+  <li>Launch Selenium Tests (IHM):</li>
+
+	$ grails test-app CreateGnTests
    </lo>
     

@@ -1,8 +1,10 @@
 import grails.plugins.springsecurity.SpringSecurityService
+import org.gnk.tag.Tag
 import org.gnk.tag.TagFamily
 import org.gnk.user.SecRole
 import org.gnk.user.User
 import org.gnk.user.UserSecRole
+import org.gnk.utils.Base
 
 class BootStrap {
 	
@@ -10,10 +12,14 @@ class BootStrap {
 
     def init = { servletContext ->
 
+//       Script to generate the database without tag_family
+//       Base b = new Base()
+//        b.transfertTagFamilyToTag()
+
         // TAG FAMILY
-        if (!TagFamily.findByValue("Age")) {
-            TagFamily tagFamily = new TagFamily();
-            tagFamily.value = "Age"
+        if (!Tag.findByName("Age")) {
+            Tag tagFamily = new Tag();
+            tagFamily.name = "Age"
             tagFamily.save(failOnError: true)
         }
 
