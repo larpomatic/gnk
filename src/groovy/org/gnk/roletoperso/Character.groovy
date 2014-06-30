@@ -235,7 +235,8 @@ class Character {
         final Integer nbPIP = getNbPIP()
         Set<RoleHasRelationWithRole> tagKeySet = relationMap.keySet()
         for (RoleHasRelationWithRole tagKey : tagKeySet) {
-            relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
+            if (nbPIP != 0)
+                relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
         }
         return relationMap
     }
@@ -274,6 +275,8 @@ class Character {
         return result;
     }
 
+
+
     public Map<RoleHasRelationWithRole, Integer> getRelations(boolean evenIfNonBijective) {
         Map<RoleHasRelationWithRole, Integer> relationMap = new HashMap<RoleHasRelationWithRole, Integer>()
         for (Role role : selectedRoles) {
@@ -299,7 +302,8 @@ class Character {
         final Integer nbPIP = getNbPIP()
         Set<RoleHasRelationWithRole> tagKeySet = relationMap.keySet()
         for (RoleHasRelationWithRole tagKey : tagKeySet) {
-            relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
+            if (nbPIP != 0)
+                relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
         }
         return relationMap
     }
@@ -314,6 +318,10 @@ class Character {
 
     public boolean roleIsLocked(Role role) {
         return lockedRoles.contains(role)
+    }
+
+    public void addplotid_role(List<Integer> list) {
+        this.plotid_role.addAll(list);
     }
 
     public Set<Plot> getPlotSet() {

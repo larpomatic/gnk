@@ -1,5 +1,9 @@
 package org.gnk.roletoperso
 
+import org.apache.poi.poifs.filesystem.Entry
+import org.bouncycastle.asn1.cms.CMSAttributes
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
@@ -141,11 +145,68 @@ class RoleToPersoController {
             characterListToDropDownLock.add(c.DTDId);
         }
 
+        String json_relation = "";
+
+
+        JSONArray json_array = new JSONArray();
+        Set<Character> characters = gn.characterSet.clone();
+        characters.addAll(gn.nonPlayerCharSet);
+
+        for (Character c : characters) {
+            JSONObject json_object = new JSONObject();
+
+            JSONArray json_adjacencies = new JSONArray();
+
+            for (Character c2 : characters) {
+                if (c != c2)
+                {
+                    String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
+                    String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
+                    if ((lien1 != null) && (lien1.isEmpty() == false))
+                    {
+                        JSONObject json_adjacencies_obj = new JSONObject();
+                        json_adjacencies_obj.put("nodeTo", "CHAR" + c2.getDTDId());
+                        json_adjacencies_obj.put("nodeFrom", "CHAR" + c.getDTDId());
+                        JSONObject json_data = new JSONObject();
+                        json_data.put("lien", lien1);
+                        if ((lien2 != null) && (lien2.isEmpty() == false))
+                            json_data.put("lien2", lien2);
+                        json_adjacencies_obj.put("data", json_data);
+                        json_adjacencies.add(json_adjacencies_obj);
+                    }
+                }
+            }
+            json_object.put("adjacencies", json_adjacencies);
+
+            JSONObject json_colortype = new JSONObject();
+            if (c.isMen())
+                json_colortype.put("\$color", "#0040FF");
+            else if (c.isWomen())
+                json_colortype.put("\$color", "#FE2EC8");
+            else
+                json_colortype.put("\$color", "#848484");
+            if (c.isPJ())
+                json_colortype.put("\$type", "circle");
+            else if (c.isPHJ())
+                json_colortype.put("\$type", "triangle");
+            else
+                json_colortype.put("\$type", "square")
+            json_object.put("data", json_colortype);
+
+            json_object.put("id", "CHAR" + c.getDTDId());
+            json_object.put("name", "CHAR" + c.getDTDId());
+            json_array.add(json_object);
+        }
+
+        json_relation = json_array.toString();
+
         [gnInstance: gn,
                 characterList: gn.characterSet,
                 allList: algo.gnTPJRoleSet,
+                PHJList: gn.nonPlayerCharSet,
                 characterListToDropDownLock: characterListToDropDownLock,
                 evenementialId: evenementialId,
+                relationjson: json_relation,
                 mainstreamId: mainstreamId]
     }
 
@@ -184,5 +245,46 @@ class RoleToPersoController {
     def deleteFromList(Long id) {
         characterService.removeCharacter(params.selectedCharacterId as int)
         redirect(action: "list")
+    }
+
+    def merge (String char_to, String char_from, String gn_id) {
+        int id_from = Integer.parseInt(char_from);
+        int id_to = Integer.parseInt(char_to.split("-")[1]);
+        int id_gn = Integer.parseInt(gn_id);
+
+        Character c_from = null;
+        Character c_to = null;
+
+        Gn gn = Gn.get(id_gn);
+        assert (gn != null)
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+        Set<Character> charnotplay = gn.getterNonPlayerCharSet();
+        for (Character c in charnotplay)
+        {
+            if (c.DTDId == id_from)
+            {
+                c_from = c;
+            }
+            else if (c.DTDId == id_to)
+            {
+                c_to = c;
+            }
+            if ((c_to != null) && (c_from != null))
+            {
+                break;
+            }
+        }
+        c_to.lockedRoles.addAll(c_from.lockedRoles);
+        c_to.selectedRoles.addAll(c_from.selectedRoles);
+        c_to.selectedPJG.addAll(c_from.selectedPJG);
+        c_to.bannedRoles.addAll(c_from.bannedRoles);
+        c_to.specificRoles.addAll(c_from.specificRoles);
+        c_to.addplotid_role(c_from.getplotid_role());
+        charnotplay.remove(c_from);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        gn.save();
+        return render(contentType: "application/json") { object(test: id_from)};
     }
 }
