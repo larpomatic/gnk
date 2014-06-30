@@ -163,4 +163,14 @@ class Plot {
     Integer getterId() {
         return id;
     }
+
+    public int getNbRoleOverPipcore(int gnPipcore) {
+        int pipCoreOkNumber = 0;
+        for (Role role in roles) {
+            if (role.getPipi() + role.getPipr() >= gnPipcore) {
+                pipCoreOkNumber += 1;
+            }
+        }
+        return pipCoreOkNumber;
+    }
 }
