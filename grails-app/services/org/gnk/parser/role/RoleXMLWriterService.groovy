@@ -53,7 +53,7 @@ class RoleXMLWriterService {
             for (RoleHasTag roleHasTag : role.roleHasTags) {
                 Element tag = doc.createElement("TAG");
                 tag.setAttribute("value", roleHasTag.tag.name)
-//                tag.setAttribute("type", roleHasTag.tag.tagFamily.value)
+                tag.setAttribute("type", roleHasTag.tag.parent.name)
                 tag.setAttribute("weight", roleHasTag.weight.toString())
                 tagsElt.appendChild(tag)
             }

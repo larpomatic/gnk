@@ -1,13 +1,23 @@
 package org.gnk.tag
 
-import java.util.List
-
 class TagService {
 
     public static final int LOCKED = 101;
     public static final int BANNED = -101;
 
     def serviceMethod() {
+    }
+
+    def findChildren(Tag t) {
+        def tags = Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
+        }
+        return tags
     }
 
     def List<Tag> getPlotTagQuery() {
@@ -20,11 +30,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t.tag));
             }
-
         }
 
         return result;
@@ -40,11 +47,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t.tag));
             }
-
         }
 
         return result;
@@ -60,11 +64,8 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t.tag));
             }
-
         }
 
         return result;
@@ -80,9 +81,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                Tag tag = t.tag
-                Set<Tag> sonsTag = tag.parentId;
-                result.addAll(sonsTag);
+                result.addAll(findChildren(t.tag));
             }
         }
         return result

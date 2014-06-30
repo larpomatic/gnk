@@ -1,5 +1,10 @@
 package org.gnk.tag
 
+import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.ResourceHasTag
+import org.gnk.roletoperso.RoleHasTag
+import org.gnk.selectintrigue.PlotHasTag
+
 class Tag {
 
     Integer id
@@ -10,7 +15,11 @@ class Tag {
     String name
     Tag parent
 
-    static hasMany = [parentId: Tag]
+    static hasMany = [
+    extPlaceTags: PlaceHasTag,
+    extResourceTags: ResourceHasTag,
+    extPlotTags: PlotHasTag,
+    extRoleTags: RoleHasTag]
 
     static constraints = {
         name maxSize: 45

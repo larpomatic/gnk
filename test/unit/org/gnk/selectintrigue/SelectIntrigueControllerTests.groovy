@@ -25,17 +25,15 @@ import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.roletoperso.RoleRelationType
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
 import org.gnk.tag.Univers
 import org.gnk.user.User
-
 import java.text.SimpleDateFormat
 
 /**
  * Created by pico on 15/04/2014.
  */
 @TestFor(SelectIntrigueController)
-@Mock([Tag, Plot, Gn, Univers, User, TagFamily, GenericPlaceHasTag, GenericPlace, Pastscene, GenericPlaceHasTag, GenericResourceHasTag, GenericResource, GenericPlace,
+@Mock([Tag, Plot, Gn, Univers, User, GenericPlaceHasTag, GenericPlace, Pastscene, GenericPlaceHasTag, GenericResourceHasTag, GenericResource, GenericPlace,
 Place, PlaceHasTag, Resource, ResourceHasTag, Firstname, FirstnameHasTag, Name, NameHasTag, PlotHasTag, Role, RoleHasTag, Event, RoleHasEvent,
 RoleRelationType, RoleHasPastscene, RoleHasRelationWithRole, RoleHasEventHasGenericResource])
 class SelectIntrigueControllerTests {

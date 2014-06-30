@@ -89,7 +89,7 @@ class SubstitutionResourceXMLWriterService {
                 for(ResourceHasTag resourceHasTag : resource.extTags) {
                     Element tagE = doc.createElement("TAG")
                     tagE.setAttribute("value", resourceHasTag.tag.name)
-                    tagE.setAttribute("type", resourceHasTag.tag.tagFamily.value)
+                    tagE.setAttribute("type", resourceHasTag.tag.parent.name)
                     tagE.setAttribute("weight", resourceHasTag.weight as String)
 
                     tagsE.appendChild(tagE)

@@ -86,23 +86,23 @@ class CheckGnTests {
 
         we = driver.findElements(By.className("btn")).get(2) // tags
         we.click()
-        we = driver.findElement(By.id("tags_1")).click()
-        we = driver.findElement(By.id("tags_2")).click()
-        we = driver.findElement(By.id("tags_3")).click()
+        we = driver.findElement(By.id("tags_33026")).click()
+        we = driver.findElement(By.id("tags_33018")).click()
+        we = driver.findElement(By.id("tags_33060")).click()
         we = driver.findElement(By.cssSelector("#tagsModal .close")).click() // close
         fillInputById("t0Hour", "11:10")
         we = driver.findElements(By.className("btn")).get(3) // tagsEvenmential
         we.click()
-        we = driver.findElement(By.id("tagsEvenemential_1")).click()
-        we = driver.findElement(By.id("tagsEvenemential_2")).click()
-        we = driver.findElement(By.id("tagsEvenemential_6")).click()
+        we = driver.findElement(By.id("tagsEvenemential_33018")).click()
+        we = driver.findElement(By.id("tagsEvenemential_33060")).click()
+        we = driver.findElement(By.id("tagsEvenemential_33051")).click()
         we = driver.findElement(By.cssSelector("#tagsEvenementialModal .close")).click() // close
         fillInputById("t0Date", "2014-04-13")
         we = driver.findElements(By.className("btn")).get(4) // tagsMainstream
         we.click()
-        we = driver.findElement(By.id("tagsMainstream_1")).click()
-        we = driver.findElement(By.id("tagsMainstream_2")).click()
-        we = driver.findElement(By.id("tagsMainstream_7")).click()
+        we = driver.findElement(By.id("tagsMainstream_33026")).click()
+        we = driver.findElement(By.id("tagsMainstream_33018")).click()
+        we = driver.findElement(By.id("tagsMainstream_33060")).click()
         we = driver.findElement(By.cssSelector("#tagsMainstreamModal .close")).click() // close
         we = driver.findElements(By.className("btn-primary")).first() // Update button
         we.click()

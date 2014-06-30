@@ -134,12 +134,19 @@ public class SelectIntrigueProcessing {
             int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
             result -= inter * inter;
         }
+        //Nombre de role ayant au moins Pipcore pipes qu'il reste à trouver
         int bonusMalusPipcore = _gn.nbPlayers - nbRolePipCoreok;
         if (bonusMalusPipcore < 0)
             bonusMalusPipcore = 0;
 
-        int remainPipPercent = ((_gn.getPipMin() - _currentPip) * 100)/_gn.getPipMin();
-        result -= (bonusMalusPipcore * result * 2 * remainPipPercent) / 100;
+        // on récupère un pourcentage, plus le pourcentage est faible, plus l'impact sur result est grand
+        int remainPipPercent = (((_gn.getPipMin() * _gn.getNbPlayers()) - _currentPip) * 100)/(_gn.getPipMin() * _gn.getNbPlayers());
+        if (remainPipPercent < 0) {
+            remainPipPercent = 0;
+        }
+        if (result != 0) {
+            result -= (bonusMalusPipcore * result * 10 *  (100 - remainPipPercent)) / result;
+        }
         return result;
     }
 

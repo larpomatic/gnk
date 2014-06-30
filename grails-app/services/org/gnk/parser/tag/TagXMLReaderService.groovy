@@ -2,7 +2,6 @@ package org.gnk.parser.tag
 
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.tag.Tag
-//import org.gnk.tag.TagFamily
 
 class TagXMLReaderService {
 
