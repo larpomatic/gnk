@@ -54,6 +54,29 @@
 <div class="panel-heading" style="margin-top: 20px">
     <g:message code="roletoperso.character"
                default="Character"/> ${character.DTDId}
+    <div class="pull-right" style="margin-top: -5px">
+    <g:if test="${((Character) character).getGender() == 'M'}">
+        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn active">Homme</button>
+                <button type="button" class="btn">Neutre</button>
+                <button type="button" class="btn">Femme</button>
+        </div>
+    </g:if>
+    <g:elseif test="${((Character) character).getGender() == 'F'}">
+        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn">Homme</button>
+                <button type="button" class="btn">Neutre</button>
+                <button type="button" class="btn active">Femme</button>
+        </div>
+    </g:elseif>
+    <g:else>
+        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn">Homme</button>
+                <button type="button" class="btn active">Neutre</button>
+                <button type="button" class="btn">Femme</button>
+        </div>
+    </g:else>
+    </div>
 </div>
 
 <div style="overflow: auto; max-height:150px;">
@@ -440,11 +463,34 @@
                             <tr id="${"line" + ((Character) PHJ).getDTDId()}">
                                 <td>CHAR-${((Character) PHJ).getDTDId()}</td>
                                 <td>"Test"</td>
-                                <td>${((Character) PHJ).getGender()}</td>
-                                <td>
-                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn fusion_modale" data-toggle="modal">
+                                <td style="text-align: center">
+                                    <g:if test="${((Character) PHJ).getGender() == 'M'}">
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                                <button type="button" class="btn btn-primary active">Homme</button>
+                                                <button type="button" class="btn btn-primary">Neutre</button>
+                                                <button type="button" class="btn btn-primary">Femme</button>
+                                        </div>
+                                    </g:if>
+                                    <g:elseif test="${((Character) PHJ).getGender() == 'F'}">
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                                <button type="button" class="btn btn-primary">Homme</button>
+                                                <button type="button" class="btn btn-primary">Neutre</button>
+                                                <button type="button" class="btn btn-primary active">Femme</button>
+                                        </div>
+                                    </g:elseif>
+                                    <g:else>
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                                <button type="button" class="btn btn-primary">Homme</button>
+                                                <button type="button" class="btn btn-primary active">Neutre</button>
+                                                <button type="button" class="btn btn-primary">Femme</button>
+                                        </div>
+                                    </g:else>
+                                </td>
+                                <td style="text-align: center">
+                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn btn-primary fusion_modale" data-toggle="modal">
                                         <g:message code="roletoperso.fusion" default="Merge"></g:message>
                                     </a>
+                                </td>
                             </tr>
                         </g:if>
                     </g:each>
@@ -524,6 +570,12 @@
 </g:form>
 
 <g:form method="post" controller="substitution">
+    <g:each in="${characterList}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
+    <g:each in="${PHJList}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <div class="form-actions">
         <g:actionSubmit class="btn btn-primary" action="index"
@@ -547,6 +599,11 @@
         });
         $(option_name).addClass("hidden");
         $("#merge").attr("data-id", $(this).attr("data-id"));
+    });
+
+    $(".radio_sexe .btn").click(function() {
+        var name = "#sexe_" + $(this).parent(".radio_sexe").data("id");
+        $(name).val("" + $(this).parent(".radio_sexe").data("id") + "-" + $(this).text());
     });
 
     $("#merge").click(function() {

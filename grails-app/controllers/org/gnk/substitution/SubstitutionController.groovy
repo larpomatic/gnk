@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.gn.Gn
+import org.gnk.roletoperso.Character;
 import org.gnk.parser.gn.GnXMLWriterService
 
 class SubstitutionController {
@@ -14,7 +15,7 @@ class SubstitutionController {
     def index() {
         InputHandler inputHandler = new InputHandler()
         final gnIdStr = params.gnId
-
+        
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
@@ -23,9 +24,11 @@ class SubstitutionController {
         }
         else {
             Integer gnDbId = gnIdStr as Integer;
-
+            List<String> sexes = params.sexe;
+            //Gn gn = changeCharSex(gnDbId, sexes);
             Gn gn = Gn.get(gnDbId)
-            inputHandler.parseGN(gn)
+            //gn = changeCharSex(gn, sexes);
+            inputHandler.parseGN(gn, sexes);
 
             /*render(text: gn.getDtd(), contentType: "text/xml", encoding: "UTF-8")
             return*/
@@ -38,6 +41,39 @@ class SubstitutionController {
         pastsceneList : inputHandler.pastsceneList,
         eventList : inputHandler.eventList]
     }
+
+    /*private void changeCharSex(Gn gn, List<String> sexes)
+    {
+        //Gn gn = Gn.get(gnId);
+        //assert (gn != null)
+        //final gnData = new GNKDataContainerService()
+        //gnData.ReadDTD(gn)
+
+        for (Character c in gn.getterNonPlayerCharSet())
+        {
+            String sex = sexes.find {it.toString().startsWith(c.getDTDId() + "-")};
+            if ((sex != null) && (sex != "false") && (sex  != "") && (sex != "NO"))
+            {
+                switch (sex.split("-")[1])
+                {
+                    case "Homme":
+                        c.setGender("M");
+                        break;
+                    case "Femme":
+                        c.setGender("F");
+                        break;
+                    case "Neutre":
+                        c.setGender("N");
+                        break;
+                }
+            }
+        }
+        //GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        //gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        //gn.save();
+        //return gn;
+        return input;
+    }*/
 
     def getSubCharacters() {
         JSONObject charJSONObject = request.JSON

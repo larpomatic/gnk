@@ -28,12 +28,49 @@ class InputHandler {
         createData(gnInst)
     }
 
-    public void parseGN(Gn gn) {
+    public void parseGN(Gn gn, List<String> sexes) {
         // Reader
         GNKDataContainerService gnkDataContainerService = new GNKDataContainerService()
         gnkDataContainerService.ReadDTD(gn)
         Gn gnInst = gnkDataContainerService.gn
+        changeCharSex(gn, sexes)
         createData(gnInst)
+    }
+
+    private void changeCharSex(Gn gn, List<String> sexes)
+    {
+        for (org.gnk.roletoperso.Character c in gn.getterCharacterSet()) {
+            String sex = sexes.find { it.toString().startsWith(c.getDTDId() + "-") };
+            if ((sex != null) && (sex != "false") && (sex != "") && (sex != "NO")) {
+                switch (sex.split("-")[1]) {
+                    case "Homme":
+                        c.setGender("M");
+                        break;
+                    case "Femme":
+                        c.setGender("F");
+                        break;
+                    case "Neutre":
+                        c.setGender("N");
+                        break;
+                }
+            }
+        }
+        for (org.gnk.roletoperso.Character c in gn.getNonPlayerCharSet()) {
+            String sex = sexes.find { it.toString().startsWith(c.getDTDId() + "-") };
+            if ((sex != null) && (sex != "false") && (sex != "") && (sex != "NO")) {
+                switch (sex.split("-")[1]) {
+                    case "Homme":
+                        c.setGender("M");
+                        break;
+                    case "Femme":
+                        c.setGender("F");
+                        break;
+                    case "Neutre":
+                        c.setGender("N");
+                        break;
+                }
+            }
+        }
     }
 
     private createData(Gn gnInst) {
