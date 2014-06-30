@@ -1,7 +1,5 @@
 package org.gnk.tag
 
-import java.util.List
-
 class TagService {
 
     public static final int LOCKED = 101;
@@ -10,13 +8,14 @@ class TagService {
     def serviceMethod() {
     }
 
-    def findChildren(Tag t)
-    {
-        def tags = Tag.findAllByParentId(t.id)
-        def tagsTmp = tags
-        for (Tag tag: tagsTmp)
+    def findChildren(Tag t) {
+        def tags = Tag.findAllWhere(id: t.id)
+        if (tags != null)
         {
-            tags.addAll(findChildren(tag))
+            def tagsTmp = tags
+            for (Tag tag : tagsTmp) {
+                tags.addAll(findChildren(tag))
+            }
         }
         return tags
     }
@@ -31,7 +30,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                result.addAll(findChildren(t));
+                result.addAll(findChildren(t.tag));
             }
         }
 
@@ -48,7 +47,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                result.addAll(findChildren(t));
+                result.addAll(findChildren(t.tag));
             }
         }
 
@@ -65,7 +64,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                result.addAll(findChildren(t));
+                result.addAll(findChildren(t.tag));
             }
         }
 
@@ -82,7 +81,7 @@ class TagService {
         {
             if (t.tagId != null)
             {
-                result.addAll(findChildren(t));
+                result.addAll(findChildren(t.tag));
             }
         }
         return result

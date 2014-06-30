@@ -25,8 +25,8 @@ import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.roletoperso.RoleRelationType
 import org.gnk.tag.Tag
+import org.gnk.tag.Univers
 import org.gnk.user.User
-
 import java.text.SimpleDateFormat
 
 /**

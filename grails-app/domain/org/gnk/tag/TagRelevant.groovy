@@ -16,11 +16,6 @@ class TagRelevant {
     static constraints = {
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     static mapping = {
         id type: 'integer'
         version type: 'integer'
