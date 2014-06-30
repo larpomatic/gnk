@@ -28,9 +28,31 @@ class PublicationController {
     private Gn gn
     private SubstitutionPublication substitutionPublication
 
-    def index() {}
+    def index() {
+        def id = params.gnId as Integer
+        Gn getGn = null
+        if (!id.equals(null))
+            getGn = Gn.get(id)
+        if (getGn.equals(null))
+        {
+            print "Error : GN not found"
+            return
+        }
+        gnk = new GNKDataContainerService()
+        gnk.ReadDTD(getGn.dtd)
+        gn = gnk.gn
 
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if( !folder.exists() ) {
+            folder.mkdirs()
+        }
 
+        return collectPublicationInfo()
+
+//        String a = "coucfgpdfijfihfegeiljou"
+//        [coucouTest: a]
+    }
 
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
@@ -63,6 +85,27 @@ class PublicationController {
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
         response.outputStream << output.newInputStream()
+    }
+
+    public collectPublicationInfo()
+    {
+        ArrayList<String> pitchOrgaList = new ArrayList<String>()
+        for (Plot p : gn.selectedPlotSet)
+            if (p.pitchOrga != null)
+            {
+                pitchOrgaList.add(p.name)
+                pitchOrgaList.add(p.pitchOrga)
+            }
+
+        [title : gn.name,
+        subtitle : createSubTile(),
+        GNinfo1 : "Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".",
+        GNinfo2 : "Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.",
+        msgCharacters : PitchOrgaMsgCharacters(),
+        pitchOrgaList : pitchOrgaList,
+        charactersList : createPlayersList(),
+
+        ]
     }
 
     // Méthode principale de la génération des documents
@@ -289,6 +332,60 @@ class PublicationController {
         wordWriter.addBorders(table)
 
         wordWriter.addObject(table);
+    }
+
+    def createPlayersList()
+    {
+        ArrayList<Character> resLChar = new ArrayList<Character>()
+        HashSet<Character> lchar = new HashSet<Character>()
+        for (Character c : gn.characterSet)
+            lchar.add(c.lastname + c.firstname)
+        def listPJ = lchar.toList().sort()
+
+        //affichage des PJ dans l'ordre aplhabétique (Nom puis prénom)
+        for (String cname : listPJ)
+            for (Character c : gn.characterSet)
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    resLChar.add(c)
+                    break;
+                }
+        //affichage des PNJ dans l'ordre aplhabétique (Nom puis prénom)
+        lchar = new HashSet<Character>()
+        for (Character c : gn.nonPlayerCharSet)
+        {
+            if (c.isPNJ())
+                lchar.add(c.lastname + c.firstname)
+        }
+        def listPNJ = lchar.toList().sort()
+        for (String cname : listPNJ)
+            for (Character c : gn.nonPlayerCharSet)
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    resLChar.add(c)
+                    break;
+                }
+
+        //affichage des PHJ dans l'ordre aplhabétique (Nom puis prénom)
+        lchar = new HashSet<Character>()
+        for (Character c : gn.nonPlayerCharSet)
+        {
+            if (c.isPHJ())
+                lchar.add(c.lastname + c.firstname)
+        }
+        def listPHJ = lchar.toList().sort()
+        for (String cname : listPHJ)
+        {
+            for (Character c : gn.nonPlayerCharSet)
+            {
+                if ((c.lastname+c.firstname) == cname)
+                {
+                    resLChar.add(c)
+                    break;
+                }
+            }
+        }
+        return resLChar
     }
 
     // Création du tableau de la synthèse des lieux du GN
@@ -615,6 +712,22 @@ class PublicationController {
         wordWriter.addParagraphOfText("Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.")
 
         // Comptage PJ
+        String msgCharacters = PitchOrgaMsgCharacters()
+        wordWriter.addParagraphOfText(msgCharacters)
+
+        for (Plot p : gn.selectedPlotSet)
+            if (p.pitchOrga != null)
+            {
+                wordWriter.addStyledParagraphOfText("T3", p.name)
+                wordWriter.addParagraphOfText(p.pitchOrga)
+            }
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table);
+    }
+
+    // Fonction renvoyant un message sur le nombre des personnages dans le pitch orga
+    def PitchOrgaMsgCharacters()
+    {
         int NbPJ = gn.characterSet.size()
         String msgCharacters = "Ce GN accueille "+ NbPJ +" Personnage"+((NbPJ > 1)?"s":"")+" Joueur"+((NbPJ > 1)?"s":"")+" (PJ dont "
         String tmpGender = ""
@@ -689,32 +802,7 @@ class PublicationController {
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). (dans ce document, le timing a été calculé pour un jeu commençant à "
         msgCharacters += gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
-
-        wordWriter.addParagraphOfText(msgCharacters)
-
-
-
-
-//        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-//        wordWriter.addTableCell(tableRow, "Pitch Orga")
-
-//        table.getContent().add(tableRow);
-
-        for (Plot p : gn.selectedPlotSet)
-        {
-            if (p.pitchOrga != null)
-            {
-//                Tr tableRowPlot = wordWriter.factory.createTr()
-                wordWriter.addStyledParagraphOfText("T3", p.name)
-//                wordWriter.addTableCell(tableRowPlot, p.name)
-                wordWriter.addParagraphOfText(p.pitchOrga)
-//                wordWriter.addTableCell(tableRowPlot, p.pitchOrga)
-//                table.getContent().add(tableRowPlot);
-            }
-
-        }
-        wordWriter.addBorders(table)
-        wordWriter.addObject(table);
+        return msgCharacters
     }
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga

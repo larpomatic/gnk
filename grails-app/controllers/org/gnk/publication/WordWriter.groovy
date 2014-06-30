@@ -31,6 +31,9 @@ class WordWriter {
     public def mainPart
     public boolean defaultTemplate
 
+    public String title
+    public String subtitle
+
     public WordWriter(String universName) {
         defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
