@@ -5,6 +5,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
 
@@ -17,14 +18,8 @@ class Plot {
     Date dateCreated
     private static List<Tag> tagList
     public static List getTagList() {
-        tagList = new ArrayList<Tag>()
-        for(Tag tag : Tag.list())
-        {
-            if (tag.tagFamily.relevantPlot)
-                tagList.add(tag)
-        }
 
-        return tagList
+        return TagService.getPlotTagQuery()
     }
 
 
