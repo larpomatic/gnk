@@ -31,7 +31,7 @@ class PlotXMLReaderService {
         Plot plotRes = ReadPlotRootNode(PLOT, dataContainer)
 
         plotRes.version = dataContainer.gn.version
-        plotRes.isDraft = true
+        plotRes.isDraft = false;
 
         // DESCRIPTION reader
         if (PLOT.DESCRIPTION.size() > 0) {
@@ -89,11 +89,11 @@ class PlotXMLReaderService {
         if (PLOT.attribute("id") != "null" && (PLOT.attribute("id") as String).isInteger())
             plotRes.DTDId = PLOT.attribute("id") as Integer
         if (PLOT.attribute("is_evenemential") != "null")
-            plotRes.isEvenemential = PLOT.attribute("is_evenemential") as Boolean
+            plotRes.isEvenemential = PLOT.attribute("is_evenemential").equals("false") ? false : true
         if (PLOT.attribute("is_mainstream") != "null")
-            plotRes.isMainstream = PLOT.attribute("is_mainstream") as Boolean
+            plotRes.isMainstream  = PLOT.attribute("is_mainstream").equals("false") ? false : true
         if (PLOT.attribute("is_public") != "null")
-            plotRes.isPublic = PLOT.attribute("is_public") as Boolean
+            plotRes.isPublic  = PLOT.attribute("is_public").equals("false") ? false : true
         if (PLOT.attribute("author") != "null")
             plotRes.user = User.findWhere(id: PLOT.attribute("author") as Integer)
         if (PLOT.attribute("creation_date") != "null")

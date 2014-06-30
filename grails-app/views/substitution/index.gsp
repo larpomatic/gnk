@@ -9,6 +9,14 @@
 <body>
 <h1>Substitution</h1>
 
+<g:form method="post" controller="publication">
+    <g:hiddenField name="gnId" value="${gnId}"/>
+    <div class="form-actions">
+        <g:actionSubmit class="btn btn-primary" action="index"
+                        value="${message(code: 'navbar.publication', default: 'Publication')}"/>
+    </div>
+</g:form>
+
 <g:render template="gnInformation" />
 
 <div class="row-fluid">

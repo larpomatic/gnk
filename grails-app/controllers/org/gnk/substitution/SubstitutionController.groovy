@@ -36,7 +36,8 @@ class SubstitutionController {
         resourceList : inputHandler.resourceList,
         placeList : inputHandler.placeList,
         pastsceneList : inputHandler.pastsceneList,
-        eventList : inputHandler.eventList]
+        eventList : inputHandler.eventList,
+        gnId : gnIdStr]
     }
 
     def getSubCharacters() {

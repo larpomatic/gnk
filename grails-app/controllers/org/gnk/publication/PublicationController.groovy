@@ -19,6 +19,9 @@ import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -100,7 +103,7 @@ class PublicationController {
         [title : gn.name,
         subtitle : createSubTile(),
         GNinfo1 : "Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".",
-        GNinfo2 : "Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.",
+        GNinfo2 : "Il débute à " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.",
         msgCharacters : PitchOrgaMsgCharacters(),
         pitchOrgaList : pitchOrgaList,
         charactersList : createPlayersList(),
@@ -484,7 +487,7 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Intrigue concernée")
         wordWriter.addTableCell(tableRow, "Lieu")
         wordWriter.addTableCell(tableRow, "Description")
-        wordWriter.addTableCell(tableRow, "Personnages présents")
+        wordWriter.addTableCell(tableRow, "Personnages et objets présents")
 
         table.getContent().add(tableRow);
 
@@ -579,6 +582,7 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
+            wordWriter.addParagraphOfText("Age du personnage : " + c.getCharacterAproximateAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
@@ -709,7 +713,7 @@ class PublicationController {
 
         // HDU-MEF5
         wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".")
-        wordWriter.addParagraphOfText("Il débute à " + getPrintableDate(gn.t0Date)  +" et dure " + gn.duration.toString() + " heures.")
+        wordWriter.addParagraphOfText("Il débute le " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.")
 
         // Comptage PJ
         String msgCharacters = PitchOrgaMsgCharacters()
@@ -801,7 +805,7 @@ class PublicationController {
             }
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). (dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+        msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
         return msgCharacters
     }
 
@@ -885,11 +889,11 @@ class PublicationController {
             String tags = ""
             if (p.isEvenemential)
                 tags += "Evènementiel"
-            if (p.isEvenemential.and(p.isMainstream))
+            if (p.isEvenemential && p.isMainstream)
                 tags += " - "
             if (p.isMainstream)
                 tags += "Mainstream"
-            if (p.isEvenemential.or(p.isMainstream))
+            if (p.isEvenemential || p.isMainstream)
                 tags += " : "
             boolean first = true
             for (PlotHasTag plotHasTag : p.extTags)
@@ -1362,11 +1366,18 @@ class PublicationController {
         return returnedSet
     }
 
+
+    // TODO : Cdate instable : A corriger
     private String getPrintableDate(Date date)
     {
-        if (date != null && date.cdate != null)
-            return date.cdate.hours+"h"+(date.cdate.minutes > 10 ? date.cdate.minutes:"0"+date.cdate.minutes)+" le "+(date.cdate.dayOfMonth > 10 ? date.cdate.dayOfMonth:"0"+date.cdate.dayOfMonth)+"/"+(date.cdate.month > 10 ? date.cdate.month:"0"+date.cdate.month)+"/"+date.cdate.year
-        else
-            return date.hours+"h"+(date.minutes > 10 ? date.minutes:"0"+date.minutes)+" le "+(date.day > 10 ? date.day:"0"+date.day)+"/"+(date.month > 10 ? date.month:"0"+date.month)+"/"+((date.year < 2000)?(date.year+1900).toString():date.year.toString())
+        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
+                        DateFormat.MEDIUM,
+                        DateFormat.SHORT);
+        return shortDateFormat.format(date)
+//        if (date != null && date.cdate != null)
+//            return date.cdate.hours+"h"+(date.cdate.minutes > 10 ? date.cdate.minutes:"0"+date.cdate.minutes)+" le "+(date.cdate.dayOfMonth > 10 ? date.cdate.dayOfMonth:"0"+date.cdate.dayOfMonth)+"/"+(date.cdate.month > 10 ? date.cdate.month:"0"+date.cdate.month)+"/"+date.cdate.year
+//        else
+//            return date.sho()
+            // return date.hours+"h"+(date.minutes > 10 ? date.minutes:"0"+date.minutes)+" le "+(date.day > 10 ? date.day:"0"+date.day)+"/"+(date.month > 10 ? date.month:"0"+date.month)+"/"+((date.year < 2000)?(date.year+1900).toString():date.year.toString())
     }
 }

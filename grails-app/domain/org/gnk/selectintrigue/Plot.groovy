@@ -36,9 +36,9 @@ class Plot {
     String pitchPnj
 
 	Boolean isEvenemential
-	Boolean isMainstream
-	Boolean isPublic
-	Boolean isDraft
+    Boolean isMainstream
+    Boolean isPublic
+    Boolean isDraft
 	Date creationDate
 	Date updatedDate
 	String description

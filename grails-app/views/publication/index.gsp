@@ -34,7 +34,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         <TH> Type </TH>
         <TH> Sexe </TH>
         <TH> Age </TH>
-        <TH> Role(s) </TH>
         <TH> Indication(s) personnage </TH>
     </TR>
     <g:each in="${charactersList}" var="c">
@@ -44,7 +43,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             <TD> ${c.type} </TD>
             <TD> ${c.gender} </TD>
             <TD> ${c.getCharacterAproximateAge()} </TD>
-            <TD> ${} </TD>
             <TD> ${} </TD>
         </TR>
     </g:each>
