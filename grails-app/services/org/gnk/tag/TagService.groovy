@@ -42,6 +42,7 @@ class TagService {
      * @return the matching score between the challenger object and the reference object ; Integer.MIN_VALUE if the challenger object break a ban if put with reference object
      * @see org.gnk.roletoperso.RoleToPersoProcessing().getRoleRank()
      */
+
     public int getTagsMatching(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
         Integer rankTag = 0;
         if (challengerTagList != null) {
@@ -144,5 +145,21 @@ class TagService {
             }
         }
         return rankTag;
+    }
+
+    public int getTagMatching(Tag t1, int w1, Tag t2, int w2) {
+        Integer score = 0;
+        if (t1 == t2)
+            return 100;
+        else {
+            TagRelation tagRelation1 = TagRelation.myFindWhere(t1, t2);
+            TagRelation tagRelation2 = TagRelation.myFindWhere(t2, t1);
+            TagRelation tagRelation = tagRelation1 == null ? tagRelation2 : tagRelation1;
+
+            if (tagRelation == null)
+                return 0;
+            else
+                return tagRelation.weight;
+        }
     }
 }

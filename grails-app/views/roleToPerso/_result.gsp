@@ -487,6 +487,35 @@
     </div>
 </div>
 
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Character</th>
+        <th>Tag1 - ID</th>
+        <th>Tag1 - Name</th>
+        <th>Tag1 - Value</th>
+        <th>Tag2 - ID</th>
+        <th>Tag2 - Name</th>
+        <th>Tag2 - Value</th>
+        <th>Compatibility</th>
+    </tr>
+    </thead>
+    <tbody>
+    <g:each in="${tagcompatibility}" var="string">
+        <tr>
+            <td>CHAR-${((String)string).split("#")[0]}</td>
+            <td>${((String)string).split("#")[1]}</td>
+            <td>${((String)string).split("#")[2]}</td>
+            <td>${((String)string).split("#")[3]}</td>
+            <td>${((String)string).split("#")[4]}</td>
+            <td>${((String)string).split("#")[5]}</td>
+            <td>${((String)string).split("#")[6]}</td>
+            <td>${((String)string).split("#")[7]}</td>
+        </tr>
+    </g:each>
+    </tbody>
+</table>
+
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
 
