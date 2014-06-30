@@ -344,32 +344,45 @@ class Character {
     }
 
     public int getCharacterAproximateAge() {
-        int sum = 0;
-        int number = 0;
-        println("name === " +firstname + " " + getDTDId());
+        int sum = 0
+        int number = 0
+        int finalAge = 0
+        println("name === " +firstname + " " + getDTDId())
         tags.each { tag ->
             if (tag.key.tagFamily.id == 3) { // Age
                 number += 1
-               println("age :" + tag.key.name + "(" + tag.value)
+                println("age :" + tag.key.name + "(" + tag.value)
                 sum += getAgeForTagAge(tag.key, tag.value)
             }
         }
-        for (Role role : selectedRoles) {
-            for (RoleHasRelationWithRole roleHasRelation : role.getRoleHasRelationWithRolesForRole1Id()) {
-                roleHasRelation.getterRole2().DTDId
-            }
-        }
-
-        getRelationsExceptBijectives().each { related ->
-            println(firstname + " -> (" +related.key.getterRole1().DTDId+ "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
-        }
         if (number == 0) {
-            return 40
+            finalAge = 40
         } else {
             println("FINAL AGE: " +(sum/number))
-            return sum / number
+            finalAge = sum / number
         }
+
+
+
+        int minage = 0
+        getRelationsExceptBijectives().each { related ->
+            if (related.key.roleRelationType.id == 21)
+            minage = 20
+            println(firstname + " -> (" + related.key.getterRole1().DTDId + "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
+        }
+
+        if (minage != 0)
+            finalAge = minage
+
+        //Fun
+        finalAge += (((new Random()).nextInt() % 7))
+        if (finalAge < 0)
+            finalAge = 0
+        println("FINAL AGE2: " +finalAge)
+
+        return finalAge;
     }
+
 
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0
@@ -398,6 +411,7 @@ class Character {
                 age = (100 - age)
             }
         }
+
         return age
     }
 }
