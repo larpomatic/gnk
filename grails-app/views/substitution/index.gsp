@@ -12,7 +12,7 @@
 <g:form method="post" controller="publication">
     <g:hiddenField name="gnId" value="${gnId}"/>
     <div class="form-actions">
-        <g:actionSubmit class="btn btn-primary" action="index"
+        <g:actionSubmit id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index"
                         value="${message(code: 'navbar.publication', default: 'Publication')}"/>
     </div>
 </g:form>
@@ -21,21 +21,6 @@
 
 <div class="row-fluid">
     <div class="span4"><h3 class="cap">Formulaire de Substitution</h3></div>
-    <div class="span2"><a id="validateSubButton" class="btn"><i class="icon-ok-sign"></i> VALIDER</a></div>
-    <div class="span3">
-    <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publicationCSV')}" method="POST">
-        <input type="hidden" value="${gnInfo.dbId}" name="gnId"/>
-        <input type="hidden" value="personnage" name="csvType" />
-        <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER PERSONNAGE.CSV</button>
-    </form>
-    </div>
-    <div class="span3">
-    <form id="exportJoueurCSVSubButton" action="${g.createLink(controller:'publication', action:'publicationCSV')}" method="POST">
-        <input type="hidden" value="${gnInfo.dbId}" name="gnId"/>
-        <input type="hidden" value="joueur" name="csvType" />
-        <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> EXPORTER JOUEUR.CSV</button>
-    </form>
-    </div>
 </div>
 
 <div id="subAlertContainer">
@@ -67,67 +52,39 @@
 <g:javascript src="substitution/sub.js" />
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // Export CSV
-        $("#exportPersoCSVSubButton").submit(function(){
-            //return true;
-            var isCharsReady = prepareCharsJSONForValidation(charsJSON);
-            var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
-            var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
-            var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
-                return true;
-            } else {
-                addAlert("subAlertContainer", "alert alert-error", "Erreur",
-                        "La substitution doit être complète pour être validée.");
-                return false;
-            }
-        });
-        $("#exportJoueurCSVSubButton").submit(function(){
+    function publicationAccess()
+    {
 
-            var isCharsReady = prepareCharsJSONForValidation(charsJSON);
-            var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
-            var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
-            var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
-                return true;
-            } else {
-                addAlert("subAlertContainer", "alert alert-error", "Erreur",
-                        "La substitution doit être complète pour être validée.");
-                return false;
-            }
-        });
+        var isCharsReady = prepareCharsJSONForValidation(charsJSON);
+        var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
+        var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
+        var isDatesReady = prepareDatesJSONForValidation(datesJSON);
+        if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady)
+        {
+            var subJSON = new Object();
+            subJSON.gnDbId = ${gnInfo.dbId};
+            subJSON.subCharacter = charsJSON.characters;
+            subJSON.subResource = resourcesJSON.resources;
+            subJSON.subPlace = placesJSON.places;
+            subJSON.subDate = datesJSON;
 
-        // Validate substitution
-        $("#validateSubButton").click( function(){
-            var isCharsReady = prepareCharsJSONForValidation(charsJSON);
-            var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
-            var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
-            var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
-                // SubJSON construction
-                var subJSON = new Object();
-                subJSON.gnDbId = ${gnInfo.dbId};
-                subJSON.subCharacter = charsJSON.characters;
-                subJSON.subResource = resourcesJSON.resources;
-                subJSON.subPlace = placesJSON.places;
-                subJSON.subDate = datesJSON;
-
-                // Form creation and submit
-                var form = $("<form>");
-                form.attr({method: "POST", action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"});
-                var inputJSON = $("<input>");
-                inputJSON.attr({type: "hidden", name: "subJSON", value: JSON.stringify(subJSON)});
-                form.append(inputJSON);
-                $("body").append(form);
-                form.submit();
-            }
-            else {
-                addAlert("subAlertContainer", "alert alert-error", "Erreur",
-                        "La substitution doit être complète pour être validée.")
-            }
-        });
-    });
+            // Form creation and submit
+            var form = $("<form>");
+            form.attr({method: "POST", action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"});
+            var inputJSON = $("<input>");
+            inputJSON.attr({type: "hidden", name: "subJSON", value: JSON.stringify(subJSON)});
+            form.append(inputJSON);
+            $("body").append(form);
+            form.submit();
+            return true
+        }
+        else
+        {
+            addAlert("subAlertContainer", "alert alert-error", "Erreur",
+                    "La substitution doit être complète pour être validée.")
+            return false
+        }
+    }
 </script>
 
 </body>

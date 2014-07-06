@@ -124,7 +124,7 @@ class SubstitutionController {
             }
 
             // Go to publication
-            redirect(controller: "publication", action: "publication", params: [gnId: gnDbId])
+            redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
     }

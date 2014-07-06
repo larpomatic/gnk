@@ -20,8 +20,6 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
 import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -51,7 +49,7 @@ class PublicationController {
             folder.mkdirs()
         }
 
-        return collectPublicationInfo()
+        return collectPublicationInfo(id)
 
 //        String a = "coucfgpdfijfihfegeiljou"
 //        [coucouTest: a]
@@ -90,7 +88,7 @@ class PublicationController {
         response.outputStream << output.newInputStream()
     }
 
-    public collectPublicationInfo()
+    public collectPublicationInfo(def id)
     {
         ArrayList<String> pitchOrgaList = new ArrayList<String>()
         for (Plot p : gn.selectedPlotSet)
@@ -100,14 +98,29 @@ class PublicationController {
                 pitchOrgaList.add(p.pitchOrga)
             }
 
-        [title : gn.name,
-        subtitle : createSubTile(),
-        GNinfo1 : "Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".",
-        GNinfo2 : "Il débute à " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.",
-        msgCharacters : PitchOrgaMsgCharacters(),
-        pitchOrgaList : pitchOrgaList,
-        charactersList : createPlayersList(),
-
+        ArrayList<String> templateWordList = new ArrayList<String>()
+        templateWordList.add("Working Directory = " + System.getProperty("user.dir"))
+//        File folder = new File();
+//        File[] listOfFiles = folder.listFiles();
+//
+//        for (int i = 0; i < listOfFiles.length; i++) {
+//            if (listOfFiles[i].isFile()) {
+//                System.out.println("File " + listOfFiles[i].getName());
+//            } else if (listOfFiles[i].isDirectory()) {
+//                System.out.println("Directory " + listOfFiles[i].getName());
+//            }
+//        }
+        [
+            title : gn.name,
+            subtitle : createSubTile(),
+            GNinfo1 : "Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".",
+            GNinfo2 : "Il débute à " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.",
+            msgCharacters : PitchOrgaMsgCharacters(),
+            pitchOrgaList : pitchOrgaList,
+            charactersList : createPlayersList(),
+            gnId : id,
+            universName : gn.univers.name,
+            templateWordList : templateWordList
         ]
     }
 
@@ -804,7 +817,7 @@ class PublicationController {
                     nbNoGender++;
             }
         }
-        msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). (dans ce document, le timing a été calculé pour un jeu commençant à "
+        msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
         msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
         return msgCharacters
     }
