@@ -19,7 +19,7 @@ $(function(){
         e.stopPropagation();
     });
 
-    //permet d'ajouter rapidement un objet, lieu ou role
+    //permet d'ajouter rapidement une ressource, lieu ou role
     $(".leftMenuList input, .inputOther").keypress(function(e) {
         if(e.which == 13) {
             var entity = $(this).attr("data-entity");
@@ -34,9 +34,18 @@ $(function(){
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
     $('.savePlotForm').submit(function() {
-        var description = $('.richTextEditor', this).html();
+        var description = $('#plotRichTextEditor', this).html();
         description = transformDescription(description);
         $('.descriptionContent', this).val(description);
+        var pitchOrga = $('#plotRichTextEditorPitchOrga', this).html();
+        pitchOrga = transformDescription(pitchOrga);
+        $('.pitchOrgaContent', this).val(pitchOrga);
+        var pitchPj = $('#plotRichTextEditorPitchPj', this).html();
+        pitchPj = transformDescription(pitchPj);
+        $('.pitchPjContent', this).val(pitchPj);
+        var pitchPnj = $('#plotRichTextEditorPitchPnj', this).html();
+        pitchPnj = transformDescription(pitchPnj);
+        $('.pitchPnjContent', this).val(pitchPnj);
     });
 
     // mode plein ecran
@@ -54,8 +63,10 @@ function initSearchBoxes() {
             $('.' + content + ' li').show();
         }
         else {
-            $('.' + content + ' li').hide();
-            $('.' + content + ' li[data-name*="'+value+'"]').show();
+            $("." + content + " li").hide();
+            var children = $('.' + content + ' li[data-name*="'+value+'"]');
+            children.show();
+            children.parents("*").show();
         }
     });
 }

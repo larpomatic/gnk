@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div id="resourceTagsModal_{{ genericResource.id }}" class="modal hide fade" tabindex="-1">
+        <div id="resourceTagsModal_{{ genericResource.id }}" class="modal hide fade tags-modal" tabindex="-1">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="myModalLabel{{ genericResource.id }}">Tags</h3>
@@ -74,14 +74,40 @@
 
             <div class="modal-body">
                 <ul class="resourceTags{{ genericResource.id }}">
-                {{#each genericResourceTagList}}
-                    <li class="modalLi" data-name="{{toLowerCase name }}">
-                        <label>
-                            <input type="checkbox" name="resourceTags_{{ id }}" id="resourceTags_{{ id }}"/>
-                            {{ name }}
-                        </label>
-                    </li>
-                {{/each}}
+                <!--{{#each genericResourceTagList}}-->
+                    <!--<li class="modalLi" data-name="{{toLowerCase name }}">-->
+                        <!--<label>-->
+                            <!--<input type="checkbox" name="resourceTags_{{ id }}" id="resourceTags_{{ id }}"/>-->
+                            <!--{{ name }}-->
+                        <!--</label>-->
+                    <!--</li>-->
+                <!--{{/each}}-->
+                    {{#recursive genericResourceTagList}}
+                        <li class="modalLi row" data-name="{{toLowerCase name }}">
+                            <label class="pull-left">
+                                <input type="checkbox" name="resourceTags_{{ id }}" id="resourceTags{{ ../genericResource.id }}_{{ id }}"
+                                       onClick="hideTags('resourceTags{{ ../genericResource.id }}_{{ id }}', 'resourceTagsWeight{{ ../genericResource.id }}_{{ id }}')"/>
+                                {{ name }}
+                            </label>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>
+                            </div>
+                            <div class="pull-right tagWeight">
+                                <input name="resourceTagsWeight_{{ id }}" value="50" type="number" max="101" class="tagWeightInput"
+                                       min="-101" style="width:45px;" id="resourceTagsWeight{{ ../genericResource.id }}_{{ id }}">
+                            </div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-success chooseTag"><i class="icon-ok"></i></button>
+                            </div>
+                        </li>
+                        {{#if children}}
+                            <li class="modalLi">
+                                <ul>
+                                    {{{recursive children}}}
+                                </ul>
+                            </li>
+                        {{/if}}
+                    {{/recursive}}
                 </ul>
             </div>
 

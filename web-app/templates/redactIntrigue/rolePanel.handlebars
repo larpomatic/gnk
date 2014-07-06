@@ -51,6 +51,8 @@
                         <option value="PJ">PJ</option>
                         <option value="PNJ">PNJ</option>
                         <option value="PHJ">PHJ</option>
+                        <option value="TPJ">TPJ</option>
+                        <option value="PJG">PJG</option>
                     </select>
                 </div>
             </div>
@@ -192,7 +194,7 @@
             </div>
         </div>
 
-        <div id="roleTagsModal_{{ role.id }}" class="modal hide fade" tabindex="-1">
+        <div id="roleTagsModal_{{ role.id }}" class="modal hide fade tags-modal" tabindex="-1">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="myModalLabel{{ role.id }}">Tags</h3>
@@ -201,14 +203,32 @@
 
             <div class="modal-body">
                 <ul class="roleTags{{ role.id }}">
-                {{#each roleTagList}}
-                    <li class="modalLi" data-name="{{toLowerCase name }}">
-                        <label>
-                            <input type="checkbox" name="roleTags_{{ id }}" id="roleTags_{{ id }}"/>
+                {{#recursive roleTagList}}
+                    <li class="modalLi row" data-name="{{toLowerCase name }}">
+                        <label class="pull-left">
+                            <input type="checkbox" name="roleTags_{{ id }}" id="roleTags{{ ../role.id }}_{{ id }}"
+                                   onClick="hideTags('roleTags{{ ../role.id }}_{{ id }}', 'roleTagsWeight{{ ../role.id }}_{{ id }}')"/>
                             {{ name }}
                         </label>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>
+                        </div>
+                        <div class="pull-right tagWeight">
+                            <input name="roleTagsWeight_{{ id }}" value="50" type="number" max="101" class="tagWeightInput"
+                                   min="-101" style="width:45px;" id="roleTagsWeight{{ ../role.id }}_{{ id }}">
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success chooseTag"><i class="icon-ok"></i></button>
+                        </div>
                     </li>
-                {{/each}}
+                    {{#if children}}
+                        <li class="modalLi">
+                            <ul>
+                                {{{recursive children}}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                {{/recursive}}
                 </ul>
             </div>
 

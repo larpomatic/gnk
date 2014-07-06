@@ -30,7 +30,7 @@ class GenericResourceController {
         genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
-        def jsonGenericResource = buildJson(genericResource, resourceTagList);
+        def jsonGenericResource = buildJson(genericResource);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("genericResource", jsonGenericResource);
@@ -46,22 +46,27 @@ class GenericResourceController {
             JSONObject jsonTag = new JSONObject();
             jsonTag.put("id", genericResourceTag.getId());
             jsonTag.put("name", genericResourceTag.getName());
+            if (genericResourceTag.children && genericResourceTag.children.size() != 0) {
+                JSONArray jsonTagChildren = buildTagList(genericResourceTag.children);
+                jsonTag.put("children", jsonTagChildren);
+            }
             jsonTagList.add(jsonTag);
         }
         return jsonTagList;
     }
 
-    def buildJson(GenericResource genericResource, resourceTagList) {
+    def buildJson(GenericResource genericResource) {
         JSONObject jsonGenericResource = new JSONObject();
         jsonGenericResource.put("code", genericResource.getCode());
         jsonGenericResource.put("id", genericResource.getId());
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
         JSONArray jsonTagList = new JSONArray();
-        for (Tag genericResourceTag in resourceTagList) {
-            if (genericResource.hasGenericResourceTag(genericResourceTag)) {
-                jsonTagList.add(genericResourceTag.getId());
-            }
+        for (GenericResourceHasTag genericResourceHasTag in genericResource.extTags) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", genericResourceHasTag.tag.id)
+            jsonTag.put("weight", genericResourceHasTag.weight)
+            jsonTagList.add(jsonTag);
         }
         jsonGenericResource.put("tagList", jsonTagList);
         return jsonGenericResource;
@@ -111,7 +116,7 @@ class GenericResourceController {
                 GenericResourceHasTag genericResourceHasTag = new GenericResourceHasTag();
                 Tag genericResourceTag = Tag.get((it.key - "resourceTags_") as Integer);
                 genericResourceHasTag.tag = genericResourceTag
-                genericResourceHasTag.weight = TagService.LOCKED
+                genericResourceHasTag.weight = params.get("resourceTagsWeight_" + genericResourceTag.id) as Integer;
                 genericResourceHasTag.genericResource = newGenericResource
                 newGenericResource.extTags.add(genericResourceHasTag)
             }
@@ -166,28 +171,4 @@ class GenericResourceController {
             object(isdelete: isDelete)
         }
     }
-
-//    def deleteResource()
-//    {
-//        def genericResourceInstance = GenericResource.get(params.id)
-//
-//        if (!genericResourceInstance) {
-//
-//            flash.message = message(code: 'Erreur : Suppression échouée de la ressource !')
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        try {
-//            genericResourceInstance.delete(flush: true)
-//            flash.messageInfo = message(code: 'adminRef.genericResource.info.delete', args: [genericResourceInstance.code])
-//            redirect(action: "list")
-//        }
-//        catch (DataIntegrityViolationException e) {
-//            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), params.id])
-//            redirect(action: "show", id: id)
-//        }
-//
-//
-//    }
 }

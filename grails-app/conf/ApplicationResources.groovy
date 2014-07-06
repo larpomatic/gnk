@@ -17,6 +17,6 @@ modules = {
         resource url: 'templates/redactIntrigue/addEntityLiElement.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
         resource url: 'templates/redactIntrigue/addEventInRole.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
         resource url: 'templates/redactIntrigue/addPastSceneInRole.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
-        resource url:'js/application.js'
+        resource url: 'js/application.js'
     }
 }

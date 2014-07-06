@@ -36,6 +36,7 @@ class GenericPlace {
         comment type: 'text'
         id type:'integer'
         version type: 'integer'
+        extTags cascade:'all-delete-orphan'
     }
 
     public boolean hasGenericPlaceTag(Tag parGenericPlaceTag) {
@@ -45,5 +46,16 @@ class GenericPlace {
             }
         }
         return false;
+    }
+
+    public getGenericPlaceHasTag(Tag tag) {
+        List<GenericPlaceHasTag> genericPlaceHasTags = GenericPlaceHasTag.createCriteria().list {
+            like("genericPlace", this)
+            like("tag", tag)
+        }
+        if (genericPlaceHasTags.size() == 0) {
+            return null;
+        }
+        return genericPlaceHasTags.first();
     }
 }

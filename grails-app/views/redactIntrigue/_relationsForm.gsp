@@ -119,7 +119,7 @@
                                         <span><g:img dir="images/redactIntrigue/relations" file="forbidden.png" /></span>
                                     </g:else>
                                 </span>
-                                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer cette relation?"
+                                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
                                         data-url="<g:createLink controller="Relation" action="Delete" id="${relationFrom.id}"/>" data-object="relation" data-id="${relationFrom.id}">
                                     <i class="icon-remove pull-right"></i>
                                 </button>
@@ -150,7 +150,7 @@
                                             <span><g:img dir="images/redactIntrigue/relations" file="forbidden.png" /></span>
                                         </g:else>
                                     </span>
-                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer cette relation?"
+                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
                                             data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
                                         <i class="icon-remove pull-right"></i>
                                     </button>

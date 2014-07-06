@@ -1,5 +1,8 @@
 <link rel="stylesheet" href="<g:resource dir="css" file="testMenuSlide.css"/>" type="text/css">
 <section id="article27" class="crayon article-css-27 demoTime">
+    <div class="pull-right">
+        <g:message code="redactintrigue.autor" default="Autor"/> : ${plotInstance.user.firstname} ${plotInstance.user.lastname}
+    </div>
     <div id="demoWrap">
         <div id="wrap1">
         <div id="wrap2">
@@ -30,7 +33,7 @@
                     <li class="wrapLi resourceLi">
                         <a class="wrapLink" href="#wrap3" onclick="bgenScroll();">
                             <span>
-                                <g:message code="redactintrigue.tabs.objects" default="Objects"/>
+                                <g:message code="redactintrigue.tabs.objects" default="Resources"/>
                             </span>
                         </a>
                         <span class="badge badge-inverse">${plotInstance.genericResources.size()}</span>

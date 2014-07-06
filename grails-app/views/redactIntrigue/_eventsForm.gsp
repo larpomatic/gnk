@@ -11,7 +11,7 @@
                 <a href="#event_${event.id}" data-toggle="tab">
                     ${event.name}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cet évènement?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
                         data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>

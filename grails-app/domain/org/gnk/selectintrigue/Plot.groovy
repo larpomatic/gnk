@@ -8,6 +8,9 @@ import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
+import org.hibernate.Hibernate
+import org.hibernate.proxy.HibernateProxy
+import org.hibernate.proxy.HibernateProxyHelper
 
 class Plot {
 
@@ -117,12 +120,27 @@ class Plot {
 	}
 
     public boolean hasPlotTag(Tag parPlotTag) {
+        if (parPlotTag instanceof HibernateProxy) {
+            Hibernate.initialize(parPlotTag);
+            parPlotTag = (Tag) ((HibernateProxy) parPlotTag).getHibernateLazyInitializer().getImplementation();
+        }
         for (PlotHasTag plotHasPlotTag : extTags) {
             if (plotHasPlotTag.tag == parPlotTag) {
                 return true;
             }
         }
         return false;
+    }
+
+    public getPlotHasTag(Tag tag) {
+        List<PlotHasTag> plotHasTags = PlotHasTag.createCriteria().list {
+            like("plot", this)
+            like("tag", tag)
+        }
+        if (plotHasTags.size() == 0) {
+            return null;
+        }
+        return plotHasTags.first();
     }
 
     public boolean hasUnivers(Univers parUnivers) {

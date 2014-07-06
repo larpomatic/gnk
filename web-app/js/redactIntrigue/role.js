@@ -134,12 +134,29 @@ function emptyRoleForm() {
     $('form[name="newRoleForm"] textarea').val("");
     $('form[name="newRoleForm"] input[type="checkbox"]').attr('checked', false);
     $('form[name="newRoleForm"] #roleType option[value="PJ"]').attr("selected", "selected");
+    $('form[name="newRoleForm"] .chooseTag').parent().addClass("invisible");
+    $('form[name="newRoleForm"] .banTag').parent().addClass("invisible");
+    $('form[name="newRoleForm"] .tagWeightInput').val(50);
+    $('form[name="newRoleForm"] .tagWeightInput').attr('disabled','disabled');
+    $('form[name="newRoleForm"] .search-query').val("");
+    $('form[name="newRoleForm"] .modalLi').show();
 }
 
 // créé un tab-pane du nouveau role
 function createNewRolePanel(data) {
     Handlebars.registerHelper('toLowerCase', function(value) {
         return new Handlebars.SafeString(value.toLowerCase());
+    });
+    var audaciousFn;
+    Handlebars.registerHelper('recursive', function(children, options) {
+        var out = '';
+        if (options.fn !== undefined) {
+            audaciousFn = options.fn;
+        }
+        children.forEach(function(child){
+            out = out + audaciousFn(child);
+        });
+        return out;
     });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
     var context = {
@@ -150,8 +167,20 @@ function createNewRolePanel(data) {
     $('.roleScreen > .tab-content').append(html);
     $('#role_' + data.role.id + ' #roleType option[value="'+ data.role.type +'"]').attr("selected", "selected");
     for (var key in data.role.tagList) {
-        $('#roleTagsModal_' + data.role.id + " #roleTags_" + data.role.tagList[key]).attr('checked', 'checked');
+        $('#roleTagsModal_' + data.role.id + " #roleTags" + data.role.id + "_" + data.role.tagList[key].id).attr('checked', 'checked');
+        $('#roleTagsModal_' + data.role.id + " #roleTagsWeight" + data.role.id + "_" + data.role.tagList[key].id).val(data.role.tagList[key].weight);
     }
+    $('#roleTagsModal_' + data.role.id + ' li').each(function() {
+        hideTags($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
+    });
+
+    $('.chooseTag').click(function() {
+        $('input', $(this).parent().prev()).val(101);
+    });
+
+    $('.banTag').click(function() {
+        $('input', $(this).parent().next()).val(-101);
+    });
 }
 
 function updateRoleRelation(data) {

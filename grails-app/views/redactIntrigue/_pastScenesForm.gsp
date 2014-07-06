@@ -10,7 +10,7 @@
                 <a href="#pastScene_${pastScene.id}" data-toggle="tab">
                     ${pastScene.title}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cette scène?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la scène?"
                         data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>

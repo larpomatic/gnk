@@ -2,7 +2,7 @@
     <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
             <a href="#newResource" data-toggle="tab" class="addResource">
-                <g:message code="redactintrigue.resource.addResource" default="New object"/>
+                <g:message code="redactintrigue.resource.addResource" default="New resource"/>
             </a>
         </li>
         <g:each in="${plotInstance.genericResources}" status="i5" var="genericResource">
@@ -10,7 +10,7 @@
                 <a href="#resource_${genericResource.id}" data-toggle="tab">
                     ${genericResource.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer cet objet?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la ressource?"
                         data-url="<g:createLink controller="GenericResource" action="Delete" id="${genericResource.id}"/>" data-object="resource" data-id="${genericResource.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
 
-                <div id="resourceTagsModal" class="modal hide fade" tabindex="-1">
+                <div id="resourceTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
 
@@ -101,12 +101,13 @@
                     <div class="modal-body">
                         <ul class="resourceTags">
                             <g:each in="${resourceTagList}" var="resourceTagInstance">
-                                <li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">
-                                    <label>
-                                        <g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"/>
-                                        ${fieldValue(bean: resourceTagInstance, field: "name")}
-                                    </label>
-                                </li>
+                                %{--<li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">--}%
+                                    %{--<label>--}%
+                                        %{--<g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"/>--}%
+                                        %{--${fieldValue(bean: resourceTagInstance, field: "name")}--}%
+                                    %{--</label>--}%
+                                %{--</li>--}%
+                                <g:render template="resourceTagTree" model="[resourceTagInstance: resourceTagInstance, resource: null]"/>
                             </g:each>
                         </ul>
                     </div>
@@ -189,7 +190,7 @@
                         </div>
                     </div>
 
-                    <div id="resourceTagsModal_${resource.id}" class="modal hide fade" tabindex="-1">
+                    <div id="resourceTagsModal_${resource.id}" class="modal hide fade tags-modal" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
 
@@ -203,13 +204,14 @@
                         <div class="modal-body">
                             <ul class="resourceTags${resource.id}">
                                 <g:each in="${resourceTagList}" var="resourceTagInstance">
-                                    <li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">
-                                        <label>
-                                            <g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"
-                                                        checked="${resource.hasGenericResourceTag(resourceTagInstance)}"/>
-                                            ${fieldValue(bean: resourceTagInstance, field: "name")}
-                                        </label>
-                                    </li>
+                                    %{--<li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">--}%
+                                        %{--<label>--}%
+                                            %{--<g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"--}%
+                                                        %{--checked="${resource.hasGenericResourceTag(resourceTagInstance)}"/>--}%
+                                            %{--${fieldValue(bean: resourceTagInstance, field: "name")}--}%
+                                        %{--</label>--}%
+                                    %{--</li>--}%
+                                    <g:render template="resourceTagTree" model="[resourceTagInstance: resourceTagInstance, resource: resource]"/>
                                 </g:each>
                             </ul>
                         </div>

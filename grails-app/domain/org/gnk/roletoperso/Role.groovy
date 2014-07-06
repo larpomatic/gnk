@@ -200,6 +200,17 @@ class Role implements Comparable {
         return code;
     }
 
+    public getRoleHasTag(Tag tag) {
+        List<RoleHasTag> roleHasTags = RoleHasTag.createCriteria().list {
+            like("role", this)
+            like("tag", tag)
+        }
+        if (roleHasTags.size() == 0) {
+            return null;
+        }
+        return roleHasTags.first();
+    }
+
     public getRoleHasEvent(Event event) {
         List<RoleHasEvent> roleHasEvents = RoleHasEvent.createCriteria().list {
             like("role", this)

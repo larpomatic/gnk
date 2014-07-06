@@ -14,7 +14,7 @@
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer ce rôle?"
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle?"
                         data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
                     <i class="icon-remove pull-right"></i>
                 </button>
@@ -71,8 +71,8 @@
                         </label>
                     </div>
                     <div class="span4">
-                        <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
-                                  keys="${['PJ', 'PNJ', 'PHJ']}" required=""/>
+                        <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                                  keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -200,7 +200,7 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <div id="roleTagsModal" class="modal hide fade" tabindex="-1">
+                <div id="roleTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3 id="myModalLabel">
@@ -213,13 +213,7 @@
                     <div class="modal-body">
                         <ul class="roleTagsCreate">
                             <g:each in="${roleTagList}" status="i2" var="roleTagInstance">
-                                <li class="modalLi" data-name="${roleTagInstance.name.toLowerCase()}">
-                                    <label for="roleTags_${roleTagInstance.id}">
-                                        <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
-                                        checked="false"/>
-                                        ${fieldValue(bean: roleTagInstance, field: "name")}
-                                    </label>
-                                </li>
+                                <g:render template="roleTagTree" model="[roleTagInstance: roleTagInstance, role: null]"/>
                             </g:each>
                         </ul>
                     </div>
@@ -282,8 +276,8 @@
                             </label>
                         </div>
                         <div class="span4">
-                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ']}"
-                                      keys="${['PJ', 'PNJ', 'PHJ']}" value="${role.type}" required=""/>
+                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                                      keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" value="${role.type}" required=""/>
                         </div>
                     </div>
                     <div class="row formRow">
@@ -416,7 +410,7 @@
                         </div>
                     </div>
 
-                    <div id="roleTagsModal_${role.id}" class="modal hide fade" tabindex="-1">
+                    <div id="roleTagsModal_${role.id}" class="modal hide fade tags-modal" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3 id="myModalLabel${role.id}">
@@ -429,12 +423,7 @@
                         <div class="modal-body">
                             <ul class="roleTags${role.id}">
                                 <g:each in="${roleTagList}" status="i3" var="roleTagInstance">
-                                    <li class="modalLi" data-name="${roleTagInstance.name.toLowerCase()}">
-                                        <label>
-                                            <g:checkBox name="roleTags_${roleTagInstance.id}" id="roleTags_${roleTagInstance.id}"
-                                            checked="${role.hasRoleTag(roleTagInstance)}"/> ${fieldValue(bean: roleTagInstance, field: "name")}
-                                        </label>
-                                    </li>
+                                    <g:render template="roleTagTree" model="[roleTagInstance: roleTagInstance, role: role]"/>
                                 </g:each>
                             </ul>
                         </div>

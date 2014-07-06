@@ -39,7 +39,7 @@
 
 <div class="btn-group">
     <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-        Objet <span class="caret"></span>
+        Ressource <span class="caret"></span>
     </button>
     <ul class="dropdown-menu resourceSelector">
         <g:each in="${plotInstance.genericResources}" status="i5" var="genericResource">

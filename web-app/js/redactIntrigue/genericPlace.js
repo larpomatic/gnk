@@ -126,12 +126,29 @@ function emptyGenericPlaceForm() {
     $('form[name="newPlaceForm"] input[type="number"]').val("");
     $('form[name="newPlaceForm"] textarea').val("");
     $('form[name="newPlaceForm"] input[type="checkbox"]').attr('checked', false);
+    $('form[name="newPlaceForm"] .chooseTag').parent().addClass("invisible");
+    $('form[name="newPlaceForm"] .banTag').parent().addClass("invisible");
+    $('form[name="newPlaceForm"] .tagWeightInput').val(50);
+    $('form[name="newPlaceForm"] .tagWeightInput').attr('disabled','disabled');
+    $('form[name="newPlaceForm"] .search-query').val("");
+    $('form[name="newPlaceForm"] .modalLi').show();
 }
 
 // créé un tab-pane du nouveau lieu
 function createNewGenericPlacePanel(data) {
     Handlebars.registerHelper('toLowerCase', function(value) {
         return new Handlebars.SafeString(value.toLowerCase());
+    });
+    var audaciousFn;
+    Handlebars.registerHelper('recursive', function(children, options) {
+        var out = '';
+        if (options.fn !== undefined) {
+            audaciousFn = options.fn;
+        }
+        children.forEach(function(child){
+            out = out + audaciousFn(child);
+        });
+        return out;
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];
     var context = {
@@ -141,18 +158,20 @@ function createNewGenericPlacePanel(data) {
     var html = template(context);
     $('.placeScreen > .tab-content').append(html);
     for (var key in data.genericPlace.tagList) {
-        $('#placeTagsModal_' + data.genericPlace.id + " #placeTags_" + data.genericPlace.tagList[key]).attr('checked', 'checked');
+        $('#placeTagsModal_' + data.genericPlace.id + " #placeTags" + data.genericPlace.id + "_" + data.genericPlace.tagList[key].id).attr('checked', 'checked');
+        $('#placeTagsModal_' + data.genericPlace.id + " #placeTagsWeight" + data.genericPlace.id + "_" + data.genericPlace.tagList[key].id).val(data.genericPlace.tagList[key].weight);
     }
-//    for (var key1 in data.genericPlace.eventList) {
-//        if (data.genericPlace.eventList[key1].eventCheck) {
-//            $('#placeEventsModal_' + data.genericPlace.id + " #placeEvent_" + data.genericPlace.eventList[key1].eventId).attr('checked', 'checked');
-//        }
-//    }
-//    for (var key2 in data.genericPlace.pastsceneList) {
-//        if (data.genericPlace.pastsceneList[key2].pastsceneCheck) {
-//            $('#placePastScenesModal_' + data.genericPlace.id + " #placePastScene_" + data.genericPlace.pastsceneList[key2].pastsceneId).attr('checked', 'checked');
-//        }
-//    }
+    $('#placeTagsModal_' + data.genericPlace.id + ' li').each(function() {
+        hideTags($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
+    });
+
+    $('.chooseTag').click(function() {
+        $('input', $(this).parent().prev()).val(101);
+    });
+
+    $('.banTag').click(function() {
+        $('input', $(this).parent().next()).val(-101);
+    });
     $('select[name="pastScenePlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
     $('select[name="eventPlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
 }

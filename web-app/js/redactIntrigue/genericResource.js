@@ -1,7 +1,7 @@
 $(function(){
     updateResource();
 
-    //ajoute un nouvel objet dans la base
+    //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
         var form = $('form[name="newResourceForm"]');
         $.ajax({
@@ -11,7 +11,7 @@ $(function(){
             dataType: "json",
             success: function(data) {
                 if (data.iscreate) {
-                    createNotification("success", "Création réussie.", "Votre objet a bien été ajouté.");
+                    createNotification("success", "Création réussie.", "Votre ressource a bien été ajouté.");
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericResource'];
                     var context = {
                         resourceId: String(data.genericResource.id),
@@ -30,17 +30,17 @@ $(function(){
                     updateResource();
                 }
                 else {
-                    createNotification("danger", "création échouée.", "Votre objet n'a pas pu être ajouté, une erreur s'est produite.");
+                    createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "création échouée.", "Votre objet n'a pas pu être ajouté, une erreur s'est produite.");
+                createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
             }
         })
     });
 });
 
-// modifie un objet dans la base
+// modifie une ressource dans la base
 function updateResource() {
     $('.updateResource').click(function() {
         var genericResourceId = $(this).attr("data-id");
@@ -52,7 +52,7 @@ function updateResource() {
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre objet a bien été modifié.");
+                    createNotification("success", "Modifications réussies.", "Votre ressource a bien été modifiée.");
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-important').each(function() {
@@ -62,17 +62,17 @@ function updateResource() {
                     });
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre ressource n'a pas pu être modifiée, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre objet n'a pas pu être modifié, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre ressource n'a pas pu être modifiée, une erreur s'est produite.");
             }
         })
     });
 }
 
-// supprime un objet dans la base
+// supprime une ressource dans la base
 function removeResource(object) {
     var liObject = object.parent();
     var name = $.trim($("a", liObject).html());
@@ -83,8 +83,8 @@ function removeResource(object) {
         }
     });
     if (isResourcePresentInDescriptions) {
-        createNotification("danger", "suppression impossible.", "Votre objet est utilisé dans certaines descriptions."
-            + " Veuillez supprimer l'utilisation de cet objet dans les descriptions avant de supprimer l'entité objet.");
+        createNotification("danger", "suppression impossible.", "Votre ressource est utilisée dans certaines descriptions."
+            + " Veuillez supprimer l'utilisation de cet ressource dans les descriptions avant de supprimer l'entité ressource.");
     }
     else {
         $.ajax({
@@ -103,30 +103,47 @@ function removeResource(object) {
                            $(this).remove();
                        }
                     });
-                    createNotification("success", "Supression réussie.", "Votre objet a bien été supprimé.");
+                    createNotification("success", "Supression réussie.", "Votre ressource a bien été supprimée.");
                 }
                 else {
-                    createNotification("danger", "suppression échouée.", "Votre objet n'a pas pu être supprimé, une erreur s'est produite.");
+                    createNotification("danger", "suppression échouée.", "Votre ressource n'a pas pu être supprimée, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "suppression échouée.", "Votre objet n'a pas pu être supprimé, une erreur s'est produite.");
+                createNotification("danger", "suppression échouée.", "Votre ressource n'a pas pu être supprimée, une erreur s'est produite.");
             }
         });
     }
 }
 
-//vide le formulaire d'ajout d'objet
+//vide le formulaire d'ajout de ressource
 function emptyGenericResourceForm() {
     $('form[name="newResourceForm"] input[type="text"]').val("");
     $('form[name="newResourceForm"] textarea').val("");
     $('form[name="newResourceForm"] input[type="checkbox"]').attr('checked', false);
+    $('form[name="newResourceForm"] .chooseTag').parent().addClass("invisible");
+    $('form[name="newResourceForm"] .banTag').parent().addClass("invisible");
+    $('form[name="newResourceForm"] .tagWeightInput').val(50);
+    $('form[name="newResourceForm"] .tagWeightInput').attr('disabled','disabled');
+    $('form[name="newResourceForm"] .search-query').val("");
+    $('form[name="newResourceForm"] .modalLi').show();
 }
 
-// créé un tab-pane du nouvel objet
+// créé un tab-pane de la nouvelle ressource
 function createNewGenericResourcePanel(data) {
     Handlebars.registerHelper('toLowerCase', function(value) {
         return new Handlebars.SafeString(value.toLowerCase());
+    });
+    var audaciousFn;
+    Handlebars.registerHelper('recursive', function(children, options) {
+        var out = '';
+        if (options.fn !== undefined) {
+            audaciousFn = options.fn;
+        }
+        children.forEach(function(child){
+            out = out + audaciousFn(child);
+        });
+        return out;
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericResourcePanel'];
     var context = {
@@ -136,6 +153,18 @@ function createNewGenericResourcePanel(data) {
     var html = template(context);
     $('.resourceScreen > .tab-content').append(html);
     for (var key in data.genericResource.tagList) {
-        $('#resourceTagsModal_' + data.genericResource.id + " #resourceTags_" + data.genericResource.tagList[key]).attr('checked', 'checked');
+        $('#resourceTagsModal_' + data.genericResource.id + " #resourceTags" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).attr('checked', 'checked');
+        $('#resourceTagsModal_' + data.genericResource.id + " #resourceTagsWeight" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).val(data.genericResource.tagList[key].weight);
     }
+    $('#resourceTagsModal_' + data.genericResource.id + ' li').each(function() {
+        hideTags($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
+    });
+
+    $('.chooseTag').click(function() {
+        $('input', $(this).parent().prev()).val(101);
+    });
+
+    $('.banTag').click(function() {
+        $('input', $(this).parent().next()).val(-101);
+    });
 }

@@ -9,7 +9,7 @@
         </li>
         <li class="leftMenuList">
             <input data-entity="resource" data-label="important" type="text"
-                   placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create object"/>"/>
+                   placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create resource"/>"/>
         </li>
         <li class="leftMenuList">
             <input data-entity="place" data-label="warning" type="text"
@@ -28,6 +28,9 @@
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
                 <g:hiddenField name="plotDescription" class="descriptionContent" value=""/>
+                <g:hiddenField name="plotPitchOrga" class="pitchOrgaContent" value=""/>
+                <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
+                <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="name">
@@ -67,51 +70,114 @@
                 </div>
 
                 <div class="row formRow">
-                    <div class="span2">
-                        <label for="isPublic">
-                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
-                        </label>
-                    </div>
-
                     <div class="span1">
-                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
-                    </div>
-
-                    <div class="span2">
                         <label for="isMainstream">
                             <g:message code="redactintrigue.generalDescription.isMainstream" default="Mainstream"/>
                         </label>
                     </div>
 
-                    <div class="span1">
+                    <div class="span4">
                         <g:checkBox name="isMainstream" id="isMainstream" checked="${plotInstance.isMainstream}"/>
                     </div>
 
-                    <div class="span2">
+                    <div class="span1">
                         <label for="isEvenemential">
                             <g:message code="redactintrigue.generalDescription.isEvenemential" default="Evenemential"/>
                         </label>
                     </div>
 
-                    <div class="span1">
+                    <div class="span4">
                         <g:checkBox name="isEvenemential" id="isEvenemential" checked="${plotInstance.isEvenemential}"/>
                     </div>
                 </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="isPublic">
+                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
+                        </label>
+                    </div>
 
-                <div class="row formRow text-center">
-                    <label>
-                        <g:message code="redactintrigue.generalDescription.plotDescription" default="Plot Description"/>
-                    </label>
-                </div>
-                <div class="fullScreenEditable">
-                    <g:render template="dropdownButtons" />
+                    <div class="span4">
+                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
+                    </div>
 
-                    <!-- Editor -->
-                    <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                        ${plotInstance.description.encodeAsHTML()}
+                    <div class="span1">
+                        <label for="isDraft">
+                            <g:message code="redactintrigue.generalDescription.isDraft" default="Draft"/>
+                        </label>
+                    </div>
+
+                    <div class="span4">
+                        <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
                     </div>
                 </div>
 
+                <div class="text-center plotTabs">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#descriptionTab" data-toggle="tab">
+                                <g:message code="redactintrigue.generalDescription.plotDescription" default="Description"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pitchOrgaTab" data-toggle="tab">
+                                <g:message code="redactintrigue.generalDescription.pitchOrga" default="pitchOrga"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pitchPjTab" data-toggle="tab">
+                                <g:message code="redactintrigue.generalDescription.pitchPj" default="pitchPj"/>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pitchPnjTab" data-toggle="tab">
+                                <g:message code="redactintrigue.generalDescription.pitchPnj" default="pitchPnj"/>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="descriptionTab">
+                            <div class="fullScreenEditable">
+                                <g:render template="dropdownButtons" />
+
+                                <!-- Editor -->
+                                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                    ${plotInstance.description.encodeAsHTML()}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="pitchOrgaTab">
+                            <div class="fullScreenEditable">
+                                <g:render template="dropdownButtons" />
+
+                                <!-- Editor -->
+                                <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                    ${plotInstance.pitchOrga.encodeAsHTML()}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="pitchPjTab">
+                            <div class="fullScreenEditable">
+                                <g:render template="dropdownButtons" />
+
+                                <!-- Editor -->
+                                <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                    ${plotInstance.pitchPj.encodeAsHTML()}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="pitchPnjTab">
+                            <div class="fullScreenEditable">
+                                <g:render template="dropdownButtons" />
+
+                                <!-- Editor -->
+                                <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                    ${plotInstance.pitchPnj.encodeAsHTML()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="universesModal" class="modal hide fade" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -138,7 +204,7 @@
                     </div>
                 </div>
 
-                <div id="tagsModal" class="modal hide fade" tabindex="-1">
+                <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>Tags</h3>
@@ -149,29 +215,7 @@
                     <div class="modal-body">
                         <ul class="plotTags">
                             <g:each in="${plotTagList}" status="i" var="plotTagInstance">
-                                <li class="modalLi" data-name="${plotTagInstance.name.toLowerCase()}">
-                                    <label for="tags_${plotTagInstance.id}" style="float: left"><g:checkBox
-                                        name="tags_${plotTagInstance.id}"
-                                        id="tags_${plotTagInstance.id}"
-                                        onClick="toggle('tags_${plotTagInstance?.id}', 'weight_tags_${plotTagInstance?.id}')"
-                                        checked="${plotInstance.hasPlotTag(plotTagInstance)}"/> ${fieldValue(bean: plotTagInstance, field: "name")}</label>
-
-                                    <div style="overflow: hidden; padding-left: .5em;" class="text-right">
-                                        <g:if test="${plotInstance.hasPlotTag(plotTagInstance)}">
-                                            <g:set var="tagValue" value="${plotInstance.getTagWeight(plotTagInstance)}"
-                                                   scope="page"/>
-                                        </g:if>
-                                        <g:if test="${!plotInstance.hasPlotTag(plotTagInstance)}">
-                                            <g:set var="tagValue" value="50" scope="page"/>
-                                        </g:if>
-                                        <input id="weight_tags_${plotTagInstance?.id}"
-                                               name="weight_tags_${plotTagInstance?.id}" value="${tagValue}"
-                                               type="number" style="width:40px;"/>
-                                    </div>
-                                    <script>
-                                        toggle('tags_${plotTagInstance?.id}', 'weight_tags_${plotTagInstance?.id}')
-                                    </script>
-                                </li>
+                                <g:render template="plotTagTree" model="[plotTagInstance: plotTagInstance, plotInstance: plotInstance]"/>
                             </g:each>
                         </ul>
                     </div>

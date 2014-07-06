@@ -46,6 +46,7 @@ class GenericResource {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+        extTags cascade:'all-delete-orphan'
     }
 
     public boolean hasGenericResourceTag(Tag parGenericResourceTag) {
@@ -55,6 +56,17 @@ class GenericResource {
             }
         }
         return false;
+    }
+
+    public getGenericResourceHasTag(Tag tag) {
+        List<GenericResourceHasTag> genericResourceHasTags = GenericResourceHasTag.createCriteria().list {
+            like("genericResource", this)
+            like("tag", tag)
+        }
+        if (genericResourceHasTags.size() == 0) {
+            return null;
+        }
+        return genericResourceHasTags.first();
     }
 
     boolean isIngameClue()

@@ -46,17 +46,6 @@ $(function(){
     $('.radioEvenemential:checked').closest("tr").prependTo(".evenemential-table tbody");
     $('.radioMainstream:checked').closest("tr").prependTo(".mainstream-table tbody");
 
-    $('.modal-body li').each(function() {
-        toggle($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
-    });
-
-    $('.chooseTag').click(function() {
-        $('input', $(this).parent().prev()).val(101);
-    });
-    $('.banTag').click(function() {
-        $('input', $(this).parent().next()).val(-101);
-    });
-
     $('.gnSubmitForm').submit(function() {
         $('input').removeClass("redBorder");
         var $gnPIPMin = $('#gnPIPMin');
@@ -88,22 +77,6 @@ $(function(){
         return true;
     });
 });
-
-function toggle(checkboxID, toggleID) {
-    var checkbox = $("#" + checkboxID);
-    var toggle = $("#" + toggleID);
-
-    if (!checkbox.prop("checked")) {
-        toggle.attr("disabled", "disabled");
-        toggle.parent().prev().addClass("invisible");
-        toggle.parent().next().addClass("invisible");
-    }
-    else {
-        toggle.removeAttr("disabled");
-        toggle.parent().prev().removeClass("invisible");
-        toggle.parent().next().removeClass("invisible");
-    }
-}
 
 function initRadioPlots() {
     if ($('input[name="selected_evenemential"]:checked').size() == 0) {

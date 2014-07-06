@@ -20,7 +20,7 @@ class RoleController {
         role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
-        def jsonRole = buildJson(role, roleTagList, plot);
+        def jsonRole = buildJson(role, plot);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("role", jsonRole);
@@ -30,18 +30,22 @@ class RoleController {
         }
 	}
 
-    def buildTagList(def roleTagList) {
+    def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();
-        for (roleTag in roleTagList) {
+        for (Tag roleTag in roleTagList) {
             JSONObject jsonTag = new JSONObject();
             jsonTag.put("id", roleTag.getId());
             jsonTag.put("name", roleTag.getName());
+            if (roleTag.children && roleTag.children.size() != 0) {
+                JSONArray jsonTagChildren = buildTagList(roleTag.children);
+                jsonTag.put("children", jsonTagChildren);
+            }
             jsonTagList.add(jsonTag);
         }
         return jsonTagList;
     }
 
-    def buildJson(Role role, roleTagList, Plot plot) {
+    def buildJson(Role role, Plot plot) {
         JSONObject jsonRole = new JSONObject();
         jsonRole.put("code", role.getCode());
         jsonRole.put("id", role.getId());
@@ -51,10 +55,11 @@ class RoleController {
         jsonRole.put("type", role.getType());
         jsonRole.put("description", role.getDescription());
         JSONArray jsonTagList = new JSONArray();
-        for (Tag roleTag in roleTagList) {
-            if (role.hasRoleTag(roleTag)) {
-                jsonTagList.add(roleTag.getId());
-            }
+        for (RoleHasTag roleHasTag in role.roleHasTags) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", roleHasTag.tag.id)
+            jsonTag.put("weight", roleHasTag.weight)
+            jsonTagList.add(jsonTag);
         }
         jsonRole.put("tagList", jsonTagList);
         JSONArray jsonEventList = new JSONArray();
@@ -136,12 +141,12 @@ class RoleController {
 		} else {
 			return false
 		}
-		if (params.containsKey("roleType") && (params.roleType == "PJ" || params.roleType == "PNJ" || params.roleType == "PHJ")) {
+		if (params.containsKey("roleType") && (params.roleType == "PJ" || params.roleType == "PNJ" || params.roleType == "PHJ"
+        || params.roleType == "PJG" || params.roleType == "TPJ")) {
 			newRole.type = params.roleType
 		} else {
 			return false
 		}
-		//deleteRoleHasRoleTag(newRole)
 		if(newRole.roleHasTags) {
             HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
             newRole.roleHasTags.clear();
@@ -174,7 +179,7 @@ class RoleController {
                 RoleHasTag roleHasTag = new RoleHasTag();
                 Tag roleTag = Tag.get((it.key - "roleTags_") as Integer);
                 roleHasTag.tag = roleTag
-                roleHasTag.weight = TagService.LOCKED
+                roleHasTag.weight = params.get("roleTagsWeight_" + roleTag.id) as Integer;
                 roleHasTag.role = newRole
                 newRole.roleHasTags.add(roleHasTag)
             }
@@ -238,28 +243,10 @@ class RoleController {
         return roleHasPastscene;
     }
 
-	def deleteRoleHasRoleTag (Role role) {
-		if (!role.roleHasRoleTags)
-		{
-			return
-		}
-		/*while ()
-		 Set<RoleHasRoleTag> toRemove = new HashSet<RoleHasRoleTag>(role.roleHasRoleTags)
-		 while (!(toRemove.empty)) {
-		 RoleHasRoleTag roleHasRoleTag = toRemove.findAll().first()
-		 toRemove.remove(roleHasRoleTag)
-		 role.roleHasRoleTags.remove(roleHasRoleTag);
-		 roleHasRoleTag.roleTag.roleHasRoleTags.remove(roleHasRoleTag)
-		 roleHasRoleTag.delete(flush: true)
-		 }*/
-	}
-
 	def delete (Long id) {
 		Role role = Role.get(id)
         boolean isDelete = false;
         if (role) {
-            //deleteRoleHasRoleTag(role)
-
             role.delete(flush: true)
             isDelete = true;
         }

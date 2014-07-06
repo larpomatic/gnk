@@ -21,70 +21,38 @@ class TagService {
     }
 
     def List<Tag> getPlotTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantPlot", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
-            }
-        }
-
+        Set<Tag> genericPlot = Tag.findAllByName("Générique Intrigue");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericPlot);
         return result;
     }
 
     def List<Tag> getResourceTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantResource", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
-            }
-        }
-
+        Set<Tag> genericResource = Tag.findAllByName("Générique Ressources");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericResource);
         return result;
     }
 
     def List<Tag> getPlaceTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantPlace", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
-            }
-        }
-
+        Set<Tag> genericPlace = Tag.findAllByName("Générique Lieux");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericPlace);
         return result;
     }
 
     def List<Tag> getRoleTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantRole", true)
-        }
+        Set<Tag> genericRole = Tag.findAllByName("Générique Rôle");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericRole);
+        return result;
+    }
 
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
-            }
+    def ArrayList<Tag> fillResult(ArrayList<Tag> result, Set<Tag> tagsToInclude) {
+        for (Tag child in tagsToInclude) {
+            result.add(child);
         }
-        return result
+        return result;
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {

@@ -41,11 +41,6 @@ class RedactIntrigueController {
 			render(view: "create", model: [plotInstance: plotInstance])
 			return
 		}
-
-		flash.message = message(code: 'default.created.message', args: [
-			message(code: 'plot.label', default: 'Plot'),
-			plotInstance.id
-		])
 		redirect(action: "edit", id: plotInstance.id)
 	}
 
@@ -56,18 +51,12 @@ class RedactIntrigueController {
 			render(view: "create", model: [plotInstance: plotInstance])
 			return
 		}
-
-		flash.message = message(code: 'default.created.message', args: [
-			message(code: 'plot.label', default: 'Plot'),
-			plotInstance.id
-		])
 		redirect(action: "show", id: plotInstance.id)
 	}
 
 	def show(Long id) {
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'plot.label', default: 'Plot'), id])
 			redirect(action: "list")
 			return
 		}
@@ -78,7 +67,6 @@ class RedactIntrigueController {
 	def edit(Long id) {
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'plot.label', default: 'Plot'), id])
 			redirect(action: "list")
 			return
 		}
@@ -101,16 +89,12 @@ class RedactIntrigueController {
 	def update(Long id, Long version) {
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'plot.label', default: 'Plot'), id])
 			redirect(action: "list")
 			return
 		}
 
 		if (version != null) {
 			if (plotInstance.version > version) {
-				plotInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-						[message(code: 'plot.label', default: 'Plot')] as Object[],
-						"Another user has updated this Plot while you were editing")
 				render(view: "edit", model: [plotInstance: plotInstance])
 				return
 			}
@@ -118,15 +102,9 @@ class RedactIntrigueController {
 
 		plotInstance.properties = params
 		plotInstance.description = params.plotDescription
-//		Set<PlotHasTag> toRemove = new HashSet<PlotHasTag>(plotInstance.extTags)
-//
-//		while (!(toRemove.empty))
-//		{
-//			PlotHasTag plotHasPlotTag = toRemove.first()
-//			toRemove.remove(plotHasPlotTag)
-//			plotInstance.extTags.remove(plotHasPlotTag);
-//			plotHasPlotTag.delete(flush: true)
-//		}
+        plotInstance.pitchOrga = params.plotPitchOrga
+        plotInstance.pitchPj = params.plotPitchPj
+        plotInstance.pitchPnj = params.plotPitchPnj
         if (plotInstance.extTags) {
             HashSet<PlotHasTag> plotHasTags = plotInstance.extTags;
             PlotHasTag.deleteAll(plotHasTags);
@@ -135,11 +113,6 @@ class RedactIntrigueController {
         else {
             plotInstance.extTags = new HashSet<PlotHasTag>();
         }
-		
-//		Set<PlotHasUnivers> toRemoveUnivers = new HashSet<PlotHasUnivers>(plotInstance.plotHasUniverses)
-		
-//        while (!(toRemoveUnivers.empty))
-//        {
         if (plotInstance.plotHasUniverses) {
             HashSet<PlotHasUnivers> plotHasUniverses = plotInstance.plotHasUniverses;
             PlotHasUnivers.deleteAll(plotHasUniverses);
@@ -148,22 +121,15 @@ class RedactIntrigueController {
         else {
             plotInstance.plotHasUniverses = new HashSet<PlotHasUnivers>();
         }
-//            PlotHasUnivers plotHasUnivers = toRemoveUnivers.findAll().first()
-//            toRemoveUnivers.remove(plotHasUnivers)
-//            plotInstance.plotHasUniverses.remove(plotHasUnivers);
-//            plotHasUnivers.univers.plotHasUniverses.remove(plotHasUnivers)
-//            plotHasUnivers.delete(flush: true);
-//        }
 
         plotInstance.save(flush: true);
 
 		params.each {
-			if (it.key.startsWith("tags_")) {
+			if (it.key.startsWith("plotTags_")) {
 				PlotHasTag plotHasPlotTag = new PlotHasTag();
-				Tag plotTag = Tag.get((it.key - "tags_") as Integer);
+				Tag plotTag = Tag.get((it.key - "plotTags_") as Integer);
 				plotHasPlotTag.tag = plotTag;
-				String weight = params.get("weight_tags_" + plotTag.id);
-				plotHasPlotTag.weight = weight as Integer
+				plotHasPlotTag.weight = params.get("plotTagsWeight_" + plotTag.id) as Integer;
 				plotHasPlotTag.plot = plotInstance
 				plotInstance.extTags.add(plotHasPlotTag)
 			}
@@ -183,31 +149,18 @@ class RedactIntrigueController {
 			render(view: "edit", model: [plotInstance: plotInstance])
 			return
 		}
-
-		flash.message = message(code: 'default.updated.message', args: [
-			message(code: 'plot.label', default: 'Plot'),
-			plotInstance.id
-		])
 		redirect(action: "show", id: plotInstance.id)
 	}
 
 	def delete(Long id) {
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			flash.message = mes sage(code: 'default.not.found.message', args: [message(code: 'plot.label', default: 'Plot'), id])
 			redirect(action: "list")
 			return
 		}
 		// FIXME Changement de Base
-		//try {
 			plotInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'plot.label', default: 'Plot'), id])
 			redirect(action: "list")
-		//}
-		
-		/*catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'plot.label', default: 'Plot'), id])
-			redirect(action: "show", id: id)
-		}*/
 	}
 }
