@@ -2,6 +2,7 @@ package org.gnk.resplacetime
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
@@ -61,6 +62,25 @@ class GenericResourceController {
         jsonGenericResource.put("id", genericResource.getId());
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
+        if (genericResource.title) {
+            jsonGenericResource.put("clue", true);
+            jsonGenericResource.put("title", genericResource.getTitle());
+        }
+        if (genericResource.possessedByRole) {
+            jsonGenericResource.put("possessedByRoleId", genericResource.getPossessedByRole().id);
+            jsonGenericResource.put("possessedByRoleName", genericResource.getPossessedByRole().code);
+        }
+        if (genericResource.fromRole) {
+            jsonGenericResource.put("fromRoleId", genericResource.getFromRole().id);
+            jsonGenericResource.put("fromRoleName", genericResource.getFromRole().code);
+        }
+        if (genericResource.toRole) {
+            jsonGenericResource.put("toRoleId", genericResource.getToRole().id);
+            jsonGenericResource.put("toRoleName", genericResource.getToRole().code);
+        }
+        if (genericResource.description) {
+            jsonGenericResource.put("description", genericResource.getDescription());
+        }
         JSONArray jsonTagList = new JSONArray();
         for (GenericResourceHasTag genericResourceHasTag in genericResource.extTags) {
             JSONObject jsonTag = new JSONObject();
@@ -84,8 +104,8 @@ class GenericResourceController {
         } else {
             return false
         }
-        if (params.containsKey("resourceDescription")) {
-            newGenericResource.comment = params.resourceDescription
+        if (params.containsKey("resourceComment")) {
+            newGenericResource.comment = params.resourceComment
         } else {
             return false
         }
@@ -94,7 +114,7 @@ class GenericResourceController {
             newGenericResource.extTags.clear();
             GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
-            newGenericResource.extTags = new HashSet<GenericResourceHasTag>()
+            newGenericResource.extTags = new HashSet<GenericResourceHasTag>();
         }
         if(newGenericResource.roleHasEventHasRessources) {
             HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
@@ -106,8 +126,27 @@ class GenericResourceController {
         newGenericResource.version = 1;
         newGenericResource.dateCreated = new Date();
         newGenericResource.lastUpdated = new Date();
-        newGenericResource.title = "";
-        newGenericResource.description = "";
+        if (params.containsKey("resourceTitle")) {
+            newGenericResource.title = params.resourceTitle
+        }
+        if (params.containsKey("resourceRolePossessor")) {
+            Integer possessorId = params.resourceRolePossessor as Integer;
+            Role possessor = Role.get(possessorId);
+            newGenericResource.possessedByRole = possessor;
+        }
+        if (params.containsKey("resourceRoleFrom")) {
+            Integer roleFromId = params.resourceRoleFrom as Integer;
+            Role roleFrom = Role.get(roleFromId);
+            newGenericResource.fromRole = roleFrom;
+        }
+        if (params.containsKey("resourceRoleTo")) {
+            Integer roleToId = params.resourceRoleTo as Integer;
+            Role roleTo = Role.get(roleToId);
+            newGenericResource.toRole = roleTo;
+        }
+        if (params.containsKey("resourceDescription")) {
+            newGenericResource.description = params.resourceDescription;
+        }
         newGenericResource.save(flush: true);
         newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
 
@@ -128,7 +167,6 @@ class GenericResourceController {
     def show(Long id) {
         def genericResourceInstance = GenericResource.get(id)
         if (!genericResourceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }
@@ -139,7 +177,6 @@ class GenericResourceController {
     def edit(Long id) {
         def genericResourceInstance = GenericResource.get(id)
         if (!genericResourceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }

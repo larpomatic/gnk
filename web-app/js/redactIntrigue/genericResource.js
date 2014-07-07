@@ -1,6 +1,11 @@
 $(function(){
     updateResource();
 
+    $('input[name="resourceIsClue"]').click(function() {
+        var form = $(this).parent().parent().parent();
+        $('.clueRow', form).toggleClass("hidden");
+    });
+
     //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
         var form = $('form[name="newResourceForm"]');
@@ -127,6 +132,7 @@ function emptyGenericResourceForm() {
     $('form[name="newResourceForm"] .tagWeightInput').attr('disabled','disabled');
     $('form[name="newResourceForm"] .search-query').val("");
     $('form[name="newResourceForm"] .modalLi').show();
+    $('form[name="newResourceForm"] .clueRow').addClass("hidden");
 }
 
 // créé un tab-pane de la nouvelle ressource
@@ -152,6 +158,13 @@ function createNewGenericResourcePanel(data) {
     };
     var html = template(context);
     $('.resourceScreen > .tab-content').append(html);
+
+    $("#newResource #resourceRolePossessor option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRolePossessor');
+    $("#newResource #resourceRoleFrom option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleFrom');
+    $("#newResource #resourceRoleTo option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleTo');
+    $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRolePossessor option[value="'+ data.genericResource.possessedByRoleId +'"]').attr("selected", "selected");
+    $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleFrom option[value="'+ data.genericResource.fromRoleId +'"]').attr("selected", "selected");
+    $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleTo option[value="'+ data.genericResource.toRoleId +'"]').attr("selected", "selected");
     for (var key in data.genericResource.tagList) {
         $('#resourceTagsModal_' + data.genericResource.id + " #resourceTags" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).attr('checked', 'checked');
         $('#resourceTagsModal_' + data.genericResource.id + " #resourceTagsWeight" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).val(data.genericResource.tagList[key].weight);

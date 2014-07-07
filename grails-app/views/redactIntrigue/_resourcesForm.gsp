@@ -25,10 +25,9 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceCode">
-                            <g:message code="redactintrigue.resource.resourceCode" default="Name"/>
+                            <g:message code="redactintrigue.resource.resourceCode" default="Code"/>
                         </label>
                     </div>
-
                     <div class="span8">
                         <g:textField name="resourceCode" id="resourceCode" value="" required=""/>
                     </div>
@@ -40,7 +39,6 @@
                             <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
                         </label>
                     </div>
-
                     <div class="span4">
                         <a href="#resourceTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
@@ -48,44 +46,67 @@
                     </div>
 
                     <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.resource.resourceClues" default="Clues"/>
+                        <label for="resourceIsClue">
+                            <g:message code="redactintrigue.resource.isClue" default="Clue"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:checkBox name="resourceIsClue" id="resourceIsClue"/>
+                    </div>
+                </div>
+                <div class="row formRow hidden clueRow">
+                    <div class="span1">
+                        <label for="resourceTitle">
+                            <g:message code="redactintrigue.resource.resourceTitle" default="Title"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:textField name="resourceTitle" id="resourceTitle" value=""/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRolePossessor">
+                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
+                                  optionKey="id" optionValue="code"/>
+                    </div>
+                </div>
+                <div class="row formRow hidden clueRow">
+                    <div class="span1">
+                        <label for="resourceRoleFrom">
+                            <g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>
                         </label>
                     </div>
 
                     <div class="span4">
-                        <a href="#resourceCluesModal" class="btn" data-toggle="modal">
-                            <g:message code="redactintrigue.resource.chooseClues" default="Choose clues"/>
-                        </a>
+                        <g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"
+                                  optionKey="id" optionValue="code"/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRoleTo">
+                            <g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>
+                        </label>
+                    </div>
+
+                    <div class="span4">
+                        <g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"
+                                  optionKey="id" optionValue="code"/>
                     </div>
                 </div>
-
                 <div class="row formRow text-center">
+                    <label for="resourceComment">
+                        <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
+                    </label>
+                </div>
+                <g:textArea name="resourceComment" id="resourceComment" value="" rows="5" cols="100"/>
+                <div class="row formRow text-center hidden clueRow">
                     <label for="resourceDescription">
                         <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100"/>
-
-                <div id="resourceCluesModal" class="modal hide fade" tabindex="-1">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-
-                        <h3>
-                            <g:message code="redactintrigue.resource.resourceClues" default="Clues"/>
-                        </h3>
-                    </div>
-
-                    <div class="modal-body">
-                        <ul>
-
-                        </ul>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal">Ok</button>
-                    </div>
-                </div>
+                <g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100" class="hidden clueRow"/>
 
                 <div id="resourceTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
@@ -101,12 +122,6 @@
                     <div class="modal-body">
                         <ul class="resourceTags">
                             <g:each in="${resourceTagList}" var="resourceTagInstance">
-                                %{--<li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">--}%
-                                    %{--<label>--}%
-                                        %{--<g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"/>--}%
-                                        %{--${fieldValue(bean: resourceTagInstance, field: "name")}--}%
-                                    %{--</label>--}%
-                                %{--</li>--}%
                                 <g:render template="resourceTagTree" model="[resourceTagInstance: resourceTagInstance, resource: null]"/>
                             </g:each>
                         </ul>
@@ -150,45 +165,75 @@
                             </a>
                         </div>
 
-                        <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.resource.resourceClues" default="Clues"/>
-                            </label>
-                        </div>
-
+                            <div class="span1">
+                                <label for="resourceIsClue">
+                                    <g:message code="redactintrigue.resource.isClue" default="Clue"/>
+                                </label>
+                            </div>
                         <div class="span4">
-                            <a href="#resourceCluesModal_${resource.id}" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.resource.chooseClues" default="Choose clues"/>
-                            </a>
+                            <g:if test="${resource.title != null}">
+                                <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled" checked="true" />
+                            </g:if>
+                            <g:else>
+                                <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled"/>
+                            </g:else>
                         </div>
                     </div>
-
+                    <g:if test="${resource.title != null}">
+                        <div class="row formRow clueRow">
+                            <div class="span1">
+                                <label for="resourceTitle">
+                                    <g:message code="redactintrigue.resource.resourceTitle" default="Title"/>
+                                </label>
+                            </div>
+                            <div class="span4">
+                                <g:textField name="resourceTitle" id="resourceTitle" value="${resource.title}"/>
+                            </div>
+                            <div class="span1">
+                                <label for="resourceRolePossessor">
+                                    <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
+                                </label>
+                            </div>
+                            <div class="span4">
+                                <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
+                                          optionKey="id" optionValue="code" value="${resource.possessedByRole?.id}"/>
+                            </div>
+                        </div>
+                        <div class="row formRow clueRow">
+                            <div class="span1">
+                                <label for="resourceRoleFrom">
+                                    <g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>
+                                </label>
+                            </div>
+                            <div class="span4">
+                                <g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"
+                                          optionKey="id" optionValue="code" value="${resource.fromRole?.id}"/>
+                            </div>
+                            <div class="span1">
+                                <label for="resourceRoleTo">
+                                    <g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>
+                                </label>
+                            </div>
+                            <div class="span4">
+                                <g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"
+                                          optionKey="id" optionValue="code" value="${resource.toRole?.id}"/>
+                            </div>
+                        </div>
+                    </g:if>
                     <div class="row formRow text-center">
-                        <label for="resourceDescription">
-                            <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
+                        <label for="resourceComment">
+                            <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
                         </label>
                     </div>
-                    <g:textArea name="resourceDescription" id="resourceDescription" value="${resource.comment}" rows="5" cols="100"/>
-
-                    <div id="resourceCluesModal_${resource.id}" class="modal hide fade" tabindex="-1">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">×</button>
-
-                            <h3>
-                                <g:message code="redactintrigue.resource.resourceClues" default="Clues"/>
-                            </h3>
+                    <g:textArea name="resourceComment" id="resourceComment" value="${resource.comment}" rows="5" cols="100"/>
+                    <g:if test="${resource.title != null}">
+                        <div class="row formRow text-center clueRow">
+                            <label for="resourceDescription">
+                                <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
+                            </label>
                         </div>
-
-                        <div class="modal-body">
-                            <ul>
-
-                            </ul>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal">Ok</button>
-                        </div>
-                    </div>
+                        <g:textArea name="resourceDescription" value="${resource.description}" id="resourceDescription" rows="5" cols="100" class="clueRow"/>
+                    </g:if>
 
                     <div id="resourceTagsModal_${resource.id}" class="modal hide fade tags-modal" tabindex="-1">
                         <div class="modal-header">
@@ -204,13 +249,6 @@
                         <div class="modal-body">
                             <ul class="resourceTags${resource.id}">
                                 <g:each in="${resourceTagList}" var="resourceTagInstance">
-                                    %{--<li class="modalLi" data-name="${resourceTagInstance.name.toLowerCase()}">--}%
-                                        %{--<label>--}%
-                                            %{--<g:checkBox name="resourceTags_${resourceTagInstance.id}" id="resourceTags_${resourceTagInstance.id}"--}%
-                                                        %{--checked="${resource.hasGenericResourceTag(resourceTagInstance)}"/>--}%
-                                            %{--${fieldValue(bean: resourceTagInstance, field: "name")}--}%
-                                        %{--</label>--}%
-                                    %{--</li>--}%
                                     <g:render template="resourceTagTree" model="[resourceTagInstance: resourceTagInstance, resource: resource]"/>
                                 </g:each>
                             </ul>

@@ -1,5 +1,4 @@
 <%@ page import="org.gnk.selectintrigue.Plot"%>
-%{--<g:hiddenField name="screenStep" value="1" />--}%
 
 <div class="tabbable tabs-left relationScreen">
 	<ul class="nav nav-tabs leftUl">
@@ -165,39 +164,6 @@
                     </g:each>
                 </div>
             </div>
-
-			%{--<div class="tab-pane" id="roleRelation_${role.id}">--}%
-				%{--<table class="table table-bordered table-striped">--}%
-					%{--<thead>--}%
-						%{--<tr>--}%
-							%{--<th><g:message code="redactintrigue.relation.to"--}%
-									%{--default="To" /></th>--}%
-							%{--<th><g:message code="redactintrigue.relation.bijective"--}%
-									%{--default="Bijective" /></th>--}%
-							%{--<th><g:message code="redactintrigue.relation.type"--}%
-									%{--default="Relation type" /></th>--}%
-							%{--<th><g:message code="redactintrigue.relation.weight"--}%
-									%{--default="Weight" /></th>--}%
-							%{--<th></th>--}%
-							%{--<th></th>--}%
-						%{--</tr>--}%
-					%{--</thead>--}%
-					%{--<tbody>--}%
-						%{--<g:each in="${role.roleHasRelationWithRolesForRole1Id}"--}%
-							%{--status="relationNumber" var="roleHasRelationWithRoles">--}%
-							%{--<g:render template="relationRow"--}%
-								%{--model="['roleHasRelationWithRoles':roleHasRelationWithRoles, 'plotInstance':plotInstance,  'isRole1':true]" />--}%
-						%{--</g:each>--}%
-						%{--<g:each in="${role.roleHasRelationWithRolesForRole2Id}"--}%
-							%{--status="relationNumber" var="roleHasRelationWithRoles">--}%
-							%{--<g:if test="${roleHasRelationWithRoles.isBijective}">--}%
-								%{--<g:render template="relationRow"--}%
-									%{--model="['roleHasRelationWithRoles':roleHasRelationWithRoles, 'isRole1':false]" />--}%
-							%{--</g:if>--}%
-						%{--</g:each>--}%
-					%{--</tbody>--}%
-				%{--</table>--}%
-			%{--</div>--}%
 		</g:each>
 	</div>
 </div>

@@ -58,6 +58,9 @@ function updateRole() {
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
                     $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"]').html('Vers: ' + data.object.name);
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
@@ -101,6 +104,9 @@ function removeRole(object) {
                     liObject.remove();
                     $('select[name="relationFrom"] option[value="' + object.attr("data-id") + '"]').remove();
                     $('select[name="relationTo"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('select[name="resourceRolePossessor"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('select[name="resourceRoleFrom"] option[value="' + object.attr("data-id") + '"]').remove();
+                    $('select[name="resourceRoleTo"] option[value="' + object.attr("data-id") + '"]').remove();
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + object.attr("data-id") + '"]').parent().remove();
                     $('.relationScreen #roleRelation_' + object.attr("data-id")).remove();
                     $('.relationScreen .accordion-group[data-roleTo="' + object.attr("data-id") + '"]').remove();
@@ -193,6 +199,9 @@ function updateRoleRelation(data) {
     $('.relationScreen > ul').append(html);
     $('select[name="relationFrom"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
     $('select[name="relationTo"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
+    $('select[name="resourceRolePossessor"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
+    $('select[name="resourceRoleFrom"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
+    $('select[name="resourceRoleTo"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
     $('.relationScreen .tab-content').append('<div class="tab-pane" id="roleRelation_'+data.role.id+'">'
     + '<div class="accordion" id="accordionRelation'+data.role.id+'"></div></div>');
 }

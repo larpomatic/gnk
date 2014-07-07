@@ -26,23 +26,75 @@
                     </a>
                 </div>
                 <div class="span1">
-                    <label>
-                        Indices
+                    <label for="resourceIsClue">
+                        Indice
                     </label>
                 </div>
-
                 <div class="span4">
-                    <a href="#resourceCluesModal_{{ genericResource.id }}" class="btn" data-toggle="modal">
-                        Choisir les indices
-                    </a>
+                    {{#if genericResource.clue}}
+                        <input type="checkbox" name="resourceIsClue" checked="checked" id="resourceIsClue" disabled="disabled">
+                    {{else}}
+                        <input type="checkbox" name="resourceIsClue" id="resourceIsClue" disabled="disabled">
+                    {{/if}}
                 </div>
             </div>
+            {{#if genericResource.clue}}
+                <div class="row formRow clueRow">
+                    <div class="span1">
+                        <label for="resourceTitle">
+                            Titre
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <input type="text" name="resourceTitle" id="resourceTitle" value="{{ genericResource.title }}">
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRolePossessor">
+                            Possesseur
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRolePossessor" id="resourceRolePossessor">
+                        </select>
+                    </div>
+                </div>
+                <div class="row formRow clueRow">
+                    <div class="span1">
+                        <label for="resourceRoleFrom">
+                            Du rôle
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRoleFrom" id="resourceRoleFrom">
+                        </select>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRoleTo">
+                            Pour le rôle
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRoleTo" id="resourceRoleTo">
+                        </select>
+                    </div>
+                </div>
+            {{/if}}
             <div class="row formRow text-center">
-                <label for="resourceDescription">
-                    Description
+                <label for="resourceComment">
+                    Commentaire
                 </label>
             </div>
-            <textarea name="resourceDescription" id="resourceDescription" rows="5" cols="100">{{{ genericResource.comment }}}</textarea>
+            <textarea name="resourceComment" id="resourceComment" rows="5" cols="100">{{{ genericResource.comment }}}</textarea>
+            {{#if genericResource.clue}}
+                <div class="row formRow text-center clueRow">
+                    <label for="resourceDescription">
+                        Description
+                    </label>
+                </div>
+                <textarea name="resourceDescription" id="resourceDescription" rows="5" cols="100" class="clueRow">
+                    {{ genericResource.description }}
+                </textarea>
+            {{/if}}
         </div>
 
         <div id="resourceCluesModal_{{ genericResource.id }}" class="modal hide fade" tabindex="-1">
@@ -74,14 +126,6 @@
 
             <div class="modal-body">
                 <ul class="resourceTags{{ genericResource.id }}">
-                <!--{{#each genericResourceTagList}}-->
-                    <!--<li class="modalLi" data-name="{{toLowerCase name }}">-->
-                        <!--<label>-->
-                            <!--<input type="checkbox" name="resourceTags_{{ id }}" id="resourceTags_{{ id }}"/>-->
-                            <!--{{ name }}-->
-                        <!--</label>-->
-                    <!--</li>-->
-                <!--{{/each}}-->
                     {{#recursive genericResourceTagList}}
                         <li class="modalLi row" data-name="{{toLowerCase name }}">
                             <label class="pull-left">
