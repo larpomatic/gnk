@@ -15,6 +15,12 @@ select {
 <legend>
     <g:message code="default.edit.label" args="[entityName]"/>
 </legend>
+<g:if test="${flash.message}">
+    <div class="alert notificationBox alert-block alert-danger fade in">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4 class="alert-heading"><g:message code="${flash.message}" args="[]"/></h4>
+    </div>
+</g:if>
 
 <g:form method="post" class="gnSubmitForm">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>

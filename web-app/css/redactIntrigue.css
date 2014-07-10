@@ -231,6 +231,14 @@
     margin-top: 13px;
 }
 
+#edit-plot .shortInput input {
+    width: 150px !important;
+}
+
+#edit-plot .littleRow {
+    margin-top: -8px !important;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

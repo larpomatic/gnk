@@ -167,6 +167,7 @@ class GenericResourceController {
     def show(Long id) {
         def genericResourceInstance = GenericResource.get(id)
         if (!genericResourceInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }
@@ -177,6 +178,7 @@ class GenericResourceController {
     def edit(Long id) {
         def genericResourceInstance = GenericResource.get(id)
         if (!genericResourceInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }

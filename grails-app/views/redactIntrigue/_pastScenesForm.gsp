@@ -114,6 +114,21 @@
                 </div>
 
                 <div class="row formRow">
+                    <div class="span2">Année</div>
+                    <div class="span2">Mois</div>
+                    <div class="span2">Jour</div>
+                    <div class="span2">Heure</div>
+                    <div class="span2">Minute</div>
+                </div>
+                <div class="row formRow littleRow">
+                    <div class="span2 shortInput"><g:field type="number" name="year" id="year"/></div>
+                    <div class="span2 shortInput"><g:field type="number" name="month" id="month"/></div>
+                    <div class="span2 shortInput"><g:field type="number" name="day" id="day"/></div>
+                    <div class="span2 shortInput"><g:field type="number" name="hour" id="hour"/></div>
+                    <div class="span2 shortInput"><g:field type="number" name="minute" id="minute"/></div>
+                </div>
+
+                <div class="row formRow">
                     <div class="span1">
                         <label for="pastScenePlace">
                             <g:message code="redactintrigue.pastScene.pastscenePlace" default="Place"/>
