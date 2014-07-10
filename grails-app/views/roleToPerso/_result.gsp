@@ -447,10 +447,10 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
+                        <th><g:message code="roletoperso.character"
+                                       default="Character"/></th>
                         <th><g:message code="roletoperso.roleCode"
                                        default="Role code"/></th>
-                        <th><g:message code="selectintrigue.plotName"
-                                       default="Plot name"/></th>
                         <th><g:message code="roletoperso.sexe"
                                        default="Sex"/></th>
                         <th><g:message code="roletoperso.action"
@@ -462,7 +462,7 @@
                         <g:if test="${(((Character) PHJ).isPHJ() == true) || (((Character) PHJ).isPNJ() == true)}">
                             <tr id="${"line" + ((Character) PHJ).getDTDId()}">
                                 <td>CHAR-${((Character) PHJ).getDTDId()}</td>
-                                <td>"Test"</td>
+                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}">${((Character) PHJ).rolesToString()}</td>
                                 <td style="text-align: center">
                                     <g:if test="${((Character) PHJ).getGender() == 'M'}">
                                         <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
@@ -509,15 +509,19 @@
     </div>
     <div class="modal-body">
         <div class="row-fluid">
-            <div class="span5">
+            <div class="span4">
                 <h4 id="modalPHJ1">Personnage 1</h4>
             </div>
-            <div class="span2"></div>
+            <div class="span3">
+                <i class="icon-chevron-right"></i>
+                <i class="icon-chevron-right"></i>
+                <i class="icon-chevron-right"></i>
+            </div>
             <div class="span5">
                 <select id="modaloption" class="form-control">
                     <option value="" disabled selected style='display:none;'>Fusionner avec ...</option>
                     <g:each in="${PHJList}" var="player">
-                        <g:if test="${((Character) player).isPHJ() == true}">
+                        <g:if test="${(((Character) player).isPHJ() == true) || (((Character) player).isPNJ() == true)}">
                             <option value="${'CHAR-' + ((Character) player).getDTDId()}" id="${'CHAR-' + ((Character) player).getDTDId()}" class="optionschar hidden">CHAR-${((Character) player).getDTDId()}</option>
                         </g:if>
                     </g:each>
@@ -622,9 +626,20 @@
                 var remove_id = "line" + data.object.test;
                 $("tr#"+remove_id).remove();
                 $("#fusionModal").modal('hide');
+                var upd_name = '#td_' + selected_char;
+                //$(upd_name).val(data.object.roles);
+                $(upd_name).html(data.object.roles)
+                $("#modaloption option").each(function()
+                {
+                    var sup_name = 'CHAR-' + from_char;
+                    if ($(this).val() == sup_name)
+                    {
+                        $(this).remove();
+                    }
+                });
             },
             error: function() {
-                alert('La requête n\'a pas abouti'); }
+                alert('La requête n\'est pas valide'); }
         });
     });
 </script>

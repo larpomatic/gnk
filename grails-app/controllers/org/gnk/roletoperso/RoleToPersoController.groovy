@@ -308,6 +308,7 @@ class RoleToPersoController {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save();
-        return render(contentType: "application/json") { object(test: id_from)};
+        String new_role = c_to.rolesToString();
+        return render(contentType: "application/json") { object(test: id_from, roles: new_role)};
     }
 }

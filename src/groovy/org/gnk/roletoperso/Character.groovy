@@ -275,7 +275,18 @@ class Character {
         return result;
     }
 
+    public String rolesToString()
+    {
+        String result = "";
 
+        for (Role r in selectedRoles)
+        {
+            if (result != "")
+                result += ", "
+            result += r.code;
+        }
+        return result;
+    }
 
     public Map<RoleHasRelationWithRole, Integer> getRelations(boolean evenIfNonBijective) {
         Map<RoleHasRelationWithRole, Integer> relationMap = new HashMap<RoleHasRelationWithRole, Integer>()
