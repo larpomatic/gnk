@@ -34,27 +34,34 @@ class WordWriter {
     public String title
     public String subtitle
 
-    public WordWriter(String universName) {
+    public WordWriter(String templateWordSelected) {
         defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
-        if (universName == "Harry Potter Anglais Fantastique (Univers)")
-        {
-            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]HARRY POTTER.docx"))
+        try{
+            this.wordMLPackage = WordprocessingMLPackage.load(new File(System.getProperty("user.dir")+"/publication/"+templateWordSelected+".docx"))
+        } catch (Exception e){
+            defaultTemplate = true
+            this.wordMLPackage = WordprocessingMLPackage.createPackage()
+            alterStyleSheet()
         }
-        else if (universName.equalsIgnoreCase("Trône de Fer / Game of Thrones"))
-        {
-            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]GAME OF THRONE.docx"))
-        }
-        else
-        {
-            try{
-                this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]DEFAULT.docx"))
-            } catch (Exception e){
-                defaultTemplate = true
-                this.wordMLPackage = WordprocessingMLPackage.createPackage()
-                alterStyleSheet()
-            }
-        }
+//        if (templateWordSelected == "Harry Potter Anglais Fantastique (Univers)")
+//        {
+//            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]HARRY POTTER.docx"))
+//        }
+//        else if (templateWordSelected.equalsIgnoreCase("Trône de Fer / Game of Thrones"))
+//        {
+//            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]GAME OF THRONE.docx"))
+//        }
+//        else
+//        {
+//            try{
+//                this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]DEFAULT.docx"))
+//            } catch (Exception e){
+//                defaultTemplate = true
+//                this.wordMLPackage = WordprocessingMLPackage.createPackage()
+//                alterStyleSheet()
+//            }
+//        }
         mainPart = wordMLPackage.getMainDocumentPart()
     }
 

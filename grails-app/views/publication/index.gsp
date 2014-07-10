@@ -9,15 +9,16 @@
 
 <br><br>
 <div class="row-fluid">
-<div class="span3">
-    <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
-        <input type="hidden" value="${gnId}" name="gnId"/>
-        <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
-    </form>
-</div>
-    <!--${templateWordList = ["DEFAULT","abc", "def", "ghi"]}-->
+    <div class="span3">
+        <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
+            <input type="hidden" value="${gnId}" name="gnId"/>
+            <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
+            <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
+        </form>
+    </div>
+
     Template Word :
-    <select class="bold" isempty="false" >
+    <select class="bold" isempty="false" onchange="document.getElementById('templateWordSelect').value = this.value">
         <g:each in="${templateWordList}" var="templateWord">
             <g:if test="${universName == templateWord}">
                 <option value="${templateWord}" selected>${templateWord}</option>
@@ -44,7 +45,10 @@
             <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter Joueur.CSV</button>
         </form>
     </div>
+    <button class="btn" disabled><i class="icon-film"></i> Afficher Simulation</button>
 </div>
+
+
 
 
 
@@ -109,12 +113,14 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
                 subJSON.subResource = resourcesJSON.resources;
                 subJSON.subPlace = placesJSON.places;
                 subJSON.subDate = datesJSON;
+                subJSON.templateWord = ${templateWordSelect}
 
                 // Form creation and submit
                 var form = $("<form>");
                 form.attr({method: "POST", action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"});
                 var inputJSON = $("<input>");
                 inputJSON.attr({type: "hidden", name: "subJSON", value: JSON.stringify(subJSON)});
+                inputJSON.attr({type : "hidden", name: "templateWordSelected", value: getSelectValue('templateWordSelect')})
                 form.append(inputJSON);
                 $("body").append(form);
                 form.submit();

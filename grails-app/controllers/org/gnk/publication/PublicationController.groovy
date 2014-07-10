@@ -58,6 +58,8 @@ class PublicationController {
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
         def id = params.gnId as Integer
+        def efg = getParams()
+        String tmpWord = params.templateWordSelect as String
         Gn getGn = null
         if (!id.equals(null))
             getGn = Gn.get(id)
@@ -79,7 +81,7 @@ class PublicationController {
 
         File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
 
-        wordWriter = new WordWriter(gn.univers.name)
+        wordWriter = new WordWriter(tmpWord)
         wordWriter.wordMLPackage = createPublication()
         wordWriter.wordMLPackage.save(output)
 
@@ -94,32 +96,30 @@ class PublicationController {
         for (Plot p : gn.selectedPlotSet)
             if (p.pitchOrga != null)
             {
+                substituteRolesAndPlotDescription(p)
                 pitchOrgaList.add(p.name)
                 pitchOrgaList.add(p.pitchOrga)
             }
 
         ArrayList<String> templateWordList = new ArrayList<String>()
-        templateWordList.add("Working Directory = " + System.getProperty("user.dir"))
-//        File folder = new File();
-//        File[] listOfFiles = folder.listFiles();
-//
-//        for (int i = 0; i < listOfFiles.length; i++) {
-//            if (listOfFiles[i].isFile()) {
-//                System.out.println("File " + listOfFiles[i].getName());
-//            } else if (listOfFiles[i].isDirectory()) {
-//                System.out.println("Directory " + listOfFiles[i].getName());
-//            }
-//        }
+
+        File folder = new File(System.getProperty("user.dir")+"/publication");
+        File[] listOfFiles = folder.listFiles();
+        for (int i = 0; i < listOfFiles.length; i++)
+            if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
+                templateWordList.add(listOfFiles[i].getName().replace(".docx","").replace(" (Univers)",""));
+        String uniName = gn.univers.name.replace(" (Univers)","").replace("/","-")
+
         [
             title : gn.name,
             subtitle : createSubTile(),
-            GNinfo1 : "Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".",
+            GNinfo1 : "Le GN se déroule dans l'Univers de : " + uniName +".",
             GNinfo2 : "Il débute à " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.",
             msgCharacters : PitchOrgaMsgCharacters(),
             pitchOrgaList : pitchOrgaList,
             charactersList : createPlayersList(),
             gnId : id,
-            universName : gn.univers.name,
+            universName : uniName,
             templateWordList : templateWordList
         ]
     }
@@ -217,18 +217,22 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
+
+
+
                     for (Role r : c.selectedRoles)
                     {
+                        substituteRolesAndPlotDescription(r.getterPlot())
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += ";" + r.code + " : " +  r.description
+                            resRoles += "; " + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -269,13 +273,13 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += ";" + r.code + " : " +  r.description
+                            resRoles += "; " + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -315,13 +319,13 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = r.code + " : " + r.description
                         else
-                            resRoles += ";" + r.code + " : " +  r.description
+                            resRoles +=   + r.code + " : " +  r.description
                         for (RoleHasTag rht : r.roleHasTags)
                         {
                             if (resTag == "Aucune indication")
                                 resTag = rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += ";" + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -736,6 +740,7 @@ class PublicationController {
             if (p.pitchOrga != null)
             {
                 wordWriter.addStyledParagraphOfText("T3", p.name)
+                substituteRolesAndPlotDescription(p)
                 wordWriter.addParagraphOfText(p.pitchOrga)
             }
         wordWriter.addBorders(table)
@@ -912,7 +917,7 @@ class PublicationController {
             for (PlotHasTag plotHasTag : p.extTags)
             {
                 if (!first)
-                    tags += ";"
+                    tags += "; "
                 else
                     first = false
                 tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%) "
@@ -1242,7 +1247,7 @@ class PublicationController {
             ArrayList<String> currentPla = tabOfPlayer.get(i)
             for (int j = 0; j < currentPla.size(); j++) {
                 String val = currentPla.get(j)
-                ret = ret.concat(val + ";")
+                ret = ret.concat(val + "; ")
             }
             ret = ret.concat("\n")
         }

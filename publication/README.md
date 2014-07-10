@@ -1,5 +1,5 @@
 Pour faire votre template word de façon efficace :
-    Copier/Coller le fichier "[Template]DEFAULT.docx"
+    Copier/Coller le fichier "DEFAULT.docx"
     Puis modifier cette copie en modifiant les styles déjà présents ("T", "ST", "T1" etc... cf plus bas pour explications), en y ajoutant des images, des footers & headers, des pages de gardes etc...
 
 Voici les règles à suivre pour que le GNK puisse lire vos template :
