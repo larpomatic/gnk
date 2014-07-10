@@ -4,6 +4,7 @@ package org.gnk.resplacetime
 import org.gnk.ressplacetime.GenericResource
 import org.gnk.ressplacetime.ReferentialResource
 import com.gnk.substitution.Tag
+import org.gnk.tag.TagService
 
 import java.text.Collator
 
@@ -130,11 +131,11 @@ class ResourceService {
                 for (Tag expectedTag : tagsList) {
                     if (itemTag.type.toUpperCase().equals(expectedTag.type.toUpperCase()) & itemTag.value.toUpperCase().equals(expectedTag.value.toUpperCase())) {
                         // The expectedTag is mandatory for the item
-                        if (expectedTag.weight.equals(101)) {
+                        if (expectedTag.weight.equals(TagService.LOCKED)) {
                             item.matchingRate += (expectedTag.weight * 100)
                         }
                         // The expectedTag is forbidden for the item
-                        else if (expectedTag.weight.equals(-101)) {
+                        else if (expectedTag.weight.equals(TagService.BANNED)) {
                             itemsList.remove(item);
                         }
                         else {
