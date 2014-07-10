@@ -19,9 +19,13 @@ class User {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
-	
+
+    int gright
 	Date lastUpdated
 	Date dateCreated
+    Date lastConnexion
+
+    int countConnexion
 
 	String firstname
 	String lastname

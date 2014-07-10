@@ -8,19 +8,50 @@ class TagService {
     def serviceMethod() {
     }
 
-    def List<Tag> getPlotTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
+    def findChildren(Tag t) {
+        def tags = Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
         }
+        return tags
+    }
 
+    def List<Tag> getPlotTagQuery() {
+        Set<Tag> genericPlot = Tag.findAllByName("Générique Intrigue");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericPlot);
+        return result;
+    }
+
+    def List<Tag> getResourceTagQuery() {
+        Set<Tag> genericResource = Tag.findAllByName("Générique Ressources");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericResource);
+        return result;
+    }
+
+    def List<Tag> getPlaceTagQuery() {
+        Set<Tag> genericPlace = Tag.findAllByName("Générique Lieux");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericPlace);
         return result;
     }
 
     def List<Tag> getRoleTagQuery() {
-        def result = Tag.withCriteria{
-            tagFamily { eq ("relevantPlot", true) }
-        }
+        Set<Tag> genericRole = Tag.findAllByName("Générique Rôle");
+        ArrayList<Tag> result = new ArrayList<>();
+        result = fillResult(result, genericRole);
+        return result;
+    }
 
+    def ArrayList<Tag> fillResult(ArrayList<Tag> result, Set<Tag> tagsToInclude) {
+        for (Tag child in tagsToInclude) {
+            result.add(child);
+        }
         return result;
     }
 

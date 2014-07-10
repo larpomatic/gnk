@@ -281,7 +281,7 @@ class GnXMLWriterService {
 
         tagE.setAttribute("db_id", tag.id.toString())
         tagE.setAttribute("value", tag.name)
-        tagE.setAttribute("type", tag.tagFamily.value)
+        tagE.setAttribute("type", tag.parent.name)
         tagE.setAttribute("weight", weight.toString())
         tagE.setAttribute("status", "")
 

@@ -44,6 +44,12 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'org.docx4j:docx4j:2.7.1'
+
+        test 'org.seleniumhq.selenium:selenium-java:2.41.0'
+        test 'org.seleniumhq.selenium:selenium-firefox-driver:2.41.0'
+        test 'org.seleniumhq.selenium:selenium-chrome-driver:2.41.0'
+
+        test 'junit:junit:4.11'
     }
 
     plugins {
@@ -51,6 +57,7 @@ grails.project.dependency.resolution = {
         runtime ":jquery:1.8.3"
         runtime ":resources:1.2.7"
         runtime ":handlebars-resources:1.3.0"
+        compile ":cookie-session:2.0.14"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"

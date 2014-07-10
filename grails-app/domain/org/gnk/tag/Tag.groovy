@@ -10,25 +10,26 @@ class Tag {
     Integer id
     Integer version
 
-	Date lastUpdated
-	Date dateCreated
-	String name
+    Date lastUpdated
+    Date dateCreated
+    String name
+    Tag parent
 
-	static belongsTo = [ tagFamily: TagFamily ]
-	
-	static hasMany = [ extPlaceTags: PlaceHasTag,
-                       extResourceTags: ResourceHasTag,
-                       extPlotTags: PlotHasTag,
-                       extRoleTags: RoleHasTag ]
+    static hasMany = [
+    extPlaceTags: PlaceHasTag,
+    extResourceTags: ResourceHasTag,
+    extPlotTags: PlotHasTag,
+    extRoleTags: RoleHasTag,
+    children: Tag]
 
-	static constraints = {
-		name maxSize: 45
-	}
-	
-	@Override
-	public String toString() {
-		return name;
-	}
+    static constraints = {
+        name maxSize: 45
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 
     static mapping = {
         id type: 'integer'

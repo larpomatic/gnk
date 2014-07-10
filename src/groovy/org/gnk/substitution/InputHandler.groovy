@@ -118,7 +118,7 @@ class InputHandler {
         for (el in gnInst.gnTags) {
             Tag tagData = new Tag()
             tagData.value = el.key.name
-            tagData.family = el.key.tagFamily.value
+            tagData.family = el.key.parent.name
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
@@ -143,7 +143,7 @@ class InputHandler {
             for (el in character.getTags()) {
                 Tag tagData = new Tag()
                 tagData.value = el.key.name
-                tagData.family = el.key.tagFamily.value
+                tagData.family = el.key.parent.name
                 tagData.weight = el.value
                 characterData.tagList.add(tagData)
             }
@@ -171,7 +171,7 @@ class InputHandler {
             for (el in character.getTags()) {
                 Tag tagData = new Tag()
                 tagData.value = el.key.name
-                tagData.family = el.key.tagFamily.value
+                tagData.family = el.key.parent.name
                 tagData.weight = el.value
                 characterData.tagList.add(tagData)
             }
@@ -193,42 +193,69 @@ class InputHandler {
         // Iterate generic resources
         for(plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
-            for(org.gnk.roletoperso.Role role : plot.roles) {
-                if (role.roleHasEvents) {
-                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
-                        if (roleHasEvent.roleHasEventHasGenericResources) {
-                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-                                GenericResource genericResource = roleHasEventHasGenericResource.genericResource
 
-                                Resource resource = new Resource()
-                                // Id
-                                resource.id = genericResource.DTDId
-                                // Plot id
-                                resource.plotId = plotId
-                                // Code
-                                resource.code = genericResource.code
-                                // Comment
-                                resource.comment = genericResource.comment
+            for (GenericResource genericResource : plot.genericResources) {
+                Resource resource = new Resource()
+                // Id
+                resource.id = genericResource.DTDId
+                // Plot id
+                resource.plotId = plotId
+                // Code
+                resource.code = genericResource.code
+                // Comment
+                resource.comment = genericResource.comment
 
-                                // TagList
-                                resource.tagList = []
-                                if (genericResource.extTags) {
-                                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
-                                        Tag tagData = new Tag()
+                // TagList
+                resource.tagList = []
+                if (genericResource.extTags) {
+                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
+                        Tag tagData = new Tag()
 
-                                        tagData.value = genericResourceHasTag.tag.name
-                                        tagData.family = genericResourceHasTag.tag.tagFamily.value
-                                        tagData.weight = genericResourceHasTag.weight as Integer
+                        tagData.value = genericResourceHasTag.tag.name
+                        tagData.family = genericResourceHasTag.tag.parent.name
+                        tagData.weight = genericResourceHasTag.weight as Integer
 
-                                        resource.tagList.add(tagData)
-                                    }
-                                }
-                                resourceList.add(resource)
-                            }
-                        }
+                        resource.tagList.add(tagData)
                     }
                 }
+                resourceList.add(resource)
             }
+//            for(org.gnk.roletoperso.Role role : plot.roles) {
+//                if (role.roleHasEvents) {
+//                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
+//                        if (roleHasEvent.roleHasEventHasGenericResources) {
+//                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
+//                                GenericResource genericResource = roleHasEventHasGenericResource.genericResource
+//
+//                                Resource resource = new Resource()
+//                                // Id
+//                                resource.id = genericResource.DTDId
+//                                // Plot id
+//                                resource.plotId = plotId
+//                                // Code
+//                                resource.code = genericResource.code
+//                                // Comment
+//                                resource.comment = genericResource.comment
+//
+//                                // TagList
+//                                resource.tagList = []
+//                                if (genericResource.extTags) {
+//                                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
+//                                        Tag tagData = new Tag()
+//
+//                                        tagData.value = genericResourceHasTag.tag.name
+//                                        tagData.family = genericResourceHasTag.tag.tagFamily.value
+//                                        tagData.weight = genericResourceHasTag.weight as Integer
+//
+//                                        resource.tagList.add(tagData)
+//                                    }
+//                                }
+//                                resourceList.add(resource)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
@@ -280,7 +307,7 @@ class InputHandler {
                 Tag tagData = new Tag()
 
                 tagData.value = genericPlaceHasTag.tag.name
-                tagData.family = genericPlaceHasTag.tag.tagFamily.value
+                tagData.family = genericPlaceHasTag.tag.parent.name
                 tagData.weight = genericPlaceHasTag.weight as Integer
 
                 place.tagList.add(tagData)

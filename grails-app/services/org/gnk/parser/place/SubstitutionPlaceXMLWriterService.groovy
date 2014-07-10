@@ -95,7 +95,7 @@ class SubstitutionPlaceXMLWriterService {
                 for(PlaceHasTag placeHasTag : place.extTags) {
                     Element tagE = doc.createElement("TAG")
                     tagE.setAttribute("value", placeHasTag.tag.name)
-                    tagE.setAttribute("type", placeHasTag.tag.tagFamily.value)
+                    tagE.setAttribute("type", placeHasTag.tag.parent.name)
                     tagE.setAttribute("weight", placeHasTag.weight as String)
 
                     tagsE.appendChild(tagE)

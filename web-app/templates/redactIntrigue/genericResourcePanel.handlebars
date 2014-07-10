@@ -1,0 +1,164 @@
+<div class="tab-pane" id="resource_{{ genericResource.id }}">
+    <form name="updateResource_{{ genericResource.id }}" data-url="/gnk/genericResource/update/{{ genericResource.id }}">
+        <input type="hidden" name="id" value="{{ genericResource.id }}"/>
+        <input type="hidden" name="plotId" id="plotId" value="{{ genericResource.plotId }}"/>
+
+        <div style="margin:auto">
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="resourceCode">
+                        Nom
+                    </label>
+                </div>
+                <div class="span8">
+                    <input type="text" name="resourceCode" id="resourceCode" value="{{ genericResource.code }}" required=""/>
+                </div>
+            </div>
+            <div class="row formRow">
+                <div class="span1">
+                    <label>
+                        Tags
+                    </label>
+                </div>
+                <div class="span4">
+                    <a href="#resourceTagsModal_{{ genericResource.id }}" class="btn" data-toggle="modal">
+                        Choisir les tags
+                    </a>
+                </div>
+                <div class="span1">
+                    <label for="resourceIsClue">
+                        Indice
+                    </label>
+                </div>
+                <div class="span4">
+                    {{#if genericResource.clue}}
+                        <input type="checkbox" name="resourceIsClue" checked="checked" id="resourceIsClue" disabled="disabled">
+                    {{else}}
+                        <input type="checkbox" name="resourceIsClue" id="resourceIsClue" disabled="disabled">
+                    {{/if}}
+                </div>
+            </div>
+            {{#if genericResource.clue}}
+                <div class="row formRow clueRow">
+                    <div class="span1">
+                        <label for="resourceTitle">
+                            Titre
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <input type="text" name="resourceTitle" id="resourceTitle" value="{{ genericResource.title }}">
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRolePossessor">
+                            Possesseur
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRolePossessor" id="resourceRolePossessor">
+                        </select>
+                    </div>
+                </div>
+                <div class="row formRow clueRow">
+                    <div class="span1">
+                        <label for="resourceRoleFrom">
+                            Du rôle
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRoleFrom" id="resourceRoleFrom">
+                        </select>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceRoleTo">
+                            Pour le rôle
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <select name="resourceRoleTo" id="resourceRoleTo">
+                        </select>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="row formRow text-center">
+                <label for="resourceComment">
+                    Commentaire
+                </label>
+            </div>
+            <textarea name="resourceComment" id="resourceComment" rows="5" cols="100">{{{ genericResource.comment }}}</textarea>
+            {{#if genericResource.clue}}
+                <div class="row formRow text-center clueRow">
+                    <label for="resourceDescription">
+                        Description
+                    </label>
+                </div>
+                <textarea name="resourceDescription" id="resourceDescription" rows="5" cols="100" class="clueRow">
+                    {{ genericResource.description }}
+                </textarea>
+            {{/if}}
+        </div>
+
+        <div id="resourceCluesModal_{{ genericResource.id }}" class="modal hide fade" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+
+                <h3>
+                    Indices
+                </h3>
+            </div>
+
+            <div class="modal-body">
+                <ul>
+
+                </ul>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+
+        <div id="resourceTagsModal_{{ genericResource.id }}" class="modal hide fade tags-modal" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3 id="myModalLabel{{ genericResource.id }}">Tags</h3>
+                <input class="input-medium search-query" data-content="resourceTags{{ genericResource.id }}" placeholder="Rechercher..."/>
+            </div>
+
+            <div class="modal-body">
+                <ul class="resourceTags{{ genericResource.id }}">
+                    {{#recursive genericResourceTagList}}
+                        <li class="modalLi row" data-name="{{toLowerCase name }}">
+                            <label class="pull-left">
+                                <input type="checkbox" name="resourceTags_{{ id }}" id="resourceTags{{ ../genericResource.id }}_{{ id }}"
+                                       onClick="hideTags('resourceTags{{ ../genericResource.id }}_{{ id }}', 'resourceTagsWeight{{ ../genericResource.id }}_{{ id }}')"/>
+                                {{ name }}
+                            </label>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>
+                            </div>
+                            <div class="pull-right tagWeight">
+                                <input name="resourceTagsWeight_{{ id }}" value="50" type="number" max="101" class="tagWeightInput"
+                                       min="-101" style="width:45px;" id="resourceTagsWeight{{ ../genericResource.id }}_{{ id }}">
+                            </div>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-success chooseTag"><i class="icon-ok"></i></button>
+                            </div>
+                        </li>
+                        {{#if children}}
+                            <li class="modalLi">
+                                <ul>
+                                    {{{recursive children}}}
+                                </ul>
+                            </li>
+                        {{/if}}
+                    {{/recursive}}
+                </ul>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+        <input type="button" name="Update" data-id="{{ genericResource.id }}" value="Update" class="btn btn-primary updateResource"/>
+    </form>
+</div>

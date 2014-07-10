@@ -25,10 +25,14 @@
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                <td><g:link controller="redactIntrigue" action="edit"
-                            id="${plotInstance.id}" target="_blank">
-                    ${fieldValue(bean: plotInstance, field: "name")}
-                </g:link></td>
+                <td>
+                    <g:if test="${plotInstance.isMainstream && gnInstance.isMainstream}">
+                        <span class="mainstreamIcon">M</span>
+                    </g:if>
+                    <g:link controller="redactIntrigue" action="edit" id="${plotInstance.id}" target="_blank">
+                        ${fieldValue(bean: plotInstance, field: "name")}
+                    </g:link>
+                </td>
                 <g:radioGroup name="plot_status_${plotInstance.id}" values="[1, 2, 3]"
                               value="${((Gn)gnInstance).getLockedPlotSet().contains(plotInstance) ? "1" : (((Gn)gnInstance).getBannedPlotSet().contains(plotInstance) ? "2" : "3")}">
                     <td>

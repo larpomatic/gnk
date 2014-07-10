@@ -7,6 +7,7 @@ import org.gnk.parser.resource.GenericResourceXMLWriterService
 import org.gnk.parser.role.RoleXMLWriterService
 import org.gnk.parser.textualclue.GenericTextualClueXMLWriterService
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -35,15 +36,15 @@ class PlotXMLWriterService {
         }
 
         if (plot.pitchPnj != null) {
-        Element plotPitchPnj = doc.createElement("PITCH_PNJ");
-        plotPitchPnj.appendChild(doc.createTextNode(plot.pitchPnj));
-        plotElt.appendChild(plotPitchPnj);
+            Element plotPitchPnj = doc.createElement("PITCH_PNJ");
+            plotPitchPnj.appendChild(doc.createTextNode(plot.pitchPnj));
+            plotElt.appendChild(plotPitchPnj);
         }
 
         if (plot.pitchPj != null) {
-        Element plotPitchPj = doc.createElement("PITCH_PJ");
-        plotPitchPj.appendChild(doc.createTextNode(plot.pitchPj));
-        plotElt.appendChild(plotPitchPj);
+            Element plotPitchPj = doc.createElement("PITCH_PJ");
+            plotPitchPj.appendChild(doc.createTextNode(plot.pitchPj));
+            plotElt.appendChild(plotPitchPj);
         }
 
         plotElt.appendChild(getTagsElement(doc, plot));
@@ -86,7 +87,7 @@ class PlotXMLWriterService {
             for (PlotHasTag plotHasPlotTag : plot.extTags) {
                 Element tag = doc.createElement("TAG");
                 tag.setAttribute("value", plotHasPlotTag.tag.name)
-                tag.setAttribute("type", plotHasPlotTag.tag.tagFamily.value)
+                tag.setAttribute("type", plotHasPlotTag.tag.parent.name)
                 tag.setAttribute("weight", plotHasPlotTag.weight.toString())
                 tagsElt.appendChild(tag)
             }
@@ -157,6 +158,7 @@ class PlotXMLWriterService {
     private Element getGenericResourcesElement(Document doc, Plot plot) {
         Element genericResourcesElt = doc.createElement("GENERIC_RESOURCES");
 
+        HashMap<GenericResource, Role> genericResourceRoleHashMap = new HashMap<>();
         if (plot.roles) {
             for (Role role : plot.roles) {
                 if (role.roleHasEvents) {
@@ -164,11 +166,18 @@ class PlotXMLWriterService {
                         if (roleHasEvent.roleHasEventHasGenericResources) {
                             final GenericResourceXMLWriterService genericResourceWriter = new GenericResourceXMLWriterService()
                             for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-                                genericResourcesElt.appendChild(genericResourceWriter.getGenericResourceElement(doc, roleHasEventHasGenericResource.genericResource, role))
+//                                genericResourcesElt.appendChild(genericResourceWriter.getGenericResourceElement(doc, roleHasEventHasGenericResource.genericResource, role))
+                                genericResourceRoleHashMap.put(roleHasEventHasGenericResource.genericResource, role);
                             }
                         }
                     }
                 }
+            }
+        }
+        if (plot.genericResources) {
+            final GenericResourceXMLWriterService genericResourceWriter = new GenericResourceXMLWriterService();
+            for (GenericResource genericResource : plot.genericResources) {
+                genericResourcesElt.appendChild(genericResourceWriter.getGenericResourceElement(doc, genericResource, genericResourceRoleHashMap.get(genericResource)))
             }
         }
 

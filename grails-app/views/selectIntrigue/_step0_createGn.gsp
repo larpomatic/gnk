@@ -43,7 +43,7 @@ select {
                     <a href="#tagsModal" class="btn" data-toggle="modal">Choisir
                     l'ambiance du GN</a> <a href="#tagsEvenementialModal"
                                             class="btn" data-toggle="modal">Choisir l'ambiance
-                        évennementielle</a> <a href="#tagsMainstreamModal"
+                        évenementielle</a> <a href="#tagsMainstreamModal"
                                                class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
                 </div></td>
             </tr>
