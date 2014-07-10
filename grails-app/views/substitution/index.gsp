@@ -9,13 +9,13 @@
 <body>
 <h1>Substitution</h1>
 
-<g:form method="post" controller="publication">
+
     <g:hiddenField name="gnId" value="${gnId}"/>
     <div class="form-actions">
-        <g:actionSubmit id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index"
-                        value="${message(code: 'navbar.publication', default: 'Publication')}"/>
+    <button id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index">
+    ${message(code: 'navbar.publication', default: 'Publication')}</button>
     </div>
-</g:form>
+
 
 <g:render template="gnInformation" />
 
@@ -54,13 +54,12 @@
 <script type="text/javascript">
     function publicationAccess()
     {
-
-        var isCharsReady = prepareCharsJSONForValidation(charsJSON);
-        var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
-        var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
-        var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-        if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady)
-        {
+            var isCharsReady = prepareCharsJSONForValidation(charsJSON);
+            var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
+            var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
+            var isDatesReady = prepareDatesJSONForValidation(datesJSON);
+            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
+            // SubJSON construction
             var subJSON = new Object();
             subJSON.gnDbId = ${gnInfo.dbId};
             subJSON.subCharacter = charsJSON.characters;
