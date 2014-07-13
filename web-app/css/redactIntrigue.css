@@ -145,6 +145,10 @@
     width: 100%;
 }
 
+#edit-plot .span5 select {
+    width: 414px;
+}
+
 .fullScreenOpen {
     position: fixed;
     top: 0;

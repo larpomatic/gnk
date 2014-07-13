@@ -60,7 +60,7 @@
                             <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
                         </label>
                     </div>
-                    <div class="span4">
+                    <div class="span3">
                         <a href="#roleTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                         </a>
@@ -70,8 +70,8 @@
                             <g:message code="redactintrigue.role.roleType" default="Type"/>
                         </label>
                     </div>
-                    <div class="span4">
-                        <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                    <div class="span5">
+                        <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
                                   keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" required=""/>
                     </div>
                 </div>
@@ -265,7 +265,7 @@
                                 <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
                             </label>
                         </div>
-                        <div class="span4">
+                        <div class="span3">
                             <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                             </a>
@@ -275,8 +275,8 @@
                                 <g:message code="redactintrigue.role.roleType" default="Type"/>
                             </label>
                         </div>
-                        <div class="span4">
-                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                        <div class="span5">
+                            <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
                                       keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" value="${role.type}" required=""/>
                         </div>
                     </div>

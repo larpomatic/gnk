@@ -5,14 +5,12 @@
             {{ relation.RoleRelationTypeName }}
         </a>
         <span class="text-center" data-roleId="{{ relation.RoleToId }}">
-            Vers: {{ relation.RoleToCode }}
-        </span>
-        <span class="text-right">
             {{#if relation.isBijective}}
-                <span><img src="/gnk/static/images/redactIntrigue/relations/validate.png"></span>
+                <span><img src="/gnk/static/images/redactIntrigue/relations/doubleArrow.png"></span>
             {{else}}
-                <span><img src="/gnk/static/images/redactIntrigue/relations/forbidden.png"></span>
+                <span><img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png"></span>
             {{/if}}
+            {{ relation.RoleToCode }}
         </span>
         <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title=""
                 data-url="/gnk/relation/delete/{{ relation.id }}" data-object="relation" data-id="{{ relation.id }}"
