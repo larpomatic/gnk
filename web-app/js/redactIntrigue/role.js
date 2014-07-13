@@ -4,6 +4,9 @@ $(function(){
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
         var form = $('form[name="newRoleForm"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -29,6 +32,9 @@ $(function(){
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
                     updateRole();
+                    $('form[name="updateRole_' + data.role.id + '"] .btnFullScreen').click(function() {
+                        $(this).parent().parent().toggleClass("fullScreenOpen");
+                    });
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
@@ -46,6 +52,9 @@ function updateRole() {
     $('.updateRole').click(function() {
         var roleId = $(this).attr("data-id");
         var form = $('form[name="updateRole_' + roleId + '"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -146,6 +155,7 @@ function emptyRoleForm() {
     $('form[name="newRoleForm"] .tagWeightInput').attr('disabled','disabled');
     $('form[name="newRoleForm"] .search-query').val("");
     $('form[name="newRoleForm"] .modalLi').show();
+    $('form[name="newRoleForm"] #roleRichTextEditor').html("");
 }
 
 // créé un tab-pane du nouveau role
@@ -164,6 +174,13 @@ function createNewRolePanel(data) {
         });
         return out;
     });
+    Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
+        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
+        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
+        value = value.replace(/>/g, '</span>');
+        return new Handlebars.SafeString(value);
+    });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
     var context = {
         role: data.role,
@@ -171,6 +188,8 @@ function createNewRolePanel(data) {
     };
     var html = template(context);
     $('.roleScreen > .tab-content').append(html);
+    var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('#role_' + data.role.id + ' .fullScreenEditable');
     $('#role_' + data.role.id + ' #roleType option[value="'+ data.role.type +'"]').attr("selected", "selected");
     for (var key in data.role.tagList) {
         $('#roleTagsModal_' + data.role.id + " #roleTags" + data.role.id + "_" + data.role.tagList[key].id).attr('checked', 'checked');

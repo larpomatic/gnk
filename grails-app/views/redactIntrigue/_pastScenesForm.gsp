@@ -8,7 +8,7 @@
         <g:each in="${plotInstance.pastescenes}" status="i5" var="pastScene">
             <li class="leftMenuList">
                 <a href="#pastScene_${pastScene.id}" data-toggle="tab">
-                    ${pastScene.title}
+                    ${pastScene.title.encodeAsHTML()}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la scène?"
                         data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">

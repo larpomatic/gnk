@@ -26,6 +26,7 @@
         <div class="tab-pane active" id="newRole">
             <form name="newRoleForm" data-url="<g:createLink controller="Role" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <g:hiddenField name="roleDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="roleCode">
@@ -102,7 +103,14 @@
                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="roleRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>--}%
 
                 <div id="roleEventsModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
@@ -230,6 +238,7 @@
             <div class="tab-pane" id="role_${role.id}">
                 <form name="updateRole_${role.id}" data-url="<g:createLink controller="Role" action="Update" id="${role.id}"/>">
                     <g:hiddenField name="id" value="${role.id}"/>
+                    <g:hiddenField name="roleDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
                         <div class="span1">
@@ -307,7 +316,16 @@
                             <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                         </label>
                     </div>
-                    <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
+
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="roleRichTextEditor${role.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                            ${role.description.encodeAsHTML()}
+                        </div>
+                    </div>
+                    %{--<g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>--}%
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">

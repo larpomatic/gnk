@@ -7,7 +7,6 @@ $(function(){
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
-//        form = $('form[name="newEventForm"]');
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -32,7 +31,7 @@ $(function(){
                         language: 'fr',
                         pickSeconds: false
                     });
-                    $('.btnFullScreen').click(function() {
+                    $('form[name="updateEvent_' + data.event.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
                     var nbEvents = parseInt($('.eventsLi .badge').html()) + 1;

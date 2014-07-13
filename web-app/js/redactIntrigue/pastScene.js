@@ -34,7 +34,7 @@ $(function(){
                         language: 'fr',
                         pickSeconds: false
                     });
-                    $('.btnFullScreen').click(function() {
+                    $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
                     var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1;

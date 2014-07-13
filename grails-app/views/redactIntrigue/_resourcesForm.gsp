@@ -45,12 +45,12 @@
                         </a>
                     </div>
 
-                    <div class="span1">
+                    <div class="span2">
                         <label for="resourceIsClue">
                             <g:message code="redactintrigue.resource.isClue" default="Clue"/>
                         </label>
                     </div>
-                    <div class="span4">
+                    <div class="span3">
                         <g:checkBox name="resourceIsClue" id="resourceIsClue"/>
                     </div>
                 </div>
@@ -165,12 +165,12 @@
                             </a>
                         </div>
 
-                            <div class="span1">
+                            <div class="span2">
                                 <label for="resourceIsClue">
                                     <g:message code="redactintrigue.resource.isClue" default="Clue"/>
                                 </label>
                             </div>
-                        <div class="span4">
+                        <div class="span3">
                             <g:if test="${resource.title != null}">
                                 <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled" checked="true" />
                             </g:if>
