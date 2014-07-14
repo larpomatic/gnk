@@ -48,6 +48,7 @@
 *.idea
 .idea
 application.properties
+.idea/uiDesigner.xml
 
 web-app/word/
 
