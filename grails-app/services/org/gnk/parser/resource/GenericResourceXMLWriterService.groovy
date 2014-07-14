@@ -51,7 +51,7 @@ class GenericResourceXMLWriterService {
             for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
                 Element tag = doc.createElement("TAG");
                 tag.setAttribute("value", genericResourceHasTag.tag.name)
-                tag.setAttribute("type", genericResourceHasTag.tag.tagFamily.value)
+                tag.setAttribute("type", genericResourceHasTag.tag.parent.name)
                 tag.setAttribute("weight", genericResourceHasTag.weight.toString())
                 tagsElt.appendChild(tag)
             }

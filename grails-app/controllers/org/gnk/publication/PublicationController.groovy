@@ -1352,7 +1352,7 @@ class PublicationController {
         charSet.each { chara->
             // Pour chacun de ces tags on regarde combien de fois il est déjà apparu dans les personnages
             chara.tags.each { tag ->
-                if(tag.key.tagFamily.value == "Trait de personnalité") {
+                if(tag.key.parent.name == "Trait de personnalité") {
                     if (returnedList.get(tag.key.id) == null) {
                         returnedList.put(tag.key.id, 1)
                     } else {

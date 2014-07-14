@@ -22,6 +22,9 @@ $(function(){
 
     initRadioPlots();
 
+    //Si il n'y a pas d'intrigue mainstream sur un gn mainstream alors on alerte l'utilisateur
+    notifyNoMainstream();
+
     $('.selectedEvenemential').val($(".radioEvenemential").first().val());
     $('.selectedMainstream').val($(".radioMainstream").first().val());
 
@@ -40,16 +43,8 @@ $(function(){
         $('.mainstream-table tr:not(:last-child):nth-child(n+'+nb+')').css("display", "none");
     });
 
-    $('.modal-body li').each(function() {
-        toggle($('input[type="checkbox"]', $(this)).attr("id"), $(".tagWeight input", $(this)).attr("id"));
-    });
-
-    $('.chooseTag').click(function() {
-        $('input', $(this).parent().prev()).val(101);
-    });
-    $('.banTag').click(function() {
-        $('input', $(this).parent().next()).val(-101);
-    });
+    $('.radioEvenemential:checked').closest("tr").prependTo(".evenemential-table tbody");
+    $('.radioMainstream:checked').closest("tr").prependTo(".mainstream-table tbody");
 
     $('.gnSubmitForm').submit(function() {
         $('input').removeClass("redBorder");
@@ -66,9 +61,9 @@ $(function(){
             createNotification("danger", "Erreur !", "PIPCore doit être strictement inférieur à PIPMax.");
             return false;
         }
-        if (parseInt($gnPIPCore.val()) < parseInt($gnPIPMin.val())) {
+        if (parseInt($gnPIPCore.val()) > parseInt($gnPIPMin.val())) {
             $gnPIPCore.addClass("redBorder");
-            createNotification("danger", "Erreur !", "PIPCore doit être supérieur ou égal à PIPMin.");
+            createNotification("danger", "Erreur !", "PIPCore doit être inférieur ou égal à PIPMin.");
             return false;
         }
         return true;
@@ -83,27 +78,17 @@ $(function(){
     });
 });
 
-function toggle(checkboxID, toggleID) {
-    var checkbox = $("#" + checkboxID);
-    var toggle = $("#" + toggleID);
-
-    if (!checkbox.prop("checked")) {
-        toggle.attr("disabled", "disabled");
-        toggle.parent().prev().addClass("invisible");
-        toggle.parent().next().addClass("invisible");
-    }
-    else {
-        toggle.removeAttr("disabled");
-        toggle.parent().prev().removeClass("invisible");
-        toggle.parent().next().removeClass("invisible");
-    }
-}
-
 function initRadioPlots() {
     if ($('input[name="selected_evenemential"]:checked').size() == 0) {
         $(".radioEvenemential").first().prop("checked", true);
     }
     if ($('input[name="selected_mainstream"]:checked').size() == 0) {
         $(".radioMainstream").first().click();
+    }
+}
+
+function notifyNoMainstream() {
+    if (($('.mainstream-table:visible').size() != 0) && ($('.mainstream-table tbody tr:not(:last-child)').size() == 0)) {
+        createNotification("warning", "Attention !", "Aucune intrigue mainstream n'a été trouvée.");
     }
 }

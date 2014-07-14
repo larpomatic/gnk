@@ -7,7 +7,7 @@
             <th>#</th>
 			<g:sortableColumn property="name" title="${message(code: 'adminRef.tag.tagName')}" />
             <th>Utilisations du tag</th>
-			<g:sortableColumn property="tagFamily.value" title="${message(code: 'adminRef.tag.tagFamilies')}" />
+			%{--<g:sortableColumn property="tagFamily.value" title="${message(code: 'adminRef.tag.tagFamilies')}" />--}%
             <th><g:message code="default.delete"/></th>
 		</tr>
 	</thead>
@@ -23,8 +23,8 @@
 							<li class="badge badge-info">
 								<g:form class="form-small">
 									<g:hiddenField name="idTag" value="${tagInstance?.id}" />
-									<g:hiddenField name="idFamily" value="${tagInstance?.tagFamily?.id}" />
-									${tagInstance?.tagFamily?.value}
+									%{--<g:hiddenField name="idFamily" value="${tagInstance?.tagFamily?.id}" />--}%
+									%{--${tagInstance?.tagFamily?.value}--}%
 									<!--g:actionSubmit class="icon-remove remove-action" controller="tag" action="deleteFamily" value=" " onclick="return confirm('${message(code: 'adminRef.tag.deleteTagFamily')}');" /-->
 								</g:form>
 							</li>

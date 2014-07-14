@@ -1,12 +1,16 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily
+import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
+import org.hibernate.Hibernate
+import org.hibernate.proxy.HibernateProxy
+import org.hibernate.proxy.HibernateProxyHelper
 
 class Plot {
 
@@ -17,14 +21,8 @@ class Plot {
     Date dateCreated
     private static List<Tag> tagList
     public static List getTagList() {
-        tagList = new ArrayList<Tag>()
-        for(Tag tag : Tag.list())
-        {
-            if (tag.tagFamily.relevantPlot)
-                tagList.add(tag)
-        }
 
-        return tagList
+        return TagService.getPlotTagQuery()
     }
 
 
@@ -54,7 +52,8 @@ class Plot {
             plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
-            genericResources: GenericResource]
+            genericResources: GenericResource,
+            genericPlaces: GenericPlace]
 
     static belongsTo = User
 
@@ -74,9 +73,9 @@ class Plot {
         id type:'integer'
         version type: 'integer'
         events cascade: 'all-delete-orphan'
-        plotHasUniverses cascade: 'all-delete-orphan'
+//        plotHasUniverses cascade: 'all-delete-orphan'
         roles cascade: 'all-delete-orphan'
-        extTags cascade: 'all-delete-orphan'
+//        extTags cascade: 'all-delete-orphan'
         pastescenes cascade: 'all-delete-orphan'
     }
 
@@ -121,12 +120,27 @@ class Plot {
 	}
 
     public boolean hasPlotTag(Tag parPlotTag) {
+        if (parPlotTag instanceof HibernateProxy) {
+            Hibernate.initialize(parPlotTag);
+            parPlotTag = (Tag) ((HibernateProxy) parPlotTag).getHibernateLazyInitializer().getImplementation();
+        }
         for (PlotHasTag plotHasPlotTag : extTags) {
             if (plotHasPlotTag.tag == parPlotTag) {
                 return true;
             }
         }
         return false;
+    }
+
+    public getPlotHasTag(Tag tag) {
+        List<PlotHasTag> plotHasTags = PlotHasTag.createCriteria().list {
+            like("plot", this)
+            like("tag", tag)
+        }
+        if (plotHasTags.size() == 0) {
+            return null;
+        }
+        return plotHasTags.first();
     }
 
     public boolean hasUnivers(Univers parUnivers) {
@@ -168,5 +182,15 @@ class Plot {
 
     Integer getterId() {
         return id;
+    }
+
+    public int getNbRoleOverPipcore(int gnPipcore) {
+        int pipCoreOkNumber = 0;
+        for (Role role in roles) {
+            if (role.getPipi() + role.getPipr() >= gnPipcore) {
+                pipCoreOkNumber += 1;
+            }
+        }
+        return pipCoreOkNumber;
     }
 }

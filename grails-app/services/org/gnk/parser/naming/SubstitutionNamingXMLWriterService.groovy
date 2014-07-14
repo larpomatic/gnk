@@ -84,7 +84,7 @@ class SubstitutionNamingXMLWriterService {
                 for(FirstnameHasTag firstnameHasTag : firstname.extTags) {
                     Element tagE = doc.createElement("TAG")
                     tagE.setAttribute("value", firstnameHasTag.tag.name)
-                    tagE.setAttribute("type", firstnameHasTag.tag.tagFamily.value)
+                    tagE.setAttribute("type", firstnameHasTag.tag.parent.name)
                     tagE.setAttribute("weight", firstnameHasTag.weight as String)
 
                     tagsE.appendChild(tagE)
@@ -111,7 +111,7 @@ class SubstitutionNamingXMLWriterService {
                 for(NameHasTag lastnameHasTag : lastname.extTags) {
                     Element tagE = doc.createElement("TAG")
                     tagE.setAttribute("value", lastnameHasTag.tag.name)
-                    tagE.setAttribute("type", lastnameHasTag.tag.tagFamily.value)
+                    tagE.setAttribute("type", lastnameHasTag.tag.parent.name)
                     tagE.setAttribute("weight", lastnameHasTag.weight  as String)
 
                     tagsE.appendChild(tagE)

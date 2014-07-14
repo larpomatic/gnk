@@ -14,6 +14,7 @@ class Pastscene {
 	Boolean isPublic
 	String description
 
+    // relative time (one year ago)
     Integer dateYear
     Integer dateMonth
     Integer dateDay
