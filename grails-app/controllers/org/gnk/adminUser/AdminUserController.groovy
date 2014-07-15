@@ -32,7 +32,6 @@ class AdminUserController {
         } else {
             redirect(controller: "login", action: "denied")
         }
-        print params
         String actionredir = params.get("actionredirect")
         String controllerredir = params.get("controllerredirect")
         redirect(controller: controllerredir, action: actionredir)

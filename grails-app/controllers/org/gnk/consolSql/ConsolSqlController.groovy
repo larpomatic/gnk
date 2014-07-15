@@ -52,8 +52,6 @@ class ConsolSqlController {
     def resultRequest(){
         String result = "";
         String request = params.sqlconsol;
-        print "test"
-        print request
         if (request) {
             def sql = new Sql(sessionFactory.currentSession.connection())
             def resultsql = sql.rows(request)
