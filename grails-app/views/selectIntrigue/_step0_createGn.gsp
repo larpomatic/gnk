@@ -15,6 +15,12 @@ select {
 <legend>
     <g:message code="default.edit.label" args="[entityName]"/>
 </legend>
+<g:if test="${flash.message}">
+    <div class="alert notificationBox alert-block alert-danger fade in">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4 class="alert-heading"><g:message code="${flash.message}" args="[]"/></h4>
+    </div>
+</g:if>
 
 <g:form method="post" class="gnSubmitForm">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
@@ -43,7 +49,7 @@ select {
                     <a href="#tagsModal" class="btn" data-toggle="modal">Choisir
                     l'ambiance du GN</a> <a href="#tagsEvenementialModal"
                                             class="btn" data-toggle="modal">Choisir l'ambiance
-                        évennementielle</a> <a href="#tagsMainstreamModal"
+                        évenementielle</a> <a href="#tagsMainstreamModal"
                                                class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
                 </div></td>
             </tr>

@@ -12,7 +12,7 @@
 #article27 #demoWrap ul .wrapLi{
     position:relative;
     float:left;
-    width: 85px;
+    width: 113px;
     list-style:none;
     margin: 0px 10px;
     padding:6px 5px 6px 5px;
@@ -44,7 +44,7 @@ remise par défaut de light 1
     content:"";
     position:absolute;
     top:65px;
-    left:48px;
+    left:61px;
     width: 4px;
     height: 4px;
     background:black;
@@ -115,28 +115,28 @@ remise par défaut du lien 1
 /* :target */
 /* lien1 */
 #article27 #demoWrap #wrap1:target #textes{margin-left:0px;}
-#article27 #demoWrap #wrap1:target #fleche{margin-left:50px;}
+#article27 #demoWrap #wrap1:target #fleche{margin-left:64px;}
 /* lien2 */
 #article27 #demoWrap #wrap2:target #textes{margin-left:-1164px;}
-#article27 #demoWrap #wrap2:target #fleche{margin-left:165px;}
+#article27 #demoWrap #wrap2:target #fleche{margin-left:206px;}
 /* lien3 */
 #article27 #demoWrap #wrap3:target #textes{margin-left:-2328px;}
-#article27 #demoWrap #wrap3:target #fleche{margin-left:280px;}
+#article27 #demoWrap #wrap3:target #fleche{margin-left:349px;}
 /* lien4 */
 #article27 #demoWrap #wrap4:target #textes{margin-left:-3492px;}
-#article27 #demoWrap #wrap4:target #fleche{margin-left:395px;}
+#article27 #demoWrap #wrap4:target #fleche{margin-left:492px;}
 /* lien5 */
 #article27 #demoWrap #wrap5:target #textes{margin-left:-4656px;}
-#article27 #demoWrap #wrap5:target #fleche{margin-left:510px;}
+#article27 #demoWrap #wrap5:target #fleche{margin-left:635px;}
 /* lien6 */
 #article27 #demoWrap #wrap6:target #textes{margin-left:-5820px;}
-#article27 #demoWrap #wrap6:target #fleche{margin-left:625px;}
+#article27 #demoWrap #wrap6:target #fleche{margin-left:778px;}
 /* lien7 */
 #article27 #demoWrap #wrap7:target #textes{margin-left:-6984px;}
-#article27 #demoWrap #wrap7:target #fleche{margin-left:740px;}
+#article27 #demoWrap #wrap7:target #fleche{margin-left:920px;}
 /* lien8 */
-#article27 #demoWrap #wrap8:target #textes{margin-left:-8148px;}
-#article27 #demoWrap #wrap8:target #fleche{margin-left:855px;}
+/*#article27 #demoWrap #wrap8:target #textes{margin-left:-8148px;}*/
+/*#article27 #demoWrap #wrap8:target #fleche{margin-left:855px;}*/
 
 /* liens modifiés par :target */
 /* PLUS: init lien1 */
@@ -172,7 +172,7 @@ remise par défaut du lien 1
 span.badge {
     position: absolute;
     margin-top: -18px;
-    margin-left: 90px;
+    margin-left: 118px;
     font-size: 10px;
     height: 13px;
     padding: 2px 2px 4px;

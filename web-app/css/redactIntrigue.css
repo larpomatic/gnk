@@ -9,20 +9,21 @@
 }
 
 #edit-plot input[type='text'],
-#edit-plot input[type='number'],
+#edit-plot input[type='number']:not(.tagWeightInput),
 #edit-plot textarea,
 #edit-plot select
 {
-    font-family: 'Shadows Into Light', cursive !important;
+    /*font-family: 'Shadows Into Light', cursive !important;*/
     font-size: 24px !important;
+    font-family: 'Gudea', sans-serif !important;
 }
 
 #edit-plot input[type='text'],
-#edit-plot input[type='number'],
+#edit-plot input[type='number']:not(.tagWeightInput),
 #edit-plot select {
     border: 0;
     outline: none;
-    letter-spacing: 3px;
+    /*letter-spacing: 3px;*/
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
     font-size: 18px;
     width: 300px;
@@ -40,10 +41,11 @@
     height: 200px;
     margin: -22px 0 40px 0;
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
-    font-family: 'Shadows Into Light', cursive;
+    /*font-family: 'Shadows Into Light', cursive;*/
+    font-family: 'Gudea', sans-serif;
     font-size: 18px;
     color: #18326d;
-    letter-spacing: 3px;
+    /*letter-spacing: 3px;*/
     border: 0;
     resize: none;
     outline: 0;
@@ -59,13 +61,13 @@
 
 #edit-plot textarea:hover,
 #edit-plot input[type='text']:hover,
-#edit-plot input[type='number']:hover,
+#edit-plot input[type='number']:hover:not(.tagWeightInput),
 #edit-plot textarea:active,
 #edit-plot input[type='text']:active,
-#edit-plot input[type='number']:active,
+#edit-plot input[type='number']:active:not(.tagWeightInput),
 #edit-plot textarea:focus,
 #edit-plot input[type='text']:focus,
-#edit-plot input[type='number']:focus
+#edit-plot input[type='number']:focus:not(.tagWeightInput)
 {
     outline:none !important;
     -webkit-appearance:none;
@@ -95,7 +97,7 @@
 
 #edit-plot .leftUl {
     height:400pt;
-    width:175pt;
+    width:185pt;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -116,6 +118,129 @@
 
 #edit-plot h3 {
     border-bottom: none;
+}
+
+#edit-plot #roleOther,
+#edit-plot #placeOther,
+#edit-plot #resourceOther {
+    border: solid 1px !important;
+    height: 22px !important;
+    font-size: 15px !important;
+    margin-top: 5px !important;
+    color: black !important;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    width: inherit !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+#edit-plot .leftMenuList a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#edit-plot .span7 select,
+#edit-plot .span8 input {
+    width: 100%;
+}
+
+#edit-plot .span5 select {
+    width: 414px;
+}
+
+.fullScreenOpen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: url(../images/redactIntrigue/roles/lines.png) repeat;
+    z-index: 99999999;
+    padding: 15px;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.fullScreenOpen .richTextEditor {
+    margin: 20px;
+    height: 85% !important;
+}
+
+.richTextEditor span {
+    font-family: Gudea, sans-serif;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.richTextEditor {
+    font-family: Gudea, sans-serif;
+    font-size: 22px;
+    line-height: 40px;
+    margin-top: 5px;
+    min-height: 200px;
+    padding: 5px;
+    overflow: auto;
+    outline: none;
+    margin-bottom: 10px;
+    color: #18326d;
+
+    background: url(../images/redactIntrigue/roles/dots.png) repeat;
+}
+
+.btnFullScreen {
+    background: url(../images/redactIntrigue/fullScreenButton.png) no-repeat;
+    background-size: 100%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.fullScreenOpen .btnFullScreen {
+    background: url(../images/redactIntrigue/reverseFullScreen.png) no-repeat;
+    background-size: 100%;
+}
+
+.pastSceneRelativeTimeUnit {
+    cursor: pointer;
+}
+
+#edit-plot .largeModal {
+    width: 1000px;
+    margin-left: -500px;
+}
+
+#edit-plot .relationScreen .accordion-heading a {
+    display: inline-block;
+}
+
+#edit-plot .relationScreen .accordion-inner {
+    padding-left : 0;
+    padding-right: 0;
+    margin-top: -17px;
+}
+
+#edit-plot .relationScreen .accordion {
+    margin-top: 10px;
+}
+
+#edit-plot .relationScreen .accordion-heading button {
+    margin: 5px;
+}
+
+#edit-plot .modal .tagWeightInput {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#edit-plot .plotTabs {
+    margin-top: 13px;
+}
+
+#edit-plot .shortInput input {
+    width: 150px !important;
+}
+
+#edit-plot .littleRow {
+    margin-top: -8px !important;
 }
 
 @font-face {

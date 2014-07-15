@@ -35,6 +35,8 @@ class GnXMLReaderService {
         gn.isMainstream = (GN_INFORMATION.attribute("architecture") == "mainstream")
         if (GN_INFORMATION.attribute("t0_date") != "null")
             gn.t0Date = new Date(new Timestamp(GN_INFORMATION.attribute("t0_date") as Long).getTime())
+        if (GN_INFORMATION.attribute("date") != "null")
+            gn.date = new Date(new Timestamp(GN_INFORMATION.attribute("date") as Long).getTime())
         if (GN_INFORMATION.attribute("duration") != "null")
             gn.duration = GN_INFORMATION.attribute("duration") as Integer
         if (GN_INFORMATION.attribute("pip_min") != "null")

@@ -10,6 +10,7 @@
 		<title><g:layoutTitle default="Genotron"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+        <link href='http://fonts.googleapis.com/css?family=Gudea' rel='stylesheet' type='text/css'>
 		<r:require modules="bootstrap"/>
 		<g:layoutHead/>
 		<r:layoutResources />

@@ -22,7 +22,7 @@
 	</div>
 	<div id="create-plot" class="content scaffold-create" role="main">
 		<h1>
-			<g:message code="default.create.label" args="[entityName]" />
+			<g:message code="redactintrigue.generalDescription.createNewPlot" />
 		</h1>
 		<g:if test="${flash.message}">
 			<div class="message" role="status">
@@ -39,13 +39,12 @@
 			</ul>
 		</g:hasErrors>
 		<g:form action="saveAndEdit">
-			<div
-				class="fieldcontain ${hasErrors(bean: plotInstance, field: 'name', 'error')} required">
-				<label for="name"> <g:message code="plot.name.label"
-						default="Name" /> <span class="required-indicator">*</span>
+			<div class="fieldcontain ${hasErrors(bean: plotInstance, field: 'name', 'error')} required">
+				<label for="name">
+                    <g:message code="redactintrigue.generalDescription.plotName" default="Name" />
+                    <span class="required-indicator">*</span>
 				</label>
-				<g:field name="name" value="${plotInstance.name}"
-					required="" />
+				<g:textField name="name" value="${plotInstance.name}" required="" />
 			</div>
 			<fieldset class="buttons">
 				<g:submitButton name="create" class="saveAndEdit"
