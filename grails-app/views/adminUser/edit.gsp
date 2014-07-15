@@ -16,11 +16,35 @@
 
 <div role="main">
 <h3>Profil</h3>
-Lastname: "${user.lastname}" <br/>
-Firstname: "${user.firstname}" <br/>
-Email: "${user.username}" <br/>
-Password: "${user.username}" <br/>
-
+Lastname: ${user.lastname} <br/>
+Firstname: ${user.firstname} <br/>
+Email: ${user.username} <br/>
+Password: ${user.username} <br/>
+Statut :
+    <g:if test="${!user.accountLocked}">
+    <g:message code="default.button.unlock.label"/>
+    </g:if>
+    <g:if test="${user.accountLocked}">
+        <g:message code="default.button.lock.label"/>
+    </g:if>
+<br/>
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        Action <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <g:link controller="adminUser" action="lock" id="${user.id}">
+                <g:if test="${user.accountLocked}">
+                    <g:message code="default.button.unlock.label"/>
+                </g:if>
+                <g:if test="${!user.accountLocked}">
+                    <g:message code="default.button.lock.label"/>
+                </g:if>
+            </g:link>
+        </li>
+    </ul>
+</div> <br/>
 <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
     Rights: ${user.gright} <br/>
 </g:hasRights>
@@ -43,6 +67,8 @@ Password: "${user.username}" <br/>
                 <th><g:message code="default.title.referentiel"/></th>
                 <th><g:message code="default.title.manageRight"/></th>
             </tr>
+            </thead>
+            <tbody>
             <tr>
                 <td><g:message code="default.action.open"/></td>
                 <td><g:checkBox name="checkbox0" value="${lb.get(0)}"></g:checkBox></td>
@@ -76,7 +102,7 @@ Password: "${user.username}" <br/>
                 <td><g:checkBox name="checkbox20" value="${lb.get(20)}"></g:checkBox></td>
                 <td><g:checkBox name="checkbox23" value="${lb.get(23)}"></g:checkBox></td>
             </tr>
-            </thead>
+            </tbody>
         </table>
         <button type="submit" class="btn btn-default">Submit</button>
     </g:form>

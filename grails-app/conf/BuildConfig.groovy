@@ -51,6 +51,7 @@ grails.project.dependency.resolution = {
         runtime ":jquery:1.8.3"
         runtime ":resources:1.2.7"
         runtime ":handlebars-resources:1.3.0"
+        runtime ':console:1.3'
         compile ":cookie-session:2.0.14"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities

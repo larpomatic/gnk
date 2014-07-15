@@ -1,8 +1,8 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-            <g:link class="brand" controller="home" action="index"><div class="brand-logo"></div>Genotron</g:link>
-            <ul class="nav">
-                <sec:ifAnyGranted roles="ROLE_ADMIN, ROLE_USER">
+        <g:link class="brand" controller="home" action="index"><div class="brand-logo"></div>Genotron</g:link>
+        <ul class="nav">
+            <sec:ifAnyGranted roles="ROLE_ADMIN, ROLE_USER">
                 <li>
                     <g:link controller="tag" action="list"><g:message code="navbar.adminRef"/></g:link>
                 </li>
@@ -19,24 +19,26 @@
                     <g:if env="development">
                         <g:link controller="roleToPerso" action="roleToPerso"><g:message code="navbar.role2perso"/></g:link>
                     </g:if>
-                </li>1
+                </li>
+
                 <g:if env="development">
                     <li>
                         <g:link controller="substitution"><g:message code="navbar.substitution"/></g:link>
                     </li>
                     <sec:ifAnyGranted roles="ROLE_ADMIN">
-                    <li>
-                        <g:link controller="ressPlaceTimeTests" action="list"><g:message code="navbar.ressPlaceTimeTest"/></g:link>
-                    </li>
-                    <li>
-                        <g:link controller="namingTest" action="index"><g:message code="navbar.namingTest"/></g:link>
-                    </li>
-                     </sec:ifAnyGranted>
-                    <li>
-                        <g:link controller="logout"><g:message code="navbar.logout"/></g:link>
-                    </li>
+                        <li>
+                            <g:link controller="ressPlaceTimeTests" action="list"><g:message code="navbar.ressPlaceTimeTest"/></g:link>
+                        </li>
+                        <li>
+                            <g:link controller="namingTest" action="index"><g:message code="navbar.namingTest"/></g:link>
+                        </li>
+                    </sec:ifAnyGranted>
                 </g:if>
-                  </sec:ifAnyGranted>
-            </ul>
+
+                <li>
+                    <g:link controller="logout" onclick='createCookie("prcgn","",-1);'><g:message code="navbar.logout" /></g:link>
+                </li>
+            </sec:ifAnyGranted>
+        </ul>
     </div>
 </div>

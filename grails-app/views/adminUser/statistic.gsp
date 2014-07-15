@@ -21,6 +21,7 @@
 <g:message code="default.title.lastConnection"/>: ${user.lastConnexion} <br/>
 <g:message code="default.title.nbIntrigPub"/>: ${countPublicPlot} <br/>
 <g:message code="default.title.nbIntrigPri"/>: ${countPrivatePlot} <br/>
+<g:message code="default.title.nbIntrigDraft"/>: ${countDraftPlot} <br/>
 <g:message code="default.title.nbConnection"/>: ${user.countConnexion}
 </body>
 </html>

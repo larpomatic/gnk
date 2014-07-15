@@ -2,7 +2,6 @@ import grails.converters.JSON
 import org.gnk.cookie.CookieService
 import org.gnk.user.User
 
-import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
@@ -16,7 +15,6 @@ import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 class LoginController {
-    CookieService cookieService
     /**
      * Dependency injection for the authenticationTrustResolver.
      */
@@ -34,6 +32,7 @@ class LoginController {
         if (springSecurityService.isLoggedIn()) {
             User currentuser = (User) springSecurityService.getCurrentUser()
             session.setAttribute("user", currentuser)
+            print currentuser
             redirect( controller: "home", action: "index")
             //redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
         }
@@ -46,19 +45,7 @@ class LoginController {
      * Show the login page.
      */
     def auth = {
-        Cookie[] cookies = request.getCookies()
-        if (cookies){
-            Cookie cookie = cookies.find {it.name == "prcgn"}
-            if (cookie){
-                    String username = cookieService.cookieusern(cookie.getValue())
-                    String password = cookieService.cookiepassword(cookie.getValue())
-                    User user = User.findByUsername(username)
-                    if(password != null && password.equals(user.password)){
-                        session.setAttribute("user", user)
-                        redirect controller: "home", action: "index"
-                    }
-                }
-            }
+
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
             redirect uri: config.successHandler.defaultTargetUrl
@@ -93,6 +80,7 @@ class LoginController {
      * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
      */
     def full = {
+        print "test"
         def config = SpringSecurityUtils.securityConfig
         render view: 'auth', params: params,
                 model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication),

@@ -15,13 +15,16 @@ class LogoutController {
 		// TODO put any pre-logout code here
         Cookie[] cookies = request.getCookies()
         Cookie cookie = cookies.find { it.name == "prcgn" }
-
+        for (int i = 0; i < cookies.length; i++){
+        print cookies[i].name
+    }
         if(cookie)
         {
             cookie.setMaxAge(0)
             cookie.setPath('/gnk/')
             response.addCookie(cookie)
         }
+        print "test"
         redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl
          // '/j_spring_security_logout'
 	}

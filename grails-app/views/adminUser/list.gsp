@@ -15,8 +15,10 @@
 <body>
 <ul class="nav nav-pills">
     <li><g:link controller="user" action="profil"><g:message code="navbar.profil"/></g:link></li>
-    <li class="active"><g:link controller="adminUser" action="list"><g:message
-            code="navbar.gestion_user"/></g:link></li>
+    <g:hasRights lvlright="${right.USEROPEN.value()}">
+        <li class="active"><g:link controller="adminUser" action="list"><g:message code="navbar.gestion_user"/></g:link></li>
+        <li><g:link controller="consolSql" action="terminal"><g:message code="navbar.gestion_console"/> </g:link> </li>
+    </g:hasRights>
 </ul>
 <g:form action="list" class="right pull-right">
     <form role="search">
@@ -38,9 +40,7 @@
             <g:hasRights lvlright="${right.USERMODIFY.value()}">
             <th></th>
             </g:hasRights>
-            <g:hasRights lvlright="${right.USERCLOSE.value()}">
-                <th><g:message code="default.button.lock.label"/>/<g:message code="default.button.unlock.label"/></th>
-            </g:hasRights>
+
             <th><g:message code="default.button.state.label"/></th>
         </tr>
         </thead>
@@ -59,27 +59,7 @@
                     </li>
                 </td>
                 </g:hasRights>
-                <g:hasRights lvlright="${right.USERCLOSE.value()}">
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                Action <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <g:link controller="adminUser" action="lock" id="${u.id}">
-                                        <g:if test="${u.accountLocked}">
-                                            <g:message code="default.button.unlock.label"/>
-                                        </g:if>
-                                        <g:if test="${!u.accountLocked}">
-                                            <g:message code="default.button.lock.label"/>
-                                        </g:if>
-                                    </g:link>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                </g:hasRights>
+
                 <td>
                     <g:if test="${!u.accountLocked}">
                         <g:message code="default.button.unlock.label"/>

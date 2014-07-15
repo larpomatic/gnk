@@ -1,13 +1,51 @@
 package org.gnk.adminUser
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.cookie.CookieService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
 import org.gnk.user.UserService
+import groovy.sql.Sql
+import sun.security.jca.GetInstance
+
+import javax.servlet.http.Cookie
 
 class AdminUserController {
     UserService userService
+    CookieService cookieService
+
+    def checkcookie(){
+
+        Cookie[] cookies = request.getCookies()
+        if (cookies){
+            Cookie cookie =  cookies.find {it.name == "prcgn"}
+            if (cookie){
+                String username = cookieService.cookieusern(cookie.value)
+                User currentuser = User.findByUsername(username)
+                if (cookieService.isAuth(currentuser.password, cookieService.cookiepassword(cookie.value)))
+                    session.setAttribute("user", currentuser)
+                else
+                    redirect(controller: "login", action: "denied")
+            } else {
+                redirect(controller: "login", action: "denied")
+            }
+        } else {
+            redirect(controller: "login", action: "denied")
+        }
+        print params
+        String actionredir = params.get("actionredirect")
+        String controllerredir = params.get("controllerredirect")
+        redirect(controller: controllerredir, action: actionredir)
+    }
     def list(){
+        User user = session.getAttribute("user")
+
+        if (!user){
+            params.setProperty("redirectaction", "profil")
+            params.setProperty("redirectcontroller", "user")
+            redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "list", controllerredirect : "adminUser"])
+            return false
+        } else {
         GrailsParameterMap param = params
         def name = param.usersearch
         if ("".equals(name) || null == name ){
@@ -19,6 +57,7 @@ class AdminUserController {
             List<User> users = c.list { ilike("username", "%"+name+"%")}
             [users : users]
         }
+        }
     }
 
     def edit (long id){
@@ -27,8 +66,13 @@ class AdminUserController {
             user = User.findById(id)
             session.setAttribute("id_user_check", id)
         } else {
-            int iduser = session.getAttribute("id_user_check")
-            user = User.findById(iduser)
+                if (!session.getAttribute("id_user_check")){
+                    redirect(action: "list")
+                    return false
+                }else{
+                    int iduser = session.getAttribute("id_user_check")
+                    user = User.findById(iduser)
+            }
         }
         int rightuser = user.gright
         List<Boolean> lb = userService.instperm(rightuser)
@@ -36,6 +80,7 @@ class AdminUserController {
     }
 
     def changeperm(long id){
+
         List<Boolean> lb = []
         User user = User.findById(id)
 
@@ -69,18 +114,27 @@ class AdminUserController {
     }
     def statistic(long id){
         User user = User.findById(id)
+        if (!id){
+            redirect (action: "list")
+            return false
+        }
         List<Plot> plots = Plot.list()
         int countPublicPlot = 0;
         int countPrivatePlot = 0;
+        int countDraftPlot = 0;
         for (int i = 0; i < plots.size(); i++){
             if (plots[i].user.id == user.id){
                 if (plots[i].isPublic){
                     countPublicPlot++
                 } else {
+                    if (plots[i].isDraft){
+                        countDraftPlot++
+                    } else {
                     countPrivatePlot++
+                    }
                 }
             }
         }
-        [user:user, countPublicPlot:countPublicPlot, countPrivatePlot:countPrivatePlot]
+        [user:user, countPublicPlot:countPublicPlot, countPrivatePlot:countPrivatePlot, countDraftPlot:countDraftPlot]
     }
 }
