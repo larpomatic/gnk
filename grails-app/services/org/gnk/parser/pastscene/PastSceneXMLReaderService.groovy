@@ -103,7 +103,7 @@ class PastSceneXMLReaderService {
         if (PASTSCENE.attribute("id") != "null" && (PASTSCENE.attribute("id") as String).isInteger())
             pastscene.DTDId = PASTSCENE.attribute("id") as Integer
         if (PASTSCENE.attribute("is_public") != "null")
-            pastscene.isPublic = PASTSCENE.attribute("is_public") as Boolean
+            pastscene.isPublic = PASTSCENE.attribute("is_public").equals("false") ? false : true
 
         return pastscene
     }

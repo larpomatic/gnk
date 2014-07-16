@@ -24,6 +24,9 @@
                     <li>
                         <g:link controller="substitution"><g:message code="navbar.substitution"/></g:link>
                     </li>
+                    <li>
+                        <g:link controller="publication"><g:message code="navbar.publication"/></g:link>
+                    </li>
                     <sec:ifAnyGranted roles="ROLE_ADMIN">
                     <li>
                         <g:link controller="ressPlaceTimeTests" action="list"><g:message code="navbar.ressPlaceTimeTest"/></g:link>

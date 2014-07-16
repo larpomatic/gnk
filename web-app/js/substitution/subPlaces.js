@@ -151,9 +151,14 @@ function preparePlacesJSONForValidation(placesJSON) {
         var placeElement =  $("#" + place.htmlId);
 
         // Update name
+        var placeWritten = document.getElementById("placeWritten");
         var placeSelect = placeElement.children(".place").eq(0).children("select").eq(0);
         if (placeSelect.attr("isEmpty") == "false") {
-            place.selectedName = placeSelect.val();
+            if (document.getElementById("writtenPlace").checked) {
+                place.selectedName = placeWritten.value;
+            } else {
+                place.selectedName = placeSelect.val();
+            }
         }
         else {
             return false;
