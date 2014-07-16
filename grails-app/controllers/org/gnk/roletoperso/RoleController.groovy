@@ -16,7 +16,7 @@ class RoleController {
 	def save () {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
-        Boolean res = saveOrUpdate(role, true);
+        Boolean res = saveOrUpdate(role);
         role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
@@ -106,7 +106,7 @@ class RoleController {
         String oldname = role.code;
 		if (role) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(role, false),
+                object(isupdate: saveOrUpdate(role),
                         id: role.id,
                         name: role.code,
                         oldname: oldname)
@@ -114,7 +114,7 @@ class RoleController {
 		}
 	}
 
-	def saveOrUpdate(Role newRole, boolean isNew) {
+	def saveOrUpdate(Role newRole) {
 		if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
@@ -168,9 +168,6 @@ class RoleController {
         } else {
             newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
         }
-		if (isNew)
-			params.updateRoleResult = newRole.myInsert();
-		else
 			params.updateRoleResult = !!(newRole.save(flush: true));
 
         newRole = Role.findAllWhere("code": newRole.getCode()).first();
