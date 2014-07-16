@@ -243,6 +243,17 @@
     margin-top: -8px !important;
 }
 
+#edit-plot .autorField {
+    max-width: 150px;
+}
+
+#edit-plot .tags-modal label {
+    max-width: 332px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

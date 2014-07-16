@@ -21,7 +21,7 @@
         %{--</li>--}%
     %{--</ul>--}%
     <div class="tab-content">
-        <div class="tab-pane active" id="newEvent">
+        <div class="tab-pane active" id="newPlot">
             <g:form method="post" class="savePlotForm">
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
@@ -212,6 +212,9 @@
                         <h3>Tags</h3>
                         <input class="input-medium search-query" data-content="plotTags"
                                placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                        <button type="button" class="btn btn-primary modifyTag push">
+                            <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                        </button>
                     </div>
 
                     <div class="modal-body">

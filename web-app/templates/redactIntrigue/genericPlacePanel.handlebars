@@ -2,6 +2,7 @@
     <form name="updatePlace_{{ genericPlace.id }}" data-url="/gnk/genericPlace/update/{{ genericPlace.id }}">
         <input type="hidden" name="id" value="{{ genericPlace.id }}"/>
         <input type="hidden" name="plotId" id="plotId" value="{{ genericPlace.plotId }}"/>
+        <input type="hidden" name="placeDescription" class="descriptionContent" value=""/>
 
         <div style="margin:auto">
             <div class="row formRow">
@@ -29,13 +30,24 @@
                     Description
                 </label>
             </div>
-            <textarea name="placeDescription" id="placeDescription" rows="5" cols="100">{{{ genericPlace.comment }}}</textarea>
+            <div class="fullScreenEditable">
+
+                <!-- Editor -->
+                <div id="placeRichTextEditor{{ genericPlace.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    {{ encodeAsHtml genericPlace.comment }}
+                </div>
+            </div>
+
+            <!--<textarea name="placeDescription" id="placeDescription" rows="5" cols="100">{{{ genericPlace.comment }}}</textarea>-->
         </div>
         <div id="placeTagsModal_{{ genericPlace.id }}" class="modal hide fade tags-modal" tabindex="-1">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="myModalLabel{{ genericPlace.id }}">Tags</h3>
                 <input class="input-medium search-query" data-content="placeTags{{ genericPlace.id }}" placeholder="Rechercher..."/>
+                <button type="button" class="btn btn-primary modifyTag push">
+                    Tags validés
+                </button>
             </div>
 
             <div class="modal-body">

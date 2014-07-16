@@ -22,6 +22,7 @@
         <div class="tab-pane active" id="newResource">
             <form name="newResourceForm" data-url="<g:createLink controller="GenericResource" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <g:hiddenField name="resourceComment" class="commentContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceCode">
@@ -100,7 +101,14 @@
                         <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
                     </label>
                 </div>
-                <g:textArea name="resourceComment" id="resourceComment" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="resourceRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="resourceComment" id="resourceComment" value="" rows="5" cols="100"/>--}%
                 <div class="row formRow text-center hidden clueRow">
                     <label for="resourceDescription">
                         <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
@@ -139,6 +147,7 @@
             <div class="tab-pane" id="resource_${resource.id}">
                 <form name="updateResource_${resource.id}" data-url="<g:createLink controller="GenericResource" action="Update" id="${resource.id}"/>">
                     <g:hiddenField name="id" value="${resource.id}"/>
+                    <g:hiddenField name="resourceComment" class="commentContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
                         <div class="span1">
@@ -225,7 +234,15 @@
                             <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
                         </label>
                     </div>
-                    <g:textArea name="resourceComment" id="resourceComment" value="${resource.comment}" rows="5" cols="100"/>
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="resourceRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                            ${resource.comment.encodeAsHTML()}
+                        </div>
+                    </div>
+                    %{--<g:textArea name="resourceComment" id="resourceComment" value="${resource.comment}" rows="5" cols="100"/>--}%
                     <g:if test="${resource.title != null}">
                         <div class="row formRow text-center clueRow">
                             <label for="resourceDescription">
@@ -244,6 +261,9 @@
                             </h3>
                             <input class="input-medium search-query" data-content="resourceTags${resource.id}"
                                    placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            <button type="button" class="btn btn-primary modifyTag push">
+                                <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                            </button>
                         </div>
 
                         <div class="modal-body">

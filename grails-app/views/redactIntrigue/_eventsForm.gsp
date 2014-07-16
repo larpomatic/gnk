@@ -6,10 +6,10 @@
                 <g:message code="redactintrigue.event.addEvent" default="New event"/>
             </a>
         </li>
-        <g:each in="${plotInstance.events}" status="i5" var="event">
+        <g:each in="${plotInstance.events.sort{it.timing}}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">
-                    ${event.name}
+                    ${event.timing}% - ${event.name.encodeAsHTML()}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
                         data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">

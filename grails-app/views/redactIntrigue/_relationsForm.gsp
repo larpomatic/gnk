@@ -19,6 +19,7 @@
 	<div class="tab-content">
         <div class="tab-pane active" id="newRelation">
             <form name="newRelationForm" data-url="<g:createLink controller="Relation" action="Save"/>">
+                <g:hiddenField name="relationDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span2">
                         <label for="relationType">
@@ -92,7 +93,14 @@
                         <g:message code="redactintrigue.relation.description" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="relationDescription" id="relationDescription" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="relationRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="relationDescription" id="relationDescription" value="" rows="5" cols="100"/>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRelation"/>
             </form>
         </div>
@@ -116,9 +124,6 @@
                                     </g:else>
                                     ${relationFrom.role2.code}
                                 </span>
-                                %{--<span class="text-right">--}%
-                                    %{----}%
-                                %{--</span>--}%
                                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
                                         data-url="<g:createLink controller="Relation" action="Delete" id="${relationFrom.id}"/>" data-object="relation" data-id="${relationFrom.id}">
                                     <i class="icon-remove pull-right"></i>

@@ -30,10 +30,10 @@ $(function(){
                     createNewPastScenePanel(data);
                     initSearchBoxes();
                     initPastSceneRelative();
-                    $('.datetimepicker').datetimepicker({
-                        language: 'fr',
-                        pickSeconds: false
-                    });
+//                    $('.datetimepicker').datetimepicker({
+//                        language: 'fr',
+//                        pickSeconds: false
+//                    });
                     $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
@@ -90,18 +90,18 @@ function initPastSceneRelative() {
         var unit = $(this).attr("data-unitTime");
         $(".pastSceneRelativeUnit", $(this).parent().parent().parent().parent()).val(unit);
     });
-
-    //bascule en mode temps relatif sur les pastscenes
-    $('.relativeButton').click(function() {
-        $('.pastSceneRelative', $(this).parent().parent()).removeClass("hidden");
-        $('.pastSceneAbsolute', $(this).parent().parent()).addClass('hidden');
-    });
-
-    //bascule en mode temps absolu sur les pastscenes
-    $('.absoluteButton').click(function() {
-        $('.pastSceneAbsolute', $(this).parent().parent()).removeClass("hidden");
-        $('.pastSceneRelative', $(this).parent().parent()).addClass('hidden');
-    });
+//
+//    //bascule en mode temps relatif sur les pastscenes
+//    $('.relativeButton').click(function() {
+//        $('.pastSceneRelative', $(this).parent().parent()).removeClass("hidden");
+//        $('.pastSceneAbsolute', $(this).parent().parent()).addClass('hidden');
+//    });
+//
+//    //bascule en mode temps absolu sur les pastscenes
+//    $('.absoluteButton').click(function() {
+//        $('.pastSceneAbsolute', $(this).parent().parent()).removeClass("hidden");
+//        $('.pastSceneRelative', $(this).parent().parent()).addClass('hidden');
+//    });
 }
 
 // supprime une scène passée dans la base

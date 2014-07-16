@@ -1,4 +1,5 @@
 <form name="updateRelation${role.id}_${relationFrom.id}" data-url="<g:createLink controller="Relation" action="Update" id="${relationFrom.id}"/>">
+    <g:hiddenField name="relationDescription" class="descriptionContent" value=""/>
     <g:if test="${isRole1}">
         <g:hiddenField name="relationFrom" value="${role.id}"/>
     </g:if>
@@ -73,7 +74,15 @@
             <g:message code="redactintrigue.relation.description" default="Description"/>
         </label>
     </div>
-    <g:textArea name="relationDescription" id="relationDescription" value="${relationFrom.description}" rows="5" cols="100"/>
+    <div class="fullScreenEditable">
+        <g:render template="dropdownButtons" />
+
+        <!-- Editor -->
+        <div id="relationRichTextEditor${role.id}_${relationFrom.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+            ${relationFrom.description.encodeAsHTML()}
+        </div>
+    </div>
+    %{--<g:textArea name="relationDescription" id="relationDescription" value="${relationFrom.description}" rows="5" cols="100"/>--}%
     <g:if test="${isRole1}">
         <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role1?.id}"
                data-oldRoleToId="${relationFrom.role2?.id}" value="Update" class="btn btn-primary updateRelation"

@@ -52,7 +52,27 @@ $(function(){
     $('.btnFullScreen').click(function() {
         $(this).parent().parent().toggleClass("fullScreenOpen");
     });
+
+    bgenScroll();
+
+    initModifyTag();
 });
+
+//active le bouton "modifier" des fenêtres de tag
+function initModifyTag() {
+    $('.modifyTag').click(function() {
+        if ($(this).hasClass("push")) {
+            $('.modal-body li', $(this).parent().parent()).hide();
+            $('.modal-body li input[type="checkbox"]:checked', $(this).parent().parent()).parent().parent().show();
+            $('.modal-body li input[type="checkbox"]:checked', $(this).parent().parent()).parents("*").show();
+        }
+        else {
+            $('.modal-body li', $(this).parent().parent()).show();
+        }
+        $(this).toggleClass("push");
+        $(this).toggleClass("active");
+    });
+}
 
 //Recherche de tags
 function initSearchBoxes() {
@@ -121,7 +141,7 @@ function appendEntity(entity, value, label, flag, id) {
 }
 
 //evite de descendre quand on clique sur un bouton du menu
-function bgenScroll() {
+function bgenScroll(e) {
     if (window.pageYOffset != null) {
         st = window.pageYOffset + '';
     }
@@ -131,7 +151,12 @@ function bgenScroll() {
         }
         st = document.documentElement.scrollTop;
     }
-    setTimeout('window.scroll(0,st)', 10);
+    setTimeout('window.scroll(0,st)', 50);
+//    setTimeout(function() {
+//        if (location.hash) {
+//            window.scrollTo(0, 0);
+//        }
+//    }, 100);
 }
 
 //desactive le weight des tags
@@ -253,5 +278,9 @@ function transformDescription(description) {
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
+    description = description.replace(/&lt;l:/g, '<l:');
+    description = description.replace(/&lt;o:/g, '<o:');
+    description = description.replace(/&lt;i:/g, '<i:');
+    description = description.replace(/&gt;/g, '>');
     return description;
 }

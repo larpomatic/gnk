@@ -25,12 +25,11 @@ class GenericPlaceController {
 
     def save() {
         GenericPlace genericPlace = new GenericPlace(params)
-        Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(genericPlace, true);
         genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
-        def jsonGenericPlace = buildJson(genericPlace, placeTagList, plot);
+        def jsonGenericPlace = buildJson(genericPlace);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("genericPlace", jsonGenericPlace);
@@ -46,42 +45,30 @@ class GenericPlaceController {
             JSONObject jsonTag = new JSONObject();
             jsonTag.put("id", genericPlaceTag.getId());
             jsonTag.put("name", genericPlaceTag.getName());
+            if (genericPlaceTag.children && genericPlaceTag.children.size() != 0) {
+                JSONArray jsonTagChildren = buildTagList(genericPlaceTag.children);
+                jsonTag.put("children", jsonTagChildren);
+            }
             jsonTagList.add(jsonTag);
         }
         return jsonTagList;
     }
 
-    def buildJson(GenericPlace genericPlace, placeTagList, Plot plot) {
+    def buildJson(GenericPlace genericPlace) {
         JSONObject jsonGenericPlace = new JSONObject();
         jsonGenericPlace.put("code", genericPlace.getCode());
         jsonGenericPlace.put("id", genericPlace.getId());
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
+
         JSONArray jsonTagList = new JSONArray();
-        for (Tag genericPlaceTag in placeTagList) {
-            if (genericPlace.hasGenericPlaceTag(genericPlaceTag)) {
-                jsonTagList.add(genericPlaceTag.getId());
-            }
+        for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {
+            JSONObject jsonTag = new JSONObject();
+            jsonTag.put("id", genericPlaceHasTag.tag.id)
+            jsonTag.put("weight", genericPlaceHasTag.weight)
+            jsonTagList.add(jsonTag);
         }
         jsonGenericPlace.put("tagList", jsonTagList);
-//        JSONArray jsonEventList = new JSONArray();
-//        for (Event event in genericPlace.events) {
-//            JSONObject jsonEvent = new JSONObject();
-//            jsonEvent.put("eventId", event.id);
-//            jsonEvent.put("eventName", event.name);
-//            jsonEvent.put("eventCheck", genericPlace.events.contains(event));
-//            jsonEventList.add(jsonEvent);
-//        }
-//        jsonGenericPlace.put("eventList", jsonEventList);
-//        JSONArray jsonPastsceneList = new JSONArray();
-//        for (Pastscene pastscene in genericPlace.pastscenes) {
-//            JSONObject jsonPastscene = new JSONObject();
-//            jsonPastscene.put("pastsceneId", pastscene.id);
-//            jsonPastscene.put("pastsceneTitle", pastscene.title);
-//            jsonPastscene.put("pastsceneCheck", genericPlace.pastscenes.contains(pastscene));
-//            jsonPastsceneList.add(jsonPastscene);
-//        }
-//        jsonGenericPlace.put("pastsceneList", jsonPastsceneList);
         return jsonGenericPlace;
     }
 
@@ -107,27 +94,8 @@ class GenericPlaceController {
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);
         } else {
-            newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>()
+            newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>();
         }
-//        if(newGenericPlace.events) {
-//            for (Event event in newGenericPlace.events) {
-//                event.genericPlace = null;
-//                event.save(flush:true);
-//            }
-//            newGenericPlace.events.clear();
-//        } else {
-//            newGenericPlace.events = new HashSet<Event>()
-//        }
-//        if(newGenericPlace.pastscenes) {
-//            for (Pastscene pastscene in newGenericPlace.pastscenes) {
-//                pastscene.genericPlace = null;
-//                pastscene.save(flush:true);
-//            }
-//            newGenericPlace.pastscenes.clear();
-//        } else {
-//            newGenericPlace.pastscenes = new HashSet<Pastscene>()
-//        }
-
         newGenericPlace.save(flush: true);
         newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode()).first();
 
@@ -136,22 +104,10 @@ class GenericPlaceController {
                 GenericPlaceHasTag genericPlaceHasTag = new GenericPlaceHasTag();
                 Tag genericPlaceTag = Tag.get((it.key - "placeTags_") as Integer);
                 genericPlaceHasTag.tag = genericPlaceTag
-                genericPlaceHasTag.weight = TagService.LOCKED
+                genericPlaceHasTag.weight = params.get("placeTagsWeight_" + genericPlaceTag.id) as Integer;
                 genericPlaceHasTag.genericPlace = newGenericPlace
                 newGenericPlace.extTags.add(genericPlaceHasTag)
             }
-//            else if (it.key.startsWith("placeEvent_")) {
-//                Event event = Event.get((it.key - "placeEvent_") as Integer);
-//                event.genericPlace = newGenericPlace;
-//                event.save(flush: true);
-//                newGenericPlace.events.add(event);
-//            }
-//            else if (it.key.startsWith("placePastScene_")) {
-//                Pastscene pastscene = Pastscene.get((it.key - "placePastScene_") as Integer);
-//                pastscene.genericPlace = newGenericPlace;
-//                pastscene.save(flush: true);
-//                newGenericPlace.pastscenes.add(pastscene);
-//            }
         }
         newGenericPlace.save(flush: true);
         return true;
