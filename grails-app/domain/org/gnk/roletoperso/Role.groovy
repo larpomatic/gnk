@@ -57,23 +57,6 @@ class Role implements Comparable {
         roleHasTags.add(roleHasTags)
     }
 
-    public boolean myInsert() {
-        def sql = Sql.newInstance("jdbc:mysql://localhost/gnkdb", "gnk", "", "com.mysql.jdbc.Driver")
-        dateCreated = new Date()
-        lastUpdated = new Date()
-        sql.execute("insert into role (version, code, date_created, description, last_updated, pipi, pipr, type, plot_id) values (1, \"" + code + "\", '2013-04-15', \"" + description + "\", '2013-04-15', " + pipi + ", " + pipr + ", \"" + type + "\", " + plot.id + ")")
-        Role role = Role.findAllWhere("code": code).first();
-        for (RoleHasTag roleHasTagIter : this.roleHasTags) {
-            RoleHasTag roleHasTag = new RoleHasTag()
-            Tag roleTag = roleHasTagIter.tag
-            roleHasTag.tag = roleTag
-            roleHasTag.weight = TagService.LOCKED //FIXME
-            roleHasTag.role = role
-            role.roleHasTags.add(roleHasTag)
-        }
-        return !!(role.save());
-    }
-
     public boolean hasRoleTag(Tag parRoleTag) {
         for (RoleHasTag roleHasRoleTag : roleHasTags) {
             if (roleHasRoleTag.tag == parRoleTag) {
