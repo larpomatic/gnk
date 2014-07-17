@@ -6,9 +6,12 @@ $(function(){
     //ajoute une nouvelle scène passée dans la base
     $('.insertPastScene').click(function() {
         var form = $('form[name="newPastSceneForm"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#pastSceneRichTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var title = $('#pastSceneTitleRichTextEditor', form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -57,9 +60,12 @@ function updatePastScene() {
     $('.updatePastScene').click(function() {
         var pastsceneId = $(this).attr("data-id");
         var form = $('form[name="updatePastScene_' + pastsceneId + '"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#pastSceneRichTextEditor' + pastsceneId, form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var title = $('#pastSceneTitleRichTextEditor' + pastsceneId, form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -146,6 +152,7 @@ function emptyPastSceneForm() {
     $('form[name="newPastSceneForm"] #pastScenePlace option[value="null"]').attr("selected", "selected");
     $('form[name="newPastSceneForm"] #pastScenePredecessor option[value="null"]').attr("selected", "selected");
     $('form[name="newPastSceneForm"] #pastSceneRichTextEditor').html("");
+    $('form[name="newPastSceneForm"] #pastSceneTitleRichTextEditor').html("");
     $('form[name="newPastSceneForm"] .relativeTimeMessage').html("Année");
 }
 

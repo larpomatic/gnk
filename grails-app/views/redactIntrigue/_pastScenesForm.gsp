@@ -22,16 +22,19 @@
         <div class="tab-pane active" id="newPastScene">
             <form name="newPastSceneForm" data-url="<g:createLink controller="PastScene" action="Save"/>">
                 <g:hiddenField name="pastSceneDescription" class="descriptionContent" value=""/>
+                <g:hiddenField name="pastSceneTitle" class="titleContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                <div class="row formRow">
-                    <div class="span1">
-                        <label for="pastSceneTitle">
-                            <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
-                        </label>
-                    </div>
+                <div class="row formRow text-center">
+                    <label for="pastSceneTitle">
+                        <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
+                    </label>
+                </div>
 
-                    <div class="span8">
-                        <g:textField name="pastSceneTitle" id="pastSceneTitle" value="" required=""/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="pastSceneTitleRichTextEditor" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
 
@@ -179,18 +182,33 @@
                 <form name="updatePastScene_${pastScene.id}" data-url="<g:createLink controller="PastScene" action="Update" id="${pastScene.id}"/>">
                     <g:hiddenField name="id" value="${pastScene.id}"/>
                     <g:hiddenField name="pastSceneDescription" class="descriptionContent" value=""/>
+                    <g:hiddenField name="pastSceneTitle" class="titleContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                    <div class="row formRow">
-                        <div class="span1">
-                            <label for="pastSceneTitle">
-                                <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
-                            </label>
-                        </div>
+                    <div class="row formRow text-center">
+                        <label for="pastSceneTitle">
+                            <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
+                        </label>
+                    </div>
 
-                        <div class="span8">
-                            <g:textField name="pastSceneTitle" id="pastSceneTitle" value="${pastScene.title}" required=""/>
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="pastSceneTitleRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                            ${pastScene.title.encodeAsHTML()}
                         </div>
                     </div>
+                    %{--<div class="row formRow">--}%
+                        %{--<div class="span1">--}%
+                            %{--<label for="pastSceneTitle">--}%
+                                %{--<g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>--}%
+                            %{--</label>--}%
+                        %{--</div>--}%
+
+                        %{--<div class="span8">--}%
+                            %{--<g:textField name="pastSceneTitle" id="pastSceneTitle" value="${pastScene.title}" required=""/>--}%
+                        %{--</div>--}%
+                    %{--</div>--}%
 
                     <div class="row formRow">
                         <div class="span1">

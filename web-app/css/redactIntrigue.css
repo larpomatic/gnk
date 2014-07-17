@@ -186,6 +186,10 @@
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
 }
 
+.richTextEditor.textTitle {
+    min-height: inherit;
+}
+
 .btnFullScreen {
     background: url(../images/redactIntrigue/fullScreenButton.png) no-repeat;
     background-size: 100%;

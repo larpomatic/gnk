@@ -3,18 +3,30 @@
     <input type="hidden" name="id" value="{{ pastscene.id }}"/>
     <input type="hidden" name="plotId" id="plotId" value="{{ pastscene.plotId }}"/>
     <input type="hidden" name="pastSceneDescription" class="descriptionContent" value=""/>
+    <div class="row formRow text-center">
+        <label for="pastSceneTitle">
+            Titre
+        </label>
+    </div>
 
-    <div class="row formRow">
-        <div class="span1">
-            <label for="pastSceneTitle">
-                Titre
-            </label>
-        </div>
+    <div class="fullScreenEditable">
 
-        <div class="span8">
-            <input type="text" name="pastSceneTitle" id="pastSceneTitle" value="{{ pastscene.title }}" required=""/>
+        <!-- Editor -->
+        <div id="pastSceneTitleRichTextEditor{{ pastscene.id }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+            {{ encodeAsHtml pastscene.title }}
         </div>
     </div>
+    <!--<div class="row formRow">-->
+        <!--<div class="span1">-->
+            <!--<label for="pastSceneTitle">-->
+                <!--Titre-->
+            <!--</label>-->
+        <!--</div>-->
+
+        <!--<div class="span8">-->
+            <!--<input type="text" name="pastSceneTitle" id="pastSceneTitle" value="{{ pastscene.title }}" required=""/>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row formRow">
         <div class="span1">
             <label for="pastSceneDatetime{{ pastscene.id }}">
