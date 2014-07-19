@@ -38,7 +38,7 @@ class WordWriter {
         defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
         try{
-            this.wordMLPackage = WordprocessingMLPackage.load(new File(System.getProperty("user.dir")+"/publication/"+templateWordSelected+".docx"))
+            this.wordMLPackage = WordprocessingMLPackage.load(new File(System.getProperty("user.dir")+"/web-app/publication/"+templateWordSelected+".docx"))
         } catch (Exception e){
             defaultTemplate = true
             this.wordMLPackage = WordprocessingMLPackage.createPackage()

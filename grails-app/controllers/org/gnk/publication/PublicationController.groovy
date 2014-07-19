@@ -103,13 +103,19 @@ class PublicationController {
 
         ArrayList<String> templateWordList = new ArrayList<String>()
 
-        File folder = new File(System.getProperty("user.dir")+"/publication");
+        File folder = new File(System.getProperty("user.dir")+"/web-app/publication");
         File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++)
-            if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
-                templateWordList.add(listOfFiles[i].getName().replace(".docx","").replace(" (Univers)",""));
-        String uniName = gn.univers.name.replace(" (Univers)","").replace("/","-")
-
+        if (listOfFiles == null)
+        {
+            templateWordList.add("DEFAULT")
+        }
+        else
+        {
+            for (int i = 0; i < listOfFiles.length; i++)
+                if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
+                    templateWordList.add(listOfFiles[i].getName().replace(".docx","").replace(" (Univers)",""));
+        }
+            String uniName = gn.univers.name.replace(" (Univers)","").replace("/","-")
         [
             title : gn.name,
             subtitle : createSubTile(),
