@@ -387,13 +387,13 @@ class OutputHandler {
         // Update pastcenes
         for(pastsceneJSON in pastscenesJSONArray) {
             Integer pastsceneGnPlotId = pastsceneJSON.gnPlotId as Integer
-            Integer pastsceneGnId = pastsceneJSON.gnId as Integer
+            Integer pastsceneGnId = pastceneJSON.gnId as Integer
             // Find pastscene in gn
             Pastscene pastscene = findGenericPastsceneInGN(gnInst, pastsceneGnPlotId, pastsceneGnId)
             // Update pastscene absolute date
             JSONObject dateJSON = pastsceneJSON.date
             if (dateJSON.year != null ) {pastscene.absoluteYear = dateJSON.year as Integer}
-            if (dateJSON.month != null ) {pastscene.absoluteMonth = dateJSON.month as Integer}
+            if (dateJSON.month != null ) {pastscene.sabsoluteMonth = dateJSON.month as Integer}
             if (dateJSON.day != null ) {pastscene.absoluteDay = dateJSON.day as Integer}
             if (dateJSON.hours != null ) {pastscene.absoluteHour = dateJSON.hours as Integer}
             if (dateJSON.minutes != null ) {pastscene.absoluteMinute = dateJSON.minutes as Integer}
@@ -428,6 +428,7 @@ class OutputHandler {
 
         return null
     }
+
     private Event findGenericEventInGN(Gn gnInst, Integer eventGnPlotId, Integer eventGnId) {
         for(plot in gnInst.selectedPlotSet) {
             if (plot.DTDId == eventGnPlotId) {

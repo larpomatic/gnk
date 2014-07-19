@@ -62,6 +62,10 @@ class RoleToPersoController {
 //            gn.setSelectedEvenemential(evenementialPlot);
 //        }
 
+        // TODO
+
+        gn.addPlot(new Plot())
+
         params.each {
             final String key = it.key as String
             if (key.startsWith("role_status_") && it.value != "3") {
@@ -132,7 +136,79 @@ class RoleToPersoController {
             }
         }
 
+
+
         RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
+        /**********/
+        /** AGE  **/
+        /**********/
+        // On donne à chaque joueur un age selon un algo simple
+        gn.characterSet.each { charact ->
+            charact.age = charact.getCharacterAproximateAge();
+            print("AGE_0 :" + charact.age)
+        }
+        // On affine en fonction des relation père/fils
+        boolean noModifDoneOnParents = true;
+        while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustement
+            noModifDoneOnParents = false
+            gn.characterSet.each { charact -> // Pour tous les caractère
+                charact.getRelationsExceptBijectives().each { related -> // On récupère leurs relation
+                    if (related.key.getterRole1().DTDId != null && related.key.getterRole2().DTDId != null) { // Si c'est pas un cas chelou
+                        if (related.key.roleRelationType.id == 21) { //Parent direct
+                            // On est sur un papa, on va donc aller vérifier qu'il a plus de 20 ans et qu'il a plus de 20 ans que son fils
+                            // On recherche son fils
+                            if (charact.age < 20) {
+                                charact.age = 20
+                                noModifDoneOnParents = true
+                            } else {
+                                gn.characterSet.each { sonChar ->
+                                    if (sonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
+                                        if (charact.age < sonChar.age + 20) { // On donne au père au moins 20 ans de plus que le fils
+                                            charact.age = sonChar.age + 20
+                                            noModifDoneOnParents = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (related.key.roleRelationType.id == 20) { //Filiation
+                            // On est sur un fils, on va aller vérifier que son père a au moins 20 ans de plus que lui
+                            gn.characterSet.each { pereChar ->
+                                if (pereChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le pereChar qui est le pere de character
+                                    if (pereChar.age < charact.age + 20) { // On donne au père au moins 20 ans de plus que le fils
+                                        pereChar.age = charact.age + 20
+                                        noModifDoneOnParents = true
+                                    }
+                                }
+                            }
+                        }
+                        if (related.key.roleRelationType.id == 24) { //Grand père
+                            // On est sur un grandpapa, on va donc aller vérifier qu'il a plus de 45 ans et qu'il a plus de 45 ans que son petit fils
+                            // On recherche son petit fils
+                            if (charact.age < 45) {
+                                charact.age = 45
+                                noModifDoneOnParents = true
+                            } else {
+                                gn.characterSet.each { grandSonChar ->
+                                    if (grandSonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
+                                        if (charact.age < grandSonChar.age + 45) { // On donne au père au moins 20 ans de plus que le fils
+                                            charact.age = grandSonChar.age + 45
+                                            noModifDoneOnParents = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        gn.characterSet.each { charact ->
+            print("AGE_1 :" + charact.age + " for IDs :")
+        }
+        /***********/
+        /**FIN AGE**/
+        /***********/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {

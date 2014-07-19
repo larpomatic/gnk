@@ -15,7 +15,16 @@ class Character {
     String firstname
     // m, f, n
     private String gender
-    private String type;
+    private String type
+
+    Integer getAge() {
+        return age
+    }
+
+    void setAge(Integer age) {
+        this.age = age
+    }
+    private Integer age
 
     private List<Role> lockedRoles = []
     private List<Role> selectedRoles = []
@@ -347,38 +356,31 @@ class Character {
         int sum = 0
         int number = 0
         int finalAge = 0
-        println("name === " +firstname + " " + getDTDId())
+
         tags.each { tag ->
-            if (tag.key.tagFamily.id == 3) { // Age
+            int sumTmp = sum
+            sum += getAgeForTagAge(tag.key, tag.value)
+            if (sumTmp != sum)
                 number += 1
-                println("age :" + tag.key.name + "(" + tag.value)
-                sum += getAgeForTagAge(tag.key, tag.value)
-            }
         }
         if (number == 0) {
             finalAge = 40
         } else {
-            println("FINAL AGE: " +(sum/number))
             finalAge = sum / number
         }
 
 
 
         int minage = 0
-        getRelationsExceptBijectives().each { related ->
-            if (related.key.roleRelationType.id == 21)
-            minage = 20
-            println(firstname + " -> (" + related.key.getterRole1().DTDId + "-" + related.key.getterRole2().DTDId + ") " + related.key.roleRelationType.name + "(" + related.key.roleRelationType.id)
-        }
 
-        if (minage != 0)
-            finalAge = minage
+
+       // if (minage != 0)
+        //    finalAge = minage
 
         //Fun
-        finalAge += (((new Random()).nextInt() % 7))
+        finalAge += (((new Random()).nextInt() % 8))
         if (finalAge < 0)
             finalAge = 0
-        println("FINAL AGE2: " +finalAge)
 
         return finalAge;
     }
@@ -387,31 +389,21 @@ class Character {
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0
 
-        if (t.tagFamily.id == 3) { // Âge
-            int fixAge = 0
-            if (t.id == 34) { //Vieux 80
-                fixAge = 80
-            } else if (t.id == 33) { //Âge mur 50
-                fixAge = 50
-            } else if (t.id == 32) { //Jeune adulte 30
-                fixAge = 30
-            } else if (t.id == 31) { // Très jeune 15
-                fixAge = 15
-            }
-            age = (fixAge * value) + (fixAge * 100) // Donne une valeur entre 0 et age * 200
+        if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
+            println(t.name + " - " + value)
 
-            if (t.id == 34) { // 80
-                age = 100 * age / (fixAge * 200)
-            } else if (t.id == 33) { // 50
-                age = 100 * age / (fixAge * 200)//(30 * age / (fixAge * 200)) + 40
-            } else if (t.id == 32) { // 30
-                age = 30//(30 * age / (fixAge * 200)) + 20
-            } else if (t.id == 31) { // 15
-                age = 100 * age / (fixAge * 200)
-                age = (100 - age)
-            }
+        // Formule de maths toutes arbitraires
+        if (t.id == 34) { //Vieux 80
+            age = 80 + Math.pow(((value - 25)/23), 3)/3
+        } else if (t.id == 33) { //Âge mur 50
+            age = 50 + Math.pow((value/38), 3)/3
+        } else if (t.id == 32) { //Jeune adulte 30
+            age = 30 - Math.pow((value/38), 3)/3
+        } else if (t.id == 31) { // Très jeune 15
+            age = 15 - Math.pow(((value - 25)/23), 3)/3
         }
-
+        if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
+            println(t.name + " - " + value + "   AGE :" + age)
         return age
     }
 }

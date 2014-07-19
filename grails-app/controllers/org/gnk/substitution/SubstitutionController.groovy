@@ -31,6 +31,7 @@ class SubstitutionController {
             return*/
         }
 
+
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
         resourceList : inputHandler.resourceList,

@@ -29,7 +29,7 @@ class CharacterXMLWriterService {
         rootElement.setAttribute("id", DTDId.toString());
         rootElement.setAttribute("gender", character.gender);
         rootElement.setAttribute("type", character.type);
-
+        rootElement.setAttribute("age", (character.age == null ? "0" : character.age as String));
         return rootElement;
     }
 
