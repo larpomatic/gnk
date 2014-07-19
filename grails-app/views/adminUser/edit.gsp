@@ -104,7 +104,7 @@ Statut :
             </tr>
             </tbody>
         </table>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Valider</button>
     </g:form>
     </div>
 </g:hasRights>

@@ -178,7 +178,7 @@
             </g:each>
         </li>
     </ul>
-    <g:form action="resultRequest" method="post">
+    <g:form action="request" method="post">
         <br/>
         <div class="input-group">
             <g:textArea class="size-console" name="sqlconsol" id="sqlcompile"/>
@@ -188,7 +188,7 @@
         <input name="requestname" id="requestname" placeholder="Nom de la Requête"><br/>
         <br/>
         <div class="btn-group text-center">
-        <button type="submit" class="button-submit btn btn-default btn-large">Submit</button>
+        <button type="submit" class="button-submit btn btn-default btn-large">Soumettre</button>
             <p id="SavedSqlRequest">
                 <input type='checkbox' class='chk' name='isSaved' id='isSaved'/>
                 <label>Sauvegarder</label>

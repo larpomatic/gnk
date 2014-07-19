@@ -18,6 +18,7 @@
 			<td><g:formatBoolean boolean="${tagRelationInstance.isBijective}" /></td>	
 			<td>${fieldValue(bean: tagRelationInstance, field: "weight")}</td>	
 			<td>
+                <a href="#modaledit${tagRelationInstance?.id}" role="button" class="btn" data-toggle="modal">${message(code: 'default.edit')}</a>
                 <g:form>
                     <fieldset class="buttons">
                         <g:hiddenField name="idRelation" value="${tagRelationInstance?.id}" />
@@ -32,3 +33,4 @@
 
 <!-- Modal Views -->
 <g:render template="../tag/modalViewTags" />
+<g:render template="modaleditViewTags" />

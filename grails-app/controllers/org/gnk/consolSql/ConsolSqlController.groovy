@@ -28,30 +28,34 @@ class ConsolSqlController {
     }
 
     def request() {
-
+            String catName;
+            String subCatName;
+            String requestName;
+            String requestSql;
             GrailsParameterMap param = getParams()
             if (param.get("isSaved")){
-                String catName = param.get("categoryname")
-                String subCatName = param.get("subcategory")
-                String requestName = param.get("requestname")
+                catName = param.get("categoryname")
+                subCatName = param.get("subcategory")
+                requestName = param.get("requestname")
+                requestSql = param.get("sqlconsol")
                 if (catName && subCatName && requestName){
-                    requestService.update(requestName, catName, subCatName, request)
+                    requestService.update(requestName, catName, subCatName, requestSql)
                 }
             }
             if (param.get("isDeleted")){
-                String catName = param.get("categorynameD")
-                String subCatName = param.get("subcategoryD")
-                String requestName = param.get("requestnameD")
+                catName = param.get("categorynameD")
+                subCatName = param.get("subcategoryD")
+                requestName = param.get("requestnameD")
                 if (catName && subCatName && requestName){
                     requestService.delete(catName, subCatName, requestName)
                 }
             }
-                        //Correction of a bug (bad display in the view when they have,ust one element
-        redirect(action: "resultRequest")
+                        //Correction of a bug (bad display in the view when they have,ust one element)
+        redirect(action: "resultRequest", params: [sqlconsol : requestSql])
     }
-    def resultRequest(){
+    def resultRequest(String request){
         String result = "";
-        String request = params.sqlconsol;
+        request = params.sqlconsol;
         if (request) {
             def sql = new Sql(sessionFactory.currentSession.connection())
             def resultsql = sql.rows(request)
