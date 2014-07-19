@@ -142,6 +142,7 @@ class RoleToPersoController {
         /**********/
         /** AGE  **/
         /**********/
+
         // On donne à chaque joueur un age selon un algo simple
         gn.characterSet.each { charact ->
             charact.age = charact.getCharacterAproximateAge();
@@ -149,7 +150,7 @@ class RoleToPersoController {
         }
         // On affine en fonction des relation père/fils
         boolean noModifDoneOnParents = true;
-        while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustement
+        while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustements
             noModifDoneOnParents = false
             gn.characterSet.each { charact -> // Pour tous les caractère
                 charact.getRelationsExceptBijectives().each { related -> // On récupère leurs relation
