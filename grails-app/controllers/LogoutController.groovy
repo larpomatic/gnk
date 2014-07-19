@@ -15,7 +15,8 @@ class LogoutController {
 		// TODO put any pre-logout code here
         Cookie[] cookies = request.getCookies()
         Cookie cookie = cookies.find { it.name == "prcgn" }
-
+        for (int i = 0; i < cookies.length; i++){
+    }
         if(cookie)
         {
             cookie.setMaxAge(0)
