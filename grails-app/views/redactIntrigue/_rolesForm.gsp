@@ -436,6 +436,9 @@
                             </h3>
                             <input class="input-medium search-query" data-content="roleTags${role.id}"
                                    placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            <button type="button" class="btn btn-primary modifyTag push">
+                                <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                            </button>
                         </div>
 
                         <div class="modal-body">
