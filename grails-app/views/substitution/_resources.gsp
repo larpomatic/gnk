@@ -49,11 +49,17 @@
             </g:else>
 			</td>
             <!-- Resource -->
-            <td class="resource">
+            <!--<td class="resource">
                 <select class="bold" disabled="true" isEmpty="true">
                 </select>
                 <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
+            </td> -->
+            <td class="resource">
+                <input type="radio" name="${resource}Radio" id="generatedResource" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
+                <input type="radio" name="${resource}Radio" id="writtenResource" ><input type="text" id="resourceWritten" class="written">
+                <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
+
             <!-- Restart resource -->
             <td class="restartResource" style="text-align: center;">
                 <input type="checkbox" name="option" value="unlock" disabled="true">

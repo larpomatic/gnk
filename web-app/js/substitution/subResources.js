@@ -151,9 +151,14 @@ function prepareResourcesJSONForValidation(resourcesJSON) {
         var resourceElement =  $("#" + resource.htmlId);
 
         // Update name
+        var resourceWritten = document.getElementById("resourceWritten");
         var resourceSelect = resourceElement.children(".resource").eq(0).children("select").eq(0);
         if (resourceSelect.attr("isEmpty") == "false") {
-            resource.selectedName = resourceSelect.val();
+            if (document.getElementById("writtenResource").checked) {
+                resource.selectedName = resourceWritten.value;
+            } else {
+                resource.selectedName = resourceSelect.val();
+            }
         }
         else {
             return false;

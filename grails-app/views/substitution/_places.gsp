@@ -44,7 +44,7 @@
             <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
             <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written">
             <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
-            </td>-
+            </td>
 
             <!-- Restart place -->
             <td class="restartPlace" style="text-align: center;">
