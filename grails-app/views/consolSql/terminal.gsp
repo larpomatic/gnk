@@ -195,7 +195,7 @@
             </p>
         </div>
     </g:form>
-    <g:form action="request" method="post">
+    <g:form action="deleteRequest" method="post">
         <input class="form-control" name="categoryname" id="categorynameD" placeholder="Catégorie"> <br/>
         <input name="subcategory" id="subcategoryD" placeholder="Sous Catégorie"><br/>
         <input name="requestname" id="requestnameD" placeholder="Nom de la Requête"><br/>
