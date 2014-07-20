@@ -27,30 +27,32 @@ class ConsolSqlController {
         }
     }
 
+    def deleteRequest (){
+        GrailsParameterMap param = getParams()
+        String catName = param.get("categoryname");
+        String subCatName = param.get("subcategory");
+        String requestName = param.get("requestname");
+            if (catName && subCatName && requestName){
+                requestService.delete(catName, subCatName, requestName)
+            }
+        redirect( action:"terminal")
+    }
+
     def request() {
             String catName;
             String subCatName;
             String requestName;
-            String requestSql;
             GrailsParameterMap param = getParams()
+            String requestSql = param.get("sqlconsol")
             if (param.get("isSaved")){
                 catName = param.get("categoryname")
                 subCatName = param.get("subcategory")
                 requestName = param.get("requestname")
-                requestSql = param.get("sqlconsol")
                 if (catName && subCatName && requestName){
                     requestService.update(requestName, catName, subCatName, requestSql)
                 }
             }
-            if (param.get("isDeleted")){
-                catName = param.get("categorynameD")
-                subCatName = param.get("subcategoryD")
-                requestName = param.get("requestnameD")
-                if (catName && subCatName && requestName){
-                    requestService.delete(catName, subCatName, requestName)
-                }
-            }
-                        //Correction of a bug (bad display in the view when they have,ust one element)
+
         redirect(action: "resultRequest", params: [sqlconsol : requestSql])
     }
     def resultRequest(String request){

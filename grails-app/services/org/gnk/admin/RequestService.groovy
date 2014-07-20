@@ -40,8 +40,10 @@ class RequestService {
             return false;
         } else {
             sqlrequest.delete();
+            sqlsubcat.sqlRequest.remove(sqlrequest)
             if (sqlsubcat.sqlRequest.size() == 0){
                 sqlsubcat.delete();
+                sqlcat.sqlRequestSubcategory.remove(sqlsubcat)
             }
             if (sqlcat.sqlRequestSubcategory.size() == 0){
                 sqlcat.delete();

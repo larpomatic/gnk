@@ -1,6 +1,7 @@
 package org.gnk.tag
 
 import grails.orm.PagedResultList
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.springframework.dao.DataIntegrityViolationException
 
 class TagRelationController {
@@ -150,4 +151,22 @@ class TagRelationController {
 		tagRelationInstance.delete()
 		redirect(action: "list")
 	}
+
+    def updateParam(){
+        GrailsParameterMap param = getParams()
+        int tagRelationId = Integer.parseInt(param.get("tagRelation"))
+        TagRelation tagRelation = TagRelation.findById(tagRelationId);
+        int weight = tagRelation.weight
+        boolean isBijectiv = tagRelation.isBijective
+        int weightUpdate = Integer.parseInt(param.get("weightTag"))
+        boolean isBijectivUpdate = (boolean)param.get("bijectivTag")
+        if (weight != weightUpdate){
+            tagRelation.weight = weightUpdate;
+        }
+        if (("true".equals(isBijectivUpdate) || "false".equals(isBijectivUpdate)) && isBijectiv != isBijectivUpdate ){
+            tagRelation.isBijective = isBijectivUpdate
+        }
+        tagRelation.save();
+        redirect(action: "list")
+    }
 }

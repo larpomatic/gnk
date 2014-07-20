@@ -31,13 +31,16 @@ class SubstitutionController {
             return*/
         }
 
+        Gn gn = Gn.get(gnIdStr as Integer)
+
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
         resourceList : inputHandler.resourceList,
         placeList : inputHandler.placeList,
         pastsceneList : inputHandler.pastsceneList,
         eventList : inputHandler.eventList,
-        gnId : gnIdStr]
+        gnId : gnIdStr,
+        ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
     }
 
     def getSubCharacters() {
