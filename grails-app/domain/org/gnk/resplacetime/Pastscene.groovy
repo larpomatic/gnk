@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 
@@ -60,5 +61,15 @@ class Pastscene {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+        roleHasPastscenes cascade: 'all-delete-orphan'
+    }
+
+    public RoleHasPastscene getRoleHasPastscene(Role role) {
+        for (RoleHasPastscene roleHasPastscene in roleHasPastscenes) {
+            if (roleHasPastscene.role == role) {
+                return roleHasPastscene;
+            }
+        }
+        return null;
     }
 }

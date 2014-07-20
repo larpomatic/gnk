@@ -28,13 +28,27 @@ $(function(){
                     createNewGenericPlacePanel(data);
                     initSearchBoxes();
                     initModifyTag();
+                    stopClosingDropdown();
                     appendEntity("place", data.genericPlace.code, "warning", "", data.genericPlace.id);
+                    initQuickObjects();
                     var nbGenericPlaces = parseInt($('.placeLi .badge').html()) + 1;
                     $('.placeLi .badge').html(nbGenericPlaces);
                     updatePlace()
                     $('form[name="updatePlace_' + data.genericPlace.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
+                    var spanList = $('.richTextEditor span.label-default').filter(function() {
+                        return $(this).text() == data.genericPlace.code;
+                    });
+                    spanList.each(function() {
+                        $(this).removeClass("label-default").addClass("label-warning");
+                    });
+                    $('.placeSelector li[data-id=""]').each(function() {
+                        if ($("a", $(this)).html().trim() == data.genericPlace.code + ' <i class="icon-warning-sign"></i>') {
+                            $(this).remove();
+                        }
+                    });
+                    updateAllDescription($.unique(spanList.closest("form")));
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre lieu n'a pas pu être ajouté, une erreur s'est produite.");
@@ -162,10 +176,10 @@ function createNewGenericPlacePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];

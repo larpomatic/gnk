@@ -86,19 +86,21 @@ class RedactIntrigueController {
                 screenStep: screen]
 	}
 
-	def update(Long id, Long version) {
+	def update(Long id) {
+        def isupdate = true;
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			redirect(action: "list")
-			return
+//			redirect(action: "list")
+//			return
+            isupdate = false;
 		}
 
-		if (version != null) {
-			if (plotInstance.version > version) {
-				render(view: "edit", model: [plotInstance: plotInstance])
-				return
-			}
-		}
+//		if (version != null) {
+//			if (plotInstance.version > version) {
+//				render(view: "edit", model: [plotInstance: plotInstance])
+//				return
+//			}
+//		}
 
 		plotInstance.properties = params
 		plotInstance.description = params.plotDescription
@@ -146,10 +148,15 @@ class RedactIntrigueController {
 		}
 
 		if (!plotInstance.save(flush: true)) {
-			render(view: "edit", model: [plotInstance: plotInstance])
-			return
+//			render(view: "edit", model: [plotInstance: plotInstance])
+//			return
+            isupdate = false;
 		}
-		redirect(action: "show", id: plotInstance.id)
+
+        render(contentType: "application/json") {
+            object(isupdate: isupdate)
+        }
+//		redirect(action: "show", id: plotInstance.id)
 	}
 
 	def delete(Long id) {

@@ -3,6 +3,7 @@
     <input type="hidden" name="id" value="{{ pastscene.id }}"/>
     <input type="hidden" name="plotId" id="plotId" value="{{ pastscene.plotId }}"/>
     <input type="hidden" name="pastSceneDescription" class="descriptionContent" value=""/>
+    <input type="hidden" name="pastSceneTitle" class="titleContent" value=""/>
     <div class="row formRow text-center">
         <label for="pastSceneTitle">
             Titre
@@ -16,17 +17,6 @@
             {{ encodeAsHtml pastscene.title }}
         </div>
     </div>
-    <!--<div class="row formRow">-->
-        <!--<div class="span1">-->
-            <!--<label for="pastSceneTitle">-->
-                <!--Titre-->
-            <!--</label>-->
-        <!--</div>-->
-
-        <!--<div class="span8">-->
-            <!--<input type="text" name="pastSceneTitle" id="pastSceneTitle" value="{{ pastscene.title }}" required=""/>-->
-        <!--</div>-->
-    <!--</div>-->
     <div class="row formRow">
         <div class="span1">
             <label for="pastSceneDatetime{{ pastscene.id }}">
@@ -34,19 +24,8 @@
             </label>
         </div>
 
-        <!--<div class="span4 pastSceneAbsolute hidden">-->
-            <!--<div class="input-append date datetimepicker">-->
-                <!--<input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime{{ pastscene.id }}" name="pastSceneDatetime"-->
-                       <!--value="{{ pastscene.absoluteDay }}/{{ pastscene.absoluteMonth }}/{{ pastscene.absoluteYear }} {{ pastscene.absoluteHour }}:{{ pastscene.absoluteMinute }}"/>-->
-                <!--<span class="add-on">-->
-                    <!--<i data-time-icon="icon-time" data-date-icon="icon-calendar">-->
-                    <!--</i>-->
-                <!--</span>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <div class="span4 pastSceneRelative">
-            <div class="input-append">
+        <div class="span3 pastSceneRelative">
+            <div class="input-append shortInput">
                 <input type="number" name="pastSceneRelative" id="pastSceneRelative{{ pastscene.id }}" value="{{ pastscene.timingRelative }}">
                 <input type="hidden" name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="{{ pastscene.unitTimingRelative }}" id="pastSceneRelativeUnit">
                 <div class="btn-group">
@@ -94,22 +73,18 @@
             </label>
         </div>
 
-        <div class="span3">
+        <div class="span2">
             {{#if pastscene.isPublic}}
                 <input type="checkbox" name="pastScenePublic" id="pastScenePublic" checked="checked">
             {{else}}
                 <input type="checkbox" name="pastScenePublic" id="pastScenePublic">
             {{/if}}
         </div>
-
-        <!--<div class="btn-group" data-toggle="buttons-radio">-->
-            <!--<button type="button" class="btn active relativeButton">-->
-                <!--Temps relatif-->
-            <!--</button>-->
-            <!--<button type="button" class="btn absoluteButton">-->
-                <!--Temps absolu-->
-            <!--</button>-->
-        <!--</div>-->
+        <div class="span2">
+            <a href="#pastsceneRolesModal{{pastscene.id}}" class="btn" data-toggle="modal">
+                Choisir les rôles
+            </a>
+        </div>
     </div>
 
     <div class="row formRow text-center">
@@ -170,6 +145,62 @@
             {{ encodeAsHtml pastscene.description }}
         </div>
     </div>
+
+    <div id="pastsceneRolesModal{{ pastscene.id }}" class="modal hide fade largeModal" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>
+                Rôles
+            </h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs leftUl">
+                    {{#each pastscene.roleList}}
+                        <li class="">
+                            <a href="#pastsceneRole{{ roleId }}_{{ ../pastscene.id }}" data-toggle="tab">
+                                {{roleCode}}
+                            </a>
+                        </li>
+                    {{/each}}
+                </ul>
+                <div class="tab-content">
+                    {{#each pastscene.roleList}}
+                        <div class="tab-pane" id="pastsceneRole{{ roleId }}_{{ ../pastscene.id }}">
+                            <input type="hidden" name="roleHasPastSceneDescription{{ roleId }}" class="descriptionContent" value="">
+                            <input type="hidden" name="roleHasPastSceneTitle{{ roleId }}" class="titleContent" value="">
+                            <div class="row formRow text-center">
+                                <label>
+                                    Titre
+                                </label>
+                            </div>
+                            <div class="fullScreenEditable">
+                                <div id="roleHasPastSceneTitleRichTextEditor{{ roleId }}_{{ ../pastscene.id }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                                    {{ encodeAsHtml title }}
+                                </div>
+                            </div>
+                            <div class="row formRow text-center">
+                                <label>
+                                    Description
+                                </label>
+                            </div>
+                            <div class="fullScreenEditable">
+                                <div id="roleHasPastSceneRichTextEditor{{ roleId }}_{{ ../pastscene.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                    {{ encodeAsHtml description }}
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Ok</button>
+        </div>
+    </div>
+
     <input type="button" name="Update" data-id="{{ pastscene.id }}" value="Update" class="btn btn-primary btn btn-primary updatePastScene"/>
     </form>
 </div>

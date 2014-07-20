@@ -25,7 +25,7 @@ class GenericPlaceController {
 
     def save() {
         GenericPlace genericPlace = new GenericPlace(params)
-        Boolean res = saveOrUpdate(genericPlace, true);
+        Boolean res = saveOrUpdate(genericPlace);
         genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
@@ -72,7 +72,7 @@ class GenericPlaceController {
         return jsonGenericPlace;
     }
 
-    def saveOrUpdate(GenericPlace newGenericPlace, boolean isNew) {
+    def saveOrUpdate(GenericPlace newGenericPlace) {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericPlace.plot = plot
@@ -140,7 +140,7 @@ class GenericPlaceController {
         String oldname = genericPlace.code;
         if (genericPlace) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(genericPlace, false),
+                object(isupdate: saveOrUpdate(genericPlace),
                         id: genericPlace.id,
                         name: genericPlace.code,
                         oldname: oldname)

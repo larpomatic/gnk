@@ -46,5 +46,6 @@ class Event {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+        roleHasEvents cascade: 'all-delete-orphan'
     }
 }

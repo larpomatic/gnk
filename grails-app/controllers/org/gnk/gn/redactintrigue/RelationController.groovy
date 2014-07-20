@@ -12,7 +12,7 @@ class RelationController {
 
     def save () {
         RoleHasRelationWithRole relation = new RoleHasRelationWithRole(params);
-        Boolean res = saveOrUpdate(relation, true);
+        Boolean res = saveOrUpdate(relation);
         def jsonRelation = buildJson(relation);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
@@ -43,7 +43,7 @@ class RelationController {
     def update(Long id) {
         RoleHasRelationWithRole relation = RoleHasRelationWithRole.get(id);
         if (relation) {
-            Boolean isupdate = saveOrUpdate(relation, true);
+            Boolean isupdate = saveOrUpdate(relation);
             def jsonRelation = buildJson(relation);
             final JSONObject object = new JSONObject();
             object.put("isupdate", isupdate);
@@ -54,7 +54,7 @@ class RelationController {
         }
     }
 
-    def saveOrUpdate(RoleHasRelationWithRole newRelation, boolean isNew) {
+    def saveOrUpdate(RoleHasRelationWithRole newRelation) {
         if (params.containsKey("relationType")) {
             RoleRelationType roleRelationType = RoleRelationType.get(params.relationType as Integer);
             newRelation.roleRelationType = roleRelationType;

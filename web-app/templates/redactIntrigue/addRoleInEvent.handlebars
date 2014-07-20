@@ -1,0 +1,75 @@
+<div class="tab-pane" id="eventRole{{ roleId }}_{{ eventId }}">
+    <input type="hidden" name="roleHasEventTitle{{ roleId }}" class="titleContent" value="">
+    <div class="row formRow text-center">
+        <label>
+            Titre
+        </label>
+    </div>
+    <div class="fullScreenEditable">
+        <div id="roleHasEventTitleRichTextEditor{{ roleId }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+        </div>
+    </div>
+    <div class="formRow">
+        <div class="span1">
+            Est annoncé
+        </div>
+        <div class="span4">
+            <input type="checkbox" name="roleHasEventannounced{{ roleId }}">
+        </div>
+    </div>
+
+    <div class="text-center roleHasEventTabs">
+        <div class="span1"></div>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#roleHasEventDescriptionTab{{ roleId }}_{{ eventId }}" data-toggle="tab">
+                    Description
+                </a>
+            </li>
+            <li>
+                <a href="#roleHasEventCommentTab{{ roleId }}_{{ eventId }}" data-toggle="tab">
+                    Commentaire
+                </a>
+            </li>
+            <li>
+                <a href="#roleHasEventEvenementialTab{{ roleId }}_{{ eventId }}" data-toggle="tab">
+                    Description évènementielle
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="roleHasEventDescriptionTab{{ roleId }}_{{ eventId }}">
+                <input type="hidden" name="roleHasEventDescription{{ roleId }}" class="descriptionContent" value="">
+                <div class="fullScreenEditable">
+                    <div id="roleHasEventRichTextEditor{{ roleId }}_{{ eventId }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="roleHasEventCommentTab{{ roleId }}_{{ eventId }}">
+                <input type="hidden" name="roleHasEventComment{{ roleId }}" class="commentContent" value="">
+                <div class="fullScreenEditable">
+                    <div id="roleHasEventCommentRichTextEditor{{ roleId }}_{{ eventId }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="roleHasEventEvenementialTab{{ roleId }}_{{ eventId }}">
+                <input type="hidden" name="roleHasEventEvenemential{{ roleId }}" class="evenementialContent" value="">
+                <div class="fullScreenEditable">
+                    <div id="roleHasEventEvenementialRichTextEditor{{ roleId }}_{{ eventId }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Ressources</th>
+            <th>Quantité</th>
+        </tr>
+        </thead>
+        <tbody data-role="{{ roleId }}">
+        </tbody>
+    </table>
+</div>

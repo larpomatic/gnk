@@ -18,7 +18,9 @@ $(function(){
                     createNewRelationPanel(data);
                     initConfirm();
                     emptyRelationForm();
+                    stopClosingDropdown();
                     $('.numberRelation').html($('.relationScreen .accordion-group').size());
+                    initQuickObjects();
                     updateRelation();
                 }
                 else {
@@ -176,10 +178,11 @@ function emptyRelationForm() {
 // créé un accordion-group de la nouvelle relation
 function createNewRelationPanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
+        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];

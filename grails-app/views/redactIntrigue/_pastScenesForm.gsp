@@ -44,20 +44,10 @@
                             <g:message code="redactintrigue.pastScene.pastsceneDatetime" default="Time"/>
                         </label>
                     </div>
-
-                    %{--<div class="span4 pastSceneAbsolute hidden">--}%
-                        %{--<div class="input-append date datetimepicker">--}%
-                            %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime" name="pastSceneDatetime"/>--}%
-                            %{--<span class="add-on">--}%
-                                %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
-                                %{--</i>--}%
-                            %{--</span>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
-                    <div class="span4 pastSceneRelative">
-                        <div class="input-append">
+                    <div class="span3 pastSceneRelative">
+                        <div class="input-append shortInput">
                             <g:field type="number" name="pastSceneRelative" id="pastSceneRelative" value=""/>
-                            <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value=""/>
+                            <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="Y"/>
                             <div class="btn-group">
                                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                                     <span class="relativeTimeMessage">
@@ -96,23 +86,20 @@
                         </div>
                     </div>
 
-                    %{--<div class="btn-group" data-toggle="buttons-radio">--}%
-                        %{--<button type="button" class="btn active relativeButton">--}%
-                            %{--<g:message code="redactintrigue.pastScene.relative" default="Relative time"/>--}%
-                        %{--</button>--}%
-                        %{--<button type="button" class="btn absoluteButton">--}%
-                            %{--<g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>--}%
-                        %{--</button>--}%
-                    %{--</div>--}%
-
                     <div class="span2">
                         <label for="pastScenePublic">
                             <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>
                         </label>
                     </div>
 
-                    <div class="span3">
+                    <div class="span2">
                         <g:checkBox name="pastScenePublic" id="pastScenePublic"/>
+                    </div>
+
+                    <div class="span2">
+                        <a href="#pastsceneRolesModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.pastScene.chooseRoles" default="Choose roles"/>
+                        </a>
                     </div>
                 </div>
 
@@ -173,11 +160,69 @@
                     <div id="pastSceneRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
+
+                <div id="pastsceneRolesModal" class="modal hide fade largeModal" tabindex="-1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>
+                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                        </h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="tabbable tabs-left">
+                            <ul class="nav nav-tabs leftUl">
+                                <g:each in="${plotInstance.roles}" status="i4" var="role">
+                                <li class="">
+                                    <a href="#pastsceneRole${role.id}_" data-toggle="tab">
+                                        ${role.code}
+                                    </a>
+                                </li>
+                                </g:each>
+                            </ul>
+                            <div class="tab-content">
+                                <g:each in="${plotInstance.roles}" status="i4" var="role">
+                                <div class="tab-pane" id="pastsceneRole${role.id}_">
+                                    <g:hiddenField name="roleHasPastSceneDescription${role.id}" class="descriptionContent" value=""/>
+                                    <g:hiddenField name="roleHasPastSceneTitle${role.id}" class="titleContent" value=""/>
+                                    <div class="row formRow text-center">
+                                        <label>
+                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                        </label>
+                                    </div>
+                                    <div class="fullScreenEditable">
+                                        <g:render template="dropdownButtons" />
+
+                                        <!-- Editor -->
+                                        <div id="roleHasPastSceneTitleRichTextEditor${role.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                                        </div>
+                                    </div>
+                                    <div class="row formRow text-center">
+                                        <label>
+                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                        </label>
+                                    </div>
+                                    <div class="fullScreenEditable">
+                                        <g:render template="dropdownButtons" />
+                                        <div id="roleHasPastSceneRichTextEditor${role.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                        </div>
+                                    </div>
+                                </div>
+                                </g:each>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
             </form>
         </div>
 
-        <g:each in="${plotInstance.pastescenes}" status="i4" var="pastScene">
+        <g:each in="${plotInstance.pastescenes}" var="pastScene">
             <div class="tab-pane" id="pastScene_${pastScene.id}">
                 <form name="updatePastScene_${pastScene.id}" data-url="<g:createLink controller="PastScene" action="Update" id="${pastScene.id}"/>">
                     <g:hiddenField name="id" value="${pastScene.id}"/>
@@ -198,17 +243,6 @@
                             ${pastScene.title.encodeAsHTML()}
                         </div>
                     </div>
-                    %{--<div class="row formRow">--}%
-                        %{--<div class="span1">--}%
-                            %{--<label for="pastSceneTitle">--}%
-                                %{--<g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>--}%
-                            %{--</label>--}%
-                        %{--</div>--}%
-
-                        %{--<div class="span8">--}%
-                            %{--<g:textField name="pastSceneTitle" id="pastSceneTitle" value="${pastScene.title}" required=""/>--}%
-                        %{--</div>--}%
-                    %{--</div>--}%
 
                     <div class="row formRow">
                         <div class="span1">
@@ -216,19 +250,8 @@
                                 <g:message code="redactintrigue.pastScene.pastsceneDatetime" default="Date and Time"/>
                             </label>
                         </div>
-
-                        %{--<div class="span4 pastSceneAbsolute hidden">--}%
-                            %{--<div class="input-append date datetimepicker">--}%
-                                %{--<input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime${pastScene.id}" name="pastSceneDatetime"--}%
-                                %{--value="${pastScene.dateDay}/${pastScene.dateMonth}/${pastScene.dateYear} ${pastScene.dateHour}:${pastScene.dateMinute}"/>--}%
-                                %{--<span class="add-on">--}%
-                                    %{--<i data-time-icon="icon-time" data-date-icon="icon-calendar">--}%
-                                    %{--</i>--}%
-                                %{--</span>--}%
-                            %{--</div>--}%
-                        %{--</div>--}%
-                        <div class="span4 pastSceneRelative">
-                            <div class="input-append">
+                        <div class="span3 pastSceneRelative">
+                            <div class="input-append shortInput">
                                 <g:field type="number" name="pastSceneRelative" id="pastSceneRelative${pastScene.id}" value="${pastScene.timingRelative}"/>
                                 <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="${pastScene.unitTimingRelative}"/>
                                 <div class="btn-group">
@@ -274,18 +297,14 @@
                                 <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>
                             </label>
                         </div>
-
-                        <div class="span3">
+                        <div class="span2">
                             <g:checkBox name="pastScenePublic" id="pastScenePublic" value="${pastScene.isPublic}"/>
                         </div>
-                        %{--<div class="btn-group" data-toggle="buttons-radio">--}%
-                            %{--<button type="button" class="btn active relativeButton">--}%
-                                %{--<g:message code="redactintrigue.pastScene.relative" default="Relative time"/>--}%
-                            %{--</button>--}%
-                            %{--<button type="button" class="btn absoluteButton">--}%
-                                %{--<g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>--}%
-                            %{--</button>--}%
-                        %{--</div>--}%
+                        <div class="span2">
+                            <a href="#pastsceneRolesModal${pastScene.id}" class="btn" data-toggle="modal">
+                                <g:message code="redactintrigue.pastScene.chooseRoles" default="Choose roles"/>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="row formRow text-center">
@@ -346,6 +365,65 @@
                             ${pastScene.description.encodeAsHTML()}
                         </div>
                     </div>
+                    <div id="pastsceneRolesModal${pastScene.id}" class="modal hide fade largeModal" tabindex="-1">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h3>
+                                <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                            </h3>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="tabbable tabs-left">
+                                <ul class="nav nav-tabs leftUl">
+                                    <g:each in="${plotInstance.roles}" status="i4" var="role">
+                                        <li>
+                                            <a href="#pastsceneRole${role.id}_${pastScene.id}" data-toggle="tab">
+                                                ${role.code}
+                                            </a>
+                                        </li>
+                                    </g:each>
+                                </ul>
+                                <div class="tab-content">
+                                    <g:each in="${plotInstance.roles}" var="role">
+                                        <div class="tab-pane" id="pastsceneRole${role.id}_${pastScene.id}">
+                                            <g:hiddenField name="roleHasPastSceneDescription${role.id}" class="descriptionContent" value=""/>
+                                            <g:hiddenField name="roleHasPastSceneTitle${role.id}" class="titleContent" value=""/>
+                                            <div class="row formRow text-center">
+                                                <label>
+                                                    <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                </label>
+                                            </div>
+                                            <div class="fullScreenEditable">
+                                                <g:render template="dropdownButtons" />
+
+                                                <!-- Editor -->
+                                                <div id="roleHasPastSceneTitleRichTextEditor${role.id}_${pastScene.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                                                    ${role?.getRoleHasPastScene(pastScene)?.title?.encodeAsHTML()}
+                                                </div>
+                                            </div>
+                                            <div class="row formRow text-center">
+                                                <label>
+                                                    <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                </label>
+                                            </div>
+                                            <div class="fullScreenEditable">
+                                                <g:render template="dropdownButtons" />
+                                                <div id="roleHasPastSceneRichTextEditor${role.id}_${pastScene.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                                    ${role?.getRoleHasPastScene(pastScene)?.description?.encodeAsHTML()}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </g:each>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
                     <input type="button" name="Update" data-id="${pastScene.id}" value="Update" class="btn btn-primary updatePastScene"/>
                 </form>
             </div>
