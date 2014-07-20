@@ -34,11 +34,12 @@ class WordWriter {
     public String title
     public String subtitle
 
-    public WordWriter(String templateWordSelected) {
+    public WordWriter(String templateWordSelected, String publicationFolder) {
         defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
         try{
-            this.wordMLPackage = WordprocessingMLPackage.load(new File(System.getProperty("user.dir")+"/web-app/publication/"+templateWordSelected+".docx"))
+
+            this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+templateWordSelected+".docx"))
         } catch (Exception e){
             defaultTemplate = true
             this.wordMLPackage = WordprocessingMLPackage.createPackage()
