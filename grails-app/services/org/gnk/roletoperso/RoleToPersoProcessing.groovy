@@ -111,6 +111,8 @@ public class RoleToPersoProcessing {
                 }
                 bestCharRanked = lowerCharacter;
             }
+            if (bestCharRanked == null)
+                bestCharRanked = gn.characterSet.first()
             addRoleAndSexualizeIFN(bestCharRanked, role);
             gnRoleSetToProcess.remove(role);
             lockedBannedTagForCharacters.put(bestCharRanked, bestCharRanked.getlockedAndBannedTags());

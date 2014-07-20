@@ -4,6 +4,9 @@ $(function(){
     //ajoute une nouvelle relation dans la base
     $('.insertRelation').click(function() {
         var form = $('form[name="newRelationForm"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -167,16 +170,29 @@ function emptyRelationForm() {
     $('form[name="newRelationForm"] #relationType option:first').attr("selected", "selected");
     $('form[name="newRelationForm"] #relationFrom option:first').attr("selected", "selected");
     $('form[name="newRelationForm"] #relationTo option:first').attr("selected", "selected");
+    $('form[name="newRelationForm"] #relationRichTextEditor').html("");
 }
 
 // créé un accordion-group de la nouvelle relation
 function createNewRelationPanel(data) {
+    Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
+        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
+        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
+        value = value.replace(/>/g, '</span>');
+        return new Handlebars.SafeString(value);
+    });
     var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
     var context = {
         relation: data.relation
     };
     var html = template(context);
     $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
+    var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .fullScreenEditable');
+    $('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .btnFullScreen').click(function() {
+        $(this).parent().parent().toggleClass("fullScreenOpen");
+    });
     if (data.relation.isBijective) {
         var roleFromId = data.relation.RoleFromId;
         var roleToId = data.relation.RoleToId;
@@ -191,6 +207,10 @@ function createNewRelationPanel(data) {
         };
         html = template(context);
         $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
+        $('.btn-group', plotFullscreenEditable).clone().prependTo('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .fullScreenEditable');
+        $('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .btnFullScreen').click(function() {
+            $(this).parent().parent().toggleClass("fullScreenOpen");
+        });
     }
     $("#newRelation #relationType option").clone().appendTo('.accordion-group[data-relation="' + data.relation.id + '"] #relationType');
     $("#newRelation #relationTo option").clone().appendTo('.accordion-group[data-relation="' + data.relation.id + '"] #relationTo');

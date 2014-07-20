@@ -96,13 +96,21 @@ class PastSceneController {
         } else {
             return false
         }
-        Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
-        if (calendar) {
-            newPastscene.dateYear = calendar.get(Calendar.YEAR);
-            newPastscene.dateMonth = calendar.get(Calendar.MONTH);
-            newPastscene.dateDay = calendar.get(Calendar.DAY_OF_MONTH);
-            newPastscene.dateHour = calendar.get(Calendar.HOUR);
-            newPastscene.dateMinute = calendar.get(Calendar.MINUTE);
+//        Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
+        if (params.containsKey("year") && params.year != "") {
+            newPastscene.dateYear = params.year as Integer;
+        }
+        if (params.containsKey("month") && params.month != "") {
+            newPastscene.dateMonth = params.month as Integer;
+        }
+        if (params.containsKey("day") && params.day != "") {
+            newPastscene.dateDay = params.day as Integer;
+        }
+        if (params.containsKey("hour") && params.hour != "") {
+            newPastscene.dateHour = params.hour as Integer;
+        }
+        if (params.containsKey("minute") && params.minute != "") {
+            newPastscene.dateMinute = params.minute as Integer;
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);

@@ -63,7 +63,7 @@ class PlaceService {
         {
             for (org.gnk.tag.Tag tagSuperficie : tagSuperficieList)
             {
-//                placeHasTagList = tagSuperficie.extPlaceTags
+                placeHasTagList = tagSuperficie.extPlaceTags
                 for (PlaceHasTag placeHasTag : placeHasTagList) {
                     ReferentialPlace referentialPlace = new ReferentialPlace()
                     referentialPlace.name = placeHasTag.place.name

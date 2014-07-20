@@ -6,9 +6,12 @@ $(function(){
     //ajoute une nouvelle scène passée dans la base
     $('.insertPastScene').click(function() {
         var form = $('form[name="newPastSceneForm"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#pastSceneRichTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var title = $('#pastSceneTitleRichTextEditor', form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -30,11 +33,11 @@ $(function(){
                     createNewPastScenePanel(data);
                     initSearchBoxes();
                     initPastSceneRelative();
-                    $('.datetimepicker').datetimepicker({
-                        language: 'fr',
-                        pickSeconds: false
-                    });
-                    $('.btnFullScreen').click(function() {
+//                    $('.datetimepicker').datetimepicker({
+//                        language: 'fr',
+//                        pickSeconds: false
+//                    });
+                    $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
                     var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1;
@@ -57,9 +60,12 @@ function updatePastScene() {
     $('.updatePastScene').click(function() {
         var pastsceneId = $(this).attr("data-id");
         var form = $('form[name="updatePastScene_' + pastsceneId + '"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#pastSceneRichTextEditor' + pastsceneId, form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var title = $('#pastSceneTitleRichTextEditor' + pastsceneId, form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -90,18 +96,18 @@ function initPastSceneRelative() {
         var unit = $(this).attr("data-unitTime");
         $(".pastSceneRelativeUnit", $(this).parent().parent().parent().parent()).val(unit);
     });
-
-    //bascule en mode temps relatif sur les pastscenes
-    $('.relativeButton').click(function() {
-        $('.pastSceneRelative', $(this).parent().parent()).removeClass("hidden");
-        $('.pastSceneAbsolute', $(this).parent().parent()).addClass('hidden');
-    });
-
-    //bascule en mode temps absolu sur les pastscenes
-    $('.absoluteButton').click(function() {
-        $('.pastSceneAbsolute', $(this).parent().parent()).removeClass("hidden");
-        $('.pastSceneRelative', $(this).parent().parent()).addClass('hidden');
-    });
+//
+//    //bascule en mode temps relatif sur les pastscenes
+//    $('.relativeButton').click(function() {
+//        $('.pastSceneRelative', $(this).parent().parent()).removeClass("hidden");
+//        $('.pastSceneAbsolute', $(this).parent().parent()).addClass('hidden');
+//    });
+//
+//    //bascule en mode temps absolu sur les pastscenes
+//    $('.absoluteButton').click(function() {
+//        $('.pastSceneAbsolute', $(this).parent().parent()).removeClass("hidden");
+//        $('.pastSceneRelative', $(this).parent().parent()).addClass('hidden');
+//    });
 }
 
 // supprime une scène passée dans la base
@@ -146,6 +152,7 @@ function emptyPastSceneForm() {
     $('form[name="newPastSceneForm"] #pastScenePlace option[value="null"]').attr("selected", "selected");
     $('form[name="newPastSceneForm"] #pastScenePredecessor option[value="null"]').attr("selected", "selected");
     $('form[name="newPastSceneForm"] #pastSceneRichTextEditor').html("");
+    $('form[name="newPastSceneForm"] #pastSceneTitleRichTextEditor').html("");
     $('form[name="newPastSceneForm"] .relativeTimeMessage').html("Année");
 }
 

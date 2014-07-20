@@ -4,6 +4,9 @@ $(function(){
     //ajoute un nouveau lieu dans la base
     $('.insertPlace').click(function() {
         var form = $('form[name="newPlaceForm"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -24,10 +27,14 @@ $(function(){
                     emptyGenericPlaceForm();
                     createNewGenericPlacePanel(data);
                     initSearchBoxes();
+                    initModifyTag();
                     appendEntity("place", data.genericPlace.code, "warning", "", data.genericPlace.id);
                     var nbGenericPlaces = parseInt($('.placeLi .badge').html()) + 1;
                     $('.placeLi .badge').html(nbGenericPlaces);
-                    updatePlace();
+                    updatePlace()
+                    $('form[name="updatePlace_' + data.genericPlace.id + '"] .btnFullScreen').click(function() {
+                        $(this).parent().parent().toggleClass("fullScreenOpen");
+                    });
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre lieu n'a pas pu être ajouté, une erreur s'est produite.");
@@ -45,6 +52,9 @@ function updatePlace() {
     $('.updatePlace').click(function() {
         var genericPlaceId = $(this).attr("data-id");
         var form = $('form[name="updatePlace_' + genericPlaceId + '"]');
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -132,6 +142,7 @@ function emptyGenericPlaceForm() {
     $('form[name="newPlaceForm"] .tagWeightInput').attr('disabled','disabled');
     $('form[name="newPlaceForm"] .search-query').val("");
     $('form[name="newPlaceForm"] .modalLi').show();
+    $('form[name="newPlaceForm"] #placeRichTextEditor').html("");
 }
 
 // créé un tab-pane du nouveau lieu
@@ -150,6 +161,13 @@ function createNewGenericPlacePanel(data) {
         });
         return out;
     });
+    Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
+        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
+        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
+        value = value.replace(/>/g, '</span>');
+        return new Handlebars.SafeString(value);
+    });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];
     var context = {
         genericPlace: data.genericPlace,
@@ -157,6 +175,8 @@ function createNewGenericPlacePanel(data) {
     };
     var html = template(context);
     $('.placeScreen > .tab-content').append(html);
+    var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('#place_' + data.genericPlace.id + ' .fullScreenEditable');
     for (var key in data.genericPlace.tagList) {
         $('#placeTagsModal_' + data.genericPlace.id + " #placeTags" + data.genericPlace.id + "_" + data.genericPlace.tagList[key].id).attr('checked', 'checked');
         $('#placeTagsModal_' + data.genericPlace.id + " #placeTagsWeight" + data.genericPlace.id + "_" + data.genericPlace.tagList[key].id).val(data.genericPlace.tagList[key].weight);

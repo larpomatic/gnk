@@ -6,10 +6,10 @@
                 <g:message code="redactintrigue.event.addEvent" default="New event"/>
             </a>
         </li>
-        <g:each in="${plotInstance.events}" status="i5" var="event">
+        <g:each in="${plotInstance.events.sort{it.timing}}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">
-                    ${event.name}
+                    ${event.timing}% - ${event.name.encodeAsHTML()}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
                         data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
@@ -22,18 +22,32 @@
         <div class="tab-pane active" id="newEvent">
             <form name="newEventForm" data-url="<g:createLink controller="Event" action="Save"/>">
                 <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
+                <g:hiddenField name="eventName" class="titleContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                <div class="row formRow">
-                    <div class="span1">
-                        <label for="eventName">
-                            <g:message code="redactintrigue.event.eventName" default="Name"/>
-                        </label>
-                    </div>
+                <div class="row formRow text-center">
+                    <label for="eventName">
+                        <g:message code="redactintrigue.event.eventName" default="Name"/>
+                    </label>
+                </div>
 
-                    <div class="span8">
-                        <g:textField name="eventName" id="eventName" value="" required=""/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="eventTitleRichTextEditor" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
+                %{--<div class="row formRow">--}%
+                    %{--<div class="span1">--}%
+                        %{--<label for="eventName">--}%
+                            %{--<g:message code="redactintrigue.event.eventName" default="Name"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="span8">--}%
+                        %{--<g:textField name="eventName" id="eventName" value="" required=""/>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
                 <div class="row formRow">
                     <div class="span1">
                         <label for="eventPublic">
@@ -122,19 +136,33 @@
             <form name="updateEvent_${event.id}" data-url="<g:createLink controller="Event" action="Update" id="${event.id}"/>">
                 <g:hiddenField name="id" value="${event.id}"/>
                 <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
+                <g:hiddenField name="eventName" class="titleContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <div class="row formRow text-center">
+                    <label for="eventName">
+                        <g:message code="redactintrigue.event.eventName" default="Name"/>
+                    </label>
+                </div>
 
-                <div class="row formRow">
-                    <div class="span1">
-                        <label for="EventName">
-                            <g:message code="redactintrigue.event.eventName" default="Name"/>
-                        </label>
-                    </div>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
 
-                    <div class="span8">
-                        <g:textField name="eventName" id="EventName" value="${event.name}" required=""/>
+                    <!-- Editor -->
+                    <div id="eventTitleRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                        ${event.name.encodeAsHTML()}
                     </div>
                 </div>
+                %{--<div class="row formRow">--}%
+                    %{--<div class="span1">--}%
+                        %{--<label for="EventName">--}%
+                            %{--<g:message code="redactintrigue.event.eventName" default="Name"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="span8">--}%
+                        %{--<g:textField name="eventName" id="EventName" value="${event.name}" required=""/>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
                 <div class="row formRow">
                     <div class="span1">
                         <label for="eventPublic">

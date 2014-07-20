@@ -31,12 +31,16 @@ class SubstitutionController {
             return*/
         }
 
+        Gn gn = Gn.get(gnIdStr as Integer)
+
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
         resourceList : inputHandler.resourceList,
         placeList : inputHandler.placeList,
         pastsceneList : inputHandler.pastsceneList,
-        eventList : inputHandler.eventList]
+        eventList : inputHandler.eventList,
+        gnId : gnIdStr,
+        ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
     }
 
     def getSubCharacters() {
@@ -123,7 +127,7 @@ class SubstitutionController {
             }
 
             // Go to publication
-            redirect(controller: "publication", action: "publication", params: [gnId: gnDbId])
+            redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
     }

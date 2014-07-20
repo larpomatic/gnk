@@ -25,12 +25,11 @@ class GenericPlaceController {
 
     def save() {
         GenericPlace genericPlace = new GenericPlace(params)
-        Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(genericPlace, true);
-        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": plot).first();
+        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
-        def jsonGenericPlace = buildJson(genericPlace, plot);
+        def jsonGenericPlace = buildJson(genericPlace);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
         object.put("genericPlace", jsonGenericPlace);
@@ -55,12 +54,13 @@ class GenericPlaceController {
         return jsonTagList;
     }
 
-    def buildJson(GenericPlace genericPlace, Plot plot) {
+    def buildJson(GenericPlace genericPlace) {
         JSONObject jsonGenericPlace = new JSONObject();
         jsonGenericPlace.put("code", genericPlace.getCode());
         jsonGenericPlace.put("id", genericPlace.getId());
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
+
         JSONArray jsonTagList = new JSONArray();
         for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {
             JSONObject jsonTag = new JSONObject();
@@ -94,9 +94,8 @@ class GenericPlaceController {
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);
         } else {
-            newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>()
+            newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>();
         }
-
         newGenericPlace.save(flush: true);
         newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode()).first();
 
@@ -117,6 +116,7 @@ class GenericPlaceController {
     def show(Long id) {
         def genericPlaceInstance = GenericPlace.get(id)
         if (!genericPlaceInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }
@@ -127,6 +127,7 @@ class GenericPlaceController {
     def edit(Long id) {
         def genericPlaceInstance = GenericPlace.get(id)
         if (!genericPlaceInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericResource.label', default: 'GenericResource'), id])
             redirect(action: "list")
             return
         }

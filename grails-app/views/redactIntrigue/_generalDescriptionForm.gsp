@@ -1,28 +1,27 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 
 <div class="tabbable tabs-left plotScreen">
-    <ul class="nav nav-tabs leftUl">
-        <li class="active leftMenuList">
-            <a href="#" data-toggle="tab">
-                <g:message code="redactintrigue.generalDescription.newElements" default="New elements"/>
-            </a>
-        </li>
-        <li class="leftMenuList">
-            <input data-entity="resource" data-label="important" type="text"
-                   placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create resource"/>"/>
-        </li>
-        <li class="leftMenuList">
-            <input data-entity="place" data-label="warning" type="text"
-                   placeholder="<g:message code="redactintrigue.generalDescription.newPlace" default="Create place"/>"/>
-        </li>
-        <li class="leftMenuList">
-            <input data-entity="role" data-label="success" type="text"
-                   placeholder="<g:message code="redactintrigue.generalDescription.newRole" default="Create role"/>"/>
-        </li>
-    </ul>
-
+    %{--<ul class="nav nav-tabs leftUl">--}%
+        %{--<li class="active leftMenuList">--}%
+            %{--<a href="#" data-toggle="tab">--}%
+                %{--<g:message code="redactintrigue.generalDescription.newElements" default="New elements"/>--}%
+            %{--</a>--}%
+        %{--</li>--}%
+        %{--<li class="leftMenuList">--}%
+            %{--<input data-entity="resource" data-label="important" type="text"--}%
+                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create resource"/>"/>--}%
+        %{--</li>--}%
+        %{--<li class="leftMenuList">--}%
+            %{--<input data-entity="place" data-label="warning" type="text"--}%
+                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newPlace" default="Create place"/>"/>--}%
+        %{--</li>--}%
+        %{--<li class="leftMenuList">--}%
+            %{--<input data-entity="role" data-label="success" type="text"--}%
+                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newRole" default="Create role"/>"/>--}%
+        %{--</li>--}%
+    %{--</ul>--}%
     <div class="tab-content">
-        <div class="tab-pane active" id="newEvent">
+        <div class="tab-pane active" id="newPlot">
             <g:form method="post" class="savePlotForm">
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
@@ -32,25 +31,27 @@
                 <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
                 <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
                 <div class="row formRow">
+                    <div class="span1"></div>
                     <div class="span1">
                         <label for="name">
                             <g:message code="redactintrigue.generalDescription.plotName" default="Name"/>
                         </label>
                     </div>
 
-                    <div class="span8">
+                    <div class="span10">
                         <g:textField name="name" value="${plotInstance?.name}" required="" class="inputLargeWidth"/>
                     </div>
                 </div>
 
                 <div class="row formRow">
+                    <div class="span1"></div>
                     <div class="span1">
                         <label>
                             <g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/>
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span3">
                         <a href="#universesModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.generalDescription.chooseUniverses" default="Chooses universes"/>
                         </a>
@@ -62,21 +63,32 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span3">
                         <a href="#tagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.generalDescription.chooseTags" default="Chooses tags"/>
                         </a>
                     </div>
+
+                    <div class="span1">
+                        <label for="isDraft">
+                            <g:message code="redactintrigue.generalDescription.isDraft" default="Draft"/>
+                        </label>
+                    </div>
+
+                    <div class="span3">
+                        <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
+                    </div>
                 </div>
 
                 <div class="row formRow">
+                    <div class="span1"></div>
                     <div class="span1">
                         <label for="isMainstream">
                             <g:message code="redactintrigue.generalDescription.isMainstream" default="Mainstream"/>
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span3">
                         <g:checkBox name="isMainstream" id="isMainstream" checked="${plotInstance.isMainstream}"/>
                     </div>
 
@@ -86,33 +98,23 @@
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span3">
                         <g:checkBox name="isEvenemential" id="isEvenemential" checked="${plotInstance.isEvenemential}"/>
                     </div>
-                </div>
-                <div class="row formRow">
+
                     <div class="span1">
                         <label for="isPublic">
                             <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
                         </label>
                     </div>
 
-                    <div class="span4">
+                    <div class="span3">
                         <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
-                    </div>
-
-                    <div class="span1">
-                        <label for="isDraft">
-                            <g:message code="redactintrigue.generalDescription.isDraft" default="Draft"/>
-                        </label>
-                    </div>
-
-                    <div class="span4">
-                        <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
                     </div>
                 </div>
 
                 <div class="text-center plotTabs">
+                    <div class="span1"></div>
                     <ul class="nav nav-tabs">
                         <li class="active">
                             <a href="#descriptionTab" data-toggle="tab">
@@ -142,7 +144,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.description.encodeAsHTML()}
+                                    ${plotInstance.description?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>
@@ -152,7 +154,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchOrga.encodeAsHTML()}
+                                    ${plotInstance.pitchOrga?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>
@@ -162,7 +164,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPj.encodeAsHTML()}
+                                    ${plotInstance.pitchPj?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>
@@ -172,7 +174,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPnj.encodeAsHTML()}
+                                    ${plotInstance.pitchPnj?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>
@@ -210,6 +212,9 @@
                         <h3>Tags</h3>
                         <input class="input-medium search-query" data-content="plotTags"
                                placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                        <button type="button" class="btn btn-primary modifyTag push">
+                            <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                        </button>
                     </div>
 
                     <div class="modal-body">

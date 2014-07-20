@@ -1,5 +1,7 @@
 package org.gnk.selectintrigue
 
+import org.gnk.gn.GnHasConvention
+import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLReaderService
 import org.gnk.parser.gn.GnXMLWriterService
@@ -72,13 +74,18 @@ class SelectIntrigueController {
 				SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
 				selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
+                if (selectedEvenementialPlotInstanceList.size() == 0) {
+                    flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: Univers.list()])
+                    return
+                }
                 selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
 				gnInstance.selectedPlotSet = selectedPlotInstanceList;
 				gnInstance.bannedPlotSet = bannedPlot;
 				gnInstance.lockedPlotSet = lockedPlot;
 				gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 				if (!gnInstance.save(flush: true)) {
-					render(view: "selectIntrigue", model: [gnInstance: gnInstance])
+					render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: Univers.list()])
 					return
 				}
 
@@ -113,7 +120,8 @@ class SelectIntrigueController {
                 nonTreatedPlots: nonTreatedPlots ,
                 statisticResultList: statisticResultList,
                 evenementialId: evenementialId,
-                mainstreamId: mainstreamId]
+                mainstreamId: mainstreamId,
+                conventionList: Convention.list()]
 	}
 
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
@@ -126,6 +134,16 @@ class SelectIntrigueController {
 
 	def save() {
 		Gn gnInstance = new Gn(params)
+
+        GnHasConvention gnHasConvention = new GnHasConvention()
+        if (params.convention) {
+            gnHasConvention.version = 1
+            gnHasConvention.gn = gnInstance
+            gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
+
+            gnInstance.gnHasConvention = gnHasConvention
+        }
+
 		formatParams(gnInstance)
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 		if (!gnInstance.save(flush: true)) {
@@ -186,9 +204,15 @@ class SelectIntrigueController {
 			}
 		}
 		gnInstance.properties = params
+
+        GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
+        gnHasConvention.version = gnHasConvention.version + 1
+        gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
+
 		formatParams(gnInstance)
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
-		if (!gnInstance.save(flush: true)) {
+
+		if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])
 			return
 		}

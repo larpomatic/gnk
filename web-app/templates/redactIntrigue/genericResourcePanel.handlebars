@@ -2,6 +2,7 @@
     <form name="updateResource_{{ genericResource.id }}" data-url="/gnk/genericResource/update/{{ genericResource.id }}">
         <input type="hidden" name="id" value="{{ genericResource.id }}"/>
         <input type="hidden" name="plotId" id="plotId" value="{{ genericResource.plotId }}"/>
+        <input type="hidden" name="resourceComment" class="commentContent" value=""/>
 
         <div style="margin:auto">
             <div class="row formRow">
@@ -25,12 +26,12 @@
                         Choisir les tags
                     </a>
                 </div>
-                <div class="span1">
+                <div class="span2">
                     <label for="resourceIsClue">
-                        Indice
+                        Element en jeu
                     </label>
                 </div>
-                <div class="span4">
+                <div class="span3">
                     {{#if genericResource.clue}}
                         <input type="checkbox" name="resourceIsClue" checked="checked" id="resourceIsClue" disabled="disabled">
                     {{else}}
@@ -84,7 +85,14 @@
                     Commentaire
                 </label>
             </div>
-            <textarea name="resourceComment" id="resourceComment" rows="5" cols="100">{{{ genericResource.comment }}}</textarea>
+            <div class="fullScreenEditable">
+
+                <!-- Editor -->
+                <div id="resourceRichTextEditor{{ genericResource.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    {{ encodeAsHtml genericResource.comment }}
+                </div>
+            </div>
+            <!--<textarea name="resourceComment" id="resourceComment" rows="5" cols="100">{{{ genericResource.comment }}}</textarea>-->
             {{#if genericResource.clue}}
                 <div class="row formRow text-center clueRow">
                     <label for="resourceDescription">
@@ -122,6 +130,9 @@
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="myModalLabel{{ genericResource.id }}">Tags</h3>
                 <input class="input-medium search-query" data-content="resourceTags{{ genericResource.id }}" placeholder="Rechercher..."/>
+                <button type="button" class="btn btn-primary modifyTag push">
+                    Tags validés
+                </button>
             </div>
 
             <div class="modal-body">

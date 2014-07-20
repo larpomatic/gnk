@@ -19,6 +19,7 @@
 	<div class="tab-content">
         <div class="tab-pane active" id="newRelation">
             <form name="newRelationForm" data-url="<g:createLink controller="Relation" action="Save"/>">
+                <g:hiddenField name="relationDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span2">
                         <label for="relationType">
@@ -92,7 +93,14 @@
                         <g:message code="redactintrigue.relation.description" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="relationDescription" id="relationDescription" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="relationRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="relationDescription" id="relationDescription" value="" rows="5" cols="100"/>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRelation"/>
             </form>
         </div>
@@ -108,15 +116,13 @@
                                     ${relationFrom.roleRelationType.name}
                                 </a>
                                 <span class="text-center" data-roleId="${relationFrom.role2.id}">
-                                    <g:message code="redactintrigue.relation.to" default="To"/>: ${relationFrom.role2.code}
-                                </span>
-                                <span class="text-right">
                                     <g:if test="${relationFrom.isBijective}">
-                                        <span><g:img dir="images/redactIntrigue/relations" file="validate.png" /></span>
+                                        <span><g:img dir="images/redactIntrigue/relations" file="doubleArrow.png" /></span>
                                     </g:if>
                                     <g:else>
-                                        <span><g:img dir="images/redactIntrigue/relations" file="forbidden.png" /></span>
+                                        <span><g:img dir="images/redactIntrigue/relations" file="rightArrow.png" /></span>
                                     </g:else>
+                                    ${relationFrom.role2.code}
                                 </span>
                                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
                                         data-url="<g:createLink controller="Relation" action="Delete" id="${relationFrom.id}"/>" data-object="relation" data-id="${relationFrom.id}">
@@ -139,15 +145,13 @@
                                         ${relationTo.roleRelationType.name}
                                     </a>
                                     <span class="text-center" data-roleId="${relationTo.role1.id}">
-                                        <g:message code="redactintrigue.relation.to" default="To"/>: ${relationTo.role1.code}
-                                    </span>
-                                    <span class="text-right">
                                         <g:if test="${relationTo.isBijective}">
-                                            <span><g:img dir="images/redactIntrigue/relations" file="validate.png" /></span>
+                                            <span><g:img dir="images/redactIntrigue/relations" file="doubleArrow.png" /></span>
                                         </g:if>
                                         <g:else>
-                                            <span><g:img dir="images/redactIntrigue/relations" file="forbidden.png" /></span>
+                                            <span><g:img dir="images/redactIntrigue/relations" file="rightArrow.png" /></span>
                                         </g:else>
+                                        ${relationTo.role1.code}
                                     </span>
                                     <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
                                             data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">

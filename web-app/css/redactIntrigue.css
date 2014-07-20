@@ -145,6 +145,10 @@
     width: 100%;
 }
 
+#edit-plot .span5 select {
+    width: 414px;
+}
+
 .fullScreenOpen {
     position: fixed;
     top: 0;
@@ -180,6 +184,10 @@
     color: #18326d;
 
     background: url(../images/redactIntrigue/roles/dots.png) repeat;
+}
+
+.richTextEditor.textTitle {
+    min-height: inherit;
 }
 
 .btnFullScreen {
@@ -229,6 +237,25 @@
 
 #edit-plot .plotTabs {
     margin-top: 13px;
+}
+
+#edit-plot .shortInput input {
+    width: 150px !important;
+}
+
+#edit-plot .littleRow {
+    margin-top: -8px !important;
+}
+
+#edit-plot .autorField {
+    max-width: 150px;
+}
+
+#edit-plot .tags-modal label {
+    max-width: 332px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 @font-face {
