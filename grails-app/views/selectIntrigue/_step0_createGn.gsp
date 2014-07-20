@@ -15,6 +15,12 @@ select {
 <legend>
     <g:message code="default.edit.label" args="[entityName]"/>
 </legend>
+<g:if test="${flash.message}">
+    <div class="alert notificationBox alert-block alert-danger fade in">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4 class="alert-heading"><g:message code="${flash.message}" args="[]"/></h4>
+    </div>
+</g:if>
 
 <g:form method="post" class="gnSubmitForm">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
@@ -61,6 +67,12 @@ select {
                 <td><g:select name="univers" id="gnUnivers"
                               from="${universList}" optionKey="id"
                               value="${gnInstance?.univers?.id}" required=""/></td>
+
+                <td><label for="gnConvention"><g:message
+                        code="selectintrigue.step0.gnConvention" default="Convention"/>
+                </label></td>
+                <td><g:select name="convention" id="gnConvention"
+                              from="${conventionList}" optionKey="id"/></td>
             </tr>
 
             <tr>

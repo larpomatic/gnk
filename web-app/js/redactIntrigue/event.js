@@ -4,10 +4,12 @@ $(function(){
     //ajoute un nouvel évènement dans la base
     $('.insertEvent').click(function() {
         var form = $('form[name="newEventForm"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#eventRichTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
-//        form = $('form[name="newEventForm"]');
+        var title = $('#eventTitleRichTextEditor', form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -32,7 +34,7 @@ $(function(){
                         language: 'fr',
                         pickSeconds: false
                     });
-                    $('.btnFullScreen').click(function() {
+                    $('form[name="updateEvent_' + data.event.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
                     var nbEvents = parseInt($('.eventsLi .badge').html()) + 1;
@@ -55,9 +57,12 @@ function updateEvent() {
     $('.updateEvent').click(function() {
         var eventId = $(this).attr("data-id");
         var form = $('form[name="updateEvent_' + eventId + '"]');
-        var description = $('.richTextEditor', form).html();
+        var description = $('#eventRichTextEditor' + eventId, form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var title = $('#eventTitleRichTextEditor' + eventId, form).html();
+        title = transformDescription(title);
+        $('.titleContent', form).val(title);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -123,6 +128,7 @@ function emptyEventForm() {
     $('form[name="newEventForm"] #eventPlace option[value="null"]').attr("selected", "selected");
     $('form[name="newEventForm"] #eventPredecessor option[value="null"]').attr("selected", "selected");
     $('form[name="newEventForm"] #eventRichTextEditor').html("");
+    $('form[name="newEventForm"] #eventTitleRichTextEditor').html("");
 }
 
 // créé un tab-pane du nouvel event

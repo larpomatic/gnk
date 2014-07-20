@@ -5,14 +5,12 @@
             {{ relation.RoleRelationTypeName }}
         </a>
         <span class="text-center" data-roleId="{{ relation.RoleToId }}">
-            Vers: {{ relation.RoleToCode }}
-        </span>
-        <span class="text-right">
             {{#if relation.isBijective}}
-                <span><img src="/gnk/static/images/redactIntrigue/relations/validate.png"></span>
+                <span><img src="/gnk/static/images/redactIntrigue/relations/doubleArrow.png"></span>
             {{else}}
-                <span><img src="/gnk/static/images/redactIntrigue/relations/forbidden.png"></span>
+                <span><img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png"></span>
             {{/if}}
+            {{ relation.RoleToCode }}
         </span>
         <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title=""
                 data-url="/gnk/relation/delete/{{ relation.id }}" data-object="relation" data-id="{{ relation.id }}"
@@ -25,6 +23,7 @@
             <form name="updateRelation{{ relation.RoleFromId }}_{{ relation.id }}" data-url="/gnk/relation/update/{{ relation.id }}">
                 <input type="hidden" name="relationFrom" value="{{ relation.RoleFromId }}" id="relationFrom">
                 <input type="hidden" name="id" value="{{ relation.id }}" id="id">
+                <input type="hidden" name="relationDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="relationType">
@@ -100,9 +99,16 @@
                         Description
                     </label>
                 </div>
-                <textarea name="relationDescription" id="relationDescription" rows="5" cols="100">
-                    {{{ relation.description }}}
-                </textarea>
+                <div class="fullScreenEditable">
+
+                    <!-- Editor -->
+                    <div id="relationRichTextEditor{{ relation.RoleFromId }}-{{ relation.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                        {{ encodeAsHtml relation.description }}
+                    </div>
+                </div>
+                <!--<textarea name="relationDescription" id="relationDescription" rows="5" cols="100">-->
+                    <!--{{{ relation.description }}}-->
+                <!--</textarea>-->
                 <input type="button" name="Update" data-id="{{ relation.id }}" data-oldRoleToId="{{ relation.RoleToId }}"
                        data-roleFromId="{{ relation.RoleFromId }}" value="Update"
                        class="btn btn-primary updateRelation" data-wasBijective="{{ relation.isBijective }}">

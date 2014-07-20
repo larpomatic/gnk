@@ -22,6 +22,7 @@
         <div class="tab-pane active" id="newPlace">
             <form name="newPlaceForm" data-url="<g:createLink controller="GenericPlace" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <g:hiddenField name="placeDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="placeCode">
@@ -47,7 +48,14 @@
                         <g:message code="redactintrigue.place.placeDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="placeDescription" id="placeDescription" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="placeRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="placeDescription" id="placeDescription" value="" rows="5" cols="100"/>--}%
                 <div id="placeTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -78,6 +86,7 @@
             <div class="tab-pane" id="place_${place.id}">
                 <form name="updatePlace_${place.id}" data-url="<g:createLink controller="GenericPlace" action="Update" id="${place.id}"/>">
                     <g:hiddenField name="id" value="${place.id}"/>
+                    <g:hiddenField name="placeDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
                         <div class="span1">
@@ -104,7 +113,16 @@
                             <g:message code="redactintrigue.place.placeDescription" default="Description"/>
                         </label>
                     </div>
-                    <g:textArea name="placeDescription" id="placeDescription" value="${place.comment}" rows="5" cols="100"/>
+                    %{--<g:textArea name="placeDescription" id="placeDescription" value="${place.comment}" rows="5" cols="100"/>--}%
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="placeRichTextEditor${place.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                            ${place.comment.encodeAsHTML()}
+                        </div>
+                    </div>
+
                     <div id="placeTagsModal_${place.id}" class="modal hide fade tags-modal" tabindex="-1">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
@@ -114,18 +132,14 @@
                             </h3>
                             <input class="input-medium search-query" data-content="placeTags${place.id}"
                                    placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            <button type="button" class="btn btn-primary modifyTag push">
+                                <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                            </button>
                         </div>
 
                         <div class="modal-body">
                             <ul class="placeTags${place.id}">
                                 <g:each in="${placeTagList}" var="placeTagInstance">
-                                    %{--<li class="modalLi" data-name="${placeTagInstance.name.toLowerCase()}">--}%
-                                        %{--<label>--}%
-                                            %{--<g:checkBox name="placeTags_${placeTagInstance.id}" id="placeTags_${placeTagInstance.id}"--}%
-                                                        %{--checked="${place.hasGenericPlaceTag(placeTagInstance)}"/>--}%
-                                            %{--${fieldValue(bean: placeTagInstance, field: "name")}--}%
-                                        %{--</label>--}%
-                                    %{--</li>--}%
                                     <g:render template="placeTagTree" model="[placeTagInstance: placeTagInstance, place: place]"/>
                                 </g:each>
                             </ul>

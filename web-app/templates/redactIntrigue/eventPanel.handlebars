@@ -3,18 +3,30 @@
     <input type="hidden" name="id" value="{{ event.id }}"/>
     <input type="hidden" name="plotId" id="plotId" value="{{ event.plotId }}"/>
     <input type="hidden" name="eventDescription" class="descriptionContent" value=""/>
+    <div class="row formRow text-center">
+        <label for="eventName">
+            Nom
+        </label>
+    </div>
 
-    <div class="row formRow">
-        <div class="span1">
-            <label for="EventName">
-                Nom
-            </label>
-        </div>
+    <div class="fullScreenEditable">
 
-        <div class="span8">
-            <input type="text" name="eventName" id="EventName" value="{{ event.name }}" required=""/>
+        <!-- Editor -->
+        <div id="eventTitleRichTextEditor{{ event.id }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+            {{ encodeAsHtml event.name }}
         </div>
     </div>
+    <!--<div class="row formRow">-->
+        <!--<div class="span1">-->
+            <!--<label for="EventName">-->
+                <!--Nom-->
+            <!--</label>-->
+        <!--</div>-->
+
+        <!--<div class="span8">-->
+            <!--<input type="text" name="eventName" id="EventName" value="{{ event.name }}" required=""/>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row formRow">
         <div class="span1">
             <label for="eventPublic">

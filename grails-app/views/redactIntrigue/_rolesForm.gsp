@@ -26,6 +26,7 @@
         <div class="tab-pane active" id="newRole">
             <form name="newRoleForm" data-url="<g:createLink controller="Role" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
+                <g:hiddenField name="roleDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="roleCode">
@@ -60,7 +61,7 @@
                             <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
                         </label>
                     </div>
-                    <div class="span4">
+                    <div class="span3">
                         <a href="#roleTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                         </a>
@@ -70,8 +71,8 @@
                             <g:message code="redactintrigue.role.roleType" default="Type"/>
                         </label>
                     </div>
-                    <div class="span4">
-                        <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                    <div class="span5">
+                        <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
                                   keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" required=""/>
                     </div>
                 </div>
@@ -102,7 +103,14 @@
                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="roleRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>--}%
 
                 <div id="roleEventsModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
@@ -230,6 +238,7 @@
             <div class="tab-pane" id="role_${role.id}">
                 <form name="updateRole_${role.id}" data-url="<g:createLink controller="Role" action="Update" id="${role.id}"/>">
                     <g:hiddenField name="id" value="${role.id}"/>
+                    <g:hiddenField name="roleDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
                         <div class="span1">
@@ -265,7 +274,7 @@
                                 <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
                             </label>
                         </div>
-                        <div class="span4">
+                        <div class="span3">
                             <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                             </a>
@@ -275,8 +284,8 @@
                                 <g:message code="redactintrigue.role.roleType" default="Type"/>
                             </label>
                         </div>
-                        <div class="span4">
-                            <g:select name="roleType" id="roleType" from="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}"
+                        <div class="span5">
+                            <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
                                       keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" value="${role.type}" required=""/>
                         </div>
                     </div>
@@ -307,7 +316,16 @@
                             <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                         </label>
                     </div>
-                    <g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>
+
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="roleRichTextEditor${role.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                            ${role.description.encodeAsHTML()}
+                        </div>
+                    </div>
+                    %{--<g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>--}%
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">
@@ -418,6 +436,9 @@
                             </h3>
                             <input class="input-medium search-query" data-content="roleTags${role.id}"
                                    placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                            <button type="button" class="btn btn-primary modifyTag push">
+                                <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                            </button>
                         </div>
 
                         <div class="modal-body">

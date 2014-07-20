@@ -3,6 +3,8 @@ package org.gnk.roletoperso
 import com.esotericsoftware.minlog.Log
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.genericevent.GenericEvent
+import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
@@ -129,13 +131,91 @@ class RoleToPersoController {
             }
         }
 
+
+
         RoleToPersoProcessing algo = new RoleToPersoProcessing(gn)
+        /**********/
+        /** AGE  **/
+        /**********/
+
+        // On donne à chaque joueur un age selon un algo simple
+        gn.characterSet.each { charact ->
+            charact.age = charact.getCharacterAproximateAge();
+            //print("AGE_0 :" + charact.age)
+        }
+        // On affine en fonction des relation père/fils
+        boolean noModifDoneOnParents = true;
+        while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustements
+            noModifDoneOnParents = false
+            gn.characterSet.each { charact -> // Pour tous les caractère
+                charact.getRelationsExceptBijectives().each { related -> // On récupère leurs relation
+                    if (related.key.getterRole1().DTDId != null && related.key.getterRole2().DTDId != null) { // Si c'est pas un cas chelou
+                        if (related.key.roleRelationType.id == 21) { //Parent direct
+                            // On est sur un papa, on va donc aller vérifier qu'il a plus de 20 ans et qu'il a plus de 20 ans que son fils
+                            // On recherche son fils
+                            if (charact.age < 20) {
+                                charact.age = 20
+                                noModifDoneOnParents = true
+                            } else {
+                                gn.characterSet.each { sonChar ->
+                                    if (sonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
+                                        if (charact.age < sonChar.age + 20) { // On donne au père au moins 20 ans de plus que le fils
+                                            charact.age = sonChar.age + 20
+                                            noModifDoneOnParents = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (related.key.roleRelationType.id == 20) { //Filiation
+                            // On est sur un fils, on va aller vérifier que son père a au moins 20 ans de plus que lui
+                            gn.characterSet.each { pereChar ->
+                                if (pereChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le pereChar qui est le pere de character
+                                    if (pereChar.age < charact.age + 20) { // On donne au père au moins 20 ans de plus que le fils
+                                        pereChar.age = charact.age + 20
+                                        noModifDoneOnParents = true
+                                    }
+                                }
+                            }
+                        }
+                        if (related.key.roleRelationType.id == 24) { //Grand père
+                            // On est sur un grandpapa, on va donc aller vérifier qu'il a plus de 45 ans et qu'il a plus de 45 ans que son petit fils
+                            // On recherche son petit fils
+                            if (charact.age < 45) {
+                                charact.age = 45
+                                noModifDoneOnParents = true
+                            } else {
+                                gn.characterSet.each { grandSonChar ->
+                                    if (grandSonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
+                                        if (charact.age < grandSonChar.age + 45) { // On donne au père au moins 20 ans de plus que le fils
+                                            charact.age = grandSonChar.age + 45
+                                            noModifDoneOnParents = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        gn.characterSet.each { charact ->
+            //print("AGE_1 :" + charact.age + " for IDs :")
+        }
+        /***********/
+        /**FIN AGE**/
+        /***********/
+
+        addLifeEvents(gn)
+
+
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
             render(view: "roleToPerso", model: [gnInstance: gn])
             return
         }
+
         List<String> characterListToDropDownLock = new LinkedList<String>()
         characterListToDropDownLock.add(0, "");
         for (Character c : gn.characterSet) {
@@ -173,26 +253,29 @@ class RoleToPersoController {
                     }
                 }
             }
-            json_object.put("adjacencies", json_adjacencies);
+            if (json_adjacencies.size() > 0)
+            {
+                json_object.put("adjacencies", json_adjacencies);
 
-            JSONObject json_colortype = new JSONObject();
-            if (c.isMen())
-                json_colortype.put("\$color", "#0040FF");
-            else if (c.isWomen())
-                json_colortype.put("\$color", "#FE2EC8");
-            else
-                json_colortype.put("\$color", "#848484");
-            if (c.isPJ())
-                json_colortype.put("\$type", "circle");
-            else if (c.isPHJ())
-                json_colortype.put("\$type", "triangle");
-            else
-                json_colortype.put("\$type", "square")
-            json_object.put("data", json_colortype);
+                JSONObject json_colortype = new JSONObject();
+                if (c.isMen())
+                    json_colortype.put("\$color", "#0040FF");
+                else if (c.isWomen())
+                    json_colortype.put("\$color", "#FE2EC8");
+                else
+                    json_colortype.put("\$color", "#848484");
+                if (c.isPJ())
+                    json_colortype.put("\$type", "circle");
+                else if (c.isPHJ())
+                    json_colortype.put("\$type", "triangle");
+                else
+                    json_colortype.put("\$type", "square")
+                json_object.put("data", json_colortype);
 
-            json_object.put("id", "CHAR" + c.getDTDId());
-            json_object.put("name", "CHAR" + c.getDTDId());
-            json_array.add(json_object);
+                json_object.put("id", "CHAR" + c.getDTDId());
+                json_object.put("name", "CHAR" + c.getDTDId());
+                json_array.add(json_object);
+            }
         }
 
         json_relation = json_array.toString();
@@ -300,6 +383,99 @@ class RoleToPersoController {
          tagcompatibility: values,
          tagrelationcompatibility: values_relation,
          mainstreamId: mainstreamId]
+    }
+
+    public void addLifeEvents(Gn gn) {
+        for (Character character : gn.getCharacterSet()) {
+            // Créer un plot
+            int dummyInt = 999897
+            Plot p = new Plot()
+            p.creationDate = gn.getSelectedPlotSet().first().creationDate
+            p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
+            p.updatedDate = gn.getSelectedPlotSet().first().updatedDate
+            p.user = gn.getSelectedPlotSet().first().user
+
+            p.isDraft = true
+            p.isEvenemential = false
+            p.isMainstream = false
+            p.isPublic = false
+            p.description = "Life"
+            p.name = p.description
+            p.setDTDId(dummyInt + character.getDTDId())
+            p.roles = new HashSet<>()
+            p.pastescenes = new HashSet<>()
+
+            // Créer un role
+            Role roleForLife = new Role()
+            roleForLife.type = "PJ"
+            roleForLife.pipi = 0
+            roleForLife.pipr = 0
+            roleForLife.code = "Life"
+            roleForLife.description = "Vie du personnage"
+            roleForLife.plot = p
+            roleForLife.setDTDId(dummyInt + character.getDTDId())
+            roleForLife.roleHasPastscenes = new HashSet<>()
+
+
+            /*
+                Si c’est l’âge 0, on choisit un GE qui est proche de l’âge 0.
+                        Sinon {
+                            On regarde le GE de (âge - 1 itération) et on va regarder quels GE peuvent être engendré depuis ce GE
+                            Pour tous les GE qu’il est possible d’engendrer {
+                                On choisit le GE qu’on veut. (Voir Etape 2)
+                            }
+                            Si aucun GE ne peut être engendré alors on choisit le GE en fonction de l’Age
+                            (Etape 4.2)
+                        }
+            }*/
+
+            int INTERVAL = 5
+            int age = 1;
+            GenericEvent lastGE = null
+            while (age < character.age) {
+                // Créer Past scene
+                def query = GenericEvent.where {
+                    averageAge in (age-3)..(age+3)
+                }
+                def query2 = GenericEvent.where {
+                    averageAge == 0
+                }
+                ArrayList<GenericEvent> listEvent = query.findAll()
+                Collections.shuffle(listEvent)
+                if (lastGE == null) {
+                    // Debut, on associe un GE
+                    //GenericEvent.findByAverageAge(age)
+
+                } else {
+                    // On trouve un GE en fonction du GE précédent
+
+                }
+                Pastscene pastSceneLife = new Pastscene()
+                pastSceneLife.plot = p
+                pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
+                pastSceneLife.description = "Past Scene de " + age
+                pastSceneLife.isPublic = true
+                pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
+                pastSceneLife.unitTimingRelative = "Y"
+                pastSceneLife.timingRelative = character.age - age
+
+                // Associer past Scene au rôle, Role Has Past Scene
+                RoleHasPastscene rhpsLife = new RoleHasPastscene()
+                rhpsLife.description = listEvent.first().description
+                rhpsLife.role = roleForLife
+                rhpsLife.pastscene = pastSceneLife
+                rhpsLife.title = "Evénement passé"
+
+                roleForLife.roleHasPastscenes.add(rhpsLife)
+                p.roles.add(roleForLife)
+                p.pastescenes.add(pastSceneLife)
+
+                age += INTERVAL + (((new Random()).nextInt() % 2))
+            }
+
+            character.addRole(roleForLife)
+            gn.addPlot(p)
+        }
     }
 
     def management(Long id) {

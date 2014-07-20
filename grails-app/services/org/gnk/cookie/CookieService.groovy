@@ -22,4 +22,10 @@ class CookieService {
         }
         return password
     }
+
+    Boolean isAuth(String password, String cpass){
+        if (password.equals(cpass))
+            return true
+        return false
+    }
 }

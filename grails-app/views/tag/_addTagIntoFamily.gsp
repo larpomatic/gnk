@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag" %>
 %{--<%@ page import="org.gnk.tag.TagFamily" %>--}%
 <div id="create-tag" class="content scaffold-create" role="main">
-	<legend>${message(code: 'adminRef.tag.TagIntoFamily')}</legend>
+	<legend>${message(code: 'adminRef.tag.TagParent')}</legend>
 	<g:form action="save" >
 		<form class="form-inline">
 			<div class="row">
@@ -11,7 +11,7 @@
 		              optionKey="id"
 		              optionValue="name"
 		              from="${Tag.list()}"
-		              noSelection="['':'-Choix du tag-']"/>
+		              noSelection="['':'-Choix du parent-']"/>
 				</div>
       			<div class="span3">
 	      			%{--<g:select--}%

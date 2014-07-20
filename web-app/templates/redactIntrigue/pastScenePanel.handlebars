@@ -3,31 +3,30 @@
     <input type="hidden" name="id" value="{{ pastscene.id }}"/>
     <input type="hidden" name="plotId" id="plotId" value="{{ pastscene.plotId }}"/>
     <input type="hidden" name="pastSceneDescription" class="descriptionContent" value=""/>
+    <div class="row formRow text-center">
+        <label for="pastSceneTitle">
+            Titre
+        </label>
+    </div>
 
-    <div class="row formRow">
-        <div class="span1">
-            <label for="pastSceneTitle">
-                Titre
-            </label>
-        </div>
+    <div class="fullScreenEditable">
 
-        <div class="span4">
-            <input type="text" name="pastSceneTitle" id="pastSceneTitle" value="{{ pastscene.title }}" required=""/>
-        </div>
-        <div class="span1">
-            <label for="pastScenePublic">
-                Publique
-            </label>
-        </div>
-
-        <div class="span4">
-            {{#if pastscene.isPublic}}
-                <input type="checkbox" name="pastScenePublic" id="pastScenePublic" checked="checked">
-            {{else}}
-                <input type="checkbox" name="pastScenePublic" id="pastScenePublic">
-            {{/if}}
+        <!-- Editor -->
+        <div id="pastSceneTitleRichTextEditor{{ pastscene.id }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+            {{ encodeAsHtml pastscene.title }}
         </div>
     </div>
+    <!--<div class="row formRow">-->
+        <!--<div class="span1">-->
+            <!--<label for="pastSceneTitle">-->
+                <!--Titre-->
+            <!--</label>-->
+        <!--</div>-->
+
+        <!--<div class="span8">-->
+            <!--<input type="text" name="pastSceneTitle" id="pastSceneTitle" value="{{ pastscene.title }}" required=""/>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="row formRow">
         <div class="span1">
             <label for="pastSceneDatetime{{ pastscene.id }}">
@@ -35,16 +34,16 @@
             </label>
         </div>
 
-        <div class="span4 pastSceneAbsolute hidden">
-            <div class="input-append date datetimepicker">
-                <input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime{{ pastscene.id }}" name="pastSceneDatetime"
-                       value="{{ pastscene.absoluteDay }}/{{ pastscene.absoluteMonth }}/{{ pastscene.absoluteYear }} {{ pastscene.absoluteHour }}:{{ pastscene.absoluteMinute }}"/>
-                <span class="add-on">
-                    <i data-time-icon="icon-time" data-date-icon="icon-calendar">
-                    </i>
-                </span>
-            </div>
-        </div>
+        <!--<div class="span4 pastSceneAbsolute hidden">-->
+            <!--<div class="input-append date datetimepicker">-->
+                <!--<input data-format="dd/MM/yyyy hh:mm" type="text" id="pastSceneDatetime{{ pastscene.id }}" name="pastSceneDatetime"-->
+                       <!--value="{{ pastscene.absoluteDay }}/{{ pastscene.absoluteMonth }}/{{ pastscene.absoluteYear }} {{ pastscene.absoluteHour }}:{{ pastscene.absoluteMinute }}"/>-->
+                <!--<span class="add-on">-->
+                    <!--<i data-time-icon="icon-time" data-date-icon="icon-calendar">-->
+                    <!--</i>-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="span4 pastSceneRelative">
             <div class="input-append">
@@ -88,15 +87,51 @@
             </div>
         </div>
 
-        <div class="btn-group" data-toggle="buttons-radio">
-            <button type="button" class="btn active relativeButton">
-                Temps relatif
-            </button>
-            <button type="button" class="btn absoluteButton">
-                Temps absolu
-            </button>
+
+        <div class="span2">
+            <label for="pastScenePublic">
+                Publique
+            </label>
         </div>
+
+        <div class="span3">
+            {{#if pastscene.isPublic}}
+                <input type="checkbox" name="pastScenePublic" id="pastScenePublic" checked="checked">
+            {{else}}
+                <input type="checkbox" name="pastScenePublic" id="pastScenePublic">
+            {{/if}}
+        </div>
+
+        <!--<div class="btn-group" data-toggle="buttons-radio">-->
+            <!--<button type="button" class="btn active relativeButton">-->
+                <!--Temps relatif-->
+            <!--</button>-->
+            <!--<button type="button" class="btn absoluteButton">-->
+                <!--Temps absolu-->
+            <!--</button>-->
+        <!--</div>-->
     </div>
+
+    <div class="row formRow text-center">
+        <label for="pastSceneDescription">
+            Temps absolu
+        </label>
+    </div>
+    <div class="row formRow">
+        <div class="span2">Année</div>
+        <div class="span2">Mois</div>
+        <div class="span2">Jour</div>
+        <div class="span2">Heure</div>
+        <div class="span2">Minute</div>
+    </div>
+    <div class="row formRow littleRow">
+        <div class="span2 shortInput"><input type="number" name="year" id="year" value="{{ pastscene.absoluteDay }}"></div>
+        <div class="span2 shortInput"><input type="number" name="month" id="month" value="{{ pastscene.absoluteMonth }}"></div>
+        <div class="span2 shortInput"><input type="number" name="day" id="day" value="{{ pastscene.absoluteYear }}"></div>
+        <div class="span2 shortInput"><input type="number" name="hour" id="hour" value="{{ pastscene.absoluteHour }}"></div>
+        <div class="span2 shortInput"><input type="number" name="minute" id="minute" value="{{ pastscene.absoluteMinute }}"></div>
+    </div>
+
     <div class="row formRow">
         <div class="span1">
             <label for="pastScenePlace">

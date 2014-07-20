@@ -21,6 +21,7 @@ class HomeController {
             if (currentuser.accountLocked == true){
                 redirect controller: "login", action: "denied"
             }
+
             Cookie[] cookies = request.getCookies()
             if (cookies){
                 Cookie cookie = cookies.find {it.name == "gnk_cookie"}

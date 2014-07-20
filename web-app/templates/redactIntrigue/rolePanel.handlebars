@@ -2,6 +2,7 @@
     <form name="updateRole_{{ role.id }}" data-url="/gnk/role/update/{{ role.id }}">
         <input type="hidden" name="id" value="{{ role.id }}"/>
         <input type="hidden" name="plotId" id="plotId" value="{{ role.plotId }}"/>
+        <input type="hidden" name="roleDescription" class="descriptionContent" value=""/>
 
         <div style="margin:auto">
             <div class="row formRow">
@@ -38,7 +39,7 @@
                         Tags
                     </label>
                 </div>
-                <div class="span4">
+                <div class="span3">
                     <a href="#roleTagsModal_{{ role.id }}" class="btn" data-toggle="modal">Choisir les tags</a>
                 </div>
                 <div class="span1">
@@ -46,13 +47,13 @@
                         Type
                     </label>
                 </div>
-                <div class="span4">
+                <div class="span5">
                     <select name="roleType" id="roleType" required="">
-                        <option value="PJ">PJ</option>
-                        <option value="PNJ">PNJ</option>
-                        <option value="PHJ">PHJ</option>
-                        <option value="TPJ">TPJ</option>
-                        <option value="PJG">PJG</option>
+                        <option value="PJ">Personnage Joueur</option>
+                        <option value="PNJ">Personnage Non Joueur (En jeu)</option>
+                        <option value="PHJ">Personnage Non Joueur (Hors jeu)</option>
+                        <option value="TPJ">Tout Personnage Joueur</option>
+                        <option value="PJG">Personnage Joueur Générique</option>
                     </select>
                 </div>
             </div>
@@ -83,7 +84,14 @@
                     Description
                 </label>
             </div>
-            <textarea name="roleDescription" id="roleDescription" rows="5" cols="100">{{{ role.description }}}</textarea>
+            <div class="fullScreenEditable">
+
+                <!-- Editor -->
+                <div id="roleRichTextEditor{{ role.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    {{ encodeAsHtml role.description }}
+                </div>
+            </div>
+
         </div>
         <div id="roleEventsModal_{{ role.id }}" class="modal hide fade largeModal" tabindex="-1">
             <div class="modal-header">
@@ -199,6 +207,9 @@
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h3 id="myModalLabel{{ role.id }}">Tags</h3>
                 <input class="input-medium search-query" data-content="roleTags{{ role.id }}" placeholder="Rechercher..."/>
+                <button type="button" class="btn btn-primary modifyTag push">
+                    Tags validés
+                </button>
             </div>
 
             <div class="modal-body">

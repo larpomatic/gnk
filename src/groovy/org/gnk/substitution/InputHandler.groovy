@@ -7,6 +7,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.substitution.data.*;
 import org.gnk.gn.Gn
 
@@ -153,6 +154,23 @@ class InputHandler {
 
             // RelationList
             characterData.relationList = []
+            String r1 = ""
+            String r2 = ""
+            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
+                if ((rrr.getterRoleRelationType().name).equals("Filiation")
+                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")){
+                    RelationCharacter relationChar = new RelationCharacter()
+                    r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
+                    r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
+                    if(!r1.equals("") && !r2.equals("")){
+                        relationChar.type = rrr.getterRoleRelationType().name
+                        relationChar.role1 = r1
+                        relationChar.role2 = r2
+                        relationChar.isHidden = rrr.isHidden
+                        characterData.relationList.add(relationChar)
+                    }
+                }
+            }
 
             characterList.add(characterData)
         }
@@ -181,7 +199,23 @@ class InputHandler {
 
             // RelationList
             characterData.relationList = []
-
+            String r1 = ""
+            String r2 = ""
+            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
+                if ((rrr.getterRoleRelationType().name).equals("Filiation")
+                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")){
+                    RelationCharacter relationChar = new RelationCharacter()
+                    r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
+                    r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
+                    if(!r1.equals("") && !r2.equals("")){
+                        relationChar.type = rrr.getterRoleRelationType().name
+                        relationChar.role1 = r1
+                        relationChar.role2 = r2
+                        relationChar.isHidden = rrr.isHidden
+                        characterData.relationList.add(relationChar)
+                    }
+                }
+            }
             characterList.add(characterData)
         }
     }

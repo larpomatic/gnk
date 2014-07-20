@@ -29,6 +29,27 @@ class TagController {
 		
 		[ tagInstanceList: resultList ]
     }
+
+    def findChildren(org.gnk.tag.Tag t) {
+        def tags = org.gnk.tag.Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (org.gnk.tag.Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
+        }
+        return tags
+    }
+
+    def listChildren(String parent)
+    {
+        Tag parentTag = Tag.findWhere(name: parent)
+
+        def resultList = findChildren(parentTag)
+
+        [ tagInstanceChildrenList: resultList ]
+    }
 	
 //	def listFrom(String tagFamily) {
 //		TagFamily family
@@ -66,7 +87,7 @@ class TagController {
 			redirect(action: "list")
 			return
 		}
-		
+
         Tag tagInstance = new Tag(params)
 		String tagFamilyId = params.TagFamily_select
 		

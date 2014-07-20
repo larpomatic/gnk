@@ -119,9 +119,9 @@ class EventXMLReaderService {
         if (EVENT.attribute("duration") != "null")
             eventRes.duration = EVENT.attribute("duration") as Integer
         if (EVENT.attribute("is_public") != "null")
-            eventRes.isPublic = EVENT.attribute("is_public") as Boolean
+            eventRes.isPublic = EVENT.attribute("is_public").equals("false") ? false : true
         if (EVENT.attribute("is_planned") != "null")
-            eventRes.isPlanned = EVENT.attribute("is_planned") as Boolean
+            eventRes.isPlanned = EVENT.attribute("is_planned").equals("false") ? false : true
 
         return eventRes
     }

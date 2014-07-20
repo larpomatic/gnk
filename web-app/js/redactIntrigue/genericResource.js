@@ -9,6 +9,9 @@ $(function(){
     //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
         var form = $('form[name="newResourceForm"]');
+        var comment = $('.richTextEditor', form).html();
+        comment = transformDescription(comment);
+        $('.commentContent', form).val(comment);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -29,10 +32,14 @@ $(function(){
                     emptyGenericResourceForm();
                     createNewGenericResourcePanel(data);
                     initSearchBoxes();
+                    initModifyTag();
                     appendEntity("resource", data.genericResource.code, "important", "", data.genericResource.id);
                     var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
                     $('.resourceLi .badge').html(nbGenericResources);
                     updateResource();
+                    $('form[name="updateResource_' + data.genericResource.id + '"] .btnFullScreen').click(function() {
+                        $(this).parent().parent().toggleClass("fullScreenOpen");
+                    });
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
@@ -50,6 +57,9 @@ function updateResource() {
     $('.updateResource').click(function() {
         var genericResourceId = $(this).attr("data-id");
         var form = $('form[name="updateResource_' + genericResourceId + '"]');
+        var comment = $('.richTextEditor', form).html();
+        comment = transformDescription(comment);
+        $('.commentContent', form).val(comment);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -133,6 +143,7 @@ function emptyGenericResourceForm() {
     $('form[name="newResourceForm"] .search-query').val("");
     $('form[name="newResourceForm"] .modalLi').show();
     $('form[name="newResourceForm"] .clueRow').addClass("hidden");
+    $('form[name="newResourceForm"] #resourceRichTextEditor').html("");
 }
 
 // créé un tab-pane de la nouvelle ressource
@@ -151,6 +162,13 @@ function createNewGenericResourcePanel(data) {
         });
         return out;
     });
+    Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
+        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
+        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
+        value = value.replace(/>/g, '</span>');
+        return new Handlebars.SafeString(value);
+    });
     var template = Handlebars.templates['templates/redactIntrigue/genericResourcePanel'];
     var context = {
         genericResource: data.genericResource,
@@ -158,7 +176,8 @@ function createNewGenericResourcePanel(data) {
     };
     var html = template(context);
     $('.resourceScreen > .tab-content').append(html);
-
+    var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('#resource_' + data.genericResource.id + ' .fullScreenEditable');
     $("#newResource #resourceRolePossessor option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRolePossessor');
     $("#newResource #resourceRoleFrom option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleFrom');
     $("#newResource #resourceRoleTo option").clone().appendTo('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleTo');
