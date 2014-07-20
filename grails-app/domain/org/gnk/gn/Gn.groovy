@@ -92,6 +92,8 @@ class Gn {
 
 	static hasMany = [ gnHasUsers: GnHasUser ]
 
+    static hasOne = [ gnHasConvention : GnHasConvention ]
+
 	static constraints = {
 		name maxSize: 45
 		date nullable: true
@@ -204,6 +206,18 @@ class Gn {
 
     public Character getCharacterContainingRole(Role role) {
         for (Character c : getCharacterSet()) {
+            if (c.getSelectedRoles().contains(role))
+                return c;
+        }
+        return null;
+    }
+
+    public Character getAllCharacterContainingRole(Role role) {
+        for (Character c : getCharacterSet()) {
+            if (c.getSelectedRoles().contains(role))
+                return c;
+        }
+        for (Character c : getNonPlayerCharSet()) {
             if (c.getSelectedRoles().contains(role))
                 return c;
         }
