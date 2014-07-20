@@ -63,8 +63,8 @@ class DbCoherenceController {
     // Méthode qui remplit la liste de requêtes de Base pour vérifier la cohérence de la Base (utilisez plutôt le fichier CoherenceQueries.csv dans web-app)
     // Cette méthode est appelée quand le fichier n'est pas trouvé
     private defaultQueryList(ArrayList<Query> queryList) {
-        queryList.add(new Query("Tables 'Tag' et 'TAG Family'", "Dans la table 'Tag', les Tag_family.ID n’existant pas dans la table 'Tag_family'", "SELECT tag.id, tag.last_updated, tag.date_created, tag.version, tag.name, tag.tag_family_id " +
-                "FROM tag LEFT JOIN tag_family ON tag.tag_family_id = tag_family.id WHERE (((tag_family.id) Is Null));"))
+//        queryList.add(new Query("Tables 'Tag'", "Dans la table 'Tag', les Tag.ID n’existant pas dans la table 'Tag'", "SELECT tag.id, tag.last_updated, tag.date_created, tag.version, tag.name, tag.parent, tag.description " +
+//                "FROM tag ON tag.id = tag.id WHERE (((tag.id) Is Null));"))
         queryList.add(new Query("Tables 'Tag' et 'Plot_has_Tag'", "Dans la table 'Plot_has_Tag', les Tag.ID n’existant pas dans la table 'Tag'", "SELECT plot_has_tag.id, plot_has_tag.last_updated, plot_has_tag.date_created, plot_has_tag.version, plot_has_tag.plot_id, plot_has_tag.tag_id, plot_has_tag.weight " +
                 "FROM plot_has_tag LEFT JOIN tag ON plot_has_tag.tag_id = tag.id WHERE (((tag.id) Is Null));"))
         queryList.add(new Query("Tables 'Tag' et 'Role_has_Tag'", "Dans la table 'Tag', dans la table 'Role_has_Tag', les Tag.ID n’existant pas  dans la table 'Tag''", "SELECT role_has_tag.id, role_has_tag.last_updated, role_has_tag.date_created, role_has_tag.version, role_has_tag.role_id, role_has_tag.weight, role_has_tag.tag_id " +
