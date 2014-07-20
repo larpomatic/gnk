@@ -24,6 +24,7 @@ class CharacterXMLReaderService {
             characterRes.DTDId = id as Integer
         characterRes.setGender(CHARACTER.attribute("gender"));
         characterRes.setType(CHARACTER.attribute("type"));
+        characterRes.setAge((CHARACTER.attribute("age") != null) ? (CHARACTER.attribute("age") as Integer) : 0);
     }
 
     private void ReadRolesNode(Node CHARACTER, Character characterRes, GNKDataContainerService dataContainer) {

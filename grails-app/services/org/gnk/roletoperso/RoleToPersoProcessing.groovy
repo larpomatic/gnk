@@ -136,6 +136,11 @@ public class RoleToPersoProcessing {
                 LOG.debug(new StringBuilder("Character ").append(c.getDTDId().toString()).append(" setted to ").append(gender).append(" because he was neutral at the end."));
             }
         }
+        for (Character c : gn.getNonPlayerCharSet()) {
+            final String gender_nonplayed = getBestSexIsMenForCharacter(c) ? "M" : "F";
+            c.setGender(gender_nonplayed);
+            LOG.debug(new StringBuilder("Character ").append(c.getDTDId().toString()).append(" setted to ").append(gender_nonplayed).append(" because he was neutral at the end."));
+        }
     }
 
     private boolean getBestSexIsMenForCharacter(Character c) {

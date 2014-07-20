@@ -104,7 +104,7 @@ remise par défaut du lien 1
     border-bottom:10px solid #1b1e22;
     border-right:10px solid transparent;
     border-left:10px solid transparent;
-    margin-left: 50px;
+    margin-left: 64px;
     /*deplacement*/
     -webkit-transition:margin-left 1s ease-out;
     -moz-transition:margin-left 1s ease-out;

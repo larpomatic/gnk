@@ -428,6 +428,7 @@ class OutputHandler {
 
         return null
     }
+
     private Event findGenericEventInGN(Gn gnInst, Integer eventGnPlotId, Integer eventGnId) {
         for(plot in gnInst.selectedPlotSet) {
             if (plot.DTDId == eventGnPlotId) {

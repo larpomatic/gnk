@@ -33,6 +33,7 @@ class SubstitutionController {
 
         Gn gn = Gn.get(gnIdStr as Integer)
 
+
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
         resourceList : inputHandler.resourceList,

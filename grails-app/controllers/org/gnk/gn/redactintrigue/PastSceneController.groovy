@@ -1,8 +1,11 @@
 package org.gnk.gn.redactintrigue
 
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.GenericPlace
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 import org.springframework.security.access.annotation.Secured
 
@@ -18,7 +21,6 @@ class PastSceneController {
     def save () {
         Pastscene pastscene = new Pastscene();
         Boolean res = saveOrUpdate(pastscene);
-//        pastscene = Pastscene.findAllWhere("title": params.pastSceneTitle).first();
         def jsonPastScene = buildJson(pastscene);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
@@ -49,6 +51,23 @@ class PastSceneController {
         if (pastscene.getGenericPlace()) {
             jsonPastScene.put("pastscenePlaceId", pastscene.getGenericPlace().getId());
         }
+        JSONArray jsonRoleList = new JSONArray();
+        for (Role role in pastscene.plot.roles) {
+            RoleHasPastscene roleHasPastscene = role.getRoleHasPastScene(pastscene);
+            JSONObject jsonRole = new JSONObject();
+            if (roleHasPastscene) {
+                jsonRole.put("title", roleHasPastscene.title);
+                jsonRole.put("description", roleHasPastscene.description);
+            }
+            else {
+                jsonRole.put("title", "");
+                jsonRole.put("description", "");
+            }
+            jsonRole.put("roleId", role.id);
+            jsonRole.put("roleCode", role.code);
+            jsonRoleList.add(jsonRole);
+        }
+        jsonPastScene.put("roleList", jsonRoleList);
         return jsonPastScene;
     }
 
@@ -75,11 +94,6 @@ class PastSceneController {
         } else {
             return false
         }
-//        newPastscene.dateYear = 0;
-//        newPastscene.dateMonth = 0;
-//        newPastscene.dateDay = 0;
-//        newPastscene.dateHour = 0;
-//        newPastscene.dateMinute = 0;
         if (params.containsKey("pastSceneRelative") && params.pastSceneRelative != "") {
             newPastscene.timingRelative = params.pastSceneRelative as Integer
         }
@@ -96,7 +110,6 @@ class PastSceneController {
         } else {
             return false
         }
-//        Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
         if (params.containsKey("year") && params.year != "") {
             newPastscene.dateYear = params.year as Integer;
         }
@@ -124,11 +137,35 @@ class PastSceneController {
                 newPastscene.pastscenePredecessor = pastScenePredecessor;
             }
         }
-        newPastscene.version = 1;
-        newPastscene.dateCreated = new Date();
-        newPastscene.lastUpdated = new Date();
+        newPastscene.save(flush: true);
+//        newPastscene = Pastscene.findAllWhere("title": newPastscene.getTitle()).first();
+        params.each {
+            if (it.key.startsWith("roleHasPastSceneTitle")) {
+                Role role = Role.get((it.key - "roleHasPastSceneTitle") as Integer);
+                RoleHasPastscene roleHasPastscene = createRoleHasPastscene(role, newPastscene);
+                newPastscene.addToRoleHasPastscenes(roleHasPastscene);
+            }
+        }
         newPastscene.save(flush: true);
         return true;
+    }
+
+    def createRoleHasPastscene(Role role, Pastscene pastscene) {
+        RoleHasPastscene roleHasPastscene = pastscene.getRoleHasPastscene(role);
+        if (!roleHasPastscene) {
+            roleHasPastscene = new RoleHasPastscene();
+            roleHasPastscene.dateCreated = new Date();
+            roleHasPastscene.lastUpdated = new Date();
+            roleHasPastscene.version = 1;
+            roleHasPastscene.pastscene = pastscene;
+            roleHasPastscene.role = role;
+        }
+        roleHasPastscene.title = params.get("roleHasPastSceneTitle" + role.id);
+        roleHasPastscene.description = params.get("roleHasPastSceneDescription" + role.id);
+        roleHasPastscene.save(flush: true);
+        role.addToRoleHasPastscenes(roleHasPastscene);
+        role.save();
+        return roleHasPastscene;
     }
 
     public Calendar isValidDate(String dateToValidate, String dateFromat){
@@ -151,7 +188,7 @@ class PastSceneController {
         Pastscene pastscene = Pastscene.get(id)
         boolean isDelete = false;
         if (pastscene) {
-            pastscene.delete();
+            pastscene.delete(flush: true);
             isDelete = true;
         }
         final JSONObject object = new JSONObject();

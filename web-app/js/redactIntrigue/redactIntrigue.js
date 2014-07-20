@@ -14,38 +14,49 @@ $(function(){
         pickSeconds: false
     });
 
-    // empeche les dropdown de se fermer lorsqu'on focus un input
-    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
-        e.stopPropagation();
-    });
+    stopClosingDropdown();
 
-    //permet d'ajouter rapidement une ressource, lieu ou role
-    $(".leftMenuList input, .inputOther").keypress(function(e) {
-        if(e.which == 13) {
-            var entity = $(this).attr("data-entity");
-            var badgeWarning = '<i class="icon-warning-sign"></i>';
-            appendEntity(entity, $(this).val(), $(this).attr("data-label"), badgeWarning);
-            $(this).val('');
-            return false;
-        }
-    });
+    initQuickObjects();
 
     initializeTextEditor();
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
-    $('.savePlotForm').submit(function() {
-        var description = $('#plotRichTextEditor', this).html();
+    $('.updatePlot').click(function() {
+        if (($('.richTextEditor span.label-default').size() > 0) && ($('#isDraft:checked').size() == 0)) {
+            createNotification("danger", "Enregistrement échoué.", "Votre intrigue comporte des éléments non enregistrés en base de données, enregistrez les ou passer l'intrigue en mode brouillon pour pouvoir continuer.");
+            return false;
+        }
+        var form = $('.savePlotForm');
+        var description = $('#plotRichTextEditor', form).html();
         description = transformDescription(description);
-        $('.descriptionContent', this).val(description);
-        var pitchOrga = $('#plotRichTextEditorPitchOrga', this).html();
+        $('.descriptionContent', form).val(description);
+        var pitchOrga = $('#plotRichTextEditorPitchOrga', form).html();
         pitchOrga = transformDescription(pitchOrga);
-        $('.pitchOrgaContent', this).val(pitchOrga);
-        var pitchPj = $('#plotRichTextEditorPitchPj', this).html();
+        $('.pitchOrgaContent', form).val(pitchOrga);
+        var pitchPj = $('#plotRichTextEditorPitchPj', form).html();
         pitchPj = transformDescription(pitchPj);
-        $('.pitchPjContent', this).val(pitchPj);
-        var pitchPnj = $('#plotRichTextEditorPitchPnj', this).html();
+        $('.pitchPjContent', form).val(pitchPj);
+        var pitchPnj = $('#plotRichTextEditorPitchPnj', form).html();
         pitchPnj = transformDescription(pitchPnj);
-        $('.pitchPnjContent', this).val(pitchPnj);
+        $('.pitchPnjContent', form).val(pitchPnj);
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
+                }
+                else {
+                    createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+            }
+        })
+
     });
 
     // mode plein ecran
@@ -57,6 +68,26 @@ $(function(){
 
     initModifyTag();
 });
+
+function initQuickObjects() {
+    //permet d'ajouter rapidement une ressource, lieu ou role
+    $(".leftMenuList input, .inputOther").keypress(function(e) {
+        if(e.which == 13) {
+            var entity = $(this).attr("data-entity");
+            var badgeWarning = '<i class="icon-warning-sign"></i>';
+            appendEntity(entity, $(this).val(), "default", badgeWarning);
+            $(this).val('');
+            return false;
+        }
+    });
+}
+
+// empeche les dropdown de se fermer lorsqu'on focus un input
+function stopClosingDropdown() {
+    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+        e.stopPropagation();
+    });
+}
 
 //active le bouton "modifier" des fenêtres de tag
 function initModifyTag() {
@@ -263,6 +294,7 @@ function initializeTextEditor() {
         description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
         description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
+        description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false">');
         description = description.replace(/&gt;/g, '</span>');
         $(this).html(description);
     });
@@ -276,11 +308,20 @@ function transformDescription(description) {
     description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
     description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
+    description = description.replace(/<span class="label label-default" contenteditable="false">/g, '<u:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');
     description = description.replace(/&lt;o:/g, '<o:');
     description = description.replace(/&lt;i:/g, '<i:');
+    description = description.replace(/&lt;u:/g, '<u:');
     description = description.replace(/&gt;/g, '>');
     return description;
+}
+
+//update all these forms
+function updateAllDescription(formlist) {
+    formlist.each(function() {
+        $('input[name="Update"]', $(this)).trigger("click");
+    });
 }
