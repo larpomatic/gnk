@@ -5,6 +5,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
+import org.gnk.tag.TagRelevant
 import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
@@ -22,7 +23,7 @@ class Plot {
     private static List<Tag> tagList
     public static List getTagList() {
 
-        return TagService.getPlotTagQuery()
+        return getPlotTagQuery()
     }
 
 
@@ -192,5 +193,17 @@ class Plot {
             }
         }
         return pipCoreOkNumber;
+    }
+
+    def static List<Tag> getPlotTagQuery() {
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantPlot) {
+                result.add(child);
+            }
+        }
+        return result;
     }
 }
