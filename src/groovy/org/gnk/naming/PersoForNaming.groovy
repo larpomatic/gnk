@@ -1,5 +1,7 @@
 package org.gnk.naming
 
+import org.gnk.substitution.data.RelationCharacter
+
 import java.util.List;
 
 import com.gnk.substitution.Tag
@@ -16,6 +18,7 @@ class PersoForNaming {
 	 Boolean is_selectedName /* True si je dois le traiter */
 	 Boolean is_selectedFirstName
 	 List<String> family /* List de String de code */
+     List<RelationCharacter> relationList /* Relation de Filiation*/
 
     public  PersoForNaming()
     {

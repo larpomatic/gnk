@@ -81,6 +81,25 @@
     <tbody>
 </table>
 
+<table class="table table-striped">
+    <thead>
+    <tr class="upper">
+        <th style="text-align: center;">convention rule</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <g:each status="n" in="${ruleList}" var="rule">
+        <tr id="char${rule.id}">
+            <!-- convention rule -->
+            <td style="text-align: center;">${n + 1}</td>
+            <!-- description -->
+            <td class="cap">${rule.description}</td>
+        </tr>
+    </g:each>
+    </tbody>
+</table>
+
 <!-- Modal Views -->
 <!--g:render template="modalViewCharacters" /-->
 
@@ -100,7 +119,7 @@
         var jsonObject = new Object();
         // Universe
         jsonObject.universe = "${gnInfo.universe}";
-
+        jsonObject.gnId = "${gnInfo.dbId}"
         // BEGIN Characters LOOP
         var charArray = new Array();
         <g:each status="i" in="${characterList}" var="character">
@@ -113,6 +132,7 @@
         character.gender = "${character.gender}"
         // BEGIN Tags LOOP
         var tagArray = new Array();
+        var relationArray = new Array()
         <g:each status="j" in="${character.tagList}" var="tag">
         var tag = new Object();
         tag.value = "${tag.value}";
@@ -120,8 +140,18 @@
         tag.weight = "${tag.weight}";
         tagArray.push(tag);
         </g:each>
+        <g:each status="j" in="${character.relationList}" var="rel">
+        var relationChar = new Object();
+        relationChar.role1 = "${rel.role1}";
+        relationChar.role2 = "${rel.role2}";
+        relationChar.type = "${rel.type}";
+        relationArray.push(relationChar);
+        </g:each>
         // END Tags LOOP
-        if (tagArray.length > 0) {character.tags = tagArray;}
+        if (tagArray.length > 0) {
+            character.tags = tagArray;
+            character.relationList = relationArray;
+        }
         charArray.push(character);
         </g:each>
         // END Characters LOOP

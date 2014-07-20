@@ -111,6 +111,8 @@ public class RoleToPersoProcessing {
                 }
                 bestCharRanked = lowerCharacter;
             }
+            if (bestCharRanked == null)
+                bestCharRanked = gn.characterSet.first()
             addRoleAndSexualizeIFN(bestCharRanked, role);
             gnRoleSetToProcess.remove(role);
             lockedBannedTagForCharacters.put(bestCharRanked, bestCharRanked.getlockedAndBannedTags());
@@ -133,6 +135,11 @@ public class RoleToPersoProcessing {
                 c.setGender(gender);
                 LOG.debug(new StringBuilder("Character ").append(c.getDTDId().toString()).append(" setted to ").append(gender).append(" because he was neutral at the end."));
             }
+        }
+        for (Character c : gn.getNonPlayerCharSet()) {
+            final String gender_nonplayed = getBestSexIsMenForCharacter(c) ? "M" : "F";
+            c.setGender(gender_nonplayed);
+            LOG.debug(new StringBuilder("Character ").append(c.getDTDId().toString()).append(" setted to ").append(gender_nonplayed).append(" because he was neutral at the end."));
         }
     }
 

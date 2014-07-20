@@ -28,6 +28,7 @@ class PublicationController {
     private GNKDataContainerService gnk
     private Gn gn
     private SubstitutionPublication substitutionPublication
+    private String publicationFolder
 
     def index() {
         def id = params.gnId as Integer
@@ -58,7 +59,6 @@ class PublicationController {
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
         def id = params.gnId as Integer
-        def efg = getParams()
         String tmpWord = params.templateWordSelect as String
         Gn getGn = null
         if (!id.equals(null))
@@ -81,7 +81,8 @@ class PublicationController {
 
         File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/","_")}_${System.currentTimeMillis()}.docx")
 
-        wordWriter = new WordWriter(tmpWord)
+        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        wordWriter = new WordWriter(tmpWord, publicationFolder)
         wordWriter.wordMLPackage = createPublication()
         wordWriter.wordMLPackage.save(output)
 
@@ -102,14 +103,20 @@ class PublicationController {
             }
 
         ArrayList<String> templateWordList = new ArrayList<String>()
-
-        File folder = new File(System.getProperty("user.dir")+"/publication");
+        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        File folder = new File(publicationFolder);
         File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++)
-            if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
-                templateWordList.add(listOfFiles[i].getName().replace(".docx","").replace(" (Univers)",""));
-        String uniName = gn.univers.name.replace(" (Univers)","").replace("/","-")
-
+        if (listOfFiles == null)
+        {
+            templateWordList.add("DEFAULT")
+        }
+        else
+        {
+            for (int i = 0; i < listOfFiles.length; i++)
+                if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
+                    templateWordList.add(listOfFiles[i].getName().replace(".docx","").replace(" (Univers)",""));
+        }
+            String uniName = gn.univers.name.replace(" (Univers)","").replace("/","-")
         [
             title : gn.name,
             subtitle : createSubTile(),
@@ -125,7 +132,7 @@ class PublicationController {
     }
 
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication(String templateWord) {
+    public WordprocessingMLPackage createPublication() {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -265,7 +272,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -311,7 +318,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -599,7 +606,7 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
-            wordWriter.addParagraphOfText("Age du personnage : " + c.getCharacterAproximateAge())
+            wordWriter.addParagraphOfText("Age du personnage : " + c.age)
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
@@ -1309,7 +1316,7 @@ class PublicationController {
             currentPlayer.add(4, "") // Joue sans
             currentPlayer.add(5, "") // Joueur prefere
             currentPlayer.add(6, "") // Joueur  facultatif
-            currentPlayer.add(7, "" + chara.getCharacterAproximateAge()) // Age
+            currentPlayer.add(7, "" + chara.age) // Age
 
             boolean foundTag = false
             // Tag spécifiques

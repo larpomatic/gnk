@@ -19,7 +19,9 @@
     <li class="active"><g:link controller="user" action="profil"><g:message code="navbar.profil"/></g:link></li>
     <g:hasRights lvlright="${right.USEROPEN.value()}">
         <li><g:link controller="adminUser" action="list"><g:message code="navbar.gestion_user"/></g:link></li>
+        <li><g:link controller="consolSql" action="terminal"><g:message code="navbar.gestion_console"/> </g:link> </li>
     </g:hasRights>
+
 </ul>
 
 <div role="main">
@@ -112,7 +114,7 @@
                 </tr>
                 </thead>
             </table>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">Valider</button>
         </g:form>
     </g:hasRights>
 </div>

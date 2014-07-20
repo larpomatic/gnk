@@ -4,6 +4,7 @@ import com.gnk.substitution.Tag
 import grails.util.Environment
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.gn.Gn
 import org.gnk.naming.NamingService
 import org.gnk.naming.PersoForNaming
 import org.gnk.resplacetime.ResourceService
@@ -15,6 +16,9 @@ import org.gnk.ressplacetime.GenericResource
 import org.gnk.ressplacetime.PastsceneTime
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.ressplacetime.ReferentialResource
+import org.gnk.roletoperso.Character
+import org.gnk.roletoperso.RoleHasRelationWithRole
+import org.gnk.substitution.data.RelationCharacter
 
 class IntegrationHandler {
 
@@ -30,6 +34,7 @@ class IntegrationHandler {
             charForNaming.universe = universe
 
             charForNaming.code = characterJson.gnId
+            //print ("characterJson.gnId : " + characterJson.gnId)
             charForNaming.gender = characterJson.gender
 
             // Tags
@@ -52,6 +57,22 @@ class IntegrationHandler {
                 persoTagList.put(ntag, tag.weight)
             }
             charForNaming.tag = tagList
+
+            // Family
+            charForNaming.family = []
+
+            charForNaming.relationList = new LinkedList<RelationCharacter>()
+
+            for (rel in characterJson.relationList) {
+                RelationCharacter relationChar = new  RelationCharacter()
+                relationChar.role1 = rel.role1
+                relationChar.role2 = rel.role2
+                relationChar.type = rel.type
+                relationChar.isHidden = rel.isHidden
+                //print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")
+
+                charForNaming.relationList.add(relationChar)
+            }
 
             // Firstname
             List<String> proposedFirstnameList = []
@@ -81,43 +102,23 @@ class IntegrationHandler {
             }
             charForNaming.bannedNames = bannedLastnameList
 
-            // Family
-            charForNaming.family = []
-
             charForNamingList.add(charForNaming)
             tagForNamingList.add(persoTagList)
         }
 
         // NAMING CALL
         NamingService namingService = new NamingService()
-        /*for(el in charForNamingList) {
-            print ("Code : " + el.code)
-            print (el.is_selectedFirstName.toString() + el.is_selectedName.toString())
-            print ("Firstnames : " + el.selectedFirstnames)
-            print ("LastNames : " + el.selectedNames)
-        }*/
-
-        //Mock
-        //if (Environment.current == Environment.PRODUCTION)
-        //{
-            // Naming call
-            charForNamingList = namingService.namingMethod(charForNamingList/*, tagForNamingList*/)
-        //}
-
-        /*for(el in charForNamingList) {
-            print ("Code : " + el.code)
-            print ("Firstnames : " + el.selectedFirstnames)
-            print ("LastNames : " + el.selectedNames)
-        }*/
+        String s = charJsonObject.gnId
+        charForNamingList = namingService.namingMethod(charForNamingList, s.toInteger())
         // END NAMING CALL
 
         // Update json
         for(characterJson in charJsonObject.characters) {
-            String gnId = characterJson.gnId
+            String gn_Id = characterJson.gnId
             PersoForNaming charForNaming = null
 
             for (charForNamingIt in charForNamingList){
-                if (charForNamingIt.code == gnId) {
+                if (charForNamingIt.code == gn_Id) {
                     charForNaming = charForNamingIt
                     break
                 }
@@ -369,6 +370,7 @@ class IntegrationHandler {
             if (pastsceneTime.absoluteDay != null) {date.put("day", pastsceneTime.absoluteDay as String)}
             if (pastsceneTime.absoluteHour != null) {date.put("hours", pastsceneTime.absoluteHour as String)}
             if (pastsceneTime.absoluteMinute != null) {date.put("minutes", pastsceneTime.absoluteMinute as String)}
+
 
             pastsceneJson.put("date", date)
         }

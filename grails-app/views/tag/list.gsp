@@ -15,7 +15,7 @@
 			<g:render template="../infosAndErrors" />
 			<g:render template="addTags" />
 			<g:render template="addTagIntoFamily" />
-			<g:render template="tableTags" />
+			<g:render template="tableChildrenTags" />
 			
 			<div class="pagination">
 				<g:paginate total="${tagInstanceList.totalCount}" />

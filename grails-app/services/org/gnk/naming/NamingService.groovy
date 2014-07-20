@@ -2,408 +2,263 @@
 package org.gnk.naming
 
 import com.gnk.substitution.Tag
-import org.gnk.naming.Firstname
-import org.gnk.naming.NameAndWeight
-import org.hibernate.FetchMode
-import org.gnk.tag.TagService;
-import java.util.LinkedList
+import org.gnk.tag.TagService
+import org.hibernate.FetchMode;
 
-class NamingService 
+class NamingService
 {
-	// Nombre de prenom ou de nom a renvoyer
-	Integer selectionNumber = 3
-	// Pour �viter de renvoyer toujours le meme prenom en choix 1
-	LinkedList<String> usedFirstName = new LinkedList<String>()
-	// Pour �viter de renvoyer toujours le meme nom en choix 1
-	LinkedList<String> usedName = new LinkedList<String>()
-	
-	/* Methode principale naming */
-	LinkedList<PersoForNaming> namingMethod(LinkedList<PersoForNaming> persoList/*, LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList*/)
-	{
-		LinkedList<PersoForNaming> doneperso = new LinkedList<PersoForNaming>()
-		// pour les tests de naming
-		usedFirstName = new LinkedList<String>()
-		usedName = new LinkedList<String>()
+    // Nombre de prenom ou de nom a renvoyer
+    Integer selectionNumber = 3
+    // Pour �viter de renvoyer toujours le meme prenom en choix 1
+    LinkedList<String> usedFirstName = new LinkedList<String>()
+    // Pour �viter de renvoyer toujours le meme nom en choix 1
+    LinkedList<String> usedName = new LinkedList<String>()
 
-        //Univers
-        LinkedList linguistique = getTagForUniverse (persoList.first.universe);
+    /* Methode principale naming */
+    LinkedList<PersoForNaming> namingMethod(LinkedList<PersoForNaming> persoList, Integer gn_id)
+    {
+        LinkedList<PersoForNaming> doneperso = new LinkedList<PersoForNaming>()
+        // pour les tests de naming
+        usedFirstName = new LinkedList<String>()
+        usedName = new LinkedList<String>()
+
         // liste des prenoms possibles
-        LinkedList<Firstname> fnlistHomme = getFirstNamebyGender ("m")
-        LinkedList<Firstname> fnlistFemme = getFirstNamebyGender ("f")
+        LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
+        LinkedList<Firstname> fnlistFemme = getFirstNamebyGender (persoList, "f", persoList.first.universe)
         Collections.shuffle(fnlistHomme)
         Collections.shuffle(fnlistFemme)
-
         //liste des noms possibles
-        LinkedList<Name> nlist = getNamebyTag(persoList, linguistique)
+        LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
         Collections.shuffle (nlist)
+        //print(fnlistHomme.size())
+        //print(fnlistFemme.size())
+        //print(nlist.size())
+        //print(persoList.size())
 
         // Pour chaque personnage envoye
-		for (PersoForNaming tmp : persoList)
-		{
-            // rajoute les tags linguistique lié à l'univers
-            tmp.tag.addAll(linguistique)
-
-			// Choix des prenoms
-			if (tmp.is_selectedFirstName)
-			{
-				NameAndWeight maxname
+        for (PersoForNaming tmp : persoList)
+        {
+            // Choix des prenoms
+            if (tmp.is_selectedFirstName)
+            {
+                NameAndWeight maxname
                 LinkedList<Firstname> fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
+                Integer rankTag = 0;
+                LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight>()
 
                 for (Tag persotag : tmp.tag )
-				{
-				    //if (persotag.type.equals("Sexe"))
-				        //print persotag.weight;
-				    if (persotag.type.equals("Sexe"))
-				    {
-				        if (persotag.weight.equals(-101))
-				            if (tmp.getgender() == "F" || tmp.getgender() == "H")
-				                fnlist = tmp.getgender() == "F" ? fnlistHomme : fnlistFemme
-				            else
-				                fnlist = persotag.value.equals("Femme") ? fnlistHomme : fnlistFemme
-				        else if (tmp.getgender() == "N")
-				            fnlist = persotag.value.equals("Homme") ? fnlistHomme : fnlistFemme
-				        else
-				            fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
-				        break;
-				    }
-				}
+                {
+                    if (persotag.type.equals("Sexe"))
+                    {
+                        if (persotag.weight.equals(-101))
+                            if (tmp.getgender() == "F" || tmp.getgender() == "H")
+                                fnlist = tmp.getgender() == "F" ? fnlistHomme : fnlistFemme
+                            else
+                                fnlist = persotag.value.equals("Femme") ? fnlistHomme : fnlistFemme
+                        else if (tmp.getgender() == "N")
+                            fnlist = persotag.value.equals("Homme") ? fnlistHomme : fnlistFemme
+                        else
+                            fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
+                        break;
+                    }
+                }
 
-				// tri sur les tags du personnage
-				LinkedList<NameAndWeight> fnweight = WeightFNcalcul (tmp, fnlist)
-                //LinkedList<NameAndWeight> fnweight = WeightFNcalcul2 (tmp, fnlist, tagForNamingList.get(persoList.indexOf(tmp)))
-                //print tmp.tag
-                //print "******************************  END FN  *************************************"
-				if (fnweight.empty)
-					fnweight = getRandomFirstname(fnlist)
+                //print("ON")
+                for (Firstname fn : fnlist){
+                    Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
+                    Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+                    if (fnHasTags != null) {
+                        for (FirstnameHasTag fnHasTag : fnHasTags) {
+                            challengerTagList.put(fnHasTag.getTag(), fnHasTag.getWeight());
+                        }
 
-				// ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
-				while (fnweight.size() > 0)
-				{
-					maxname = fnweight.first
-					for (NameAndWeight nw : fnweight)
-					{
-						if (maxname.weight < nw.weight)
-							maxname = nw
-					}
-					if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
-						tmp.selectedFirstnames.add(maxname.name)
-					fnweight.remove(maxname)
-					
-					if (tmp.selectedFirstnames.size() >= selectionNumber)
-						break
-				}
+                        Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
+                        for (Tag t : tmp.getTag()) {
+                            tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
+                        }
 
-				if (tmp.selectedFirstnames.first())
-					usedFirstName.add(tmp.selectedFirstnames.first())
-			}
-			
- 			// Si la personne est dans la famille d'un des personnages deja traite, on reprend les memes noms  
-			for (PersoForNaming pers : doneperso)
-			{
-				if (tmp.family.contains(pers.code))
-				{
-					tmp.selectedNames = pers.selectedNames
-				}
-			}
-			
-			// Choix du nom de famille
-			if (tmp.is_selectedName && tmp.selectedNames.isEmpty())
-			{
-				NameAndWeight maxname
-				// tri sur les tags du personnage
-				LinkedList<NameAndWeight> nweight = WeightNcalcul (tmp, nlist)
+                        //calcule la correspondance d'un prenom avec le caractere
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        fnweight.add(new NameAndWeight(fn.name, rankTag))
+                    }
+                }
+                //print("OFF")
 
-				if (nweight.size() < persoList.size())
-					nweight += getRandomName(nlist, persoList)
+                if (fnweight.empty)
+                    fnweight = getRandomFirstname(fnlist)
 
-				// verifie que les tags sont bien valides
-				if (!nweight.empty)
-				{
-					// ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
-					while (nweight.size() > 0)
-					{
-						maxname = nweight.first
-						for (NameAndWeight nw : nweight)
-						{
-							if (maxname.weight < nw.weight)
-								maxname = nw
-						}
+                /*for(NameAndWeight nw : fnweight){
+                    print(nw.weight + " : " + nw.name)
+                }*/
+                // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
+                while (fnweight.size() > 0)
+                {
+                    maxname = fnweight.first
+                    for (NameAndWeight nw : fnweight)
+                    {
+                        if (maxname.weight < nw.weight)
+                            maxname = nw
+                    }
+                    if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
+                        tmp.selectedFirstnames.add(maxname.name)
+                    fnweight.remove(maxname)
+
+                    if (tmp.selectedFirstnames.size() >= selectionNumber)
+                        break
+                }
+
+                if (tmp.selectedFirstnames.first())
+                    usedFirstName.add(tmp.selectedFirstnames.first())
+            }
+            //print("     FN " + tmp)
+            //****CONVENTION**********************************************
+
+            if (!tmp.relationList.empty){
+                List<List<Object>> res = (new ConventionVisitorService()).visit(tmp, doneperso, gn_id)
+                if (!res[1].isEmpty()){
+                    doneperso = (LinkedList<PersoForNaming>) res[0]
+                    tmp.selectedNames = (List<String>) res[1]
+                }
+            }
+
+            // Choix du nom de famille
+            if (tmp.is_selectedName && tmp.selectedNames.isEmpty())
+            {
+                NameAndWeight maxname
+                LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight>()
+                Integer rankTag = 0;
+
+                for (Name n : nlist){
+                    Set<NameHasTag> nHasTags = n.getExtTags();
+                    Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+                    if (nHasTags != null) {
+                        for (NameHasTag nHasTag : nHasTags) {
+                            challengerTagList.put(nHasTag.getTag(), nHasTag.getWeight());
+                        }
+
+                        Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
+                        for (Tag t : tmp.getTag()) {
+                            tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
+                        }
+
+                        //calcule la correspondance d'un nom avec le caractere
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        nweight.add(new NameAndWeight(n.name, rankTag))
+                    }
+                }
+                if (nweight.size() < persoList.size())
+                    nweight += getRandomName(nlist, persoList)
+
+                // verifie que les tags sont bien valides
+                if (!nweight.empty)
+                {
+                    // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
+                    while (nweight.size() > 0)
+                    {
+                        maxname = nweight.first
+                        for (NameAndWeight nw : nweight)
+                        {
+                            if (maxname.weight < nw.weight)
+                                maxname = nw
+                        }
                         if (tmp.bannedNames.contains(maxname.name))
                             continue
-						if (!usedName.contains(maxname.name) && !tmp.selectedNames.add(maxname.name))
-							tmp.selectedNames.add(maxname.name)
-						nweight.remove(maxname)
-						
-						if (tmp.selectedNames.size() >= selectionNumber)
-							break
-					}
-					if (tmp.selectedNames.first())
-						usedName.add(tmp.selectedNames.first())
-				}
-			}
-			// ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
-			doneperso.add(tmp)
-		}
-		return doneperso
-	}
+                        if (!usedName.contains(maxname.name) && !tmp.selectedNames.add(maxname.name))
+                            tmp.selectedNames.add(maxname.name)
+                        nweight.remove(maxname)
 
-	
-	/* Methode en prive */
-	// recuperer les prenoms de la Base de donnees en fonction du genre (+ les neutre)
-	private LinkedList<Firstname> getFirstNamebyGender2 (String gender)
-	{
-		LinkedList<Firstname> fnlist
-        LinkedList<Firstname> fnlistNeutre
-
-        fnlist = org.gnk.naming.Firstname.createCriteria().list {
-            or{
-                eq ('gender', gender)
-                eq ('gender', 'n')
+                        if (tmp.selectedNames.size() >= selectionNumber)
+                            break
+                    }
+                    if (tmp.selectedNames.first())
+                        usedName.add(tmp.selectedNames.first())
+                }
             }
-		}
-		return fnlist
-	}
-    private LinkedList<Firstname> getFirstNamebyGender (String gender)
+            //print("     LN " + tmp)
+            // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
+            doneperso.add(tmp)
+        }
+        return doneperso
+    }
+
+    // recuperer les prenoms de la base de donnees en fonction de l'univers et du genre (+ les neutre)
+    private LinkedList<Firstname> getFirstNamebyGender (LinkedList<PersoForNaming> persoList, String gender, String universe)
     {
-        LinkedList<Firstname> fnlist
-
-        fnlist = org.gnk.naming.Firstname.createCriteria().list {
-            or{
-                eq ('gender', gender)
-                eq ('gender', 'n')
+        LinkedList<Firstname> fnlist = new LinkedList<Firstname>()
+        fnlist = FirstnameHasTag.createCriteria().list {
+            createAlias('tag', 'T')
+            createAlias('firstname', 'N')
+            and{
+                eq ('T.name', universe)
+                or{
+                    eq ('N.gender', gender)
+                    eq ('N.gender', 'n')
+                }
             }
-            fetchMode("extTags", FetchMode.EAGER)
+            maxResults(500)
+            order("N.name", "desc")
+            projections{
+                property("firstname")
+            }
+            fetchMode("firstname", FetchMode.EAGER)
+        }
+        if(fnlist.isEmpty() || fnlist.size() < (persoList.size() * 1))
+        {
+            fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 500])
+            return (fnlist)
         }
         return fnlist
     }
-	
-	// recuperer les noms de la Base de donnees en fonction du tag
-	private LinkedList<Name> getNamebyTag2 (LinkedList<PersoForNaming> persoList, LinkedList linguistique)
-	{
-		LinkedList<Name> nlist = new LinkedList<Name>()
-        LinkedList<NameHasTag> ntaglist = new LinkedList<NameHasTag>()
 
-        if (!linguistique.isEmpty())
-		{
-            for (Tag ltag : linguistique)
-            {
-                // recuperer le tag differenciant version BDD
-                org.gnk.tag.Tag tag = org.gnk.tag.Tag.createCriteria().get {
-                    eq ('name', ltag.value)
-                }
-
-                LinkedList<NameHasTag> ntaglistsub = org.gnk.naming.NameHasTag.createCriteria().list {
-                    eq ('tag', tag)
-                }
-                ntaglist += ntaglistsub
-            }
-            if (!ntaglist.isEmpty()) {
-                    for (NameHasTag ntag : ntaglist)
-                        nlist.add(ntag.name)
-                }
-            else
-                nlist = org.gnk.naming.Name.all
-        }
-		else
-			nlist = org.gnk.naming.Name.all
-
-        if(nlist.size() < (persoList.size() * 3))
-        {
-            return (org.gnk.naming.Name.all)
-        }
-
-		return nlist
-	}
-    private LinkedList<Name> getNamebyTag (LinkedList<PersoForNaming> persoList, LinkedList linguistique)
+    // recuperer les noms de la base de donnees en fonction de l'univers
+    private LinkedList<Name> getNamebyTag (LinkedList<PersoForNaming> persoList, String universe)
     {
         LinkedList<Name> nlist = new LinkedList<Name>()
-
-        if (!linguistique.isEmpty())
-        {
-            for (Tag ltag : linguistique)
-            {
-                // recuperer le tag differenciant version BDD
-                LinkedList<Name> nlistsub = org.gnk.naming.NameHasTag.createCriteria().list {
-                    createAlias('tag', 'T')
-                    eq ('T.name', ltag.value)
-                    projections{
-                        property("name")
-                    }
-                    fetchMode("name", FetchMode.EAGER)
-                }
-                nlist += nlistsub
+        nlist = NameHasTag.createCriteria().list {
+            createAlias('tag', 'T')
+            createAlias('name', 'N')
+            eq ('T.name', universe)
+            maxResults(500)
+            order("N.name", "desc")
+            projections{
+                property("name")
             }
-            if (nlist.isEmpty()) {
-                nlist = org.gnk.naming.Name.all
-            }
+            fetchMode("name", FetchMode.EAGER)
         }
-        else
-            nlist = org.gnk.naming.Name.all
-
-        if(nlist.size() < (persoList.size() * 3))
+        if(nlist.isEmpty() || nlist.size() < (persoList.size() * 1))
         {
-            return (org.gnk.naming.Name.all)
+            nlist += Name.findAll("from Name order by rand()", [max: 500])
+            return (nlist)
         }
-
         return nlist
     }
-	
-	//calcule la correspondance d'un tag avec le caractere pour les prenoms
-	private LinkedList<NameAndWeight> WeightFNcalcul (PersoForNaming tmp, LinkedList fnlist)
-	{
-		LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight> ()
 
-		for (Firstname fn : fnlist)
-        {
-            if (tmp.bannedFirstnames.contains(fn.name))
-                continue
-			NameAndWeight firstn = new NameAndWeight(fn.name, 0)
-			for (FirstnameHasTag fntag : fn.extTags)
-			{
-				for (Tag persotag : tmp.tag )
-				{
-					// Verifie la valeur du tag
-					if (fntag.tag.name.equals(persotag.value)){
-                        if (persotag.weight.equals(101) || persotag.weight.equals(-101))
-                            firstn.weight += (fntag.weight * persotag.weight) * 1000
-                        else
-                            firstn.weight += (fntag.weight * persotag.weight)
-                        break;
-                    }
-				}
-			}
-			// Si les poids ont matche, on ajoute a la liste retournee
-			//if (firstn.weight > 0)
-				fnweight.add(firstn)
-		}
-			
-		return fnweight
-	}
-    private LinkedList<NameAndWeight> WeightFNcalcul2 (PersoForNaming tmp, LinkedList fnlist, Map<org.gnk.tag.Tag, Integer> persoTagList)
+    private LinkedList<NameAndWeight> getRandomFirstname (LinkedList fnlist)
     {
         LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight> ()
-
         for (Firstname fn : fnlist)
         {
-            if (tmp.bannedFirstnames.contains(fn.name))
-                continue
             NameAndWeight firstn = new NameAndWeight(fn.name, 0)
 
-            Set<FirstnameHasTag> firstnameHasTags = fn.extTags;
-            Map<org.gnk.tag.Tag, Integer> fnTagList = new HashMap<org.gnk.tag.Tag, Integer>();
-            if (firstnameHasTags != null) {
-                for (FirstnameHasTag fntag : firstnameHasTags) {
-                    fnTagList.put(fntag.getTag(), fntag.getWeight());
-                }
-            }
-            Map<org.gnk.tag.Tag, Boolean> persoLockedBannedTags = new HashMap<org.gnk.tag.Tag, Boolean>();
-            firstn.weight = (new TagService()).getTagsMatchingWithoutRelation(persoTagList, fnTagList, persoLockedBannedTags);
-
-            // Si les poids ont matche, on ajoute a la liste retournee
-            if (firstn.weight > 0)
-                fnweight.add(firstn)
+            fnweight.add(firstn)
         }
+
         return fnweight
     }
-	
-	//calcule la correspondance d'un tag avec le caractere pour les noms
-	private LinkedList<NameAndWeight> WeightNcalcul (PersoForNaming tmp, LinkedList nlist)
-	{
-		LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight> ()
-		for (Name n : nlist)
-		{
-			NameAndWeight name = new NameAndWeight(n.name, 0)
-			for (NameHasTag ntag : n.extTags)
-			{
-				for (Tag persotag : tmp.tag )
-				{
-					// Verifie la valeur du tag
-                    if (ntag.tag.name.equals(persotag.value)){
-                        if (persotag.weight.equals(101) || persotag.weight.equals(-101))
-                            name.weight += (ntag.weight * persotag.weight) * 1000
-                        else
-                            name.weight += (ntag.weight * persotag.weight)
-                        break;
-                    }
-				}
-			}
-			
-			// Si les poids ont matche, on ajoute a la liste retournee
-			//if (name.weight > 0)
-                nweight.add(name)
-		}
-		
-		return nweight
-	}
 
-	private LinkedList<NameAndWeight> getRandomFirstname (LinkedList fnlist)
-	{
-		LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight> ()
-		for (Firstname fn : fnlist)
-		{
-			NameAndWeight firstn = new NameAndWeight(fn.name, 0)
-			
-			fnweight.add(firstn)
-		}
-		
-		return fnweight
-	}
-		
-	private LinkedList<NameAndWeight> getRandomName (LinkedList nlist, LinkedList persoList)
-	{
-		LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight> ()
-		for (Name n : nlist)
-		{
-			NameAndWeight firstn = new NameAndWeight(n.name, 0)
-			
-			nweight.add(firstn)
+    private LinkedList<NameAndWeight> getRandomName (LinkedList nlist, LinkedList persoList)
+    {
+        LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight> ()
+        for (Name n : nlist)
+        {
+            NameAndWeight firstn = new NameAndWeight(n.name, 0)
+
+            nweight.add(firstn)
             if (nweight.size() > persoList.size())
                 break;
-		}
-		
-		return nweight
-	}
-
-    // Fait la liste des groupes linguistiques liés à l'univers
-    private LinkedList<Tag> getTagForUniverse2 (String universe)
-    {
-        LinkedList<Tag> linguistique = new LinkedList<>()
-
-        //faire la liste dans Tagrelation avec id1 = id du tag
-        LinkedList<org.gnk.tag.TagRelation> tagrelations = org.gnk.tag.TagRelation.createCriteria().list {
-            eq ('tag1', org.gnk.tag.Tag.createCriteria().get {
-                eq ('name', universe)
-                })
-        }
-        //faire des tags à partir de tous les tag2 des tagRelations
-        for (org.gnk.tag.TagRelation tagrelation : tagrelations)
-        {
-            com.gnk.substitution.Tag tag = new com.gnk.substitution.Tag(tagrelation.tag2.name,
-                                                                        "langue", tagrelation.weight, "")
-            if (tag.weight > 0)
-                linguistique.add(tag)
         }
 
-        return linguistique
+        return nweight
     }
-    private LinkedList<Tag> getTagForUniverse (String universe)
-    {
-        LinkedList<Tag> linguistique = new LinkedList<>()
 
-        //faire la liste dans Tagrelation avec id1 = id du tag
-        LinkedList<org.gnk.tag.TagRelation> tagrelations = org.gnk.tag.TagRelation.createCriteria().list {
-            tag1 { eq ("name", universe) }
-            gt ("weight", 0)
-        }
-
-        //faire des tags à partir de tous les tag2 des tagRelations
-        for (org.gnk.tag.TagRelation tagrelation : tagrelations)
-        {
-            com.gnk.substitution.Tag tag = new com.gnk.substitution.Tag(tagrelation.tag2.name,
-                                                                        "langue", tagrelation.weight, "")
-            linguistique.add(tag)
-        }
-
-        return linguistique
-    }
 }

@@ -7,6 +7,5 @@ class Character {
 	List<Tag> tagList
     // unused for now
 	List<RoleCharacter> roleList
-    // unused for now
 	List<RelationCharacter> relationList
 }
