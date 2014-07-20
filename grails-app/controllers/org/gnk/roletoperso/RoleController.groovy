@@ -3,6 +3,7 @@ package org.gnk.roletoperso
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
@@ -54,6 +55,14 @@ class RoleController {
         jsonRole.put("pipr", role.getPipr());
         jsonRole.put("type", role.getType());
         jsonRole.put("description", role.getDescription());
+        JSONArray jsonResourceList = new JSONArray();
+        for (GenericResource genericResource in plot.genericResources) {
+            JSONObject jsonResource = new JSONObject();
+            jsonResource.put("id", genericResource.id)
+            jsonResource.put("code", genericResource.code)
+            jsonResourceList.add(jsonResource);
+        }
+        jsonRole.put("resourceList", jsonResourceList);
         JSONArray jsonTagList = new JSONArray();
         for (RoleHasTag roleHasTag in role.roleHasTags) {
             JSONObject jsonTag = new JSONObject();
@@ -147,28 +156,28 @@ class RoleController {
 		} else {
 			return false
 		}
-		if(newRole.roleHasTags) {
+		if(newRole.roleHasTags != null) {
             HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
             newRole.roleHasTags.clear();
             RoleHasTag.deleteAll(roleHasTags);
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
-        if(newRole.roleHasEvents) {
+        if(newRole.roleHasEvents != null) {
             HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
             newRole.roleHasEvents.clear();
             RoleHasEvent.deleteAll(roleHasEvents);
         } else {
             newRole.roleHasEvents = new HashSet<RoleHasEvent>()
         }
-        if(newRole.roleHasPastscenes) {
+        if(newRole.roleHasPastscenes != null) {
             HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
             newRole.roleHasPastscenes.clear();
             RoleHasPastscene.deleteAll(roleHasPastscenes);
         } else {
             newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
         }
-			params.updateRoleResult = !!(newRole.save(flush: true));
+        newRole.save(flush: true);
 
         newRole = Role.findAllWhere("code": newRole.getCode()).first();
         params.each {

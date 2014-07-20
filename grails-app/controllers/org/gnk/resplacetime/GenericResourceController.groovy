@@ -109,14 +109,14 @@ class GenericResourceController {
         } else {
             return false
         }
-        if(newGenericResource.extTags) {
+        if(newGenericResource.extTags != null) {
             HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;
             newGenericResource.extTags.clear();
             GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
             newGenericResource.extTags = new HashSet<GenericResourceHasTag>();
         }
-        if(newGenericResource.roleHasEventHasRessources) {
+        if(newGenericResource.roleHasEventHasRessources != null) {
             HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
             newGenericResource.roleHasEventHasRessources.clear();
             RoleHasEventHasGenericResource.deleteAll(genericResourceHasRoleHasEvents);

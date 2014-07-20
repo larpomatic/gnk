@@ -89,7 +89,7 @@ class GenericPlaceController {
         } else {
             return false
         }
-        if(newGenericPlace.extTags) {
+        if(newGenericPlace.extTags != null) {
             HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);
