@@ -425,6 +425,9 @@
                     </div>
                     <g:render template="relationSummary2"></g:render>
                 </div>
+                <div class="legend">
+                </div>
+                </br>
             </div>
         </div>
     </div>
