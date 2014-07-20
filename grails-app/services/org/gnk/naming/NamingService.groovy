@@ -30,10 +30,10 @@ class NamingService
         //liste des noms possibles
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
         Collections.shuffle (nlist)
-        print(fnlistHomme.size())
-        print(fnlistFemme.size())
-        print(nlist.size())
-        print(persoList.size())
+        //print(fnlistHomme.size())
+        //print(fnlistFemme.size())
+        //print(nlist.size())
+        //print(persoList.size())
 
         // Pour chaque personnage envoye
         for (PersoForNaming tmp : persoList)
@@ -63,7 +63,7 @@ class NamingService
                     }
                 }
 
-                print("ON")
+                //print("ON")
                 for (Firstname fn : fnlist){
                     Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
                     Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
@@ -82,7 +82,7 @@ class NamingService
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
-                print("OFF")
+                //print("OFF")
 
                 if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
@@ -110,7 +110,7 @@ class NamingService
                 if (tmp.selectedFirstnames.first())
                     usedFirstName.add(tmp.selectedFirstnames.first())
             }
-            print("     FN " + tmp)
+            //print("     FN " + tmp)
             //****CONVENTION**********************************************
 
             if (!tmp.relationList.empty){
@@ -174,7 +174,7 @@ class NamingService
                         usedName.add(tmp.selectedNames.first())
                 }
             }
-            print("     LN " + tmp)
+            //print("     LN " + tmp)
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
         }

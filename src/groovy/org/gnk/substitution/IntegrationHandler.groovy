@@ -34,7 +34,7 @@ class IntegrationHandler {
             charForNaming.universe = universe
 
             charForNaming.code = characterJson.gnId
-            print ("characterJson.gnId : " + characterJson.gnId)
+            //print ("characterJson.gnId : " + characterJson.gnId)
             charForNaming.gender = characterJson.gender
 
             // Tags
@@ -69,7 +69,7 @@ class IntegrationHandler {
                 relationChar.role2 = rel.role2
                 relationChar.type = rel.type
                 relationChar.isHidden = rel.isHidden
-                print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")
+                //print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")
 
                 charForNaming.relationList.add(relationChar)
             }
