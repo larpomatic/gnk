@@ -70,6 +70,14 @@
         </tr>
         </thead>
         <tbody data-role="{{ roleId }}">
+        {{#each resourceList}}
+            <tr>
+                <td data-id="{{ id }}">{{ code }}</td>
+                <td>
+                    <input type="number" name="quantity{{ ../roleId }}_{{ id }}" value="">
+                </td>
+            </tr>
+        {{/each}}
         </tbody>
     </table>
 </div>

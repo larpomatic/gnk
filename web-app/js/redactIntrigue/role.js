@@ -254,11 +254,12 @@ function createNewRolePanel(data) {
         context = {
             roleId: data.role.id,
             roleCode: data.role.code,
-            eventId: eventId
+            eventId: eventId,
+            resourceList: data.role.resourceList
         };
         html = template(context);
         $(".tab-content:first", $(this)).append(html);
-        $('.eventScreen #eventRolesModal tbody').first().clone().appendTo($('#eventRole'+data.role.id+'_'+eventId+' table', $(this)));
+//        $('.eventScreen #eventRolesModal tbody').first().clone().appendTo($('#eventRole'+data.role.id+'_'+eventId+' table', $(this)));
     });
     $('.btn-group', plotFullscreenEditable).clone().prependTo('.eventScreen div[id*="eventRole' + data.role.id + '"] .fullScreenEditable');
 

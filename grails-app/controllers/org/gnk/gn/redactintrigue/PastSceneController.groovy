@@ -138,7 +138,6 @@ class PastSceneController {
             }
         }
         newPastscene.save(flush: true);
-//        newPastscene = Pastscene.findAllWhere("title": newPastscene.getTitle()).first();
         params.each {
             if (it.key.startsWith("roleHasPastSceneTitle")) {
                 Role role = Role.get((it.key - "roleHasPastSceneTitle") as Integer);
