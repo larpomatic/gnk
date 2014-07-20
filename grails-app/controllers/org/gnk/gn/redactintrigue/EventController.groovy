@@ -1,11 +1,16 @@
 package org.gnk.gn.redactintrigue
 
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
+import org.gnk.resplacetime.GenericResource
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasEvent
+import org.gnk.roletoperso.RoleHasEventHasGenericResource
+import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 import org.springframework.security.access.annotation.Secured
-
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -49,6 +54,43 @@ class EventController {
         if (event.getGenericPlace()) {
             jsonEvent.put("eventPlaceId", event.getGenericPlace().getId());
         }
+        JSONArray jsonRoleList = new JSONArray();
+        for (Role role in event.plot.roles) {
+            RoleHasEvent roleHasEvent = role.getRoleHasEvent(event);
+            JSONObject jsonRole = new JSONObject();
+            if (roleHasEvent) {
+                jsonRole.put("title", roleHasEvent.title);
+                jsonRole.put("isAnnounced", roleHasEvent.isAnnounced);
+                jsonRole.put("description", roleHasEvent.description);
+                jsonRole.put("comment", roleHasEvent.comment);
+                jsonRole.put("evenemential", roleHasEvent.evenementialDescription);
+            }
+            else {
+                jsonRole.put("title", "");
+                jsonRole.put("isAnnounced", "");
+                jsonRole.put("description", "");
+                jsonRole.put("comment", "");
+                jsonRole.put("evenemential", "");
+            }
+            JSONArray jsonResourceList = new JSONArray();
+            for (GenericResource resource in event.plot.genericResources) {
+                JSONObject jsonResource = new JSONObject();
+                jsonResource.put("id", resource.id);
+                jsonResource.put("code", resource.code);
+                if (resource.getGenericResourceHasRoleHasEvent(roleHasEvent)) {
+                    jsonResource.put("quantity", resource.getGenericResourceHasRoleHasEvent(roleHasEvent).quantity);
+                }
+                else {
+                    jsonResource.put("quantity", "");
+                }
+                jsonResourceList.add(jsonResource);
+            }
+            jsonRole.put("resourceList", jsonResourceList);
+            jsonRole.put("roleId", role.id);
+            jsonRole.put("roleCode", role.code);
+            jsonRoleList.add(jsonRole);
+        }
+        jsonEvent.put("roleList", jsonRoleList);
         return jsonEvent;
     }
 
@@ -58,6 +100,7 @@ class EventController {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(event),
                         id: event.id,
+                        timing: event.timing,
                         name: event.name)
             }
         }
@@ -95,14 +138,6 @@ class EventController {
         } else {
             return false
         }
-        Calendar calendar = isValidDate(params.eventDatetime as String, "dd/MM/yyyy HH:mm");
-        if (calendar) { // TODO !, données non persistante donc à traiter autrement
-//            newEvent.absoluteYear = calendar.get(Calendar.YEAR);
-//            newEvent.absoluteMonth = calendar.get(Calendar.MONTH);
-//            newEvent.absoluteDay = calendar.get(Calendar.DAY_OF_MONTH);
-//            newEvent.absoluteHour = calendar.get(Calendar.HOUR);
-//            newEvent.absoluteMinute = calendar.get(Calendar.MINUTE);
-        }
         if (params.containsKey("eventTiming")) {
             newEvent.timing = params.eventTiming as Integer;
         }
@@ -127,10 +162,75 @@ class EventController {
         newEvent.version = 1;
         newEvent.dateCreated = new Date();
         newEvent.lastUpdated = new Date();
-//        newEvent.roleHasEvents = new HashSet<RoleHasEvent>();
-//        newEvent.DTDId = 1;
+        newEvent.save(flush: true);
+        params.each {
+            if (it.key.startsWith("roleHasEventTitle")) {
+                Role role = Role.get((it.key - "roleHasEventTitle") as Integer);
+                RoleHasEvent roleHasEvent = createRoleHasEvent(role, newEvent);
+                newEvent.addToRoleHasEvents(roleHasEvent);
+            }
+        }
         newEvent.save(flush: true);
         return true;
+    }
+
+    def createRoleHasEvent(Role role, Event event) {
+        RoleHasEvent roleHasEvent = role.getRoleHasEvent(event);
+        if (!roleHasEvent) {
+            roleHasEvent = new RoleHasEvent();
+            roleHasEvent.dateCreated = new Date();
+            roleHasEvent.lastUpdated = new Date();
+            roleHasEvent.version = 1;
+            roleHasEvent.event = event;
+            roleHasEvent.role = role;
+        }
+        roleHasEvent.title = params.get("roleHasEventTitle" + role.id);
+        roleHasEvent.isAnnounced = params.get("roleHasEventannounced" + role.id) != null;
+        roleHasEvent.description = params.get("roleHasEventDescription" + role.id);
+        roleHasEvent.comment = params.get("roleHasEventComment" + role.id);
+        roleHasEvent.evenementialDescription = params.get("roleHasEventEvenemential" + role.id);
+        roleHasEvent.save(flush: true);
+        params.each {
+            if (it.key.startsWith("quantity" + role.id + "_")) {
+                GenericResource genericResource = GenericResource.get((it.key - ("quantity" + role.id + "_")) as Integer);
+                RoleHasEventHasGenericResource roleHasEventHasGenericResource = createRoleHasEventHasGenericResource(genericResource, roleHasEvent);
+                if (roleHasEventHasGenericResource != null) {
+                    roleHasEvent.addToRoleHasEventHasGenericResources(roleHasEventHasGenericResource);
+                }
+            }
+        }
+        roleHasEvent.save(flush: true);
+        role.addToRoleHasEvents(roleHasEvent);
+        role.save();
+        return roleHasEvent;
+    }
+
+    public RoleHasEventHasGenericResource createRoleHasEventHasGenericResource(GenericResource genericResource, roleHasEvent) {
+        RoleHasEventHasGenericResource roleHasEventHasGenericResource = genericResource.getGenericResourceHasRoleHasEvent(roleHasEvent);
+        if (!roleHasEventHasGenericResource && (params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) != "")) {
+            roleHasEventHasGenericResource = new RoleHasEventHasGenericResource();
+            roleHasEventHasGenericResource.roleHasEvent = roleHasEvent;
+            roleHasEventHasGenericResource.genericResource = genericResource;
+            roleHasEventHasGenericResource.quantity = params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) as Integer;
+            roleHasEventHasGenericResource.save(flush: true);
+            genericResource.addToRoleHasEventHasRessources(roleHasEventHasGenericResource);
+            genericResource.save();
+        }
+        else {
+            if (params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) == "") {
+                if (roleHasEventHasGenericResource) {
+                    roleHasEventHasGenericResource.delete(flush: true);
+                }
+                return null;
+            }
+            else {
+                roleHasEventHasGenericResource.quantity = params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) as Integer;
+                roleHasEventHasGenericResource.save(flush: true);
+                genericResource.addToRoleHasEventHasRessources(roleHasEventHasGenericResource);
+                genericResource.save();
+            }
+        }
+        return roleHasEventHasGenericResource;
     }
 
     public Calendar isValidDate(String dateToValidate, String dateFromat){
@@ -153,7 +253,7 @@ class EventController {
         Event event = Event.get(id)
         boolean isDelete = false;
         if (event) {
-            event.delete();
+            event.delete(flush: true);
             isDelete = true;
         }
         final JSONObject object = new JSONObject();

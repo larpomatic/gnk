@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
@@ -60,6 +61,20 @@ class GenericResource {
             }
         }
         return false;
+    }
+
+    public getGenericResourceHasRoleHasEvent(RoleHasEvent roleHasEvent) {
+        if (roleHasEvent == null) {
+            return null;
+        }
+        List<RoleHasEventHasGenericResource> roleHasEventHasGenericResources = RoleHasEventHasGenericResource.createCriteria().list {
+            like("genericResource", this)
+            like("roleHasEvent", roleHasEvent)
+        }
+        if (roleHasEventHasGenericResources.size() == 0) {
+            return null;
+        }
+        return roleHasEventHasGenericResources.first();
     }
 
     public getGenericResourceHasTag(Tag tag) {

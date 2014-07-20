@@ -76,28 +76,28 @@
                                   keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" required=""/>
                     </div>
                 </div>
-                <div class="row formRow">
-                    <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <a href="#rolePastScenesModal" class="btn" data-toggle="modal">
-                            <g:message code="redactintrigue.role.choosePastScenes" default="Choose past scenes"/>
-                        </a>
-                    </div>
-                    <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.role.roleEvent" default="Events"/>
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <a href="#roleEventsModal" class="btn" data-toggle="modal">
-                            <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
-                        </a>
-                    </div>
-                </div>
+                %{--<div class="row formRow">--}%
+                    %{--<div class="span1">--}%
+                        %{--<label>--}%
+                            %{--<g:message code="redactintrigue.role.rolePastScene" default="Past Scene"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
+                    %{--<div class="span4">--}%
+                        %{--<a href="#rolePastScenesModal" class="btn" data-toggle="modal">--}%
+                            %{--<g:message code="redactintrigue.role.choosePastScenes" default="Choose past scenes"/>--}%
+                        %{--</a>--}%
+                    %{--</div>--}%
+                    %{--<div class="span1">--}%
+                        %{--<label>--}%
+                            %{--<g:message code="redactintrigue.role.roleEvent" default="Events"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
+                    %{--<div class="span4">--}%
+                        %{--<a href="#roleEventsModal" class="btn" data-toggle="modal">--}%
+                            %{--<g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>--}%
+                        %{--</a>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
                 <div class="row formRow text-center">
                     <label for="roleDescription">
                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
@@ -110,7 +110,6 @@
                     <div id="roleRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
-                %{--<g:textArea name="roleDescription" id="roleDescription" value="" rows="5" cols="100"/>--}%
 
                 <div id="roleEventsModal" class="modal hide fade largeModal" tabindex="-1">
                     <div class="modal-header">
@@ -127,7 +126,7 @@
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent"
                                            href="#collapseEvent-${event.id}" data-eventId="${event.id}">
-                                            ${event.name}
+                                            ${event.name.encodeAsHTML()}
                                         </a>
                                     </div>
                                     <div id="collapseEvent-${event.id}" class="accordion-body collapse">
@@ -178,7 +177,7 @@
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene"
                                            href="#collapsePastScene-${pastscene.id}" data-pastsceneId="${pastscene.id}">
-                                            ${pastscene.title}
+                                            ${pastscene.title.encodeAsHTML()}
                                         </a>
                                     </div>
                                     <div id="collapsePastScene-${pastscene.id}" class="accordion-body collapse">
