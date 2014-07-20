@@ -265,7 +265,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -311,7 +311,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -599,7 +599,7 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
-            wordWriter.addParagraphOfText("Age du personnage : " + c.getCharacterAproximateAge())
+            wordWriter.addParagraphOfText("Age du personnage : " + c.age)
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
@@ -1309,7 +1309,7 @@ class PublicationController {
             currentPlayer.add(4, "") // Joue sans
             currentPlayer.add(5, "") // Joueur prefere
             currentPlayer.add(6, "") // Joueur  facultatif
-            currentPlayer.add(7, "" + chara.getCharacterAproximateAge()) // Age
+            currentPlayer.add(7, "" + chara.age) // Age
 
             boolean foundTag = false
             // Tag spécifiques

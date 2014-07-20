@@ -366,7 +366,6 @@ class RoleToPersoController {
                 }
                 ArrayList<GenericEvent> listEvent = query.findAll()
                 Collections.shuffle(listEvent)
-                print("Taille Liste :" + listEvent.size())
                 if (lastGE == null) {
                     // Debut, on associe un GE
                     //GenericEvent.findByAverageAge(age)
