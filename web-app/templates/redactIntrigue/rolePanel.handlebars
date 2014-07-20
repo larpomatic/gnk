@@ -1,149 +1,252 @@
 <div class="tab-pane" id="role_{{ role.id }}">
-    <form name="updateRole_{{ role.id }}" data-url="">
-    <input type="hidden" name="id" value="{{ role.id }}"/>
-    <input type="hidden" name="plotId" id="plotId" value="{{ role.plotId }}"/>
+    <form name="updateRole_{{ role.id }}" data-url="/gnk/role/update/{{ role.id }}">
+        <input type="hidden" name="id" value="{{ role.id }}"/>
+        <input type="hidden" name="plotId" id="plotId" value="{{ role.plotId }}"/>
+        <input type="hidden" name="roleDescription" class="descriptionContent" value=""/>
 
-    <div style="margin:auto">
-        <div class="row formRow">
-            <div class="span1">
-                <label for="roleCode">
-                    Nom
-                </label>
-            </div>
-            <div class="span4">
-                <input type="text" name="roleCode" id="roleCode" value="{{ role.code }}" required=""/>
-            </div>
-        </div>
-        <div class="row formRow">
-            <div class="span1">
-                <label for="rolePipi">
-                    PIPI
-                </label>
-            </div>
-            <div class="span4">
-                <input type="number" name="rolePipi" id="rolePipi" value="{{ role.pipi }}" required=""/>
-            </div>
-            <div class="span1">
-                <label for="rolePipr">
-                    PIPR
-                </label>
-            </div>
-            <div class="span4">
-                <input type="number" name="rolePipr" id="rolePipr" value="{{ role.pipr }}" required=""/>
-            </div>
-        </div>
-        <div class="row formRow">
-            <div class="span1">
-                <label>
-                    Tags
-                </label>
-            </div>
-            <div class="span4">
-                <a href="#roleTagsModal_{{ role.id }}" class="btn" data-toggle="modal">Choisir les tags</a>
-            </div>
-            <div class="span1">
-                <label for="roleType">
-                    Type
-                </label>
-            </div>
-            <div class="span4">
-                <select name="roleType" id="roleType" required="">
-                    <option value="PJ">PJ</option>
-                    <option value="PNJ">PNJ</option>
-                    <option value="PHJ">PHJ</option>
-                </select>
-            </div>
-        </div>
-        <div class="row formRow">
-            <div class="span1">
-                <label for="rolePastScene">
-                    Scènes passées
-                </label>
-            </div>
-            <div class="span4">
-                <a href="#rolePastScenesModal_{{ role.id }}" class="btn" data-toggle="modal">
-                    Choisir les scènes passées
-                </a>
-            </div>
-            <div class="span1">
-                <label for="roleEvent">
-                   Evènements
-                </label>
-            </div>
-            <div class="span4">
-                <a href="#roleEventsModal_{{ role.id }}" class="btn" data-toggle="modal">
-                    Choisir les évènements
-                </a>
-            </div>
-        </div>
-        <div class="row formRow text-center">
-            <label for="roleDescription">
-                Description
-            </label>
-        </div>
-        <textarea name="roleDescription" id="roleDescription" rows="5" cols="100">{{{ role.description }}}</textarea>
-    </div>
-    <div id="roleEventsModal_{{ role.id }}" class="modal hide fade" tabindex="-1">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>
-                Evènements
-            </h3>
-        </div>
-
-        <div class="modal-body">
-            <ul>
-
-            </ul>
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">Ok</button>
-        </div>
-    </div>
-    <div id="rolePastScenesModal_{{ role.id }}" class="modal hide fade" tabindex="-1">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3>
-                Scènes passées
-            </h3>
-        </div>
-
-        <div class="modal-body">
-            <ul>
-
-            </ul>
-        </div>
-
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">Ok</button>
-        </div>
-    </div>
-
-    <div id="roleTagsModal_{{ role.id }}" class="modal hide fade" tabindex="-1">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            <h3 id="myModalLabel{{ role.id }}">Tags</h3>
-            <input class="input-medium search-query" data-content="roleTags{{ role.id }}" placeholder="Rechercher..."/>
-        </div>
-
-        <div class="modal-body">
-            <ul class="roleTags{{ role.id }}">
-            {{#each roleTagList}}
-                <li class="modalLi" data-name="{{toLowerCase name }}">
-                    <label>
-                        <input type="checkbox" name="roleTags_{{ id }}" id="roleTags_{{ id }}"/>
-                        {{ name }}
+        <div style="margin:auto">
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="roleCode">
+                        Nom
                     </label>
-                </li>
-            {{/each}}
-            </ul>
+                </div>
+                <div class="span8">
+                    <input type="text" name="roleCode" id="roleCode" value="{{ role.code }}" required=""/>
+                </div>
+            </div>
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="rolePipi">
+                        PIPI
+                    </label>
+                </div>
+                <div class="span4">
+                    <input type="number" name="rolePipi" id="rolePipi" value="{{ role.pipi }}" required=""/>
+                </div>
+                <div class="span1">
+                    <label for="rolePipr">
+                        PIPR
+                    </label>
+                </div>
+                <div class="span4">
+                    <input type="number" name="rolePipr" id="rolePipr" value="{{ role.pipr }}" required=""/>
+                </div>
+            </div>
+            <div class="row formRow">
+                <div class="span1">
+                    <label>
+                        Tags
+                    </label>
+                </div>
+                <div class="span3">
+                    <a href="#roleTagsModal_{{ role.id }}" class="btn" data-toggle="modal">Choisir les tags</a>
+                </div>
+                <div class="span1">
+                    <label for="roleType">
+                        Type
+                    </label>
+                </div>
+                <div class="span5">
+                    <select name="roleType" id="roleType" required="">
+                        <option value="PJ">Personnage Joueur</option>
+                        <option value="PNJ">Personnage Non Joueur (En jeu)</option>
+                        <option value="PHJ">Personnage Non Joueur (Hors jeu)</option>
+                        <option value="TPJ">Tout Personnage Joueur</option>
+                        <option value="PJG">Personnage Joueur Générique</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="rolePastScene">
+                        Scènes passées
+                    </label>
+                </div>
+                <div class="span4">
+                    <a href="#rolePastScenesModal_{{ role.id }}" class="btn" data-toggle="modal">
+                        Choisir les scènes passées
+                    </a>
+                </div>
+                <div class="span1">
+                    <label for="roleEvent">
+                       Evènements
+                    </label>
+                </div>
+                <div class="span4">
+                    <a href="#roleEventsModal_{{ role.id }}" class="btn" data-toggle="modal">
+                        Choisir les évènements
+                    </a>
+                </div>
+            </div>
+            <div class="row formRow text-center">
+                <label for="roleDescription">
+                    Description
+                </label>
+            </div>
+            <div class="fullScreenEditable">
+
+                <!-- Editor -->
+                <div id="roleRichTextEditor{{ role.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    {{ encodeAsHtml role.description }}
+                </div>
+            </div>
+
+        </div>
+        <div id="roleEventsModal_{{ role.id }}" class="modal hide fade largeModal" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>
+                    Evènements
+                </h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="accordion" id="accordionEvent{{ role.id }}">
+                    {{#each role.eventList}}
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}" href="#collapseEvent{{ ../role.id }}-{{ eventId }}">
+                                    {{ eventName }}
+                                </a>
+                            </div>
+                            <div id="collapseEvent{{ ../role.id }}-{{ eventId }}" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="formRow">
+                                        <div class="span1">
+                                            <label>
+                                                Titre
+                                            </label>
+                                        </div>
+                                        <div class="span4">
+                                            <input type="text" name="roleHasEventTitle{{ eventId }}" value="{{ title }}"/>
+                                        </div>
+                                        <div class="span1">
+                                            <label>
+                                                Est annoncé
+                                            </label>
+                                        </div>
+                                        <div class="span4">
+                                        {{#if isAnnounced}}
+                                            <input type="checkbox" name="roleHasEventannounced{{ eventId }}" checked="checked"/>
+                                        {{else}}
+                                            <input type="checkbox" name="roleHasEventannounced{{ eventId }}" />
+                                        {{/if}}
+                                        </div>
+                                    </div>
+                                    <div class="row formRow text-center">
+                                        <label>
+                                            Description
+                                        </label>
+                                    </div>
+                                    <textarea name="roleHasEventDescription{{ eventId }}" rows="5" cols="100">
+                                        {{{ description }}}
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+        <div id="rolePastScenesModal_{{ role.id }}" class="modal hide fade largeModal" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>
+                    Scènes passées
+                </h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="accordion" id="accordionPastScene{{ role.id }}">
+                    {{#each role.pastsceneList}}
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}" href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}">
+                                    {{ pastsceneTitle }}
+                                </a>
+                            </div>
+                            <div id="collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="formRow">
+                                        <div class="span1">
+                                            <label>
+                                                Titre
+                                            </label>
+                                        </div>
+                                        <div class="span8">
+                                            <input type="text" name="roleHasPastSceneTitle{{ pastsceneId }}" value="{{ title }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="row formRow text-center">
+                                        <label>
+                                            Description
+                                        </label>
+                                    </div>
+                                    <textarea name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100">
+                                        {{{ description }}}
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Ok</button>
+            </div>
         </div>
 
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal">Ok</button>
+        <div id="roleTagsModal_{{ role.id }}" class="modal hide fade tags-modal" tabindex="-1">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3 id="myModalLabel{{ role.id }}">Tags</h3>
+                <input class="input-medium search-query" data-content="roleTags{{ role.id }}" placeholder="Rechercher..."/>
+                <button type="button" class="btn btn-primary modifyTag push">
+                    Tags validés
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <ul class="roleTags{{ role.id }}">
+                {{#recursive roleTagList}}
+                    <li class="modalLi row" data-name="{{toLowerCase name }}">
+                        <label class="pull-left">
+                            <input type="checkbox" name="roleTags_{{ id }}" id="roleTags{{ ../role.id }}_{{ id }}"
+                                   onClick="hideTags('roleTags{{ ../role.id }}_{{ id }}', 'roleTagsWeight{{ ../role.id }}_{{ id }}')"/>
+                            {{ name }}
+                        </label>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>
+                        </div>
+                        <div class="pull-right tagWeight">
+                            <input name="roleTagsWeight_{{ id }}" value="50" type="number" max="101" class="tagWeightInput"
+                                   min="-101" style="width:45px;" id="roleTagsWeight{{ ../role.id }}_{{ id }}">
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success chooseTag"><i class="icon-ok"></i></button>
+                        </div>
+                    </li>
+                    {{#if children}}
+                        <li class="modalLi">
+                            <ul>
+                                {{{recursive children}}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                {{/recursive}}
+                </ul>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Ok</button>
+            </div>
         </div>
-    </div>
-    <input type="button" name="Update" data-id="{{ role.id }}" value="Update" class="btn btn-primary updateRole"/>
+        <input type="button" name="Update" data-id="{{ role.id }}" value="Update" class="btn btn-primary updateRole"/>
     </form>
 </div>

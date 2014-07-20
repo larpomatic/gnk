@@ -13,7 +13,7 @@
 		    <a class="brand" href="#">${message(code: 'navbar.adminRef')} : </a>
 		    <ul class="nav">
 		      	<li><g:link controller="tag" class="list" action="list">${message(code: 'adminRef.navbar.tags')}</g:link></li>
-		      	<li><g:link controller="tagFamily" class="list" action="list">${message(code: 'adminRef.navbar.tagFamilies')}</g:link></li>
+		      	%{--<li><g:link controller="tagFamily" class="list" action="list">${message(code: 'adminRef.navbar.tagFamilies')}</g:link></li>--}%
 		      	     	<li><g:link controller="tag" action="stats">${message(code: 'adminRef.navbar.stats')}</g:link></li>
 		  </ul>
 		</div>
@@ -32,16 +32,16 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${tagInstance?.tagFamilies}">
-				<li class="fieldcontain">
-					<span id="tagFamilies-label" class="property-label"><g:message code="tag.tagFamilies.label" default="Tag Families" /></span>
+				%{--<g:if test="${tagInstance?.tagFamilies}">--}%
+				%{--<li class="fieldcontain">--}%
+					%{--<span id="tagFamilies-label" class="property-label"><g:message code="tag.tagFamilies.label" default="Tag Families" /></span>--}%
+
+						%{--<g:each in="${tagInstance.tagFamilies}" var="t">--}%
+						%{--<span class="property-value" aria-labelledby="tagFamilies-label"><g:link controller="tagHasTagFamily" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>--}%
+						%{--</g:each>--}%
 					
-						<g:each in="${tagInstance.tagFamilies}" var="t">
-						<span class="property-value" aria-labelledby="tagFamilies-label"><g:link controller="tagHasTagFamily" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
+				%{--</li>--}%
+				%{--</g:if>--}%
 			
 			</ol>
 			<g:form>

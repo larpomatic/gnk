@@ -1,5 +1,6 @@
 package org.gnk.selectintrigue
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
@@ -7,6 +8,9 @@ import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
+import org.hibernate.Hibernate
+import org.hibernate.proxy.HibernateProxy
+import org.hibernate.proxy.HibernateProxyHelper
 
 class Plot {
 
@@ -30,9 +34,9 @@ class Plot {
     String pitchPnj
 
 	Boolean isEvenemential
-	Boolean isMainstream
-	Boolean isPublic
-	Boolean isDraft
+    Boolean isMainstream
+    Boolean isPublic
+    Boolean isDraft
 	Date creationDate
 	Date updatedDate
 	String description
@@ -48,7 +52,8 @@ class Plot {
             plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
-            genericResources: GenericResource]
+            genericResources: GenericResource,
+            genericPlaces: GenericPlace]
 
     static belongsTo = User
 
@@ -68,9 +73,9 @@ class Plot {
         id type:'integer'
         version type: 'integer'
         events cascade: 'all-delete-orphan'
-        plotHasUniverses cascade: 'all-delete-orphan'
+//        plotHasUniverses cascade: 'all-delete-orphan'
         roles cascade: 'all-delete-orphan'
-        extTags cascade: 'all-delete-orphan'
+//        extTags cascade: 'all-delete-orphan'
         pastescenes cascade: 'all-delete-orphan'
     }
 
@@ -115,12 +120,27 @@ class Plot {
 	}
 
     public boolean hasPlotTag(Tag parPlotTag) {
+        if (parPlotTag instanceof HibernateProxy) {
+            Hibernate.initialize(parPlotTag);
+            parPlotTag = (Tag) ((HibernateProxy) parPlotTag).getHibernateLazyInitializer().getImplementation();
+        }
         for (PlotHasTag plotHasPlotTag : extTags) {
             if (plotHasPlotTag.tag == parPlotTag) {
                 return true;
             }
         }
         return false;
+    }
+
+    public getPlotHasTag(Tag tag) {
+        List<PlotHasTag> plotHasTags = PlotHasTag.createCriteria().list {
+            like("plot", this)
+            like("tag", tag)
+        }
+        if (plotHasTags.size() == 0) {
+            return null;
+        }
+        return plotHasTags.first();
     }
 
     public boolean hasUnivers(Univers parUnivers) {

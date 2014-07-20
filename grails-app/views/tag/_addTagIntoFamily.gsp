@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag" %>
-<%@ page import="org.gnk.tag.TagFamily" %>
+%{--<%@ page import="org.gnk.tag.TagFamily" %>--}%
 <div id="create-tag" class="content scaffold-create" role="main">
-	<legend>${message(code: 'adminRef.tag.TagIntoFamily')}</legend>
+	<legend>${message(code: 'adminRef.tag.TagParent')}</legend>
 	<g:form action="save" >
 		<form class="form-inline">
 			<div class="row">
@@ -11,15 +11,15 @@
 		              optionKey="id"
 		              optionValue="name"
 		              from="${Tag.list()}"
-		              noSelection="['':'-Choix du tag-']"/>
+		              noSelection="['':'-Choix du parent-']"/>
 				</div>
       			<div class="span3">
-	      			<g:select
-		              name="TagFamily_select"
-		              optionKey="id"
-		              optionValue="value"
-		              from="${TagFamily.list()}"
-		              noSelection="['':'-Choix de la famille de tag-']"/>
+	      			%{--<g:select--}%
+		              %{--name="TagFamily_select"--}%
+		              %{--optionKey="id"--}%
+		              %{--optionValue="value"--}%
+		              %{--from="${TagFamily.list()}"--}%
+		              %{--noSelection="['':'-Choix de la famille de tag-']"/>--}%
              	</div>
    			</div>
 			<g:actionSubmit class="btn btn-primary" action="addTagIntoFamily" value="${message(code: 'default.add')}" />

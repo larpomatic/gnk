@@ -21,70 +21,60 @@ class TagService {
     }
 
     def List<Tag> getPlotTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantPlot", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantPlot) {
+                result.add(child);
             }
         }
-
         return result;
     }
 
     def List<Tag> getResourceTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantResource", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantResource) {
+                result.add(child);
             }
         }
-
         return result;
     }
 
     def List<Tag> getPlaceTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantPlace", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantPlace) {
+                result.add(child);
             }
         }
-
         return result;
     }
 
     def List<Tag> getRoleTagQuery() {
-        def family = TagRelevant.withCriteria{
-            eq ("relevantRole", true)
-        }
-
-        ArrayList<Tag> result = new ArrayList<>()
-        for (TagRelevant t: family)
-        {
-            if (t.tagId != null)
-            {
-                result.addAll(findChildren(t.tag));
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantRole) {
+                result.add(child);
             }
         }
-        return result
+        return result;
+    }
+
+    def getGenericChilds() {
+        Set<Tag> generics = Tag.findAllByName("Générique");
+        ArrayList<Tag> genericChilds = new ArrayList<>();
+        for (Tag generic in generics) {
+            genericChilds.addAll(Tag.findAllByParent(generic));
+        }
+        return genericChilds;
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {

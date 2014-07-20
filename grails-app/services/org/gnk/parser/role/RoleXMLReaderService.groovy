@@ -118,7 +118,7 @@ class RoleXMLReaderService {
             final String isBijectiveStr = RELATION.attribute("is_bijective")
             Boolean isBijective;
             if (isBijectiveStr != "null")
-                isBijective = isBijectiveStr as Boolean
+                isBijective = isBijectiveStr.equals("false")?false:true
             final String weightStr = RELATION.attribute("weight")
             Integer weight;
             if (weightStr != "null" && (weightStr as String).isInteger())
@@ -201,9 +201,9 @@ class RoleXMLReaderService {
                 }
 
                 if (RELATION.attribute("is_bijective") != "null")
-                    isBijective = RELATION.attribute("is_bijective") as boolean
+                    isBijective = RELATION.attribute("is_bijective").equals("false") ? false : true
                 if (RELATION.attribute("is_exclusive") != "null")
-                    isExclusive = RELATION.attribute("is_exclusive") as boolean
+                    isExclusive = RELATION.attribute("is_exclusive").equals("false") ? false : true
                 if (RELATION.attribute("weight") != "null")
                     weight = RELATION.attribute("weight") as Integer
                 if (RELATION.DESCRIPTION.size() > 0)

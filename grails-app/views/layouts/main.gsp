@@ -10,11 +10,12 @@
 		<title><g:layoutTitle default="Genotron"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+        <link href='http://fonts.googleapis.com/css?family=Gudea' rel='stylesheet' type='text/css'>
 		<r:require modules="bootstrap"/>
 		<g:layoutHead/>
 		<r:layoutResources />
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
-
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'console.css')}" type="text/css">
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
 	</head>
 	<body>

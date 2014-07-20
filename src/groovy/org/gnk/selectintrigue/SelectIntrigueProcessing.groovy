@@ -53,7 +53,10 @@ public class SelectIntrigueProcessing {
         // on ajoute les intrigues compatibles à leur listes respectives
         for (Plot plot : parAllPlotList) {
             if (plot.getIsEvenemential()) {
-                _allEvenementialPlotList.add(plot);
+                //si l'intrigue évenementielle n'a pas plus de joueurs que le gn alors on l'ajoute
+                if (isEvenementialIsCompatible(plot)) {
+                    _allEvenementialPlotList.add(plot);
+                }
             } else {
                 if (plotIsCompatible(plot)) {
                     _allPlotList.add(plot);
@@ -78,6 +81,38 @@ public class SelectIntrigueProcessing {
         }
         selectEvenementailAndMainstreamPlots(_allEvenementialPlotList, _gn.getEvenementialTags(), _selectedEvenementialPlotList);
         selectIntrigue();
+    }
+
+    public isEvenementialIsCompatible(Plot plot) {
+        int countWomen = 0;
+        int countMen = 0;
+        int countOthers = 0;
+        for (Role role in plot.roles) {
+            RoleHasTag Man = RoleHasTag.createCriteria().get {
+                like("tag", Tag.createCriteria().get {
+                    like("name", "Homme")
+                    like("version", 2)
+                }.first())
+            }?.first();
+            RoleHasTag Woman = RoleHasTag.createCriteria().get {
+                like("tag", Tag.createCriteria().get {
+                    like("name", "Femme")
+                    like("version", 2)
+                }.first())
+            }?.first();
+            if (Man && (Man.weight == 101)) {
+                countMen++;
+            } else if (Man && Man.weight == -101) {
+                countWomen++;
+            } else if (Woman && Woman.weight == 101) {
+                countWomen++;
+            } else if (Woman && Woman.weight == -101) {
+                countMen++;
+            } else {
+                countOthers++;
+            }
+        }
+        return (countMen + countWomen + countOthers < _gn.getNbPlayers());
     }
 
     public Set<Plot> getSelectedPlots() {

@@ -1,5 +1,7 @@
 package org.gnk.resplacetime
 
+import org.gnk.tag.Tag
+
 class Place {
 
     Integer id

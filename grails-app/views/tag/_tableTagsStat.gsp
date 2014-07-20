@@ -16,7 +16,7 @@
 				<td>
 					<ul class="inline">
   						<span class="label label-info">
-  						<li class="label label-info">${tagInstance.tagFamily.value} </li>
+  						%{--<li class="label label-info">${tagInstance.tagFamily.value} </li>--}%
 						</span>
 					</ul>
 				</td>

@@ -19,7 +19,8 @@ class Tag {
     extPlaceTags: PlaceHasTag,
     extResourceTags: ResourceHasTag,
     extPlotTags: PlotHasTag,
-    extRoleTags: RoleHasTag]
+    extRoleTags: RoleHasTag,
+    children: Tag]
 
     static constraints = {
         name maxSize: 45

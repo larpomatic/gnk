@@ -30,11 +30,6 @@ class GnXMLWriterService {
         StreamResult result = new StreamResult(writer);
         TransformerFactory tf = TransformerFactory.newInstance();
         tf.newTransformer().transform(domSource, result);
-        // TMP to SEE
-        FileWriter fw = new FileWriter("../test.txt", true);
-        BufferedWriter output = new BufferedWriter(fw);
-        output.write(writer.toString());
-        output.close();
         return writer.toString();
     }
 
@@ -193,6 +188,7 @@ class GnXMLWriterService {
         gnElement.setAttribute("last_update_date", gn.lastUpdated == null ? now.time.toString() : gn.lastUpdated?.time.toString());
         gnElement.setAttribute("architecture", gn.isMainstream ? "mainstream" : "parallelized");
         gnElement.setAttribute("t0_date", gn.t0Date?.time.toString());
+        gnElement.setAttribute("date", gn.date?.time.toString());
         gnElement.setAttribute("duration", gn.duration.toString());
         gnElement.setAttribute("pip_min", gn.pipMin.toString());
         gnElement.setAttribute("pip_max", gn.pipMax.toString());

@@ -1,0 +1,26 @@
+<div class="accordion-group">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ roleId }}"
+           href="#collapsePastScene{{ roleId }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
+            {{ pastsceneTitle }}
+        </a>
+    </div>
+    <div id="collapsePastScene{{ roleId }}-{{ pastsceneId }}" class="accordion-body collapse">
+        <div class="accordion-inner">
+            <div class="formRow">
+                <div class="span1">
+                    Titre
+                </div>
+                <div class="span8">
+                    <input type="text" name="roleHasPastSceneTitle{{ pastsceneId }}" value="" id="roleHasPastSceneTitle{{ pastsceneId }}">
+                </div>
+            </div>
+            <div class="row formRow text-center">
+                <label for="roleDescription">
+                    Description
+                </label>
+            </div>
+            <textarea name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100" id="roleHasPastSceneDescription{{ pastsceneId }}"></textarea>
+        </div>
+    </div>
+</div>

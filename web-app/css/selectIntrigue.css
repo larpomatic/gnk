@@ -68,3 +68,14 @@ th,td {
 .redBorder {
     border: 1px solid red !important;
 }
+
+.mainstreamIcon {
+    height: 15px;
+    width: 15px;
+    padding: 5px;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    border-radius: 55px;
+    font-size: 14px;
+}
