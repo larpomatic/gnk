@@ -244,8 +244,11 @@ class Character {
         final Integer nbPIP = getNbPIP()
         Set<RoleHasRelationWithRole> tagKeySet = relationMap.keySet()
         for (RoleHasRelationWithRole tagKey : tagKeySet) {
-            if (nbPIP != 0)
+
+            if(nbPIP != 0)
                 relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
+            else
+                relationMap.put(tagKey, relationMap.get(tagKey))
         }
         return relationMap
     }
@@ -311,8 +314,11 @@ class Character {
         final Integer nbPIP = getNbPIP()
         Set<RoleHasRelationWithRole> tagKeySet = relationMap.keySet()
         for (RoleHasRelationWithRole tagKey : tagKeySet) {
-            if (nbPIP != 0)
+
+            if(nbPIP != 0)
                 relationMap.put(tagKey, relationMap.get(tagKey) / nbPIP)
+            else
+                relationMap.put(tagKey, relationMap.get(tagKey))
         }
         return relationMap
     }

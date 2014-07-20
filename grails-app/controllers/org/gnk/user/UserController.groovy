@@ -1,8 +1,11 @@
 package org.gnk.user
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.springframework.security.access.annotation.Secured
 
+import javax.servlet.http.Cookie
 
+@Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class UserController {
     UserService userService
 
@@ -11,18 +14,32 @@ class UserController {
     }
 
     def profil(){
-
         User user = session.getAttribute("user")
+
+        if (!user){
+            params.setProperty("redirectaction", "profil")
+            params.setProperty("redirectcontroller", "user")
+            redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "profil", controllerredirect : "user"])
+            return false
+        } else {
         User currentuser = User.findById(user.id)
         int rightuser = currentuser.gright
         List<Boolean> lb = userService.instperm(rightuser)
-
         [currentuser : currentuser , lb : lb]
+        }
     }
 
     def modifperm(){
+        User user = session.getAttribute("user")
+
+        if (!user){
+            params.setProperty("redirectaction", "profil")
+            params.setProperty("redirectcontroller", "user")
+            redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "profil", controllerredirect : "user"])
+            return false
+        } else {
         List<Boolean> lb = []
-        User user = session.getAttribute('user')
+        user = session.getAttribute('user')
         User currentuser = User.findById(user.id)
 
         for (int i = 0; i < 24; i++)
@@ -44,6 +61,7 @@ class UserController {
         currentuser.save(failOnError: true)
         session.setAttribute("user", user)
         redirect(controller: "user", action: "profil")
+        }
     }
 
     def modifyProfil(){
