@@ -1,5 +1,8 @@
 package org.gnk.resplacetime
 
+import org.gnk.selectintrigue.Plot
+import org.gnk.tag.Tag
+
 class GenericPlace {
 
     Integer id
@@ -18,6 +21,8 @@ class GenericPlace {
     List<Place> bannedPlaces
     Place selectedPlace
 
+    static belongsTo = [plot: Plot]
+
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,
 	                   pastscenes: Pastscene ]
@@ -31,6 +36,26 @@ class GenericPlace {
         comment type: 'text'
         id type:'integer'
         version type: 'integer'
+        extTags cascade:'all-delete-orphan'
     }
 
+    public boolean hasGenericPlaceTag(Tag parGenericPlaceTag) {
+        for (GenericPlaceHasTag genericPlaceHasPlaceTag : extTags) {
+            if (genericPlaceHasPlaceTag.tag == parGenericPlaceTag) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public getGenericPlaceHasTag(Tag tag) {
+        List<GenericPlaceHasTag> genericPlaceHasTags = GenericPlaceHasTag.createCriteria().list {
+            like("genericPlace", this)
+            like("tag", tag)
+        }
+        if (genericPlaceHasTags.size() == 0) {
+            return null;
+        }
+        return genericPlaceHasTags.first();
+    }
 }

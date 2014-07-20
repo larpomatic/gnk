@@ -19,10 +19,13 @@
                     <g:if env="development">
                         <g:link controller="roleToPerso" action="roleToPerso"><g:message code="navbar.role2perso"/></g:link>
                     </g:if>
-                </li>1
+                </li>
                 <g:if env="development">
                     <li>
                         <g:link controller="substitution"><g:message code="navbar.substitution"/></g:link>
+                    </li>
+                    <li>
+                        <g:link controller="publication"><g:message code="navbar.publication"/></g:link>
                     </li>
                     <sec:ifAnyGranted roles="ROLE_ADMIN">
                     <li>

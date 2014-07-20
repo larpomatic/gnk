@@ -139,7 +139,7 @@ class Character {
                 selectedPJG.add(role)
             if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
                 specificRoles.add(role);
-                plotid_role.add(role.plotId);
+                plotid_role.add(role.plotId as Integer);
             }
 
     }
@@ -369,14 +369,6 @@ class Character {
             finalAge = sum / number
         }
 
-
-
-        int minage = 0
-
-
-       // if (minage != 0)
-        //    finalAge = minage
-
         //Fun
         finalAge += (((new Random()).nextInt() % 8))
         if (finalAge < 0)
@@ -389,8 +381,8 @@ class Character {
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0
 
-        if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
-            println(t.name + " - " + value)
+        //if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
+        //    println(t.name + " - " + value)
 
         // Formule de maths toutes arbitraires
         if (t.id == 34) { //Vieux 80
@@ -402,8 +394,8 @@ class Character {
         } else if (t.id == 31) { // Très jeune 15
             age = 15 - Math.pow(((value - 25)/23), 3)/3
         }
-        if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
-            println(t.name + " - " + value + "   AGE :" + age)
+        //if (t.id == 34 || t.id == 33|| t.id == 32 || t.id == 31)
+        //    println(t.name + " - " + value + "   AGE :" + age)
         return age
     }
 }

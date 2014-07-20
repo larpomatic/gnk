@@ -149,7 +149,7 @@ class NamingService
 
 	
 	/* Methode en prive */
-	// recuperer les prenoms de la base de donnees en fonction du genre (+ les neutre)
+	// recuperer les prenoms de la Base de donnees en fonction du genre (+ les neutre)
 	private LinkedList<Firstname> getFirstNamebyGender2 (String gender)
 	{
 		LinkedList<Firstname> fnlist
@@ -177,7 +177,7 @@ class NamingService
         return fnlist
     }
 	
-	// recuperer les noms de la base de donnees en fonction du tag
+	// recuperer les noms de la Base de donnees en fonction du tag
 	private LinkedList<Name> getNamebyTag2 (LinkedList<PersoForNaming> persoList, LinkedList linguistique)
 	{
 		LinkedList<Name> nlist = new LinkedList<Name>()

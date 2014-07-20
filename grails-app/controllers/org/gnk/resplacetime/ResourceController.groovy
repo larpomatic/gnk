@@ -1,7 +1,6 @@
 package org.gnk.resplacetime
 
 import org.gnk.tag.Tag
-import org.gnk.tag.TagFamily;
 import org.gnk.tag.Univers
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.web.multipart.MultipartFile
@@ -310,7 +309,7 @@ class ResourceController {
             redirect(action: "list")
             return
         }
-		//FIXME Changement de base
+		//FIXME Changement de Base
 		/*
         try {
             resourceInstance.delete(flush: true)

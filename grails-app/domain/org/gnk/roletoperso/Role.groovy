@@ -1,6 +1,8 @@
 package org.gnk.roletoperso
 
 import groovy.sql.Sql
+import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
@@ -53,23 +55,6 @@ class Role implements Comparable {
             roleHasTags = new HashSet<RoleHasTag>()
         }
         roleHasTags.add(roleHasTags)
-    }
-
-    public boolean myInsert() {
-        def sql = Sql.newInstance("jdbc:mysql://localhost/gnkdb", "gnk", "", "com.mysql.jdbc.Driver")
-        dateCreated = new Date()
-        lastUpdated = new Date()
-        sql.execute("insert into role (version, code, date_created, description, last_updated, pipi, pipr, type, plot_id) values (1, \"" + code + "\", '2013-04-15', \"" + description + "\", '2013-04-15', " + pipi + ", " + pipr + ", \"" + type + "\", " + plot.id + ")")
-        Role role = Role.findAllWhere("code": code).first();
-        for (RoleHasTag roleHasTagIter : this.roleHasTags) {
-            RoleHasTag roleHasTag = new RoleHasTag()
-            Tag roleTag = roleHasTagIter.tag
-            roleHasTag.tag = roleTag
-            roleHasTag.weight = TagService.LOCKED //FIXME
-            roleHasTag.role = role
-            role.roleHasTags.add(roleHasTag)
-        }
-        return !!(role.save());
     }
 
     public boolean hasRoleTag(Tag parRoleTag) {
@@ -198,4 +183,36 @@ class Role implements Comparable {
         return code;
     }
 
+    public getRoleHasTag(Tag tag) {
+        List<RoleHasTag> roleHasTags = RoleHasTag.createCriteria().list {
+            like("role", this)
+            like("tag", tag)
+        }
+        if (roleHasTags.size() == 0) {
+            return null;
+        }
+        return roleHasTags.first();
+    }
+
+    public getRoleHasEvent(Event event) {
+        List<RoleHasEvent> roleHasEvents = RoleHasEvent.createCriteria().list {
+            like("role", this)
+            like("event", event)
+        }
+        if (roleHasEvents.size() == 0) {
+            return null;
+        }
+        return roleHasEvents.first();
+    }
+
+    public getRoleHasPastScene(Pastscene pastscene) {
+        List<RoleHasPastscene> roleHasPastscenes = RoleHasPastscene.createCriteria().list {
+            like("role", this)
+            like("pastscene", pastscene)
+        }
+        if (roleHasPastscenes.size() == 0) {
+            return null;
+        }
+        return roleHasPastscenes.first();
+    }
 }

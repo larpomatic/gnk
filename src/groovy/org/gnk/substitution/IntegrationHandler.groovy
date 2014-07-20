@@ -370,6 +370,7 @@ class IntegrationHandler {
             if (pastsceneTime.absoluteHour != null) {date.put("hours", pastsceneTime.absoluteHour as String)}
             if (pastsceneTime.absoluteMinute != null) {date.put("minutes", pastsceneTime.absoluteMinute as String)}
 
+
             pastsceneJson.put("date", date)
         }
         // Event
