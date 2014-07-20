@@ -4997,9 +4997,9 @@
                     }
                     else
                     {
-                        if ((a.data.lien2 != null) && (a.data.lien2 != ""))
+                        /*if ((a.data.lien2 != null) && (a.data.lien2 != ""))
                             action(a, id, a.data.lien2);
-                        else
+                        else*/
                             action(a, id, a.data.lien);
                     }
                 }

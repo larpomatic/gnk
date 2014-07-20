@@ -55,27 +55,27 @@
     <g:message code="roletoperso.character"
                default="Character"/> ${character.DTDId}
     <div class="pull-right" style="margin-top: -5px">
-    <g:if test="${((Character) character).getGender() == 'M'}">
-        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+        <g:if test="${((Character) character).getGender() == 'M'}">
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
                 <button type="button" class="btn active">Homme</button>
                 <button type="button" class="btn">Neutre</button>
                 <button type="button" class="btn">Femme</button>
-        </div>
-    </g:if>
-    <g:elseif test="${((Character) character).getGender() == 'F'}">
-        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+            </div>
+        </g:if>
+        <g:elseif test="${((Character) character).getGender() == 'F'}">
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
                 <button type="button" class="btn">Homme</button>
                 <button type="button" class="btn">Neutre</button>
                 <button type="button" class="btn active">Femme</button>
-        </div>
-    </g:elseif>
-    <g:else>
-        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+            </div>
+        </g:elseif>
+        <g:else>
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
                 <button type="button" class="btn">Homme</button>
                 <button type="button" class="btn active">Neutre</button>
                 <button type="button" class="btn">Femme</button>
-        </div>
-    </g:else>
+            </div>
+        </g:else>
     </div>
 </div>
 
@@ -466,23 +466,23 @@
                                 <td style="text-align: center">
                                     <g:if test="${((Character) PHJ).getGender() == 'M'}">
                                         <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
-                                                <button type="button" class="btn btn-primary active">Homme</button>
-                                                <button type="button" class="btn btn-primary">Neutre</button>
-                                                <button type="button" class="btn btn-primary">Femme</button>
+                                            <button type="button" class="btn btn-primary active">Homme</button>
+                                            <button type="button" class="btn btn-primary">Neutre</button>
+                                            <button type="button" class="btn btn-primary">Femme</button>
                                         </div>
                                     </g:if>
                                     <g:elseif test="${((Character) PHJ).getGender() == 'F'}">
                                         <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
-                                                <button type="button" class="btn btn-primary">Homme</button>
-                                                <button type="button" class="btn btn-primary">Neutre</button>
-                                                <button type="button" class="btn btn-primary active">Femme</button>
+                                            <button type="button" class="btn btn-primary">Homme</button>
+                                            <button type="button" class="btn btn-primary">Neutre</button>
+                                            <button type="button" class="btn btn-primary active">Femme</button>
                                         </div>
                                     </g:elseif>
                                     <g:else>
                                         <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
-                                                <button type="button" class="btn btn-primary">Homme</button>
-                                                <button type="button" class="btn btn-primary active">Neutre</button>
-                                                <button type="button" class="btn btn-primary">Femme</button>
+                                            <button type="button" class="btn btn-primary">Homme</button>
+                                            <button type="button" class="btn btn-primary active">Neutre</button>
+                                            <button type="button" class="btn btn-primary">Femme</button>
                                         </div>
                                     </g:else>
                                 </td>
@@ -537,17 +537,16 @@
     </div>
 </div>
 
+<g:if test="${tagcompatibility != null}">
 <table class="table table-bordered">
     <thead>
     <tr>
         <th>Character</th>
-        <th>Tag1 - ID</th>
         <th>Tag1 - Name</th>
-        <th>Tag1 - Value</th>
-        <th>Tag2 - ID</th>
+        <th>Tag1 - Valeur</th>
         <th>Tag2 - Name</th>
-        <th>Tag2 - Value</th>
-        <th>Compatibility</th>
+        <th>Tag2 - Valeur</th>
+        <th>Compatibilité</th>
     </tr>
     </thead>
     <tbody>
@@ -558,14 +557,45 @@
             <td>${((String)string).split("#")[2]}</td>
             <td>${((String)string).split("#")[3]}</td>
             <td>${((String)string).split("#")[4]}</td>
-            <td>${((String)string).split("#")[5]}</td>
-            <td>${((String)string).split("#")[6]}</td>
-            <td>${((String)string).split("#")[7]}</td>
+            <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
+                <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
+            </g:if>
+            <g:else>
+                <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
+            </g:else>
         </tr>
     </g:each>
     </tbody>
 </table>
+</g:if>
 
+<g:if test="${tagrelationcompatibility != null}">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Character</th>
+            <th>Relation 1</th>
+            <th>Relation 2</th>
+            <th>Compatibilité</th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${tagrelationcompatibility}" var="string">
+            <tr>
+                <td>CHAR-${((String)string).split("#")[0]}</td>
+                <td>${((String)string).split("#")[1]}</td>
+                <td>${((String)string).split("#")[2]}</td>
+                <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
+                    <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
+                </g:if>
+                <g:else>
+                    <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
+                </g:else>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</g:if>
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
 

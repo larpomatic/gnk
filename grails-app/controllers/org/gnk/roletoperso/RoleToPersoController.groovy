@@ -1,5 +1,6 @@
 package org.gnk.roletoperso
 
+import com.esotericsoftware.minlog.Log
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot
@@ -157,7 +158,7 @@ class RoleToPersoController {
                 if (c != c2)
                 {
                     String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
-                    String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
+                    //String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
                     if ((lien1 != null) && (lien1.isEmpty() == false))
                     {
                         JSONObject json_adjacencies_obj = new JSONObject();
@@ -165,8 +166,8 @@ class RoleToPersoController {
                         json_adjacencies_obj.put("nodeFrom", "CHAR" + c.getDTDId());
                         JSONObject json_data = new JSONObject();
                         json_data.put("lien", lien1);
-                        if ((lien2 != null) && (lien2.isEmpty() == false))
-                            json_data.put("lien2", lien2);
+                        //if ((lien2 != null) && (lien2.isEmpty() == false))
+                        //    json_data.put("lien2", lien2);
                         json_adjacencies_obj.put("data", json_data);
                         json_adjacencies.add(json_adjacencies_obj);
                     }
@@ -197,27 +198,98 @@ class RoleToPersoController {
         json_relation = json_array.toString();
 
         ArrayList<String> values = new ArrayList<>();
+        ArrayList<String> values_relation = new ArrayList<>();
         for (Character c in gn.characterSet)
         {
-            Map<Tag, Integer> test = c.getTags();
-            Set<Tag> tags = test.keySet();
+            Map<Tag, Integer> map_tag = c.getTags();
+            Set<Tag> tags = map_tag.keySet();
             TagService tagservice = new TagService();
+            Tag bad_tag1;
+            Tag bad_tag2;
+            int result = 0;
             for (Tag tag1 in tags)
             {
                 for (Tag tag2 in tags)
                 {
                     if (tag1 != tag2)
                     {
-                        String val = "" + c.getDTDId();
-                        val += "#" + tag1.id + "#" + tag1.name + "#" + test.get(tag1);
-                        val += "#" + tag2.id + "#" + tag2.name + "#" + test.get(tag2);
-                        val += "#" + tagservice.getTagMatching(tag1, 0, tag2, 0);
-                        values.add(val);
+                        int isgood = tagservice.getTagMatching(tag1, 0, tag2, 0) * map_tag.get(tag1) * map_tag.get(tag2);
+                        if (isgood < result)
+                        {
+                            result = isgood;
+                            bad_tag1 = tag1;
+                            bad_tag2 = tag2;
+                        }
+                    }
+                }
+            }
+            if ((bad_tag1 != null) && (bad_tag2 != null))
+            {
+                String val = "" + c.getDTDId();
+                val += "#" + bad_tag1.name + "#" + map_tag.get(bad_tag1) + "#" +  bad_tag2.name + "#" + map_tag.get(bad_tag2) + "#" + (int)((result/1000000) *100);
+                values.add(val);
+            }
+
+            Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelations(gn);
+            map_relation = map_relation;
+            for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                // Test on same character
+                for (RoleHasRelationWithRole r1 : relation_list) {
+                    if (relation_list.size() > 1) {
+                        for (RoleHasRelationWithRole r2 : relation_list) {
+                            if (r1 != r2) {
+                                RoleRelationTypeCompatibility comp = RoleRelationTypeCompatibility.myFindWhere(r1.getterRoleRelationType(), r2.getterRoleRelationType(), true);
+                                if (comp != null) {
+                                    int val = comp.getWeight() * r1.getWeight() * r2.getWeight();
+                                    Log.info("RelationCompatibility1 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
+                                    if (val < 0)
+                                        values_relation.add("1" + c.getDTDId() + "#"
+                                                + r1.getterRoleRelationType().getName() + "#"
+                                                + r2.getterRoleRelationType().getName() + "#"
+                                                + (int)((val/1000000) *100));
+                                }
+                            }
+                        }
+
+                    }
+                    for (List<RoleHasRelationWithRole> relation_list2 : map_relation.values())
+                    {
+                        if (relation_list != relation_list2)
+                        {
+                            for (RoleHasRelationWithRole r2 : relation_list2)
+                            {
+                                if (r1 != r2) {
+                                    RoleRelationTypeCompatibility comp = RoleRelationTypeCompatibility.myFindWhere(r1.getterRoleRelationType(), r2.getterRoleRelationType(), false);
+                                    if (comp != null) {
+                                        int val = comp.getWeight() * r1.getWeight() * r2.getWeight();
+                                        Log.info("RelationCompatibility2 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
+                                        if (val < 0)
+                                        {
+                                            values_relation.add("2" + c.getDTDId() + "#"
+                                                    + r1.getterRoleRelationType().getName() + "#"
+                                                    + r2.getterRoleRelationType().getName() + "#"
+                                                    + (int)((val/1000000) *100));
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
+        if (values.size() == 0)
+            values = null;
+
+        if (values_relation.size() == 0)
+            values_relation = null;
+        else
+        {
+            Set set = new HashSet() ;
+            set.addAll(values_relation) ;
+            values_relation = new ArrayList<>(set);
+        }
         [gnInstance: gn,
          characterList: gn.characterSet,
          allList: algo.gnTPJRoleSet,
@@ -226,6 +298,7 @@ class RoleToPersoController {
          evenementialId: evenementialId,
          relationjson: json_relation,
          tagcompatibility: values,
+         tagrelationcompatibility: values_relation,
          mainstreamId: mainstreamId]
     }
 
