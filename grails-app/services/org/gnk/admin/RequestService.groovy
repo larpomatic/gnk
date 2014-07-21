@@ -36,9 +36,8 @@ class RequestService {
         SqlRequestCategory sqlcat = SqlRequestCategory.findByName(catName);
         SqlRequestSubcategory sqlsubcat = SqlRequestSubcategory.findByNameAndSqlRequestCategory(subCatName, sqlcat)
         SqlRequest sqlrequest = SqlRequest.findByNameAndSqlRequestSubcategory(sqlr, sqlsubcat)
-        if (!sqlcat && !sqlsubcat && !sqlrequest){
-            return false;
-        } else {
+        if (sqlcat && sqlsubcat && sqlrequest){
+
             sqlrequest.delete();
             sqlsubcat.sqlRequest.remove(sqlrequest)
             if (sqlsubcat.sqlRequest.size() == 0){
@@ -49,6 +48,9 @@ class RequestService {
                 sqlcat.delete();
             }
             return true;
+        }
+        else {
+            return false;
         }
     }
 }

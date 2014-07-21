@@ -78,7 +78,7 @@
         <div class="row">
             <g:form method="post" controller="user" action="modifyProfil">
                 <div class="col-lg-6">
-                    Changer mot de passe : <input type="password" name="passwordChanged"/><br/>
+                    Changer mot de passe : <input type="password" name="passwordChanged" placeholder="<g:message code="default.minsize.password"/>"/><br/>
                     Confirmer mot de passe : <input type="password" name="passwordChangedConfirm"/><br/>
 
                     <div class="input-group">

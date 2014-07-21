@@ -427,7 +427,7 @@
                 </div>
                 <div class="legend">
                 </div>
-                </br>
+            </br>
             </div>
         </div>
     </div>
@@ -454,6 +454,8 @@
                                        default="Character"/></th>
                         <th><g:message code="roletoperso.roleCode"
                                        default="Role code"/></th>
+                        <th><g:message code="roletoperso.roleType"
+                                       default="Character Type"/></th>
                         <th><g:message code="roletoperso.sexe"
                                        default="Sex"/></th>
                         <th><g:message code="roletoperso.action"
@@ -466,6 +468,7 @@
                             <tr id="${"line" + ((Character) PHJ).getDTDId()}">
                                 <td>CHAR-${((Character) PHJ).getDTDId()}</td>
                                 <td id="td_CHAR-${((Character) PHJ).getDTDId()}">${((Character) PHJ).rolesToString()}</td>
+                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}-TYPE">${((Character) PHJ).type}</td>
                                 <td style="text-align: center">
                                     <g:if test="${((Character) PHJ).getGender() == 'M'}">
                                         <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
@@ -540,64 +543,82 @@
     </div>
 </div>
 
-<g:if test="${tagcompatibility != null}">
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Character</th>
-        <th>Tag1 - Name</th>
-        <th>Tag1 - Valeur</th>
-        <th>Tag2 - Name</th>
-        <th>Tag2 - Valeur</th>
-        <th>Compatibilité</th>
-    </tr>
-    </thead>
-    <tbody>
-    <g:each in="${tagcompatibility}" var="string">
-        <tr>
-            <td>CHAR-${((String)string).split("#")[0]}</td>
-            <td>${((String)string).split("#")[1]}</td>
-            <td>${((String)string).split("#")[2]}</td>
-            <td>${((String)string).split("#")[3]}</td>
-            <td>${((String)string).split("#")[4]}</td>
-            <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
-                <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
-            </g:if>
-            <g:else>
-                <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
-            </g:else>
-        </tr>
-    </g:each>
-    </tbody>
-</table>
-</g:if>
+<g:if test="${(tagcompatibility != null) || (tagrelationcompatibility != null)}">
+    <div class="accordion" id="accordionStat">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse"
+                   data-parent="#accordionStat"
+                   href="#collapseStat">
+                    <g:message code="roletoperso.Stat"
+                               default="Tag Relation Problems"/>
+                </a>
+            </div>
+            <div id="collapseStat" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <g:if test="${tagcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Tag1 - Name</th>
+                                <th>Tag1 - Valeur</th>
+                                <th>Tag2 - Name</th>
+                                <th>Tag2 - Valeur</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <td>${((String)string).split("#")[3]}</td>
+                                    <td>${((String)string).split("#")[4]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
 
-<g:if test="${tagrelationcompatibility != null}">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Character</th>
-            <th>Relation 1</th>
-            <th>Relation 2</th>
-            <th>Compatibilité</th>
-        </tr>
-        </thead>
-        <tbody>
-        <g:each in="${tagrelationcompatibility}" var="string">
-            <tr>
-                <td>CHAR-${((String)string).split("#")[0]}</td>
-                <td>${((String)string).split("#")[1]}</td>
-                <td>${((String)string).split("#")[2]}</td>
-                <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
-                    <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
-                </g:if>
-                <g:else>
-                    <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
-                </g:else>
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
+                    <g:if test="${tagrelationcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Relation 1</th>
+                                <th>Relation 2</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagrelationcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+                </div>
+            </div>
+        </div>
+    </div>
 </g:if>
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
@@ -660,8 +681,9 @@
                 $("tr#"+remove_id).remove();
                 $("#fusionModal").modal('hide');
                 var upd_name = '#td_' + selected_char;
-                //$(upd_name).val(data.object.roles);
+                var upd_type = '#td_' + selected_char + "-TYPE";
                 $(upd_name).html(data.object.roles)
+                $(upd_type).html(data.object.type)
                 $("#modaloption option").each(function()
                 {
                     var sup_name = 'CHAR-' + from_char;
