@@ -9,7 +9,8 @@ import javax.servlet.http.Cookie
 class UserController {
     UserService userService
 
-    def index() {
+    def
+    index() {
         render 'Secure access only'
     }
 
@@ -70,7 +71,6 @@ class UserController {
         User currentuser = User.findById(user.id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        print params
         if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
             currentuser.password = newpassword
         if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){

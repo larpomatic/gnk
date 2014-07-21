@@ -1,5 +1,6 @@
 package org.gnk.consolSql
 
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException
 import groovy.sql.Sql
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.gnk.admin.RequestService
@@ -57,10 +58,18 @@ class ConsolSqlController {
     }
     def resultRequest(String request){
         String result = "";
+        def resultsql;
         request = params.sqlconsol;
         if (request) {
+
             def sql = new Sql(sessionFactory.currentSession.connection())
-            def resultsql = sql.rows(request)
+            try{
+                resultsql = sql.rows(request)
+            }
+            catch (Exception e){
+                redirect(action: "terminal")
+                return
+            }
             result+="<table class=\"table\">\n <thead></thead>\n <tbody>"
             for (def it : resultsql) {
                 result+=" <tr>\n"
@@ -72,9 +81,9 @@ class ConsolSqlController {
                 result+="  </tr>\n"
             }
             result+=" </tbody>\n</table>\n"
-        }
         params.remove("resultRequest")
         params.setProperty("resultRequest", "")
+        }
         [result: result]
     }
 

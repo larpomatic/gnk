@@ -143,7 +143,6 @@ class AdminUserController {
         User user = User.findById(id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        print params
         if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
             user.password = newpassword
         if (params.firstnamemodif && params.firstnamemodif != user.firstname){
