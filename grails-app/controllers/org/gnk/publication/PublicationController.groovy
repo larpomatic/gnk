@@ -927,7 +927,7 @@ class PublicationController {
                     tags += "; "
                 else
                     first = false
-                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%) "
+                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name  + ") "
             }
             wordWriter.addTableCell(tableRowPlot, tags.toString())
 
