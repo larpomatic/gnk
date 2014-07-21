@@ -74,6 +74,9 @@ class AdminUserController {
             }
         }
         int rightuser = user.gright
+        String newpassword = params.passwordChanged
+        if (newpassword && newpassword.size() > 5)
+            user.password = newpassword
         List<Boolean> lb = userService.instperm(rightuser)
         [user:user, lb : lb]
     }
@@ -135,5 +138,27 @@ class AdminUserController {
             }
         }
         [user:user, countPublicPlot:countPublicPlot, countPrivatePlot:countPrivatePlot, countDraftPlot:countDraftPlot]
+    }
+    def modifyUser(long id){
+        User user = User.findById(id)
+        String newpassword = params.passwordChanged
+        String confirmpassword = params.passwordChangedConfirm
+        print params
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+            user.password = newpassword
+        if (params.firstnamemodif && params.firstnamemodif != user.firstname){
+            user.firstname = params.firstnamemodif
+        }
+        if (params.lastnamemodif && params.lastnamemodif != user.lastname){
+            user.lastname = params.lastnamemodif
+
+        }
+        if (params.usernamemodif && params.usernamemodif != user.username){
+            if (User.findByUsername((String)params.usernamemodif) == null){
+                user.username = params.usernamemodif;
+            }
+        }
+        user.save()
+        redirect( action: "edit", params: "user : ${user.id}")
     }
 }
