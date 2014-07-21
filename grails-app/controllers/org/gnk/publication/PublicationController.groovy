@@ -907,6 +907,9 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
         {
+            //Ignorer Life
+            if (p.name == "Life")
+                continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
@@ -1007,6 +1010,9 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
         {
+            //Ignorer Life
+            if (p.name == "Life")
+                continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
 
