@@ -139,15 +139,24 @@ class RoleToPersoController {
         /**********/
 
         // On donne à chaque joueur un age selon un algo simple
+
         gn.characterSet.each { charact ->
             charact.age = charact.getCharacterAproximateAge();
             //print("AGE_0 :" + charact.age)
         }
+        gn.nonPlayerCharSet.each { charact ->
+            charact.age = charact.getCharacterAproximateAge();
+            //print("AGE_0 :" + charact.age)
+        }
+        Set<Character> charSum = new HashSet<Character>()
+        charSum.addAll(gn.characterSet)
+        charSum.addAll(gn.nonPlayerCharSet)
+
         // On affine en fonction des relation père/fils
         boolean noModifDoneOnParents = true;
         while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustements
             noModifDoneOnParents = false
-            gn.characterSet.each { charact -> // Pour tous les caractère
+            charSum.each { charact -> // Pour tous les caractère
                 charact.getRelationsExceptBijectives().each { related -> // On récupère leurs relation
                     if (related.key.getterRole1().DTDId != null && related.key.getterRole2().DTDId != null) { // Si c'est pas un cas chelou
                         if (related.key.roleRelationType.id == 21) { //Parent direct
@@ -155,12 +164,20 @@ class RoleToPersoController {
                             // On recherche son fils
                             if (charact.age < 20) {
                                 charact.age = 20
+                                if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.characterSet.find {ch -> ch.DTDId = charact.getDTDId()}).age = 20
+                                if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 20
                                 noModifDoneOnParents = true
                             } else {
-                                gn.characterSet.each { sonChar ->
+                                charSum.each { sonChar ->
                                     if (sonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
                                         if (charact.age < sonChar.age + 20) { // On donne au père au moins 20 ans de plus que le fils
                                             charact.age = sonChar.age + 20
+                                            if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = sonChar.age + 20
+                                            if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = sonChar.age + 20
                                             noModifDoneOnParents = true
                                         }
                                     }
@@ -169,10 +186,14 @@ class RoleToPersoController {
                         }
                         if (related.key.roleRelationType.id == 20) { //Filiation
                             // On est sur un fils, on va aller vérifier que son père a au moins 20 ans de plus que lui
-                            gn.characterSet.each { pereChar ->
+                            charSum.each { pereChar ->
                                 if (pereChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le pereChar qui est le pere de character
                                     if (pereChar.age < charact.age + 20) { // On donne au père au moins 20 ans de plus que le fils
                                         pereChar.age = charact.age + 20
+                                        if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                            (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = charact.age + 20
+                                        if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                            (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = charact.age + 20
                                         noModifDoneOnParents = true
                                     }
                                 }
@@ -183,12 +204,20 @@ class RoleToPersoController {
                             // On recherche son petit fils
                             if (charact.age < 45) {
                                 charact.age = 45
+                                if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 45
+                                if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 45
                                 noModifDoneOnParents = true
                             } else {
-                                gn.characterSet.each { grandSonChar ->
+                                charSum.each { grandSonChar ->
                                     if (grandSonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
                                         if (charact.age < grandSonChar.age + 45) { // On donne au père au moins 20 ans de plus que le fils
                                             charact.age = grandSonChar.age + 45
+                                            if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = grandSonChar.age + 45
+                                            if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = grandSonChar.age + 45
                                             noModifDoneOnParents = true
                                         }
                                     }
@@ -202,10 +231,14 @@ class RoleToPersoController {
         gn.characterSet.each { charact ->
             //print("AGE_1 :" + charact.age + " for IDs :")
         }
+        gn.nonPlayerCharSet.each { charact ->
+            //print("AGE_2 :" + charact.age + " for IDs :")
+        }
         /***********/
         /**FIN AGE**/
         /***********/
 
+        // Life
         addLifeEvents(gn)
 
 

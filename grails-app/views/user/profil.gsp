@@ -19,7 +19,7 @@
     <li class="active"><g:link controller="user" action="profil"><g:message code="navbar.profil"/></g:link></li>
     <g:hasRights lvlright="${right.USEROPEN.value()}">
         <li><g:link controller="adminUser" action="list"><g:message code="navbar.gestion_user"/></g:link></li>
-        <li><g:link controller="consolSql" action="terminal"><g:message code="navbar.gestion_console"/> </g:link> </li>
+        <li><g:link controller="consolSql" action="terminal"><g:message code="navbar.gestion_console"/></g:link></li>
     </g:hasRights>
 
 </ul>
@@ -29,36 +29,68 @@
 
     <div class="row">
         <g:form method="post" controller="user" action="modifyProfil">
-            <form>
-                <div class="col-lg-6">
-                    <g:message code="default.profil.lastname"/>: ${currentuser.lastname} <br/>
-
+            <div class="col-lg-6">
+                <g:message code="default.profil.lastname"/>: ${currentuser.lastname} <br/>
+                <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
                     <div class="input-group">
                         <input type="text" name="lastnamemodif" class="form-control"/>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Modifier</button>
                         </span>
                     </div>
-                </div>
-            </form>
+                </g:hasRights>
+            </div>
         </g:form>
     </div><!-- /.row -->
     <div class="row">
-        <div class="col-lg-6">
-            <g:message code="default.profil.firstname"/>: ${currentuser.firstname} <br/> <br/>
-        </div><!-- /.col-lg-6 -->
-        <div class="col-lg-6">
-            <div class="input-group">
-                <input type="text" class="form-control">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Modifier</button>
-                </span>
-            </div><!-- /input-group -->
-        </div><!-- /.col-lg-6 -->
+        <g:form method="post" controller="user" action="modifyProfil">
+            <div class="col-lg-6">
+                <g:message code="default.profil.firstname"/>: ${currentuser.firstname} <br/>
+            </div><!-- /.col-lg-6 -->
+            <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" name="firstnamemodif" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Modifier</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </g:hasRights>
+        </g:form>
     </div><!-- /.row -->
+    <div class="row">
+        <g:form method="post" controller="user" action="modifyProfil">
+            <div class="col-lg-6">
+                <g:message code="default.profil.email"/>: ${currentuser.username} <br/>
+                <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+                    <div class="input-group">
+                        <input type="text" name="usernamemodif" class="form-control"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Modifier</button>
+                        </span>
+                    </div>
+                </g:hasRights>
+            </div>
+        </g:form>
+    </div>
+    <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+        <div class="row">
+            <g:form method="post" controller="user" action="modifyProfil">
+                <div class="col-lg-6">
+                    Changer mot de passe : <input type="password" name="passwordChanged"/><br/>
+                    Confirmer mot de passe : <input type="password" name="passwordChangedConfirm"/><br/>
 
-<g:message code="default.profil.email"/>: ${currentuser.username} <br/>
-    <g:message code="default.profil.password"/>: <br/>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Modifier</button>
+                        </span>
+                    </div>
+                </div>
+            </g:form>
+        </div>
+    </g:hasRights>
+
     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
         <g:message code="default.profil.lvlright"/>: ${currentuser.gright} <br/>
     </g:hasRights>
