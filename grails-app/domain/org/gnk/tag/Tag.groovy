@@ -34,6 +34,7 @@ class Tag {
     static mapping = {
         id type: 'integer'
         version type: 'integer'
+        parent cascade: 'all'
     }
 
     String getterName() {

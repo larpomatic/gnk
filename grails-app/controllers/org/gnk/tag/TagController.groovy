@@ -2,6 +2,7 @@ package org.gnk.tag
 
 import org.gnk.administration.DbCoherenceController
 import org.springframework.security.access.annotation.Secured
+import org.gnk.tag.TagService
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class TagController {
@@ -13,42 +14,52 @@ class TagController {
     }
 
     def list(Integer max, Integer offset, String sort) {
-        max = max ?: 10
-        offset = offset ?: 0
-        sort = sort ?: 'name'
-        params.order = params.order ?: 'asc'
+        if (params.showChildren)
+            {
+                Tag parent = Tag.get(params.Tag_select as Integer)
+                List<Tag> resultList = new ArrayList<Tag>()
+                resultList.addAll(parent.children)
+                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds() ]
+            }
+        else
+        {
+            max = max ?: 10
+            offset = offset ?: 0
+            sort = sort ?: 'name'
+            params.order = params.order ?: 'asc'
 
-        def resultList = Tag.createCriteria().list(max: max, offset: offset) {
-            if (sort.indexOf('tagFamily.') == 0) {
-                tagFamily {
-                    order(sort.split('\\.')[1], params.order)
-                }
-            } else
-                order(sort, params.order as String)
+            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+                if (sort.indexOf('tagFamily.') == 0) {
+                    tagFamily {
+                        order(sort.split('\\.')[1], params.order)
+                    }
+                } else
+                    order(sort, params.order as String)
+            }
+            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds() ]
         }
-		
-		[ tagInstanceList: resultList ]
     }
 
-    def findChildren(org.gnk.tag.Tag t) {
-        def tags = org.gnk.tag.Tag.findAllWhere(parent: t)
+    def childrenList(Tag t)
+    {
+        t = t ?: params.Tag_select
+
+        def resultList = findChildren(t)
+
+        [tagInstanceList: resultList]
+    }
+
+    def findChildren(Tag t) {
+
+        def tags = Tag.findAllWhere(parent: t)
         def tagsTmp = new ArrayList()
         tagsTmp.addAll(tags)
         if (tagsTmp == null)
             return tags
-        for (org.gnk.tag.Tag tag : tagsTmp) {
+        for (Tag tag : tagsTmp) {
             tags.addAll(findChildren(tag))
         }
         return tags
-    }
-
-    def listChildren(String parent)
-    {
-        Tag parentTag = Tag.findWhere(name: parent)
-
-        def resultList = findChildren(parentTag)
-
-        [ tagInstanceChildrenList: resultList ]
     }
 	
 //	def listFrom(String tagFamily) {
@@ -158,7 +169,7 @@ class TagController {
 		}
 
 //		TagFamily tagFamilyInstance = null;
-//		Tag tagInstance = null;
+		Tag tagInstance = null;
 //		for (TagFamily tagFamily : TagFamily.list())
 //		{
 //			if (tagFamily.id == params.TagFamily_select.toInteger())
@@ -199,6 +210,24 @@ class TagController {
 
 		redirect(action: "list")
 	}
+
+//    def viewChildren() {
+//
+//        Tag tagInstance = null;
+//
+//        if (params.Tag_select.equals("")) {
+//            print "Invalid params"
+//            flash.message = message(code: 'Erreur : Il faut choisir un tag et son parent!')
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        tagInstance = Tag.findWhere(id: (int) params.Tag_select)
+//
+//        List<Tag> children = tagInstance.children
+//        list(children)
+//
+//    }
 	
     def show(Long id) {
         def tagInstance = Tag.get(id)
