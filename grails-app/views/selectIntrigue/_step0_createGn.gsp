@@ -54,12 +54,18 @@ select {
                 </div></td>
             </tr>
             <tr>
-                <td><label for="gnDate"><g:message
+                <td><label for="gnDateHour"><g:message
                         code="selectintrigue.step0.gnDate" default="Virtual GN Date"/></label></td>
-                <td><input type="date" id="gnDate" name="gnDate" class="date"
-                           value="${formatDate(format: 'yyyy-MM-dd', date: gnInstance?.date)}"/>
-                    <input type="time" width="50" id="gnDateHour" name="gnDateHour" class="time"
-                           value="${formatDate(format: 'HH:mm', date: gnInstance?.date)}"/></td>
+                <td>
+                    <div class="input-append date datetimepicker">
+                        <input data-format="dd/MM/yyyy HH:mm" type="text" id="gnDateHour" name="gnDateHour" placeholder="jj/mm/aaaa hh:mm"
+                               value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.date)}"/>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                            </i>
+                        </span>
+                    </div>
+                </td>
 
                 <td><label for="gnUnivers"><g:message
                         code="selectintrigue.step0.gnUnivers" default="Univers"/>
@@ -76,19 +82,25 @@ select {
             </tr>
 
             <tr>
-                <td><label for="t0Date"><g:message
+                <td><label for="t0DateHour"><g:message
                         code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
-                <td><input type="date" id="t0Date" name="t0Date" class="date"
-                           value="${formatDate(format: 'yyyy-MM-dd', date: gnInstance?.t0Date)}"/>
-                    <input type="time" width="50" id="t0Hour" name="t0Hour" class="time"
-                           value="${formatDate(format: 'HH:mm', date: gnInstance?.t0Date)}"/></td>
+                <td>
+                    <div class="input-append date datetimepicker">
+                        <input data-format="dd/MM/yyyy HH:mm" type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
+                               value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+                            </i>
+                        </span>
+                    </div>
+                </td>
 
                 <td><label for="gnDuration"><g:message
                         code="selectintrigue.step0.gnDuration" default="GN duration"/></label></td>
                 <td><div class="input-append">
                     <input class="span2" name="gnDuration" id="gnDuration"
-                           type="number" value="${gnInstance?.duration}"
-                           style="margin-right: 0px;"/><span class="add-on">h</span>
+                           type="number" value="${gnInstance?.duration}" required="required" pattern="\d*"
+                           style="margin-right: 0px;" min="1"/><span class="add-on">h</span>
                 </div></td>
             </tr>
 

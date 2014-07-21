@@ -73,7 +73,7 @@
 
                     <div class="input-group">
 
-                        Changer mot de passe : <input type="password" name="passwordChanged"/><br/>
+                        Changer mot de passe : <input type="password" name="passwordChanged" placeholder="<g:message code="default.minsize.password"/>"/><br/>
                         Confirmer nouveau mot de passe : <input type="password" name="passwordChanged"/><br/>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Modifier</button>
@@ -173,5 +173,6 @@
         </div>
     </g:hasRights>
 </g:hasRights>
+<g:link type="button" action="list"><g:message code="default.action.back"/></g:link>
 </body>
 </html>

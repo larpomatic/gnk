@@ -221,7 +221,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getCharacterAproximateAge().toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
 
@@ -272,7 +272,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -318,7 +318,7 @@ class PublicationController {
                     wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
 
                     wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.age.toString())
+                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles)
@@ -606,7 +606,7 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T3", "Présentation")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
-            wordWriter.addParagraphOfText("Age du personnage : " + c.age)
+            wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso )
 
             //Todo: Ajouter les relations entre les personnages
@@ -907,6 +907,9 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
         {
+            //Ignorer Life
+            if (p.name == "Life")
+                continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
@@ -927,7 +930,7 @@ class PublicationController {
                     tags += "; "
                 else
                     first = false
-                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%) "
+                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name  + ") "
             }
             wordWriter.addTableCell(tableRowPlot, tags.toString())
 
@@ -1007,6 +1010,9 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
         {
+            //Ignorer Life
+            if (p.name == "Life")
+                continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
 

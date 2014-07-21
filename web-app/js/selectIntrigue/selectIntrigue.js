@@ -20,6 +20,14 @@ $(function(){
         $('input[name="plot_status_'+ id +'"][value="3"]').attr("disabled", "disabled");
     });
 
+    // charge les datetimepickers
+    $('.datetimepicker').datetimepicker({
+        language: 'fr',
+        pickSeconds: false,
+        startDate: -Infinity,
+        endDate: Infinity
+    });
+
     initRadioPlots();
 
     //Si il n'y a pas d'intrigue mainstream sur un gn mainstream alors on alerte l'utilisateur
