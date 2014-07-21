@@ -351,6 +351,7 @@ class SelectIntrigueController {
         sdf.setLenient(false);
         try {
             Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.ERA, GregorianCalendar.BC);
             Date date = sdf.parse(dateToValidate);
             cal.setTime(date)
             return cal;
