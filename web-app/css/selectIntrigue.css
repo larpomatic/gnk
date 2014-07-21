@@ -79,3 +79,7 @@ th,td {
     border-radius: 55px;
     font-size: 14px;
 }
+
+.datetimepicker span {
+    margin-left: -25px !important;
+}

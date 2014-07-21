@@ -7,6 +7,7 @@ import org.gnk.parser.gn.GnXMLReaderService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.springframework.security.access.annotation.Secured
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Map.Entry
 
@@ -29,8 +30,8 @@ class SelectIntrigueController {
 	def selectIntrigue(Long id) {
 		Gn gnInstance
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
-		Set<Plot> selectedPlotInstanceList = new HashSet<Plot>()
-        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>()
+		Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
+        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>();
         Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
 		List<List<String>> statisticResultList = new ArrayList<List<String>>();
@@ -225,20 +226,32 @@ class SelectIntrigueController {
 	}
 
 	def formatParams (Gn gnInstance) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		if (params.gnDate) {
-			gnInstance.date = sdf.parse(params.gnDate);
-		}
-        if (params.gnDateHour) {
-            SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
-            Calendar calHour = Calendar.getInstance();
-            calHour.setTime(sdfHour.parse(params.gnDateHour));
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(gnInstance.date);
-            cal.set(Calendar.HOUR_OF_DAY, calHour.get(Calendar.HOUR_OF_DAY))
-            cal.set(Calendar.MINUTE, calHour.get(Calendar.MINUTE))
-            gnInstance.date = cal.getTime();
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (params.t0DateHour) {
+            Calendar calendar = isValidDate(params.t0DateHour as String, "dd/MM/yyyy HH:mm");
+            if (calendar) {
+                gnInstance.t0Date = calendar.getTime();
+            }
         }
+        if (params.gnDateHour) {
+            Calendar calendar = isValidDate(params.gnDateHour as String, "dd/MM/yyyy HH:mm");
+            if (calendar) {
+                gnInstance.date = calendar.getTime();
+            }
+        }
+//		if (params.gnDate) {
+//			gnInstance.date = sdf.parse(params.gnDate);
+//		}
+//        if (params.gnDateHour) {
+//            SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
+//            Calendar calHour = Calendar.getInstance();
+//            calHour.setTime(sdfHour.parse(params.gnDateHour));
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(gnInstance.date);
+//            cal.set(Calendar.HOUR_OF_DAY, calHour.get(Calendar.HOUR_OF_DAY))
+//            cal.set(Calendar.MINUTE, calHour.get(Calendar.MINUTE))
+//            gnInstance.date = cal.getTime();
+//        }
 		if (params.univers) {
 			gnInstance.univers = Univers.get(params.univers as Integer)
 		}
@@ -248,19 +261,19 @@ class SelectIntrigueController {
 		if (params.gnArchitechture) {
 			gnInstance.isMainstream = Boolean.parseBoolean(params.gnArchitechture)
 		}
-		if (params.t0Date) {
-			gnInstance.t0Date = sdf.parse(params.t0Date)
-		}
-        if (params.t0Hour) {
-            SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
-            Calendar calHour = Calendar.getInstance();
-            calHour.setTime(sdfHour.parse(params.t0Hour));
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(gnInstance.t0Date);
-            cal.set(Calendar.HOUR_OF_DAY, calHour.get(Calendar.HOUR_OF_DAY))
-            cal.set(Calendar.MINUTE, calHour.get(Calendar.MINUTE))
-            gnInstance.t0Date = cal.getTime();
-        }
+//		if (params.t0Date) {
+//			gnInstance.t0Date = sdf.parse(params.t0Date)
+//		}
+//        if (params.t0Hour) {
+//            SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm");
+//            Calendar calHour = Calendar.getInstance();
+//            calHour.setTime(sdfHour.parse(params.t0Hour));
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(gnInstance.t0Date);
+//            cal.set(Calendar.HOUR_OF_DAY, calHour.get(Calendar.HOUR_OF_DAY))
+//            cal.set(Calendar.MINUTE, calHour.get(Calendar.MINUTE))
+//            gnInstance.t0Date = cal.getTime();
+//        }
 		if (params.gnDuration) {
 			gnInstance.duration = params.gnDuration as Integer
 		}
@@ -329,6 +342,22 @@ class SelectIntrigueController {
 			}
 		}
 	}
+
+    public Calendar isValidDate(String dateToValidate, String dateFromat){
+        if(dateToValidate == null){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
+        sdf.setLenient(false);
+        try {
+            Calendar cal = Calendar.getInstance();
+            Date date = sdf.parse(dateToValidate);
+            cal.setTime(date)
+            return cal;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 
 	def displayDTD() {
 		String gnDTD2Html = params.gnDTD
