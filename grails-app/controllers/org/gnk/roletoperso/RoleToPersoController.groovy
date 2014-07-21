@@ -326,7 +326,7 @@ class RoleToPersoController {
                                     int val = comp.getWeight() * r1.getWeight() * r2.getWeight();
                                     Log.info("RelationCompatibility1 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
                                     if (val < 0)
-                                        values_relation.add("1" + c.getDTDId() + "#"
+                                        values_relation.add(c.getDTDId() + "#"
                                                 + r1.getterRoleRelationType().getName() + "#"
                                                 + r2.getterRoleRelationType().getName() + "#"
                                                 + (int)((val/1000000) *100));
@@ -348,7 +348,7 @@ class RoleToPersoController {
                                         Log.info("RelationCompatibility2 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
                                         if (val < 0)
                                         {
-                                            values_relation.add("2" + c.getDTDId() + "#"
+                                            values_relation.add(c.getDTDId() + "#"
                                                     + r1.getterRoleRelationType().getName() + "#"
                                                     + r2.getterRoleRelationType().getName() + "#"
                                                     + (int)((val/1000000) *100));
@@ -543,6 +543,10 @@ class RoleToPersoController {
                 break;
             }
         }
+        if (c_to.isPNJ() || c_from.isPNJ())
+            c_to.type = "PNJ";
+        else
+            c_to.type = "PHJ";
         c_to.lockedRoles.addAll(c_from.lockedRoles);
         c_to.selectedRoles.addAll(c_from.selectedRoles);
         c_to.selectedPJG.addAll(c_from.selectedPJG);
@@ -554,6 +558,6 @@ class RoleToPersoController {
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save();
         String new_role = c_to.rolesToString();
-        return render(contentType: "application/json") { object(test: id_from, roles: new_role)};
+        return render(contentType: "application/json") { object(test: id_from, roles: new_role, type: c_to.type)};
     }
 }
