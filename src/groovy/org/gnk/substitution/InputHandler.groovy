@@ -158,7 +158,8 @@ class InputHandler {
             String r2 = ""
             for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
-                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")){
+                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
+                        || (rrr.getterRoleRelationType().name).equals("Mariage")){
                     RelationCharacter relationChar = new RelationCharacter()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
@@ -167,6 +168,7 @@ class InputHandler {
                         relationChar.role1 = r1
                         relationChar.role2 = r2
                         relationChar.isHidden = rrr.isHidden
+                        relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
                     }
                 }
@@ -203,7 +205,8 @@ class InputHandler {
             String r2 = ""
             for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
-                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")){
+                        || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
+                        || (rrr.getterRoleRelationType().name).equals("Mariage")){
                     RelationCharacter relationChar = new RelationCharacter()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
@@ -212,6 +215,7 @@ class InputHandler {
                         relationChar.role1 = r1
                         relationChar.role2 = r2
                         relationChar.isHidden = rrr.isHidden
+                        relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
                     }
                 }
