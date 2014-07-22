@@ -229,12 +229,26 @@ class SelectIntrigueController {
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (params.t0DateHour) {
             Calendar calendar = isValidDate(params.t0DateHour as String, "dd/MM/yyyy HH:mm");
+            if (params.t0DateHourUnity == "+") {
+                calendar.set(calendar.ERA, GregorianCalendar.AD)
+//                calendar.ERA = GregorianCalendar.AD;
+            }
+            else {
+                calendar.set(calendar.ERA, GregorianCalendar.BC)
+//                calendar.ERA = GregorianCalendar.BC;
+            }
             if (calendar) {
                 gnInstance.t0Date = calendar.getTime();
             }
         }
         if (params.gnDateHour) {
             Calendar calendar = isValidDate(params.gnDateHour as String, "dd/MM/yyyy HH:mm");
+            if (params.gnDateHourUnity == "+") {
+                calendar.set(calendar.ERA, GregorianCalendar.AD)
+            }
+            else {
+                calendar.set(calendar.ERA, GregorianCalendar.BC)
+            }
             if (calendar) {
                 gnInstance.date = calendar.getTime();
             }

@@ -80,6 +80,6 @@ th,td {
     font-size: 14px;
 }
 
-.input-append span {
+.input-append .add-on.btn {
     margin-left: -25px !important;
 }
