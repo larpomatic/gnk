@@ -101,6 +101,7 @@ function updateEvent() {
                     $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + $('<div/>').text(data.object.name).html());
                     $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('.roleScreen a[data-eventId="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    initializeTextEditor();
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");

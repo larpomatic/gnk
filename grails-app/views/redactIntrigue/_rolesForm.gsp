@@ -126,7 +126,7 @@
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent"
                                            href="#collapseEvent-${event.id}" data-eventId="${event.id}">
-                                            ${event.name.encodeAsHTML()}
+                                            ${event.name?.encodeAsHTML()}
                                         </a>
                                     </div>
                                     <div id="collapseEvent-${event.id}" class="accordion-body collapse">
@@ -177,7 +177,7 @@
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene"
                                            href="#collapsePastScene-${pastscene.id}" data-pastsceneId="${pastscene.id}">
-                                            ${pastscene.title.encodeAsHTML()}
+                                            ${pastscene.title?.encodeAsHTML()}
                                         </a>
                                     </div>
                                     <div id="collapsePastScene-${pastscene.id}" class="accordion-body collapse">
@@ -321,7 +321,7 @@
 
                         <!-- Editor -->
                         <div id="roleRichTextEditor${role.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                            ${role.description.encodeAsHTML()}
+                            ${role.description?.encodeAsHTML()}
                         </div>
                     </div>
                     %{--<g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>--}%

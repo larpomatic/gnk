@@ -1,29 +1,9 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 
 <div class="tabbable tabs-left plotScreen">
-    %{--<ul class="nav nav-tabs leftUl">--}%
-        %{--<li class="active leftMenuList">--}%
-            %{--<a href="#" data-toggle="tab">--}%
-                %{--<g:message code="redactintrigue.generalDescription.newElements" default="New elements"/>--}%
-            %{--</a>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="resource" data-label="important" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create resource"/>"/>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="place" data-label="warning" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newPlace" default="Create place"/>"/>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="role" data-label="success" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newRole" default="Create role"/>"/>--}%
-        %{--</li>--}%
-    %{--</ul>--}%
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
             <form class="savePlotForm" data-url="<g:createLink controller="RedactIntrigue" action="Update" id="${plotInstance.id}"/>">
-            %{--<g:form method="post" class="savePlotForm">--}%
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
@@ -232,14 +212,11 @@
                 </div>
                 <fieldset class="buttons text-center">
                     <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
-                    %{--<g:actionSubmit class="save btn btn-primary" action="update"--}%
-                                    %{--value="${message(code: 'default.button.update.label', default: 'Update')}"/>--}%
                     %{--<g:actionSubmit class="delete btn btn-danger" action="delete"--}%
                                     %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
                                     %{--formnovalidate=""--}%
                                     %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
                 </fieldset>
-            %{--</g:form>--}%
             </form>
         </div>
     </div>

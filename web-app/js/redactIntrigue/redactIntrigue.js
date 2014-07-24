@@ -6,7 +6,7 @@ $(function(){
     initSearchBoxes();
 
     // ajout du nombre de relation
-    $('.numberRelation').html($('.relationScreen .accordion-group').size());
+    $('.numberRelation').html($('.relationScreen .accordion-group:not(.leftRelation)').size());
 
     // charge les datetimepickers
     $('.datetimepicker').datetimepicker({
@@ -46,7 +46,9 @@ $(function(){
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
+                    initializeTextEditor();
                     createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
+
                 }
                 else {
                     createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");

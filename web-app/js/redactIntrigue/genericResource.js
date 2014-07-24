@@ -9,9 +9,12 @@ $(function(){
     //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
         var form = $('form[name="newResourceForm"]');
-        var comment = $('.richTextEditor', form).html();
+        var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var description = $('#clueRichTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -71,9 +74,12 @@ function updateResource() {
     $('.updateResource').click(function() {
         var genericResourceId = $(this).attr("data-id");
         var form = $('form[name="updateResource_' + genericResourceId + '"]');
-        var comment = $('.richTextEditor', form).html();
+        var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var description = $('#clueRichTextEditor' + genericResourceId, form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -85,6 +91,7 @@ function updateResource() {
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
+                    initializeTextEditor();
                     $('.richTextEditor span.label-important').each(function() {
                         if ($(this).html() == data.object.oldname) {
                             $(this).html(data.object.name);

@@ -79,7 +79,7 @@
 
         <!-- Editor -->
         <div id="relationRichTextEditor${role.id}_${relationFrom.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-            ${relationFrom.description.encodeAsHTML()}
+            ${relationFrom.description?.encodeAsHTML()}
         </div>
     </div>
     %{--<g:textArea name="relationDescription" id="relationDescription" value="${relationFrom.description}" rows="5" cols="100"/>--}%

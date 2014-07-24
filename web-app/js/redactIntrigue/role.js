@@ -78,6 +78,7 @@ function updateRole() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                    initializeTextEditor();
                     $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
                     $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
