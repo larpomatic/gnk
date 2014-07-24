@@ -61,13 +61,7 @@ function updateRelation() {
                         return new Handlebars.SafeString(value);
                     });
                     if ((roleFromIdRelation == data.relation.RoleFromId.toString())) {
-//                        if (wasBijective == "true") {
-                            $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="'
-                                + data.relation.id + '"]').remove();
-//                        }
-//                        else {
-//                            $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-right').html('<span><img src="/gnk/static/images/redactIntrigue/relations/validate.png"></span>');
-//                        }
+                            $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"]').remove();
                         var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
                         var roleFromId = data.relation.RoleFromId;
                         var roleToId = data.relation.RoleToId;

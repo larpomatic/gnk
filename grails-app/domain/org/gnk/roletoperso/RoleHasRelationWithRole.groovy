@@ -18,7 +18,7 @@ class RoleHasRelationWithRole {
 //    static transients = ["isHidden"] // TODO To remove after getting the database
 
     static mapping = {
-//        description type: 'text'
+        description type: 'text'
         id type:'integer'
         version type: 'integer'
     }
