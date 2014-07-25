@@ -181,7 +181,7 @@
                                     </button>
                                 </div>
                                 <div id="collapseRelation${role.id}-${relationTo.id}" class="accordion-body collapse">
-                                    <div class="accordion-inner">
+                                    <div class="accordion-inner reverseRelation">
                                         <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false]" />
                                     </div>
                                 </div>

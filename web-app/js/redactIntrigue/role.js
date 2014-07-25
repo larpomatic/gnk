@@ -88,7 +88,10 @@ function updateRole() {
                     $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"]').html('Vers: ' + data.object.name);
+                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
+                        var relationImage = $(this).html();
+                        $(this).parent().html("<span>" + relationImage + "</span> " + data.object.name);
+                    });
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
                         if ($(this).html() == data.object.oldname) {

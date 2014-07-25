@@ -175,7 +175,7 @@
                                         <g:checkBox name="universes_${universInstance.id}"
                                                     id="universes_${universInstance.id}"
                                                     checked="${plotInstance.hasUnivers(universInstance)}"/>
-                                        ${fieldValue(bean: universInstance, field: "name")}
+                                        ${universInstance.name}
                                     </label>
                                 </li>
                             </g:each>

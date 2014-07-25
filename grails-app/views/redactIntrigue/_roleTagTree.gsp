@@ -9,7 +9,7 @@
                     checked="${role.hasRoleTag(roleTagInstance)}"
                     onClick="hideTags('roleTags${role.id}_${roleTagInstance.id}', 'roleTagsWeight${role.id}_${roleTagInstance.id}')"/>
         </g:else>
-        ${fieldValue(bean: roleTagInstance, field: "name")}
+        ${roleTagInstance.name}
     </label>
     <div class="pull-right">
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>

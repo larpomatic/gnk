@@ -73,7 +73,7 @@ function updateRelation() {
                         data.relation.RoleToCode = roleFromCode;
                         var context = {
                             relation: data.relation,
-                            myRelation: true
+                            myRelation: false
                         };
                         var html = template(context);
                         $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
@@ -89,7 +89,7 @@ function updateRelation() {
                         else {
                             image = '<img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png">';
                         }
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(image + " " + data.relation.RoleFromCode);
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html("<span>" + image + "</span> " + data.relation.RoleFromCode);
                         updateButton.attr("data-wasBijective", "true");
                         initializeTextEditor();
                         initConfirm();
@@ -100,7 +100,7 @@ function updateRelation() {
                         var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
                         var context = {
                             relation: data.relation,
-                            myRelation: false
+                            myRelation: true
                         };
                         var html = template(context);
                         $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
@@ -115,7 +115,7 @@ function updateRelation() {
                         else {
                             image = '<img src="/gnk/static/images/redactIntrigue/relations/leftArrow.png">';
                         }
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(image + " " + data.relation.RoleFromCode);
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html("<span>" + image + "</span> " + data.relation.RoleFromCode);
                         updateButton.attr("data-wasBijective", "true");
                         initConfirm();
                         updateRelation();

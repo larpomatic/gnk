@@ -163,20 +163,20 @@ class RoleController {
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
-        if(newRole.roleHasEvents != null) {
-            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
-            newRole.roleHasEvents.clear();
-            RoleHasEvent.deleteAll(roleHasEvents);
-        } else {
-            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
-        }
-        if(newRole.roleHasPastscenes != null) {
-            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
-            newRole.roleHasPastscenes.clear();
-            RoleHasPastscene.deleteAll(roleHasPastscenes);
-        } else {
-            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
-        }
+//        if(newRole.roleHasEvents != null) {
+//            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
+//            newRole.roleHasEvents.clear();
+//            RoleHasEvent.deleteAll(roleHasEvents);
+//        } else {
+//            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
+//        }
+//        if(newRole.roleHasPastscenes != null) {
+//            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
+//            newRole.roleHasPastscenes.clear();
+//            RoleHasPastscene.deleteAll(roleHasPastscenes);
+//        } else {
+//            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
+//        }
         newRole.save(flush: true);
 
         newRole = Role.findAllWhere("code": newRole.getCode()).first();
