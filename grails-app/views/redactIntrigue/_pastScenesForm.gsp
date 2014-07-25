@@ -8,7 +8,7 @@
         <g:each in="${plotInstance.pastescenes}" status="i5" var="pastScene">
             <li class="leftMenuList">
                 <a href="#pastScene_${pastScene.id}" data-toggle="tab">
-                    ${pastScene.title.encodeAsHTML()}
+                    ${pastScene.title?.encodeAsHTML()}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la scène?"
                         data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">
@@ -240,7 +240,7 @@
 
                         <!-- Editor -->
                         <div id="pastSceneTitleRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
-                            ${pastScene.title.encodeAsHTML()}
+                            ${pastScene.title?.encodeAsHTML()}
                         </div>
                     </div>
 
@@ -362,7 +362,7 @@
 
                         <!-- Editor -->
                         <div id="pastSceneRichTextEditor${pastScene.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                            ${pastScene.description.encodeAsHTML()}
+                            ${pastScene.description?.encodeAsHTML()}
                         </div>
                     </div>
                     <div id="pastsceneRolesModal${pastScene.id}" class="modal hide fade largeModal" tabindex="-1">

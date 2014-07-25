@@ -87,6 +87,7 @@ function updatePastScene() {
                     $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('select[name="pastScenePredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    initializeTextEditor();
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");

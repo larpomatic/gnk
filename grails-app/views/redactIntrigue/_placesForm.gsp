@@ -119,7 +119,7 @@
 
                         <!-- Editor -->
                         <div id="placeRichTextEditor${place.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                            ${place.comment.encodeAsHTML()}
+                            ${place.comment?.encodeAsHTML()}
                         </div>
                     </div>
 

@@ -8,7 +8,11 @@
             {{#if relation.isBijective}}
                 <span><img src="/gnk/static/images/redactIntrigue/relations/doubleArrow.png"></span>
             {{else}}
+                {{#if myRelation}}
                 <span><img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png"></span>
+                {{else}}
+                <span><img src="/gnk/static/images/redactIntrigue/relations/leftArrow.png"></span>
+                {{/if}}
             {{/if}}
             {{ relation.RoleToCode }}
         </span>
@@ -106,9 +110,6 @@
                         {{ encodeAsHtml relation.description }}
                     </div>
                 </div>
-                <!--<textarea name="relationDescription" id="relationDescription" rows="5" cols="100">-->
-                    <!--{{{ relation.description }}}-->
-                <!--</textarea>-->
                 <input type="button" name="Update" data-id="{{ relation.id }}" data-oldRoleToId="{{ relation.RoleToId }}"
                        data-roleFromId="{{ relation.RoleFromId }}" value="Update"
                        class="btn btn-primary updateRelation" data-wasBijective="{{ relation.isBijective }}">

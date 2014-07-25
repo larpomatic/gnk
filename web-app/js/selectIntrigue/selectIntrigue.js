@@ -20,13 +20,23 @@ $(function(){
         $('input[name="plot_status_'+ id +'"][value="3"]').attr("disabled", "disabled");
     });
 
-    // charge les datetimepickers
-    $('.datetimepicker').datetimepicker({
-        language: 'fr',
-        pickSeconds: false,
-        startDate: -Infinity,
-        endDate: Infinity
+    $(".add-on.btn").click(function() {
+        if ($("i", $(this)).html() == "+ JC") {
+            $("i", $(this)).html("- JC");
+            $(this).prev().val("-");
+        }
+        else {
+            $("i", $(this)).html("+ JC");
+            $(this).prev().val("+");
+        }
     });
+    // charge les datetimepickers
+//    $('.datetimepicker').datetimepicker({
+//        language: 'fr',
+//        pickSeconds: false,
+//        startDate: -Infinity,
+//        endDate: Infinity
+//    });
 
     initRadioPlots();
 
