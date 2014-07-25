@@ -89,7 +89,7 @@ function updateRelation() {
                         else {
                             image = '<img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png">';
                         }
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html("<span>" + image + "</span> " + data.relation.RoleFromCode);
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(image + " " + data.relation.RoleFromCode);
                         updateButton.attr("data-wasBijective", "true");
                         initializeTextEditor();
                         initConfirm();

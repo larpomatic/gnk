@@ -80,7 +80,7 @@ class RedactIntrigueController {
 		[plotInstance: plotInstance,
                 plotTagList: tagService.getPlotTagQuery(),
                 universList: Univers.list(),
-                roleTagList: new TagService().getRoleTagQuery(),
+                roleTagList: tagService.getRoleTagQuery(),
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
