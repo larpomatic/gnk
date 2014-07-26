@@ -100,7 +100,7 @@ function updateEvent() {
                     createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
                     $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + $('<div/>').text(data.object.name).html());
                     $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
-                    $('.roleScreen a[data-eventId="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    $('.roleScreen a[data-eventId="' + data.object.id + '"]').html($('<div/>').text(data.object.timing + "% - " + data.object.name).html());
                     initializeTextEditor();
                 }
                 else {
@@ -196,6 +196,7 @@ function createNewEventPanel(data) {
         context = {
             eventId: data.event.id,
             eventName: data.event.name,
+            eventTiming: data.event.timing,
             roleId: roleId
         };
         html = template(context);

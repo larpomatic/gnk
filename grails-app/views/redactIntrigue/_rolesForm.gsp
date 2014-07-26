@@ -206,7 +206,6 @@
                             ${role.description?.encodeAsHTML()}
                         </div>
                     </div>
-                    %{--<g:textArea name="roleDescription" id="roleDescription" value="${role.description}" rows="5" cols="100"/>--}%
 
                     <div id="roleEventsModal_${role.id}" class="modal hide fade largeModal" tabindex="-1">
                         <div class="modal-header">
@@ -223,7 +222,7 @@
                                         <div class="accordion-heading">
                                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}"
                                                href="#collapseEvent${role.id}-${event.id}" data-eventId="${event.id}">
-                                                ${event.name}
+                                                ${event.timing}% - ${event.name}
                                             </a>
                                         </div>
                                         <div id="collapseEvent${role.id}-${event.id}" class="accordion-body collapse">

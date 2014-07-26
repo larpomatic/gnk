@@ -87,6 +87,7 @@ class RoleController {
             }
             jsonEvent.put("eventId", event.id);
             jsonEvent.put("eventName", event.name);
+            jsonEvent.put("eventTiming", event.timing);
             jsonEventList.add(jsonEvent);
         }
         jsonRole.put("eventList", jsonEventList);
