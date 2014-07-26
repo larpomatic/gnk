@@ -4,17 +4,36 @@
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Détail de l'utilisation du tag ${tag.name.encodeAsHTML()}</h3>
+            <h3 id="myModalLabel">Editer les Tags Relevant</h3>
         </div>
         <g:form action="editRelevantTag" id="${tag.id}">
         <div class="modal-body">
             <g:if test="${tag.getTagRelevant()}">
-            RelevantPlace : <g:checkBox name="checkboxRelevantPlace" value="${tag.getTagRelevant().relevantPlace}"/>
-            RelevantFirstName : <g:checkBox name="checkboxRelevantFirstName" value="${tag.getTagRelevant().relevantFirstname}"/>
-            RelevantLastName : <g:checkBox name="checkboxRelevantLastName" value="${tag.getTagRelevant().relevantLastname}"/>
-            RelevantPlot : <g:checkBox name="checkboxRelevantPlot" value="${tag.getTagRelevant().relevantPlot}"/>
-            RelevantResource : <g:checkBox name="checkboxRelevantResource" value="${tag.getTagRelevant().relevantResource}"/>
-            RelevantRole : <g:checkBox name="checkboxRelevantRole" value="${tag.getTagRelevant().relevantRole}"/>
+            <table>
+                <tr>
+                    <td>RelevantPlace</td>
+                    <td><g:checkBox name="checkboxRelevantPlace" value="${tag.getTagRelevant().relevantPlace}"/></td>
+                </tr>
+                <tr>
+                    <td>RelevantFirstName</td>
+                    <td><g:checkBox name="checkboxRelevantFirstName" value="${tag.getTagRelevant().relevantFirstname}"/></td>
+                </tr>
+                <tr>
+                    <td>RelevantLastName</td>
+                    <td> <g:checkBox name="checkboxRelevantLastName" value="${tag.getTagRelevant().relevantLastname}"/></td>
+                </tr>
+                <tr><td>RelevantPlot</td>
+                    <td><g:checkBox name="checkboxRelevantPlot" value="${tag.getTagRelevant().relevantPlot}"/></td>
+                </tr>
+                <tr>
+                    <td>RelevantResource</td>
+                    <td> <g:checkBox name="checkboxRelevantResource" value="${tag.getTagRelevant().relevantResource}"/></td>
+                </tr>
+                <tr>
+                    <td>RelevantRole</td>
+                    <td> <g:checkBox name="checkboxRelevantRole" value="${tag.getTagRelevant().relevantRole}"/></td>
+                </tr>
+            </table>
             </g:if>
         </div>
 
