@@ -42,6 +42,9 @@
             </g:hasRights>
 
             <th><g:message code="default.button.state.label"/></th>
+            <g:hasRights lvlright="${right.USERCLOSE.value()}">
+                <th><g:message code="default.button.delete.label"/></th>
+            </g:hasRights>
         </tr>
         </thead>
         <tbody>
@@ -68,6 +71,11 @@
                         <g:message code="default.button.lock.label"/>
                     </g:if>
                 </td>
+                <g:hasRights lvlright="${right.USERCLOSE.value()}">
+                <td>
+                    <g:link controller="adminUser" action="deleteUser" id="${u.id}" type="button" class="btn btn-danger btn-small"><g:message code="default.button.delete.label"/></g:link>
+                </td>
+                </g:hasRights>
             </tr>
         </g:each>
         </tbody>
