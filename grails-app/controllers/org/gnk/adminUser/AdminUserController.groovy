@@ -4,6 +4,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.gnk.cookie.CookieService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
+import org.gnk.user.UserSecRole
 import org.gnk.user.UserService
 import groovy.sql.Sql
 import sun.security.jca.GetInstance
@@ -159,5 +160,23 @@ class AdminUserController {
         }
         user.save()
         redirect( action: "edit", params: "user : ${user.id}")
+    }
+
+    def deleteUser(int id){
+     User user = User.findById(id)
+     User newUser = User.findByUsername("admin@gnk.com")
+     ArrayList<Plot> plots = Plot.findAllByUser(user)
+     for (Plot p : plots){
+         p.user = newUser
+         p.save(flush: true)
+     }
+
+     UserSecRole userSecRoles = UserSecRole.findAllByUser(user)
+        for (UserSecRole userSecRole : userSecRoles){
+            userSecRole.delete()
+        }
+        user.delete();
+
+        redirect(action: "list")
     }
 }
