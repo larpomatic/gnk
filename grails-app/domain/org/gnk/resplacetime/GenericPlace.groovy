@@ -28,7 +28,7 @@ class GenericPlace {
 	                   pastscenes: Pastscene ]
 
 	static constraints = {
-		code (blank: false, maxSize: 45, unique: true)
+		code (blank: false, maxSize: 45, unique: false)
 		comment (nullable: true)
 	}
 

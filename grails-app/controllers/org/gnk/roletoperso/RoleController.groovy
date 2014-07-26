@@ -18,7 +18,7 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role);
-        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
+//        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
@@ -179,7 +179,7 @@ class RoleController {
 //        }
         newRole.save(flush: true);
 
-        newRole = Role.findAllWhere("code": newRole.getCode()).first();
+//        newRole = Role.findAllWhere("code": newRole.getCode()).first();
         params.each {
             if (it.key.startsWith("roleTags_")) {
                 RoleHasTag roleHasTag = new RoleHasTag();

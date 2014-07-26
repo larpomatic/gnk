@@ -24,9 +24,9 @@ class GenericPlaceController {
     }
 
     def save() {
-        GenericPlace genericPlace = new GenericPlace(params)
+        GenericPlace genericPlace = new GenericPlace(params);
         Boolean res = saveOrUpdate(genericPlace);
-        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
+//        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": ).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
         def jsonGenericPlace = buildJson(genericPlace);
@@ -73,6 +73,7 @@ class GenericPlaceController {
     }
 
     def saveOrUpdate(GenericPlace newGenericPlace) {
+//        Plot plot = null;
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericPlace.plot = plot
@@ -97,7 +98,7 @@ class GenericPlaceController {
             newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>();
         }
         newGenericPlace.save(flush: true);
-        newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode()).first();
+//        newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode(), "plot": plot).first();
 
         params.each {
             if (it.key.startsWith("placeTags_")) {
