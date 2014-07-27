@@ -179,4 +179,28 @@ class AdminUserController {
 
         redirect(action: "list")
     }
+
+    def createUser (){
+        String username = params.username
+        String firstname = params.firstname
+        String lastname = params.lastname
+        String password = params.password
+        String passwordRepeat = params.passwordRepeat
+
+        if (username && firstname && lastname && password && passwordRepeat && !User.findByUsername(username)){
+
+            User nUser = new  User()
+            nUser.username = username
+            nUser.firstname = firstname
+            nUser.lastname = lastname
+            nUser.password = password
+            nUser.enabled = true
+            nUser.gright = 0
+            nUser.countConnexion = 0
+            nUser.lastConnexion = new Date()
+            nUser.save(failOnError: true)
+            redirect (action: "list")
+        }
+
+    }
 }

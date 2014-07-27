@@ -31,6 +31,8 @@
 
 <div role="main">
     <br/>
+    <g:link action="createUser" type="button" class="btn btn-primary">Créer un Utilisateur</g:link>
+    <br/>
     <table class="table">
         <thead>
         <tr>
