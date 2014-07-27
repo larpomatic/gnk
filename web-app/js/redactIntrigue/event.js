@@ -101,6 +101,32 @@ function updateEvent() {
                     $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + $('<div/>').text(data.object.name).html());
                     $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('.roleScreen a[data-eventId="' + data.object.id + '"]').html($('<div/>').text(data.object.timing + "% - " + data.object.name).html());
+                    $('#eventRolesModal' + data.object.id + ' div[id*="roleHasEventTitleRichTextEditor"]', form).each(function() {
+                        var roleId = $(this).attr("id").replace("roleHasEventTitleRichTextEditor", "");
+                        if ($(this).html() == "") {
+                            $('a[href="#eventRole' + roleId + "_" + data.object.id + '"]', form).parent().removeClass("alert-success");
+                            $('.roleScreen a[href="#collapseEvent' + roleId + '-' + data.object.id + '"]').parent().removeClass("alert-success");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="text"]').val("");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' textarea').html("");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', false);
+                        }
+                        else {
+                            $('a[href="#eventRole' + roleId + "_" + data.object.id + '"]', form).parent().addClass("alert-success");
+                            $('.roleScreen a[href="#collapseEvent' + roleId + '-' + data.object.id + '"]').parent().addClass("alert-success");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="text"]').val(
+                                $('input[name="roleHasEventTitle' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                            if ($('input[type="checkbox"]:checked', $(this).closest(".tab-pane")).length == 1) {
+                                $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', "checked");
+                            }
+                            else {
+                                $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', false);
+                            }
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' textarea').html(
+                                $('input[name="roleHasEventDescription' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                        }
+                    });
                     initializeTextEditor();
                 }
                 else {
@@ -189,17 +215,14 @@ function createNewEventPanel(data) {
         '<input type="checkbox" name="placeEvent_' + data.event.id + '" id="placeEvent_' + data.event.id + '">' +
         $('<div/>').text(data.event.name).html() +
         '</li>');
-    $('.roleScreen div[id*="roleEventsModal"] .accordion').each(function() {
-        var roleId = $(this).attr("id");
-        roleId = roleId.replace("accordionEvent", "");
+    $.each(data.event.roleList, function(i, item) {
+        var roleId = item.roleId;
         template = Handlebars.templates['templates/redactIntrigue/addEventInRole'];
         context = {
-            eventId: data.event.id,
-            eventName: data.event.name,
-            eventTiming: data.event.timing,
-            roleId: roleId
+            event: data.event,
+            role: item
         };
         html = template(context);
-        $(this).append(html);
+        $('.roleScreen div[id*="roleEventsModal"] #accordionEvent' + roleId).append(html);
     });
 }

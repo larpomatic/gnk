@@ -45,7 +45,7 @@ class Pastscene {
 		title (maxSize: 45)
         isPublic ()
         description (nullable: true)
-        dateYear (min: 0, nullable: true)
+        dateYear (nullable: true)
         dateMonth (min: 0, max: 12, nullable: true)
         dateDay (min: 0, max: 31, nullable: true)
         dateHour (min: 0, max: 24, nullable: true)

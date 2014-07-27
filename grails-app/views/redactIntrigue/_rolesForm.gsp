@@ -219,7 +219,12 @@
                             <div class="accordion" id="accordionEvent${role.id}">
                                 <g:each in="${plotInstance.events}" var="event">
                                     <div class="accordion-group">
-                                        <div class="accordion-heading">
+                                        <g:if test="${role?.getRoleHasEvent(event)?.title}">
+                                            <div class="accordion-heading alert-success">
+                                        </g:if>
+                                        <g:else>
+                                            <div class="accordion-heading">
+                                        </g:else>
                                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}"
                                                href="#collapseEvent${role.id}-${event.id}" data-eventId="${event.id}">
                                                 ${event.timing}% - ${event.name}
@@ -274,10 +279,21 @@
                             <div class="accordion" id="accordionPastScene${role.id}">
                                 <g:each in="${plotInstance.pastescenes}" var="pastscene">
                                     <div class="accordion-group">
-                                        <div class="accordion-heading">
+                                        <g:if test="${role?.getRoleHasPastScene(pastscene)?.title}">
+                                            <div class="accordion-heading alert-success">
+                                        </g:if>
+                                        <g:else>
+                                            <div class="accordion-heading">
+                                        </g:else>
                                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
                                                href="#collapsePastScene${role.id}-${pastscene.id}" data-pastsceneId="${pastscene.id}">
-                                                ${pastscene.title}
+                                                <g:if test="${pastscene.timingRelative && (pastscene.timingRelative != '')}">
+                                                    il y a ${pastscene.timingRelative} <g:timeUnit unit="${pastscene.unitTimingRelative}" quantity="${pastscene.timingRelative}"/> -
+                                                </g:if>
+                                                <g:else>
+                                                    En ${pastscene.dateYear} le ${pastscene.dateDay} <g:timeMonth month="${pastscene.dateMonth}"/> à ${pastscene.dateHour}h ${pastscene.dateMinute} -
+                                                </g:else>
+                                                 ${pastscene.title}
                                             </a>
                                         </div>
                                         <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">

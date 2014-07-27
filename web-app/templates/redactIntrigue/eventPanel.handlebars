@@ -124,11 +124,19 @@
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs leftUl">
                     {{#each event.roleList}}
-                        <li class="">
-                            <a href="#eventRole{{ roleId }}_{{ ../event.id }}" data-toggle="tab">
-                                {{ roleCode }}
-                            </a>
-                        </li>
+                        {{#if title}}
+                            <li class="alert-success">
+                                <a href="#eventRole{{ roleId }}_{{ ../../event.id }}" data-toggle="tab">
+                                    {{ roleCode }}
+                                </a>
+                            </li>
+                        {{else}}
+                            <li>
+                                <a href="#eventRole{{ roleId }}_{{ ../../event.id }}" data-toggle="tab">
+                                    {{ roleCode }}
+                                </a>
+                            </li>
+                        {{/if}}
                     {{/each}}
                 </ul>
                 <div class="tab-content">

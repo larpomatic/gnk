@@ -23,7 +23,6 @@ class EventController {
     def save () {
         Event event = new Event();
         Boolean res = saveOrUpdate(event);
-//        event = Event.findAllWhere("name": params.eventName).first();
         def jsonEvent = buildJson(event);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
@@ -167,7 +166,9 @@ class EventController {
             if (it.key.startsWith("roleHasEventTitle")) {
                 Role role = Role.get((it.key - "roleHasEventTitle") as Integer);
                 RoleHasEvent roleHasEvent = createRoleHasEvent(role, newEvent);
-                newEvent.addToRoleHasEvents(roleHasEvent);
+//                if (roleHasEvent) {
+//                    newEvent.addToRoleHasEvents(roleHasEvent);
+//                }
             }
         }
         newEvent.save(flush: true);
@@ -176,7 +177,10 @@ class EventController {
 
     def createRoleHasEvent(Role role, Event event) {
         RoleHasEvent roleHasEvent = role.getRoleHasEvent(event);
-        if (!roleHasEvent) {
+        if (!roleHasEvent && (params.get("roleHasEventTitle" + role.id) == "")) {
+            return null;
+        }
+        else if (!roleHasEvent) {
             roleHasEvent = new RoleHasEvent();
             roleHasEvent.dateCreated = new Date();
             roleHasEvent.lastUpdated = new Date();
@@ -184,12 +188,18 @@ class EventController {
             roleHasEvent.event = event;
             roleHasEvent.role = role;
         }
+        else if ((params.get("roleHasEventTitle" + role.id) == "")) {
+            roleHasEvent.delete(flush: true);
+            return null;
+        }
         roleHasEvent.title = params.get("roleHasEventTitle" + role.id);
         roleHasEvent.isAnnounced = params.get("roleHasEventannounced" + role.id) != null;
         roleHasEvent.description = params.get("roleHasEventDescription" + role.id);
         roleHasEvent.comment = params.get("roleHasEventComment" + role.id);
         roleHasEvent.evenementialDescription = params.get("roleHasEventEvenemential" + role.id);
         roleHasEvent.save(flush: true);
+//        role.addToRoleHasEvents(roleHasEvent);
+//        role.save(flush: true);
         params.each {
             if (it.key.startsWith("quantity" + role.id + "_")) {
                 GenericResource genericResource = GenericResource.get((it.key - ("quantity" + role.id + "_")) as Integer);
@@ -200,8 +210,6 @@ class EventController {
             }
         }
         roleHasEvent.save(flush: true);
-        role.addToRoleHasEvents(roleHasEvent);
-        role.save();
         return roleHasEvent;
     }
 

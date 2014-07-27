@@ -86,7 +86,36 @@ function updatePastScene() {
                     createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
                     $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('select[name="pastScenePredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
-                    $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    if (data.object.time && (data.object.time != "")) {
+                        $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
+                            "Il y a " + data.object.time + " " + data.object.timeUnit  + " - " + data.object.name
+                        ).html());
+                    }
+                    else {
+                        $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
+                            "En " + data.object.year + " le " + data.object.day + " " + data.object.month + " à " + data.object.hour + "h "
+                                + data.object.minute + " - " + data.object.name
+                        ).html());
+                    }
+                    $('#pastsceneRolesModal' + data.object.id + ' div[id*="roleHasPastSceneTitleRichTextEditor"]', form).each(function() {
+                        var roleId = $('.titleContent', $(this).closest(".tab-pane")).attr("name").replace("roleHasPastSceneTitle", "");
+                        if ($(this).html() == "") {
+                            $('a[href="#pastsceneRole' + roleId + "_" + data.object.id + '"]', form).parent().removeClass("alert-success");
+                            $('.roleScreen a[href="#collapsePastScene' + roleId + '-' + data.object.id + '"]').parent().removeClass("alert-success");
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' input[type="text"]').val("");
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' textarea').html("");
+                        }
+                        else {
+                            $('a[href="#pastsceneRole' + roleId + "_" + data.object.id + '"]', form).parent().addClass("alert-success");
+                            $('.roleScreen a[href="#collapsePastScene' + roleId + '-' + data.object.id + '"]').parent().addClass("alert-success");
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' input[type="text"]').val(
+                                $('input[name="roleHasPastSceneTitle' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' textarea').html(
+                                $('input[name="roleHasPastSceneDescription' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                        }
+                    });
                     initializeTextEditor();
                 }
                 else {
@@ -168,17 +197,20 @@ function createNewPastScenePanel(data) {
         if (value == "Y") {
             value = "Année";
         }
-        if (value == "M") {
+        else if (value == "M") {
             value = "Mois";
         }
-        if (value == "d") {
+        else if (value == "d") {
             value = "Jour"
         }
-        if (value == "h") {
+        else if (value == "h") {
             value = "Heure";
         }
-        if (value == "m") {
+        else if (value == "m") {
             value = "Minute";
+        }
+        else {
+            value = "Année";
         }
         return new Handlebars.SafeString(value);
     });
@@ -203,16 +235,14 @@ function createNewPastScenePanel(data) {
         '<input type="checkbox" name="placePastScene_' + data.pastscene.id + '" id="placePastScene_' + data.pastscene.id + '">' +
         $('<div/>').text(data.pastscene.title).html() +
         '</li>');
-    $('.roleScreen div[id*="rolePastScenesModal"] .accordion').each(function() {
-        var roleId = $(this).attr("id");
-        roleId = roleId.replace("accordionPastScene", "");
+    $.each(data.pastscene.roleList, function(i, item) {
+        var roleId = item.roleId;
         template = Handlebars.templates['templates/redactIntrigue/addPastSceneInRole'];
         context = {
-            pastsceneId: data.pastscene.id,
-            pastsceneTitle: data.pastscene.title,
-            roleId: roleId
+            pastscene: data.pastscene,
+            role: item
         };
         html = template(context);
-        $(this).append(html);
+        $('.roleScreen div[id*="rolePastScenesModal"] #accordionPastScene' + roleId).append(html);
     });
 }
