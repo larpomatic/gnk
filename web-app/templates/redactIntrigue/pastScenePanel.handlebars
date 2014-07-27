@@ -20,7 +20,7 @@
     <div class="row formRow">
         <div class="span1">
             <label for="pastSceneDatetime{{ pastscene.id }}">
-                Date et heure
+                Temps
             </label>
         </div>
 
@@ -158,11 +158,19 @@
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs leftUl">
                     {{#each pastscene.roleList}}
-                        <li class="">
-                            <a href="#pastsceneRole{{ roleId }}_{{ ../pastscene.id }}" data-toggle="tab">
-                                {{roleCode}}
-                            </a>
-                        </li>
+                        {{#if title}}
+                            <li class="alert-success">
+                                <a href="#pastsceneRole{{ roleId }}_{{ ../../pastscene.id }}" data-toggle="tab">
+                                    {{roleCode}}
+                                </a>
+                            </li>
+                        {{else}}
+                            <li class="">
+                                <a href="#pastsceneRole{{ roleId }}_{{ ../../pastscene.id }}" data-toggle="tab">
+                                    {{roleCode}}
+                                </a>
+                            </li>
+                        {{/if}}
                     {{/each}}
                 </ul>
                 <div class="tab-content">

@@ -106,7 +106,8 @@
                     {{#each role.eventList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}" href="#collapseEvent{{ ../role.id }}-{{ eventId }}">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}"
+                                   href="#collapseEvent{{ ../role.id }}-{{ eventId }}" data-eventId="{{ eventId }}">
                                     {{eventTiming}}% - {{ eventName }}
                                 </a>
                             </div>
@@ -166,7 +167,13 @@
                     {{#each role.pastsceneList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}" href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
+                                   href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
+                                    {{#if pastsceneTiming}}
+                                        il y a {{pastsceneTiming}} {{pastsceneUnitTiming}} -
+                                    {{else}}
+                                        En {{pastsceneYear}} le {{pastsceneDay}} {{pastsceneMonth}} à {{pastsceneHour}}h {{pastsceneMinute}} -
+                                    {{/if}}
                                     {{ pastsceneTitle }}
                                 </a>
                             </div>

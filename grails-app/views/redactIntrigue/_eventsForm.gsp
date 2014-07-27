@@ -361,11 +361,20 @@
                         <div class="tabbable tabs-left">
                             <ul class="nav nav-tabs leftUl">
                                 <g:each in="${plotInstance.roles}" var="role">
-                                    <li class="">
-                                        <a href="#eventRole${role.id}_${event.id}" data-toggle="tab">
-                                            ${role.code}
-                                        </a>
-                                    </li>
+                                    <g:if test="${role.getRoleHasEvent(event)?.title && role.getRoleHasEvent(event)?.title != ""}">
+                                        <li class="alert-success">
+                                            <a href="#eventRole${role.id}_${event.id}" data-toggle="tab">
+                                                ${role.code}
+                                            </a>
+                                        </li>
+                                    </g:if>
+                                    <g:else>
+                                        <li>
+                                            <a href="#eventRole${role.id}_${event.id}" data-toggle="tab">
+                                                ${role.code}
+                                            </a>
+                                        </li>
+                                    </g:else>
                                 </g:each>
                             </ul>
                             <div class="tab-content">

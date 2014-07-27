@@ -53,7 +53,7 @@ public class RoleToPersoProcessing {
         addPJG();
         // Harmonize Sex -- Warning to relation type
         //reHarmonizeRole();
-        LOG.info("\t</Algo>");
+        //LOG.info("\t</Algo>");
 
     }
 
@@ -61,8 +61,8 @@ public class RoleToPersoProcessing {
     {
         int nb_men = gn.getNbMen();
         int nb_women = gn.getNbWomen();
-        Map<Character, Integer> women_list = new HashMap<Character, Integer>();
-        Map<Character, Integer> men_list = new HashMap<Character, Integer>();
+        TreeMap<Integer, Character> women_list = new TreeMap<Integer, Character>();
+        TreeMap<Integer, Character> men_list = new TreeMap<Integer, Character>();
         for (Character c : gn.getterCharacterSet())
         {
             Map<Tag, Integer> tags = c.getTags();
@@ -81,18 +81,18 @@ public class RoleToPersoProcessing {
                 LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "F");
                 c.setGender("F");
                 nb_women -= 1;
-                women_list.put(c, wWomen - wMen);
+                women_list.put(wWomen - wMen, c);
             }
             else {
                 LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "M");
                 c.setGender("M");
                 nb_men -= 1;
-                men_list.put(c, wMen - wWomen);
+                men_list.put(wMen - wWomen, c);
             }
         }
         if ((nb_men > 0) || (nb_women > 0))
         {
-            Map<Character, Integer> pblm_sex;
+            TreeMap<Integer, Character> pblm_sex;
             int lim = 0;
             String gender = "";
             if (nb_men > 0) {
@@ -105,16 +105,14 @@ public class RoleToPersoProcessing {
                 lim = nb_women;
                 gender = "M";
             }
-            pblm_sex.sort { a, b -> a.value <=> b.value};
-            List<Character> char_to_change = new ArrayList<Integer>(pblm_sex.keySet());
-            int i = 0;
+
             while (lim > 0)
             {
                 lim -= 1;
-                Character chara = char_to_change.get(i);
+                Character chara = pblm_sex.firstEntry().getValue();
                 chara.setGender(gender);
                 LOG.info("URGENT HARMONIZE : Character " + chara.getDTDId() + " TO " + gender);
-                i++;
+                pblm_sex.remove(pblm_sex.firstEntry().getKey());
             }
 
         }

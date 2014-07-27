@@ -257,7 +257,7 @@
                                 <div class="btn-group">
                                     <button class="btn dropdown-toggle" data-toggle="dropdown">
                                         <span class="relativeTimeMessage">
-                                            <g:timeUnit unit="${pastScene.unitTimingRelative}" />
+                                            <g:timeUnitU unit="${pastScene.unitTimingRelative}" />
                                         </span>
                                         <span class="caret"></span>
                                     </button>
@@ -377,11 +377,20 @@
                             <div class="tabbable tabs-left">
                                 <ul class="nav nav-tabs leftUl">
                                     <g:each in="${plotInstance.roles}" status="i4" var="role">
-                                        <li>
-                                            <a href="#pastsceneRole${role.id}_${pastScene.id}" data-toggle="tab">
-                                                ${role.code}
-                                            </a>
-                                        </li>
+                                        <g:if test="${role?.getRoleHasPastScene(pastScene)?.title && role?.getRoleHasPastScene(pastScene)?.title != ""}">
+                                            <li class="alert-success">
+                                                <a href="#pastsceneRole${role.id}_${pastScene.id}" data-toggle="tab">
+                                                    ${role.code}
+                                                </a>
+                                            </li>
+                                        </g:if>
+                                        <g:else>
+                                            <li>
+                                                <a href="#pastsceneRole${role.id}_${pastScene.id}" data-toggle="tab">
+                                                    ${role.code}
+                                                </a>
+                                            </li>
+                                        </g:else>
                                     </g:each>
                                 </ul>
                                 <div class="tab-content">

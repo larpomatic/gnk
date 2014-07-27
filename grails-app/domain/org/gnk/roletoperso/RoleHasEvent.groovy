@@ -30,5 +30,6 @@ class RoleHasEvent {
         evenementialDescription type: 'text'
         id type:'integer'
         version type: 'integer'
+        roleHasEventHasGenericResources cascade: 'all-delete-orphan'
     }
 }
