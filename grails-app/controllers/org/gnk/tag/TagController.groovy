@@ -3,6 +3,7 @@ package org.gnk.tag
 import org.gnk.administration.DbCoherenceController
 import org.springframework.security.access.annotation.Secured
 import org.gnk.tag.TagService
+import org.springframework.web.context.request.RequestContextHolder
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class TagController {
@@ -10,16 +11,21 @@ class TagController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: "list", params: "params")
     }
 
     def list(Integer max, Integer offset, String sort) {
+
+        Tag parent = Tag.get(params.Tag_select as Integer)
+        String parentName = parent == null ? "" : parent.name
+
         if (params.showChildren)
             {
-                Tag parent = Tag.get(params.Tag_select as Integer)
+                session.tagParent = parent.id
+
                 List<Tag> resultList = new ArrayList<Tag>()
                 resultList.addAll(parent.children)
-                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds() ]
+                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
             }
         else
         {
@@ -36,7 +42,7 @@ class TagController {
                 } else
                     order(sort, params.order as String)
             }
-            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds() ]
+            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
         }
     }
 
@@ -92,15 +98,24 @@ class TagController {
             return
 		}
 		
-		if (params.TagFamily_select.equals(""))
-		{
-			flash.message = message(code: 'Erreur : Il faut choisir une famille pour le tag !')
-			redirect(action: "list")
-			return
-		}
+//		if (params.TagFamily_select.equals(""))
+//		{
+//			flash.message = message(code: 'Erreur : Il faut choisir un parent pour le tag !')
+//			redirect(action: "list")
+//			return
+//		}
 
         Tag tagInstance = new Tag(params)
-		String tagFamilyId = params.TagFamily_select
+        //Tag parent = Tag.findWhere(name: params.Tag_parent)
+        Integer parentId = session.tagParent as Integer
+        print("TAGPARENTID: " + parentId)
+        Tag parent = Tag.findWhere(id: parentId)
+
+        if (parent == null)
+            return
+
+        print("Tag parent: " + params.Tag_parent)
+        tagInstance.setParent(parent)
 		
 		for (Tag tag : Tag.list()) 
 		{
@@ -133,7 +148,7 @@ class TagController {
         }
 
         
-        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, tagFamilyInstance.value])
+        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, parent.name])
         redirect(action: "list")
     }
 
@@ -158,58 +173,50 @@ class TagController {
         */
     }
 
-    def addTagIntoFamily()
-	{
-		if (params.TagFamily_select.equals("") || params.Tag_select.equals(""))
-		{
-				print "Invalid params"
-				flash.message = message(code: 'Erreur : Il faut choisir un tag et une famille !')
-				redirect(action: "list")
-				return
-		}
-
-//		TagFamily tagFamilyInstance = null;
-		Tag tagInstance = null;
-//		for (TagFamily tagFamily : TagFamily.list())
+//    def addTagIntoFamily()
+//	{
+//		if (params.TagFamily_select.equals("") || params.Tag_select.equals(""))
 //		{
-//			if (tagFamily.id == params.TagFamily_select.toInteger())
+//				print "Invalid params"
+//				flash.message = message(code: 'Erreur : Il faut choisir un tag et une famille !')
+//				redirect(action: "list")
+//				return
+//		}
+//
+////		TagFamily tagFamilyInstance = null;
+//		Tag tagInstance = null;
+////		for (TagFamily tagFamily : TagFamily.list())
+////		{
+////			if (tagFamily.id == params.TagFamily_select.toInteger())
+////			{
+////				tagFamilyInstance = tagFamily
+////				break
+////			}
+////		}
+//
+//		for (Tag tag : Tag.list())
+//		{
+//			if (tag.id == params.Tag_select.toInteger())
 //			{
-//				tagFamilyInstance = tagFamily
+//				tagInstance = tag
 //				break
 //			}
 //		}
-		
-		for (Tag tag : Tag.list())
-		{
-			if (tag.id == params.Tag_select.toInteger())
-			{
-				tagInstance = tag
-				break
-			}
-		}
-		
-		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
-		{
-			print "Family or Tag not found"
-			flash.message = message(code: 'Erreur : Tag ou famille invalide !')
-			redirect(action: "list")
-			return
-		}
-		
-		if (tagInstance.tagFamily.value.equals(tagFamilyInstance.value))
-		{
-			print "This relation already exists"
-			flash.message = message(code: 'Erreur : Cette relation existe deja !')
-			redirect(action: "list")
-			return
-		}
-		
-		tagInstance.tagFamily = tagFamilyInstance
-		tagInstance.save()
-		flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.create', args: [tagInstance.name, tagFamilyInstance.value])
-
-		redirect(action: "list")
-	}
+//
+//		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
+//		{
+//			print "Family or Tag not found"
+//			flash.message = message(code: 'Erreur : Tag ou famille invalide !')
+//			redirect(action: "list")
+//			return
+//		}
+//
+//		tagInstance.tagFamily = tagFamilyInstance
+//		tagInstance.save()
+//		flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.create', args: [tagInstance.name, tagFamilyInstance.value])
+//
+//		redirect(action: "list")
+//	}
 
 //    def viewChildren() {
 //

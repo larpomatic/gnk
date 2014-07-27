@@ -14,6 +14,7 @@
                     <a href="#tagList" class="btn" data-toggle="modal">
                     Choisir le Tag parent
                     </a>
+                    <input data-content="tagList" disabled="disabled" name="Tag_parent" value="${tagParent}" />
 				</div>
                 <div id="tagList" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
