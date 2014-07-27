@@ -37,7 +37,7 @@ class GenericResource {
 
     static constraints = {
         title maxSize: 75
-        code (blank: false, maxSize: 45, unique: true)
+        code (blank: false, maxSize: 45, unique: false)
         comment (nullable: true)
         title (nullable: true)
         description (nullable: true)
@@ -51,7 +51,7 @@ class GenericResource {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
-//        extTags cascade:'all-delete-orphan'
+        extTags cascade:'all-delete-orphan'
     }
 
     public boolean hasGenericResourceTag(Tag parGenericResourceTag) {

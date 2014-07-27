@@ -54,6 +54,29 @@
 <div class="panel-heading" style="margin-top: 20px">
     <g:message code="roletoperso.character"
                default="Character"/> ${character.DTDId}
+    <div class="pull-right" style="margin-top: -5px">
+        <g:if test="${((Character) character).getGender() == 'M'}">
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn active">Homme</button>
+                <button type="button" class="btn">Neutre</button>
+                <button type="button" class="btn">Femme</button>
+            </div>
+        </g:if>
+        <g:elseif test="${((Character) character).getGender() == 'F'}">
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn">Homme</button>
+                <button type="button" class="btn">Neutre</button>
+                <button type="button" class="btn active">Femme</button>
+            </div>
+        </g:elseif>
+        <g:else>
+            <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${character.DTDId}">
+                <button type="button" class="btn">Homme</button>
+                <button type="button" class="btn active">Neutre</button>
+                <button type="button" class="btn">Femme</button>
+            </div>
+        </g:else>
+    </div>
 </div>
 
 <div style="overflow: auto; max-height:150px;">
@@ -402,6 +425,9 @@
                     </div>
                     <g:render template="relationSummary2"></g:render>
                 </div>
+                <div class="legend">
+                </div>
+            </br>
             </div>
         </div>
     </div>
@@ -424,10 +450,12 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
+                        <th><g:message code="roletoperso.character"
+                                       default="Character"/></th>
                         <th><g:message code="roletoperso.roleCode"
                                        default="Role code"/></th>
-                        <th><g:message code="selectintrigue.plotName"
-                                       default="Plot name"/></th>
+                        <th><g:message code="roletoperso.roleType"
+                                       default="Character Type"/></th>
                         <th><g:message code="roletoperso.sexe"
                                        default="Sex"/></th>
                         <th><g:message code="roletoperso.action"
@@ -439,12 +467,36 @@
                         <g:if test="${(((Character) PHJ).isPHJ() == true) || (((Character) PHJ).isPNJ() == true)}">
                             <tr id="${"line" + ((Character) PHJ).getDTDId()}">
                                 <td>CHAR-${((Character) PHJ).getDTDId()}</td>
-                                <td>"Test"</td>
-                                <td>${((Character) PHJ).getGender()}</td>
-                                <td>
-                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn fusion_modale" data-toggle="modal">
+                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}">${((Character) PHJ).rolesToString()}</td>
+                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}-TYPE">${((Character) PHJ).type}</td>
+                                <td style="text-align: center">
+                                    <g:if test="${((Character) PHJ).getGender() == 'M'}">
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                            <button type="button" class="btn btn-primary active">Homme</button>
+                                            <button type="button" class="btn btn-primary">Neutre</button>
+                                            <button type="button" class="btn btn-primary">Femme</button>
+                                        </div>
+                                    </g:if>
+                                    <g:elseif test="${((Character) PHJ).getGender() == 'F'}">
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                            <button type="button" class="btn btn-primary">Homme</button>
+                                            <button type="button" class="btn btn-primary">Neutre</button>
+                                            <button type="button" class="btn btn-primary active">Femme</button>
+                                        </div>
+                                    </g:elseif>
+                                    <g:else>
+                                        <div class="btn-group text-center radio_sexe" data-toggle="buttons-radio" data-id="${((Character) PHJ).getDTDId()}">
+                                            <button type="button" class="btn btn-primary">Homme</button>
+                                            <button type="button" class="btn btn-primary active">Neutre</button>
+                                            <button type="button" class="btn btn-primary">Femme</button>
+                                        </div>
+                                    </g:else>
+                                </td>
+                                <td style="text-align: center">
+                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn btn-primary fusion_modale" data-toggle="modal">
                                         <g:message code="roletoperso.fusion" default="Merge"></g:message>
                                     </a>
+                                </td>
                             </tr>
                         </g:if>
                     </g:each>
@@ -463,15 +515,19 @@
     </div>
     <div class="modal-body">
         <div class="row-fluid">
-            <div class="span5">
+            <div class="span4">
                 <h4 id="modalPHJ1">Personnage 1</h4>
             </div>
-            <div class="span2"></div>
+            <div class="span3">
+                <i class="icon-chevron-right"></i>
+                <i class="icon-chevron-right"></i>
+                <i class="icon-chevron-right"></i>
+            </div>
             <div class="span5">
                 <select id="modaloption" class="form-control">
                     <option value="" disabled selected style='display:none;'>Fusionner avec ...</option>
                     <g:each in="${PHJList}" var="player">
-                        <g:if test="${((Character) player).isPHJ() == true}">
+                        <g:if test="${(((Character) player).isPHJ() == true) || (((Character) player).isPNJ() == true)}">
                             <option value="${'CHAR-' + ((Character) player).getDTDId()}" id="${'CHAR-' + ((Character) player).getDTDId()}" class="optionschar hidden">CHAR-${((Character) player).getDTDId()}</option>
                         </g:if>
                     </g:each>
@@ -487,35 +543,83 @@
     </div>
 </div>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Character</th>
-        <th>Tag1 - ID</th>
-        <th>Tag1 - Name</th>
-        <th>Tag1 - Value</th>
-        <th>Tag2 - ID</th>
-        <th>Tag2 - Name</th>
-        <th>Tag2 - Value</th>
-        <th>Compatibility</th>
-    </tr>
-    </thead>
-    <tbody>
-    <g:each in="${tagcompatibility}" var="string">
-        <tr>
-            <td>CHAR-${((String)string).split("#")[0]}</td>
-            <td>${((String)string).split("#")[1]}</td>
-            <td>${((String)string).split("#")[2]}</td>
-            <td>${((String)string).split("#")[3]}</td>
-            <td>${((String)string).split("#")[4]}</td>
-            <td>${((String)string).split("#")[5]}</td>
-            <td>${((String)string).split("#")[6]}</td>
-            <td>${((String)string).split("#")[7]}</td>
-        </tr>
-    </g:each>
-    </tbody>
-</table>
+<g:if test="${(tagcompatibility != null) || (tagrelationcompatibility != null)}">
+    <div class="accordion" id="accordionStat">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse"
+                   data-parent="#accordionStat"
+                   href="#collapseStat">
+                    <g:message code="roletoperso.Stat"
+                               default="Tag Relation Problems"/>
+                </a>
+            </div>
+            <div id="collapseStat" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <g:if test="${tagcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Tag1 - Name</th>
+                                <th>Tag1 - Valeur</th>
+                                <th>Tag2 - Name</th>
+                                <th>Tag2 - Valeur</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <td>${((String)string).split("#")[3]}</td>
+                                    <td>${((String)string).split("#")[4]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
 
+                    <g:if test="${tagrelationcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Relation 1</th>
+                                <th>Relation 2</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagrelationcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</g:if>
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
 
@@ -524,6 +628,12 @@
 </g:form>
 
 <g:form method="post" controller="substitution">
+    <g:each in="${characterList}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
+    <g:each in="${PHJList}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <div class="form-actions">
         <g:actionSubmit class="btn btn-primary" action="index"
@@ -549,6 +659,11 @@
         $("#merge").attr("data-id", $(this).attr("data-id"));
     });
 
+    $(".radio_sexe .btn").click(function() {
+        var name = "#sexe_" + $(this).parent(".radio_sexe").data("id");
+        $(name).val("" + $(this).parent(".radio_sexe").data("id") + "-" + $(this).text());
+    });
+
     $("#merge").click(function() {
         var from_char = $(this).attr("data-id");
         var opt = document.getElementById("modaloption");
@@ -565,9 +680,21 @@
                 var remove_id = "line" + data.object.test;
                 $("tr#"+remove_id).remove();
                 $("#fusionModal").modal('hide');
+                var upd_name = '#td_' + selected_char;
+                var upd_type = '#td_' + selected_char + "-TYPE";
+                $(upd_name).html(data.object.roles)
+                $(upd_type).html(data.object.type)
+                $("#modaloption option").each(function()
+                {
+                    var sup_name = 'CHAR-' + from_char;
+                    if ($(this).val() == sup_name)
+                    {
+                        $(this).remove();
+                    }
+                });
             },
             error: function() {
-                alert('La requête n\'a pas abouti'); }
+                alert('La requête n\'est pas valide'); }
         });
     });
 </script>

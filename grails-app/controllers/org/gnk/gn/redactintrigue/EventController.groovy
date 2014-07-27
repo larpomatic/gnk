@@ -207,7 +207,8 @@ class EventController {
 
     public RoleHasEventHasGenericResource createRoleHasEventHasGenericResource(GenericResource genericResource, roleHasEvent) {
         RoleHasEventHasGenericResource roleHasEventHasGenericResource = genericResource.getGenericResourceHasRoleHasEvent(roleHasEvent);
-        if (!roleHasEventHasGenericResource && (params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) != "")) {
+        String quantity = params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id);
+        if (!roleHasEventHasGenericResource && (quantity.isInteger())) {
             roleHasEventHasGenericResource = new RoleHasEventHasGenericResource();
             roleHasEventHasGenericResource.roleHasEvent = roleHasEvent;
             roleHasEventHasGenericResource.genericResource = genericResource;
@@ -217,14 +218,14 @@ class EventController {
             genericResource.save();
         }
         else {
-            if (params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) == "") {
+            if (!quantity.isInteger()) {
                 if (roleHasEventHasGenericResource) {
                     roleHasEventHasGenericResource.delete(flush: true);
                 }
                 return null;
             }
             else {
-                roleHasEventHasGenericResource.quantity = params.get("quantity" + roleHasEvent.role.id + "_" + genericResource.id) as Integer;
+                roleHasEventHasGenericResource.quantity = quantity as Integer;
                 roleHasEventHasGenericResource.save(flush: true);
                 genericResource.addToRoleHasEventHasRessources(roleHasEventHasGenericResource);
                 genericResource.save();

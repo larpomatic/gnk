@@ -34,7 +34,7 @@ select {
                         code="selectintrigue.step0.gnName" default="GN Name"/>
                 </label></td>
                 <td><g:textField name="name" value="${gnInstance?.name}"
-                                 required=""/></td>
+                                 required="required"/></td>
 
                 <td><label for="gnArchitechture"><g:message
                         code="selectintrigue.step0.gnArchitecture" default="Architecture"/>
@@ -42,24 +42,7 @@ select {
                 <td><g:select name="gnArchitechture" id="gnArchitechture"
                               from="${['Mainstream', 'Parallelisé']}" keys="${[true, false]}"
                               value="${gnInstance?.isMainstream}" required=""/></td>
-            </tr>
-            <tr>
-                <td colspan="4" style="text-align: center;"><div
-                        style="margin-bottom: 10px;">
-                    <a href="#tagsModal" class="btn" data-toggle="modal">Choisir
-                    l'ambiance du GN</a> <a href="#tagsEvenementialModal"
-                                            class="btn" data-toggle="modal">Choisir l'ambiance
-                        évenementielle</a> <a href="#tagsMainstreamModal"
-                                               class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
-                </div></td>
-            </tr>
-            <tr>
-                <td><label for="gnDate"><g:message
-                        code="selectintrigue.step0.gnDate" default="Virtual GN Date"/></label></td>
-                <td><input type="date" id="gnDate" name="gnDate" class="date"
-                           value="${formatDate(format: 'yyyy-MM-dd', date: gnInstance?.date)}"/>
-                    <input type="time" width="50" id="gnDateHour" name="gnDateHour" class="time"
-                           value="${formatDate(format: 'HH:mm', date: gnInstance?.date)}"/></td>
+
 
                 <td><label for="gnUnivers"><g:message
                         code="selectintrigue.step0.gnUnivers" default="Univers"/>
@@ -67,70 +50,128 @@ select {
                 <td><g:select name="univers" id="gnUnivers"
                               from="${universList}" optionKey="id"
                               value="${gnInstance?.univers?.id}" required=""/></td>
-
-                <td><label for="gnConvention"><g:message
-                        code="selectintrigue.step0.gnConvention" default="Convention"/>
-                </label></td>
-                <td><g:select name="convention" id="gnConvention"
-                              from="${conventionList}" optionKey="id"/></td>
             </tr>
-
             <tr>
-                <td><label for="t0Date"><g:message
-                        code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
-                <td><input type="date" id="t0Date" name="t0Date" class="date"
-                           value="${formatDate(format: 'yyyy-MM-dd', date: gnInstance?.t0Date)}"/>
-                    <input type="time" width="50" id="t0Hour" name="t0Hour" class="time"
-                           value="${formatDate(format: 'HH:mm', date: gnInstance?.t0Date)}"/></td>
-
-                <td><label for="gnDuration"><g:message
-                        code="selectintrigue.step0.gnDuration" default="GN duration"/></label></td>
-                <td><div class="input-append">
-                    <input class="span2" name="gnDuration" id="gnDuration"
-                           type="number" value="${gnInstance?.duration}"
-                           style="margin-right: 0px;"/><span class="add-on">h</span>
-                </div></td>
+                <td colspan="2" class="text-center">
+                    <a href="#tagsModal" class="btn" data-toggle="modal">Choisir l'ambiance du GN</a>
+                </td>
+                <td colspan="2" class="text-center">
+                    <a href="#tagsEvenementialModal" class="btn"
+                       data-toggle="modal">Choisir l'ambiance évenementielle</a>
+                </td>
+                <td colspan="2" class="text-center">
+                    <a href="#tagsMainstreamModal" class="btn" data-toggle="modal">Choisir l'ambiance Mainstream</a>
+                </td>
             </tr>
-
             <tr>
+
                 <td><label for="gnPIPMin"><g:message
                         code="selectintrigue.step0.gnPIPMin" default="PIP Min"/></label></td>
-                <td><input id="gnPIPMin" name="gnPIPMin"
+                <td><input id="gnPIPMin" name="gnPIPMin" required="required"
                            value="${gnInstance?.pipMin}" type="number"></td>
 
-                <td><label for="gnNbPlayers"><g:message
-                        code="selectintrigue.step0.gnNbPlayers"
-                        default="Number of players"/></label></td>
-                <td><input id="gnNbPlayers" name="gnNbPlayers"
-                           value="${gnInstance?.nbPlayers}" type="number"></td>
-            </tr>
 
-            <tr>
                 <td><label for="gnPIPMax"><g:message
                         code="selectintrigue.step0.gnPIPMax" default="PIP Max"/></label></td>
-                <td><input id="gnPIPMax" name="gnPIPMax"
+                <td><input id="gnPIPMax" name="gnPIPMax" required="required"
                            value="${gnInstance?.pipMax}" type="number"></td>
-
-                <td><label for="gnNbWomen"><g:message
-                        code="selectintrigue.step0.gnNbWomen"
-                        default="Minimal women number"/></label></td>
-                <td><input id="gnNbWomen" name="gnNbWomen"
-                           value="${gnInstance?.nbWomen}" type="number"></td>
-            </tr>
-            <tr>
                 <td>
                     <label for="gnPIPCore">
                         <g:message code="selectintrigue.step0.gnPIPCore" default="PIP Max"/>
                     </label>
                 </td>
                 <td>
-                    <input id="gnPIPCore" name="gnPIPCore" value="${gnInstance?.pipCore}" type="number">
+                    <input id="gnPIPCore" name="gnPIPCore" value="${gnInstance?.pipCore}" type="number"
+                           required="required">
                 </td>
+
+            </tr>
+
+            <tr>
+                <td><label for="gnNbPlayers"><g:message
+                        code="selectintrigue.step0.gnNbPlayers"
+                        default="Number of players"/></label></td>
+                <td><input id="gnNbPlayers" name="gnNbPlayers" required="required"
+                           value="${gnInstance?.nbPlayers}" type="number"></td>
+
+                <td><label for="gnNbWomen"><g:message
+                        code="selectintrigue.step0.gnNbWomen"
+                        default="Minimal women number"/></label></td>
+                <td><input id="gnNbWomen" name="gnNbWomen" required="required"
+                           value="${gnInstance?.nbWomen}" type="number"></td>
+
 
                 <td><label for="gnNbMen"><g:message
                         code="selectintrigue.step0.gnNbMen" default="Minimal men number"/></label></td>
-                <td><input id="gnNbMen" name="gnNbMen"
+                <td><input id="gnNbMen" name="gnNbMen" required="required"
                            value="${gnInstance?.nbMen}" type="number"></td>
+
+            </tr>
+
+            <tr>
+                <td><label for="gnDateHour"><g:message
+                        code="selectintrigue.step0.gnDate" default="Virtual GN Date"/></label></td>
+                <td>
+                    <div class="input-append">
+                        <input type="text" id="gnDateHour" name="gnDateHour" placeholder="jj/mm/aaaa hh:mm"
+                               required="required"
+                               value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.date)}"/>
+                        <g:if test="${formatDate(format: 'G', date: gnInstance?.date) == 'BC'}">
+                            <input type="hidden" name="gnDateHourUnity" value="-"/>
+                            <span class="add-on btn">
+                                <i>- JC</i>
+                            </span>
+                        </g:if>
+                        <g:else>
+                            <input type="hidden" name="gnDateHourUnity" value="+"/>
+                            <span class="add-on btn">
+                                <i>+ JC</i>
+                            </span>
+                        </g:else>
+                    </div>
+                </td>
+                <td colspan="2"></td>
+                <td><label for="t0DateHour"><g:message
+                        code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
+                <td>
+                    <div class="input-append">
+                        <input type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
+                               required="required"
+                               value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
+                        <g:if test="${formatDate(format: 'G', date: gnInstance?.t0Date) == 'BC'}">
+                            <input type="hidden" name="t0DateHourUnity" value="-"/>
+                            <span class="add-on btn">
+                                <i>- JC</i>
+                            </span>
+                        </g:if>
+                        <g:else>
+                            <input type="hidden" name="t0DateHourUnity" value="+"/>
+                            <span class="add-on btn">
+                                <i>+ JC</i>
+                            </span>
+                        </g:else>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td><label for="gnDuration"><g:message
+                        code="selectintrigue.step0.gnDuration" default="GN duration"/></label></td>
+                <td><div class="input-append">
+                    <input class="span2" name="gnDuration" id="gnDuration"
+                           type="number" value="${gnInstance?.duration}" required="required" pattern="\d*"
+                           style="margin-right: 0px;" min="1"/><span class="add-on">h</span>
+                </div></td>
+
+                <td colspan="2"></td>
+
+                <td><label for="gnConvention"><g:message
+                        code="selectintrigue.step0.gnConvention" default="Convention"/>
+                </label></td>
+                <td><g:select name="convention" id="gnConvention"
+                              from="${conventionList}" optionKey="id"/></td>
+
             </tr>
         </table>
         <g:render template="tagsPopup"

@@ -81,6 +81,7 @@ function updatePlace() {
                     $('.placeSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="pastScenePlace"] option[value="' + data.object.id + '"]').html(data.object.name);
+                    initializeTextEditor();
                     $('.richTextEditor span.label-warning').each(function() {
                         if ($(this).html() == data.object.oldname) {
                             $(this).html(data.object.name);

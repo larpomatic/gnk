@@ -23,5 +23,7 @@
 <g:message code="default.title.nbIntrigPri"/>: ${countPrivatePlot} <br/>
 <g:message code="default.title.nbIntrigDraft"/>: ${countDraftPlot} <br/>
 <g:message code="default.title.nbConnection"/>: ${user.countConnexion}
+
+<g:link type="button" action="edit" id="{user.id}"><g:message code="default.action.back"/></g:link>
 </body>
 </html>

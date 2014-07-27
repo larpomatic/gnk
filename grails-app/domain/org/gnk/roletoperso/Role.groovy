@@ -50,6 +50,7 @@ class Role implements Comparable {
         version type: 'integer'
         roleHasPastscenes cascade: 'all-delete-orphan'
         roleHasEvents cascade: 'all-delete-orphan'
+        roleHasTags cascade: 'all-delete-orphan'
     }
 
     public void addTag(RoleHasTag roleHasTag) {

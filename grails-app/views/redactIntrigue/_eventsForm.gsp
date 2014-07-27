@@ -9,7 +9,7 @@
         <g:each in="${plotInstance.events.sort{it.timing}}" status="i5" var="event">
             <li class="leftMenuList">
                 <a href="#event_${event.id}" data-toggle="tab">
-                    ${event.timing}% - ${event.name.encodeAsHTML()}
+                    ${event.timing}% - ${event.name?.encodeAsHTML()}
                 </a>
                 <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
                         data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
@@ -260,7 +260,7 @@
 
                     <!-- Editor -->
                     <div id="eventTitleRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
-                        ${event.name.encodeAsHTML()}
+                        ${event.name?.encodeAsHTML()}
                     </div>
                 </div>
                 <div class="row formRow">
@@ -345,7 +345,7 @@
 
                     <!-- Editor -->
                     <div id="eventRichTextEditor${event.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                        ${event.description.encodeAsHTML()}
+                        ${event.description?.encodeAsHTML()}
                     </div>
                 </div>
 

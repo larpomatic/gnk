@@ -3,7 +3,7 @@
         <g:checkBox name="plotTags_${plotTagInstance.id}" id="plotTags${plotInstance.id}_${plotTagInstance.id}"
                 checked="${plotInstance.hasPlotTag(plotTagInstance)}"
                 onClick="hideTags('plotTags${plotInstance.id}_${plotTagInstance.id}', 'plotTagsWeight${plotInstance.id}_${plotTagInstance.id}')"/>
-        ${fieldValue(bean: plotTagInstance, field: "name")}
+        ${plotTagInstance.name}
     </label>
     <div class="pull-right">
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>

@@ -1,5 +1,6 @@
 package org.gnk.roletoperso
 
+import com.esotericsoftware.minlog.Log
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.genericevent.GenericEvent
@@ -138,15 +139,24 @@ class RoleToPersoController {
         /**********/
 
         // On donne à chaque joueur un age selon un algo simple
+
         gn.characterSet.each { charact ->
             charact.age = charact.getCharacterAproximateAge();
             //print("AGE_0 :" + charact.age)
         }
+        gn.nonPlayerCharSet.each { charact ->
+            charact.age = charact.getCharacterAproximateAge();
+            //print("AGE_0 :" + charact.age)
+        }
+        Set<Character> charSum = new HashSet<Character>()
+        charSum.addAll(gn.characterSet)
+        charSum.addAll(gn.nonPlayerCharSet)
+
         // On affine en fonction des relation père/fils
         boolean noModifDoneOnParents = true;
         while (noModifDoneOnParents) { // Tant qu'on doit faire des ajustements
             noModifDoneOnParents = false
-            gn.characterSet.each { charact -> // Pour tous les caractère
+            charSum.each { charact -> // Pour tous les caractère
                 charact.getRelationsExceptBijectives().each { related -> // On récupère leurs relation
                     if (related.key.getterRole1().DTDId != null && related.key.getterRole2().DTDId != null) { // Si c'est pas un cas chelou
                         if (related.key.roleRelationType.id == 21) { //Parent direct
@@ -154,12 +164,20 @@ class RoleToPersoController {
                             // On recherche son fils
                             if (charact.age < 20) {
                                 charact.age = 20
+                                if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.characterSet.find {ch -> ch.DTDId = charact.getDTDId()}).age = 20
+                                if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 20
                                 noModifDoneOnParents = true
                             } else {
-                                gn.characterSet.each { sonChar ->
+                                charSum.each { sonChar ->
                                     if (sonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
                                         if (charact.age < sonChar.age + 20) { // On donne au père au moins 20 ans de plus que le fils
                                             charact.age = sonChar.age + 20
+                                            if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = sonChar.age + 20
+                                            if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = sonChar.age + 20
                                             noModifDoneOnParents = true
                                         }
                                     }
@@ -168,10 +186,14 @@ class RoleToPersoController {
                         }
                         if (related.key.roleRelationType.id == 20) { //Filiation
                             // On est sur un fils, on va aller vérifier que son père a au moins 20 ans de plus que lui
-                            gn.characterSet.each { pereChar ->
+                            charSum.each { pereChar ->
                                 if (pereChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le pereChar qui est le pere de character
                                     if (pereChar.age < charact.age + 20) { // On donne au père au moins 20 ans de plus que le fils
                                         pereChar.age = charact.age + 20
+                                        if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                            (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = charact.age + 20
+                                        if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                            (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = charact.age + 20
                                         noModifDoneOnParents = true
                                     }
                                 }
@@ -182,12 +204,20 @@ class RoleToPersoController {
                             // On recherche son petit fils
                             if (charact.age < 45) {
                                 charact.age = 45
+                                if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 45
+                                if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                    (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = 45
                                 noModifDoneOnParents = true
                             } else {
-                                gn.characterSet.each { grandSonChar ->
+                                charSum.each { grandSonChar ->
                                     if (grandSonChar.DTDId == related.key.getterRole2().DTDId) { // On est sur le sonChar qui est le fils de character
                                         if (charact.age < grandSonChar.age + 45) { // On donne au père au moins 20 ans de plus que le fils
                                             charact.age = grandSonChar.age + 45
+                                            if ((gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.characterSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = grandSonChar.age + 45
+                                            if ((gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}) != null)
+                                                (gn.nonPlayerCharSet.find {ch -> ch.DTDId == charact.getDTDId()}).age = grandSonChar.age + 45
                                             noModifDoneOnParents = true
                                         }
                                     }
@@ -201,10 +231,14 @@ class RoleToPersoController {
         gn.characterSet.each { charact ->
             //print("AGE_1 :" + charact.age + " for IDs :")
         }
+        gn.nonPlayerCharSet.each { charact ->
+            //print("AGE_2 :" + charact.age + " for IDs :")
+        }
         /***********/
         /**FIN AGE**/
         /***********/
 
+        // Life
         addLifeEvents(gn)
 
 
@@ -237,7 +271,7 @@ class RoleToPersoController {
                 if (c != c2)
                 {
                     String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
-                    String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
+                    //String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
                     if ((lien1 != null) && (lien1.isEmpty() == false))
                     {
                         JSONObject json_adjacencies_obj = new JSONObject();
@@ -245,59 +279,133 @@ class RoleToPersoController {
                         json_adjacencies_obj.put("nodeFrom", "CHAR" + c.getDTDId());
                         JSONObject json_data = new JSONObject();
                         json_data.put("lien", lien1);
-                        if ((lien2 != null) && (lien2.isEmpty() == false))
-                            json_data.put("lien2", lien2);
+                        //if ((lien2 != null) && (lien2.isEmpty() == false))
+                        //    json_data.put("lien2", lien2);
                         json_adjacencies_obj.put("data", json_data);
                         json_adjacencies.add(json_adjacencies_obj);
                     }
                 }
             }
-            json_object.put("adjacencies", json_adjacencies);
+            if (json_adjacencies.size() > 0)
+            {
+                json_object.put("adjacencies", json_adjacencies);
 
-            JSONObject json_colortype = new JSONObject();
-            if (c.isMen())
-                json_colortype.put("\$color", "#0040FF");
-            else if (c.isWomen())
-                json_colortype.put("\$color", "#FE2EC8");
-            else
-                json_colortype.put("\$color", "#848484");
-            if (c.isPJ())
-                json_colortype.put("\$type", "circle");
-            else if (c.isPHJ())
-                json_colortype.put("\$type", "triangle");
-            else
-                json_colortype.put("\$type", "square")
-            json_object.put("data", json_colortype);
+                JSONObject json_colortype = new JSONObject();
+                if (c.isMen())
+                    json_colortype.put("\$color", "#0040FF");
+                else if (c.isWomen())
+                    json_colortype.put("\$color", "#FE2EC8");
+                else
+                    json_colortype.put("\$color", "#848484");
+                if (c.isPJ())
+                    json_colortype.put("\$type", "circle");
+                else if (c.isPHJ())
+                    json_colortype.put("\$type", "triangle");
+                else
+                    json_colortype.put("\$type", "square")
+                json_object.put("data", json_colortype);
 
-            json_object.put("id", "CHAR" + c.getDTDId());
-            json_object.put("name", "CHAR" + c.getDTDId());
-            json_array.add(json_object);
+                json_object.put("id", "CHAR" + c.getDTDId());
+                json_object.put("name", "CHAR" + c.getDTDId());
+                json_array.add(json_object);
+            }
         }
 
         json_relation = json_array.toString();
 
         ArrayList<String> values = new ArrayList<>();
+        ArrayList<String> values_relation = new ArrayList<>();
         for (Character c in gn.characterSet)
         {
-            Map<Tag, Integer> test = c.getTags();
-            Set<Tag> tags = test.keySet();
+            Map<Tag, Integer> map_tag = c.getTags();
+            Set<Tag> tags = map_tag.keySet();
             TagService tagservice = new TagService();
+            Tag bad_tag1;
+            Tag bad_tag2;
+            int result = 0;
             for (Tag tag1 in tags)
             {
                 for (Tag tag2 in tags)
                 {
                     if (tag1 != tag2)
                     {
-                        String val = "" + c.getDTDId();
-                        val += "#" + tag1.id + "#" + tag1.name + "#" + test.get(tag1);
-                        val += "#" + tag2.id + "#" + tag2.name + "#" + test.get(tag2);
-                        val += "#" + tagservice.getTagMatching(tag1, 0, tag2, 0);
-                        values.add(val);
+                        int isgood = tagservice.getTagMatching(tag1, 0, tag2, 0) * map_tag.get(tag1) * map_tag.get(tag2);
+                        if (isgood < result)
+                        {
+                            result = isgood;
+                            bad_tag1 = tag1;
+                            bad_tag2 = tag2;
+                        }
+                    }
+                }
+            }
+            if ((bad_tag1 != null) && (bad_tag2 != null))
+            {
+                String val = "" + c.getDTDId();
+                val += "#" + bad_tag1.name + "#" + map_tag.get(bad_tag1) + "#" +  bad_tag2.name + "#" + map_tag.get(bad_tag2) + "#" + (int)((result/1000000) *100);
+                values.add(val);
+            }
+
+            Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelations(gn);
+            map_relation = map_relation;
+            for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                // Test on same character
+                for (RoleHasRelationWithRole r1 : relation_list) {
+                    if (relation_list.size() > 1) {
+                        for (RoleHasRelationWithRole r2 : relation_list) {
+                            if (r1 != r2) {
+                                RoleRelationTypeCompatibility comp = RoleRelationTypeCompatibility.myFindWhere(r1.getterRoleRelationType(), r2.getterRoleRelationType(), true);
+                                if (comp != null) {
+                                    int val = comp.getWeight() * r1.getWeight() * r2.getWeight();
+                                    Log.info("RelationCompatibility1 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
+                                    if (val < 0)
+                                        values_relation.add(c.getDTDId() + "#"
+                                                + r1.getterRoleRelationType().getName() + "#"
+                                                + r2.getterRoleRelationType().getName() + "#"
+                                                + (int)((val/1000000) *100));
+                                }
+                            }
+                        }
+
+                    }
+                    for (List<RoleHasRelationWithRole> relation_list2 : map_relation.values())
+                    {
+                        if (relation_list != relation_list2)
+                        {
+                            for (RoleHasRelationWithRole r2 : relation_list2)
+                            {
+                                if (r1 != r2) {
+                                    RoleRelationTypeCompatibility comp = RoleRelationTypeCompatibility.myFindWhere(r1.getterRoleRelationType(), r2.getterRoleRelationType(), false);
+                                    if (comp != null) {
+                                        int val = comp.getWeight() * r1.getWeight() * r2.getWeight();
+                                        Log.info("RelationCompatibility2 : " + r1.getRoleRelationType().getName() + " / " + r2.getterRoleRelationType().getterName() + " : " + val);
+                                        if (val < 0)
+                                        {
+                                            values_relation.add(c.getDTDId() + "#"
+                                                    + r1.getterRoleRelationType().getName() + "#"
+                                                    + r2.getterRoleRelationType().getName() + "#"
+                                                    + (int)((val/1000000) *100));
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
+        if (values.size() == 0)
+            values = null;
+
+        if (values_relation.size() == 0)
+            values_relation = null;
+        else
+        {
+            Set set = new HashSet() ;
+            set.addAll(values_relation) ;
+            values_relation = new ArrayList<>(set);
+        }
         [gnInstance: gn,
          characterList: gn.characterSet,
          allList: algo.gnTPJRoleSet,
@@ -306,6 +414,7 @@ class RoleToPersoController {
          evenementialId: evenementialId,
          relationjson: json_relation,
          tagcompatibility: values,
+         tagrelationcompatibility: values_relation,
          mainstreamId: mainstreamId]
     }
 
@@ -467,6 +576,10 @@ class RoleToPersoController {
                 break;
             }
         }
+        if (c_to.isPNJ() || c_from.isPNJ())
+            c_to.type = "PNJ";
+        else
+            c_to.type = "PHJ";
         c_to.lockedRoles.addAll(c_from.lockedRoles);
         c_to.selectedRoles.addAll(c_from.selectedRoles);
         c_to.selectedPJG.addAll(c_from.selectedPJG);
@@ -477,6 +590,7 @@ class RoleToPersoController {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save();
-        return render(contentType: "application/json") { object(test: id_from)};
+        String new_role = c_to.rolesToString();
+        return render(contentType: "application/json") { object(test: id_from, roles: new_role, type: c_to.type)};
     }
 }

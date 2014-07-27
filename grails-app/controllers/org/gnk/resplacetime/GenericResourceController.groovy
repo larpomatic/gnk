@@ -28,7 +28,7 @@ class GenericResourceController {
     def save() {
         GenericResource genericResource = new GenericResource(params)
         Boolean res = saveOrUpdate(genericResource);
-        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
+//        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
         def jsonGenericResource = buildJson(genericResource);
@@ -109,14 +109,14 @@ class GenericResourceController {
         } else {
             return false
         }
-        if(newGenericResource.extTags) {
+        if(newGenericResource.extTags != null) {
             HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;
             newGenericResource.extTags.clear();
             GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
             newGenericResource.extTags = new HashSet<GenericResourceHasTag>();
         }
-        if(newGenericResource.roleHasEventHasRessources) {
+        if(newGenericResource.roleHasEventHasRessources != null) {
             HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
             newGenericResource.roleHasEventHasRessources.clear();
             RoleHasEventHasGenericResource.deleteAll(genericResourceHasRoleHasEvents);
@@ -148,7 +148,7 @@ class GenericResourceController {
             }
         }
         newGenericResource.save(flush: true);
-        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
+//        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
 
         params.each {
             if (it.key.startsWith("resourceTags_")) {

@@ -133,14 +133,14 @@ class Character {
 
     public addRole(Role role) {
         bannedRoles.remove(role)
-            if (!selectedRoles.contains(role))
-                selectedRoles.add(role)
-            if ((role.isPJG()) && (!selectedPJG.contains(role)))
-                selectedPJG.add(role)
-            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
-                specificRoles.add(role);
-                plotid_role.add(role.plotId as Integer);
-            }
+        if (!selectedRoles.contains(role))
+            selectedRoles.add(role)
+        if ((role.isPJG()) && (!selectedPJG.contains(role)))
+            selectedPJG.add(role)
+        if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
+            specificRoles.add(role);
+            plotid_role.add(role.plotId as Integer);
+        }
 
     }
 
@@ -287,7 +287,59 @@ class Character {
         return result;
     }
 
+    public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelations(Gn gnInstance) {
+        final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
+        final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();
 
+        for (Character character : relations.keySet()) {
+            List<RoleHasRelationWithRole> list = new ArrayList<RoleHasRelationWithRole>();
+            for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
+                list.add(roleHasRelationWithRole);
+            }
+            if (list.size() > 0)
+                result.put(character, list);
+        }
+
+        for (Character c : gnInstance.getterCharacterSet())
+        {
+            if (c != this)
+            {
+                Map<Character, Set<RoleHasRelationWithRole>> bijrela = c.getRelatedCharactersExceptBijectives(gnInstance);
+                Set<RoleHasRelationWithRole> bijective = bijrela.get(this);
+                if (bijective.size() > 0)
+                {
+                    for (RoleHasRelationWithRole bij : bijective)
+                    {
+                        if (bij.isBijective == true)
+                        {
+                            List<RoleHasRelationWithRole> listbij = result.get(c);
+                            if (listbij == null)
+                                listbij = new ArrayList<RoleHasRelationWithRole>();
+                            listbij.add(bij);
+                            result.remove(c);
+                            result.put(c, listbij);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public String rolesToString()
+    {
+        String result = "";
+
+        for (Role r in selectedRoles)
+
+        {
+            if (result != "")
+                result += ", "
+            result += r.code;
+        }
+        return result;
+    }
 
     public Map<RoleHasRelationWithRole, Integer> getRelations(boolean evenIfNonBijective) {
         Map<RoleHasRelationWithRole, Integer> relationMap = new HashMap<RoleHasRelationWithRole, Integer>()
@@ -382,7 +434,6 @@ class Character {
 
         return finalAge;
     }
-
 
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0

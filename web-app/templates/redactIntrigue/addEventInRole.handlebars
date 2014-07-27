@@ -2,7 +2,7 @@
     <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ roleId }}"
            href="#collapseEvent{{ roleId }}-{{ eventId }}" data-eventId="{{ eventId }}">
-            {{ eventName }}
+            {{ eventTiming }}% - {{ eventName }}
         </a>
     </div>
     <div id="collapseEvent{{ roleId }}-{{ eventId }}" class="accordion-body collapse">
@@ -12,13 +12,13 @@
                     Titre
                 </div>
                 <div class="span4">
-                    <input type="text" name="roleHasEventTitle{{ eventId }}" value="" id="roleHasEventTitle{{ eventId }}">
+                    <input disabled="disabled" type="text" name="roleHasEventTitle{{ eventId }}" value="" id="roleHasEventTitle{{ eventId }}">
                 </div>
                 <div class="span1">
                     Est annoncé
                 </div>
                 <div class="span4">
-                    <input type="checkbox" name="roleHasEventannounced{{ eventId }}" id="roleHasEventannounced{{ eventId }}">
+                    <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ eventId }}" id="roleHasEventannounced{{ eventId }}">
                 </div>
             </div>
             <div class="row formRow text-center">
@@ -26,7 +26,7 @@
                     Description
                 </label>
             </div>
-            <textarea name="roleHasEventDescription{{ eventId }}" rows="5" cols="100" id="roleHasEventDescription{{ eventId }}"></textarea>
+            <textarea disabled="disabled" name="roleHasEventDescription{{ eventId }}" rows="5" cols="100" id="roleHasEventDescription{{ eventId }}"></textarea>
         </div>
     </div>
 </div>

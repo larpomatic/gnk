@@ -26,6 +26,8 @@ class IntegrationHandler {
         String universe = charJsonObject.get("universe")
         LinkedList<PersoForNaming> charForNamingList = []
         LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList = []
+        LinkedList<RelationCharacter> charsRelBijectives = new LinkedList<RelationCharacter>()
+        LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>>()
 
         // CharForNamingList construction from json
         for(characterJson in charJsonObject.characters) {
@@ -69,6 +71,16 @@ class IntegrationHandler {
                 relationChar.role2 = rel.role2
                 relationChar.type = rel.type
                 relationChar.isHidden = rel.isHidden
+                relationChar.isBijective = rel.isBijective
+
+                if (rel.isBijective){
+                    org.apache.commons.lang3.tuple.Pair<String, RelationCharacter> tuple
+                    tuple.key = rel.role2
+                    tuple.value = relationChar
+                    tuple.value.role1 = rel.role2
+                    tuple.value.role2 = rel.role1
+                }
+
                 //print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")
 
                 charForNaming.relationList.add(relationChar)
@@ -84,7 +96,6 @@ class IntegrationHandler {
 
             List<String> bannedFirstnameList = []
             for (firstnameJson in characterJson.bannedFirstnames) {
-                bannedFirstnameList.add(firstnameJson)
             }
             charForNaming.bannedFirstnames = bannedFirstnameList
 
@@ -104,6 +115,14 @@ class IntegrationHandler {
 
             charForNamingList.add(charForNaming)
             tagForNamingList.add(persoTagList)
+        }
+
+       for(c in charForNamingList){
+            for(t in tupleList){
+                if(t.key.equals(c.code)){
+                    c.relationList.add(t.value)
+                }
+            }
         }
 
         // NAMING CALL

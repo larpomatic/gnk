@@ -100,7 +100,6 @@
                     <div id="relationRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
-                %{--<g:textArea name="relationDescription" id="relationDescription" value="" rows="5" cols="100"/>--}%
                 <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRelation"/>
             </form>
         </div>
@@ -165,6 +164,29 @@
                                 </div>
                             </div>
                         </g:if>
+                        <g:else>
+                            <div class="accordion-group leftRelation" data-relation="${relationTo.id}" data-roleTo="${relationTo.role1.id}">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionRelation${role.id}"
+                                       href="#collapseRelation${role.id}-${relationTo.id}">
+                                        ${relationTo.roleRelationType.name}
+                                    </a>
+                                    <span class="text-center" data-roleId="${relationTo.role1.id}">
+                                        <span><g:img dir="images/redactIntrigue/relations" file="leftArrow.png" /></span>
+                                        ${relationTo.role1.code}
+                                    </span>
+                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
+                                            data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
+                                        <i class="icon-remove pull-right"></i>
+                                    </button>
+                                </div>
+                                <div id="collapseRelation${role.id}-${relationTo.id}" class="accordion-body collapse">
+                                    <div class="accordion-inner reverseRelation">
+                                        <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </g:else>
                     </g:each>
                 </div>
             </div>

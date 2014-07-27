@@ -207,7 +207,9 @@ class TagService {
         else {
             TagRelation tagRelation1 = TagRelation.myFindWhere(t1, t2);
             TagRelation tagRelation2 = TagRelation.myFindWhere(t2, t1);
-            TagRelation tagRelation = tagRelation1 == null ? tagRelation2 : tagRelation1;
+            TagRelation tagRelation = tagRelation1;
+            if ((tagRelation1 == null) && (tagRelation2 != null) && (tagRelation2.isBijective == true))
+                tagRelation = tagRelation2;
 
             if (tagRelation == null)
                 return 0;

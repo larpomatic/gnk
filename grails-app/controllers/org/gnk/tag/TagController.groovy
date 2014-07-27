@@ -357,4 +357,41 @@ class TagController {
 	def stats(){
 		render(view: "statistics")
 	}
+
+    def editRelevantTag(int id){
+
+        Tag tag = Tag.findById(id)
+        TagRelevant tagRelevant = tag.getTagRelevant()
+        if(params.checkboxRelevantPlace){
+            tagRelevant.relevantPlace = true;
+        } else {
+            tagRelevant.relevantPlace = false;
+        }
+        if(params.checkboxRelevantFirstName){
+            tagRelevant.relevantFirstname = true;
+        } else {
+            tagRelevant.relevantFirstname = false;
+        }
+        if(params.checkboxRelevantLastname){
+            tagRelevant.relevantLastname = true;
+        } else {
+            tagRelevant.relevantLastname = false;
+        }
+        if(params.checkboxRelevantPlot){
+            tagRelevant.relevantPlot= true;
+        } else {
+            tagRelevant.relevantPlot = false;
+        }
+        if(params.checkboxRelevantResource){
+            tagRelevant.relevantResource = true;
+        } else {
+            tagRelevant.relevantResource = false;
+        }
+        if(params.checkboxRelevantRole){
+            tagRelevant.relevantRole = true;
+        } else {
+            tagRelevant.relevantRole = false;
+        }
+        redirect(action : "list")
+    }
 }

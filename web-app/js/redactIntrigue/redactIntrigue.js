@@ -6,7 +6,7 @@ $(function(){
     initSearchBoxes();
 
     // ajout du nombre de relation
-    $('.numberRelation').html($('.relationScreen .accordion-group').size());
+    $('.numberRelation').html($('.relationScreen .accordion-group:not(.leftRelation)').size());
 
     // charge les datetimepickers
     $('.datetimepicker').datetimepicker({
@@ -46,7 +46,9 @@ $(function(){
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
+                    initializeTextEditor();
                     createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
+
                 }
                 else {
                     createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
@@ -183,11 +185,6 @@ function bgenScroll(e) {
         st = document.documentElement.scrollTop;
     }
     setTimeout('window.scroll(0,st)', 50);
-//    setTimeout(function() {
-//        if (location.hash) {
-//            window.scrollTo(0, 0);
-//        }
-//    }, 100);
 }
 
 //desactive le weight des tags
@@ -302,6 +299,10 @@ function initializeTextEditor() {
 
 // on remplace les span html dans une description par des balises
 function transformDescription(description) {
+    description = "<div>" + description + "</div>";
+    var html = $(description);
+    $("span:not(.label)", html).contents().unwrap();
+    description = html.html();
     description = description.replace(/<div>/g, '\n');
     description = description.replace(/<\/div>/g, '\n');
     description = description.replace(/<br>/g, '\n');
@@ -309,6 +310,10 @@ function transformDescription(description) {
     description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
     description = description.replace(/<span class="label label-default" contenteditable="false">/g, '<u:');
+    description = description.replace(/<span class="label label-warning">/g, '<l:');
+    description = description.replace(/<span class="label label-important">/g, '<o:');
+    description = description.replace(/<span class="label label-success">/g, '<i:');
+    description = description.replace(/<span class="label label-default">/g, '<u:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');

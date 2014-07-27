@@ -76,12 +76,13 @@ class RedactIntrigueController {
 			screen = params.screenStep 
 			screen = (screen - 48)	 
 		}
+        TagService tagService = new TagService();
 		[plotInstance: plotInstance,
-                plotTagList: new TagService().getPlotTagQuery(),
+                plotTagList: tagService.getPlotTagQuery(),
                 universList: Univers.list(),
-                roleTagList: new TagService().getRoleTagQuery(),
-                resourceTagList: new TagService().getResourceTagQuery(),
-                placeTagList: new TagService().getPlaceTagQuery(),
+                roleTagList: tagService.getRoleTagQuery(),
+                resourceTagList: tagService.getResourceTagQuery(),
+                placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
                 screenStep: screen]
 	}

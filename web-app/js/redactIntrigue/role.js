@@ -78,6 +78,7 @@ function updateRole() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                    initializeTextEditor();
                     $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
                     $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
@@ -87,7 +88,10 @@ function updateRole() {
                     $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"]').html('Vers: ' + data.object.name);
+                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
+                        var relationImage = $(this).html();
+                        $(this).parent().html(relationImage + " " + data.object.name);
+                    });
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
                         if ($(this).html() == data.object.oldname) {
@@ -254,11 +258,12 @@ function createNewRolePanel(data) {
         context = {
             roleId: data.role.id,
             roleCode: data.role.code,
-            eventId: eventId
+            eventId: eventId,
+            resourceList: data.role.resourceList
         };
         html = template(context);
         $(".tab-content:first", $(this)).append(html);
-        $('.eventScreen #eventRolesModal tbody').first().clone().appendTo($('#eventRole'+data.role.id+'_'+eventId+' table', $(this)));
+//        $('.eventScreen #eventRolesModal tbody').first().clone().appendTo($('#eventRole'+data.role.id+'_'+eventId+' table', $(this)));
     });
     $('.btn-group', plotFullscreenEditable).clone().prependTo('.eventScreen div[id*="eventRole' + data.role.id + '"] .fullScreenEditable');
 

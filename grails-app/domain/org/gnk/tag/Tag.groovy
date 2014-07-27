@@ -26,6 +26,7 @@ class Tag {
         name maxSize: 45
     }
 
+
     @Override
     public String toString() {
         return name;
@@ -39,5 +40,9 @@ class Tag {
 
     String getterName() {
         return name;
+    }
+
+    TagRelevant getTagRelevant(){
+         return TagRelevant.findByTag(this)
     }
 }

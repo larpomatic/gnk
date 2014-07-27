@@ -20,9 +20,9 @@ class TagRelationController {
 
         def resultList = TagRelation.createCriteria().list(max: max, offset: offset) {
             tag1
-            {
-                order(sort, params.order as String)
-            }
+                    {
+                        order(sort, params.order as String)
+                    }
         }
 
         [tagRelationInstanceList: resultList]
@@ -31,35 +31,33 @@ class TagRelationController {
     def create() {
         [tagRelationInstance: new TagRelation(params)]
     }
-	
-	def addRelation()
-	{
-		print params
-		Boolean bijective = true
-		if (!params.bijective)
-			bijective = false
-		TagRelation tagRelationInstance = new TagRelation()
-		
-		if (params.Tag_select.equals("") || params.Tag2_select.equals(""))
-		{
-			print "Invalid params"
-			flash.message = message(code: 'Erreur : Les tags selectionn�s sont invalides !')
-			redirect(action: "list")
-			return
-		}
-		
-		Tag tag1Instance = Tag.get(params.Tag_select)
-		Tag tag2Instance = Tag.get(params.Tag2_select)
-	
-		tagRelationInstance.tag1 = tag1Instance
-		tagRelationInstance.tag2 = tag2Instance
-		tagRelationInstance.weight = params.weight.toInteger()
-		tagRelationInstance.isBijective = bijective
-		tagRelationInstance.save()
-		
-		flash.messageInfo = message(code: 'adminRef.tagRelation.info.create', args: [tag1Instance.name, tag2Instance.name])
-		redirect(action: "list")
-	}
+
+    def addRelation() {
+        print params
+        Boolean bijective = true
+        if (!params.bijective)
+            bijective = false
+        TagRelation tagRelationInstance = new TagRelation()
+
+        if (params.Tag_select.equals("") || params.Tag2_select.equals("")) {
+            print "Invalid params"
+            flash.message = message(code: 'Erreur : Les tags selectionn�s sont invalides !')
+            redirect(action: "list")
+            return
+        }
+
+        Tag tag1Instance = Tag.get(params.Tag_select)
+        Tag tag2Instance = Tag.get(params.Tag2_select)
+
+        tagRelationInstance.tag1 = tag1Instance
+        tagRelationInstance.tag2 = tag2Instance
+        tagRelationInstance.weight = params.weight.toInteger()
+        tagRelationInstance.isBijective = bijective
+        tagRelationInstance.save()
+
+        flash.messageInfo = message(code: 'adminRef.tagRelation.info.create', args: [tag1Instance.name, tag2Instance.name])
+        redirect(action: "list")
+    }
 
     def save() {
         def tagRelationInstance = new TagRelation(params)
@@ -105,8 +103,8 @@ class TagRelationController {
         if (version != null) {
             if (tagRelationInstance.version > version) {
                 tagRelationInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'tagRelation.label', default: 'TagRelation')] as Object[],
-                          "Another user has updated this TagRelation while you were editing")
+                        [message(code: 'tagRelation.label', default: 'TagRelation')] as Object[],
+                        "Another user has updated this TagRelation while you were editing")
                 render(view: "edit", model: [tagRelationInstance: tagRelationInstance])
                 return
             }
@@ -141,32 +139,49 @@ class TagRelationController {
             redirect(action: "show", id: id)
         }
     }
-	
-	def deleteRelation()
-	{
-		print "delete relation : " + params
-		
-		TagRelation tagRelationInstance = TagRelation.get(params.idRelation)
-		flash.messageInfo = message(code: 'adminRef.tagRelation.info.delete', args: [tagRelationInstance.tag1.name, tagRelationInstance.tag2.name])
-		tagRelationInstance.delete()
-		redirect(action: "list")
-	}
 
-    def updateParam(){
+    def deleteRelation() {
+        print "delete relation : " + params
+
+        TagRelation tagRelationInstance = TagRelation.get(params.idRelation)
+        flash.messageInfo = message(code: 'adminRef.tagRelation.info.delete', args: [tagRelationInstance.tag1.name, tagRelationInstance.tag2.name])
+        tagRelationInstance.delete()
+        redirect(action: "list")
+    }
+
+    def updateParam() {
         GrailsParameterMap param = getParams()
         int tagRelationId = Integer.parseInt(param.get("tagRelation"))
         TagRelation tagRelation = TagRelation.findById(tagRelationId);
         int weight = tagRelation.weight
         boolean isBijectiv = tagRelation.isBijective
         int weightUpdate = Integer.parseInt(param.get("weightTag"))
-        boolean isBijectivUpdate = (boolean)param.get("bijectivTag")
-        if (weight != weightUpdate){
+        boolean isBijectivUpdate = (boolean) param.get("bijectivTag")
+        if (weight != weightUpdate) {
             tagRelation.weight = weightUpdate;
         }
-        if (("true".equals(isBijectivUpdate) || "false".equals(isBijectivUpdate)) && isBijectiv != isBijectivUpdate ){
+        if (("true".equals(isBijectivUpdate) || "false".equals(isBijectivUpdate)) && isBijectiv != isBijectivUpdate) {
             tagRelation.isBijective = isBijectivUpdate
         }
         tagRelation.save();
         redirect(action: "list")
+    }
+
+    def updateRelation(long id) {
+        GrailsParameterMap param = getParams()
+        String isbijective = params.("isBijective" + id)
+        String tagWeightInput = params.("weightRelationTag" + id)
+        TagRelation tagR = TagRelation.findById(id)
+        if (isbijective) {
+            tagR.isBijective = true;
+        } else {
+            tagR.isBijective = false;
+        }
+        int newWeight = Integer.parseInt(tagWeightInput)
+        if (newWeight != tagR.weight){
+            tagR.weight = newWeight
+        }
+        tagR.save()
+        redirect (action: "list")
     }
 }

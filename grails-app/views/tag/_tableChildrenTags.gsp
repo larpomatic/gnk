@@ -8,6 +8,7 @@
         <g:sortableColumn property="name" title="${message(code: 'adminRef.tag.tagName')}" />
         <th>Utilisations du tag</th>
         %{--<g:sortableColumn property="tagFamily.value" title="${message(code: 'adminRef.tag.tagFamilies')}" />--}%
+        <th>Tag Relevant</th>
         <th><g:message code="default.delete"/></th>
     </tr>
     </thead>
@@ -18,19 +19,9 @@
             <td>${fieldValue(bean: tagInstance, field: "name")}</td>
             <td><a href="#modal${tagInstance.id}" role="button" class="btn" data-toggle="modal">voir le détail</a></td>
             <td>
-                <ul class="inline">
-                    <g:if test="${tagInstance}">
-                        <li class="badge badge-info">
-                            <g:form class="form-small">
-                                <g:hiddenField name="idTag" value="${tagInstance?.id}" />
-                            %{--<g:hiddenField name="idFamily" value="${tagInstance?.tagFamily?.id}" />--}%
-                            %{--${tagInstance?.tagFamily?.value}--}%
-                                <!--g:actionSubmit class="icon-remove remove-action" controller="tag" action="deleteFamily" value=" " onclick="return confirm('${message(code: 'adminRef.tag.deleteTagFamily')}');" /-->
-                            </g:form>
-                        </li>
-                    </g:if>
-                </ul>
+                <a href="#editmodal${tagInstance.id}" role="button" class="btn" data-toggle="modal">Editer</a>
             </td>
+
             <td>
                 <g:form>
                     <fieldset class="buttons">
@@ -46,3 +37,4 @@
 
 <!-- Modal Views -->
 <g:render template="modalViewTags" />
+<g:render template="modaleditViewTags" />
