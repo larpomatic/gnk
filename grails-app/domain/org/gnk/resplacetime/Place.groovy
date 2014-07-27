@@ -18,7 +18,7 @@ class Place {
     static transients = ["DTDId"]
     Integer DTDId;
 
-    static belongsTo = [ genericPlace: GenericPlace]
+    static belongsTo = [genericPlace: GenericPlace]
 
 	static hasMany = [ extTags: PlaceHasTag,
 	                   placeHasUniverses: PlaceHasUnivers]
