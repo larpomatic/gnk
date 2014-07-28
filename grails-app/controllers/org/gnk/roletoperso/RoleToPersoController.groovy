@@ -467,14 +467,34 @@ class RoleToPersoController {
             GenericEvent lastGE = null
             while (age < character.age) {
                 // Créer Past scene
+                //def query = GenericEvent.where {
+                //    averageAge in (age-3)..(age+3)
+                //}
                 def query = GenericEvent.where {
-                    averageAge in (age-3)..(age+3)
+                    ageMin <= age && ageMax >= age
                 }
-                def query2 = GenericEvent.where {
-                    averageAge == 0
-                }
+                //def query2 = GenericEvent.where {
+                //    averageAge == 0
+                //}
                 ArrayList<GenericEvent> listEvent = query.findAll()
                 Collections.shuffle(listEvent)
+                lastGE = listEvent.first()
+                //Vérification duplicata
+                // On parcours les resultats de la requete
+                for (GenericEvent ge : listEvent) {
+                    // On parcours ceux qu'on a déjà pour voir si ils existent
+                    lastGE = ge
+                    boolean exist = false
+                    if (p.roles.size() > 0) {
+                        for (RoleHasPastscene selectedPastScene : p.roles.first().roleHasPastscenes) {
+                            if (selectedPastScene.description == ge.description) {
+                                exist = true
+                            }
+                        }
+                    }
+                    if (exist == false)
+                        break
+                }
                 if (lastGE == null) {
                     // Debut, on associe un GE
                     //GenericEvent.findByAverageAge(age)
@@ -483,6 +503,7 @@ class RoleToPersoController {
                     // On trouve un GE en fonction du GE précédent
 
                 }
+
                 Pastscene pastSceneLife = new Pastscene()
                 pastSceneLife.plot = p
                 pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
@@ -494,7 +515,7 @@ class RoleToPersoController {
 
                 // Associer past Scene au rôle, Role Has Past Scene
                 RoleHasPastscene rhpsLife = new RoleHasPastscene()
-                rhpsLife.description = listEvent.first().description
+                rhpsLife.description = lastGE.description//listEvent.first().description
                 rhpsLife.role = roleForLife
                 rhpsLife.pastscene = pastSceneLife
                 rhpsLife.title = "Evénement passé"
@@ -505,7 +526,12 @@ class RoleToPersoController {
 
                 age += INTERVAL + (((new Random()).nextInt() % 2))
             }
-
+            p.roles.each { ps ->
+                ps.roleHasPastscenes.each { rhpsfez ->
+                    System.out.print(rhpsfez.description)
+                }
+            }
+            System.out.print("____")
             character.addRole(roleForLife)
             gn.addPlot(p)
         }

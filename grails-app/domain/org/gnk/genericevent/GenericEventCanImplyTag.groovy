@@ -1,6 +1,5 @@
 package org.gnk.genericevent
 
-
 import org.gnk.tag.Tag
 
 class GenericEventCanImplyTag {
