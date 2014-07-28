@@ -628,7 +628,7 @@ class PublicationController {
         Br br = wordWriter.factory.createBr()
         br.setType(STBrType.PAGE)
         wordWriter.addObject(br)
-        wordWriter.addStyledParagraphOfText("T1", "Dossier Personnage Joueurs")
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Personnage Non-Joueurs")
         wordWriter.addParagraphOfText("Il y a " + listPNJ.size() + " Personnages Non-Joueurs(PNJ) dans ce GN dont voici la liste : ")
         String resListPNJ = ""
         for (Character c : listPNJ)
