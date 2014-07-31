@@ -172,7 +172,7 @@ class PastSceneController {
 //                }
             }
         }
-//        newPastscene.save(flush: true);
+        newPastscene.save(flush: true);
         return true;
     }
 
