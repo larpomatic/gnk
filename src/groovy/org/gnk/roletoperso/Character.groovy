@@ -1,5 +1,6 @@
 package org.gnk.roletoperso
 
+import com.granicus.grails.plugins.cookiesession.SessionPersistenceListener
 import org.gnk.gn.Gn
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
@@ -206,11 +207,17 @@ class Character {
     }
 
     public Map<Tag, Integer> getTags() {
-        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>()
+        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        List<Tag> tag_101 = new ArrayList<Tag>();
+        List<Tag> tag_m101 = new ArrayList<>();
         for (Role role : selectedRoles) {
             for (RoleHasTag roleHasTag : role.getRoleHasTags()) {
                 final Tag tag = roleHasTag.getTag()
                 Integer weight = roleHasTag.getWeight() * (isPJ() ? roleHasTag.getRole().getPIPTotal() : 99)
+                if (weight == 101)
+                    tag_101.add(tag);
+                if (weight == -101)
+                    tag_m101.add(tag);
                 if (tagMap.containsKey(tag)) {
                     weight += tagMap.get(tag)
                 }
@@ -223,24 +230,23 @@ class Character {
         Set<Tag> tagKeySet = tagMap.keySet()
         for (Tag tagKey : tagKeySet) {
             int weight = tagMap.get(tagKey);
-            if ((weight > 100) || (weight < -100))
-            {
-                if (weight > 100)
-                    tagMap.put(tagKey, 101);
-                else
-                    tagMap.put(tagKey, -101);
+            if (tag_101.contains(tagKey)) {
+                tagMap.put(tagKey, 101);
+            }
+            else if (tag_m101.contains(tagKey)) {
+                tagMap.put(tagKey, -101);
             }
             else
             {
-                if (((tagKey.name == "Homme") && (isMen())) || ((tagKey.name == "Femme") && (isWomen())))
-                    tagMap.put(tagKey, 101);
-                else {
-                    if (nbPIP != 0)
-                        weight /= nbPIP
-                    tagMap.put(tagKey, weight)
-                }
+                if (nbPIP != 0)
+                    weight /= nbPIP
+                tagMap.put(tagKey, weight)
             }
         }
+        if (isMen())
+            tagMap.put(Tag.get(21) , 101);
+        if (isWomen())
+            tagMap.put(Tag.get(22) , 101);
         return tagMap
     }
 
