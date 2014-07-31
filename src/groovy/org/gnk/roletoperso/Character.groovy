@@ -222,10 +222,24 @@ class Character {
             nbPIP = 99;
         Set<Tag> tagKeySet = tagMap.keySet()
         for (Tag tagKey : tagKeySet) {
-            int weight = tagMap.get(tagKey)
-            if (nbPIP != 0)
-                weight /= nbPIP
-            tagMap.put(tagKey, weight)
+            int weight = tagMap.get(tagKey);
+            if ((weight > 100) || (weight < -100))
+            {
+                if (weight > 100)
+                    tagMap.put(tagKey, 101);
+                else
+                    tagMap.put(tagKey, -101);
+            }
+            else
+            {
+                if (((tagKey.name == "Homme") && (isMen())) || ((tagKey.name == "Femme") && (isWomen())))
+                    tagMap.put(tagKey, 101);
+                else {
+                    if (nbPIP != 0)
+                        weight /= nbPIP
+                    tagMap.put(tagKey, weight)
+                }
+            }
         }
         return tagMap
     }
