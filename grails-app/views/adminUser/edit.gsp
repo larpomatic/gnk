@@ -40,7 +40,7 @@
                 <g:message code="default.profil.firstname"/>:  ${user.firstname} <br/>
                 <g:hasRights lvlright="${right.USERMODIFY.value()}">
                     <div class="input-group">
-                        <input type="text" name="lastnamemodif" class="form-control"/>
+                        <input type="text" name="firstnamemodif" class="form-control"/>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Modifier</button>
                         </span>
@@ -56,7 +56,7 @@
                 <g:message code="default.profil.email"/>:  ${user.username} <br/>
                 <g:hasRights lvlright="${right.USERMODIFY.value()}">
                     <div class="input-group">
-                        <input type="text" name="lastnamemodif" class="form-control"/>
+                        <input type="text" name="usernamemodif" class="form-control"/>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Modifier</button>
                         </span>
@@ -74,7 +74,7 @@
                     <div class="input-group">
 
                         Changer mot de passe : <input type="password" name="passwordChanged" placeholder="<g:message code="default.minsize.password"/>"/><br/>
-                        Confirmer nouveau mot de passe : <input type="password" name="passwordChanged"/><br/>
+                        Confirmer nouveau mot de passe : <input type="password" name="passwordChangedConfirm"/><br/>
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">Modifier</button>
                         </span>

@@ -15,7 +15,7 @@ class RoleHasPastscene {
 	static belongsTo = [ pastscene: Pastscene, role: Role ]
 
 	static constraints = {
-		title maxSize: 45
+		title maxSize: 256
 	}
 
     static mapping = {

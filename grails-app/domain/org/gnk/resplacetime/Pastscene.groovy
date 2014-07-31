@@ -42,7 +42,7 @@ class Pastscene {
 	static belongsTo = [ plot: Plot ]
 
 	static constraints = {
-		title (maxSize: 45)
+		title (maxSize: 256)
         isPublic ()
         description (nullable: true)
         dateYear (nullable: true)

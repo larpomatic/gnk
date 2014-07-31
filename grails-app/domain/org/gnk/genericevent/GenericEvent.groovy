@@ -1,6 +1,5 @@
 package org.gnk.genericevent
 
-import org.gnk.tag.Tag
 
 class GenericEvent {
 
@@ -9,7 +8,9 @@ class GenericEvent {
     Date lastUpdated
     Date dateCreated
     String description
-    Integer averageAge
+    String title
+    Integer ageMin
+    Integer ageMax
 
 
     static constraints = {
@@ -18,5 +19,5 @@ class GenericEvent {
     static mapping = {
         description type:'text'
     }
-    static belongsTo = [tag : Tag]
+    static hasMany = [ genericEventHasTag : GenericEventHasTag ]
 }

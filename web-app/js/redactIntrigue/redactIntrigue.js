@@ -69,6 +69,21 @@ $(function(){
     bgenScroll();
 
     initModifyTag();
+
+    //insert html span into textEditors
+    $('.buttonRichTextEditor').click(function() {
+        setCarretPos();
+        if ($(this).closest("ul").hasClass("roleSelector")) {
+            pasteHtmlAtCaret('<span class="label label-success" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("placeSelector")) {
+            pasteHtmlAtCaret('<span class="label label-warning" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("resourceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-important" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        return false;
+    });
 });
 
 function initQuickObjects() {
@@ -293,6 +308,10 @@ function initializeTextEditor() {
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
         description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false">');
         description = description.replace(/&gt;/g, '</span>');
+        description = "<div>" + description + "</div>";
+        var html = $(description);
+        $("span br", html).remove();
+        description = html.html();
         $(this).html(description);
     });
 }
