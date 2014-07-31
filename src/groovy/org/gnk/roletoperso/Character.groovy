@@ -6,6 +6,7 @@ import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class Character {
     static CharacterService cs
@@ -214,9 +215,9 @@ class Character {
             for (RoleHasTag roleHasTag : role.getRoleHasTags()) {
                 final Tag tag = roleHasTag.getTag()
                 Integer weight = roleHasTag.getWeight() * (isPJ() ? roleHasTag.getRole().getPIPTotal() : 99)
-                if (weight == 101)
+                if (weight == TagService.LOCKED)
                     tag_101.add(tag);
-                if (weight == -101)
+                if (weight == TagService.BANNED)
                     tag_m101.add(tag);
                 if (tagMap.containsKey(tag)) {
                     weight += tagMap.get(tag)
@@ -231,10 +232,10 @@ class Character {
         for (Tag tagKey : tagKeySet) {
             int weight = tagMap.get(tagKey);
             if (tag_101.contains(tagKey)) {
-                tagMap.put(tagKey, 101);
+                tagMap.put(tagKey, TagService.LOCKED);
             }
             else if (tag_m101.contains(tagKey)) {
-                tagMap.put(tagKey, -101);
+                tagMap.put(tagKey, TagService.BANNED);
             }
             else
             {
@@ -244,9 +245,9 @@ class Character {
             }
         }
         if (isMen())
-            tagMap.put(Tag.get(21) , 101);
+            tagMap.put(Tag.findByName("Homme") , TagService.LOCKED);
         if (isWomen())
-            tagMap.put(Tag.get(22) , 101);
+            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);
         return tagMap
     }
 
