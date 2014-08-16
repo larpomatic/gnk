@@ -35,7 +35,7 @@ class PlaceService {
             referentialPlacesList.sort(new Comparator<ReferentialPlace>() {
                 @Override
                 int compare(ReferentialPlace o1, ReferentialPlace o2) {
-                    return (o1.matchingRate > o2.matchingRate ? -1 : 1)
+                    return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
                 }
             })
 
