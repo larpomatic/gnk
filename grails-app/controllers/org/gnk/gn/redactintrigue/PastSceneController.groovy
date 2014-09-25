@@ -167,9 +167,9 @@ class PastSceneController {
             if (it.key.startsWith("roleHasPastSceneTitle")) {
                 Role role = Role.get((it.key - "roleHasPastSceneTitle") as Integer);
                 RoleHasPastscene roleHasPastscene = createRoleHasPastscene(role, newPastscene);
-                if (roleHasPastscene) {
-                    newPastscene.addToRoleHasPastscenes(roleHasPastscene);
-                }
+//                if (roleHasPastscene) {
+//                    newPastscene.addToRoleHasPastscenes(roleHasPastscene);
+//                }
             }
         }
         newPastscene.save(flush: true);
@@ -196,11 +196,11 @@ class PastSceneController {
             role.save(flush: true);
             return null;
         }
-        roleHasPastscene.title = params.get("roleHasPastSceneTitle" + role.id);
-        roleHasPastscene.description = params.get("roleHasPastSceneDescription" + role.id);
+        roleHasPastscene.title = params.get("roleHasPastSceneTitle" + role.id).toString().trim();
+        roleHasPastscene.description = params.get("roleHasPastSceneDescription" + role.id).toString().trim();
         roleHasPastscene.save(flush: true);
-        role.addToRoleHasPastscenes(roleHasPastscene);
-        role.save(flush: true);
+//        role.addToRoleHasPastscenes(roleHasPastscene);
+//        role.save(flush: true);
         return roleHasPastscene;
     }
 

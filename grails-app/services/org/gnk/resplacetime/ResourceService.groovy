@@ -39,7 +39,7 @@ class ResourceService {
             referentialResourcesList.sort(new Comparator<ReferentialResource>() {
                 @Override
                 int compare(ReferentialResource o1, ReferentialResource o2) {
-                    return (o1.matchingRate > o2.matchingRate ? -1 : 1)
+                    return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
                 }
             })
 

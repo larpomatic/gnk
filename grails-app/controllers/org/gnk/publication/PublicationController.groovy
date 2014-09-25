@@ -51,9 +51,6 @@ class PublicationController {
         }
 
         return collectPublicationInfo(id)
-
-//        String a = "coucfgpdfijfihfegeiljou"
-//        [coucouTest: a]
     }
 
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
@@ -139,7 +136,6 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("ST", createSubTile())
         wordWriter.addStyledParagraphOfText("T1", "Synthèse pour les organisateurs")
 
-        // HDU-MEF4
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des pitchs des Intrigues du GN")
         createPitchOrga()
 
@@ -164,15 +160,12 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
         createDetailedEventsTable()
 
-//        wordWriter.addStyledParagraphOfText("T1", "Logistique détaillée")
-
         wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
 
         createPJFile()
         createPNJFile()
         createPHJFile()
-//        createCharactersFile();
 
         return wordWriter.wordMLPackage
     }
@@ -190,7 +183,6 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        // HDU-MEF2
         wordWriter.addTableCell(tableRow, "NOM - Prenom")
         wordWriter.addTableCell(tableRow, "Nb PIP Total")
         wordWriter.addTableCell(tableRow, "Type")
@@ -198,7 +190,6 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Age")
         wordWriter.addTableCell(tableRow, "Role(s)")
         wordWriter.addTableCell(tableRow, "Indication(s) personnage")
-        //wordWriter.addTableCell(tableRow, "Description")
 
         table.getContent().add(tableRow);
 
@@ -342,22 +333,7 @@ class PublicationController {
                 }
             }
         }
-
-//        for (Character c : gn.characterSet + gn.nonPlayerCharSet)
-//        {
-//            Tr tableRowCharacter = wordWriter.factory.createTr()
-//
-//            wordWriter.addTableCell(tableRowCharacter, c.firstname + " " + c.lastname)
-//            wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-//            wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ()? "PNJ" : "PHJ")
-//
-//            wordWriter.addTableCell(tableRowCharacter, c.gender)
-//            //wordWriter.addTableCell(tableRowCharacter, "TODO :  Description of the characters ?")
-//            table.getContent().add(tableRowCharacter);
-//        }
-
         wordWriter.addBorders(table)
-
         wordWriter.addObject(table);
     }
 
@@ -628,7 +604,7 @@ class PublicationController {
         Br br = wordWriter.factory.createBr()
         br.setType(STBrType.PAGE)
         wordWriter.addObject(br)
-        wordWriter.addStyledParagraphOfText("T1", "Dossier Personnage Joueurs")
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Personnage Non-Joueurs")
         wordWriter.addParagraphOfText("Il y a " + listPNJ.size() + " Personnages Non-Joueurs(PNJ) dans ce GN dont voici la liste : ")
         String resListPNJ = ""
         for (Character c : listPNJ)
@@ -692,7 +668,6 @@ class PublicationController {
 
             wordWriter.addStyledParagraphOfText("T3", "Mon Histoire")
 
-            // HDU-MEF1
             wordWriter.addParagraphOfText("Je m'appelle " + c.firstname + " " + c.lastname + ".")
             wordWriter.addParagraphOfText("Voici mon histoire :")
 
@@ -814,7 +789,6 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        // HDU-MEF5
         wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)","")+".")
         wordWriter.addParagraphOfText("Il débute le " + getPrintableDate(gn.date)  +" et dure " + gn.duration.toString() + " heures.")
 
@@ -963,7 +937,6 @@ class PublicationController {
 
         wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
 
-        // HDU-MEF3
         wordWriter.addTableCell(tableRow, "Nb PIP")
         wordWriter.addTableCell(tableRow, "Indication(s) Intrigue")
         wordWriter.addTableCell(tableRow, "Résumé/Description")
@@ -1464,17 +1437,12 @@ class PublicationController {
     }
 
 
-    // TODO : Cdate instable : A corriger
     private String getPrintableDate(Date date)
     {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                         DateFormat.MEDIUM,
-                        DateFormat.SHORT);
+                        DateFormat.SHORT,
+                        new Locale("FR","fr"));
         return shortDateFormat.format(date)
-//        if (date != null && date.cdate != null)
-//            return date.cdate.hours+"h"+(date.cdate.minutes > 10 ? date.cdate.minutes:"0"+date.cdate.minutes)+" le "+(date.cdate.dayOfMonth > 10 ? date.cdate.dayOfMonth:"0"+date.cdate.dayOfMonth)+"/"+(date.cdate.month > 10 ? date.cdate.month:"0"+date.cdate.month)+"/"+date.cdate.year
-//        else
-//            return date.sho()
-            // return date.hours+"h"+(date.minutes > 10 ? date.minutes:"0"+date.minutes)+" le "+(date.day > 10 ? date.day:"0"+date.day)+"/"+(date.month > 10 ? date.month:"0"+date.month)+"/"+((date.year < 2000)?(date.year+1900).toString():date.year.toString())
     }
 }
