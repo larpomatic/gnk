@@ -6,11 +6,10 @@
     {{/if}}
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ role.roleId }}"
            href="#collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" data-pastsceneId="{{ pastscene.id }}">
-            {{#if pastscene.timingRelative}}
-                il y a {{pastscene.timingRelative}} {{pastscene.unitTimingRelativeTrue}} -
-            {{else}}
-                En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} -
-            {{/if}}
+
+            <!--###PASTSCENECHANGE-->
+            En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} -
+
             {{ pastscene.title }}
         </a>
     </div>

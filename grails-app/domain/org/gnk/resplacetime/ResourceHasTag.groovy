@@ -4,6 +4,10 @@ import org.gnk.tag.Tag
 
 class ResourceHasTag {
 
+    def ResourceHasTag() {
+
+    }
+
     def ResourceHasTag(Resource resource, Tag tag, Integer weight)
     {
         this.resource = resource

@@ -37,15 +37,17 @@ class PastSceneController {
         jsonPastScene.put("plotId", pastscene.getPlot().getId());
         jsonPastScene.put("isPublic", pastscene.getIsPublic());
         jsonPastScene.put("description", pastscene.getDescription());
-        jsonPastScene.put("timingRelative", pastscene.getTimingRelative());
-        jsonPastScene.put("unitTimingRelative", pastscene.getUnitTimingRelative());
-        jsonPastScene.put("unitTimingRelativeTrue", g.timeUnit(unit: pastscene.unitTimingRelative, quantity: pastscene.unitTimingRelative));
-        jsonPastScene.put("absoluteYear", pastscene.getDateYear());
-        jsonPastScene.put("absoluteMonth", pastscene.getDateMonth());
-        jsonPastScene.put("absoluteMonthLetters", g.timeMonth(month: pastscene.dateMonth));
-        jsonPastScene.put("absoluteDay", pastscene.getDateDay());
-        jsonPastScene.put("absoluteHour", pastscene.getDateHour());
-        jsonPastScene.put("absoluteMinute", pastscene.getDateMinute());
+        jsonPastScene.put("Year", pastscene.getDateYear());
+        jsonPastScene.put("Month", pastscene.getDateMonth());
+        jsonPastScene.put("MonthLetters", g.timeMonth(month: pastscene.dateMonth));
+        jsonPastScene.put("Day", pastscene.getDateDay());
+        jsonPastScene.put("Hour", pastscene.getDateHour());
+        jsonPastScene.put("Minute", pastscene.getDateMinute());
+        jsonPastScene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+        jsonPastScene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+        jsonPastScene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+        jsonPastScene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+        jsonPastScene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
         if (pastscene.getPastscenePredecessor()) {
             jsonPastScene.put("pastscenePredecessor", pastscene.getPastscenePredecessor().getTitle());
             jsonPastScene.put("pastscenePredecessorId", pastscene.getPastscenePredecessor().getId());
@@ -85,8 +87,11 @@ class PastSceneController {
                         day: pastscene.dateDay,
                         hour: pastscene.dateHour,
                         minute: pastscene.dateMinute,
-                        time: pastscene.timingRelative,
-                        timeUnit: g.timeUnit(unit: pastscene.unitTimingRelative, quantity: pastscene.unitTimingRelative)
+                        yearIsAbsolute: pastscene.isAbsoluteYear,
+                        monthIsAbsolute: pastscene.isAbsoluteMonth,
+                        dayIsAbsolute: pastscene.isAbsoluteDay,
+                        hourIsAbsolute: pastscene.isAbsoluteHour,
+                        minuteIsAbsolute: pastscene.isAbsoluteMinute
                         )
             }
         }
@@ -103,17 +108,6 @@ class PastSceneController {
             newPastscene.title = params.pastSceneTitle
         } else {
             return false
-        }
-        if (params.containsKey("pastSceneRelativeUnit")) {
-            newPastscene.unitTimingRelative = params.pastSceneRelativeUnit
-        } else {
-            newPastscene.unitTimingRelative = null;
-        }
-        if (params.containsKey("pastSceneRelative") && params.pastSceneRelative != "") {
-            newPastscene.timingRelative = params.pastSceneRelative as Integer
-        } else {
-            newPastscene.timingRelative = null;
-            newPastscene.unitTimingRelative = null;
         }
         if (params.containsKey("pastScenePublic")) {
             newPastscene.isPublic = true;
@@ -149,6 +143,31 @@ class PastSceneController {
             newPastscene.dateMinute = params.minute as Integer;
         } else {
             newPastscene.dateMinute = null;
+        }
+        if (params.containsKey("yearIsAbsolute")) {
+            newPastscene.isAbsoluteYear = true;
+        } else {
+            newPastscene.isAbsoluteYear = false;
+        }
+        if (params.containsKey("monthIsAbsolute")) {
+            newPastscene.isAbsoluteMonth = true;
+        } else {
+            newPastscene.isAbsoluteMonth = false;
+        }
+        if (params.containsKey("dayIsAbsolute")) {
+            newPastscene.isAbsoluteDay = true;
+        } else {
+            newPastscene.isAbsoluteDay = false;
+        }
+        if (params.containsKey("hourIsAbsolute")) {
+            newPastscene.isAbsoluteHour = true;
+        } else {
+            newPastscene.isAbsoluteHour = false;
+        }
+        if (params.containsKey("minuteIsAbsolute")) {
+            newPastscene.isAbsoluteMinute = true;
+        } else {
+            newPastscene.isAbsoluteMinute = false;
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);

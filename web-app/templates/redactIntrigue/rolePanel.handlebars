@@ -169,11 +169,10 @@
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
                                    href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
-                                    {{#if pastsceneTiming}}
-                                        il y a {{pastsceneTiming}} {{pastsceneUnitTiming}} -
-                                    {{else}}
-                                        En {{pastsceneYear}} le {{pastsceneDay}} {{pastsceneMonth}} à {{pastsceneHour}}h {{pastsceneMinute}} -
-                                    {{/if}}
+
+                                    <!--###PASTSCENECHANGE-->
+                                    En {{pastsceneYear}} le {{pastsceneDay}} {{pastsceneMonth}} à {{pastsceneHour}}h {{pastsceneMinute}} -
+
                                     {{ pastsceneTitle }}
                                 </a>
                             </div>

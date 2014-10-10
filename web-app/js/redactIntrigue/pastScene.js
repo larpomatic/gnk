@@ -1,6 +1,4 @@
 $(function(){
-    initPastSceneRelative();
-
     updatePastScene();
 
     //ajoute une nouvelle scène passée dans la base
@@ -86,17 +84,13 @@ function updatePastScene() {
                     createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
                     $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('select[name="pastScenePredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
-                    if (data.object.time && (data.object.time != "")) {
-                        $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
-                            "Il y a " + data.object.time + " " + data.object.timeUnit  + " - " + data.object.name
-                        ).html());
-                    }
-                    else {
-                        $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
-                            "En " + data.object.year + " le " + data.object.day + " " + data.object.month + " à " + data.object.hour + "h "
-                                + data.object.minute + " - " + data.object.name
-                        ).html());
-                    }
+
+                    <!--###PASTSCENECHANGE-->
+                    $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
+                        "En " + data.object.year + " le " + data.object.day + " " + data.object.month + " à " + data.object.hour + "h "
+                            + data.object.minute + " - " + data.object.name
+                    ).html());
+
                     $('#pastsceneRolesModal' + data.object.id + ' div[id*="roleHasPastSceneTitleRichTextEditor"]', form).each(function() {
                         var roleId = $('.titleContent', $(this).closest(".tab-pane")).attr("name").replace("roleHasPastSceneTitle", "");
                         if ($(this).html() == "") {
@@ -126,15 +120,6 @@ function updatePastScene() {
                 createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
             }
         })
-    });
-}
-
-function initPastSceneRelative() {
-    //change l'unité de temps sur les pastScenes
-    $('.pastSceneRelativeTimeUnit').click(function() {
-        $(".relativeTimeMessage", $(this).closest(".pastSceneRelative")).html($(this).html());
-        var unit = $(this).attr("data-unitTime");
-        $(".pastSceneRelativeUnit", $(this).closest(".pastSceneRelative")).val(unit);
     });
 }
 
@@ -179,7 +164,6 @@ function emptyPastSceneForm() {
     $('form[name="newPastSceneForm"] input[type="checkbox"]').attr('checked', false);
     $('form[name="newPastSceneForm"] #pastScenePlace option[value="null"]').attr("selected", "selected");
     $('form[name="newPastSceneForm"] #pastScenePredecessor option[value="null"]').attr("selected", "selected");
-    $('form[name="newPastSceneForm"] .relativeTimeMessage').html("Année");
     $('form[name="newPastSceneForm"] .richTextEditor').html("");
 }
 
@@ -191,27 +175,6 @@ function createNewPastScenePanel(data) {
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
         value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
-        return new Handlebars.SafeString(value);
-    });
-    Handlebars.registerHelper('unitTimeConverter', function(value) {
-        if (value == "Y") {
-            value = "Année";
-        }
-        else if (value == "M") {
-            value = "Mois";
-        }
-        else if (value == "d") {
-            value = "Jour"
-        }
-        else if (value == "h") {
-            value = "Heure";
-        }
-        else if (value == "m") {
-            value = "Minute";
-        }
-        else {
-            value = "Année";
-        }
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/pastScenePanel'];

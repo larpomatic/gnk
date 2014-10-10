@@ -29,19 +29,19 @@
 					</g:each>
 				</ul>
             </td>
-			<td>
-                <ul class="inline">
-                    <g:each in="${plotInstance.plotHasUniverses.toArray()}" status="j" var="plotHasUniverses">
-                        <li class="badge badge-info">
-                            <g:form class="form-small">
-                                <g:hiddenField name="plotHasUniversesId" value="${plotHasUniverses.id}" />
-                                ${plotHasUniverses.univers.name} ${plotHasUniverses.weight}%
-                                <g:actionSubmit class="icon-remove remove-action" controller="plot" action="removeUnivers" value=" " onclick="return confirm('${message(code: 'adminRef.plot.removeUnivers')}');" />
-                            </g:form>
-                        </li>
-                    </g:each>
-                </ul>
-			</td>
+			%{--<td>--}%
+                %{--<ul class="inline">--}%
+                    %{--<g:each in="${plotInstance.plotHasUniverses.toArray()}" status="j" var="plotHasUniverses">--}%
+                        %{--<li class="badge badge-info">--}%
+                            %{--<g:form class="form-small">--}%
+                                %{--<g:hiddenField name="plotHasUniversesId" value="${plotHasUniverses.id}" />--}%
+                                %{--${plotHasUniverses.univers.name} ${plotHasUniverses.weight}%--}%
+                                %{--<g:actionSubmit class="icon-remove remove-action" controller="plot" action="removeUnivers" value=" " onclick="return confirm('${message(code: 'adminRef.plot.removeUnivers')}');" />--}%
+                            %{--</g:form>--}%
+                        %{--</li>--}%
+                    %{--</g:each>--}%
+                %{--</ul>--}%
+			%{--</td>--}%
 
 			<td>${fieldValue(bean: plotInstance, field: "description")}</td>
 	

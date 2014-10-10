@@ -287,13 +287,8 @@
                                         </g:else>
                                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
                                                href="#collapsePastScene${role.id}-${pastscene.id}" data-pastsceneId="${pastscene.id}">
-                                                <g:if test="${pastscene.timingRelative && (pastscene.timingRelative != '')}">
-                                                    il y a ${pastscene.timingRelative} <g:timeUnit unit="${pastscene.unitTimingRelative}" quantity="${pastscene.timingRelative}"/> -
-                                                </g:if>
-                                                <g:else>
-                                                    En ${pastscene.dateYear} le ${pastscene.dateDay} <g:timeMonth month="${pastscene.dateMonth}"/> à ${pastscene.dateHour}h ${pastscene.dateMinute} -
-                                                </g:else>
-                                                 ${pastscene.title}
+
+                                                <g:pastsceneTime pastsceneId="${pastscene.id}"/>
                                             </a>
                                         </div>
                                         <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">

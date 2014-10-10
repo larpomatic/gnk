@@ -12,6 +12,10 @@ class PlotHasTag {
 
     Integer weight
 
+    public PlotHasTag() {
+
+    }
+
     public PlotHasTag(Plot plotPar, Tag tagPar, Integer weightPar) {
         plot = plotPar
         tag = tagPar
