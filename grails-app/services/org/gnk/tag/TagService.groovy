@@ -69,12 +69,8 @@ class TagService {
     }
 
     def getGenericChilds() {
-        Set<Tag> generics = Tag.findAllByName("Générique");
-        ArrayList<Tag> genericChilds = new ArrayList<>();
-        for (Tag generic in generics) {
-            genericChilds.addAll(Tag.findAllByParent(generic));
-        }
-        return genericChilds;
+        Tag generics = Tag.findById(0);
+        return generics.children;
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {

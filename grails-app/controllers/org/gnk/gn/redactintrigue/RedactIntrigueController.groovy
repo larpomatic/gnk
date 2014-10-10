@@ -79,7 +79,6 @@ class RedactIntrigueController {
         TagService tagService = new TagService();
 		[plotInstance: plotInstance,
                 plotTagList: tagService.getPlotTagQuery(),
-                universList: Univers.list(),
                 roleTagList: tagService.getRoleTagQuery(),
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),
@@ -91,18 +90,8 @@ class RedactIntrigueController {
         def isupdate = true;
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-//			redirect(action: "list")
-//			return
             isupdate = false;
 		}
-
-//		if (version != null) {
-//			if (plotInstance.version > version) {
-//				render(view: "edit", model: [plotInstance: plotInstance])
-//				return
-//			}
-//		}
-
 		plotInstance.properties = params
 		plotInstance.description = params.plotDescription
         plotInstance.pitchOrga = params.plotPitchOrga
@@ -115,14 +104,6 @@ class RedactIntrigueController {
         }
         else {
             plotInstance.extTags = new HashSet<PlotHasTag>();
-        }
-        if (plotInstance.plotHasUniverses) {
-            HashSet<PlotHasUnivers> plotHasUniverses = plotInstance.plotHasUniverses;
-            PlotHasUnivers.deleteAll(plotHasUniverses);
-            plotInstance.plotHasUniverses.clear();
-        }
-        else {
-            plotInstance.plotHasUniverses = new HashSet<PlotHasUnivers>();
         }
 
         plotInstance.save(flush: true);
@@ -137,27 +118,14 @@ class RedactIntrigueController {
 				plotInstance.extTags.add(plotHasPlotTag)
 			}
 		}
-		
-		params.each {
-			if (it.key.startsWith("universes_")) {
-				PlotHasUnivers plotHasUnivers = new PlotHasUnivers()
-				plotHasUnivers.univers = Univers.get((it.key - "universes_") as Integer);
-				plotHasUnivers.weight = TagService.LOCKED
-				plotHasUnivers.plot = plotInstance
-				plotInstance.plotHasUniverses.add(plotHasUnivers)
-			}
-		}
 
 		if (!plotInstance.save(flush: true)) {
-//			render(view: "edit", model: [plotInstance: plotInstance])
-//			return
             isupdate = false;
 		}
 
         render(contentType: "application/json") {
             object(isupdate: isupdate)
         }
-//		redirect(action: "show", id: plotInstance.id)
 	}
 
 	def delete(Long id) {

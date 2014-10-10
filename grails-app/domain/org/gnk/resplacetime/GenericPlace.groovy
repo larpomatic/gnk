@@ -21,7 +21,7 @@ class GenericPlace {
     List<Place> bannedPlaces
     Place selectedPlace
 
-    static belongsTo = [plot: Plot]
+    static belongsTo = [plot: Plot, objectType: ObjectType]
 
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,

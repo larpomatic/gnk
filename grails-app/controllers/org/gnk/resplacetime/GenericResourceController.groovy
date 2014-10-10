@@ -62,6 +62,7 @@ class GenericResourceController {
         jsonGenericResource.put("id", genericResource.getId());
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
+        jsonGenericResource.put("resourceObject", genericResource.getObjectType().getType());
         if (genericResource.title) {
             jsonGenericResource.put("clue", true);
             jsonGenericResource.put("title", genericResource.getTitle());
@@ -108,6 +109,14 @@ class GenericResourceController {
             newGenericResource.comment = params.resourceComment
         } else {
             return false
+        }
+        if (params.containsKey("resourceObject")) {
+            ObjectType objectType = ObjectType.findById(params.resourceObject as Integer);
+            newGenericResource.objectType = objectType;
+        }
+        else {
+            ObjectType objectType = ObjectType.findById(1);
+            newGenericResource.objectType = objectType;
         }
         if(newGenericResource.extTags != null) {
             HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;

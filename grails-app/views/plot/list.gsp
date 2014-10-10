@@ -24,7 +24,7 @@
 			
 			
 			<g:render template="addTagToPlot" />
-			<g:render template="addPlotToUnivers" />
+			%{--<g:render template="addPlotToUnivers" />--}%
 			<g:render template="tablePlots"></g:render>
 			
 			<div class="pagination">

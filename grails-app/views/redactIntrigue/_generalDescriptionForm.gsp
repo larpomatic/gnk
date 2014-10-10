@@ -26,17 +26,6 @@
 
                 <div class="row formRow">
                     <div class="span1"></div>
-                    <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/>
-                        </label>
-                    </div>
-
-                    <div class="span3">
-                        <a href="#universesModal" class="btn" data-toggle="modal">
-                            <g:message code="redactintrigue.generalDescription.chooseUniverses" default="Chooses universes"/>
-                        </a>
-                    </div>
 
                     <div class="span1">
                         <label>
@@ -58,6 +47,16 @@
 
                     <div class="span3">
                         <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
+                    </div>
+
+                    <div class="span1">
+                        <label for="isPublic">
+                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
+                        </label>
+                    </div>
+
+                    <div class="span3">
+                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
                     </div>
                 </div>
 
@@ -81,16 +80,6 @@
 
                     <div class="span3">
                         <g:checkBox name="isEvenemential" id="isEvenemential" checked="${plotInstance.isEvenemential}"/>
-                    </div>
-
-                    <div class="span1">
-                        <label for="isPublic">
-                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
-                        </label>
-                    </div>
-
-                    <div class="span3">
-                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
                     </div>
                 </div>
 
@@ -159,31 +148,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div id="universesModal" class="modal hide fade" tabindex="-1">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h3><g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/></h3>
-                    </div>
-
-                    <div class="modal-body">
-                        <ul>
-                            <g:each in="${universList}" status="i" var="universInstance">
-                                <li class="modalLi">
-                                    <label for="universes_${universInstance.id}">
-                                        <g:checkBox name="universes_${universInstance.id}"
-                                                    id="universes_${universInstance.id}"
-                                                    checked="${plotInstance.hasUnivers(universInstance)}"/>
-                                        ${universInstance.name}
-                                    </label>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
 

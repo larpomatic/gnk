@@ -21,7 +21,7 @@ class GenericResource {
     String title
     String description
 
-    static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role]
+    static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role, objectType: ObjectType]
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]

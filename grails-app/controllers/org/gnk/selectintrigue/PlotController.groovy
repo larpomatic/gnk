@@ -106,47 +106,47 @@ class PlotController {
 		 redirect(action: "list")
 	}
 
-    def addUniversToPlot() {
-        if (params.Plot_select.equals("") || params.Tag_select.equals(""))
-        {
-            print "Invalid params"
-            flash.message = message(code: 'Erreur : Il faut choisir un tag et une intrigue !')
-            redirect(action: "list")
-            return
-        }
+//    def addUniversToPlot() {
+//        if (params.Plot_select.equals("") || params.Tag_select.equals(""))
+//        {
+//            print "Invalid params"
+//            flash.message = message(code: 'Erreur : Il faut choisir un tag et une intrigue !')
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        Plot plotInstance = Plot.get(params.Plot_select.toInteger())
+//        Univers universInstance = Univers.get(params.Univers_select.toInteger())
+//
+//        PlotHasUnivers plotHasUnivers = new PlotHasUnivers()
+//        plotHasUnivers.plot = plotInstance
+//        plotHasUnivers.univers = universInstance
+//        plotHasUnivers.weight = params.weight.toInteger()
+//
+//        plotHasUnivers.save()
+//
+//        flash.messageInfo = message(code: 'adminRef.PlotHasUnivers.info.create', args: [plotInstance.name, universInstance.name])
+//        redirect(action: "list")
+//    }
 
-        Plot plotInstance = Plot.get(params.Plot_select.toInteger())
-        Univers universInstance = Univers.get(params.Univers_select.toInteger())
-
-        PlotHasUnivers plotHasUnivers = new PlotHasUnivers()
-        plotHasUnivers.plot = plotInstance
-        plotHasUnivers.univers = universInstance
-        plotHasUnivers.weight = params.weight.toInteger()
-
-        plotHasUnivers.save()
-
-        flash.messageInfo = message(code: 'adminRef.PlotHasUnivers.info.create', args: [plotInstance.name, universInstance.name])
-        redirect(action: "list")
-    }
-
-    def removeUnivers()
-    {
-        if (params.plotHasUniversesId != "")
-        {
-            PlotHasUnivers plotHasUnivers = PlotHasUnivers.get(params.plotHasUniversesId)
-            if (plotHasUnivers == null)
-            {
-                flash.message = "Erreur lors de la suppression de l'univers"
-                redirect(action: "list")
-            }
-
-            plotHasUnivers.delete()
-
-            flash.messageInfo = message(code: 'adminRef.PlotHasUnivers.info.delete', args: [plotHasUnivers.plot.name, plotHasUnivers.univers.name])
-            redirect(action: "list")
-        }
-
-    }
+//    def removeUnivers()
+//    {
+//        if (params.plotHasUniversesId != "")
+//        {
+//            PlotHasUnivers plotHasUnivers = PlotHasUnivers.get(params.plotHasUniversesId)
+//            if (plotHasUnivers == null)
+//            {
+//                flash.message = "Erreur lors de la suppression de l'univers"
+//                redirect(action: "list")
+//            }
+//
+//            plotHasUnivers.delete()
+//
+//            flash.messageInfo = message(code: 'adminRef.PlotHasUnivers.info.delete', args: [plotHasUnivers.plot.name, plotHasUnivers.univers.name])
+//            redirect(action: "list")
+//        }
+//
+//    }
 
 	def show(Long id) {
 		def plotInstance = Plot.get(id)

@@ -43,6 +43,37 @@
                         </a>
                     </div>
                 </div>
+                <div class="row formRow">
+                    <div class="span4">
+                        <label>
+                            <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label for="placeObjectInGame">
+                            <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="placeObject" id="placeObjectInGame" value="1" checked="checked"/>
+                    </div>
+                    <div class="span1">
+                        <label for="placeObjectSimulated">
+                            <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="placeObject" id="placeObjectSimulated" value="2"/>
+                    </div>
+                    <div class="span1">
+                        <label for="placeObjectOffGame">
+                            <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="placeObject" id="placeObjectOffGame" value="3"/>
+                    </div>
+                </div>
                 <div class="row formRow text-center">
                     <label for="placeDescription">
                         <g:message code="redactintrigue.place.placeDescription" default="Description"/>
@@ -108,6 +139,39 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="row formRow">
+                        <div class="span4">
+                            <label>
+                                <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <label for="placeObjectInGame">
+                                <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="placeObject" id="placeObjectInGame" value="1" checked="${place?.objectType?.id == 1}"/>
+                        </div>
+                        <div class="span1">
+                            <label for="placeObjectSimulated">
+                                <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="placeObject" id="placeObjectSimulated" value="2" checked="${place?.objectType?.id == 2}"/>
+                        </div>
+                        <div class="span1">
+                            <label for="placeObjectOffGame">
+                                <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="placeObject" id="placeObjectOffGame" value="3" checked="${place?.objectType?.id == 3}"/>
+                        </div>
+                    </div>
+
                     <div class="row formRow text-center">
                         <label for="placeDescription">
                             <g:message code="redactintrigue.place.placeDescription" default="Description"/>
