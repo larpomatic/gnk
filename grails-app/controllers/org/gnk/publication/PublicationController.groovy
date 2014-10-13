@@ -409,7 +409,14 @@ class PublicationController {
             Tr tableRowPlace = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlace, p.name)
             if (p.genericPlace)
-                wordWriter.addTableCell(tableRowPlace, p.genericPlace.code)
+            {
+                String typeStr = p.genericPlace.code
+                if (p.genericPlace.objectType != null)
+                    typeStr += " (" + p.genericPlace.objectType.type + ")"
+                else
+                    typeStr += " (NULL)"
+                wordWriter.addTableCell(tableRowPlace, typeStr)
+            }
             else
                 wordWriter.addTableCell(tableRowPlace, "[Pas de type de lieu]")
             wordWriter.addTableCell(tableRowPlace, p.description)

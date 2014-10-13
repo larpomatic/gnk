@@ -24,6 +24,19 @@ class ObjectType {
         id type:'integer'
         version type: 'integer'
     }
+
+    ObjectType(int id)
+    {
+        this.id = id
+        if (id == 1)
+            this.type = "en jeu"
+        else if (id == 2)
+            this.type = "simulé"
+        else if (id == 3)
+            this.type = "hors jeu"
+        else
+            throw Exception("Bad Object Type ID value")
+    }
 }
 
 
