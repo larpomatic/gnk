@@ -154,7 +154,8 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
         createResTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Liste des Ingames Clues")
+        // Liste Ingame CLues
+        wordWriter.addStyledParagraphOfText("T2", "Liste des Indices en Jeu")
         createICTableOrga()
 
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
@@ -889,45 +890,51 @@ class PublicationController {
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
     def createICTableOrga() {
+        wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableCell(tableRow, "Indice en Jeu")
+        wordWriter.addTableCell(tableRow, "Détenu au début du Jeu par")
+        table.getContent().add(tableRow);
         for (GenericResource genericResource : gnk.genericResourceMap.values())
-        {
-            // construction du substitutionPublication
-            HashMap<String, Role> rolesNames = new HashMap<>()
-            for (Character c : gn.characterSet)
-                for (Role r : c.selectedRoles)
-                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
-            for (Character c : gn.nonPlayerCharSet)
-                for (Role r : c.selectedRoles)
-                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
-            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
-            // Fin construction du substitutionPublication
-
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
+                Tr tableRowPlot = wordWriter.factory.createTr()
+                wordWriter.addTableCell(tableRowPlot, genericResource.code + " - " + genericResource.comment)
+                if (genericResource.possessedByRole != null)
+                    wordWriter.addTableCell(tableRowPlot, genericResource.possessedByRole.code) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                else
+                    wordWriter.addTableCell(tableRowPlot, "Personne")
+                table.getContent().add(tableRowPlot);
+            }
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table);
+
+
+
+        wordWriter.addStyledParagraphOfText("T3", "Détails")
+        for (GenericResource genericResource : gnk.genericResourceMap.values())
+            if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
+            {
+                // construction du substitutionPublication
+                HashMap<String, Role> rolesNames = new HashMap<>()
+                for (Character c : gn.characterSet)
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                for (Character c : gn.nonPlayerCharSet)
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                // Fin construction du substitutionPublication
+
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-                wordWriter.addStyledParagraphOfText("T3", genericResource.code + " - " + genericResource.title)
-                wordWriter.addStyledParagraphOfText("T4", "Descritpion")
-                wordWriter.addParagraphOfText(/*type*/"" + " - " + genericResource.selectedResource.name + " - Ingame CLue")
-                wordWriter.addParagraphOfText(/*Nom de l'intrigue*/"")
-                wordWriter.addParagraphOfText("Détenu au début du jeu par : "+/*role_has_ingame_clue ou ressource*/"")
-                wordWriter.addParagraphOfText(genericResource.comment)
-                wordWriter.addStyledParagraphOfText("T4", "Contenu")
-                wordWriter.addParagraphOfText(/*Champs titre*/"")
-                wordWriter.addParagraphOfText(genericResource.description)
-
-
-//                genericResource.title = substitutionPublication.replaceAll(genericResource.title)
-//                genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.selectedResource.name)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.code)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.comment)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.title)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.description)
+                wordWriter.addParagraphOfText(genericResource.code + " - " + genericResource.comment)
+                wordWriter.addStyledParagraphOfText("titleIC", genericResource.title)
+                wordWriter.addStyledParagraphOfText("contentIC", genericResource.description)
             }
-        }
     }
 
     // Création du tableau de synthèse des intrigues
