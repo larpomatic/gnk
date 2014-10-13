@@ -413,8 +413,6 @@ class PublicationController {
                 String typeStr = p.genericPlace.code
                 if (p.genericPlace.objectType != null)
                     typeStr += " (" + p.genericPlace.objectType.type + ")"
-                else
-                    typeStr += " (NULL)"
                 wordWriter.addTableCell(tableRowPlace, typeStr)
             }
             else
@@ -456,7 +454,12 @@ class PublicationController {
                 Tr tableRowRes = wordWriter.factory.createTr()
 
                 if (genericResource.selectedResource)
-                    wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.name)
+                {
+                    String typeStr = genericResource.selectedResource.name
+                    if (genericResource.objectType != null)
+                        typeStr += " (" + genericResource.objectType.type + ")"
+                    wordWriter.addTableCell(tableRowRes, typeStr)
+                }
                 else
                     wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
 

@@ -28,7 +28,10 @@ class GenericPlaceXMLWriterService {
             genericPlace.DTDId = genericPlace.id
         rootElt.setAttribute("id", genericPlace.DTDId.toString())
         rootElt.setAttribute("code", genericPlace.code)
-        rootElt.setAttribute("object_type_id", genericPlace.objectType.id.toString())
+        if (genericPlace.objectType != null)
+            rootElt.setAttribute("object_type_id", genericPlace.objectType.id.toString())
+        else
+            rootElt.setAttribute("object_type_id", "null")
 
         return rootElt
     }
