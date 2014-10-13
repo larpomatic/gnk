@@ -121,7 +121,6 @@
         </ul>
     </div> <br/>
     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
-        Rights: ${user.gright} <br/>
     </g:hasRights>
     <g:link class="btn btn-warning" controller="adminUser" action="statistic" id="${user.id}">
         <g:message code="default.statistique"/>
