@@ -102,25 +102,7 @@
             </div>
         </g:hasRights>
     </div>
-
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Action <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li>
-                <g:link controller="adminUser" action="lock" id="${user.id}">
-                    <g:if test="${user.accountLocked}">
-                        <g:message code="default.button.unlock.label"/>
-                    </g:if>
-                    <g:if test="${!user.accountLocked}">
-                        <g:message code="default.button.lock.label"/>
-                    </g:if>
-                </g:link>
-            </li>
-        </ul>
-    </div> <br/>
-    <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
+     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
     </g:hasRights>
     <g:link class="btn btn-warning" controller="adminUser" action="statistic" id="${user.id}">
         <g:message code="default.statistique"/>
