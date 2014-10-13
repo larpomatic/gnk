@@ -2,6 +2,11 @@ package org.gnk.resplacetime
 
 class ObjectType {
     Integer id
+    /*
+        Id 1 = "en jeu"
+        Id 2 = "simulé"
+        Id 3 = "hors jeu"
+     */
     Integer version
 
     Date lastUpdated
