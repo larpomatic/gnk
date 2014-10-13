@@ -24,6 +24,6 @@
 <g:message code="default.title.nbIntrigDraft"/>: ${countDraftPlot} <br/>
 <g:message code="default.title.nbConnection"/>: ${user.countConnexion}
 
-<g:link type="button" action="edit" id="{user.id}"><g:message code="default.action.back"/></g:link>
+<g:link type="button" class="btn-primary btn btn-large right" action="edit" id="{user.id}"><g:message code="default.action.back"/></g:link>
 </body>
 </html>

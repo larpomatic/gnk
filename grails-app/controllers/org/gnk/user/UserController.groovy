@@ -3,7 +3,12 @@ package org.gnk.user
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.springframework.security.access.annotation.Secured
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
+import java.util.Date
+
 import javax.servlet.http.Cookie
+import java.util.logging.SimpleFormatter
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class UserController {
@@ -27,7 +32,10 @@ class UserController {
         int rightuser = currentuser.gright
 
         List<Boolean> lb = userService.instperm(rightuser)
-        [currentuser : currentuser , lb : lb]
+            Date date = currentuser.lastConnexion
+            DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy")
+           String dateDesign = dateFormat.format(date).toString()
+        [currentuser : currentuser , lb : lb, date : dateDesign]
         }
     }
 

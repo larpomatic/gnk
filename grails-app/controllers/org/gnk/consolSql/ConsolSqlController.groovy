@@ -1,11 +1,14 @@
 package org.gnk.consolSql
 
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException
+import gnk.RightsUserTagLib
 import groovy.sql.Sql
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.gnk.admin.RequestService
 import org.gnk.admin.SqlRequest
 import org.gnk.admin.SqlRequestCategory
+import org.gnk.admin.right
+import org.gnk.rights.RightsService
 import org.gnk.user.User
 import org.hibernate.SessionFactory
 
@@ -13,16 +16,21 @@ class ConsolSqlController {
 
     SessionFactory sessionFactory
     RequestService requestService
+    RightsService rightsService
 
-    def terminal() {
+      def terminal() {
         User user = session.getAttribute("user")
-
             if (!user) {
                 params.setProperty("redirectaction", "terminal")
                 params.setProperty("redirectcontroller", "adminUser")
                 redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect: "terminal", controllerredirect: "consolSQL"])
                 return false
             } else {
+               def r1 =  rightsService.hasRight(user.gright, right.RIGHTSHOW.value())
+               def r2 = rightsService.hasRight(user.gright, right.REFOPEN.value())
+               if (!r1 || !r2){
+                   redirect(controller: "login", action: "denied")
+               }
             List<SqlRequestCategory> listCategory = SqlRequestCategory.list();
             [listCategory: listCategory]
         }
@@ -86,5 +94,4 @@ class ConsolSqlController {
         }
         [result: result]
     }
-
-}
+    }

@@ -54,7 +54,13 @@ class AdminUserController {
         }
         else {
             def c = User.createCriteria()
-            List<User> users = c.list { ilike("username", "%"+name+"%")}
+            List<User> users = c.list {
+                or{
+                    ilike("username", "%"+name+"%")
+                    ilike("firstname", "%"+name+"%")
+                    ilike("lastname", "%"+name+"%")
+                }
+            }
             [users : users]
         }
         }

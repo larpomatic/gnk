@@ -142,7 +142,8 @@
 
     </style>
 </head>
-
+<g:hasRights lvlright="${right.REFOPEN.value()}">
+    <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
 <body>
 <br/>
 <br/>
@@ -156,6 +157,7 @@
 </ul>
 
 <div role="main">
+
     <h3><g:message code="navbar.gestion_console"/></h3>
     <ul id="rad0" class="radmc">
         <li>
@@ -217,4 +219,6 @@
 
 </script>
 </body>
+    </g:hasRights>
+</g:hasRights>
 </html>

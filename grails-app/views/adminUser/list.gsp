@@ -22,16 +22,18 @@
 </ul>
 <g:form action="list" class="right pull-right">
     <form role="search">
-        <div class="form-group">
-            <input type="text" name="usersearch" class="form-control" placeholder="Recherche">
+
+        <div class="form-group btn-block">
+            <input type="text" name="usersearch" class="form-control" placeholder=<g:message code="default.action.search.label"/>>
+
+        <button type="submit" class="btn btn-default btn-submit"><g:message code="default.action.search.label"/></button>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </g:form>
 
 <div role="main">
     <br/>
-    <g:link action="createUser" type="button" class="btn btn-primary">Créer un Utilisateur</g:link>
+    <g:link action="createUser" type="button" class="btn btn-primary"><g:message code="default.action.creatUser"/></g:link>
     <br/>
     <table class="table">
         <thead>
@@ -45,7 +47,7 @@
 
             <th><g:message code="default.button.state.label"/></th>
             <g:hasRights lvlright="${right.USERCLOSE.value()}">
-                <th><g:message code="default.button.delete.label"/></th>
+                <th></th>
             </g:hasRights>
         </tr>
         </thead>
@@ -67,15 +69,19 @@
 
                 <td>
                     <g:if test="${!u.accountLocked}">
-                        <g:message code="default.button.unlock.label"/>
+                        <g:link class="btn btn-success" controller="adminUser" action="lock" id="${u.id}">
+                            <g:message code="default.button.actif.label"/>
+                        </g:link>
                     </g:if>
                     <g:if test="${u.accountLocked}">
-                        <g:message code="default.button.lock.label"/>
+                        <g:link class="btn btn-danger" controller="adminUser" action="lock" id="${u.id}">
+                            <g:message code="default.button.inactif.label"/>
+                        </g:link>
                     </g:if>
                 </td>
                 <g:hasRights lvlright="${right.USERCLOSE.value()}">
                 <td>
-                    <g:link controller="adminUser" action="deleteUser" id="${u.id}" type="button" class="btn btn-danger btn-small"><g:message code="default.button.delete.label"/></g:link>
+                    <g:link controller="adminUser" action="deleteUser" id="${u.id}" type="button" class="btn btn-danger btn-small"><g:message code="default.action.delete.label"/></g:link>
                 </td>
                 </g:hasRights>
             </tr>
