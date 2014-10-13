@@ -15,14 +15,22 @@ class Pastscene {
 	Boolean isPublic
 	String description
 
-    // relative time (one year ago)
     Integer dateYear
     Integer dateMonth
     Integer dateDay
     Integer dateHour
     Integer dateMinute
+    Boolean isAbsoluteYear
+    Boolean isAbsoluteMonth
+    Boolean isAbsoluteDay
+    Boolean isAbsoluteHour
+    Boolean isAbsoluteMinute
+
+    // à virer ****
     Integer timingRelative
     String unitTimingRelative
+    // *******
+
     Pastscene pastscenePredecessor
     GenericPlace genericPlace
 
@@ -42,7 +50,7 @@ class Pastscene {
 	static belongsTo = [ plot: Plot ]
 
 	static constraints = {
-		title (maxSize: 45)
+		title (maxSize: 256)
         isPublic ()
         description (nullable: true)
         dateYear (nullable: true)

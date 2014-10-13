@@ -40,59 +40,12 @@
 
                 <div class="row formRow">
                     <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.pastScene.pastsceneDatetime" default="Time"/>
-                        </label>
-                    </div>
-                    <div class="span3 pastSceneRelative">
-                        <div class="input-append shortInput">
-                            <g:field type="number" name="pastSceneRelative" id="pastSceneRelative" value=""/>
-                            <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="Y"/>
-                            <div class="btn-group">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <span class="relativeTimeMessage">
-                                        <g:message code="redactintrigue.pastScene.pastSceneYear" default="Time"/>
-                                    </span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="Y">
-                                            <g:message code="redactintrigue.pastScene.pastSceneYear" default="Year"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="M">
-                                            <g:message code="redactintrigue.pastScene.pastSceneMonth" default="Month"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="d">
-                                            <g:message code="redactintrigue.pastScene.pastSceneDay" default="Day"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="h">
-                                            <g:message code="redactintrigue.pastScene.pastSceneHour" default="Hour"/>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="pastSceneRelativeTimeUnit" data-unitTime="m">
-                                            <g:message code="redactintrigue.pastScene.pastSceneMinute" default="Minute"/>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="span2">
                         <label for="pastScenePublic">
                             <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>
                         </label>
                     </div>
 
-                    <div class="span2">
+                    <div class="span4">
                         <g:checkBox name="pastScenePublic" id="pastScenePublic"/>
                     </div>
 
@@ -102,13 +55,6 @@
                         </a>
                     </div>
                 </div>
-
-                <div class="row formRow text-center">
-                    <label for="pastSceneDescription">
-                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
-                    </label>
-                </div>
-
                 <div class="row formRow">
                     <div class="span2">Année</div>
                     <div class="span2">Mois</div>
@@ -122,6 +68,28 @@
                     <div class="span2 shortInput"><g:field type="number" name="day" id="day"/></div>
                     <div class="span2 shortInput"><g:field type="number" name="hour" id="hour"/></div>
                     <div class="span2 shortInput"><g:field type="number" name="minute" id="minute"/></div>
+                </div>
+                <div class="row formRow littleRow">
+                    <div class="span2 shortInput">
+                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                        <g:checkBox name="yearIsAbsolute" id="yearIsAbsolute"/>
+                    </div>
+                    <div class="span2 shortInput">
+                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                        <g:checkBox name="monthIsAbsolute" id="monthIsAbsolute"/>
+                    </div>
+                    <div class="span2 shortInput">
+                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                        <g:checkBox name="dayIsAbsolute" id="dayIsAbsolute"/>
+                    </div>
+                    <div class="span2 shortInput">
+                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                        <g:checkBox name="hourIsAbsolute" id="hourIsAbsolute"/>
+                    </div>
+                    <div class="span2 shortInput">
+                        <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                        <g:checkBox name="minuteIsAbsolute" id="minuteIsAbsolute"/>
+                    </div>
                 </div>
 
                 <div class="row formRow">
@@ -246,58 +214,11 @@
 
                     <div class="row formRow">
                         <div class="span1">
-                            <label>
-                                <g:message code="redactintrigue.pastScene.pastsceneDatetime" default="Date and Time"/>
-                            </label>
-                        </div>
-                        <div class="span3 pastSceneRelative">
-                            <div class="input-append shortInput">
-                                <g:field type="number" name="pastSceneRelative" id="pastSceneRelative${pastScene.id}" value="${pastScene.timingRelative}"/>
-                                <g:hiddenField name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="${pastScene.unitTimingRelative}"/>
-                                <div class="btn-group">
-                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                        <span class="relativeTimeMessage">
-                                            <g:timeUnitU unit="${pastScene.unitTimingRelative}" />
-                                        </span>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="Y">
-                                                <g:message code="redactintrigue.pastScene.pastSceneYear" default="Year"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="M">
-                                                <g:message code="redactintrigue.pastScene.pastSceneMonth" default="Month"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="d">
-                                                <g:message code="redactintrigue.pastScene.pastSceneDay" default="Day"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="h">
-                                                <g:message code="redactintrigue.pastScene.pastSceneHour" default="Hour"/>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="pastSceneRelativeTimeUnit" data-unitTime="m">
-                                                <g:message code="redactintrigue.pastScene.pastSceneMinute" default="Minute"/>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="span2">
                             <label for="pastScenePublic">
                                 <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>
                             </label>
                         </div>
-                        <div class="span2">
+                        <div class="span4">
                             <g:checkBox name="pastScenePublic" id="pastScenePublic" value="${pastScene.isPublic}"/>
                         </div>
                         <div class="span2">
@@ -305,12 +226,6 @@
                                 <g:message code="redactintrigue.pastScene.chooseRoles" default="Choose roles"/>
                             </a>
                         </div>
-                    </div>
-
-                    <div class="row formRow text-center">
-                        <label for="pastSceneDescription">
-                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
-                        </label>
                     </div>
 
                     <div class="row formRow">
@@ -327,7 +242,28 @@
                         <div class="span2 shortInput"><g:field type="number" name="hour" id="hour" value="${pastScene.dateHour}"/></div>
                         <div class="span2 shortInput"><g:field type="number" name="minute" id="minute" value="${pastScene.dateMinute}"/></div>
                     </div>
-
+                    <div class="row formRow littleRow">
+                        <div class="span2 shortInput">
+                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                            <g:checkBox name="yearIsAbsolute" id="yearIsAbsolute" value="${pastScene.isAbsoluteYear}"/>
+                        </div>
+                        <div class="span2 shortInput">
+                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                            <g:checkBox name="monthIsAbsolute" id="monthIsAbsolute" value="${pastScene.isAbsoluteMonth}"/>
+                        </div>
+                        <div class="span2 shortInput">
+                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                            <g:checkBox name="dayIsAbsolute" id="dayIsAbsolute" value="${pastScene.isAbsoluteDay}"/>
+                        </div>
+                        <div class="span2 shortInput">
+                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                            <g:checkBox name="hourIsAbsolute" id="hourIsAbsolute" value="${pastScene.isAbsoluteHour}"/>
+                        </div>
+                        <div class="span2 shortInput">
+                            <g:message code="redactintrigue.pastScene.absolute" default="Absolute time"/>
+                            <g:checkBox name="minuteIsAbsolute" id="minuteIsAbsolute" value="${pastScene.isAbsoluteMinute}"/>
+                        </div>
+                    </div>
                     <div class="row formRow">
                         <div class="span1">
                             <label for="pastScenePlace">

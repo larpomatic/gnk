@@ -105,15 +105,16 @@ class RoleController {
             }
             jsonPastscene.put("pastsceneId", pastscene.id);
             jsonPastscene.put("pastsceneTitle", pastscene.title);
-            if (pastscene.timingRelative && pastscene.timingRelative != "") {
-                jsonPastscene.put("pastsceneTiming", pastscene.timingRelative);
-                jsonPastscene.put("pastsceneUnitTiming", g.timeUnit(unit: pastscene.unitTimingRelative, quantity: pastscene.unitTimingRelative));
-            }
             jsonPastscene.put("pastsceneYear", pastscene.dateYear);
             jsonPastscene.put("pastsceneMonth", g.timeMonth(month: pastscene.dateMonth));
             jsonPastscene.put("pastsceneDay", pastscene.dateDay);
             jsonPastscene.put("pastsceneHour", pastscene.dateHour);
             jsonPastscene.put("pastsceneMinute", pastscene.dateMinute);
+            jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+            jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+            jsonPastscene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
             jsonPastsceneList.add(jsonPastscene);
         }
         jsonRole.put("pastsceneList", jsonPastsceneList);

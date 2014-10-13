@@ -47,6 +47,37 @@
                         </a>
                     </div>
                 </div>
+                <div class="row formRow">
+                    <div class="span4">
+                        <label>
+                            <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectInGame">
+                            <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectInGame" value="1" checked="checked"/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectSimulated">
+                            <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectSimulated" value="2"/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectOffGame">
+                            <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"/>
+                    </div>
+                </div>
                 <div class="row formRow text-center">
                     <label for="resourceComment">
                         <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
@@ -181,6 +212,38 @@
                             <a href="#resourceTagsModal_${resource.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                             </a>
+                        </div>
+                    </div>
+
+                    <div class="row formRow">
+                        <div class="span4">
+                            <label>
+                                <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectInGame">
+                                <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectInGame" value="1"  checked="${resource?.objectType?.id == 1}" />
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectSimulated">
+                                <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectSimulated" value="2"  checked="${resource?.objectType?.id == 2}"/>
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectOffGame">
+                                <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"  checked="${resource?.objectType?.id == 3}"/>
                         </div>
                     </div>
 

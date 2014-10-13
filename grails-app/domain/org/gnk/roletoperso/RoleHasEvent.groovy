@@ -20,7 +20,7 @@ class RoleHasEvent {
     static belongsTo = [ event: Event, role: Role ]
 
 	static constraints = {
-		title maxSize: 45
+		title maxSize: 256
 		comment nullable: true
 	}
 

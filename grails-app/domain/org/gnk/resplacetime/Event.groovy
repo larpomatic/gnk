@@ -32,7 +32,7 @@ class Event {
 	static belongsTo = [ eventPredecessor: Event, genericPlace: GenericPlace, plot: Plot ]
 
 	static constraints = {
-		name (blank: false, maxSize: 45)
+		name (blank: false, maxSize: 256)
         eventPredecessor (nullable: true)
         genericPlace (nullable: true)
 		timing ()

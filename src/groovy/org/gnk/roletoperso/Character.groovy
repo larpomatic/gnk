@@ -1,10 +1,12 @@
 package org.gnk.roletoperso
 
+import com.granicus.grails.plugins.cookiesession.SessionPersistenceListener
 import org.gnk.gn.Gn
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class Character {
     static CharacterService cs
@@ -206,11 +208,17 @@ class Character {
     }
 
     public Map<Tag, Integer> getTags() {
-        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>()
+        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        List<Tag> tag_101 = new ArrayList<Tag>();
+        List<Tag> tag_m101 = new ArrayList<>();
         for (Role role : selectedRoles) {
             for (RoleHasTag roleHasTag : role.getRoleHasTags()) {
                 final Tag tag = roleHasTag.getTag()
                 Integer weight = roleHasTag.getWeight() * (isPJ() ? roleHasTag.getRole().getPIPTotal() : 99)
+                if (weight == TagService.LOCKED)
+                    tag_101.add(tag);
+                if (weight == TagService.BANNED)
+                    tag_m101.add(tag);
                 if (tagMap.containsKey(tag)) {
                     weight += tagMap.get(tag)
                 }
@@ -222,11 +230,24 @@ class Character {
             nbPIP = 99;
         Set<Tag> tagKeySet = tagMap.keySet()
         for (Tag tagKey : tagKeySet) {
-            int weight = tagMap.get(tagKey)
-            if (nbPIP != 0)
-                weight /= nbPIP
-            tagMap.put(tagKey, weight)
+            int weight = tagMap.get(tagKey);
+            if (tag_101.contains(tagKey)) {
+                tagMap.put(tagKey, TagService.LOCKED);
+            }
+            else if (tag_m101.contains(tagKey)) {
+                tagMap.put(tagKey, TagService.BANNED);
+            }
+            else
+            {
+                if (nbPIP != 0)
+                    weight /= nbPIP
+                tagMap.put(tagKey, weight)
+            }
         }
+        if (isMen())
+            tagMap.put(Tag.findByName("Homme") , TagService.LOCKED);
+        if (isWomen())
+            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);
         return tagMap
     }
 

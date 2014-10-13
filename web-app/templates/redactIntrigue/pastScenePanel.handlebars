@@ -19,61 +19,12 @@
     </div>
     <div class="row formRow">
         <div class="span1">
-            <label for="pastSceneDatetime{{ pastscene.id }}">
-                Temps
-            </label>
-        </div>
-
-        <div class="span3 pastSceneRelative">
-            <div class="input-append shortInput">
-                <input type="number" name="pastSceneRelative" id="pastSceneRelative{{ pastscene.id }}" value="{{ pastscene.timingRelative }}">
-                <input type="hidden" name="pastSceneRelativeUnit" class="pastSceneRelativeUnit" value="{{ pastscene.unitTimingRelative }}" id="pastSceneRelativeUnit">
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                        <span class="relativeTimeMessage">
-                            {{ unitTimeConverter pastscene.unitTimingRelative }}
-                        </span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="pastSceneRelativeTimeUnit" data-unitTime="Y">
-                                Année
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pastSceneRelativeTimeUnit" data-unitTime="M">
-                                Mois
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pastSceneRelativeTimeUnit" data-unitTime="d">
-                                Jour
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pastSceneRelativeTimeUnit" data-unitTime="h">
-                                Heure
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pastSceneRelativeTimeUnit" data-unitTime="m">
-                                Minute
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="span2">
             <label for="pastScenePublic">
                 Publique
             </label>
         </div>
 
-        <div class="span2">
+        <div class="span4">
             {{#if pastscene.isPublic}}
                 <input type="checkbox" name="pastScenePublic" id="pastScenePublic" checked="checked">
             {{else}}
@@ -85,12 +36,6 @@
                 Choisir les rôles
             </a>
         </div>
-    </div>
-
-    <div class="row formRow text-center">
-        <label for="pastSceneDescription">
-            Temps absolu
-        </label>
     </div>
     <div class="row formRow">
         <div class="span2">Année</div>
@@ -105,6 +50,48 @@
         <div class="span2 shortInput"><input type="number" name="day" id="day" value="{{ pastscene.absoluteYear }}"></div>
         <div class="span2 shortInput"><input type="number" name="hour" id="hour" value="{{ pastscene.absoluteHour }}"></div>
         <div class="span2 shortInput"><input type="number" name="minute" id="minute" value="{{ pastscene.absoluteMinute }}"></div>
+    </div>
+    <div class="row formRow littleRow">
+        <div class="span2 shortInput">
+            Temps absolu
+            {{#if pastscene.isAbsoluteYear}}
+                <input type="checkbox" name="yearIsAbsolute" id="yearIsAbsolute" checked="checked">
+            {{else}}
+                <input type="checkbox" name="yearIsAbsolute" id="yearIsAbsolute">
+            {{/if}}
+        </div>
+        <div class="span2 shortInput">
+            Temps absolu
+            {{#if pastscene.isAbsoluteMonth}}
+                <input type="checkbox" name="monthIsAbsolute" id="monthIsAbsolute" checked="checked">
+            {{else}}
+                <input type="checkbox" name="monthIsAbsolute" id="monthIsAbsolute">
+            {{/if}}
+        </div>
+        <div class="span2 shortInput">
+            Temps absolu
+            {{#if pastscene.isAbsoluteDay}}
+                <input type="checkbox" name="dayIsAbsolute" id="dayIsAbsolute" checked="checked">
+            {{else}}
+                <input type="checkbox" name="dayIsAbsolute" id="dayIsAbsolute">
+            {{/if}}
+        </div>
+        <div class="span2 shortInput">
+            Temps absolu
+            {{#if pastscene.isAbsoluteHour}}
+                <input type="checkbox" name="hourIsAbsolute" id="hourIsAbsolute" checked="checked">
+            {{else}}
+                <input type="checkbox" name="hourIsAbsolute" id="hourIsAbsolute">
+            {{/if}}
+        </div>
+        <div class="span2 shortInput">
+            Temps absolu
+            {{#if pastscene.isAbsoluteMinute}}
+                <input type="checkbox" name="minuteIsAbsolute" id="minuteIsAbsolute" checked="checked">
+            {{else}}
+                <input type="checkbox" name="minuteIsAbsolute" id="minuteIsAbsolute">
+            {{/if}}
+        </div>
     </div>
 
     <div class="row formRow">

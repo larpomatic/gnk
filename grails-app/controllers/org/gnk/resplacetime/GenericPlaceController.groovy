@@ -60,6 +60,7 @@ class GenericPlaceController {
         jsonGenericPlace.put("id", genericPlace.getId());
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
+        jsonGenericPlace.put("placeObject", genericPlace.getObjectType().getType());
 
         JSONArray jsonTagList = new JSONArray();
         for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {
@@ -84,6 +85,14 @@ class GenericPlaceController {
             newGenericPlace.code = params.placeCode
         } else {
             return false
+        }
+        if (params.containsKey("placeObject")) {
+            ObjectType objectType = ObjectType.findById(params.placeObject as Integer);
+            newGenericPlace.objectType = objectType;
+        }
+        else {
+            ObjectType objectType = ObjectType.findById(1);
+            newGenericPlace.objectType = objectType;
         }
         if (params.containsKey("placeDescription")) {
             newGenericPlace.comment = params.placeDescription

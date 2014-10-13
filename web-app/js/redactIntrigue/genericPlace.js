@@ -151,6 +151,8 @@ function emptyGenericPlaceForm() {
     $('form[name="newPlaceForm"] input[type="number"]').val("");
     $('form[name="newPlaceForm"] textarea').val("");
     $('form[name="newPlaceForm"] input[type="checkbox"]').attr('checked', false);
+    $('form[name="newPlaceForm"] input[type="radio"]').attr('checked', false);
+    $('form[name="newPlaceForm"] input[type="radio"][value="1"]').attr('checked', 'checked');
     $('form[name="newPlaceForm"] .chooseTag').parent().addClass("invisible");
     $('form[name="newPlaceForm"] .banTag').parent().addClass("invisible");
     $('form[name="newPlaceForm"] .tagWeightInput').val(50);
