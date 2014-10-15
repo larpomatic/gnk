@@ -6,7 +6,8 @@ import org.gnk.gn.Gn;
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
-import org.gnk.tag.TagService;
+import org.gnk.tag.TagService
+import sun.rmi.runtime.Log;
 
 import java.util.*;
 
@@ -50,8 +51,71 @@ public class RoleToPersoProcessing {
         associateRolesToCharacters();
         // add rôle OTHER
         addPJG();
-        LOG.info("\t</Algo>");
+        // Harmonize Sex -- Warning to relation type
+        //reHarmonizeRole();
+        //LOG.info("\t</Algo>");
 
+    }
+
+    private void reHarmonizeRole()
+    {
+        int nb_men = gn.getNbMen();
+        int nb_women = gn.getNbWomen();
+        TreeMap<Integer, Character> women_list = new TreeMap<Integer, Character>();
+        TreeMap<Integer, Character> men_list = new TreeMap<Integer, Character>();
+        for (Character c : gn.getterCharacterSet())
+        {
+            Map<Tag, Integer> tags = c.getTags();
+            int wWomen = 0;
+            int wMen = 0;
+            for (Tag t : tags.keySet())
+            {
+                if (t.getName() == "Homme")
+                    wMen += tags.get(t);
+                if (t.getName() == "Femme")
+                    wWomen += tags.get(t);
+                if ((wWomen != 0) && (wMen != 0))
+                    break;
+            }
+            if (wWomen > wMen) {
+                LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "F");
+                c.setGender("F");
+                nb_women -= 1;
+                women_list.put(wWomen - wMen, c);
+            }
+            else {
+                LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "M");
+                c.setGender("M");
+                nb_men -= 1;
+                men_list.put(wMen - wWomen, c);
+            }
+        }
+        if ((nb_men > 0) || (nb_women > 0))
+        {
+            TreeMap<Integer, Character> pblm_sex;
+            int lim = 0;
+            String gender = "";
+            if (nb_men > 0) {
+                pblm_sex = men_list;
+                lim = nb_men;
+                gender = "F";
+            }
+            else {
+                pblm_sex = women_list;
+                lim = nb_women;
+                gender = "M";
+            }
+
+            while (lim > 0)
+            {
+                lim -= 1;
+                Character chara = pblm_sex.firstEntry().getValue();
+                chara.setGender(gender);
+                LOG.info("URGENT HARMONIZE : Character " + chara.getDTDId() + " TO " + gender);
+                pblm_sex.remove(pblm_sex.firstEntry().getKey());
+            }
+
+        }
     }
 
     private void associateRolesToCharacters() {
@@ -111,8 +175,9 @@ public class RoleToPersoProcessing {
                 }
                 bestCharRanked = lowerCharacter;
             }
-            if (bestCharRanked == null)
+            if (bestCharRanked == null) {
                 bestCharRanked = gn.characterSet.first()
+            }
             addRoleAndSexualizeIFN(bestCharRanked, role);
             gnRoleSetToProcess.remove(role);
             lockedBannedTagForCharacters.put(bestCharRanked, bestCharRanked.getlockedAndBannedTags());

@@ -24,9 +24,9 @@ class GenericPlaceController {
     }
 
     def save() {
-        GenericPlace genericPlace = new GenericPlace(params)
-        Boolean res = saveOrUpdate(genericPlace, true);
-        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode()).first();
+        GenericPlace genericPlace = new GenericPlace(params);
+        Boolean res = saveOrUpdate(genericPlace);
+//        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": ).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
         def jsonGenericPlace = buildJson(genericPlace);
@@ -60,6 +60,7 @@ class GenericPlaceController {
         jsonGenericPlace.put("id", genericPlace.getId());
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
+        jsonGenericPlace.put("placeObject", genericPlace.getObjectType().getType());
 
         JSONArray jsonTagList = new JSONArray();
         for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {
@@ -72,7 +73,8 @@ class GenericPlaceController {
         return jsonGenericPlace;
     }
 
-    def saveOrUpdate(GenericPlace newGenericPlace, boolean isNew) {
+    def saveOrUpdate(GenericPlace newGenericPlace) {
+//        Plot plot = null;
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericPlace.plot = plot
@@ -84,12 +86,20 @@ class GenericPlaceController {
         } else {
             return false
         }
+        if (params.containsKey("placeObject")) {
+            ObjectType objectType = ObjectType.findById(params.placeObject as Integer);
+            newGenericPlace.objectType = objectType;
+        }
+        else {
+            ObjectType objectType = ObjectType.findById(1);
+            newGenericPlace.objectType = objectType;
+        }
         if (params.containsKey("placeDescription")) {
             newGenericPlace.comment = params.placeDescription
         } else {
             return false
         }
-        if(newGenericPlace.extTags) {
+        if(newGenericPlace.extTags != null) {
             HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);
@@ -97,7 +107,7 @@ class GenericPlaceController {
             newGenericPlace.extTags = new HashSet<GenericPlaceHasTag>();
         }
         newGenericPlace.save(flush: true);
-        newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode()).first();
+//        newGenericPlace = GenericPlace.findAllWhere("code": newGenericPlace.getCode(), "plot": plot).first();
 
         params.each {
             if (it.key.startsWith("placeTags_")) {
@@ -140,7 +150,7 @@ class GenericPlaceController {
         String oldname = genericPlace.code;
         if (genericPlace) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(genericPlace, false),
+                object(isupdate: saveOrUpdate(genericPlace),
                         id: genericPlace.id,
                         name: genericPlace.code,
                         oldname: oldname)

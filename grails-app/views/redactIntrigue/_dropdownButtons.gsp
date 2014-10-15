@@ -6,7 +6,7 @@
     <ul class="dropdown-menu roleSelector">
         <g:each in="${plotInstance.roles}" status="i5" var="role">
             <li data-id="${role.id}">
-                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-success&quot; contenteditable=&quot;false&quot;>${role.code}</span>'); return false;">
+                <a class="buttonRichTextEditor" href="#">
                     ${role.code}
                 </a>
             </li>
@@ -25,7 +25,7 @@
     <ul class="dropdown-menu placeSelector">
         <g:each in="${plotInstance.genericPlaces}" status="i5" var="genericPlace">
             <li data-id="${genericPlace.id}">
-                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-warning&quot; contenteditable=&quot;false&quot;>${genericPlace.code}</span>'); return false;">
+                <a class="buttonRichTextEditor">
                     ${genericPlace.code}
                 </a>
             </li>
@@ -44,7 +44,7 @@
     <ul class="dropdown-menu resourceSelector">
         <g:each in="${plotInstance.genericResources}" status="i5" var="genericResource">
             <li data-id="${genericResource.id}">
-                <a onclick="setCarretPos(); pasteHtmlAtCaret('<span class=&quot;label label-important&quot; contenteditable=&quot;false&quot;>${genericResource.code}</span>'); return false;">
+                <a class="buttonRichTextEditor">
                     ${genericResource.code}
                 </a>
             </li>

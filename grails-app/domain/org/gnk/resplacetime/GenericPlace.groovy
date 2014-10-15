@@ -21,14 +21,14 @@ class GenericPlace {
     List<Place> bannedPlaces
     Place selectedPlace
 
-    static belongsTo = [plot: Plot]
+    static belongsTo = [plot: Plot, objectType: ObjectType]
 
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,
 	                   pastscenes: Pastscene ]
 
 	static constraints = {
-		code (blank: false, maxSize: 45, unique: true)
+		code (blank: false, maxSize: 45, unique: false)
 		comment (nullable: true)
 	}
 

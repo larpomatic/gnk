@@ -9,7 +9,7 @@
                     checked="${place.hasGenericPlaceTag(placeTagInstance)}"
                     onClick="hideTags('placeTags${place.id}_${placeTagInstance.id}', 'placeTagsWeight${place.id}_${placeTagInstance.id}')"/>
         </g:else>
-        ${fieldValue(bean: placeTagInstance, field: "name")}
+        ${placeTagInstance.name}
     </label>
     <div class="pull-right">
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>

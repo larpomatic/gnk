@@ -6,6 +6,8 @@ class RoleHasEventHasGenericResource {
 
     Integer id
     Integer version
+    Date lastUpdated
+    Date dateCreated
 
 	Integer quantity
 

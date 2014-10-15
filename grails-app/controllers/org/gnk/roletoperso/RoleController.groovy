@@ -3,6 +3,7 @@ package org.gnk.roletoperso
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
@@ -17,7 +18,7 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role);
-        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
+//        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
@@ -54,6 +55,14 @@ class RoleController {
         jsonRole.put("pipr", role.getPipr());
         jsonRole.put("type", role.getType());
         jsonRole.put("description", role.getDescription());
+        JSONArray jsonResourceList = new JSONArray();
+        for (GenericResource genericResource in plot.genericResources) {
+            JSONObject jsonResource = new JSONObject();
+            jsonResource.put("id", genericResource.id)
+            jsonResource.put("code", genericResource.code)
+            jsonResourceList.add(jsonResource);
+        }
+        jsonRole.put("resourceList", jsonResourceList);
         JSONArray jsonTagList = new JSONArray();
         for (RoleHasTag roleHasTag in role.roleHasTags) {
             JSONObject jsonTag = new JSONObject();
@@ -78,6 +87,7 @@ class RoleController {
             }
             jsonEvent.put("eventId", event.id);
             jsonEvent.put("eventName", event.name);
+            jsonEvent.put("eventTiming", event.timing);
             jsonEventList.add(jsonEvent);
         }
         jsonRole.put("eventList", jsonEventList);
@@ -95,6 +105,16 @@ class RoleController {
             }
             jsonPastscene.put("pastsceneId", pastscene.id);
             jsonPastscene.put("pastsceneTitle", pastscene.title);
+            jsonPastscene.put("pastsceneYear", pastscene.dateYear);
+            jsonPastscene.put("pastsceneMonth", g.timeMonth(month: pastscene.dateMonth));
+            jsonPastscene.put("pastsceneDay", pastscene.dateDay);
+            jsonPastscene.put("pastsceneHour", pastscene.dateHour);
+            jsonPastscene.put("pastsceneMinute", pastscene.dateMinute);
+            jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+            jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+            jsonPastscene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
             jsonPastsceneList.add(jsonPastscene);
         }
         jsonRole.put("pastsceneList", jsonPastsceneList);
@@ -147,30 +167,30 @@ class RoleController {
 		} else {
 			return false
 		}
-		if(newRole.roleHasTags) {
+		if(newRole.roleHasTags != null) {
             HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
             newRole.roleHasTags.clear();
             RoleHasTag.deleteAll(roleHasTags);
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
-        if(newRole.roleHasEvents) {
-            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
-            newRole.roleHasEvents.clear();
-            RoleHasEvent.deleteAll(roleHasEvents);
-        } else {
-            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
-        }
-        if(newRole.roleHasPastscenes) {
-            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
-            newRole.roleHasPastscenes.clear();
-            RoleHasPastscene.deleteAll(roleHasPastscenes);
-        } else {
-            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
-        }
-			params.updateRoleResult = !!(newRole.save(flush: true));
+//        if(newRole.roleHasEvents != null) {
+//            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
+//            newRole.roleHasEvents.clear();
+//            RoleHasEvent.deleteAll(roleHasEvents);
+//        } else {
+//            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
+//        }
+//        if(newRole.roleHasPastscenes != null) {
+//            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
+//            newRole.roleHasPastscenes.clear();
+//            RoleHasPastscene.deleteAll(roleHasPastscenes);
+//        } else {
+//            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
+//        }
+        newRole.save(flush: true);
 
-        newRole = Role.findAllWhere("code": newRole.getCode()).first();
+//        newRole = Role.findAllWhere("code": newRole.getCode()).first();
         params.each {
             if (it.key.startsWith("roleTags_")) {
                 RoleHasTag roleHasTag = new RoleHasTag();

@@ -9,7 +9,8 @@ import javax.servlet.http.Cookie
 class UserController {
     UserService userService
 
-    def index() {
+    def
+    index() {
         render 'Secure access only'
     }
 
@@ -24,6 +25,7 @@ class UserController {
         } else {
         User currentuser = User.findById(user.id)
         int rightuser = currentuser.gright
+
         List<Boolean> lb = userService.instperm(rightuser)
         [currentuser : currentuser , lb : lb]
         }
@@ -67,11 +69,23 @@ class UserController {
     def modifyProfil(){
         User user = session.getAttribute("user")
         User currentuser = User.findById(user.id)
-
-        if (params.lastnamemodif != currentuser.lastname){
-            currentuser.lastname = params.lastnamemodif
-            currentuser.save()
+        String newpassword = params.passwordChanged
+        String confirmpassword = params.passwordChangedConfirm
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+            currentuser.password = newpassword
+        if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){
+            currentuser.firstname = params.firstnamemodif
         }
+        if (params.lastnamemodif && params.lastnamemodif != currentuser.lastname){
+            currentuser.lastname = params.lastnamemodif
+
+        }
+        if (params.usernamemodif && params.usernamemodif != currentuser.username){
+            if (User.findByUsername((String)params.usernamemodif) == null){
+                currentuser.username = params.usernamemodif;
+            }
+        }
+        currentuser.save()
         redirect( action: "profil")
     }
 }

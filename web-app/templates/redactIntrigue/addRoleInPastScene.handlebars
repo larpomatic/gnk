@@ -1,0 +1,22 @@
+<div class="tab-pane" id="pastsceneRole{{ roleId }}_{{ pastsceneId }}">
+    <input type="hidden" name="roleHasPastSceneDescription{{ roleId }}" class="descriptionContent" value="">
+    <input type="hidden" name="roleHasPastSceneTitle{{ roleId }}" class="titleContent" value="">
+    <div class="row formRow text-center">
+        <label>
+            Titre
+        </label>
+    </div>
+    <div class="fullScreenEditable">
+        <div id="roleHasPastSceneTitleRichTextEditor{{ roleId }}_{{ pastsceneId }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+        </div>
+    </div>
+    <div class="row formRow text-center">
+        <label>
+            Description
+        </label>
+    </div>
+    <div class="fullScreenEditable">
+        <div id="roleHasPastSceneRichTextEditor{{ roleId }}_{{ pastsceneId }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+        </div>
+    </div>
+</div>

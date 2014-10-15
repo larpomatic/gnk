@@ -9,9 +9,12 @@ $(function(){
     //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
         var form = $('form[name="newResourceForm"]');
-        var comment = $('.richTextEditor', form).html();
+        var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var description = $('#clueRichTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -33,13 +36,27 @@ $(function(){
                     createNewGenericResourcePanel(data);
                     initSearchBoxes();
                     initModifyTag();
+                    stopClosingDropdown();
                     appendEntity("resource", data.genericResource.code, "important", "", data.genericResource.id);
+                    initQuickObjects();
                     var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
                     $('.resourceLi .badge').html(nbGenericResources);
                     updateResource();
                     $('form[name="updateResource_' + data.genericResource.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
+                    var spanList = $('.richTextEditor span.label-default').filter(function() {
+                        return $(this).text() == data.genericResource.code;
+                    });
+                    spanList.each(function() {
+                        $(this).removeClass("label-default").addClass("label-important");
+                    });
+                    $('.resourceSelector li[data-id=""]').each(function() {
+                        if ($("a", $(this)).html().trim() == data.genericResource.code + ' <i class="icon-warning-sign"></i>') {
+                            $(this).remove();
+                        }
+                    });
+                    updateAllDescription($.unique(spanList.closest("form")));
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
@@ -57,9 +74,12 @@ function updateResource() {
     $('.updateResource').click(function() {
         var genericResourceId = $(this).attr("data-id");
         var form = $('form[name="updateResource_' + genericResourceId + '"]');
-        var comment = $('.richTextEditor', form).html();
+        var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var description = $('#clueRichTextEditor' + genericResourceId, form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -70,6 +90,8 @@ function updateResource() {
                     createNotification("success", "Modifications réussies.", "Votre ressource a bien été modifiée.");
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                    $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
+                    initializeTextEditor();
                     $('.richTextEditor span.label-important').each(function() {
                         if ($(this).html() == data.object.oldname) {
                             $(this).html(data.object.name);
@@ -113,6 +135,7 @@ function removeResource(object) {
                     $('.resourceLi .badge').html(nbGenericResources);
                     $('.addResource').trigger("click");
                     $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                    $('.eventScreen td[data-id="'+object.attr("data-id")+'"]').parent().remove();
                     $('.richTextEditor span.label-important').each(function() {
                        if ($(this).html() == name) {
                            $(this).remove();
@@ -163,10 +186,11 @@ function createNewGenericResourcePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
+        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericResourcePanel'];
@@ -198,5 +222,10 @@ function createNewGenericResourcePanel(data) {
 
     $('.banTag').click(function() {
         $('input', $(this).parent().next()).val(-101);
+    });
+    $('.eventScreen tbody').each(function() {
+        var roleId = $(this).attr("data-role");
+        $(this).append('<tr><td data-id="'+data.genericResource.id+'">'+data.genericResource.code+
+            '</td><td><input type="number" name="quantity'+roleId+'_'+data.genericResource.id+'" value=""/></td></tr>');
     });
 }

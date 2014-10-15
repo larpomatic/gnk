@@ -6,7 +6,7 @@ $(function(){
     initSearchBoxes();
 
     // ajout du nombre de relation
-    $('.numberRelation').html($('.relationScreen .accordion-group').size());
+    $('.numberRelation').html($('.relationScreen .accordion-group:not(.leftRelation)').size());
 
     // charge les datetimepickers
     $('.datetimepicker').datetimepicker({
@@ -14,38 +14,51 @@ $(function(){
         pickSeconds: false
     });
 
-    // empeche les dropdown de se fermer lorsqu'on focus un input
-    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
-        e.stopPropagation();
-    });
+    stopClosingDropdown();
 
-    //permet d'ajouter rapidement une ressource, lieu ou role
-    $(".leftMenuList input, .inputOther").keypress(function(e) {
-        if(e.which == 13) {
-            var entity = $(this).attr("data-entity");
-            var badgeWarning = '<i class="icon-warning-sign"></i>';
-            appendEntity(entity, $(this).val(), $(this).attr("data-label"), badgeWarning);
-            $(this).val('');
-            return false;
-        }
-    });
+    initQuickObjects();
 
     initializeTextEditor();
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
-    $('.savePlotForm').submit(function() {
-        var description = $('#plotRichTextEditor', this).html();
+    $('.updatePlot').click(function() {
+        if (($('.richTextEditor span.label-default').size() > 0) && ($('#isDraft:checked').size() == 0)) {
+            createNotification("danger", "Enregistrement échoué.", "Votre intrigue comporte des éléments non enregistrés en base de données, enregistrez les ou passer l'intrigue en mode brouillon pour pouvoir continuer.");
+            return false;
+        }
+        var form = $('.savePlotForm');
+        var description = $('#plotRichTextEditor', form).html();
         description = transformDescription(description);
-        $('.descriptionContent', this).val(description);
-        var pitchOrga = $('#plotRichTextEditorPitchOrga', this).html();
+        $('.descriptionContent', form).val(description);
+        var pitchOrga = $('#plotRichTextEditorPitchOrga', form).html();
         pitchOrga = transformDescription(pitchOrga);
-        $('.pitchOrgaContent', this).val(pitchOrga);
-        var pitchPj = $('#plotRichTextEditorPitchPj', this).html();
+        $('.pitchOrgaContent', form).val(pitchOrga);
+        var pitchPj = $('#plotRichTextEditorPitchPj', form).html();
         pitchPj = transformDescription(pitchPj);
-        $('.pitchPjContent', this).val(pitchPj);
-        var pitchPnj = $('#plotRichTextEditorPitchPnj', this).html();
+        $('.pitchPjContent', form).val(pitchPj);
+        var pitchPnj = $('#plotRichTextEditorPitchPnj', form).html();
         pitchPnj = transformDescription(pitchPnj);
-        $('.pitchPnjContent', this).val(pitchPnj);
+        $('.pitchPnjContent', form).val(pitchPnj);
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.object.isupdate) {
+                    initializeTextEditor();
+                    createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
+
+                }
+                else {
+                    createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+            }
+        })
+
     });
 
     // mode plein ecran
@@ -56,7 +69,42 @@ $(function(){
     bgenScroll();
 
     initModifyTag();
+
+    //insert html span into textEditors
+    $('.buttonRichTextEditor').click(function() {
+        setCarretPos();
+        if ($(this).closest("ul").hasClass("roleSelector")) {
+            pasteHtmlAtCaret('<span class="label label-success" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("placeSelector")) {
+            pasteHtmlAtCaret('<span class="label label-warning" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("resourceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-important" contenteditable="false">' + $(this).html() + '</span>');
+        }
+        return false;
+    });
 });
+
+function initQuickObjects() {
+    //permet d'ajouter rapidement une ressource, lieu ou role
+    $(".leftMenuList input, .inputOther").keypress(function(e) {
+        if(e.which == 13) {
+            var entity = $(this).attr("data-entity");
+            var badgeWarning = '<i class="icon-warning-sign"></i>';
+            appendEntity(entity, $(this).val(), "default", badgeWarning);
+            $(this).val('');
+            return false;
+        }
+    });
+}
+
+// empeche les dropdown de se fermer lorsqu'on focus un input
+function stopClosingDropdown() {
+    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+        e.stopPropagation();
+    });
+}
 
 //active le bouton "modifier" des fenêtres de tag
 function initModifyTag() {
@@ -152,11 +200,6 @@ function bgenScroll(e) {
         st = document.documentElement.scrollTop;
     }
     setTimeout('window.scroll(0,st)', 50);
-//    setTimeout(function() {
-//        if (location.hash) {
-//            window.scrollTo(0, 0);
-//        }
-//    }, 100);
 }
 
 //desactive le weight des tags
@@ -263,24 +306,46 @@ function initializeTextEditor() {
         description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
         description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
         description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
+        description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false">');
         description = description.replace(/&gt;/g, '</span>');
+        description = "<div>" + description + "</div>";
+        var html = $(description);
+        $("span br", html).remove();
+        description = html.html();
         $(this).html(description);
     });
 }
 
 // on remplace les span html dans une description par des balises
 function transformDescription(description) {
+    description = "<div>" + description + "</div>";
+    var html = $(description);
+    $("span:not(.label)", html).contents().unwrap();
+    description = html.html();
     description = description.replace(/<div>/g, '\n');
     description = description.replace(/<\/div>/g, '\n');
     description = description.replace(/<br>/g, '\n');
     description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
     description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
     description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
+    description = description.replace(/<span class="label label-default" contenteditable="false">/g, '<u:');
+    description = description.replace(/<span class="label label-warning">/g, '<l:');
+    description = description.replace(/<span class="label label-important">/g, '<o:');
+    description = description.replace(/<span class="label label-success">/g, '<i:');
+    description = description.replace(/<span class="label label-default">/g, '<u:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');
     description = description.replace(/&lt;o:/g, '<o:');
     description = description.replace(/&lt;i:/g, '<i:');
+    description = description.replace(/&lt;u:/g, '<u:');
     description = description.replace(/&gt;/g, '>');
     return description;
+}
+
+//update all these forms
+function updateAllDescription(formlist) {
+    formlist.each(function() {
+        $('input[name="Update"]', $(this)).trigger("click");
+    });
 }

@@ -110,7 +110,7 @@ class SubstitutionPublication {
                 continue
             if (place.genericPlace.code.toUpperCase().equals(code))
             {
-                return place.genericPlace.code
+                return place.name
             }
         }
         return "[Lieu générique]"

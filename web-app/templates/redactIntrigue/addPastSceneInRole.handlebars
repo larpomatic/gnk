@@ -1,18 +1,26 @@
 <div class="accordion-group">
+    {{#if role.title}}
+    <div class="accordion-heading alert-success">
+    {{else}}
     <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ roleId }}"
-           href="#collapsePastScene{{ roleId }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
-            {{ pastsceneTitle }}
+    {{/if}}
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ role.roleId }}"
+           href="#collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" data-pastsceneId="{{ pastscene.id }}">
+
+            <!--###PASTSCENECHANGE-->
+            En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} -
+
+            {{ pastscene.title }}
         </a>
     </div>
-    <div id="collapsePastScene{{ roleId }}-{{ pastsceneId }}" class="accordion-body collapse">
+    <div id="collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" class="accordion-body collapse">
         <div class="accordion-inner">
             <div class="formRow">
                 <div class="span1">
                     Titre
                 </div>
                 <div class="span8">
-                    <input type="text" name="roleHasPastSceneTitle{{ pastsceneId }}" value="" id="roleHasPastSceneTitle{{ pastsceneId }}">
+                    <input type="text" disabled="disabled" name="roleHasPastSceneTitle{{ pastscene.id }}" value="{{role.title}}" id="roleHasPastSceneTitle{{ pastscene.id }}">
                 </div>
             </div>
             <div class="row formRow text-center">
@@ -20,7 +28,9 @@
                     Description
                 </label>
             </div>
-            <textarea name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100" id="roleHasPastSceneDescription{{ pastsceneId }}"></textarea>
+            <textarea disabled="disabled" name="roleHasPastSceneDescription{{ pastscene.id }}" rows="5" cols="100" id="roleHasPastSceneDescription{{ pastscene.id }}">
+                {{role.description}}
+            </textarea>
         </div>
     </div>
 </div>

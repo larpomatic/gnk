@@ -29,13 +29,27 @@ $(function(){
                     createNewRolePanel(data);
                     initSearchBoxes();
                     initModifyTag();
+                    stopClosingDropdown();
                     appendEntity("role", data.role.code, "success", "", data.role.id);
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
+                    initQuickObjects();
                     updateRole();
                     $('form[name="updateRole_' + data.role.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
+                    var spanList = $('.richTextEditor span.label-default').filter(function() {
+                        return $(this).text() == data.role.code;
+                    });
+                    spanList.each(function() {
+                        $(this).removeClass("label-default").addClass("label-success");
+                    });
+                    $('.roleSelector li[data-id=""]').each(function() {
+                        if ($("a", $(this)).html().trim() == data.role.code + ' <i class="icon-warning-sign"></i>') {
+                            $(this).remove();
+                        }
+                    });
+                    updateAllDescription($.unique(spanList.closest("form")));
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
@@ -64,14 +78,20 @@ function updateRole() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                    initializeTextEditor();
                     $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
+                    $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
+                    $('.eventScreen a[href*="#eventRole'+data.object.id +'"]').html(data.object.name);
                     $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"]').html('Vers: ' + data.object.name);
+                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
+                        var relationImage = $(this).html();
+                        $(this).parent().html(relationImage + " " + data.object.name);
+                    });
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
                         if ($(this).html() == data.object.oldname) {
@@ -120,6 +140,10 @@ function removeRole(object) {
                     $('.relationScreen .leftMenuList a[href="#roleRelation_' + object.attr("data-id") + '"]').parent().remove();
                     $('.relationScreen #roleRelation_' + object.attr("data-id")).remove();
                     $('.relationScreen .accordion-group[data-roleTo="' + object.attr("data-id") + '"]').remove();
+                    $('.pastSceneScreen a[href*="#pastsceneRole' + object.attr("data-id") +'"]').parent().remove();
+                    $('.pastSceneScreen div[id*="pastsceneRole' + object.attr("data-id") + '"]').remove();
+                    $('.eventScreen a[href*="#eventRole' + object.attr("data-id") +'"]').parent().remove();
+                    $('.eventScreen div[id*="eventRole' + object.attr("data-id") + '"]').remove();
                     var nbRoles = parseInt($('.roleLi .badge').html()) - 1;
                     $('.roleLi .badge').html(nbRoles);
                     $('.addRole').trigger("click");
@@ -176,10 +200,11 @@ function createNewRolePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
+        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
@@ -206,6 +231,44 @@ function createNewRolePanel(data) {
 
     $('.banTag').click(function() {
         $('input', $(this).parent().next()).val(-101);
+    });
+    $('.pastSceneScreen div[id*="pastsceneRolesModal"]').each(function() {
+        var pastsceneId = $(this).attr("id");
+        pastsceneId = pastsceneId.replace("pastsceneRolesModal", "");
+        template = Handlebars.templates['templates/redactIntrigue/addRoleInPastScene'];
+        context = {
+            roleId: data.role.id,
+            roleCode: data.role.code,
+            pastsceneId: pastsceneId
+        };
+        html = template(context);
+        $(".tab-content", $(this)).append(html);
+        $(".leftUl", $(this)).append('<li><a href="#pastsceneRole'+data.role.id+'_'+pastsceneId+'" data-toggle="tab">'+data.role.code+'</a></li>')
+    });
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('.pastSceneScreen div[id*="pastsceneRole' + data.role.id + '"] .fullScreenEditable');
+
+    $('.pastSceneScreen div[id*="pastsceneRole' + data.role.id + '"] .fullScreenEditable .btnFullScreen').click(function() {
+        $(this).parent().parent().toggleClass("fullScreenOpen");
+    });
+    $('.eventScreen div[id*="eventRolesModal"]').each(function() {
+        var eventId = $(this).attr("id");
+        eventId = eventId.replace("eventRolesModal", "");
+        $(".leftUl", $(this)).append('<li><a href="#eventRole'+data.role.id+'_'+eventId+'" data-toggle="tab">'+data.role.code+'</a></li>');
+        template = Handlebars.templates['templates/redactIntrigue/addRoleInEvent'];
+        context = {
+            roleId: data.role.id,
+            roleCode: data.role.code,
+            eventId: eventId,
+            resourceList: data.role.resourceList
+        };
+        html = template(context);
+        $(".tab-content:first", $(this)).append(html);
+//        $('.eventScreen #eventRolesModal tbody').first().clone().appendTo($('#eventRole'+data.role.id+'_'+eventId+' table', $(this)));
+    });
+    $('.btn-group', plotFullscreenEditable).clone().prependTo('.eventScreen div[id*="eventRole' + data.role.id + '"] .fullScreenEditable');
+
+    $('.eventScreen div[id*="eventRole' + data.role.id + '"] .fullScreenEditable .btnFullScreen').click(function() {
+        $(this).parent().parent().toggleClass("fullScreenOpen");
     });
 }
 

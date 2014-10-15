@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 
@@ -14,14 +15,22 @@ class Pastscene {
 	Boolean isPublic
 	String description
 
-    // relative time (one year ago)
     Integer dateYear
     Integer dateMonth
     Integer dateDay
     Integer dateHour
     Integer dateMinute
+    Boolean isAbsoluteYear
+    Boolean isAbsoluteMonth
+    Boolean isAbsoluteDay
+    Boolean isAbsoluteHour
+    Boolean isAbsoluteMinute
+
+    // à virer ****
     Integer timingRelative
     String unitTimingRelative
+    // *******
+
     Pastscene pastscenePredecessor
     GenericPlace genericPlace
 
@@ -41,10 +50,10 @@ class Pastscene {
 	static belongsTo = [ plot: Plot ]
 
 	static constraints = {
-		title (maxSize: 45)
+		title (maxSize: 256)
         isPublic ()
         description (nullable: true)
-        dateYear (min: 0, nullable: true)
+        dateYear (nullable: true)
         dateMonth (min: 0, max: 12, nullable: true)
         dateDay (min: 0, max: 31, nullable: true)
         dateHour (min: 0, max: 24, nullable: true)
@@ -60,5 +69,15 @@ class Pastscene {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+        roleHasPastscenes cascade: 'all-delete-orphan'
+    }
+
+    public RoleHasPastscene getRoleHasPastscene(Role role) {
+        for (RoleHasPastscene roleHasPastscene in roleHasPastscenes) {
+            if (roleHasPastscene.role == role) {
+                return roleHasPastscene;
+            }
+        }
+        return null;
     }
 }

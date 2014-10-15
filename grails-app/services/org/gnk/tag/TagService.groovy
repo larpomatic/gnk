@@ -69,12 +69,8 @@ class TagService {
     }
 
     def getGenericChilds() {
-        Set<Tag> generics = Tag.findAllByName("Générique");
-        ArrayList<Tag> genericChilds = new ArrayList<>();
-        for (Tag generic in generics) {
-            genericChilds.addAll(Tag.findAllByParent(generic));
-        }
-        return genericChilds;
+        Tag generics = Tag.findById(0);
+        return generics.children;
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
@@ -207,7 +203,9 @@ class TagService {
         else {
             TagRelation tagRelation1 = TagRelation.myFindWhere(t1, t2);
             TagRelation tagRelation2 = TagRelation.myFindWhere(t2, t1);
-            TagRelation tagRelation = tagRelation1 == null ? tagRelation2 : tagRelation1;
+            TagRelation tagRelation = tagRelation1;
+            if ((tagRelation1 == null) && (tagRelation2 != null) && (tagRelation2.isBijective == true))
+                tagRelation = tagRelation2;
 
             if (tagRelation == null)
                 return 0;

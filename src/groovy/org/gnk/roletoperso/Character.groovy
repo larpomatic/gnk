@@ -1,10 +1,12 @@
 package org.gnk.roletoperso
 
+import com.granicus.grails.plugins.cookiesession.SessionPersistenceListener
 import org.gnk.gn.Gn
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.tag.TagService
 
 class Character {
     static CharacterService cs
@@ -133,14 +135,14 @@ class Character {
 
     public addRole(Role role) {
         bannedRoles.remove(role)
-            if (!selectedRoles.contains(role))
-                selectedRoles.add(role)
-            if ((role.isPJG()) && (!selectedPJG.contains(role)))
-                selectedPJG.add(role)
-            if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
-                specificRoles.add(role);
-                plotid_role.add(role.plotId as Integer);
-            }
+        if (!selectedRoles.contains(role))
+            selectedRoles.add(role)
+        if ((role.isPJG()) && (!selectedPJG.contains(role)))
+            selectedPJG.add(role)
+        if ((!role.isTPJ()) && (!role.isPJG()) && (!specificRoles.contains(role))) {
+            specificRoles.add(role);
+            plotid_role.add(role.plotId as Integer);
+        }
 
     }
 
@@ -206,11 +208,17 @@ class Character {
     }
 
     public Map<Tag, Integer> getTags() {
-        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>()
+        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        List<Tag> tag_101 = new ArrayList<Tag>();
+        List<Tag> tag_m101 = new ArrayList<>();
         for (Role role : selectedRoles) {
             for (RoleHasTag roleHasTag : role.getRoleHasTags()) {
                 final Tag tag = roleHasTag.getTag()
                 Integer weight = roleHasTag.getWeight() * (isPJ() ? roleHasTag.getRole().getPIPTotal() : 99)
+                if (weight == TagService.LOCKED)
+                    tag_101.add(tag);
+                if (weight == TagService.BANNED)
+                    tag_m101.add(tag);
                 if (tagMap.containsKey(tag)) {
                     weight += tagMap.get(tag)
                 }
@@ -222,11 +230,24 @@ class Character {
             nbPIP = 99;
         Set<Tag> tagKeySet = tagMap.keySet()
         for (Tag tagKey : tagKeySet) {
-            int weight = tagMap.get(tagKey)
-            if (nbPIP != 0)
-                weight /= nbPIP
-            tagMap.put(tagKey, weight)
+            int weight = tagMap.get(tagKey);
+            if (tag_101.contains(tagKey)) {
+                tagMap.put(tagKey, TagService.LOCKED);
+            }
+            else if (tag_m101.contains(tagKey)) {
+                tagMap.put(tagKey, TagService.BANNED);
+            }
+            else
+            {
+                if (nbPIP != 0)
+                    weight /= nbPIP
+                tagMap.put(tagKey, weight)
+            }
         }
+        if (isMen())
+            tagMap.put(Tag.findByName("Homme") , TagService.LOCKED);
+        if (isWomen())
+            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);
         return tagMap
     }
 
@@ -287,7 +308,59 @@ class Character {
         return result;
     }
 
+    public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelations(Gn gnInstance) {
+        final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
+        final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();
 
+        for (Character character : relations.keySet()) {
+            List<RoleHasRelationWithRole> list = new ArrayList<RoleHasRelationWithRole>();
+            for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
+                list.add(roleHasRelationWithRole);
+            }
+            if (list.size() > 0)
+                result.put(character, list);
+        }
+
+        for (Character c : gnInstance.getterCharacterSet())
+        {
+            if (c != this)
+            {
+                Map<Character, Set<RoleHasRelationWithRole>> bijrela = c.getRelatedCharactersExceptBijectives(gnInstance);
+                Set<RoleHasRelationWithRole> bijective = bijrela.get(this);
+                if (bijective.size() > 0)
+                {
+                    for (RoleHasRelationWithRole bij : bijective)
+                    {
+                        if (bij.isBijective == true)
+                        {
+                            List<RoleHasRelationWithRole> listbij = result.get(c);
+                            if (listbij == null)
+                                listbij = new ArrayList<RoleHasRelationWithRole>();
+                            listbij.add(bij);
+                            result.remove(c);
+                            result.put(c, listbij);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public String rolesToString()
+    {
+        String result = "";
+
+        for (Role r in selectedRoles)
+
+        {
+            if (result != "")
+                result += ", "
+            result += r.code;
+        }
+        return result;
+    }
 
     public Map<RoleHasRelationWithRole, Integer> getRelations(boolean evenIfNonBijective) {
         Map<RoleHasRelationWithRole, Integer> relationMap = new HashMap<RoleHasRelationWithRole, Integer>()
@@ -382,7 +455,6 @@ class Character {
 
         return finalAge;
     }
-
 
     public static int getAgeForTagAge(Tag t, int value) {
         int age = 0

@@ -3,6 +3,7 @@
     <input type="hidden" name="id" value="{{ event.id }}"/>
     <input type="hidden" name="plotId" id="plotId" value="{{ event.plotId }}"/>
     <input type="hidden" name="eventDescription" class="descriptionContent" value=""/>
+    <input type="hidden" name="eventName" class="titleContent" value=""/>
     <div class="row formRow text-center">
         <label for="eventName">
             Nom
@@ -16,25 +17,14 @@
             {{ encodeAsHtml event.name }}
         </div>
     </div>
-    <!--<div class="row formRow">-->
-        <!--<div class="span1">-->
-            <!--<label for="EventName">-->
-                <!--Nom-->
-            <!--</label>-->
-        <!--</div>-->
-
-        <!--<div class="span8">-->
-            <!--<input type="text" name="eventName" id="EventName" value="{{ event.name }}" required=""/>-->
-        <!--</div>-->
-    <!--</div>-->
     <div class="row formRow">
-        <div class="span1">
+        <div class="span2">
             <label for="eventPublic">
                 Publique
             </label>
         </div>
 
-        <div class="span4">
+        <div class="span2">
             {{#if event.isPublic}}
                 <input type="checkbox" name="eventPublic" id="eventPublic" checked="checked">
             {{else}}
@@ -42,18 +32,23 @@
             {{/if}}
         </div>
 
-        <div class="span1">
+        <div class="span2">
             <label for="eventPlanned">
                 Planifié
             </label>
         </div>
 
-        <div class="span4">
+        <div class="span2">
             {{#if event.isPlanned}}
                 <input type="checkbox" name="eventPlanned" id="eventPlanned" checked="checked">
             {{else}}
                 <input type="checkbox" name="eventPlanned" id="eventPlanned">
             {{/if}}
+        </div>
+        <div class="span2">
+            <a href="#eventRolesModal{{event.id}}" class="btn" data-toggle="modal">
+                Choisir les rôles
+            </a>
         </div>
     </div>
     <div class="row formRow">
@@ -116,6 +111,138 @@
             {{ encodeAsHtml event.description }}
         </div>
     </div>
+
+    <div id="eventRolesModal{{ event.id }}" class="modal hide fade largeModal" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>
+                Rôles
+            </h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs leftUl">
+                    {{#each event.roleList}}
+                        {{#if title}}
+                            <li class="alert-success">
+                                <a href="#eventRole{{ roleId }}_{{ ../../event.id }}" data-toggle="tab">
+                                    {{ roleCode }}
+                                </a>
+                            </li>
+                        {{else}}
+                            <li>
+                                <a href="#eventRole{{ roleId }}_{{ ../../event.id }}" data-toggle="tab">
+                                    {{ roleCode }}
+                                </a>
+                            </li>
+                        {{/if}}
+                    {{/each}}
+                </ul>
+                <div class="tab-content">
+                    {{#each event.roleList}}
+                        <div class="tab-pane" id="eventRole{{ roleId }}_{{ ../event.id }}">
+                            <input type="hidden" name="roleHasEventTitle{{ roleId }}" class="titleContent" value="">
+                            <div class="row formRow text-center">
+                                <label>
+                                    Titre
+                                </label>
+                            </div>
+                            <div class="fullScreenEditable">
+                                <div id="roleHasEventTitleRichTextEditor{{ roleId }}" contenteditable="true" class="text-left richTextEditor textTitle" onblur="saveCarretPos($(this).attr('id'))">
+                                    {{ encodeAsHtml title }}
+                                </div>
+                            </div>
+                            <div class="formRow">
+                                <div class="span1">
+                                    Est annoncé
+                                </div>
+                                <div class="span4">
+                                    {{#if isAnnounced}}
+                                        <input type="checkbox" name="roleHasEventannounced{{ roleId }}" checked="checked">
+                                    {{else}}
+                                        <input type="checkbox" name="roleHasEventannounced{{ roleId }}">
+                                    {{/if}}
+
+                                </div>
+                            </div>
+
+                            <div class="text-center roleHasEventTabs">
+                                <div class="span1"></div>
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#roleHasEventDescriptionTab{{ roleId }}_{{ ../event.id }}" data-toggle="tab">
+                                            Description
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#roleHasEventCommentTab{{ roleId }}_{{ ../event.id }}" data-toggle="tab">
+                                            Commentaire
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#roleHasEventEvenementialTab{{ roleId }}_{{ ../event.id }}" data-toggle="tab">
+                                            Description évènementielle
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="roleHasEventDescriptionTab{{ roleId }}_{{ ../event.id }}">
+                                        <input type="hidden" name="roleHasEventDescription{{ roleId }}" class="descriptionContent" value="">
+                                        <div class="fullScreenEditable">
+                                            <div id="roleHasEventRichTextEditor{{ roleId }}_{{ ../event.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                                {{ encodeAsHtml description }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="roleHasEventCommentTab{{ roleId }}_{{ ../event.id }}">
+                                        <input type="hidden" name="roleHasEventComment{{ roleId }}" class="commentContent" value="">
+                                        <div class="fullScreenEditable">
+                                            <div id="roleHasEventCommentRichTextEditor{{ roleId }}_{{ ../event.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                                {{ encodeAsHtml comment }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="roleHasEventEvenementialTab{{ roleId }}_{{ ../event.id }}">
+                                        <input type="hidden" name="roleHasEventEvenemential{{ roleId }}" class="evenementialContent" value="">
+                                        <div class="fullScreenEditable">
+                                            <div id="roleHasEventEvenementialRichTextEditor{{ roleId }}_{{ ../event.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                                {{ encodeAsHtml evenemential }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Ressources</th>
+                                    <th>Quantité</th>
+                                </tr>
+                                </thead>
+                                <tbody data-role="{{ ../roleId }}">
+                                {{#each resourceList}}
+                                    <tr>
+                                        <td data-id="{{ id }}">{{ code }}</td>
+                                        <td>
+                                            <input type="number" name="quantity{{ ../roleId }}_{{ id }}" value="{{ quantity }}">
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Ok</button>
+        </div>
+    </div>
+
     <input type="button" name="Update" data-id="{{ event.id }}" value="Update" class="btn btn-primary updateEvent"/>
     </form>
 </div>

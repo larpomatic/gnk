@@ -40,7 +40,22 @@ class ConventionVisitorService {
             if (hidden && relation.isHidden){
                 break
             }
-            if (relation.type.equals("Filiation") || relation.type.equals("Parent (direct)")){
+            if (relation.type.equals("Filiation")
+                    || relation.type.equals("Parent (direct)")){
+                for(PersoForNaming p : doneperso){
+                    if (hidden){
+                        if(p.code.equals(relation.role2.toString())){
+                            return p.selectedNames
+                        }
+                    }
+                    else{
+                        if(p.code.equals(relation.role2.toString()) && (perso.getgender()).equals("M")){
+                            return p.selectedNames
+                        }
+                    }
+                }
+            }
+            else if (relation.type.equals("Mariage")){
                 for(PersoForNaming p : doneperso){
                     if (hidden){
                         if(p.code.equals(relation.role2.toString())){

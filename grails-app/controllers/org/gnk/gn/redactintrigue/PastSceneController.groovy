@@ -1,8 +1,11 @@
 package org.gnk.gn.redactintrigue
 
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.GenericPlace
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 import org.springframework.security.access.annotation.Secured
 
@@ -18,7 +21,6 @@ class PastSceneController {
     def save () {
         Pastscene pastscene = new Pastscene();
         Boolean res = saveOrUpdate(pastscene);
-//        pastscene = Pastscene.findAllWhere("title": params.pastSceneTitle).first();
         def jsonPastScene = buildJson(pastscene);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
@@ -35,13 +37,17 @@ class PastSceneController {
         jsonPastScene.put("plotId", pastscene.getPlot().getId());
         jsonPastScene.put("isPublic", pastscene.getIsPublic());
         jsonPastScene.put("description", pastscene.getDescription());
-        jsonPastScene.put("timingRelative", pastscene.getTimingRelative());
-        jsonPastScene.put("unitTimingRelative", pastscene.getUnitTimingRelative());
-        jsonPastScene.put("absoluteYear", pastscene.getDateYear());
-        jsonPastScene.put("absoluteMonth", pastscene.getDateMonth());
-        jsonPastScene.put("absoluteDay", pastscene.getDateDay());
-        jsonPastScene.put("absoluteHour", pastscene.getDateHour());
-        jsonPastScene.put("absoluteMinute", pastscene.getDateMinute());
+        jsonPastScene.put("Year", pastscene.getDateYear());
+        jsonPastScene.put("Month", pastscene.getDateMonth());
+        jsonPastScene.put("MonthLetters", g.timeMonth(month: pastscene.dateMonth));
+        jsonPastScene.put("Day", pastscene.getDateDay());
+        jsonPastScene.put("Hour", pastscene.getDateHour());
+        jsonPastScene.put("Minute", pastscene.getDateMinute());
+        jsonPastScene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+        jsonPastScene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+        jsonPastScene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+        jsonPastScene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+        jsonPastScene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
         if (pastscene.getPastscenePredecessor()) {
             jsonPastScene.put("pastscenePredecessor", pastscene.getPastscenePredecessor().getTitle());
             jsonPastScene.put("pastscenePredecessorId", pastscene.getPastscenePredecessor().getId());
@@ -49,6 +55,23 @@ class PastSceneController {
         if (pastscene.getGenericPlace()) {
             jsonPastScene.put("pastscenePlaceId", pastscene.getGenericPlace().getId());
         }
+        JSONArray jsonRoleList = new JSONArray();
+        for (Role role in pastscene.plot.roles) {
+            RoleHasPastscene roleHasPastscene = role.getRoleHasPastScene(pastscene);
+            JSONObject jsonRole = new JSONObject();
+            if (roleHasPastscene) {
+                jsonRole.put("title", roleHasPastscene.title);
+                jsonRole.put("description", roleHasPastscene.description);
+            }
+            else {
+                jsonRole.put("title", "");
+                jsonRole.put("description", "");
+            }
+            jsonRole.put("roleId", role.id);
+            jsonRole.put("roleCode", role.code);
+            jsonRoleList.add(jsonRole);
+        }
+        jsonPastScene.put("roleList", jsonRoleList);
         return jsonPastScene;
     }
 
@@ -58,7 +81,18 @@ class PastSceneController {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(pastscene),
                         id: pastscene.id,
-                        name: pastscene.title)
+                        name: pastscene.title,
+                        year: pastscene.dateYear,
+                        month: g.timeMonth(month: pastscene.dateMonth),
+                        day: pastscene.dateDay,
+                        hour: pastscene.dateHour,
+                        minute: pastscene.dateMinute,
+                        yearIsAbsolute: pastscene.isAbsoluteYear,
+                        monthIsAbsolute: pastscene.isAbsoluteMonth,
+                        dayIsAbsolute: pastscene.isAbsoluteDay,
+                        hourIsAbsolute: pastscene.isAbsoluteHour,
+                        minuteIsAbsolute: pastscene.isAbsoluteMinute
+                        )
             }
         }
     }
@@ -75,17 +109,6 @@ class PastSceneController {
         } else {
             return false
         }
-//        newPastscene.dateYear = 0;
-//        newPastscene.dateMonth = 0;
-//        newPastscene.dateDay = 0;
-//        newPastscene.dateHour = 0;
-//        newPastscene.dateMinute = 0;
-        if (params.containsKey("pastSceneRelative") && params.pastSceneRelative != "") {
-            newPastscene.timingRelative = params.pastSceneRelative as Integer
-        }
-        if (params.containsKey("pastSceneRelativeUnit")) {
-            newPastscene.unitTimingRelative = params.pastSceneRelativeUnit
-        }
         if (params.containsKey("pastScenePublic")) {
             newPastscene.isPublic = true;
         } else {
@@ -96,21 +119,55 @@ class PastSceneController {
         } else {
             return false
         }
-//        Calendar calendar = isValidDate(params.pastSceneDatetime as String, "dd/MM/yyyy HH:mm");
         if (params.containsKey("year") && params.year != "") {
             newPastscene.dateYear = params.year as Integer;
+        } else {
+            newPastscene.dateYear = null;
         }
         if (params.containsKey("month") && params.month != "") {
             newPastscene.dateMonth = params.month as Integer;
+        } else {
+            newPastscene.dateMonth = null;
         }
         if (params.containsKey("day") && params.day != "") {
             newPastscene.dateDay = params.day as Integer;
+        } else {
+            newPastscene.dateDay = null;
         }
         if (params.containsKey("hour") && params.hour != "") {
             newPastscene.dateHour = params.hour as Integer;
+        } else {
+            newPastscene.dateHour = null;
         }
         if (params.containsKey("minute") && params.minute != "") {
             newPastscene.dateMinute = params.minute as Integer;
+        } else {
+            newPastscene.dateMinute = null;
+        }
+        if (params.containsKey("yearIsAbsolute")) {
+            newPastscene.isAbsoluteYear = true;
+        } else {
+            newPastscene.isAbsoluteYear = false;
+        }
+        if (params.containsKey("monthIsAbsolute")) {
+            newPastscene.isAbsoluteMonth = true;
+        } else {
+            newPastscene.isAbsoluteMonth = false;
+        }
+        if (params.containsKey("dayIsAbsolute")) {
+            newPastscene.isAbsoluteDay = true;
+        } else {
+            newPastscene.isAbsoluteDay = false;
+        }
+        if (params.containsKey("hourIsAbsolute")) {
+            newPastscene.isAbsoluteHour = true;
+        } else {
+            newPastscene.isAbsoluteHour = false;
+        }
+        if (params.containsKey("minuteIsAbsolute")) {
+            newPastscene.isAbsoluteMinute = true;
+        } else {
+            newPastscene.isAbsoluteMinute = false;
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);
@@ -124,11 +181,46 @@ class PastSceneController {
                 newPastscene.pastscenePredecessor = pastScenePredecessor;
             }
         }
-        newPastscene.version = 1;
-        newPastscene.dateCreated = new Date();
-        newPastscene.lastUpdated = new Date();
+        newPastscene.save(flush: true);
+        params.each {
+            if (it.key.startsWith("roleHasPastSceneTitle")) {
+                Role role = Role.get((it.key - "roleHasPastSceneTitle") as Integer);
+                RoleHasPastscene roleHasPastscene = createRoleHasPastscene(role, newPastscene);
+//                if (roleHasPastscene) {
+//                    newPastscene.addToRoleHasPastscenes(roleHasPastscene);
+//                }
+            }
+        }
         newPastscene.save(flush: true);
         return true;
+    }
+
+    def createRoleHasPastscene(Role role, Pastscene pastscene) {
+        RoleHasPastscene roleHasPastscene = pastscene.getRoleHasPastscene(role);
+        if (!roleHasPastscene && (params.get("roleHasPastSceneTitle" + role.id) == "")) {
+            return null;
+        }
+        else if (!roleHasPastscene) {
+            roleHasPastscene = new RoleHasPastscene();
+            roleHasPastscene.dateCreated = new Date();
+            roleHasPastscene.lastUpdated = new Date();
+            roleHasPastscene.version = 1;
+            roleHasPastscene.pastscene = pastscene;
+            roleHasPastscene.role = role;
+        }
+        else if ((params.get("roleHasPastSceneTitle" + role.id) == "")) {
+            pastscene.removeFromRoleHasPastscenes(roleHasPastscene);
+            role.removeFromRoleHasPastscenes(roleHasPastscene);
+            pastscene.save();
+            role.save(flush: true);
+            return null;
+        }
+        roleHasPastscene.title = params.get("roleHasPastSceneTitle" + role.id).toString().trim();
+        roleHasPastscene.description = params.get("roleHasPastSceneDescription" + role.id).toString().trim();
+        roleHasPastscene.save(flush: true);
+//        role.addToRoleHasPastscenes(roleHasPastscene);
+//        role.save(flush: true);
+        return roleHasPastscene;
     }
 
     public Calendar isValidDate(String dateToValidate, String dateFromat){
@@ -151,7 +243,7 @@ class PastSceneController {
         Pastscene pastscene = Pastscene.get(id)
         boolean isDelete = false;
         if (pastscene) {
-            pastscene.delete();
+            pastscene.delete(flush: true);
             isDelete = true;
         }
         final JSONObject object = new JSONObject();

@@ -18,7 +18,9 @@ $(function(){
                     createNewRelationPanel(data);
                     initConfirm();
                     emptyRelationForm();
+                    stopClosingDropdown();
                     $('.numberRelation').html($('.relationScreen .accordion-group').size());
+                    initQuickObjects();
                     updateRelation();
                 }
                 else {
@@ -39,6 +41,9 @@ function updateRelation() {
         var oldRoleToId = $(this).attr("data-oldRoleToId");
         var wasBijective = $(this).attr("data-wasBijective");
         var form = $(this).parent();
+        var description = $('.richTextEditor', form).html();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
         var updateButton = $(this);
         $.ajax({
             type: "POST",
@@ -47,14 +52,16 @@ function updateRelation() {
             dataType: "json",
             success: function(data) {
                 if (data.isupdate) {
-                    if (data.relation.isBijective && (roleFromIdRelation == data.relation.RoleFromId.toString())) {
-                        if (wasBijective == "true") {
-                            $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="'
-                                + data.relation.id + '"]').remove();
-                        }
-                        else {
-                            $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-right').html('<span><img src="/gnk/static/images/redactIntrigue/relations/validate.png"></span>');
-                        }
+                    Handlebars.registerHelper('encodeAsHtml', function(value) {
+                        value = value.replace(/>/g, '</span>');
+                        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
+                        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
+                        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
+                        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+                        return new Handlebars.SafeString(value);
+                    });
+                    if ((roleFromIdRelation == data.relation.RoleFromId.toString())) {
+                            $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"]').remove();
                         var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
                         var roleFromId = data.relation.RoleFromId;
                         var roleToId = data.relation.RoleToId;
@@ -65,7 +72,8 @@ function updateRelation() {
                         data.relation.RoleFromCode = roleToCode;
                         data.relation.RoleToCode = roleFromCode;
                         var context = {
-                            relation: data.relation
+                            relation: data.relation,
+                            myRelation: false
                         };
                         var html = template(context);
                         $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
@@ -74,57 +82,52 @@ function updateRelation() {
                         $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
                         $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
                         $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading a').html(data.relation.RoleRelationTypeName);
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(data.relation.RoleFromCode);
+                        var image;
+                        if (data.relation.isBijective) {
+                            image = '<img src="/gnk/static/images/redactIntrigue/relations/doubleArrow.png">';
+                        }
+                        else {
+                            image = '<img src="/gnk/static/images/redactIntrigue/relations/rightArrow.png">';
+                        }
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(image + " " + data.relation.RoleFromCode);
+                        updateButton.attr("data-wasBijective", "true");
+                        initializeTextEditor();
+                        initConfirm();
+                        updateRelation();
+                    }
+                    else {
+                        $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"]').remove();
+                        var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
+                        var context = {
+                            relation: data.relation,
+                            myRelation: true
+                        };
+                        var html = template(context);
+                        $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
+                        $("#newRelation #relationType option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType');
+                        $("#newRelation #relationTo option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationTo');
+                        $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
+                        $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading a').html(data.relation.RoleRelationTypeName);
+                        if (data.relation.isBijective) {
+                            image = '<img src="/gnk/static/images/redactIntrigue/relations/doubleArrow.png">';
+                        }
+                        else {
+                            image = '<img src="/gnk/static/images/redactIntrigue/relations/leftArrow.png">';
+                        }
+                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html("<span>" + image + "</span> " + data.relation.RoleFromCode);
                         updateButton.attr("data-wasBijective", "true");
                         initConfirm();
                         updateRelation();
                     }
-                    else if (data.relation.isBijective) {
-                        $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="'
-                            + data.relation.id + '"]').remove();
-                        var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
-                        var context = {
-                            relation: data.relation
-                        };
-                        var html = template(context);
-                        $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
-                        $("#newRelation #relationType option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType');
-                        $("#newRelation #relationTo option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationTo');
-                        $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
-                        $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading a').html(data.relation.RoleRelationTypeName);
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(data.relation.RoleFromCode);
-                        updateButton.attr("data-wasBijective", "true");
-                        initConfirm();
-                        updateRelation();
-                    }
-                    else if (wasBijective == "true" && (roleFromIdRelation == data.relation.RoleFromId.toString())) {
-                        $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="'
-                            + data.relation.id + '"]').remove();
-                        $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-right').html('<span><img src="/gnk/static/images/redactIntrigue/relations/forbidden.png"></span>');
-                        updateButton.attr("data-wasBijective", "false");
-                    }
-                    else if (wasBijective == "true") {
-                        $('#accordionRelation' + oldRoleToId + ' .accordion-group[data-relation="'
-                            + data.relation.id + '"]').remove();
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-right').html('<span><img src="/gnk/static/images/redactIntrigue/relations/forbidden.png"></span>');
-                        var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
-                        var context = {
-                            relation: data.relation
-                        };
-                        var html = template(context);
-                        $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
-                        $("#newRelation #relationType option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType');
-                        $("#newRelation #relationTo option").clone().appendTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationTo');
-                        $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
-                        $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading a').html(data.relation.RoleRelationTypeName);
-                        $('#accordionRelation' + data.relation.RoleToId + ' .accordion-group[data-relation="' + data.relation.id + '"] .accordion-heading .text-center').html(data.relation.RoleFromCode);
-                        updateButton.attr("data-wasBijective", "false");
-                        initConfirm();
-                        updateRelation();
-                    }
+                    var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
+                    $('.btn-group', plotFullscreenEditable).clone().prependTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"]' + ' .fullScreenEditable');
                     $('.numberRelation').html($('.relationScreen .accordion-group').size());
+                    initQuickObjects();
+                    stopClosingDropdown();
+                    $('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"]' + ' .btnFullScreen').click(function() {
+                        $(this).parent().parent().toggleClass("fullScreenOpen");
+                    });
                     createNotification("success", "Modifications réussies.", "Votre relation a bien été modifiée.");
                 }
                 else {
@@ -176,15 +179,17 @@ function emptyRelationForm() {
 // créé un accordion-group de la nouvelle relation
 function createNewRelationPanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
+        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
     var context = {
-        relation: data.relation
+        relation: data.relation,
+        myRelation: true
     };
     var html = template(context);
     $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
@@ -193,7 +198,7 @@ function createNewRelationPanel(data) {
     $('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .btnFullScreen').click(function() {
         $(this).parent().parent().toggleClass("fullScreenOpen");
     });
-    if (data.relation.isBijective) {
+//    if (data.relation.isBijective) {
         var roleFromId = data.relation.RoleFromId;
         var roleToId = data.relation.RoleToId;
         var roleFromCode = data.relation.RoleFromCode;
@@ -203,7 +208,8 @@ function createNewRelationPanel(data) {
         data.relation.RoleFromCode = roleToCode;
         data.relation.RoleToCode = roleFromCode;
         context = {
-            relation: data.relation
+            relation: data.relation,
+            myRelation: false
         };
         html = template(context);
         $('.relationScreen #accordionRelation' + data.relation.RoleFromId).append(html);
@@ -211,14 +217,14 @@ function createNewRelationPanel(data) {
         $('form[name="updateRelation' + data.relation.RoleFromId + '_' + data.relation.id + '"] .btnFullScreen').click(function() {
             $(this).parent().parent().toggleClass("fullScreenOpen");
         });
-    }
+//    }
     $("#newRelation #relationType option").clone().appendTo('.accordion-group[data-relation="' + data.relation.id + '"] #relationType');
     $("#newRelation #relationTo option").clone().appendTo('.accordion-group[data-relation="' + data.relation.id + '"] #relationTo');
     $('#collapseRelation'+data.relation.RoleToId+'-'+data.relation.id+' #relationFrom option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
     $('#collapseRelation'+data.relation.RoleToId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleFromId +'"]').attr("selected", "selected");
-    if (data.relation.isBijective) {
+//    if (data.relation.isBijective) {
         $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationFrom option[value="'+ data.relation.RoleFromId +'"]').attr("selected", "selected");
         $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
-    }
+//    }
     $('.accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
 }

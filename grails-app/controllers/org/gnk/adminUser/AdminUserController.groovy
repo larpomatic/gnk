@@ -4,6 +4,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.gnk.cookie.CookieService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
+import org.gnk.user.UserSecRole
 import org.gnk.user.UserService
 import groovy.sql.Sql
 import sun.security.jca.GetInstance
@@ -74,6 +75,9 @@ class AdminUserController {
             }
         }
         int rightuser = user.gright
+        String newpassword = params.passwordChanged
+        if (newpassword && newpassword.size() > 5)
+            user.password = newpassword
         List<Boolean> lb = userService.instperm(rightuser)
         [user:user, lb : lb]
     }
@@ -135,5 +139,68 @@ class AdminUserController {
             }
         }
         [user:user, countPublicPlot:countPublicPlot, countPrivatePlot:countPrivatePlot, countDraftPlot:countDraftPlot]
+    }
+    def modifyUser(long id){
+        User user = User.findById(id)
+        String newpassword = params.passwordChanged
+        String confirmpassword = params.passwordChangedConfirm
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+            user.password = newpassword
+        if (params.firstnamemodif && params.firstnamemodif != user.firstname){
+            user.firstname = params.firstnamemodif
+        }
+        if (params.lastnamemodif && params.lastnamemodif != user.lastname){
+            user.lastname = params.lastnamemodif
+
+        }
+        if (params.usernamemodif && params.usernamemodif != user.username){
+            if (User.findByUsername((String)params.usernamemodif) == null){
+                user.username = params.usernamemodif;
+            }
+        }
+        user.save()
+        redirect( action: "edit", params: "user : ${user.id}")
+    }
+
+    def deleteUser(int id){
+     User user = User.findById(id)
+     User newUser = User.findByUsername("admin@gnk.com")
+     ArrayList<Plot> plots = Plot.findAllByUser(user)
+     for (Plot p : plots){
+         p.user = newUser
+         p.save(flush: true)
+     }
+
+     UserSecRole userSecRoles = UserSecRole.findAllByUser(user)
+        for (UserSecRole userSecRole : userSecRoles){
+            userSecRole.delete()
+        }
+        user.delete();
+
+        redirect(action: "list")
+    }
+
+    def createUser (){
+        String username = params.username
+        String firstname = params.firstname
+        String lastname = params.lastname
+        String password = params.password
+        String passwordRepeat = params.passwordRepeat
+
+        if (username && firstname && lastname && password && passwordRepeat && !User.findByUsername(username)){
+
+            User nUser = new  User()
+            nUser.username = username
+            nUser.firstname = firstname
+            nUser.lastname = lastname
+            nUser.password = password
+            nUser.enabled = true
+            nUser.gright = 0
+            nUser.countConnexion = 0
+            nUser.lastConnexion = new Date()
+            nUser.save(failOnError: true)
+            redirect (action: "list")
+        }
+
     }
 }

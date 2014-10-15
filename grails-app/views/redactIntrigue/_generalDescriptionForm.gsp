@@ -1,28 +1,9 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 
 <div class="tabbable tabs-left plotScreen">
-    %{--<ul class="nav nav-tabs leftUl">--}%
-        %{--<li class="active leftMenuList">--}%
-            %{--<a href="#" data-toggle="tab">--}%
-                %{--<g:message code="redactintrigue.generalDescription.newElements" default="New elements"/>--}%
-            %{--</a>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="resource" data-label="important" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newObject" default="Create resource"/>"/>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="place" data-label="warning" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newPlace" default="Create place"/>"/>--}%
-        %{--</li>--}%
-        %{--<li class="leftMenuList">--}%
-            %{--<input data-entity="role" data-label="success" type="text"--}%
-                   %{--placeholder="<g:message code="redactintrigue.generalDescription.newRole" default="Create role"/>"/>--}%
-        %{--</li>--}%
-    %{--</ul>--}%
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
-            <g:form method="post" class="savePlotForm">
+            <form class="savePlotForm" data-url="<g:createLink controller="RedactIntrigue" action="Update" id="${plotInstance.id}"/>">
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
@@ -45,17 +26,6 @@
 
                 <div class="row formRow">
                     <div class="span1"></div>
-                    <div class="span1">
-                        <label>
-                            <g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/>
-                        </label>
-                    </div>
-
-                    <div class="span3">
-                        <a href="#universesModal" class="btn" data-toggle="modal">
-                            <g:message code="redactintrigue.generalDescription.chooseUniverses" default="Chooses universes"/>
-                        </a>
-                    </div>
 
                     <div class="span1">
                         <label>
@@ -77,6 +47,16 @@
 
                     <div class="span3">
                         <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
+                    </div>
+
+                    <div class="span1">
+                        <label for="isPublic">
+                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
+                        </label>
+                    </div>
+
+                    <div class="span3">
+                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
                     </div>
                 </div>
 
@@ -100,16 +80,6 @@
 
                     <div class="span3">
                         <g:checkBox name="isEvenemential" id="isEvenemential" checked="${plotInstance.isEvenemential}"/>
-                    </div>
-
-                    <div class="span1">
-                        <label for="isPublic">
-                            <g:message code="redactintrigue.generalDescription.isPublic" default="Public"/>
-                        </label>
-                    </div>
-
-                    <div class="span3">
-                        <g:checkBox id="isPublic" name="isPublic" checked="${plotInstance.isPublic}"/>
                     </div>
                 </div>
 
@@ -180,31 +150,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="universesModal" class="modal hide fade" tabindex="-1">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h3><g:message code="redactintrigue.generalDescription.plotUnivers" default="Universes"/></h3>
-                    </div>
-
-                    <div class="modal-body">
-                        <ul>
-                            <g:each in="${universList}" status="i" var="universInstance">
-                                <li class="modalLi">
-                                    <label for="universes_${universInstance.id}">
-                                        <g:checkBox name="universes_${universInstance.id}"
-                                                    id="universes_${universInstance.id}"
-                                                    checked="${plotInstance.hasUnivers(universInstance)}"/>
-                                        ${fieldValue(bean: universInstance, field: "name")}
-                                    </label>
-                                </li>
-                            </g:each>
-                        </ul>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal">Ok</button>
-                    </div>
-                </div>
 
                 <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
@@ -230,14 +175,13 @@
                     </div>
                 </div>
                 <fieldset class="buttons text-center">
-                    <g:actionSubmit class="save btn btn-primary" action="update"
-                                    value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-                    <g:actionSubmit class="delete btn btn-danger" action="delete"
-                                    value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                                    formnovalidate=""
-                                    onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+                    <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
+                    %{--<g:actionSubmit class="delete btn btn-danger" action="delete"--}%
+                                    %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
+                                    %{--formnovalidate=""--}%
+                                    %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
                 </fieldset>
-            </g:form>
+            </form>
         </div>
     </div>
 </div>

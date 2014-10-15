@@ -31,9 +31,6 @@ class WordWriter {
     public def mainPart
     public boolean defaultTemplate
 
-    public String title
-    public String subtitle
-
     public WordWriter(String templateWordSelected, String publicationFolder) {
         defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
@@ -45,24 +42,6 @@ class WordWriter {
             this.wordMLPackage = WordprocessingMLPackage.createPackage()
             alterStyleSheet()
         }
-//        if (templateWordSelected == "Harry Potter Anglais Fantastique (Univers)")
-//        {
-//            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]HARRY POTTER.docx"))
-//        }
-//        else if (templateWordSelected.equalsIgnoreCase("Trône de Fer / Game of Thrones"))
-//        {
-//            this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]GAME OF THRONE.docx"))
-//        }
-//        else
-//        {
-//            try{
-//                this.wordMLPackage = WordprocessingMLPackage.load(new File("C:\\dev\\workspace\\gnk\\publication\\[Template]DEFAULT.docx"))
-//            } catch (Exception e){
-//                defaultTemplate = true
-//                this.wordMLPackage = WordprocessingMLPackage.createPackage()
-//                alterStyleSheet()
-//            }
-//        }
         mainPart = wordMLPackage.getMainDocumentPart()
     }
 
@@ -74,7 +53,6 @@ class WordWriter {
             for (String line : lines)
                 this.mainPart.addParagraphOfText(line)
         }
-        //mainPart.addParagraphOfText(text)
     }
 
     def void addObject(Object o)
@@ -85,7 +63,6 @@ class WordWriter {
     def void addStyledParagraphOfText(String style, String text)
     {
         if (defaultTemplate)
-        {
             if (style == "T")
                 style = "Title"
             else if (style == "ST")
@@ -100,14 +77,16 @@ class WordWriter {
                 style = "Heading4"
             else if (style == "T5")
                 style = "Heading5"
-        }
+            else if (style == "title.ingameclue")
+                style = "Normal"
+            else if (style == "content.ingameclue")
+                style = "Normal"
 
         String[] lines = text.split("\n")
         for (String line : lines)
             this.mainPart.addStyledParagraphOfText(style, line)
-
-        //this.mainPart.addStyledParagraphOfText(style, text)
     }
+
     def void addBorders(Tbl table) {
         table.setTblPr(new TblPr());
         CTBorder border = new CTBorder();
@@ -125,12 +104,6 @@ class WordWriter {
         borders.setInsideV(border);
         table.getTblPr().setTblBorders(borders);
     }
-
-//    def addTableCell(Tr tableRow, String content) {
-//        Tc tableCell = factory.createTc();
-//        tableCell.getContent().add(wordMLPackage.getMainDocumentPart().createParagraphOfText(content));
-//        tableRow.getContent().add(tableCell);
-//    }
 
     def addTableCell(Tr tableRow, String content) {
         Tc tableCell = factory.createTc();

@@ -27,8 +27,8 @@ class GenericResourceController {
 
     def save() {
         GenericResource genericResource = new GenericResource(params)
-        Boolean res = saveOrUpdate(genericResource, true);
-        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
+        Boolean res = saveOrUpdate(genericResource);
+//        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
         def jsonGenericResource = buildJson(genericResource);
@@ -62,6 +62,7 @@ class GenericResourceController {
         jsonGenericResource.put("id", genericResource.getId());
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
+        jsonGenericResource.put("resourceObject", genericResource.getObjectType().getType());
         if (genericResource.title) {
             jsonGenericResource.put("clue", true);
             jsonGenericResource.put("title", genericResource.getTitle());
@@ -92,7 +93,7 @@ class GenericResourceController {
         return jsonGenericResource;
     }
 
-    def saveOrUpdate(GenericResource newGenericResource, boolean isNew) {
+    def saveOrUpdate(GenericResource newGenericResource) {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericResource.plot = plot
@@ -109,14 +110,22 @@ class GenericResourceController {
         } else {
             return false
         }
-        if(newGenericResource.extTags) {
+        if (params.containsKey("resourceObject")) {
+            ObjectType objectType = ObjectType.findById(params.resourceObject as Integer);
+            newGenericResource.objectType = objectType;
+        }
+        else {
+            ObjectType objectType = ObjectType.findById(1);
+            newGenericResource.objectType = objectType;
+        }
+        if(newGenericResource.extTags != null) {
             HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;
             newGenericResource.extTags.clear();
             GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
             newGenericResource.extTags = new HashSet<GenericResourceHasTag>();
         }
-        if(newGenericResource.roleHasEventHasRessources) {
+        if(newGenericResource.roleHasEventHasRessources != null) {
             HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
             newGenericResource.roleHasEventHasRessources.clear();
             RoleHasEventHasGenericResource.deleteAll(genericResourceHasRoleHasEvents);
@@ -126,29 +135,29 @@ class GenericResourceController {
         newGenericResource.version = 1;
         newGenericResource.dateCreated = new Date();
         newGenericResource.lastUpdated = new Date();
-        if (params.containsKey("resourceTitle")) {
-            newGenericResource.title = params.resourceTitle
-        }
-        if (params.containsKey("resourceRolePossessor")) {
-            Integer possessorId = params.resourceRolePossessor as Integer;
-            Role possessor = Role.get(possessorId);
-            newGenericResource.possessedByRole = possessor;
-        }
-        if (params.containsKey("resourceRoleFrom")) {
-            Integer roleFromId = params.resourceRoleFrom as Integer;
-            Role roleFrom = Role.get(roleFromId);
-            newGenericResource.fromRole = roleFrom;
-        }
-        if (params.containsKey("resourceRoleTo")) {
-            Integer roleToId = params.resourceRoleTo as Integer;
-            Role roleTo = Role.get(roleToId);
-            newGenericResource.toRole = roleTo;
-        }
-        if (params.containsKey("resourceDescription")) {
-            newGenericResource.description = params.resourceDescription;
+        if (params.containsKey("resourceTitle") && params.resourceTitle != "") {
+            newGenericResource.title = params.resourceTitle;
+            if (params.containsKey("resourceRolePossessor")) {
+                Integer possessorId = params.resourceRolePossessor as Integer;
+                Role possessor = Role.get(possessorId);
+                newGenericResource.possessedByRole = possessor;
+            }
+            if (params.containsKey("resourceRoleFrom")) {
+                Integer roleFromId = params.resourceRoleFrom as Integer;
+                Role roleFrom = Role.get(roleFromId);
+                newGenericResource.fromRole = roleFrom;
+            }
+            if (params.containsKey("resourceRoleTo")) {
+                Integer roleToId = params.resourceRoleTo as Integer;
+                Role roleTo = Role.get(roleToId);
+                newGenericResource.toRole = roleTo;
+            }
+            if (params.containsKey("resourceDescription")) {
+                newGenericResource.description = params.resourceDescription;
+            }
         }
         newGenericResource.save(flush: true);
-        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
+//        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
 
         params.each {
             if (it.key.startsWith("resourceTags_")) {
@@ -191,7 +200,7 @@ class GenericResourceController {
         String oldname = genericResource.code;
         if (genericResource) {
             render(contentType: "application/json") {
-                object(isupdate: saveOrUpdate(genericResource, false),
+                object(isupdate: saveOrUpdate(genericResource),
                        id: genericResource.id,
                        name: genericResource.code,
                        oldname: oldname)

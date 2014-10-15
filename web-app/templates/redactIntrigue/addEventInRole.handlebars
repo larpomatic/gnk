@@ -1,24 +1,33 @@
 <div class="accordion-group">
+    {{#if role.title}}
+    <div class="accordion-heading alert-success">
+    {{else}}
     <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ roleId }}"
-           href="#collapseEvent{{ roleId }}-{{ eventId }}" data-eventId="{{ eventId }}">
-            {{ eventName }}
+    {{/if}}
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ role.roleId }}"
+           href="#collapseEvent{{ role.roleId }}-{{ event.id }}" data-eventId="{{ event.id }}">
+            {{ event.timing }}% - {{ event.name }}
         </a>
     </div>
-    <div id="collapseEvent{{ roleId }}-{{ eventId }}" class="accordion-body collapse">
+    <div id="collapseEvent{{ role.roleId }}-{{ event.id }}" class="accordion-body collapse">
         <div class="accordion-inner">
             <div class="formRow">
                 <div class="span1">
                     Titre
                 </div>
                 <div class="span4">
-                    <input type="text" name="roleHasEventTitle{{ eventId }}" value="" id="roleHasEventTitle{{ eventId }}">
+                    <input disabled="disabled" type="text" name="roleHasEventTitle{{ event.id }}" value="{{role.title}}" id="roleHasEventTitle{{ event.id }}">
                 </div>
                 <div class="span1">
                     Est annoncé
                 </div>
                 <div class="span4">
-                    <input type="checkbox" name="roleHasEventannounced{{ eventId }}" id="roleHasEventannounced{{ eventId }}">
+                    {{#if role.isAnnounced}}
+                        <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ event.id }}" id="roleHasEventannounced{{ event.id }}" checked="checked">
+                    {{else}}
+                        <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ event.id }}" id="roleHasEventannounced{{ event.id }}">
+                    {{/if}}
+
                 </div>
             </div>
             <div class="row formRow text-center">
@@ -26,7 +35,9 @@
                     Description
                 </label>
             </div>
-            <textarea name="roleHasEventDescription{{ eventId }}" rows="5" cols="100" id="roleHasEventDescription{{ eventId }}"></textarea>
+            <textarea disabled="disabled" name="roleHasEventDescription{{ event.id }}" rows="5" cols="100" id="roleHasEventDescription{{ event.id }}">
+                {{role.description}}
+            </textarea>
         </div>
     </div>
 </div>

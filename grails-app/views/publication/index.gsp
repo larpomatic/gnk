@@ -87,7 +87,7 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             <TD> ${c.nbPIP} </TD>
             <TD> ${c.type} </TD>
             <TD> ${c.gender} </TD>
-            <TD> ${c.getCharacterAproximateAge()} </TD>
+            <TD> ${c.getAge()} </TD>
         </TR>
     </g:each>
 </TABLE>

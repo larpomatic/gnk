@@ -23,6 +23,7 @@
             <form name="newResourceForm" data-url="<g:createLink controller="GenericResource" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <g:hiddenField name="resourceComment" class="commentContent" value=""/>
+                <g:hiddenField name="resourceDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceCode">
@@ -45,7 +46,51 @@
                             <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                         </a>
                     </div>
+                </div>
+                <div class="row formRow">
+                    <div class="span4">
+                        <label>
+                            <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectInGame">
+                            <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectInGame" value="1" checked="checked"/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectSimulated">
+                            <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectSimulated" value="2"/>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectOffGame">
+                            <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"/>
+                    </div>
+                </div>
+                <div class="row formRow text-center">
+                    <label for="resourceComment">
+                        <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
+                    </label>
+                </div>
+                <div class="fullScreenEditable">
+                    <g:render template="dropdownButtons" />
 
+                    <!-- Editor -->
+                    <div id="resourceRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                <div class="row formRow">
                     <div class="span2">
                         <label for="resourceIsClue">
                             <g:message code="redactintrigue.resource.isClue" default="Clue"/>
@@ -96,25 +141,19 @@
                                   optionKey="id" optionValue="code"/>
                     </div>
                 </div>
-                <div class="row formRow text-center">
-                    <label for="resourceComment">
-                        <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
-                    </label>
-                </div>
-                <div class="fullScreenEditable">
-                    <g:render template="dropdownButtons" />
-
-                    <!-- Editor -->
-                    <div id="resourceRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                    </div>
-                </div>
-                %{--<g:textArea name="resourceComment" id="resourceComment" value="" rows="5" cols="100"/>--}%
                 <div class="row formRow text-center hidden clueRow">
                     <label for="resourceDescription">
                         <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
                     </label>
                 </div>
-                <g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100" class="hidden clueRow"/>
+                <div class="fullScreenEditable hidden clueRow">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="clueRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+                %{--<g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100" class="hidden clueRow"/>--}%
 
                 <div id="resourceTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
@@ -148,6 +187,7 @@
                 <form name="updateResource_${resource.id}" data-url="<g:createLink controller="GenericResource" action="Update" id="${resource.id}"/>">
                     <g:hiddenField name="id" value="${resource.id}"/>
                     <g:hiddenField name="resourceComment" class="commentContent" value=""/>
+                    <g:hiddenField name="resourceDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
                         <div class="span1">
@@ -173,12 +213,60 @@
                                 <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                             </a>
                         </div>
+                    </div>
 
-                            <div class="span2">
-                                <label for="resourceIsClue">
-                                    <g:message code="redactintrigue.resource.isClue" default="Clue"/>
-                                </label>
-                            </div>
+                    <div class="row formRow">
+                        <div class="span4">
+                            <label>
+                                <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectInGame">
+                                <g:message code="redactintrigue.objecttype.ingame" default="In game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectInGame" value="1"  checked="${resource?.objectType?.id == 1}" />
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectSimulated">
+                                <g:message code="redactintrigue.objecttype.simulated" default="Simulated"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectSimulated" value="2"  checked="${resource?.objectType?.id == 2}"/>
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectOffGame">
+                                <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"  checked="${resource?.objectType?.id == 3}"/>
+                        </div>
+                    </div>
+
+                    <div class="row formRow text-center">
+                        <label for="resourceComment">
+                            <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
+                        </label>
+                    </div>
+                    <div class="fullScreenEditable">
+                        <g:render template="dropdownButtons" />
+
+                        <!-- Editor -->
+                        <div id="resourceRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                            ${resource.comment?.encodeAsHTML()}
+                        </div>
+                    </div>
+
+                    <div class="row formRow">
+                        <div class="span2">
+                            <label for="resourceIsClue">
+                                <g:message code="redactintrigue.resource.isClue" default="Clue"/>
+                            </label>
+                        </div>
                         <div class="span3">
                             <g:if test="${resource.title != null}">
                                 <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled" checked="true" />
@@ -228,28 +316,21 @@
                                           optionKey="id" optionValue="code" value="${resource.toRole?.id}"/>
                             </div>
                         </div>
-                    </g:if>
-                    <div class="row formRow text-center">
-                        <label for="resourceComment">
-                            <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
-                        </label>
-                    </div>
-                    <div class="fullScreenEditable">
-                        <g:render template="dropdownButtons" />
-
-                        <!-- Editor -->
-                        <div id="resourceRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                            ${resource.comment.encodeAsHTML()}
-                        </div>
-                    </div>
-                    %{--<g:textArea name="resourceComment" id="resourceComment" value="${resource.comment}" rows="5" cols="100"/>--}%
-                    <g:if test="${resource.title != null}">
                         <div class="row formRow text-center clueRow">
                             <label for="resourceDescription">
                                 <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
                             </label>
                         </div>
-                        <g:textArea name="resourceDescription" value="${resource.description}" id="resourceDescription" rows="5" cols="100" class="clueRow"/>
+
+                        <div class="fullScreenEditable clueRow">
+                            <g:render template="dropdownButtons" />
+
+                            <!-- Editor -->
+                            <div id="clueRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                ${resource.description?.encodeAsHTML()}
+                            </div>
+                        </div>
+                        %{--<g:textArea name="resourceDescription" value="${resource.description}" id="resourceDescription" rows="5" cols="100" class="clueRow"/>--}%
                     </g:if>
 
                     <div id="resourceTagsModal_${resource.id}" class="modal hide fade tags-modal" tabindex="-1">

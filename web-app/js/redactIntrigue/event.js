@@ -10,6 +10,18 @@ $(function(){
         var title = $('#eventTitleRichTextEditor', form).html();
         title = transformDescription(title);
         $('.titleContent', form).val(title);
+        $('div[id*="roleHasEventTitleRichTextEditor"]', form).each(function() {
+            $(".titleContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventRichTextEditor"]', form).each(function() {
+            $(".descriptionContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventCommentRichTextEditor"]', form).each(function() {
+            $(".commentContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventEvenementialRichTextEditor"]', form).each(function() {
+            $(".evenementialContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -21,7 +33,8 @@ $(function(){
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiEvent'];
                     var context = {
                         eventId: String(data.event.id),
-                        eventName: data.event.name
+                        eventName: data.event.name,
+                        eventTiming: data.event.timing
                     };
                     var html = template(context);
                     $('.eventScreen > ul').append(html);
@@ -30,6 +43,7 @@ $(function(){
                     emptyEventForm();
                     createNewEventPanel(data);
                     initSearchBoxes();
+                    stopClosingDropdown();
                     $('.datetimepicker').datetimepicker({
                         language: 'fr',
                         pickSeconds: false
@@ -39,6 +53,7 @@ $(function(){
                     });
                     var nbEvents = parseInt($('.eventsLi .badge').html()) + 1;
                     $('.eventsLi .badge').html(nbEvents);
+                    initQuickObjects();
                     updateEvent();
                 }
                 else {
@@ -63,6 +78,18 @@ function updateEvent() {
         var title = $('#eventTitleRichTextEditor' + eventId, form).html();
         title = transformDescription(title);
         $('.titleContent', form).val(title);
+        $('div[id*="roleHasEventTitleRichTextEditor"]', form).each(function() {
+            $(".titleContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventRichTextEditor"]', form).each(function() {
+            $(".descriptionContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventCommentRichTextEditor"]', form).each(function() {
+            $(".commentContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
+        $('div[id*="roleHasEventEvenementialRichTextEditor"]', form).each(function() {
+            $(".evenementialContent", $(this).closest(".tab-pane")).val(transformDescription($(this).html()));
+        });
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -71,9 +98,36 @@ function updateEvent() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
-                    $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.name);
-                    $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('.roleScreen a[data-eventId="' + data.object.id + '"]').html(data.object.name);
+                    $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + $('<div/>').text(data.object.name).html());
+                    $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    $('.roleScreen a[data-eventId="' + data.object.id + '"]').html($('<div/>').text(data.object.timing + "% - " + data.object.name).html());
+                    $('#eventRolesModal' + data.object.id + ' div[id*="roleHasEventTitleRichTextEditor"]', form).each(function() {
+                        var roleId = $(this).attr("id").replace("roleHasEventTitleRichTextEditor", "");
+                        if ($(this).html() == "") {
+                            $('a[href="#eventRole' + roleId + "_" + data.object.id + '"]', form).parent().removeClass("alert-success");
+                            $('.roleScreen a[href="#collapseEvent' + roleId + '-' + data.object.id + '"]').parent().removeClass("alert-success");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="text"]').val("");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' textarea').html("");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', false);
+                        }
+                        else {
+                            $('a[href="#eventRole' + roleId + "_" + data.object.id + '"]', form).parent().addClass("alert-success");
+                            $('.roleScreen a[href="#collapseEvent' + roleId + '-' + data.object.id + '"]').parent().addClass("alert-success");
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="text"]').val(
+                                $('input[name="roleHasEventTitle' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                            if ($('input[type="checkbox"]:checked', $(this).closest(".tab-pane")).length == 1) {
+                                $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', "checked");
+                            }
+                            else {
+                                $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' input[type="checkbox"]').attr('checked', false);
+                            }
+                            $('.roleScreen #collapseEvent' + roleId + '-' + data.object.id + ' textarea').html(
+                                $('input[name="roleHasEventDescription' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            );
+                        }
+                    });
+                    initializeTextEditor();
                 }
                 else {
                     createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
@@ -127,17 +181,17 @@ function emptyEventForm() {
     $('form[name="newEventForm"] input[type="checkbox"]').attr('checked', false);
     $('form[name="newEventForm"] #eventPlace option[value="null"]').attr("selected", "selected");
     $('form[name="newEventForm"] #eventPredecessor option[value="null"]').attr("selected", "selected");
-    $('form[name="newEventForm"] #eventRichTextEditor').html("");
-    $('form[name="newEventForm"] #eventTitleRichTextEditor').html("");
+    $('form[name="newEventForm"] .richTextEditor').html("");
 }
 
 // créé un tab-pane du nouvel event
 function createNewEventPanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
+        value = value.replace(/>/g, '</span>');
         value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
         value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
         value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/>/g, '</span>');
+        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/eventPanel'];
@@ -150,27 +204,25 @@ function createNewEventPanel(data) {
     $('.btn-group', plotFullscreenEditable).clone().prependTo('#event_' + data.event.id + ' .fullScreenEditable');
     $("#newEvent #eventPlace option").clone().appendTo('#event_' + data.event.id + ' #eventPlace');
     $("#newEvent #eventPredecessor option").clone().appendTo('#event_' + data.event.id + ' #eventPredecessor');
-    $('select[name="eventPredecessor"]').append('<option value="' + data.event.id + '">' + data.event.name + '</option>');
+    $('select[name="eventPredecessor"]').append('<option value="' + data.event.id + '">' + $('<div/>').text(data.event.name).html() + '</option>');
     if (data.event.eventPredecessorId) {
         $('#event_' + data.event.id + ' #eventPredecessor option[value="'+ data.event.eventPredecessorId +'"]').attr("selected", "selected");
     }
     if (data.event.eventPlaceId) {
         $('#event_' + data.event.id + ' #eventPlace option[value="'+ data.event.eventPlaceId +'"]').attr("selected", "selected");
     }
-    $('ul[class*="placeEvent"]').append('<li class="modalLi" data-name="' + data.event.name + '">' +
+    $('ul[class*="placeEvent"]').append('<li class="modalLi" data-name="' + $('<div/>').text(data.event.name).html() + '">' +
         '<input type="checkbox" name="placeEvent_' + data.event.id + '" id="placeEvent_' + data.event.id + '">' +
-        data.event.name +
+        $('<div/>').text(data.event.name).html() +
         '</li>');
-    $('.roleScreen div[id*="roleEventsModal"] .accordion').each(function() {
-        var roleId = $(this).attr("id");
-        roleId = roleId.replace("accordionEvent", "");
+    $.each(data.event.roleList, function(i, item) {
+        var roleId = item.roleId;
         template = Handlebars.templates['templates/redactIntrigue/addEventInRole'];
         context = {
-            eventId: data.event.id,
-            eventName: data.event.name,
-            roleId: roleId
+            event: data.event,
+            role: item
         };
         html = template(context);
-        $(this).append(html);
+        $('.roleScreen div[id*="roleEventsModal"] #accordionEvent' + roleId).append(html);
     });
 }

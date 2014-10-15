@@ -9,7 +9,7 @@
                     checked="${resource.hasGenericResourceTag(resourceTagInstance)}"
                     onClick="hideTags('resourceTags${resource.id}_${resourceTagInstance.id}', 'resourceTagsWeight${resource.id}_${resourceTagInstance.id}')"/>
         </g:else>
-        ${fieldValue(bean: resourceTagInstance, field: "name")}
+        ${resourceTagInstance.name}
     </label>
     <div class="pull-right">
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>

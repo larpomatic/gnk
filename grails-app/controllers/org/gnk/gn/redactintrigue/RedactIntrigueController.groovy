@@ -76,30 +76,22 @@ class RedactIntrigueController {
 			screen = params.screenStep 
 			screen = (screen - 48)	 
 		}
+        TagService tagService = new TagService();
 		[plotInstance: plotInstance,
-                plotTagList: new TagService().getPlotTagQuery(),
-                universList: Univers.list(),
-                roleTagList: new TagService().getRoleTagQuery(),
-                resourceTagList: new TagService().getResourceTagQuery(),
-                placeTagList: new TagService().getPlaceTagQuery(),
+                plotTagList: tagService.getPlotTagQuery(),
+                roleTagList: tagService.getRoleTagQuery(),
+                resourceTagList: tagService.getResourceTagQuery(),
+                placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
                 screenStep: screen]
 	}
 
-	def update(Long id, Long version) {
+	def update(Long id) {
+        def isupdate = true;
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
-			redirect(action: "list")
-			return
+            isupdate = false;
 		}
-
-		if (version != null) {
-			if (plotInstance.version > version) {
-				render(view: "edit", model: [plotInstance: plotInstance])
-				return
-			}
-		}
-
 		plotInstance.properties = params
 		plotInstance.description = params.plotDescription
         plotInstance.pitchOrga = params.plotPitchOrga
@@ -112,14 +104,6 @@ class RedactIntrigueController {
         }
         else {
             plotInstance.extTags = new HashSet<PlotHasTag>();
-        }
-        if (plotInstance.plotHasUniverses) {
-            HashSet<PlotHasUnivers> plotHasUniverses = plotInstance.plotHasUniverses;
-            PlotHasUnivers.deleteAll(plotHasUniverses);
-            plotInstance.plotHasUniverses.clear();
-        }
-        else {
-            plotInstance.plotHasUniverses = new HashSet<PlotHasUnivers>();
         }
 
         plotInstance.save(flush: true);
@@ -134,22 +118,14 @@ class RedactIntrigueController {
 				plotInstance.extTags.add(plotHasPlotTag)
 			}
 		}
-		
-		params.each {
-			if (it.key.startsWith("universes_")) {
-				PlotHasUnivers plotHasUnivers = new PlotHasUnivers()
-				plotHasUnivers.univers = Univers.get((it.key - "universes_") as Integer);
-				plotHasUnivers.weight = TagService.LOCKED
-				plotHasUnivers.plot = plotInstance
-				plotInstance.plotHasUniverses.add(plotHasUnivers)
-			}
-		}
 
 		if (!plotInstance.save(flush: true)) {
-			render(view: "edit", model: [plotInstance: plotInstance])
-			return
+            isupdate = false;
 		}
-		redirect(action: "show", id: plotInstance.id)
+
+        render(contentType: "application/json") {
+            object(isupdate: isupdate)
+        }
 	}
 
 	def delete(Long id) {
