@@ -3,9 +3,10 @@ package org.gnk.resplacetime
 class ObjectType {
     Integer id
     /*
-        Id 1 = "en jeu"
-        Id 2 = "simulé"
-        Id 3 = "hors jeu"
+        Id 0 = "À définir"
+        Id 1 = "En jeu"
+        Id 2 = "Simulé"
+        Id 3 = "Hors jeu"
      */
     Integer version
 
@@ -28,12 +29,14 @@ class ObjectType {
     ObjectType(int id)
     {
         this.id = id
-        if (id == 1)
-            this.type = "en jeu"
+        if (id == 0)
+            this.type = "À définir"
+        else if (id == 1)
+            this.type = "En jeu"
         else if (id == 2)
-            this.type = "simulé"
+            this.type = "Simulé"
         else if (id == 3)
-            this.type = "hors jeu"
+            this.type = "Hors jeu"
         else
             throw Exception("Bad Object Type ID value")
     }
