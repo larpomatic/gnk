@@ -528,7 +528,11 @@ class PublicationController {
         for (String n : nameList)
             for (GenericResource gr : GRList)
                 if (n == gr.selectedResource.name)
+                {
                     resList.add(gr)
+                    GRList.remove(gr)
+                    break
+                }
         return resList
     }
 
@@ -541,7 +545,7 @@ class PublicationController {
             if (gr.objectType != null)
                 GROTList.add(gr)
             else
-                GGRList.add(gr)
+                GRList.add(gr)
         }
 
         GRList = sortGenericResourceList(GRList)
