@@ -81,7 +81,7 @@
                 </td>
                 <g:hasRights lvlright="${right.USERCLOSE.value()}">
                 <td>
-                    <g:link controller="adminUser" action="deleteUser" id="${u.id}" type="button" class="btn btn-danger btn-small"><g:message code="default.action.delete.label"/></g:link>
+                    <a id="${u.id}" type="button" class="btn btn-danger btn-small" href="#deletemodal${u.id}" data-toggle="modal" ><g:message code="default.action.delete.label"/></a>
                 </td>
                 </g:hasRights>
             </tr>
@@ -89,6 +89,6 @@
         </tbody>
     </table>
 </div>
-
+<g:render template="deletemodalUsers" />
 </body>
 </html>
