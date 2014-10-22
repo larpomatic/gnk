@@ -25,15 +25,9 @@ class ConsolSqlController {
                 params.setProperty("redirectcontroller", "adminUser")
                 redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect: "terminal", controllerredirect: "consolSQL"])
                 return false
-            } else {
-               def r1 =  rightsService.hasRight(user.gright, right.RIGHTSHOW.value())
-               def r2 = rightsService.hasRight(user.gright, right.REFOPEN.value())
-               if (!r1 || !r2){
-                   redirect(controller: "login", action: "denied")
-               }
+            }
             List<SqlRequestCategory> listCategory = SqlRequestCategory.list();
             [listCategory: listCategory]
-        }
     }
 
     def deleteRequest (){
