@@ -154,7 +154,8 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
         createResTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Liste des Ingames Clues")
+        // Liste Ingame CLues
+        wordWriter.addStyledParagraphOfText("T2", "Liste des Indices en Jeu")
         createICTableOrga()
 
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
@@ -391,8 +392,65 @@ class PublicationController {
         return resLChar
     }
 
+    def sortPlaceList(ArrayList<Place> PList)
+    {
+        ArrayList<String> nameList = new ArrayList<String>()
+        ArrayList<Place> resList = new ArrayList<Place>()
+
+        for (Place p : PList)
+            nameList.add(p.name)
+        nameList = nameList.sort()
+        for (String n : nameList)
+            for (Place p : PList)
+                if (n == p.name)
+                {
+                    resList.add(p)
+                    PList.remove(p)
+                    break
+                }
+        return resList
+    }
+
+    def sortGenericPlaceObjectTypeList(ArrayList<Place> PList)
+    {
+        ArrayList<Place> resList = new ArrayList<Place>()
+        for (int i = 0; i <= 3; i++)
+        {
+            ArrayList<Place> tmpList = new ArrayList<Place>()
+            ArrayList<String> nameList = new ArrayList<String>()
+            for (Place p : PList)
+                if (p.genericPlace.objectType.id == i)
+                    nameList.add(p.name)
+            nameList = nameList.sort()
+            for (String n : nameList)
+                for (Place p : PList)
+                    if (n == p.name)
+                        tmpList.add(p)
+            resList += tmpList
+        }
+        return resList
+    }
+
     // Création du tableau de la synthèse des lieux du GN
     def createPlaceTable() {
+        ArrayList<Place> PList = new ArrayList<Place>() // Liste des place
+        ArrayList<Place> GPList = new ArrayList<Place>() // Liste des generic_place
+        ArrayList<Place> GPOTList = new ArrayList<Place>() // Liste des generic_place ayant un objectType renseigné
+        for (Place p : gnk.placeMap.values())
+        {
+            if (p.genericPlace)
+                if (p.genericPlace.objectType != null)
+                    GPOTList.add(p)
+                else
+                    GPList.add(p)
+            else
+                PList.add(p)
+        }
+
+        PList = sortPlaceList(PList)
+        GPList = sortPlaceList(GPList)
+        GPOTList = sortGenericPlaceObjectTypeList(GPOTList)
+
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
@@ -402,13 +460,17 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Indication(s) lieu")
 
         table.getContent().add(tableRow)
-
-        for (Place p : gnk.placeMap.values())
+        for (Place p : GPOTList + GPList + PList)
         {
             Tr tableRowPlace = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlace, p.name)
             if (p.genericPlace)
-                wordWriter.addTableCell(tableRowPlace, p.genericPlace.code)
+            {
+                String typeStr = p.genericPlace.code
+                if (p.genericPlace.objectType != null)
+                    typeStr += " (" + p.genericPlace.objectType.type + ")"
+                wordWriter.addTableCell(tableRowPlace, typeStr)
+            }
             else
                 wordWriter.addTableCell(tableRowPlace, "[Pas de type de lieu]")
             wordWriter.addTableCell(tableRowPlace, p.description)
@@ -427,8 +489,67 @@ class PublicationController {
         wordWriter.addObject(table)
     }
 
+    def sortGenericResourceObjectTypeList(ArrayList<GenericResource> PList)
+    {
+        ArrayList<GenericResource> resList = new ArrayList<GenericResource>()
+        for (Integer i = 0; i <= 3; i++)
+        {
+            ArrayList<GenericResource> tmpList = new ArrayList<GenericResource>()
+            ArrayList<String> nameList = new ArrayList<String>()
+            for (GenericResource gr : PList)
+            {
+                if (gr.objectType.id == i)
+                {
+                    nameList.add(gr.selectedResource.name)
+                }
+            }
+            nameList = nameList.sort()
+            for (String n : nameList)
+                for (GenericResource gr : PList)
+                    if (n == gr.selectedResource.name)
+                    {
+                        tmpList.add(gr)
+                        PList.remove(gr)
+                        break
+                    }
+            resList += tmpList
+        }
+        return resList
+    }
+
+    def sortGenericResourceList(ArrayList<GenericResource> GRList)
+    {
+        ArrayList<String> nameList = new ArrayList<String>()
+        ArrayList<GenericResource> resList = new ArrayList<GenericResource>()
+
+        for (GenericResource gr : GRList)
+            nameList.add(gr.selectedResource.name)
+        nameList = nameList.sort()
+        for (String n : nameList)
+            for (GenericResource gr : GRList)
+                if (n == gr.selectedResource.name)
+                {
+                    resList.add(gr)
+                    GRList.remove(gr)
+                    break
+                }
+        return resList
+    }
+
     // Création du tableau de la synthèse des ressources
     def createResTable() {
+        ArrayList<GenericResource> GRList = new ArrayList<GenericResource>() // Liste des GenericResource
+        ArrayList<GenericResource> GROTList = new ArrayList<GenericResource>() // Liste des generic_GenericResource ayant un objectType renseigné
+        for (GenericResource gr : gnk.genericResourceMap.values())
+        {
+            if (gr.objectType != null)
+                GROTList.add(gr)
+            else
+                GRList.add(gr)
+        }
+
+        GRList = sortGenericResourceList(GRList)
+        GROTList = sortGenericResourceObjectTypeList(GROTList)
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -441,7 +562,7 @@ class PublicationController {
 
         table.getContent().add(tableRow);
 
-        for (GenericResource genericResource : gnk.genericResourceMap.values())
+        for (GenericResource genericResource : GROTList + GRList)
         {
 //            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
 //            {
@@ -452,7 +573,10 @@ class PublicationController {
                 else
                     wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
 
-                wordWriter.addTableCell(tableRowRes, genericResource.code)
+                String typeStr = genericResource.code
+                if (genericResource.objectType != null)
+                    typeStr += " (" + genericResource.objectType.type + ")"
+                wordWriter.addTableCell(tableRowRes, typeStr)
 
                 if (genericResource.selectedResource)
                     wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.description)
@@ -889,45 +1013,51 @@ class PublicationController {
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
     def createICTableOrga() {
+        wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableCell(tableRow, "Indice en Jeu")
+        wordWriter.addTableCell(tableRow, "Détenu au début du Jeu par")
+        table.getContent().add(tableRow);
         for (GenericResource genericResource : gnk.genericResourceMap.values())
-        {
-            // construction du substitutionPublication
-            HashMap<String, Role> rolesNames = new HashMap<>()
-            for (Character c : gn.characterSet)
-                for (Role r : c.selectedRoles)
-                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
-            for (Character c : gn.nonPlayerCharSet)
-                for (Role r : c.selectedRoles)
-                    if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
-            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
-            // Fin construction du substitutionPublication
-
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
+                Tr tableRowPlot = wordWriter.factory.createTr()
+                wordWriter.addTableCell(tableRowPlot, genericResource.code + " - " + genericResource.comment)
+                if (genericResource.possessedByRole != null)
+                    wordWriter.addTableCell(tableRowPlot, genericResource.possessedByRole.code) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                else
+                    wordWriter.addTableCell(tableRowPlot, "Personne")
+                table.getContent().add(tableRowPlot);
+            }
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table);
+
+
+
+        wordWriter.addStyledParagraphOfText("T3", "Détails")
+        for (GenericResource genericResource : gnk.genericResourceMap.values())
+            if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
+            {
+                // construction du substitutionPublication
+                HashMap<String, Role> rolesNames = new HashMap<>()
+                for (Character c : gn.characterSet)
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                for (Character c : gn.nonPlayerCharSet)
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(genericResource.plot.DTDId))
+                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                // Fin construction du substitutionPublication
+
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-                wordWriter.addStyledParagraphOfText("T3", genericResource.code + " - " + genericResource.title)
-                wordWriter.addStyledParagraphOfText("T4", "Descritpion")
-                wordWriter.addParagraphOfText(/*type*/"" + " - " + genericResource.selectedResource.name + " - Ingame CLue")
-                wordWriter.addParagraphOfText(/*Nom de l'intrigue*/"")
-                wordWriter.addParagraphOfText("Détenu au début du jeu par : "+/*role_has_ingame_clue ou ressource*/"")
-                wordWriter.addParagraphOfText(genericResource.comment)
-                wordWriter.addStyledParagraphOfText("T4", "Contenu")
-                wordWriter.addParagraphOfText(/*Champs titre*/"")
-                wordWriter.addParagraphOfText(genericResource.description)
-
-
-//                genericResource.title = substitutionPublication.replaceAll(genericResource.title)
-//                genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.selectedResource.name)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.code)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.comment)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.title)
-//                wordWriter.addTableCell(tableRowPlot, genericResource.description)
+                wordWriter.addParagraphOfText(genericResource.code + " - " + genericResource.comment)
+                wordWriter.addStyledParagraphOfText("titleIC", genericResource.title)
+                wordWriter.addStyledParagraphOfText("contentIC", genericResource.description)
             }
-        }
     }
 
     // Création du tableau de synthèse des intrigues

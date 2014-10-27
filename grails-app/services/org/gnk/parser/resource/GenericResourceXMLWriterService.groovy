@@ -34,6 +34,10 @@ class GenericResourceXMLWriterService {
             genericResource.DTDId = genericResource.id
         rootElt.setAttribute("id", genericResource.DTDId.toString())
         rootElt.setAttribute("code", genericResource.code)
+        if (genericResource.objectType != null)
+            rootElt.setAttribute("object_type_id", genericResource.objectType.id.toString())
+        else
+            rootElt.setAttribute("object_type_id", "null")
         if (role != null) {
             if (role.DTDId == null || role.DTDId < 0)
                 role.DTDId = role.id

@@ -7,6 +7,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.gn.Gn
 import org.gnk.roletoperso.Character;
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.roletoperso.RelationshipGraphService
 
 class SubstitutionController {
 
@@ -35,7 +36,8 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
-
+        RelationshipGraphService graphservice = new RelationshipGraphService();
+        String json = graphservice.create_graph(gn);
 
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
@@ -43,6 +45,7 @@ class SubstitutionController {
         placeList : inputHandler.placeList,
         pastsceneList : inputHandler.pastsceneList,
         eventList : inputHandler.eventList,
+        relationjson : json,
         gnId : gnIdStr,
         ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
     }

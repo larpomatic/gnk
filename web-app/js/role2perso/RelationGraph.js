@@ -1,6 +1,9 @@
 /**
  * Created by nicol_000 on 07/06/2014.
  */
+
+
+
 var labelType, useGradients, nativeTextSupport, animate;
 
 (function() {

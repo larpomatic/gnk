@@ -19,8 +19,6 @@ th,td {
 <meta name="layout" content="main">
 <g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}" />
 <title><g:message code="gn.edition" /></title>
-<g:javascript src="role2perso/springy.js" />
-<g:javascript src="role2perso/springyui.js" />
 </head>
 <body>
     <g:render template="subNav"/>

@@ -4,6 +4,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.resplacetime.ObjectType
 import org.gnk.selectintrigue.Plot
 
 class GenericPlaceXMLReaderService {
@@ -43,6 +44,9 @@ class GenericPlaceXMLReaderService {
 
         if (GENERICPLACE.attribute("id") != "null")
             genericPlaceRes.DTDId = GENERICPLACE.attribute("id") as Integer
+
+        if (GENERICPLACE.attribute("object_type_id") != "null")
+            genericPlaceRes.objectType = new ObjectType(GENERICPLACE.attribute("object_type_id") as Integer)
 
         return genericPlaceRes
     }

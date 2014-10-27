@@ -77,6 +77,10 @@ class WordWriter {
                 style = "Heading4"
             else if (style == "T5")
                 style = "Heading5"
+            else if (style == "title.ingameclue")
+                style = "Normal"
+            else if (style == "content.ingameclue")
+                style = "Normal"
 
         String[] lines = text.split("\n")
         for (String line : lines)
