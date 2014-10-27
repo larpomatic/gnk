@@ -7,7 +7,6 @@ class Resource {
 	Character character
 	List<Tag> tagList
 	String comment
-
-    // unused for now
-	Plot plot
+    // Plot name
+    String plot
 }

@@ -30,10 +30,6 @@
                             </g:each>
                         </ul>
                     </div>
-                    <div class="modal-footer">
-                        %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
-                        <g:actionSubmit class="btn btn-primary" id="children" action="list" value="${message(code: 'default.ok')}" />
-                    </div>
                 </div>
                 <g:hiddenField name="showChildren" value="true"/>
    			</div>

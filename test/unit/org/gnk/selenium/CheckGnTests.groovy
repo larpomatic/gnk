@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.firefox.FirefoxDriver
 
 /**
- * Created by pico on 19/05/2014.
+ *
  */
 @TestFor(SelectIntrigueController)
 class CheckGnTests {

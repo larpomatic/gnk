@@ -13,6 +13,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
+        <th>Plot Name</th>
         <th>tags</th>
         <th>comment</th>
         <th>nom</th>
@@ -26,8 +27,10 @@
         <tr id="place${place.id}_plot${place.plotId}">
             <!-- # -->
             <td style="text-align: center;">${i + 1}</td>
-            <!-- Code - modal button -->
-            <td><a href="#modalPla${i + 1}" role="button" class="btn" data-toggle="modal">PLA-${place.id.encodeAsHTML()}_${place.plotId.encodeAsHTML()}</a></td>
+            <!-- Code -->
+            <td>${place.code}</td>
+            <!-- Plot Name -->
+            <td>${place.plotName}</td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">
@@ -42,7 +45,8 @@
             <!-- Place -->
             <td class="place">
             <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
-            <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written">
+            <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written"><br>
+            <input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">
             <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>-
 
@@ -83,10 +87,12 @@
         place.gnId = "${place.id}"
         // Gn plot id
         place.gnPlotId = "${place.plotId}"
+        // Gn plot
+        place.plotName = "${place.plotName}"
         // HTML id
         place.htmlId = "place${place.id}_plot${place.plotId}"
         // Code
-        place.code = "${place.code}"
+        place.code = "${place.code}
         // BEGIN Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${place.tagList}" var="tag">

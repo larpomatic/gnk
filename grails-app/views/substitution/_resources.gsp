@@ -13,6 +13,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
+        <th>Plot name</th>
         <th>tags</th>
         <th>comment</th>
         <th>propriétaire</th>
@@ -29,6 +30,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td><a href="#modalRes${i + 1}" role="button" class="btn" data-toggle="modal" disabled="true">RES-${resource.id.encodeAsHTML()}_${resource.plotId.encodeAsHTML()}</a></td>
+            <!-- Plot name -->
+            <td>${resource.plot}</td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">
@@ -52,6 +55,7 @@
             <td class="resource">
                 <select class="bold" disabled="true" isEmpty="true">
                 </select>
+            <input type="text" id="Manualresource" class="written" placeholder="Add a custom resource">
                 <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
             <!-- Restart resource -->

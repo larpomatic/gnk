@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.springframework.dao.DataIntegrityViolationException
 import org.gnk.tag.Univers

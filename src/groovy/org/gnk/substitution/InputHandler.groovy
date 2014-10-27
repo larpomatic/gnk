@@ -242,6 +242,8 @@ class InputHandler {
                 resource.code = genericResource.code
                 // Comment
                 resource.comment = genericResource.comment
+                // Plot name
+                resource.plot = plot.name
 
                 // TagList
                 resource.tagList = []
@@ -353,7 +355,9 @@ class InputHandler {
         }
 
         // Plot
-        place.plot = null
+        def plot = org.gnk.selectintrigue.Plot.get(plotId)
+        // Plot name
+        place.plotName = plot.name
 
         return place
     }
