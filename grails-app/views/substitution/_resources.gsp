@@ -51,7 +51,7 @@
                 Info indisponible
             </g:else>
 			</td>
-            <!-- Resource -->
+            <!-- Resources -->
             <td class="resource">
                 <select class="bold" disabled="true" isEmpty="true">
                 </select>
