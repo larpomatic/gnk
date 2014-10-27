@@ -844,7 +844,8 @@ class PublicationController {
                 {
                     unit = "mois"
                 }
-                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+                String GnFixDate = getFixDate(gn.date, -roleHasPastscene.pastscene.timingRelative, unit)
+                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 
@@ -1007,7 +1008,7 @@ class PublicationController {
             }
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+        msgCharacters += getPrintableDate(gn.t0Date)
         return msgCharacters
     }
 
@@ -1567,12 +1568,35 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date)
+    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT)
     {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                        DateFormat.MEDIUM,
-                        DateFormat.SHORT,
+                        format1,
+                        format2,
                         new Locale("FR","fr"));
         return shortDateFormat.format(date)
+    }
+
+    private String getFixDate(Date t0Date, Integer number, String unit)
+    {
+        String prefix = "Le "
+        Calendar calendar = new GregorianCalendar()
+        calendar.setTime(t0Date)
+        if (unit == "an" || unit == "année" || unit == "années")
+            calendar.add(Calendar.YEAR, number.intValue())
+        else if (unit == "mois")
+            calendar.add(Calendar.MONTH, number.intValue())
+        else if (unit == "jour" || unit == "jours")
+            calendar.add(Calendar.DAY_OF_MONTH, number.intValue())
+        else
+        {
+            if (number < 0)
+                prefix = "Il y à "
+            else
+                prefix = "Dans "
+            return prefix + number.toString() + " " + unit
+        }
+        Date date = calendar.getTime()
+        return prefix + getPrintableDate(date, DateFormat.LONG, DateFormat.SHORT)
     }
 }
