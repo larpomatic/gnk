@@ -26,10 +26,40 @@ class Pastscene {
     Boolean isAbsoluteHour
     Boolean isAbsoluteMinute
 
+
+
+
+    //*************
     // à virer ****
+    //*************
     Integer timingRelative
     String unitTimingRelative
-    // *******
+    def correctTimingVariables()
+    {
+        if (dateYear == isAbsoluteYear && unitTimingRelative.toLowerCase().startsWith("y"))
+        {
+            dateYear = timingRelative
+            isAbsoluteYear = false
+        }
+        if (dateMonth == isAbsoluteMonth && unitTimingRelative.toLowerCase().startsWith("m"))
+        {
+            dateMonth = timingRelative
+            isAbsoluteMonth = false
+        }
+        if (dateDay == isAbsoluteDay && unitTimingRelative.toLowerCase().startsWith("d"))
+        {
+            dateDay = timingRelative
+            isAbsoluteDay = false
+        }
+    }
+    //*************
+    //*************
+    //*************
+
+
+
+
+
 
     Pastscene pastscenePredecessor
     GenericPlace genericPlace
@@ -79,5 +109,51 @@ class Pastscene {
             }
         }
         return null;
+    }
+
+    public Date getAbsoluteDate(Date t0Date)
+    {
+        correctTimingVariables()
+        Calendar calendar = new GregorianCalendar()
+        calendar.setTime(t0Date)
+        if (dateYear != null)
+        {
+            if(!isAbsoluteYear)
+                calendar.add(Calendar.YEAR, -dateYear)
+            else
+                calendar.set(Calendar.YEAR, dateYear)
+        }
+        if (dateMonth != null)
+        {
+            if(!isAbsoluteMonth)
+                calendar.add(Calendar.MONTH, -dateMonth)
+            else
+                calendar.set(Calendar.MONTH, dateMonth-1) // On fait -1 car "Janvier" est le mois numéro "0"; "février" est le "1" etc...
+        }
+        if (dateDay != null)
+        {
+            if(!isAbsoluteDay)
+                calendar.add(Calendar.DAY_OF_MONTH, -dateDay)
+            else
+                calendar.set(Calendar.DAY_OF_MONTH, dateDay)
+        }
+        if (dateHour != null)
+        {
+            if(!isAbsoluteHour)
+                calendar.add(Calendar.HOUR_OF_DAY, -dateHour)
+            else
+                calendar.set(Calendar.HOUR_OF_DAY, dateHour)
+        }
+        if (dateMinute != null)
+        {
+            if(!isAbsoluteMinute)
+                calendar.add(Calendar.MINUTE, -dateMinute)
+            else
+                calendar.set(Calendar.MINUTE, dateMinute)
+        }
+
+
+        Date date = calendar.getTime()
+        return date
     }
 }

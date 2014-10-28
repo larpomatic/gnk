@@ -828,23 +828,24 @@ class PublicationController {
             {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-                {
-                    unit = "an"
-                }
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-                {
-                    unit = "années"
-                }
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
-                    unit = "jour"
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
-                    unit = "jours"
-                if (unit.toLowerCase().startsWith("m"))
-                {
-                    unit = "mois"
-                }
-                String GnFixDate = getFixDate(gn.date, -roleHasPastscene.pastscene.timingRelative, unit)
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+//                {
+//                    unit = "an"
+//                }
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+//                {
+//                    unit = "années"
+//                }
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+//                    unit = "jour"
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+//                    unit = "jours"
+//                if (unit.toLowerCase().startsWith("m"))
+//                {
+//                    unit = "mois"
+//                }
+//                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
+                String GnFixDate = getPrintableDate(roleHasPastscene.pastscene.getAbsoluteDate(gn.date), DateFormat.LONG, DateFormat.SHORT)
                 wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
@@ -1575,28 +1576,5 @@ class PublicationController {
                         format2,
                         new Locale("FR","fr"));
         return shortDateFormat.format(date)
-    }
-
-    private String getFixDate(Date t0Date, Integer number, String unit)
-    {
-        String prefix = "Le "
-        Calendar calendar = new GregorianCalendar()
-        calendar.setTime(t0Date)
-        if (unit == "an" || unit == "année" || unit == "années")
-            calendar.add(Calendar.YEAR, number.intValue())
-        else if (unit == "mois")
-            calendar.add(Calendar.MONTH, number.intValue())
-        else if (unit == "jour" || unit == "jours")
-            calendar.add(Calendar.DAY_OF_MONTH, number.intValue())
-        else
-        {
-            if (number < 0)
-                prefix = "Il y à "
-            else
-                prefix = "Dans "
-            return prefix + number.toString() + " " + unit
-        }
-        Date date = calendar.getTime()
-        return prefix + getPrintableDate(date, DateFormat.LONG, DateFormat.SHORT)
     }
 }
