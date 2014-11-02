@@ -144,14 +144,14 @@ class Plot {
         return plotHasTags.first();
     }
 
-    public boolean hasUnivers(Univers parUnivers) {
-        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
-            if (plotHasUnivers.univers == parUnivers) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean hasUnivers(Univers parUnivers) {
+//        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
+//            if (plotHasUnivers.univers == parUnivers) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     public boolean isUniversGeneric() {
         int i = 0;

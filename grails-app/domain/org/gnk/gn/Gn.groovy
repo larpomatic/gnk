@@ -64,7 +64,7 @@ class Gn {
 	]
 
 	Date t0Date
-	String step // selectIntrigue|role2perso|naming|ressplacetime|casting
+	String step // selectIntrigue|role2perso|substitution|publication
 	boolean isMainstream // Or parallelized
 	int duration // En heure
 	int pipMin
@@ -79,7 +79,7 @@ class Gn {
 	int nbPlayers
 	int nbMen
 	int nbWomen
-	Univers univers
+	Tag univers
 	HashMap<Tag, Integer> gnTags
 	HashMap<Tag, Integer> mainstreamTags
 	HashMap<Tag, Integer> evenementialTags

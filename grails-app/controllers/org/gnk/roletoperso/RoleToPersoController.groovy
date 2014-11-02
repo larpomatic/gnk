@@ -35,7 +35,6 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-
         assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
@@ -243,6 +242,7 @@ class RoleToPersoController {
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "role2perso"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
             render(view: "roleToPerso", model: [gnInstance: gn])

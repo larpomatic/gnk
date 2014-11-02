@@ -5,6 +5,7 @@ import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLReaderService
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.roletoperso.RoleToPersoController
 import org.springframework.security.access.annotation.Secured
 
 import java.text.ParseException
@@ -29,6 +30,7 @@ class SelectIntrigueController {
 
 	def selectIntrigue(Long id) {
 		Gn gnInstance
+        TagService tagService = new TagService();
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
 		Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
         Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>();
@@ -77,7 +79,7 @@ class SelectIntrigueController {
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
                 if (selectedEvenementialPlotInstanceList.size() == 0) {
                     flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
-                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: Univers.list()])
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
                     return
                 }
                 selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
@@ -86,7 +88,7 @@ class SelectIntrigueController {
 				gnInstance.lockedPlotSet = lockedPlot;
 				gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 				if (!gnInstance.save(flush: true)) {
-					render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: Univers.list()])
+					render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
 					return
 				}
 
@@ -110,10 +112,12 @@ class SelectIntrigueController {
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
         if (gnInstance && gnInstance.bannedPlotSet)
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
-		[gnInstance: gnInstance,
+
+       [gnInstance: gnInstance,
                 screenStep: params?.screenStep,
-                plotTagList: (new TagService()).getPlotTagQuery(),
-                universList: Univers.list(),
+                plotTagList: tagService.getPlotTagQuery(),
+                universList: tagService.getUniversTagQuery(),
+//                universList: Univers.findAll(),
                 plotInstanceList: selectedPlotInstanceList,
                 evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
                 mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
@@ -178,8 +182,8 @@ class SelectIntrigueController {
 			redirect(action: "list")
 			return
 		}
-
-		[gnInstance: gnInstance, universList: Univers.list()]
+        TagService tagService = new TagService();
+		[gnInstance: gnInstance, universList: tagService.getUniversTagQuery()]
 	}
 
 	def saveOrUpdate(Long id, Long version) {
@@ -267,7 +271,7 @@ class SelectIntrigueController {
 //            gnInstance.date = cal.getTime();
 //        }
 		if (params.univers) {
-			gnInstance.univers = Univers.get(params.univers as Integer)
+			gnInstance.univers = Tag.get(params.univers as Integer)
 		}
 		if (params.gnStep) {
 			gnInstance.step = params.gnStep

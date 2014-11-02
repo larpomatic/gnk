@@ -259,6 +259,14 @@
     overflow: hidden;
 }
 
+.specialTag .btn-primary {
+    width: 75px;
+}
+
+.specialTag .btn-danger {
+    width: 150px;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

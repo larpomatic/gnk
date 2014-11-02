@@ -229,7 +229,7 @@ public class SelectIntrigueProcessing {
         int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
-        if (!(plot.hasUnivers(_gn.getUnivers())) && !(plot.isUniversGeneric())) {
+        if (!(plot.hasPlotTag(_gn.getUnivers()))) { // TODO faire jouer le poids
             return false;
         }
         if (plot.getIsEvenemential()) {

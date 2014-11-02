@@ -36,6 +36,10 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "substitution";
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        gn.save(flush: true);
         RelationshipGraphService graphservice = new RelationshipGraphService();
         String json = graphservice.create_graph(gn);
 

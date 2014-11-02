@@ -74,14 +74,25 @@ $(function(){
     $('.buttonRichTextEditor').click(function() {
         setCarretPos();
         if ($(this).closest("ul").hasClass("roleSelector")) {
-            pasteHtmlAtCaret('<span class="label label-success" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-success" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
-            pasteHtmlAtCaret('<span class="label label-warning" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-warning" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-important" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-important" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
+        var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary">Article</button>' +
+            '<button class="btn btn-small btn-primary">Nominatif</button></div>' +
+            '<div class="specialTag"><button class="btn btn-small btn-primary">Particule</button>' +
+            '<button class="btn btn-small btn-primary">Possessif</button></div>' +
+            '<div class="specialTag"><button class="btn btn-danger btn-small">Aucune</button></div>';
+        $('.label[contenteditable="false"]:not(.label-success)').popover({
+            html: 'true',
+            placement: 'top',
+            content: spanPopover,
+            container: "body"
+        });
         return false;
     });
 });
@@ -303,16 +314,28 @@ function initializeTextEditor() {
             description = description.substring(0, description.length - 1)
         }
         description = description.replace(/\n/g, '<br>');
-        description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
-        description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
-        description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
-        description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false">');
+        description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         description = description.replace(/&gt;/g, '</span>');
         description = "<div>" + description + "</div>";
         var html = $(description);
         $("span br", html).remove();
         description = html.html();
         $(this).html(description);
+        $('.label[contenteditable="false"]').attr("data-content", spanPopover);
+    });
+    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary">Article</button>' +
+        '<button class="btn btn-small btn-primary">Nominatif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary">Particule</button>' +
+        '<button class="btn btn-small btn-primary">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-danger btn-small">Aucune</button></div>';
+    $('.label[contenteditable="false"]:not(.label-success)').popover({
+        html: 'true',
+        placement: 'top',
+        content: spanPopover,
+        container: "body"
     });
 }
 
@@ -325,14 +348,10 @@ function transformDescription(description) {
     description = description.replace(/<div>/g, '\n');
     description = description.replace(/<\/div>/g, '\n');
     description = description.replace(/<br>/g, '\n');
-    description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
-    description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
-    description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
-    description = description.replace(/<span class="label label-default" contenteditable="false">/g, '<u:');
-    description = description.replace(/<span class="label label-warning">/g, '<l:');
-    description = description.replace(/<span class="label label-important">/g, '<o:');
-    description = description.replace(/<span class="label label-success">/g, '<i:');
-    description = description.replace(/<span class="label label-default">/g, '<u:');
+    description = description.replace(/<span class="label label-warning" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, '<l:');
+    description = description.replace(/<span class="label label-important" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, '<o:');
+    description = description.replace(/<span class="label label-success" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, '<i:');
+    description = description.replace(/<span class="label label-default" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, '<u:');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');
