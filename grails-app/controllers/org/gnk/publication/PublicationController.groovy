@@ -837,23 +837,25 @@ class PublicationController {
             {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-                {
-                    unit = "an"
-                }
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-                {
-                    unit = "années"
-                }
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
-                    unit = "jour"
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
-                    unit = "jours"
-                if (unit.toLowerCase().startsWith("m"))
-                {
-                    unit = "mois"
-                }
-                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+//                {
+//                    unit = "an"
+//                }
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+//                {
+//                    unit = "années"
+//                }
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+//                    unit = "jour"
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+//                    unit = "jours"
+//                if (unit.toLowerCase().startsWith("m"))
+//                {
+//                    unit = "mois"
+//                }
+//                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
+                String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
+                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 
@@ -1016,7 +1018,7 @@ class PublicationController {
             }
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+        msgCharacters += getPrintableDate(gn.t0Date)
         return msgCharacters
     }
 
@@ -1576,11 +1578,11 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date)
+    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT)
     {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                        DateFormat.MEDIUM,
-                        DateFormat.SHORT,
+                        format1,
+                        format2,
                         new Locale("FR","fr"));
         return shortDateFormat.format(date)
     }
