@@ -7,6 +7,7 @@ import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
+import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
@@ -40,9 +41,17 @@ class PublicationController {
             print "Error : GN not found"
             return
         }
+
         gnk = new GNKDataContainerService()
         gnk.ReadDTD(getGn.dtd)
         gn = gnk.gn
+        // FIXME convention is null so we can not save the gn
+//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+//        gn.step = "publication";
+//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+//        if (!gn.save(flush: true, failOnError: true)) {
+//
+//        }
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
