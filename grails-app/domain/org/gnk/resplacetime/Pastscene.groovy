@@ -4,6 +4,8 @@ import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 
+import java.text.SimpleDateFormat
+
 class Pastscene {
 
     Integer id
@@ -155,5 +157,16 @@ class Pastscene {
 
         Date date = calendar.getTime()
         return date
+    }
+
+    public String printDate(Date t0Date)
+    {
+        Date d = getAbsoluteDate(t0Date);
+        SimpleDateFormat formater = null;
+        if (dateHour > 0 || dateMinute > 0 || isAbsoluteHour || isAbsoluteMinute)
+            formater = new SimpleDateFormat("'Le' dd MMMM yyyy 'à' HH'h'mm");
+        else
+            formater = new SimpleDateFormat("'Le' dd MMMM yyyy");
+        return formater.format(d);
     }
 }

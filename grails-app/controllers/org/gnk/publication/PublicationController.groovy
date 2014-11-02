@@ -845,7 +845,7 @@ class PublicationController {
 //                    unit = "mois"
 //                }
 //                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
-                String GnFixDate = getPrintableDate(roleHasPastscene.pastscene.getAbsoluteDate(gn.date), DateFormat.LONG, DateFormat.SHORT)
+                String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
                 wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
