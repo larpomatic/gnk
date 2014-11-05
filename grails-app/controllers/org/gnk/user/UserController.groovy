@@ -79,18 +79,31 @@ class UserController {
         User currentuser = User.findById(user.id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
             currentuser.password = newpassword
-        if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){
-            currentuser.firstname = params.firstnamemodif
+            flash.mpassword = "votre mot de passe été modifié"
         }
-        if (params.lastnamemodif && params.lastnamemodif != currentuser.lastname){
-            currentuser.lastname = params.lastnamemodif
-
-        }
-        if (params.usernamemodif && params.usernamemodif != currentuser.username){
-            if (User.findByUsername((String)params.usernamemodif) == null){
-                currentuser.username = params.usernamemodif;
+        else {
+            if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){
+                currentuser.firstname = params.firstnamemodif
+                flash.mfirstname = "votre prénom a bien été modifié"
+            }
+            else {
+                if (params.lastnamemodif && params.lastnamemodif != currentuser.lastname){
+                    currentuser.lastname = params.lastnamemodif
+                    flash.mlastname = "votre nom de famille a bien été modifié"
+                }
+                else {
+                    if (params.usernamemodif && params.usernamemodif != currentuser.username){
+                        if (User.findByUsername((String)params.usernamemodif) == null){
+                            currentuser.username = params.usernamemodif;
+                        }
+                        flash.musername = "votre login/email a été modifiée"
+                    }
+                    else {
+                        flash.error = "erreur champ vide ou invalid";
+                    }
+                }
             }
         }
         currentuser.save()

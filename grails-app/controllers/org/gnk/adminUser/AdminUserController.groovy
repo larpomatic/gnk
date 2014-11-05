@@ -150,22 +150,35 @@ class AdminUserController {
         User user = User.findById(id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
             user.password = newpassword
-        if (params.firstnamemodif && params.firstnamemodif != user.firstname){
-            user.firstname = params.firstnamemodif
+            flash.mpassword = "votre mot de passe été modifié"
         }
-        if (params.lastnamemodif && params.lastnamemodif != user.lastname){
-            user.lastname = params.lastnamemodif
-
-        }
-        if (params.usernamemodif && params.usernamemodif != user.username){
-            if (User.findByUsername((String)params.usernamemodif) == null){
-                user.username = params.usernamemodif;
+        else {
+            if (params.firstnamemodif && params.firstnamemodif != user.firstname){
+                user.firstname = params.firstnamemodif
+                flash.mfirstname = "votre prénom a bien été modifié"
+            }
+            else {
+                if (params.lastnamemodif && params.lastnamemodif != user.lastname){
+                    user.lastname = params.lastnamemodif
+                    flash.mlastname = "votre nom de famille a bien été modifié"
+                }
+                else {
+                     if (params.usernamemodif && params.usernamemodif != user.username){
+                            if (User.findByUsername((String)params.usernamemodif) == null){
+                                user.username = params.usernamemodif;
+                            }
+                         flash.musername = "votre login/email a été modifiée"
+                     }
+                    else {
+                         flash.error = "erreur champ vide ou invalid";
+                     }
+                }
             }
         }
         user.save()
-        redirect( action: "edit", params: "user : ${user.id}")
+        redirect(action: "edit", params: "user : ${user.id}")
     }
 
     def deleteUser(int id){

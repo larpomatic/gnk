@@ -26,7 +26,21 @@
 
 <div role="main">
     <h3><g:message code="default.title.my.profil"/></h3>
-
+    <g:if test="${flash.error}">
+        <div class="alert alert-error" style="display: block">${flash.error}</div>
+    </g:if>
+    <g:if test="${flash.mlastname}">
+        <div class="message alert-success" style="display: block">${flash.mlastname}</div>
+    </g:if>
+    <g:if test="${flash.mpassword}">
+        <div class="message alert-success" style="display: block">${flash.mpassword}</div>
+    </g:if>
+    <g:if test="${flash.mfrstname}">
+        <div class="message alert-success" style="display: block">${flash.mfirstname}</div>
+    </g:if>
+    <g:if test="${flash.mpassword}">
+        <div class="message alert-success" style="display: block">${flash.mpassword}</div>
+    </g:if>
     <div class="row-fluid">
         <div class="span6">
             <div class="indentProfil">
