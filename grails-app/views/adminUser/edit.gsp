@@ -40,8 +40,7 @@
                     <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
                         <label for="lastname"><g:message code="default.profil.lastname"/> :</label>
                         <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
-                            <input type="text" name="lastnamemodif" id="lastname" class="form-control"
-                                   placeholder='${user.lastname}'/>
+                            <input type="text" name="lastnamemodif" id="lastname" class="form-control" placeholder='${user.lastname}'/>
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-submit " type="submit"><g:message
                                         code="default.action.modify"/></button>
