@@ -19,7 +19,6 @@ import org.gnk.gn.GnHasUser
 import org.gnk.selectintrigue.Plot
 import org.gnk.roletoperso.Character
 import org.gnk.tag.Tag
-import org.gnk.tag.Univers
 import org.gnk.user.User
 import org.w3c.dom.Document
 import org.w3c.dom.Element

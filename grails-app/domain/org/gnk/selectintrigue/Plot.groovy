@@ -144,7 +144,7 @@ class Plot {
         return plotHasTags.first();
     }
 
-//    public boolean hasUnivers(Univers parUnivers) {
+//    public boolean hasUnivers(Tag tagUnivers) {
 //        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
 //            if (plotHasUnivers.univers == parUnivers) {
 //                return true;

@@ -169,6 +169,12 @@ public class SelectIntrigueProcessing {
             int inter = Math.abs(_gn.getGnTags().get(entry.getKey()) - entry.getValue());
             result -= inter * inter;
         }
+
+        Tag gnUnivers = _gn.getUnivers();
+        for (Plot plot : _selectedPlotList) {
+
+        }
+
         //Nombre de role ayant au moins Pipcore pipes qu'il reste à trouver
         int bonusMalusPipcore = _gn.nbPlayers - nbRolePipCoreok;
         if (bonusMalusPipcore < 0)
@@ -229,9 +235,6 @@ public class SelectIntrigueProcessing {
         int nbTPS_PIP = 0;
         if (plot.getIsDraft())
             return false;
-        if (!(plot.hasPlotTag(_gn.getUnivers()))) { // TODO faire jouer le poids
-            return false;
-        }
         if (plot.getIsEvenemential()) {
             for (Tag bannedEvenementialPlotTag : _bannedEvenementialTagList) {
                 if (plot.hasPlotTag(bannedEvenementialPlotTag)) {

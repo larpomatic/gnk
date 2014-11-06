@@ -50,7 +50,7 @@ class RoleToPersoController {
 
         int mainstreamId = 0;
         if (gn.getIsMainstream()) {
-            if (params.selectedMainstream) {
+            if (params.selectedMainstream && params.selectedMainstream != "0") {
                 mainstreamId = params.selectedMainstream as int;
                 Plot mainstreamPlot = Plot.findById(mainstreamId);
                 gn.addPlot(mainstreamPlot);

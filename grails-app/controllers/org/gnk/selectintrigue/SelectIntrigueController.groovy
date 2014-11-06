@@ -117,7 +117,6 @@ class SelectIntrigueController {
                 screenStep: params?.screenStep,
                 plotTagList: tagService.getPlotTagQuery(),
                 universList: tagService.getUniversTagQuery(),
-//                universList: Univers.findAll(),
                 plotInstanceList: selectedPlotInstanceList,
                 evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
                 mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
@@ -128,6 +127,74 @@ class SelectIntrigueController {
                 mainstreamId: mainstreamId,
                 conventionList: Convention.list()]
 	}
+
+    def goToRoleToPerso(Long id) {
+        Gn gnInstance;
+        TagService tagService = new TagService();
+        List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
+        Integer evenementialId = 0;
+        Integer mainstreamId = 0;
+        if (id >= 0) {
+            gnInstance = Gn.get(id)
+            if ((params.screenStep as Integer) == 1) {
+                String gnDTD = params.gnDTD
+                gnInstance.dtd = gnDTD
+                new GNKDataContainerService().ReadDTD(gnInstance)
+                HashSet<Plot> bannedPlot = new HashSet<Plot>();
+                HashSet<Plot> lockedPlot = new HashSet<Plot>();
+                params.each {
+                    if (it.key.startsWith("plot_status_") && it.value != "3") {
+                        // Locked = 1, Banned= 2, Selected = 3
+                        Plot plot = Plot.get((it.key - "plot_status_") as Integer);
+                        if (it.value == "1") {
+                            lockedPlot.add(plot)
+                        } else {
+                            bannedPlot.add(plot)
+                        }
+                    } else if (it.key.startsWith("keepBanned_")) {
+                        final Plot plotToBan = Plot.get((it.key - "keepBanned_") as Integer)
+                        bannedPlot.add(plotToBan);
+                        lockedPlot.remove(plotToBan);
+
+                    } else if (it.key.startsWith("toLock_")) {
+                        final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
+                        lockedPlot.add(plotToLock);
+                        bannedPlot.remove(plotToLock);
+                    }
+                    else if (it.key.startsWith("selected_evenemential")) {
+                        evenementialId = it.value as Integer;
+                    }
+                    else if (it.key.startsWith("selected_mainstream")) {
+                        mainstreamId = it.value as Integer;
+                    }
+                }
+
+                SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
+                Set<Plot> selectedPlotInstanceList = algo.getSelectedPlots();
+
+                if (algo.getSelectedEvenementialPlotList().size() == 0) {
+                    flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
+                    return
+                }
+                algo.getSelectedMainstreamPlotList();
+                gnInstance.selectedPlotSet = selectedPlotInstanceList;
+                gnInstance.bannedPlotSet = bannedPlot;
+                gnInstance.lockedPlotSet = lockedPlot;
+                gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+                if (!gnInstance.save(flush: true)) {
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
+                    return
+                }
+
+            } else {
+                new GNKDataContainerService().ReadDTD(gnInstance)
+            }
+        }
+        redirect(controller: 'roleToPerso', action:'roleToPerso', params: [gnId: id as String,
+                selectedMainstream: mainstreamId as String,
+                selectedEvenemential: evenementialId as String]);
+    }
 
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
 		List<String> stat = new ArrayList<String>(3)
@@ -214,7 +281,7 @@ class SelectIntrigueController {
         gnHasConvention.version = gnHasConvention.version + 1
         gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
 
-		formatParams(gnInstance)
+        formatParams(gnInstance)
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
 		if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
@@ -359,6 +426,9 @@ class SelectIntrigueController {
 				    evenementialTags.put(plotTag, weight as Integer)
 			}
 		}
+        gnTags.put(gnInstance.univers, 101);
+        mainstreamTags.put(gnInstance.univers, 101);
+        evenementialTags.put(gnInstance.univers, 101);
 	}
 
     public Calendar isValidDate(String dateToValidate, String dateFromat){
