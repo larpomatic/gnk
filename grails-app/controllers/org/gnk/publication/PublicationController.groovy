@@ -43,15 +43,18 @@ class PublicationController {
         }
 
         gnk = new GNKDataContainerService()
-        gnk.ReadDTD(getGn.dtd)
-        gn = gnk.gn
-        // FIXME convention is null so we can not save the gn
-//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-//        gn.step = "publication";
-//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
-//        if (!gn.save(flush: true, failOnError: true)) {
-//
-//        }
+        //gnk.ReadDTD(getGn.dtd)
+        //gn = gnk.gn
+        gnk.ReadDTD(getGn);
+
+        gn = getGn;
+
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "publication";
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        if (!gn.save(flush: true, failOnError: true)) {
+
+        }
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
