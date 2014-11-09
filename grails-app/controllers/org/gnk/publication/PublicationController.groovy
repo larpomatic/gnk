@@ -55,6 +55,7 @@ class PublicationController {
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
+        
         if( !folder.exists() ) {
             folder.mkdirs()
         }
