@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagService
 import org.gnk.tag.Tag
+import org.gnk.tag.Univers
 
 class GenericPlaceController {
 
@@ -36,6 +37,34 @@ class GenericPlaceController {
         object.put("genericPlaceTagList", jsonTagList);
         render(contentType: "application/json") {
             object
+        }
+    }
+
+    def getBestPlaces() {
+        org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+        List<com.gnk.substitution.Tag> tags = new ArrayList<>();
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                // TODO create TAG into genericplace
+                com.gnk.substitution.Tag tag = new com.gnk.substitution.Tag();
+                Tag genericPlaceTag = Tag.get((it.key - "placeTags_") as Integer);
+                tag.value = genericPlaceTag.name;
+                tag.weight =  params.get("placeTagsWeight_" + genericPlaceTag.id) as Integer;
+                tags.add(tag);
+            }
+        }
+        genericplace.setTagList(tags);
+        List<Univers> univers = Univers.getAll();
+        PlaceService placeservice = new PlaceService();
+        for (Univers u : univers)
+        {
+            genericplace = placeservice.findReferentialPlace(genericplace, u.name);
+            genericplace.resultList;
+        }
+        final JSONObject object = new JSONObject();
+        object.put("value", jsonTagList.size());
+        render(contentType: "application/json") {
+            object;
         }
     }
 

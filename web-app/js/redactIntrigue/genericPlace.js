@@ -59,6 +59,9 @@ $(function(){
             }
         })
     });
+
+    // add link to add 10 best places
+    getBestPlace();
 });
 
 function updatePlace() {
@@ -211,4 +214,25 @@ function createNewGenericPlacePanel(data) {
     });
     $('select[name="pastScenePlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
     $('select[name="eventPlace"]').append('<option value="' + data.genericPlace.id + '">' + data.genericPlace.code + '</option>');
+}
+
+// function to get 10 best places depending of tags
+function getBestPlace()
+{
+    $('#bestPlace').click(function() {
+        var url = $(this).data('url');
+        var form = $('form[name="newPlaceForm"]');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                $("#bestPlaceModal").modal('show');
+            },
+            error: function() {
+                createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
+            }
+        })
+    });
 }

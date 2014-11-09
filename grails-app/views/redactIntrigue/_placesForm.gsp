@@ -41,6 +41,7 @@
                         <a href="#placeTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                         </a>
+                        <button id="bestPlace" type="button" class="btn btn-info" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>">Test</button>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -109,7 +110,23 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPlace"/>
+                <div id="bestPlaceModal" class="modal hide fade tags-modal" tabindex="-1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>
+                            <g:message code="redactintrigue.place.bestPlace" default="Best Places"/>
+                        </h3>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>Test 1</p>
+                        <p>Test 2</p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
             </form>
         </div>
 
