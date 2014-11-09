@@ -7,6 +7,7 @@ import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
+import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
@@ -40,9 +41,17 @@ class PublicationController {
             print "Error : GN not found"
             return
         }
+
         gnk = new GNKDataContainerService()
         gnk.ReadDTD(getGn.dtd)
         gn = gnk.gn
+        // FIXME convention is null so we can not save the gn
+//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+//        gn.step = "publication";
+//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+//        if (!gn.save(flush: true, failOnError: true)) {
+//
+//        }
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
@@ -828,23 +837,25 @@ class PublicationController {
             {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-                {
-                    unit = "an"
-                }
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-                {
-                    unit = "années"
-                }
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
-                    unit = "jour"
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
-                    unit = "jours"
-                if (unit.toLowerCase().startsWith("m"))
-                {
-                    unit = "mois"
-                }
-                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+//                {
+//                    unit = "an"
+//                }
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+//                {
+//                    unit = "années"
+//                }
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+//                    unit = "jour"
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+//                    unit = "jours"
+//                if (unit.toLowerCase().startsWith("m"))
+//                {
+//                    unit = "mois"
+//                }
+//                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
+                String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
+                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 
@@ -1007,7 +1018,7 @@ class PublicationController {
             }
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+        msgCharacters += getPrintableDate(gn.t0Date)
         return msgCharacters
     }
 
@@ -1567,11 +1578,11 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date)
+    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT)
     {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                        DateFormat.MEDIUM,
-                        DateFormat.SHORT,
+                        format1,
+                        format2,
                         new Locale("FR","fr"));
         return shortDateFormat.format(date)
     }

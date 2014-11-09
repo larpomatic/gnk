@@ -168,6 +168,12 @@ function createNewGenericPlacePanel(data) {
         return new Handlebars.SafeString(value.toLowerCase());
     });
     var audaciousFn;
+    Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+        if(v1 === v2) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    });
     Handlebars.registerHelper('recursive', function(children, options) {
         var out = '';
         if (options.fn !== undefined) {

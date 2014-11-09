@@ -48,10 +48,18 @@
                     </div>
                 </div>
                 <div class="row formRow">
-                    <div class="span4">
+                    <div class="span3">
                         <label>
                             <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
                         </label>
+                    </div>
+                    <div class="span1">
+                        <label for="resourceObjectToDefine">
+                            <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="resourceObject" id="resourceObjectToDefine" value="0" checked="checked"/>
                     </div>
                     <div class="span1">
                         <label for="resourceObjectInGame">
@@ -59,7 +67,7 @@
                         </label>
                     </div>
                     <div class="span1">
-                        <g:radio name="resourceObject" id="resourceObjectInGame" value="1" checked="checked"/>
+                        <g:radio name="resourceObject" id="resourceObjectInGame" value="1"/>
                     </div>
                     <div class="span1">
                         <label for="resourceObjectSimulated">
@@ -216,10 +224,18 @@
                     </div>
 
                     <div class="row formRow">
-                        <div class="span4">
+                        <div class="span3">
                             <label>
                                 <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
                             </label>
+                        </div>
+                        <div class="span1">
+                            <label for="resourceObjectToDefine">
+                                <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="resourceObject" id="resourceObjectToDefine" value="0" checked="${resource?.objectType?.id == 0}"/>
                         </div>
                         <div class="span1">
                             <label for="resourceObjectInGame">

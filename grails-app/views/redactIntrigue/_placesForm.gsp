@@ -44,10 +44,18 @@
                     </div>
                 </div>
                 <div class="row formRow">
-                    <div class="span4">
+                    <div class="span3">
                         <label>
                             <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>
                         </label>
+                    </div>
+                    <div class="span1">
+                        <label for="placeObjectToDefine">
+                            <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>
+                        </label>
+                    </div>
+                    <div class="span1">
+                        <g:radio name="placeObject" id="placeObjectToDefine" value="0" checked="checked"/>
                     </div>
                     <div class="span1">
                         <label for="placeObjectInGame">
@@ -55,7 +63,7 @@
                         </label>
                     </div>
                     <div class="span1">
-                        <g:radio name="placeObject" id="placeObjectInGame" value="1" checked="checked"/>
+                        <g:radio name="placeObject" id="placeObjectInGame" value="1"/>
                     </div>
                     <div class="span1">
                         <label for="placeObjectSimulated">
@@ -141,10 +149,18 @@
                     </div>
 
                     <div class="row formRow">
-                        <div class="span4">
+                        <div class="span3">
                             <label>
                                 <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>
                             </label>
+                        </div>
+                        <div class="span1">
+                            <label for="placeObjectToDefine">
+                                <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>
+                            </label>
+                        </div>
+                        <div class="span1">
+                            <g:radio name="placeObject" id="placeObjectToDefine" value="0" checked="${place?.objectType?.id == 0}"/>
                         </div>
                         <div class="span1">
                             <label for="placeObjectInGame">

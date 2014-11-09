@@ -35,7 +35,6 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-
         assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
@@ -51,7 +50,7 @@ class RoleToPersoController {
 
         int mainstreamId = 0;
         if (gn.getIsMainstream()) {
-            if (params.selectedMainstream) {
+            if (params.selectedMainstream && params.selectedMainstream != "0") {
                 mainstreamId = params.selectedMainstream as int;
                 Plot mainstreamPlot = Plot.findById(mainstreamId);
                 gn.addPlot(mainstreamPlot);
@@ -243,6 +242,7 @@ class RoleToPersoController {
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "role2perso"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
             render(view: "roleToPerso", model: [gnInstance: gn])
