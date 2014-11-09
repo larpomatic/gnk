@@ -6,6 +6,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLReaderService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.RoleToPersoController
+import org.omg.CORBA.Request
 import org.springframework.security.access.annotation.Secured
 
 import java.text.ParseException
@@ -28,6 +29,55 @@ class SelectIntrigueController {
 		[gnInstanceList: Gn.list(params), gnInstanceTotal: Gn.count()]
 	}
 
+    def dispatchStep(Long id) {
+        if (id == 0) {
+            redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
+        }
+        Gn gn = Gn.get(id);
+        assert (gn != null);
+        if (gn == null) {
+            redirect(controller: 'selectIntrigue', action: "list");
+        }
+//        String dtd = gn.getDtd();
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        String step = gn.step;
+        if (step == "selectIntrigue") {
+            redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"/*, gnDTD: dtd*/]);
+        }
+        else if (step == "role2perso") {
+            Integer evenementialId = 0;
+            Integer mainstreamId = 0;
+            for (Plot plot in gn.selectedPlotSet) {
+                if (plot.isEvenemential) {
+                    evenementialId = Plot.findByName(plot.name).id;
+                }
+                else if (plot.isMainstream && gn.isMainstream) {
+                    mainstreamId = Plot.findByName(plot.name).id;;
+                }
+            }
+            redirect(controller: 'roleToPerso', action:'roleToPerso', params: [gnId: id as String,
+                    selectedMainstream: mainstreamId as String,
+                    selectedEvenemential: evenementialId as String]);
+        }
+        else if (step == "substitution") {
+            List<String> sexes = new ArrayList<>();
+            for (org.gnk.roletoperso.Character character in gn.characterSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            redirect(controller: 'substitution', action:'index', params: [gnId: id as String, sexe: sexes]);
+        }
+        else if (step == "publication") {
+            redirect(controller: 'publication', action:'index', params: [gnId: id as String]);
+        }
+        else {
+            redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: 0);
+        }
+    }
+
 	def selectIntrigue(Long id) {
 		Gn gnInstance
         TagService tagService = new TagService();
@@ -42,8 +92,8 @@ class SelectIntrigueController {
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
 			if ((params.screenStep as Integer) == 1) {
-				String gnDTD = params.gnDTD
-				gnInstance.dtd = gnDTD
+//				String gnDTD = params.gnDTD
+//				gnInstance.dtd = gnDTD
                 new GNKDataContainerService().ReadDTD(gnInstance)
 				HashSet<Plot> bannedPlot = new HashSet<Plot>();
 				HashSet<Plot> lockedPlot = new HashSet<Plot>();
@@ -114,18 +164,18 @@ class SelectIntrigueController {
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
 
        [gnInstance: gnInstance,
-                screenStep: params?.screenStep,
-                plotTagList: tagService.getPlotTagQuery(),
-                universList: tagService.getUniversTagQuery(),
-                plotInstanceList: selectedPlotInstanceList,
-                evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
-                mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
-                bannedPlotInstanceList: gnInstance?.bannedPlotSet,
-                nonTreatedPlots: nonTreatedPlots ,
-                statisticResultList: statisticResultList,
-                evenementialId: evenementialId,
-                mainstreamId: mainstreamId,
-                conventionList: Convention.list()]
+               screenStep: params?.screenStep,
+               plotTagList: tagService.getPlotTagQuery(),
+               universList: tagService.getUniversTagQuery(),
+               plotInstanceList: selectedPlotInstanceList,
+               evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
+               mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
+               bannedPlotInstanceList: gnInstance?.bannedPlotSet,
+               nonTreatedPlots: nonTreatedPlots ,
+               statisticResultList: statisticResultList,
+               evenementialId: evenementialId,
+               mainstreamId: mainstreamId,
+               conventionList: Convention.list()]
 	}
 
     def goToRoleToPerso(Long id) {

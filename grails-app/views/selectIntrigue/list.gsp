@@ -26,7 +26,7 @@
 				<tbody>
 				<g:each in="${gnInstanceList}" status="i" var="gnInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link action="selectIntrigue" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link></td>
+						<td><g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link></td>
 						<td><g:formatDate date="${gnInstance.date}" /></td>
 					</tr>
 				</g:each>
