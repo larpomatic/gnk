@@ -65,7 +65,7 @@ class GnXMLReaderService {
 
         assert (GN_INFORMATION.UNIVERSE.size() == 1)
         Node UNIVERSE = GN_INFORMATION.UNIVERSE[0]
-        gn.univers = Univers.get(UNIVERSE.attribute("id") as Integer) //FIXME
+        gn.univers = Tag.get(UNIVERSE.attribute("id") as Integer)
 
         assert (GN_INFORMATION.TAGS.size() == 1)
         Node TAGS = GN_INFORMATION.TAGS[0]

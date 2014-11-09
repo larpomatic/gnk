@@ -40,13 +40,15 @@
                     </div>
 
                     <div class="span1">
-                        <label for="isDraft">
-                            <g:message code="redactintrigue.generalDescription.isDraft" default="Draft"/>
+                        <label>
+                            <g:message code="redactintrigue.generalDescription.plotUnivers" default="Univers"/>
                         </label>
                     </div>
 
                     <div class="span3">
-                        <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
+                        <a href="#universModal" class="btn" data-toggle="modal">
+                            <g:message code="redactintrigue.generalDescription.chooseUniverses" default="Choose univers"/>
+                        </a>
                     </div>
 
                     <div class="span1">
@@ -81,6 +83,17 @@
                     <div class="span3">
                         <g:checkBox name="isEvenemential" id="isEvenemential" checked="${plotInstance.isEvenemential}"/>
                     </div>
+
+                    <div class="span1">
+                        <label for="isDraft">
+                            <g:message code="redactintrigue.generalDescription.isDraft" default="Draft"/>
+                        </label>
+                    </div>
+
+                    <div class="span3">
+                        <g:checkBox id="isDraft" name="isDraft" checked="${plotInstance.isDraft}"/>
+                    </div>
+
                 </div>
 
                 <div class="text-center plotTabs">
@@ -166,6 +179,29 @@
                         <ul class="plotTags">
                             <g:each in="${plotTagList}" status="i" var="plotTagInstance">
                                 <g:render template="plotTagTree" model="[plotTagInstance: plotTagInstance, plotInstance: plotInstance]"/>
+                            </g:each>
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+                <div id="universModal" class="modal hide fade tags-modal" tabindex="-1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h3>Univers</h3>
+                        <input class="input-medium search-query" data-content="plotTags"
+                               placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
+                        <button type="button" class="btn btn-primary modifyTag push">
+                            <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul class="plotTags">
+                            <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
+                                <g:render template="plotTagTree" model="[plotTagInstance: plotUniversInstance, plotInstance: plotInstance]"/>
                             </g:each>
                         </ul>
                     </div>

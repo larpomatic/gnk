@@ -8,7 +8,8 @@
            href="#collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" data-pastsceneId="{{ pastscene.id }}">
 
             <!--###PASTSCENECHANGE-->
-            En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} -
+            {{#pastSceneTime pastscene}}{{/pastSceneTime}}
+            <!--En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} --->
 
             {{ pastscene.title }}
         </a>

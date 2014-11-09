@@ -7,6 +7,7 @@ import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
+import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
@@ -40,9 +41,17 @@ class PublicationController {
             print "Error : GN not found"
             return
         }
+
         gnk = new GNKDataContainerService()
         gnk.ReadDTD(getGn.dtd)
         gn = gnk.gn
+        // FIXME convention is null so we can not save the gn
+//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+//        gn.step = "publication";
+//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+//        if (!gn.save(flush: true, failOnError: true)) {
+//
+//        }
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
@@ -392,8 +401,65 @@ class PublicationController {
         return resLChar
     }
 
+    def sortPlaceList(ArrayList<Place> PList)
+    {
+        ArrayList<String> nameList = new ArrayList<String>()
+        ArrayList<Place> resList = new ArrayList<Place>()
+
+        for (Place p : PList)
+            nameList.add(p.name)
+        nameList = nameList.sort()
+        for (String n : nameList)
+            for (Place p : PList)
+                if (n == p.name)
+                {
+                    resList.add(p)
+                    PList.remove(p)
+                    break
+                }
+        return resList
+    }
+
+    def sortGenericPlaceObjectTypeList(ArrayList<Place> PList)
+    {
+        ArrayList<Place> resList = new ArrayList<Place>()
+        for (int i = 0; i <= 3; i++)
+        {
+            ArrayList<Place> tmpList = new ArrayList<Place>()
+            ArrayList<String> nameList = new ArrayList<String>()
+            for (Place p : PList)
+                if (p.genericPlace.objectType.id == i)
+                    nameList.add(p.name)
+            nameList = nameList.sort()
+            for (String n : nameList)
+                for (Place p : PList)
+                    if (n == p.name)
+                        tmpList.add(p)
+            resList += tmpList
+        }
+        return resList
+    }
+
     // Création du tableau de la synthèse des lieux du GN
     def createPlaceTable() {
+        ArrayList<Place> PList = new ArrayList<Place>() // Liste des place
+        ArrayList<Place> GPList = new ArrayList<Place>() // Liste des generic_place
+        ArrayList<Place> GPOTList = new ArrayList<Place>() // Liste des generic_place ayant un objectType renseigné
+        for (Place p : gnk.placeMap.values())
+        {
+            if (p.genericPlace)
+                if (p.genericPlace.objectType != null)
+                    GPOTList.add(p)
+                else
+                    GPList.add(p)
+            else
+                PList.add(p)
+        }
+
+        PList = sortPlaceList(PList)
+        GPList = sortPlaceList(GPList)
+        GPOTList = sortGenericPlaceObjectTypeList(GPOTList)
+
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
@@ -403,8 +469,7 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Indication(s) lieu")
 
         table.getContent().add(tableRow)
-
-        for (Place p : gnk.placeMap.values())
+        for (Place p : GPOTList + GPList + PList)
         {
             Tr tableRowPlace = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlace, p.name)
@@ -433,8 +498,67 @@ class PublicationController {
         wordWriter.addObject(table)
     }
 
+    def sortGenericResourceObjectTypeList(ArrayList<GenericResource> PList)
+    {
+        ArrayList<GenericResource> resList = new ArrayList<GenericResource>()
+        for (Integer i = 0; i <= 3; i++)
+        {
+            ArrayList<GenericResource> tmpList = new ArrayList<GenericResource>()
+            ArrayList<String> nameList = new ArrayList<String>()
+            for (GenericResource gr : PList)
+            {
+                if (gr.objectType.id == i)
+                {
+                    nameList.add(gr.selectedResource.name)
+                }
+            }
+            nameList = nameList.sort()
+            for (String n : nameList)
+                for (GenericResource gr : PList)
+                    if (n == gr.selectedResource.name)
+                    {
+                        tmpList.add(gr)
+                        PList.remove(gr)
+                        break
+                    }
+            resList += tmpList
+        }
+        return resList
+    }
+
+    def sortGenericResourceList(ArrayList<GenericResource> GRList)
+    {
+        ArrayList<String> nameList = new ArrayList<String>()
+        ArrayList<GenericResource> resList = new ArrayList<GenericResource>()
+
+        for (GenericResource gr : GRList)
+            nameList.add(gr.selectedResource.name)
+        nameList = nameList.sort()
+        for (String n : nameList)
+            for (GenericResource gr : GRList)
+                if (n == gr.selectedResource.name)
+                {
+                    resList.add(gr)
+                    GRList.remove(gr)
+                    break
+                }
+        return resList
+    }
+
     // Création du tableau de la synthèse des ressources
     def createResTable() {
+        ArrayList<GenericResource> GRList = new ArrayList<GenericResource>() // Liste des GenericResource
+        ArrayList<GenericResource> GROTList = new ArrayList<GenericResource>() // Liste des generic_GenericResource ayant un objectType renseigné
+        for (GenericResource gr : gnk.genericResourceMap.values())
+        {
+            if (gr.objectType != null)
+                GROTList.add(gr)
+            else
+                GRList.add(gr)
+        }
+
+        GRList = sortGenericResourceList(GRList)
+        GROTList = sortGenericResourceObjectTypeList(GROTList)
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -447,7 +571,7 @@ class PublicationController {
 
         table.getContent().add(tableRow);
 
-        for (GenericResource genericResource : gnk.genericResourceMap.values())
+        for (GenericResource genericResource : GROTList + GRList)
         {
 //            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
 //            {
@@ -713,23 +837,25 @@ class PublicationController {
             {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-                {
-                    unit = "an"
-                }
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-                {
-                    unit = "années"
-                }
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
-                    unit = "jour"
-                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
-                    unit = "jours"
-                if (unit.toLowerCase().startsWith("m"))
-                {
-                    unit = "mois"
-                }
-                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+//                {
+//                    unit = "an"
+//                }
+//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+//                {
+//                    unit = "années"
+//                }
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+//                    unit = "jour"
+//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+//                    unit = "jours"
+//                if (unit.toLowerCase().startsWith("m"))
+//                {
+//                    unit = "mois"
+//                }
+//                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
+                String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
+                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 
@@ -892,7 +1018,7 @@ class PublicationController {
             }
         }
         msgCharacters += "Il mentionne "+NbPHJ+" Personnage"+((NbPHJ > 1)?"s":"")+" Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)//gn.t0Date.cdate.hours+"h"+(gn.t0Date.cdate.minutes > 10 ? gn.t0Date.cdate.minutes:"0"+gn.t0Date.cdate.minutes)+" le "+gn.t0Date.cdate.dayOfMonth+"/"+(gn.t0Date.cdate.month > 10 ? gn.t0Date.cdate.month:"0"+gn.t0Date.cdate.month)+"/"+gn.t0Date.cdate.year
+        msgCharacters += getPrintableDate(gn.t0Date)
         return msgCharacters
     }
 
@@ -1452,11 +1578,11 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date)
+    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT)
     {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                        DateFormat.MEDIUM,
-                        DateFormat.SHORT,
+                        format1,
+                        format2,
                         new Locale("FR","fr"));
         return shortDateFormat.format(date)
     }

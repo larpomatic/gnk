@@ -25,6 +25,63 @@
                     </a>
                 </div>
             </div>
+
+            <div class="row formRow">
+                <div class="span3">
+                    <label>
+                        Type de ressource :
+                    </label>
+                </div>
+                <div class="span1">
+                    <label for="resourceObjectToDefine">
+                        A définir
+                    </label>
+                </div>
+                <div class="span1">
+                    {{#ifCond genericPlace.placeObject 0}}
+                        <input type="radio" name="resourceObject" checked="checked" value="0" id="resourceObjectToDefine">
+                    {{else}}
+                        <input type="radio" name="resourceObject" value="0" id="resourceObjectToDefine">
+                    {{/ifCond}}
+                </div>
+                <div class="span1">
+                    <label for="resourceObjectInGame">
+                        En jeu
+                    </label>
+                </div>
+                <div class="span1">
+                    {{#ifCond genericPlace.placeObject 1}}
+                        <input type="radio" name="resourceObject" checked="checked" value="1" id="resourceObjectInGame">
+                    {{else}}
+                        <input type="radio" name="resourceObject" value="1" id="resourceObjectInGame">
+                    {{/ifCond}}
+                </div>
+                <div class="span1">
+                    <label for="resourceObjectSimulated">
+                        Simulé
+                    </label>
+                </div>
+                <div class="span1">
+                    {{#ifCond genericPlace.placeObject 2}}
+                        <input type="radio" name="resourceObject" checked="checked" value="2" id="resourceObjectSimulated">
+                    {{else}}
+                        <input type="radio" name="resourceObject" value="2" id="resourceObjectSimulated">
+                    {{/ifCond}}
+                </div>
+                <div class="span1">
+                    <label for="resourceObjectOffGame">
+                        Hors jeu
+                    </label>
+                </div>
+                <div class="span1">
+                    {{#ifCond genericPlace.placeObject 3}}
+                        <input type="radio" name="resourceObject" checked="checked" value="3" id="resourceObjectOffGame">
+                    {{else}}
+                        <input type="radio" name="resourceObject" value="3" id="resourceObjectOffGame">
+                    {{/ifCond}}
+                </div>
+            </div>
+
             <div class="row formRow text-center">
                 <label for="placeDescription">
                     Description

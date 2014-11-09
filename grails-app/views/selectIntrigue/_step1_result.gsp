@@ -234,15 +234,9 @@
     <fieldset class="buttons">
     <g:actionSubmit class="btn btn-primary" action="selectIntrigue"
                     value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+    <g:actionSubmit class="btn btn-primary" action="goToRoleToPerso"
+                value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
 </g:form>
 </fieldset>
-<g:form method="post" controller="roleToPerso" name="roleToPersoFrom" class="roleToPersoFrom">
-    <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-    <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value=""/>
-    <g:hiddenField name="selectedMainstream" class="selectedMainstream" value=""/>
-    <div class="form-actions">
-        <g:actionSubmit class="btn btn-primary" action="roleToPerso" value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
-    </div>
-</g:form>
 
 

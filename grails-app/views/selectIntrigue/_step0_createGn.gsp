@@ -47,9 +47,9 @@ select {
                 <td><label for="gnUnivers"><g:message
                         code="selectintrigue.step0.gnUnivers" default="Univers"/>
                 </label></td>
-                <td><g:select name="univers" id="gnUnivers"
-                              from="${universList}" optionKey="id"
-                              value="${gnInstance?.univers?.id}" required=""/></td>
+                <td>
+                    <g:select name="univers" id="gnUnivers" from="${universList}" optionKey="id" value="${gnInstance?.univers?.id}" />
+                </td>
             </tr>
             <tr>
                 <td colspan="2" class="text-center">
