@@ -267,6 +267,7 @@ class SelectIntrigueController {
         }
 
 		formatParams(gnInstance)
+        gnInstance.step = 'selectIntrigue';
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 		if (!gnInstance.save(flush: true)) {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])
