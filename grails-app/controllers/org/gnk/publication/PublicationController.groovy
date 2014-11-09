@@ -33,25 +33,25 @@ class PublicationController {
 
     def index() {
         def id = params.gnId as Integer
-        //Gn getGn = null
+        Gn getGn = null
         if (!id.equals(null))
-            gn = Gn.get(id)
-        if (gn.equals(null))
+            getGn = Gn.get(id)
+        if (getGn.equals(null))
         {
             print "Error : GN not found"
             return
         }
 
         gnk = new GNKDataContainerService()
-        gnk.ReadDTD(gn)
-
-        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "publication"
-        gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">")
-
-        if (!gn.save(flush: true, failOnError: true)) {
-
-        }
+        gnk.ReadDTD(getGn.dtd)
+        gn = gnk.gn
+        // FIXME convention is null so we can not save the gn
+//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+//        gn.step = "publication";
+//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+//        if (!gn.save(flush: true, failOnError: true)) {
+//
+//        }
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
@@ -66,18 +66,18 @@ class PublicationController {
     def publication = {
         def id = params.gnId as Integer
         String tmpWord = params.templateWordSelect as String
-        //Gn getGn = null
+        Gn getGn = null
         if (!id.equals(null))
-            gn = Gn.get(id)
-        if (gn.equals(null))
+            getGn = Gn.get(id)
+        if (getGn.equals(null))
         {
             print "Error : GN not found"
             return
         }
 
         gnk = new GNKDataContainerService()
-        gnk.ReadDTD(gn)
-        //gn = gnk.gn
+        gnk.ReadDTD(getGn.dtd)
+        gn = gnk.gn
 
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)

@@ -90,8 +90,7 @@ class SelectIntrigueController {
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
 		if (id >= 0) {
-			gnInstance = Gn.get(id);
-            String step = gnInstance.getStep();
+			gnInstance = Gn.get(id)
 			if ((params.screenStep as Integer) == 1) {
 //				String gnDTD = params.gnDTD
 //				gnInstance.dtd = gnDTD
@@ -268,7 +267,6 @@ class SelectIntrigueController {
         }
 
 		formatParams(gnInstance)
-        gnInstance.step = 'selectIntrigue';
 		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 		if (!gnInstance.save(flush: true)) {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])

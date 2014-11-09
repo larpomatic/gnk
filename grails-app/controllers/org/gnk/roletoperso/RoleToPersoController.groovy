@@ -482,6 +482,21 @@ class RoleToPersoController {
         }
     }
 
+    def management(Long id) {
+        if (id && id >= 0) {
+            gnInstance = Gn.get(id)
+        }
+        [screenStep: 0, plotTagList: PlotTag.list(), universList: Univers.list(), characters: characterService.characters]
+    }
+
+    def edit(Long id) {
+        def Character c
+        if (id && id >= 0) {
+            c = characterService.getCharacter(id as int)
+        }
+        [screenStep: 0, roles: c.roles, plotTagList: PlotTag.list(), universList: Univers.list(), character: c]
+    }
+
     def save() {
         Character c = new Character()
 

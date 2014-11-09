@@ -85,31 +85,6 @@ $(function(){
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
             pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
-        var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-            '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
-            '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-        $('.label[contenteditable="false"]:not(.label-success)').popover({
-            html: 'true',
-            placement: 'top',
-            content: spanPopover,
-            container: "body",
-            delay: { "show": 0, "hide": 0 }
-        });
-        var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-            '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-            '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-            '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-        $('.label[contenteditable="false"].label-success').popover({
-            html: 'true',
-            placement: 'top',
-            content: spanPopoverRole,
-            container: "body",
-            delay: { "show": 0, "hide": 0 }
-        });
         initializePopover();
         return false;
     });
@@ -343,32 +318,6 @@ function initializeTextEditor() {
         $("span br", html).remove();
         description = html.html();
         $(this).html(description);
-        $('.label[contenteditable="false"]').attr("data-content", spanPopover);
-    });
-    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"]:not(.label-success)').popover({
-        html: 'true',
-        placement: 'top',
-        content: spanPopover,
-        container: "body",
-        delay: { "show": 0, "hide": 0 }
-    });
-    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-    '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"].label-success').popover({
-        html: 'true',
-        placement: 'top',
-        content: spanPopoverRole,
-        container: "body",
-        delay: { "show": 0, "hide": 0 }
     });
     initializePopover();
 }
@@ -405,6 +354,32 @@ function updateAllDescription(formlist) {
 }
 
 function initializePopover() {
+    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"]:not(.label-success)').popover({
+        html: 'true',
+        placement: 'top',
+        content: spanPopover,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"].label-success').popover({
+        html: 'true',
+        placement: 'top',
+        content: spanPopoverRole,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+
     $('.label[contenteditable="false"]').on("shown.bs.popover", function () {
         if ($('.popover').size() > 1) {
             $(this).popover('hide');
