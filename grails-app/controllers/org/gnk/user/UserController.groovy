@@ -1,6 +1,8 @@
 package org.gnk.user
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.admin.right
+import org.gnk.rights.RightsService
 import org.springframework.security.access.annotation.Secured
 
 import java.text.DateFormat
@@ -12,6 +14,7 @@ import java.util.logging.SimpleFormatter
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class UserController {
+    RightsService rightsService
     UserService userService
 
     def
@@ -20,6 +23,7 @@ class UserController {
     }
 
     def profil(){
+
         User user = session.getAttribute("user")
 
         if (!user){
@@ -28,14 +32,17 @@ class UserController {
             redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "profil", controllerredirect : "user"])
             return false
         } else {
+            int disabled = 0
         User currentuser = User.findById(user.id)
         int rightuser = currentuser.gright
-
+        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value())){
+            disabled = 1;
+        }
         List<Boolean> lb = userService.instperm(rightuser)
             Date date = currentuser.lastConnexion
             DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy")
            String dateDesign = dateFormat.format(date).toString()
-        [currentuser : currentuser , lb : lb, date : dateDesign]
+        [currentuser : currentuser , lb : lb, date : dateDesign, disabled : disabled]
         }
     }
 

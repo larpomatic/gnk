@@ -18,18 +18,10 @@
 <g:if test="${flash.error}">
 <div class="alert alert-error" style="display: block">${flash.error}</div>
 </g:if>
-<g:if test="${flash.mlastname}">
-    <div class="message alert-success" style="display: block">${flash.mlastname}</div>
+<g:if test="${flash.success}">
+    <div class="message alert-success" style="display: block">${flash.success}</div>
 </g:if>
-<g:if test="${flash.mpassword}">
-    <div class="message alert-success" style="display: block">${flash.mpassword}</div>
-</g:if>
-<g:if test="${flash.mfrstname}">
-    <div class="message alert-success" style="display: block">${flash.mfirstname}</div>
-</g:if>
-<g:if test="${flash.mpassword}">
-    <div class="message alert-success" style="display: block">${flash.mpassword}</div>
-</g:if>
+
 <g:hasRights lvlright="${right.USEROPEN.value()}">
     <h3>Profil</h3>
 
@@ -39,14 +31,14 @@
                 <div class="row profil-margin">
                     <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
                         <label for="lastname"><g:message code="default.profil.lastname"/> :</label>
-                        <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasRights lvlright="${right.USERMODIFY.value()}">
                             <input type="text" name="lastnamemodif" id="lastname" class="form-control" placeholder='${user.lastname}'/>
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-submit " type="submit"><g:message
                                         code="default.action.modify"/></button>
                             </span>
                         </g:hasRights>
-                        <g:hasNotRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasNotRights lvlright="${right.USERMODIFY.value()}">
                             <span class="normal-txt">${user.lastname}</span>
                         </g:hasNotRights>
                     </g:form>
@@ -55,7 +47,7 @@
                 <div class="row profil-margin">
                     <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
                         <label for="firstname"><g:message code="default.profil.firstname"/> :</label>
-                        <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasRights lvlright="${right.USERMODIFY.value()}">
                             <input type="text" name="firstnamemodif" id="firstname" class="form-control"
                                    placeholder="${user.firstname}">
                             <span class="input-group-btn">
@@ -63,7 +55,7 @@
                                         code="default.action.modify"/></button>
                             </span>
                         </g:hasRights>
-                        <g:hasNotRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasNotRights lvlright="${right.USERMODIFY.value()}">
                             <span class="normal-txt">${user.firstname}</span>
                         </g:hasNotRights>
                     </g:form>
@@ -72,7 +64,7 @@
                 <div class="row profil-margin">
                     <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
                         <label for="email"><g:message code="default.profil.email"/> :</label>
-                        <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasRights lvlright="${right.USERMODIFY.value()}">
                             <input type="text" name="usernamemodif" id="email" class="form-control"
                                    placeholder="${user.username}"/>
                             <span class="input-group-btn">
@@ -80,7 +72,7 @@
                                         code="default.action.modify"/></button>
                             </span>
                         </g:hasRights>
-                        <g:hasNotRights lvlright="${right.PROFILMODIFY.value()}">
+                        <g:hasNotRights lvlright="${right.USERMODIFY.value()}">
                             <span class="normal-txt">${user.username}</span>
                         </g:hasNotRights>
                     </g:form>
@@ -88,7 +80,7 @@
             </div>
         </div>
 
-        <g:hasRights lvlright="${right.PROFILMODIFY.value()}">
+        <g:hasRights lvlright="${right.USERMODIFY.value()}">
             <div class="span6 ">
                 <div class="indentPassword">
                     <div class="row profil-margin">
@@ -116,8 +108,6 @@
             </div>
         </g:hasRights>
     </div>
-     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
-    </g:hasRights>
     <g:link class="btn btn-warning" controller="adminUser" action="statistic" id="${user.id}">
         <g:message code="default.statistique"/>
     </g:link>

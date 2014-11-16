@@ -33,7 +33,9 @@
 
 <div role="main">
     <br/>
+    <g:hasRights lvlright="${right.USERMODIFY.value()}">
     <g:link action="createUser" type="button" class="btn btn-primary"><g:message code="default.action.creatUser"/></g:link>
+    </g:hasRights>
     <br/>
     <table class="table">
         <thead>
@@ -41,9 +43,7 @@
             <th><g:message code="default.profil.email"/></th>
             <th><g:message code="default.profil.firstname"/></th>
             <th><g:message code="default.profil.lastname"/></th>
-            <g:hasRights lvlright="${right.USERMODIFY.value()}">
             <th></th>
-            </g:hasRights>
 
             <th><g:message code="default.button.state.label"/></th>
             <g:hasRights lvlright="${right.USERCLOSE.value()}">
@@ -57,7 +57,6 @@
                 <td>${u.username}</td>
                 <td>${u.firstname}</td>
                 <td>${u.lastname}</td>
-                <g:hasRights lvlright="${right.USERMODIFY.value()}">
                 <td>
                     <li>
                         <g:link controller="adminUser" action="edit" id="${u.id}" class="btn btn-small">
@@ -65,11 +64,10 @@
                         </g:link>
                     </li>
                 </td>
-                </g:hasRights>
-
                 <td>
+                    <g:hasRights lvlright="${right.USERMODIFY.value()}">
                     <g:if test="${!u.accountLocked}">
-                        <g:link class="btn btn-success" controller="adminUser" action="lock" id="${u.id}">
+                        <g:link class="btn btn-success"   controller="adminUser" action="lock" id="${u.id}">
                             <g:message code="default.button.actif.label"/>
                         </g:link>
                     </g:if>
@@ -78,6 +76,19 @@
                             <g:message code="default.button.inactif.label"/>
                         </g:link>
                     </g:if>
+                    </g:hasRights>
+                    <g:hasNotRights lvlright="${right.USERMODIFY.value()}">
+                        <g:if test="${!u.accountLocked}">
+                            <btn class="btn btn-success" disabled="disabled">
+                                <g:message code="default.button.actif.label"/>
+                            </btn>
+                        </g:if>
+                        <g:if test="${u.accountLocked}">
+                            <btn class="btn btn-danger" disabled="disabled">
+                                <g:message code="default.button.inactif.label"/>
+                            </btn>
+                        </g:if>
+                    </g:hasNotRights>
                 </td>
                 <g:hasRights lvlright="${right.USERCLOSE.value()}">
                 <td>

@@ -1,7 +1,9 @@
 package org.gnk.adminUser
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.admin.right
 import org.gnk.cookie.CookieService
+import org.gnk.rights.RightsService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
 import org.gnk.user.UserSecRole
@@ -38,6 +40,7 @@ class AdminUserController {
         redirect(controller: controllerredir, action: actionredir)
     }
     def list(){
+
         User user = session.getAttribute("user")
 
         if (!user){
@@ -152,24 +155,24 @@ class AdminUserController {
         String confirmpassword = params.passwordChangedConfirm
         if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
             user.password = newpassword
-            flash.mpassword = "votre mot de passe été modifié"
+            flash.success = "votre mot de passe été modifié"
         }
         else {
             if (params.firstnamemodif && params.firstnamemodif != user.firstname){
                 user.firstname = params.firstnamemodif
-                flash.mfirstname = "votre prénom a bien été modifié"
+                flash.success = "votre prénom a bien été modifié"
             }
             else {
                 if (params.lastnamemodif && params.lastnamemodif != user.lastname){
                     user.lastname = params.lastnamemodif
-                    flash.mlastname = "votre nom de famille a bien été modifié"
+                    flash.success = "votre nom de famille a bien été modifié"
                 }
                 else {
                      if (params.usernamemodif && params.usernamemodif != user.username){
                             if (User.findByUsername((String)params.usernamemodif) == null){
                                 user.username = params.usernamemodif;
                             }
-                         flash.musername = "votre login/email a été modifiée"
+                         flash.success = "votre login/email a été modifiée"
                      }
                     else {
                          flash.error = "erreur champ vide ou invalid";
