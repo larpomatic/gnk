@@ -24,6 +24,7 @@ th,td {
     <g:render template="subNav"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
 		<legend><g:message code="roletoperso.roletopersoModule" default="RoleToPerso Module"/></legend>
+        <g:link action="getBack" id="${gnInstance.id}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
         <g:render template="result" />
 	</div>
 </body>

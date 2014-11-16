@@ -1,5 +1,10 @@
 $(function(){
     var element;
+
+    $('body').keydown(function(e) {
+       keyhandler(e);
+    });
+
     initConfirm();
 
     initDeleteButton();
@@ -22,6 +27,18 @@ $(function(){
     initializeTextEditor();
 
     initializeClosingPopover();
+
+    // on supprimer le role staff des select dans l'onglet relation
+    $('select[name="relationTo"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
+    $('select[name="relationFrom"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
     $('.updatePlot').click(function() {
@@ -73,7 +90,12 @@ $(function(){
 
     initModifyTag();
 
-    //insert html span into textEditors
+    initSpanCreation();
+});
+
+//insert html span into textEditors
+function initSpanCreation() {
+    $(".buttonRichTextEditor").unbind('click');
     $('.buttonRichTextEditor').click(function() {
         setCarretPos();
         if ($(this).closest("ul").hasClass("roleSelector")) {
@@ -88,7 +110,7 @@ $(function(){
         initializePopover();
         return false;
     });
-});
+}
 
 function initQuickObjects() {
     //permet d'ajouter rapidement une ressource, lieu ou role
@@ -190,6 +212,7 @@ function appendEntity(entity, value, label, flag, id) {
     if (flag != "") {
         createNotification("info", "ajout réussi.", "Votre entité a bien été ajoutée, vous pourrez la compléter ultérieurement.");
     }
+    initSpanCreation();
 }
 
 //evite de descendre quand on clique sur un bouton du menu
@@ -417,4 +440,15 @@ function initializeClosingPopover() {
             }
         }
     });
+}
+
+function keyhandler(e) {
+    var key = e.keyCode
+    if (key == 8)
+    {
+        var d = e.srcElement || e.target;
+        if ($(d).hasClass("richTextEditor")) {
+            e.preventDefault();
+        }
+    }
 }

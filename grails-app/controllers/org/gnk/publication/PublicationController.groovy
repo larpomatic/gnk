@@ -31,6 +31,24 @@ class PublicationController {
     private SubstitutionPublication substitutionPublication
     private String publicationFolder
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        gn.step = "substitution";
+        // trouver un moyen de supprimer les places, les ressources et les names
+        gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
+        gn.save(flush: true);
+        List<String> sexes = new ArrayList<>();
+        for (Character character in gn.characterSet) {
+            sexes.add("sexe_" + character.getDTDId() as String);
+        }
+        for (Character character in gn.nonPlayerCharSet) {
+            sexes.add("sexe_" + character.getDTDId() as String);
+        }
+        redirect(controller: 'substitution', action:'index', params: [gnId: id as String, sexe: sexes]);
+    }
+
     def index() {
         def id = params.gnId as Integer
 //        Gn getGn = null

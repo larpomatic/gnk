@@ -38,7 +38,6 @@ class SelectIntrigueController {
         if (gn == null) {
             redirect(controller: 'selectIntrigue', action: "list");
         }
-//        String dtd = gn.getDtd();
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         String step = gn.step;
@@ -92,8 +91,6 @@ class SelectIntrigueController {
 		if (id >= 0) {
 			gnInstance = Gn.get(id)
 			if ((params.screenStep as Integer) == 1) {
-//				String gnDTD = params.gnDTD
-//				gnInstance.dtd = gnDTD
                 new GNKDataContainerService().ReadDTD(gnInstance)
 				HashSet<Plot> bannedPlot = new HashSet<Plot>();
 				HashSet<Plot> lockedPlot = new HashSet<Plot>();
@@ -137,6 +134,7 @@ class SelectIntrigueController {
 				gnInstance.bannedPlotSet = bannedPlot;
 				gnInstance.lockedPlotSet = lockedPlot;
 				gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+                gnInstance.step = "selectIntrigue";
 				if (!gnInstance.save(flush: true)) {
 					render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
 					return
@@ -181,7 +179,6 @@ class SelectIntrigueController {
     def goToRoleToPerso(Long id) {
         Gn gnInstance;
         TagService tagService = new TagService();
-        List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
         if (id >= 0) {
@@ -219,16 +216,18 @@ class SelectIntrigueController {
                     }
                 }
 
-                SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
-                Set<Plot> selectedPlotInstanceList = algo.getSelectedPlots();
-
-                if (algo.getSelectedEvenementialPlotList().size() == 0) {
-                    flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
-                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
-                    return
+                HashSet<Plot> selectedPlot = gnInstance.selectedPlotSet;
+                for (Plot plot in lockedPlot) {
+                    if (!gnInstance.selectedPlotSet.contains(plot)) {
+                        selectedPlot.add(plot);
+                    }
                 }
-                algo.getSelectedMainstreamPlotList();
-                gnInstance.selectedPlotSet = selectedPlotInstanceList;
+                for (Plot plot in bannedPlot) {
+                    if (gnInstance.selectedPlotSet.contains(plot)) {
+                        selectedPlot.remove(plot);
+                    }
+                }
+                gnInstance.selectedPlotSet = selectedPlot;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
                 gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)

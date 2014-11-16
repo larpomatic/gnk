@@ -93,7 +93,7 @@ function updateResource() {
                     $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
                     initializeTextEditor();
                     $('.richTextEditor span.label-important').each(function() {
-                        if ($(this).html() == data.object.oldname) {
+                        if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
                     });
@@ -137,7 +137,7 @@ function removeResource(object) {
                     $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
                     $('.eventScreen td[data-id="'+object.attr("data-id")+'"]').parent().remove();
                     $('.richTextEditor span.label-important').each(function() {
-                       if ($(this).html() == name) {
+                       if ($(this).html().trim() == name) {
                            $(this).remove();
                        }
                     });

@@ -22,7 +22,9 @@ $(function(){
                     };
                     var html = template(context);
                     $('.roleScreen > ul').append(html);
-                    updateRoleRelation(data);
+                    if (!data.role.code.lowercase == "staff") {
+                        updateRoleRelation(data);
+                    }
                     initConfirm();
                     initDeleteButton();
                     emptyRoleForm();
@@ -30,7 +32,9 @@ $(function(){
                     initSearchBoxes();
                     initModifyTag();
                     stopClosingDropdown();
-                    appendEntity("role", data.role.code, "success", "", data.role.id);
+                    if (!data.role.code.lowercase == "staff") {
+                        appendEntity("role", data.role.code, "success", "", data.role.id);
+                    }
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
                     initQuickObjects();
@@ -94,7 +98,7 @@ function updateRole() {
                     });
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
-                        if ($(this).html() == data.object.oldname) {
+                        if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
                     });

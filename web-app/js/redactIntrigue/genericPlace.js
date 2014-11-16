@@ -86,7 +86,7 @@ function updatePlace() {
                     $('select[name="pastScenePlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                     initializeTextEditor();
                     $('.richTextEditor span.label-warning').each(function () {
-                        if ($(this).html() == data.object.oldname) {
+                        if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
                     });
@@ -131,7 +131,7 @@ function removePlace(object) {
                     $('.addPlace').trigger("click");
                     $('.placeSelector li[data-id="' + object.attr("data-id") + '"]').remove();
                     $('.richTextEditor span.label-warning').each(function () {
-                        if ($(this).html() == name) {
+                        if ($(this).html().trim() == name) {
                             $(this).remove();
                         }
                     });
