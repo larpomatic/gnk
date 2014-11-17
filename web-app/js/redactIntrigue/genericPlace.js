@@ -225,22 +225,68 @@ function createNewGenericPlacePanel(data) {
     initializePopover();
 }
 
+
 // function to get 10 best places depending of tags
-function getBestPlace() {
-    $('#bestPlace').click(function () {
+function getBestPlace()
+{
+    $('#newbestPlace').click(function() {
+        $('#selectUnivers').data('status', 'create');
+        $('.bestRow').remove();
+        $('.myselect').remove();
+        $('#selectUnivers').prop('selectedIndex',0);
+        $('#selectUnivers').data('form', 'newPlaceForm');
+    });
+
+    $('#selectUnivers').change(function() {
+        var status = $(this).data('status');
         var url = $(this).data('url');
-        var form = $('form[name="newPlaceForm"]');
+        var form_name = $(this).data('form');
+        var form = $('form[name=' + form_name + ']');
+        var input = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "univerTag").val($(this).val());
+        form.append(input);
+
         $.ajax({
             type: "POST",
             url: url,
             data: form.serialize(),
             dataType: "json",
-            success: function (data) {
-                $("#bestPlaceModal").modal('show');
+            success: function(data) {
+                var array = data.value.split('#');
+                var cont = $('#listContainer');
+                $('.bestRow').remove();
+                $('.myselect').remove();
+                var add = 0;
+                $.each(array, function(i, v) {
+                    add = add + 1;
+                    if (v != null && v != "") {
+                        var row = $('#templateBest').clone();
+                        row.attr('id', 'row-' + i);
+                        row.removeClass('hidden');
+                        row.addClass("bestRow");
+                        row.html(v);
+                        cont.append(row);
+                    }
+                });
+                if (add <= 1) {
+                    var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
+                    var cont = $('#modalBestPlace');
+                    cont.append(label);
+                }
             },
-            error: function () {
+            error: function() {
                 createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })
+    });
+
+    $('.bestPlace').click(function() {
+        $('#selectUnivers').data('status', 'update');
+        $('.bestRow').remove();
+        $('.myselect').remove();
+        $('#selectUnivers').prop('selectedIndex',0);
+        var form_name = $(this).data('form');
+        $('#selectUnivers').data('form', form_name);
     });
 }

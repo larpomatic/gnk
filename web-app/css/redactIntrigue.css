@@ -11,7 +11,7 @@
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
 #edit-plot textarea,
-#edit-plot select
+#edit-plot select:not(#selectUnivers)
 {
     /*font-family: 'Shadows Into Light', cursive !important;*/
     font-size: 24px !important;
@@ -20,7 +20,7 @@
 
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
-#edit-plot select {
+#edit-plot select:not(#selectUnivers) {
     border: 0;
     outline: none;
     /*letter-spacing: 3px;*/
@@ -203,6 +203,14 @@
     background-size: 100%;
 }
 
+.btnBestPlace {
+    background: url(../images/redactIntrigue/place/place.png) no-repeat;
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
 .pastSceneRelativeTimeUnit {
     cursor: pointer;
 }
@@ -252,7 +260,7 @@
     max-width: 150px;
 }
 
-#edit-plot .tags-modal label {
+#edit-plot .tags-modal label:not(.myselect) {
     max-width: 332px;
     white-space: nowrap;
     text-overflow: ellipsis;

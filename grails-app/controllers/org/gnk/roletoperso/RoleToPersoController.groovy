@@ -246,6 +246,7 @@ class RoleToPersoController {
         gn.nonPlayerCharSet.each { charact ->
             //print("AGE_2 :" + charact.age + " for IDs :")
         }
+
         /***********/
         /**FIN AGE**/
         /***********/
