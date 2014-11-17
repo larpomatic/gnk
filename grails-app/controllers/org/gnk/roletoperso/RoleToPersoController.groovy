@@ -26,6 +26,19 @@ class RoleToPersoController {
         [characters: characterService.characters]
     }
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "selectIntrigue";
+        gn.characterSet = null;
+        gn.nonPlayerCharSet = null;
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
+    }
+
     def roleToPerso() {
         final gnIdStr = params.gnId
         assert (gnIdStr != "null" && (gnIdStr as String).isInteger())

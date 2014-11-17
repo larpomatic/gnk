@@ -137,8 +137,7 @@ class GenericPlaceController {
         if (params.containsKey("placeObject")) {
             ObjectType objectType = ObjectType.findById(params.placeObject as Integer);
             newGenericPlace.objectType = objectType;
-        }
-        else {
+        } else {
             ObjectType objectType = ObjectType.findById(1);
             newGenericPlace.objectType = objectType;
         }
@@ -147,7 +146,7 @@ class GenericPlaceController {
         } else {
             return false
         }
-        if(newGenericPlace.extTags != null) {
+        if (newGenericPlace.extTags != null) {
             HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);

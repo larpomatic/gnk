@@ -93,7 +93,7 @@ function updateResource() {
                     $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
                     initializeTextEditor();
                     $('.richTextEditor span.label-important').each(function() {
-                        if ($(this).html() == data.object.oldname) {
+                        if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
                     });
@@ -137,7 +137,7 @@ function removeResource(object) {
                     $('.resourceSelector li[data-id="' + object.attr("data-id") + '"]').remove();
                     $('.eventScreen td[data-id="'+object.attr("data-id")+'"]').parent().remove();
                     $('.richTextEditor span.label-important').each(function() {
-                       if ($(this).html() == name) {
+                       if ($(this).html().trim() == name) {
                            $(this).remove();
                        }
                     });
@@ -193,10 +193,10 @@ function createNewGenericResourcePanel(data) {
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
         value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
-        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
-        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
+        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
+        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
+        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericResourcePanel'];
@@ -234,4 +234,5 @@ function createNewGenericResourcePanel(data) {
         $(this).append('<tr><td data-id="'+data.genericResource.id+'">'+data.genericResource.code+
             '</td><td><input type="number" name="quantity'+roleId+'_'+data.genericResource.id+'" value=""/></td></tr>');
     });
+    initializePopover();
 }
