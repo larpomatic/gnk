@@ -41,7 +41,7 @@ class Role implements Comparable {
 
     static constraints = {
         code maxSize: 45
-        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG"]
+        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG", "STF"]
     }
 
     static mapping = {
@@ -158,6 +158,11 @@ class Role implements Comparable {
     // Check if the role is Tout Personnage Joueur (cf balise TOUS)
     public boolean isTPJ() {
         return (type != null && type.toUpperCase().equals("TPJ"))
+    }
+
+    // Check if the role is STAF
+    public boolean isSTF() {
+        return (type != null && type.toUpperCase().equals("STF"))
     }
 
     // Check if the role is Personnage Joueur Générique (cf balise OTHER)

@@ -64,8 +64,8 @@ class Character {
             return
         }
         String formattedType = type.toUpperCase()
-        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ"))
-        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ")))
+        assert (formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ") || formattedType.equals("STF"))
+        if (!(formattedType.equals("PNJ") || formattedType.equals("PHJ") || formattedType.equals("PJ") || formattedType.equals("STF")))
         {
             this.type = "PHJ"
             return
@@ -83,6 +83,10 @@ class Character {
 
     public boolean isPHJ() {
         return this.type.equals("PHJ");
+    }
+
+    public boolean isSTF() {
+        return this.type.equals("STF");
     }
 
     public boolean isNeutralGender() {
