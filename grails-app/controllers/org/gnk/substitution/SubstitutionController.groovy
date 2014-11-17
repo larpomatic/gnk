@@ -8,10 +8,34 @@ import org.gnk.gn.Gn
 import org.gnk.roletoperso.Character;
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.RelationshipGraphService
+import org.gnk.selectintrigue.Plot
 
 class SubstitutionController {
 
     String xmlGnTestPath = "DTD_V3.xml"
+
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "role2perso";
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        Integer evenementialId = 0;
+        Integer mainstreamId = 0;
+        for (Plot plot in gn.selectedPlotSet) {
+            if (plot.isEvenemential) {
+                evenementialId = Plot.findByName(plot.name).id;
+            }
+            else if (plot.isMainstream && gn.isMainstream) {
+                mainstreamId = Plot.findByName(plot.name).id;;
+            }
+        }
+        redirect(controller: 'roleToPerso', action:'roleToPerso', params: [gnId: id as String,
+                selectedMainstream: mainstreamId as String,
+                selectedEvenemential: evenementialId as String]);
+    }
 
     def index() {
         InputHandler inputHandler = new InputHandler()
@@ -36,6 +60,10 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "substitution";
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        gn.save(flush: true);
         RelationshipGraphService graphservice = new RelationshipGraphService();
         String json = graphservice.create_graph(gn);
 

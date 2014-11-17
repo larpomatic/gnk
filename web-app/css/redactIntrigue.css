@@ -259,6 +259,19 @@
     overflow: hidden;
 }
 
+.specialTag .btn {
+    width: 75px;
+}
+
+.specialTag .none {
+    width: 150px;
+}
+
+.MFfields input {
+    width: 61px;
+    margin: 0 !important;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

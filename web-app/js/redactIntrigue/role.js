@@ -22,7 +22,9 @@ $(function(){
                     };
                     var html = template(context);
                     $('.roleScreen > ul').append(html);
-                    updateRoleRelation(data);
+                    if (!data.role.code.lowercase == "staff") {
+                        updateRoleRelation(data);
+                    }
                     initConfirm();
                     initDeleteButton();
                     emptyRoleForm();
@@ -30,7 +32,9 @@ $(function(){
                     initSearchBoxes();
                     initModifyTag();
                     stopClosingDropdown();
-                    appendEntity("role", data.role.code, "success", "", data.role.id);
+                    if (!data.role.code.lowercase == "staff") {
+                        appendEntity("role", data.role.code, "success", "", data.role.id);
+                    }
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
                     $('.roleLi .badge').html(nbRoles);
                     initQuickObjects();
@@ -94,7 +98,7 @@ function updateRole() {
                     });
                     $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.richTextEditor span.label-success').each(function() {
-                        if ($(this).html() == data.object.oldname) {
+                        if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
                     });
@@ -201,10 +205,10 @@ function createNewRolePanel(data) {
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
         value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
-        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
-        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
+        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
+        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
+        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
@@ -270,6 +274,7 @@ function createNewRolePanel(data) {
     $('.eventScreen div[id*="eventRole' + data.role.id + '"] .fullScreenEditable .btnFullScreen').click(function() {
         $(this).parent().parent().toggleClass("fullScreenOpen");
     });
+    initializePopover();
 }
 
 function updateRoleRelation(data) {

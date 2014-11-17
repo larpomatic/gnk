@@ -26,6 +26,19 @@ class RoleToPersoController {
         [characters: characterService.characters]
     }
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "selectIntrigue";
+        gn.characterSet = null;
+        gn.nonPlayerCharSet = null;
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
+    }
+
     def roleToPerso() {
         final gnIdStr = params.gnId
         assert (gnIdStr != "null" && (gnIdStr as String).isInteger())
@@ -35,7 +48,6 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-
         assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
@@ -51,7 +63,7 @@ class RoleToPersoController {
 
         int mainstreamId = 0;
         if (gn.getIsMainstream()) {
-            if (params.selectedMainstream) {
+            if (params.selectedMainstream && params.selectedMainstream != "0") {
                 mainstreamId = params.selectedMainstream as int;
                 Plot mainstreamPlot = Plot.findById(mainstreamId);
                 gn.addPlot(mainstreamPlot);
@@ -243,6 +255,7 @@ class RoleToPersoController {
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "role2perso"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
             render(view: "roleToPerso", model: [gnInstance: gn])
@@ -480,21 +493,6 @@ class RoleToPersoController {
             character.addRole(roleForLife)
             gn.addPlot(p)
         }
-    }
-
-    def management(Long id) {
-        if (id && id >= 0) {
-            gnInstance = Gn.get(id)
-        }
-        [screenStep: 0, plotTagList: PlotTag.list(), universList: Univers.list(), characters: characterService.characters]
-    }
-
-    def edit(Long id) {
-        def Character c
-        if (id && id >= 0) {
-            c = characterService.getCharacter(id as int)
-        }
-        [screenStep: 0, roles: c.roles, plotTagList: PlotTag.list(), universList: Univers.list(), character: c]
     }
 
     def save() {
