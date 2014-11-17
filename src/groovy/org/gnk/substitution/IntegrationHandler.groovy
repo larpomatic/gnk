@@ -188,14 +188,6 @@ class IntegrationHandler {
             GenericResource genericResource = new GenericResource()
 
             genericResource.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
-            // ******
-            // choper le GNID pour trouver le generic ressource (a partir de son id) et prendre son objecttype -> fait
-            org.gnk.resplacetime.GenericResource gr = org.gnk.resplacetime.GenericResource.get(resourceJson.gnId)
-            org.gnk.resplacetime.ObjectType ot = new org.gnk.resplacetime.ObjectType(gr.objectType.id)
-            // ******
-            // Modifer le code ici pour avoir l'objectype de la générique resource
-            genericResource.ObjectType = ot.type
-            // ******
 
             List<Tag> tagList = []
             for(tagJson in resourceJson.tags) {

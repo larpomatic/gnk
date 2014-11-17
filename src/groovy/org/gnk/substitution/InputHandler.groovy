@@ -242,6 +242,8 @@ class InputHandler {
                 resource.code = genericResource.code
                 // Comment
                 resource.comment = genericResource.comment
+                // ObjectType
+                resource.objectType = genericResource.objectType.type
 
                 // TagList
                 resource.tagList = []

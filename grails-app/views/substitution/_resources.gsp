@@ -31,7 +31,9 @@
             <!-- Code - modal button -->
             <td><a href="#modalRes${i + 1}" role="button" class="btn" data-toggle="modal" disabled="true">RES-${resource.id.encodeAsHTML()}_${resource.plotId.encodeAsHTML()}</a></td>
             <!-- Type -->
-            <td style="text-align: center;"></td>
+            <td center>
+            ${resource.objectType}
+            </td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">
