@@ -13,6 +13,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
+        <th>type</th>
         <th>tags</th>
         <th>comment</th>
         <th>nom</th>
@@ -28,6 +29,10 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td><a href="#modalPla${i + 1}" role="button" class="btn" data-toggle="modal">PLA-${place.id.encodeAsHTML()}_${place.plotId.encodeAsHTML()}</a></td>
+            <!-- Type -->
+            <td center>
+                ${place.objectType}
+            </td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">
