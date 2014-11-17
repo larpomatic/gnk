@@ -13,6 +13,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
+        <th>type</th>
         <th>tags</th>
         <th>comment</th>
         <th>propriétaire</th>
@@ -29,6 +30,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td><a href="#modalRes${i + 1}" role="button" class="btn" data-toggle="modal" disabled="true">RES-${resource.id.encodeAsHTML()}_${resource.plotId.encodeAsHTML()}</a></td>
+            <!-- Type -->
+            <td style="text-align: center;"></td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">

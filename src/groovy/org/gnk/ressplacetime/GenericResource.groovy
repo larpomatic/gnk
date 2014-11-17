@@ -11,6 +11,7 @@ import com.gnk.substitution.Tag
  */
 class GenericResource {
     String code
+    String ObjectType
     List<Tag> tagList
     List<ReferentialResource> bannedItemsList
     List<ReferentialResource> resultList
