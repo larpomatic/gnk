@@ -232,6 +232,7 @@ function getBestPlace()
     $('#newbestPlace').click(function() {
         $('#selectUnivers').data('status', 'create');
         $('.bestRow').remove();
+        $('.myselect').remove();
         $('#selectUnivers').prop('selectedIndex',0);
         $('#selectUnivers').data('form', 'newPlaceForm');
     });
@@ -255,6 +256,7 @@ function getBestPlace()
                 var array = data.value.split('#');
                 var cont = $('#listContainer');
                 $('.bestRow').remove();
+                $('.myselect').remove();
                 var add = 0;
                 $.each(array, function(i, v) {
                     add = add + 1;
@@ -282,6 +284,7 @@ function getBestPlace()
     $('.bestPlace').click(function() {
         $('#selectUnivers').data('status', 'update');
         $('.bestRow').remove();
+        $('.myselect').remove();
         $('#selectUnivers').prop('selectedIndex',0);
         var form_name = $(this).data('form');
         $('#selectUnivers').data('form', form_name);

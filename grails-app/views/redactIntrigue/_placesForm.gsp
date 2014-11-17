@@ -46,8 +46,7 @@
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
                     <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                 </a>
-                <button id="bestPlace" type="button" class="btn btn-info"
-                        data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>">Test</button>
+                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
             </div>
         </div>
 
@@ -144,16 +143,22 @@
 <div id="bestPlaceModal" class="modal hide fade tags-modal" tabindex="-1">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
-
         <h3>
             <g:message code="redactintrigue.place.bestPlace" default="Best Places"/>
         </h3>
     </div>
 
-    <div class="modal-body">
-        <p>Test 1</p>
-
-        <p>Test 2</p>
+    <div id="modalBestPlace" class="modal-body">
+        <select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
+            <option></option>
+            <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
+                <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
+            </g:each>
+        </select>
+        <br>
+        <ul id="listContainer" class="unstyled">
+            <li id="templateBest" class="hidden">TEMPLATE</li>
+        </ul>
     </div>
 
     <div class="modal-footer">
@@ -190,6 +195,7 @@
                     <a href="#placeTagsModal_${place.id}" class="btn" data-toggle="modal">
                         <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                     </a>
+                    <button data-target="#bestPlaceModal" type="button" data-form="updatePlace_${place.id}" class="btnBestPlace bestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
                 </div>
             </div>
 
