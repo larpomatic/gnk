@@ -1,4 +1,10 @@
 $(function(){
+    var element;
+
+    $('body').keydown(function(e) {
+       keyhandler(e);
+    });
+
     initConfirm();
 
     initDeleteButton();
@@ -19,6 +25,20 @@ $(function(){
     initQuickObjects();
 
     initializeTextEditor();
+
+    initializeClosingPopover();
+
+    // on supprimer le role staff des select dans l'onglet relation
+    $('select[name="relationTo"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
+    $('select[name="relationFrom"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
     $('.updatePlot').click(function() {
@@ -70,21 +90,27 @@ $(function(){
 
     initModifyTag();
 
-    //insert html span into textEditors
+    initSpanCreation();
+});
+
+//insert html span into textEditors
+function initSpanCreation() {
+    $(".buttonRichTextEditor").unbind('click');
     $('.buttonRichTextEditor').click(function() {
         setCarretPos();
         if ($(this).closest("ul").hasClass("roleSelector")) {
-            pasteHtmlAtCaret('<span class="label label-success" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
-            pasteHtmlAtCaret('<span class="label label-warning" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-important" contenteditable="false">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
         }
+        initializePopover();
         return false;
     });
-});
+}
 
 function initQuickObjects() {
     //permet d'ajouter rapidement une ressource, lieu ou role
@@ -186,6 +212,7 @@ function appendEntity(entity, value, label, flag, id) {
     if (flag != "") {
         createNotification("info", "ajout réussi.", "Votre entité a bien été ajoutée, vous pourrez la compléter ultérieurement.");
     }
+    initSpanCreation();
 }
 
 //evite de descendre quand on clique sur un bouton du menu
@@ -303,10 +330,11 @@ function initializeTextEditor() {
             description = description.substring(0, description.length - 1)
         }
         description = description.replace(/\n/g, '<br>');
-        description = description.replace(/&lt;l:/g, '<span class="label label-warning" contenteditable="false">');
-        description = description.replace(/&lt;o:/g, '<span class="label label-important" contenteditable="false">');
-        description = description.replace(/&lt;i:/g, '<span class="label label-success" contenteditable="false">');
-        description = description.replace(/&lt;u:/g, '<span class="label label-default" contenteditable="false">');
+        description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="');
+        description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="');
+        description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="');
+        description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="');
+        description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         description = description.replace(/&gt;/g, '</span>');
         description = "<div>" + description + "</div>";
         var html = $(description);
@@ -314,6 +342,7 @@ function initializeTextEditor() {
         description = html.html();
         $(this).html(description);
     });
+    initializePopover();
 }
 
 // on remplace les span html dans une description par des balises
@@ -325,14 +354,11 @@ function transformDescription(description) {
     description = description.replace(/<div>/g, '\n');
     description = description.replace(/<\/div>/g, '\n');
     description = description.replace(/<br>/g, '\n');
-    description = description.replace(/<span class="label label-warning" contenteditable="false">/g, '<l:');
-    description = description.replace(/<span class="label label-important" contenteditable="false">/g, '<o:');
-    description = description.replace(/<span class="label label-success" contenteditable="false">/g, '<i:');
-    description = description.replace(/<span class="label label-default" contenteditable="false">/g, '<u:');
-    description = description.replace(/<span class="label label-warning">/g, '<l:');
-    description = description.replace(/<span class="label label-important">/g, '<o:');
-    description = description.replace(/<span class="label label-success">/g, '<i:');
-    description = description.replace(/<span class="label label-default">/g, '<u:');
+    description = description.replace(/<span class="label label-warning" data-tag="/g, '<l:');
+    description = description.replace(/<span class="label label-important" data-tag="/g, '<o:');
+    description = description.replace(/<span class="label label-success" data-tag="/g, '<i:');
+    description = description.replace(/<span class="label label-default" data-tag="/g, '<u:');
+    description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
     description = description.replace(/<\/span>/g, '>');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');
@@ -348,4 +374,81 @@ function updateAllDescription(formlist) {
     formlist.each(function() {
         $('input[name="Update"]', $(this)).trigger("click");
     });
+}
+
+function initializePopover() {
+    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"]:not(.label-success)').popover({
+        html: 'true',
+        placement: 'top',
+        content: spanPopover,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"].label-success').popover({
+        html: 'true',
+        placement: 'top',
+        content: spanPopoverRole,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+
+    $('.label[contenteditable="false"]').on("shown.bs.popover", function () {
+        if ($('.popover').size() > 1) {
+            $(this).popover('hide');
+        }
+        else {
+            element = $(this);
+            $('.popover button').removeClass("btn-success").addClass("btn-primary");
+            $('.popover button[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
+            if ($('.popover button.btn-success').size() == 0) {
+                $('.popover button[data-tag="Per"]').addClass('btn-success').removeClass("btn-primary");
+                var tag = $(element).attr("data-tag");
+                var maleName = tag.match("M#(.*);F#");
+                var femaleName = tag.match("F#(.*);");
+                $('.popover input[placeholder="Masculin"]').val(maleName[1]);
+                $('.popover input[placeholder="Féminin"]').val(femaleName[1]);
+            }
+            $('.specialTag button').click(function() {
+                $("button", $(this).closest(".popover-content")).removeClass("btn-success").addClass("btn-primary");
+                $(this).removeClass("btn-primary").addClass("btn-success");
+                $(element).attr("data-tag", $(this).attr("data-tag"));
+            });
+        }
+    });
+}
+
+function initializeClosingPopover() {
+    $('body').mousedown(function (e) {
+        if ($('.popover').size() != 0) {
+            if (!$(element).is(e.target) && $(element).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                if ($(element).attr("data-tag") == "Per" || $(element).attr("data-tag").match("^M#")) {
+                    var newtag = "M#" + $('.popover input[placeholder="Masculin"]').val() + ";F#" + $('.popover input[placeholder="Féminin"]').val() + ";";
+                    $(element).attr("data-tag", newtag);
+                }
+                $(element).popover('hide');
+            }
+        }
+    });
+}
+
+function keyhandler(e) {
+    var key = e.keyCode
+    if (key == 8)
+    {
+        var d = e.srcElement || e.target;
+        if ($(d).hasClass("richTextEditor")) {
+            e.preventDefault();
+        }
+    }
 }

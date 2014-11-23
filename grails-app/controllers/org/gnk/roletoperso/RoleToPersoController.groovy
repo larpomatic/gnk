@@ -26,6 +26,19 @@ class RoleToPersoController {
         [characters: characterService.characters]
     }
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "selectIntrigue";
+        gn.characterSet = null;
+        gn.nonPlayerCharSet = null;
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
+    }
+
     def roleToPerso() {
         final gnIdStr = params.gnId
         assert (gnIdStr != "null" && (gnIdStr as String).isInteger())
@@ -35,7 +48,6 @@ class RoleToPersoController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-
         assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
@@ -51,7 +63,7 @@ class RoleToPersoController {
 
         int mainstreamId = 0;
         if (gn.getIsMainstream()) {
-            if (params.selectedMainstream) {
+            if (params.selectedMainstream && params.selectedMainstream != "0") {
                 mainstreamId = params.selectedMainstream as int;
                 Plot mainstreamPlot = Plot.findById(mainstreamId);
                 gn.addPlot(mainstreamPlot);
@@ -234,6 +246,7 @@ class RoleToPersoController {
         gn.nonPlayerCharSet.each { charact ->
             //print("AGE_2 :" + charact.age + " for IDs :")
         }
+
         /***********/
         /**FIN AGE**/
         /***********/
@@ -243,6 +256,7 @@ class RoleToPersoController {
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "role2perso"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         if (!gn.save(flush: true)) {
             render(view: "roleToPerso", model: [gnInstance: gn])
@@ -255,63 +269,8 @@ class RoleToPersoController {
             characterListToDropDownLock.add(c.DTDId);
         }
 
-        String json_relation = "";
-
-
-        JSONArray json_array = new JSONArray();
-        Set<Character> characters = gn.characterSet.clone();
-        characters.addAll(gn.nonPlayerCharSet);
-
-        for (Character c : characters) {
-            JSONObject json_object = new JSONObject();
-
-            JSONArray json_adjacencies = new JSONArray();
-
-            for (Character c2 : characters) {
-                if (c != c2)
-                {
-                    String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
-                    //String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
-                    if ((lien1 != null) && (lien1.isEmpty() == false))
-                    {
-                        JSONObject json_adjacencies_obj = new JSONObject();
-                        json_adjacencies_obj.put("nodeTo", "CHAR" + c2.getDTDId());
-                        json_adjacencies_obj.put("nodeFrom", "CHAR" + c.getDTDId());
-                        JSONObject json_data = new JSONObject();
-                        json_data.put("lien", lien1);
-                        //if ((lien2 != null) && (lien2.isEmpty() == false))
-                        //    json_data.put("lien2", lien2);
-                        json_adjacencies_obj.put("data", json_data);
-                        json_adjacencies.add(json_adjacencies_obj);
-                    }
-                }
-            }
-            if (json_adjacencies.size() > 0)
-            {
-                json_object.put("adjacencies", json_adjacencies);
-
-                JSONObject json_colortype = new JSONObject();
-                if (c.isMen())
-                    json_colortype.put("\$color", "#0040FF");
-                else if (c.isWomen())
-                    json_colortype.put("\$color", "#FE2EC8");
-                else
-                    json_colortype.put("\$color", "#848484");
-                if (c.isPJ())
-                    json_colortype.put("\$type", "circle");
-                else if (c.isPHJ())
-                    json_colortype.put("\$type", "triangle");
-                else
-                    json_colortype.put("\$type", "square")
-                json_object.put("data", json_colortype);
-
-                json_object.put("id", "CHAR" + c.getDTDId());
-                json_object.put("name", "CHAR" + c.getDTDId());
-                json_array.add(json_object);
-            }
-        }
-
-        json_relation = json_array.toString();
+        RelationshipGraphService graph = new RelationshipGraphService();
+        String json_relation = graph.create_graph(gn);
 
         ArrayList<String> values = new ArrayList<>();
         ArrayList<String> values_relation = new ArrayList<>();
@@ -536,21 +495,6 @@ class RoleToPersoController {
             character.addRole(roleForLife)
             gn.addPlot(p)
         }
-    }
-
-    def management(Long id) {
-        if (id && id >= 0) {
-            gnInstance = Gn.get(id)
-        }
-        [screenStep: 0, plotTagList: PlotTag.list(), universList: Univers.list(), characters: characterService.characters]
-    }
-
-    def edit(Long id) {
-        def Character c
-        if (id && id >= 0) {
-            c = characterService.getCharacter(id as int)
-        }
-        [screenStep: 0, roles: c.roles, plotTagList: PlotTag.list(), universList: Univers.list(), character: c]
     }
 
     def save() {

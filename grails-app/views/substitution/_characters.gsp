@@ -36,7 +36,7 @@
             <!-- # -->
             <td style="text-align: center;">${i + 1}</td>
             <!-- Id - modal button -->
-            <td><a href="#modalChar${i + 1}" role="button" class="btn" data-toggle="modal" disabled="true">CHAR-${character.id.encodeAsHTML()}</a></td>
+            <td class="code"><a href="#modalChar${i + 1}" role="button" class="btn" data-toggle="modal" disabled="true">CHAR-${character.id.encodeAsHTML()}</a></td>
             <!-- Type -->
             <td class="upper" style="text-align: center;">${character.type.encodeAsHTML()}</td>
             <!-- Gender -->
@@ -58,7 +58,7 @@
             </td>
             <!-- Firstname -->
             <td class="firstname">
-                <select class="bold" disabled="true" isEmpty="true">
+                <select class="firstname_select bold" disabled="true" isEmpty="true">
                 </select>
                 <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
@@ -68,7 +68,7 @@
             </td>
             <!-- Lastname -->
             <td class="lastname">
-                <select class="bold" disabled="true" isEmpty="true">
+                <select class="lastname_select bold" disabled="true" isEmpty="true">
                 </select>
                 <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
@@ -80,6 +80,36 @@
     </g:each>
     <tbody>
 </table>
+
+<!-- RelationShip Graph -->
+
+<div class="row-fluid">
+    <div class="span12" id="Relations">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="margin-top: 20px">
+                <g:message code="roletoperso.allRelationsSummary"
+                           default="All relations between characters summary"/>
+                <i class="icon-refresh" id="mybtnrefresh"></i>
+            </div>
+
+            <div style="overflow: auto; height:500px;" id="container">
+                <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
+                <g:hiddenField id="relationjson_tmp" name="relationjson" value="${relationjson}"/>
+                <div id="infovis">
+                </div>
+                <div id="right-container">
+                    <div id="inner-details"></div>
+                </div>
+                <g:render template="relationSummary"></g:render>
+            </div>
+            <div class="legend">
+            </div>
+        </br>
+        </div>
+    </div>
+</div>
+
+<!-- End Graph -->
 
 <table class="table table-striped">
     <thead>
@@ -112,8 +142,27 @@
 
         isSubCharactersRunning = false;
 
+        initgraph();
+
         initCharsEvents("${g.createLink(controller:'substitution', action:'getSubCharacters')}")
+
     });
+
+    function initgraph() {
+        $("#mybtnrefresh").click(function () {
+            reloadgraph();
+        });
+        $(".firstname_select").on({
+            change: function() {
+                reloadgraph();
+            }
+        });
+        $(".lastname_select").on({
+            change: function() {
+                reloadgraph();
+            }
+        });
+    }
 
     function initCharsJSON() {
         var jsonObject = new Object();

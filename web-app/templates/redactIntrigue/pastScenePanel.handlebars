@@ -45,52 +45,52 @@
         <div class="span2">Minute</div>
     </div>
     <div class="row formRow littleRow">
-        <div class="span2 shortInput"><input type="number" name="year" id="year" value="{{ pastscene.absoluteDay }}"></div>
-        <div class="span2 shortInput"><input type="number" name="month" id="month" value="{{ pastscene.absoluteMonth }}"></div>
-        <div class="span2 shortInput"><input type="number" name="day" id="day" value="{{ pastscene.absoluteYear }}"></div>
-        <div class="span2 shortInput"><input type="number" name="hour" id="hour" value="{{ pastscene.absoluteHour }}"></div>
-        <div class="span2 shortInput"><input type="number" name="minute" id="minute" value="{{ pastscene.absoluteMinute }}"></div>
+        <div class="span2 shortInput"><input type="number" name="year" id="year" value="{{ pastscene.Year }}"></div>
+        <div class="span2 shortInput"><input type="number" name="month" id="month" value="{{ pastscene.Month }}"></div>
+        <div class="span2 shortInput"><input type="number" name="day" id="day" value="{{ pastscene.Day }}"></div>
+        <div class="span2 shortInput"><input type="number" name="hour" id="hour" value="{{ pastscene.Hour }}"></div>
+        <div class="span2 shortInput"><input type="number" name="minute" id="minute" value="{{ pastscene.Minute }}"></div>
     </div>
     <div class="row formRow littleRow">
         <div class="span2 shortInput">
             Temps absolu
-            {{#if pastscene.isAbsoluteYear}}
+            {{#ifNull pastscene.isAbsoluteYear}}
                 <input type="checkbox" name="yearIsAbsolute" id="yearIsAbsolute" checked="checked">
             {{else}}
                 <input type="checkbox" name="yearIsAbsolute" id="yearIsAbsolute">
-            {{/if}}
+            {{/ifNull}}
         </div>
         <div class="span2 shortInput">
             Temps absolu
-            {{#if pastscene.isAbsoluteMonth}}
+            {{#ifNull pastscene.isAbsoluteMonth}}
                 <input type="checkbox" name="monthIsAbsolute" id="monthIsAbsolute" checked="checked">
             {{else}}
                 <input type="checkbox" name="monthIsAbsolute" id="monthIsAbsolute">
-            {{/if}}
+            {{/ifNull}}
         </div>
         <div class="span2 shortInput">
             Temps absolu
-            {{#if pastscene.isAbsoluteDay}}
+            {{#ifNull pastscene.isAbsoluteDay}}
                 <input type="checkbox" name="dayIsAbsolute" id="dayIsAbsolute" checked="checked">
             {{else}}
                 <input type="checkbox" name="dayIsAbsolute" id="dayIsAbsolute">
-            {{/if}}
+            {{/ifNull}}
         </div>
         <div class="span2 shortInput">
             Temps absolu
-            {{#if pastscene.isAbsoluteHour}}
+            {{#ifNull pastscene.isAbsoluteHour}}
                 <input type="checkbox" name="hourIsAbsolute" id="hourIsAbsolute" checked="checked">
             {{else}}
                 <input type="checkbox" name="hourIsAbsolute" id="hourIsAbsolute">
-            {{/if}}
+            {{/ifNull}}
         </div>
         <div class="span2 shortInput">
             Temps absolu
-            {{#if pastscene.isAbsoluteMinute}}
+            {{#ifNull pastscene.isAbsoluteMinute}}
                 <input type="checkbox" name="minuteIsAbsolute" id="minuteIsAbsolute" checked="checked">
             {{else}}
                 <input type="checkbox" name="minuteIsAbsolute" id="minuteIsAbsolute">
-            {{/if}}
+            {{/ifNull}}
         </div>
     </div>
 

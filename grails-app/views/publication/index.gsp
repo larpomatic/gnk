@@ -8,6 +8,7 @@
 <body>
 
 <br><br>
+<g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
 <div class="row-fluid">
     <div class="span3">
         <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">

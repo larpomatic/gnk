@@ -171,11 +171,17 @@ function emptyPastSceneForm() {
 function createNewPastScenePanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
         value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
-        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
-        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
+        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
+        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
+        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         return new Handlebars.SafeString(value);
+    });
+    Handlebars.registerHelper('ifNull', function(value, options) {
+        if(value) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
     });
     var template = Handlebars.templates['templates/redactIntrigue/pastScenePanel'];
     var context = {
@@ -198,6 +204,17 @@ function createNewPastScenePanel(data) {
         '<input type="checkbox" name="placePastScene_' + data.pastscene.id + '" id="placePastScene_' + data.pastscene.id + '">' +
         $('<div/>').text(data.pastscene.title).html() +
         '</li>');
+    Handlebars.registerHelper('pastSceneTime', function(pastscene) {
+        var res = "";
+        var globalList = buildDateList(pastscene);
+        res = buildRelativeString(globalList, pastscene, res);
+        if (globalList.relativeList.length != 0 && globalList.absoluteList.length != 0) {
+            res += ", ";
+        }
+        res = buildAbsoluteString(globalList, res, pastscene);
+        res += " - ";
+        return res;
+    });
     $.each(data.pastscene.roleList, function(i, item) {
         var roleId = item.roleId;
         template = Handlebars.templates['templates/redactIntrigue/addPastSceneInRole'];
@@ -208,4 +225,97 @@ function createNewPastScenePanel(data) {
         html = template(context);
         $('.roleScreen div[id*="rolePastScenesModal"] #accordionPastScene' + roleId).append(html);
     });
+    initializePopover();
+}
+
+function buildAbsoluteString(globalList, res, pastscene) {
+    var first = true;
+    for (key in globalList.absoluteList) {
+        if (!first && globalList.absoluteList[key] != "Minute") {
+            res += ", "
+        }
+        first = false;
+        if (globalList.absoluteList[key] == "Year") {
+            res += "en " + pastscene.Year;
+        }
+        else if (globalList.absoluteList[key] == "Day") {
+            res += "le " + pastscene.Day;
+        }
+        else if (globalList.absoluteList[key] == "Month") {
+            res += "en " + pastscene.MonthLetters;
+        }
+        else if (globalList.absoluteList[key] == "Hour") {
+            res += "à " + pastscene.Hour + "h"
+        }
+        else if (globalList.absoluteList[key] == "Minute") {
+            res += pastscene.Minute;
+        }
+    }
+    return res;
+}
+
+function buildRelativeString(globalList, pastscene, res) {
+    var first = true;
+    if (globalList.relativeList.length != 0)  {
+        res += "Il y a ";
+    }
+    for (key in globalList.relativeList) {
+        if (!first) {
+            res += ", "
+        }
+        first = false;
+        if (globalList.relativeList[key] == "Year") {
+            res += pastscene.Year + " ans"
+        }
+        else if (globalList.relativeList[key] == "Day") {
+            res += pastscene.Day + " jours"
+        }
+        else if (globalList.relativeList[key] == "Month") {
+            res += pastscene.Month + " mois"
+        }
+        else if (globalList.relativeList[key] == "Hour") {
+            res += pastscene.Hour + " heures"
+        }
+        else if (globalList.relativeList[key] == "Minute") {
+            res += pastscene.Minute + " minutes"
+        }
+    }
+    return res;
+}
+
+function buildDateList(pastscene) {
+    var globalList = {};
+    globalList.relativeList = [];
+    globalList.absoluteList = [];
+    if (pastscene.isAbsoluteYear && pastscene.Year != null) {
+        globalList.absoluteList.push("Year");
+    }
+    else if (pastscene.Year != null) {
+        globalList.relativeList.push("Year");
+    }
+    if (pastscene.isAbsoluteDay && pastscene.Day != null) {
+        globalList.absoluteList.push("Day");
+    }
+    else if (pastscene.Day != null) {
+        globalList.relativeList.push("Day");
+    }
+    if (pastscene.isAbsoluteMonth && pastscene.Month != null) {
+        globalList.absoluteList.push("Month");
+    }
+    else if (pastscene.Month != null) {
+        globalList.relativeList.push("Month");
+    }
+    if (pastscene.isAbsoluteHour && pastscene.Hour != null) {
+        globalList.absoluteList.push("Hour");
+    }
+    else if (pastscene.Hour != null) {
+        globalList.relativeList.push("Hour");
+    }
+    if (pastscene.isAbsoluteMinute && pastscene.Minute != null) {
+        globalList.absoluteList.push("Minute");
+    }
+    else if (pastscene.Minute != null) {
+        globalList.relativeList.push("Minute");
+    }
+    return globalList;
 }

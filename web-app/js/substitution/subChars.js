@@ -201,6 +201,25 @@ function updateCharsView(charsJSON)
     charsPercentageSpan.text(Math.round(percent) + " %");
 }
 
+
+// Reload graph function
+function reloadgraph() {
+    $("#infovis-canvaswidget").remove();
+    var old_json = $("#relationjson_tmp").val();
+    $("#characterTable > tbody > tr").each(function() {
+        var firstname = $("td.firstname select", this).val();
+        var lastname = $("td.lastname select", this).val();
+        var code = $("td.code a", this).html();
+        code = code.replace(/\-/g, '');
+        if ((firstname != null) && (lastname != null))
+        {
+            old_json = old_json.replace(new RegExp(code, 'g'), firstname + " " + lastname);
+        }
+    });
+    $("#relationjson").val(old_json);
+    init();
+}
+
 // On succes AJAX
 function onSuccessAjaxChars(data, textStatus, jqXHR) {
     // Update charsJson with substitution result
@@ -213,6 +232,8 @@ function onSuccessAjaxChars(data, textStatus, jqXHR) {
     updateCharsView(charsJSON);
 
     addAlert("subCharsAlertContainer", "alert alert-info", "Information", "La substitution des personnages a été effectuée.")
+
+    reloadgraph();
 }
 
 // On error AJAX
@@ -398,7 +419,7 @@ function initCharsEvents(url) {
             // Show loader
             $("#charsLoader").show();
 
-            console.log("charsJSON BEFORE sending -> ");
+            console.log("charsJSON BEFORE sending to " + url + " -> ");
             console.log(charsJSON);
 
             // Send JSON to controller
