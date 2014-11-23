@@ -465,6 +465,7 @@ class RoleToPersoController {
             int INTERVAL = 5
             int age = 1;
             GenericEvent lastGE = null
+            System.out.println("AGE : " + character.age)
             while (age < character.age) {
                 // Créer Past scene
                 //def query = GenericEvent.where {

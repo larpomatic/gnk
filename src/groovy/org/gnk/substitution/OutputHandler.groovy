@@ -12,6 +12,7 @@ import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.gnk.resplacetime.GenericResource
+import org.gnk.resplacetime.TimeService
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -384,19 +385,27 @@ class OutputHandler {
         JSONArray pastscenesJSONArray = datesJSON.pastscenes
         JSONArray eventsJSONArray = datesJSON.events
 
+        System.out.println("date : " + gnInst.date); // Date virtuelle
+        System.out.println("dateT0 : " + gnInst.t0Date); // Date réelle
         // Update pastcenes
         for(pastsceneJSON in pastscenesJSONArray) {
             Integer pastsceneGnPlotId = pastsceneJSON.gnPlotId as Integer
             Integer pastsceneGnId = pastsceneJSON.gnId as Integer
             // Find pastscene in gn
+
             Pastscene pastscene = findGenericPastsceneInGN(gnInst, pastsceneGnPlotId, pastsceneGnId)
             // Update pastscene absolute date
             JSONObject dateJSON = pastsceneJSON.date
+
+
             if (dateJSON.year != null ) {pastscene.absoluteYear = dateJSON.year as Integer}
             if (dateJSON.month != null ) {pastscene.absoluteMonth = dateJSON.month as Integer}
             if (dateJSON.day != null ) {pastscene.absoluteDay = dateJSON.day as Integer}
             if (dateJSON.hours != null ) {pastscene.absoluteHour = dateJSON.hours as Integer}
             if (dateJSON.minutes != null ) {pastscene.absoluteMinute = dateJSON.minutes as Integer}
+
+            // On doit mettre à jour le relative time avec l'absolute saisie lors de la substitution car c'est celui qui est pris en compte pour la publication
+            (new TimeService()).updateRelativeTimeFromAbsolute(pastscene, gnInst.t0Date)
         }
 
         // Update events

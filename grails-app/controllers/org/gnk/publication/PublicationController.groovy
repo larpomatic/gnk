@@ -688,7 +688,7 @@ class PublicationController {
                 {
                     Integer time = roleHasPastscene.pastscene.timingRelative
                     String unit = roleHasPastscene.pastscene.unitTimingRelative
-
+                    /*
                     if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
                     {
                         time = 365
@@ -705,6 +705,7 @@ class PublicationController {
                     {
                         time = 1
                     }
+                    */
                     roleHasPastsceneList.put(time, roleHasPastscene)
                 }
             }
@@ -713,6 +714,7 @@ class PublicationController {
             {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
+
                 if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
                 {
                     unit = "an"
