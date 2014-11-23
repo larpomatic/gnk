@@ -379,13 +379,10 @@ class IntegrationHandler {
             pastsceneTime.absoluteMinute = null
             if (pastsceneJson.absoluteMinute != "") {pastsceneTime.absoluteMinute = pastsceneJson.absoluteMinute as Integer}
 
-            System.out.println("PS : " + pastsceneJson);
             // Call service
             if (pastsceneJson.isUpdate != null && pastsceneJson.isUpdate == "yes") {
-                System.out.println("OUI CEST UPDATE")
                 pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, true)
             } else {
-                System.out.println("NON CEST PAS CEST UPDATE")
                 pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, false)
             }
 
