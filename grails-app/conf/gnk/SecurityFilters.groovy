@@ -113,7 +113,7 @@ class SecurityFilters {
                     redirect(controller: "home", action: "index")
                 } else {
                     User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.INTRIGUEOPEN.value())
+                    def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
                     if (!right) {
                         redirect(controller: "login", action: "denied")
                     }
