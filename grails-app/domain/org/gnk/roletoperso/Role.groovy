@@ -155,6 +155,11 @@ class Role implements Comparable {
         return (type != null && type.toUpperCase().equals("TPJ"))
     }
 
+    // Check if the role is STAF
+    public boolean isSTF() {
+        return (type != null && type.toUpperCase().equals("STF"))
+    }
+
     // Check if the role is Personnage Joueur Générique (cf balise OTHER)
     public boolean isPJG() {
         return (type != null && type.toUpperCase().equals("PJG"))

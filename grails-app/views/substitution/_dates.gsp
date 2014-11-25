@@ -1,6 +1,7 @@
 <div class="row-fluid">
     <div class="span4"><legend>Dates</legend></div>
     <div class="span1"><span class="badge badge-important" id="datesPercentage">0 %</span></div>
+    <div class="span2"><a id="runSubDateButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a></div>
     <div class="span1" id="datesLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div>
 
@@ -59,7 +60,7 @@
                     <span class="label label-warning">NON</span>
                 </g:else></td>
             <!-- Date -->
-            <td style="text-align: center; font-weight: bold; font-size: 120%;" class="date" isEmpty="true"></td>
+            <td style="text-align: center; font-weight: bold; font-size: 120%;" class="date" isEmpty="false" ></td>
         </tr>
     </g:each>
     <tbody>
@@ -78,7 +79,8 @@
         isSubDatesRunning = false;
 
         // Run dates substitution
-        runDatesSubstitution("${g.createLink(controller:'substitution', action:'getSubDates')}");
+        //runDatesSubstitution("${g.createLink(controller:'substitution', action:'getSubDates')}");
+        initDateList("${g.createLink(controller:'substitution', action:'getSubDates')}");
     });
 
     function initDatesJSON() {
@@ -107,6 +109,7 @@
         pastscene.absoluteDay = "${pastscene.absoluteDay}";
         pastscene.absoluteHour = "${pastscene.absoluteHour}";
         pastscene.absoluteMinute = "${pastscene.absoluteMin}";
+        pastscene.isUpdate = "";
         pastsceneArray.push(pastscene);
         </g:each>
         // END Pastscenes LOOP
@@ -128,7 +131,6 @@
         </g:each>
         // END Events LOOP
         jsonObject.events = eventArray;
-
         return jsonObject;
     }
 </script>

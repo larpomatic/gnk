@@ -157,6 +157,7 @@ class SelectIntrigueController {
                 new GNKDataContainerService().ReadDTD(gnInstance)
             }
 		}
+
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
         nonTreatedPlots.removeAll(selectedEvenementialPlotInstanceList);
         if (gnInstance && gnInstance.bannedPlotSet)

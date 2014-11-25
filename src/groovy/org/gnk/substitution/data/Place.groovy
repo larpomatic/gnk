@@ -6,6 +6,7 @@ class Place {
 	String code
 	List<Tag> tagList
 	String comment
+    String objectType
 
     // unused for now
 	Plot plot
