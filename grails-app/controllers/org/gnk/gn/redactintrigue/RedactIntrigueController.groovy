@@ -79,6 +79,7 @@ class RedactIntrigueController {
         TagService tagService = new TagService();
 		[plotInstance: plotInstance,
                 plotTagList: tagService.getPlotTagQuery(),
+                plotUniversList: tagService.getUniversTagQuery(),
                 roleTagList: tagService.getRoleTagQuery(),
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),

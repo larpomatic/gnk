@@ -4,6 +4,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.ObjectType
 
 class GenericResourceXMLReaderService {
 
@@ -48,6 +49,9 @@ class GenericResourceXMLReaderService {
 
         if (GENERIC_RESOURCE.attribute("id") != "null")
             genericResourceRes.DTDId = GENERIC_RESOURCE.attribute("id") as Integer
+
+        if (GENERIC_RESOURCE.attribute("object_type_id") != "null")
+            genericResourceRes.objectType = new ObjectType(GENERIC_RESOURCE.attribute("object_type_id") as Integer)
 
         // FIXME: @Boycotted: owner_role_id (already exist with role=>generic_resource)
         // if (GENERIC_RESOURCE.attribute("owner_role_id") != "null")

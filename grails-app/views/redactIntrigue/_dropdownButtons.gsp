@@ -5,11 +5,13 @@
     </button>
     <ul class="dropdown-menu roleSelector">
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <li data-id="${role.id}">
-                <a class="buttonRichTextEditor" href="#">
-                    ${role.code}
-                </a>
-            </li>
+            <g:if test="${!(role.type == "STF")}">
+                <li data-id="${role.id}">
+                    <a class="buttonRichTextEditor" href="#">
+                        ${role.code}
+                    </a>
+                </li>
+            </g:if>
         </g:each>
         <li>
             <input data-entity="role" data-label="success" type="text" class="inputOther" id="roleOther"

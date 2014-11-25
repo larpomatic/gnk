@@ -32,6 +32,15 @@ class TagService {
         return result;
     }
 
+    def List<Tag> getUniversTagQuery() {
+        Tag genericUnivers = Tag.findById(33089); // "Tag Univers"
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericUnivers.children) {
+            result.add(child);
+        }
+        return result;
+    }
+
     def List<Tag> getResourceTagQuery() {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
@@ -70,7 +79,9 @@ class TagService {
 
     def getGenericChilds() {
         Tag generics = Tag.findById(0);
-        return generics.children;
+        ArrayList<Tag> result = generics.children;
+        result.remove(Tag.findById(33089));
+        return result;
     }
 
     def tagIsLocked(Map.Entry<Tag, Integer> valuedTag) {
