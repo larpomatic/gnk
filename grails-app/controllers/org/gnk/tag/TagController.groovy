@@ -18,6 +18,24 @@ class TagController {
         sort = sort ?: 'name'
         params.order = params.order ?: 'asc'
 
+        List<Tag> tags = Tag.list();
+        Map<Integer, ArrayList<Tag>> mapTagParent= new HashMap<Integer, ArrayList>();
+        for(Tag tag : tags){
+            ArrayList<Tag>  tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            print "[ "
+            while (t != null && t.id != 0){
+                print t.name+","
+                if (!"".equals(tag.name)){
+                    tagParent.add(t);
+                }
+                t = t.parent;
+            }
+            println "]"
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
+        }
+
         def resultList = Tag.createCriteria().list(max: max, offset: offset) {
             if (sort.indexOf('tagFamily.') == 0) {
                 tagFamily {
@@ -27,7 +45,7 @@ class TagController {
                 order(sort, params.order as String)
         }
 		
-		[ tagInstanceList: resultList ]
+		[ tagInstanceList: resultList, listTagParent : mapTagParent ]
     }
 
     def findChildren(org.gnk.tag.Tag t) {

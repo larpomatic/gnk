@@ -1,8 +1,12 @@
 <%@ page import="org.gnk.tag.Tag" %>
-<g:each status="i" in="${Tag.list()}" var="tag">
+<g:each status="id" in="${Tag.list()}" var="tag">
     <div id="modal${tag.id}" class="modal hide fade" style="width: 800px; margin-left: -400px;"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
+            <g:each in="${listTagParent[tag.id]}"  var="tagParent">
+                ${tagParent.name.encodeAsHTML()} >
+            </g:each>
+
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Détail de l'utilisation du tag ${tag.name.encodeAsHTML()}</h3>
         </div>
@@ -153,3 +157,4 @@
         </div>
     </div>
 </g:each>
+
