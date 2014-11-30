@@ -23,15 +23,12 @@ class TagController {
         for(Tag tag : tags){
             ArrayList<Tag>  tagParent = new ArrayList<Tag>();
             Tag t = tag.parent;
-            print "[ "
-            while (t != null && t.id != 0){
-                print t.name+","
+            while (t != null){
                 if (!"".equals(tag.name)){
                     tagParent.add(t);
                 }
                 t = t.parent;
             }
-            println "]"
             tagParent = tagParent.reverse();
             mapTagParent.put(tag.id, tagParent);
         }
