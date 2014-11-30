@@ -7,7 +7,9 @@
         <th>#</th>
         <g:sortableColumn property="name" title="${message(code: 'adminRef.tag.tagName')}"/>
         <th>Utilisations du tag</th>
+
         %{--<g:sortableColumn property="tagFamily.value" title="${message(code: 'adminRef.tag.tagFamilies')}" />--}%
+
         <g:hasRights lvlright="${right.REFMODIFY.value()}"><th>Tag Relevant</th></g:hasRights>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <g:hasRights lvlright="${right.REFDELETE.value()}">

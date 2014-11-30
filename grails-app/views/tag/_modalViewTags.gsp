@@ -167,6 +167,7 @@
     </div>
 </g:each>
 </div>
+
 <script>
     function goTo(tagPid, tagId) {
         if(tagId != tagPid){
