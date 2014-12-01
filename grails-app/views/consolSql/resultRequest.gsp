@@ -12,10 +12,14 @@
         <meta name="layout" content="main"/>
         <title>Result</title>
     </head>
+<g:hasRights lvlright="${right.REFOPEN.value()}">
+    <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
     <body>
         <g:form action="terminal" method="post">
             <button type="submit" class="btn btn-info btn-large">Retour</button>
         </g:form>
         ${result}
     </body>
+    </g:hasRights>
+</g:hasRights>
 </html>

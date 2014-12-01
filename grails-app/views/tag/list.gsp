@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.tag.Tag" %>
+<%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,9 +13,11 @@
             </fieldset>
 
 			<g:render template="../infosAndErrors" />
-			<g:render template="addTags" />
-			<g:render template="addTagIntoFamily" />
-			<g:render template="tableChildrenTags" />
+            <g:hasRights lvlright="${right.REFMODIFY.value()}">
+			    <g:render template="addTags" />
+			    <g:render template="addTagIntoFamily" />
+            </g:hasRights>
+			<g:render template="tableChildrenTags" model="[listTagParent : listTagParent]" />
 			
 			<div class="pagination">
 				<g:paginate total="${tagInstanceList.totalCount}" />
@@ -23,9 +25,6 @@
 		</div>
 	</body>
 </html>
-
-
-
 
 
 

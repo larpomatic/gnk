@@ -22,16 +22,20 @@
 </ul>
 <g:form action="list" class="right pull-right">
     <form role="search">
-        <div class="form-group">
-            <input type="text" name="usersearch" class="form-control" placeholder="Recherche">
+
+        <div class="form-group btn-block">
+            <input type="text" name="usersearch" class="form-control" placeholder=<g:message code="default.action.search.label"/>>
+
+        <button type="submit" class="btn btn-default btn-submit"><g:message code="default.action.search.label"/></button>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </g:form>
 
 <div role="main">
     <br/>
-    <g:link action="createUser" type="button" class="btn btn-primary">Créer un Utilisateur</g:link>
+    <g:hasRights lvlright="${right.USERMODIFY.value()}">
+    <g:link action="createUser" type="button" class="btn btn-primary"><g:message code="default.action.creatUser"/></g:link>
+    </g:hasRights>
     <br/>
     <table class="table">
         <thead>
@@ -39,13 +43,11 @@
             <th><g:message code="default.profil.email"/></th>
             <th><g:message code="default.profil.firstname"/></th>
             <th><g:message code="default.profil.lastname"/></th>
-            <g:hasRights lvlright="${right.USERMODIFY.value()}">
             <th></th>
-            </g:hasRights>
 
             <th><g:message code="default.button.state.label"/></th>
             <g:hasRights lvlright="${right.USERCLOSE.value()}">
-                <th><g:message code="default.button.delete.label"/></th>
+                <th></th>
             </g:hasRights>
         </tr>
         </thead>
@@ -55,7 +57,6 @@
                 <td>${u.username}</td>
                 <td>${u.firstname}</td>
                 <td>${u.lastname}</td>
-                <g:hasRights lvlright="${right.USERMODIFY.value()}">
                 <td>
                     <li>
                         <g:link controller="adminUser" action="edit" id="${u.id}" class="btn btn-small">
@@ -63,19 +64,35 @@
                         </g:link>
                     </li>
                 </td>
-                </g:hasRights>
-
                 <td>
+                    <g:hasRights lvlright="${right.USERMODIFY.value()}">
                     <g:if test="${!u.accountLocked}">
-                        <g:message code="default.button.unlock.label"/>
+                        <g:link class="btn btn-success"   controller="adminUser" action="lock" id="${u.id}">
+                            <g:message code="default.button.actif.label"/>
+                        </g:link>
                     </g:if>
                     <g:if test="${u.accountLocked}">
-                        <g:message code="default.button.lock.label"/>
+                        <g:link class="btn btn-danger" controller="adminUser" action="lock" id="${u.id}">
+                            <g:message code="default.button.inactif.label"/>
+                        </g:link>
                     </g:if>
+                    </g:hasRights>
+                    <g:hasNotRights lvlright="${right.USERMODIFY.value()}">
+                        <g:if test="${!u.accountLocked}">
+                            <btn class="btn btn-success" disabled="disabled">
+                                <g:message code="default.button.actif.label"/>
+                            </btn>
+                        </g:if>
+                        <g:if test="${u.accountLocked}">
+                            <btn class="btn btn-danger" disabled="disabled">
+                                <g:message code="default.button.inactif.label"/>
+                            </btn>
+                        </g:if>
+                    </g:hasNotRights>
                 </td>
                 <g:hasRights lvlright="${right.USERCLOSE.value()}">
                 <td>
-                    <g:link controller="adminUser" action="deleteUser" id="${u.id}" type="button" class="btn btn-danger btn-small"><g:message code="default.button.delete.label"/></g:link>
+                    <a id="${u.id}" type="button" class="btn btn-danger btn-small" href="#deletemodal${u.id}" data-toggle="modal" ><g:message code="default.action.delete.label"/></a>
                 </td>
                 </g:hasRights>
             </tr>
@@ -83,6 +100,6 @@
         </tbody>
     </table>
 </div>
-
+<g:render template="deletemodalUsers" />
 </body>
 </html>

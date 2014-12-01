@@ -1,6 +1,7 @@
 package org.gnk.nav
 
 import grails.plugins.springsecurity.SpringSecurityService
+import org.gnk.cookie.CookieService
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 
@@ -8,6 +9,7 @@ import javax.servlet.http.Cookie
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class HomeController {
+    CookieService cookieService;
     SpringSecurityService springSecurityService
     def index() {
         User user = session.getAttribute("user")
@@ -18,7 +20,7 @@ class HomeController {
             user.save(failOnError: true)
             session.setAttribute("user", user)
             User currentuser = User.findById(user.id)
-            if (currentuser.accountLocked == true){
+            if (currentuser.accountLocked){
                 redirect controller: "login", action: "denied"
             }
 
@@ -34,7 +36,7 @@ class HomeController {
                 }
             }
         } else {
-            if (user.accountLocked == true){
+            if (user.accountLocked){
                 redirect controller: "login", action: "denied"
             }
         }
