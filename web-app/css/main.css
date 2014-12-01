@@ -134,3 +134,7 @@ p:first-letter {
 .profil-margin {
     padding-left: 3%;
 }
+
+.tagRefLink a {
+    cursor: pointer;
+}
