@@ -16,6 +16,9 @@
 		<r:layoutResources />
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'console.css')}" type="text/css">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+    %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'administration.css')}" type="text/css">
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
 	</head>
@@ -25,6 +28,9 @@
             <g:javascript src="handlebars-v1.3.0.js"/>
             <g:javascript src="lodash.js"/>
             <g:javascript library="application"/>
+            <!-- DataTables -->
+            <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+
             <r:layoutResources />
             <div class="page-body container">
                 <g:layoutBody/>

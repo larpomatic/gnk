@@ -1,0 +1,15 @@
+.trueIMG {
+    background: url(../images/redactIntrigue/list/true.png) no-repeat;
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.falseIMG {
+    background: url(../images/redactIntrigue/list/false.png) no-repeat;
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}

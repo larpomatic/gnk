@@ -4,7 +4,7 @@
     <div id="modal${tag.id}" class="modal hide" style="width: 800px; margin-left: -400px;"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
-            <div id="fa-container${tag.id}">
+            <div id="fa-container${tag.id}" class="tagRefLink">
             <div id="fa${tag.id}">
                 <g:each in="${listTagParent[tag.id]}" var="tagParent">
                     <a id="tagparent${tagParent.id}" onclick="goTo(${tagParent.id}, ${tag.id})"
