@@ -240,7 +240,13 @@ class GenericResourceController {
                     subtag.value = tag.name;
                     subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
                     subtag.type = tag.parent.name;
-                    tags.add(subtag);
+                    if (tag.parent.id == 33096)
+                    {
+                        tags.add(tags.size(), subtag);
+                    }
+                    else {
+                        tags.add(0, subtag);
+                    }
                 }
             }
         }
