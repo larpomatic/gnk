@@ -1,5 +1,4 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
-
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
@@ -211,7 +210,10 @@
                     </div>
                 </div>
                 <fieldset class="buttons text-center">
-                    <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
+                    <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
+                    </g:hasRights>
+
                     %{--<g:actionSubmit class="delete btn btn-danger" action="delete"--}%
                                     %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
                                     %{--formnovalidate=""--}%

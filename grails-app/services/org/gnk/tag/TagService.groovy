@@ -33,7 +33,7 @@ class TagService {
     }
 
     def List<Tag> getUniversTagQuery() {
-        Tag genericUnivers = Tag.findById(33089); // "Tag Univers"
+        Tag genericUnivers = Tag.findByName("Tag Univers");
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericUnivers.children) {
             result.add(child);
@@ -80,7 +80,7 @@ class TagService {
     def getGenericChilds() {
         Tag generics = Tag.findById(0);
         ArrayList<Tag> result = generics.children;
-        result.remove(Tag.findById(33089));
+        result.remove(Tag.findByName("Tag Univers"));
         return result;
     }
 
