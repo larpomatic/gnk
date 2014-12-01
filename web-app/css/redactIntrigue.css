@@ -288,6 +288,10 @@
     margin: 0 !important;
 }
 
+.popover {
+    z-index: 999999999 !important;
+}
+
 @font-face {
     font-family: 'Shadows Into Light';
     font-style: normal;

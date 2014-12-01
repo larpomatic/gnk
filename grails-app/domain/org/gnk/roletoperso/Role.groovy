@@ -61,12 +61,7 @@ class Role implements Comparable {
     }
 
     public boolean hasRoleTag(Tag parRoleTag) {
-        for (RoleHasTag roleHasRoleTag : roleHasTags) {
-            if (roleHasRoleTag.tag == parRoleTag) {
-                return true;
-            }
-        }
-        return false;
+        return (RoleHasTag.findByTagAndRole(parRoleTag, this) != null);
     }
 
     public Plot getterPlot() {
@@ -192,14 +187,7 @@ class Role implements Comparable {
     }
 
     public getRoleHasTag(Tag tag) {
-        List<RoleHasTag> roleHasTags = RoleHasTag.createCriteria().list {
-            like("role", this)
-            like("tag", tag)
-        }
-        if (roleHasTags.size() == 0) {
-            return null;
-        }
-        return roleHasTags.first();
+        return RoleHasTag.findByTagAndRole(tag, this);
     }
 
     public getRoleHasEvent(Event event) {

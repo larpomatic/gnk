@@ -5,7 +5,7 @@
     </button>
     <ul class="dropdown-menu roleSelector">
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <g:if test="${!(role.code.toLowerCase() == "staff")}">
+            <g:if test="${!(role.type == "STF")}">
                 <li data-id="${role.id}">
                     <a class="buttonRichTextEditor" href="#">
                         ${role.code}

@@ -55,12 +55,7 @@ class GenericResource {
     }
 
     public boolean hasGenericResourceTag(Tag parGenericResourceTag) {
-        for (GenericResourceHasTag genericResourceHasPlaceTag : extTags) {
-            if (genericResourceHasPlaceTag.tag == parGenericResourceTag) {
-                return true;
-            }
-        }
-        return false;
+        return (GenericResourceHasTag.findByTagAndGenericResource(parGenericResourceTag, this) != null)
     }
 
     public getGenericResourceHasRoleHasEvent(RoleHasEvent roleHasEvent) {
@@ -78,14 +73,7 @@ class GenericResource {
     }
 
     public getGenericResourceHasTag(Tag tag) {
-        List<GenericResourceHasTag> genericResourceHasTags = GenericResourceHasTag.createCriteria().list {
-            like("genericResource", this)
-            like("tag", tag)
-        }
-        if (genericResourceHasTags.size() == 0) {
-            return null;
-        }
-        return genericResourceHasTags.first();
+        return GenericResourceHasTag.findByTagAndGenericResource(tag, this);
     }
 
     boolean isIngameClue()

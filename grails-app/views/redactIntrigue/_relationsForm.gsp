@@ -8,13 +8,11 @@
             </a>
         </li>
 		<g:each in="${plotInstance.roles}" status="i5" var="role">
-            <g:if test="${!(role.code.toLowerCase() == "staff")}">
-                <li class="leftMenuList">
-                    <a href="#roleRelation_${role.id}" data-toggle="tab">
-                        ${role.code}
-                    </a>
-                </li>
-            </g:if>
+            <li class="leftMenuList">
+                <a href="#roleRelation_${role.id}" data-toggle="tab">
+                    ${role.code}
+                </a>
+            </li>
 		</g:each>
 	</ul>
 

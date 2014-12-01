@@ -72,8 +72,8 @@
                         </label>
                     </div>
                     <div class="span5">
-                        <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
-                                  keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" required=""/>
+                        <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique', 'Personnage Staff']}"
+                                  keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG', 'STF']}" required=""/>
                     </div>
                 </div>
                 <div class="row formRow text-center">
@@ -166,8 +166,8 @@
                             </label>
                         </div>
                         <div class="span5">
-                            <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique']}"
-                                      keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG']}" value="${role.type}" required=""/>
+                            <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique', 'Personnage Staff']}"
+                                      keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG', 'STF']}" value="${role.type}" required=""/>
                         </div>
                     </div>
                     <div class="row formRow">

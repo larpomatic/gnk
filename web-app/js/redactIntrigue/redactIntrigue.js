@@ -99,13 +99,13 @@ function initSpanCreation() {
     $('.buttonRichTextEditor').click(function() {
         setCarretPos();
         if ($(this).closest("ul").hasClass("roleSelector")) {
-            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
-            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         initializePopover();
         return false;
@@ -384,7 +384,7 @@ function initializePopover() {
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
     $('.label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
-        placement: 'top',
+        placement: 'bottom',
         content: spanPopover,
         container: "body",
         delay: { "show": 0, "hide": 0 }
@@ -397,7 +397,7 @@ function initializePopover() {
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
     $('.label[contenteditable="false"].label-success').popover({
         html: 'true',
-        placement: 'top',
+        placement: 'bottom',
         content: spanPopoverRole,
         container: "body",
         delay: { "show": 0, "hide": 0 }
