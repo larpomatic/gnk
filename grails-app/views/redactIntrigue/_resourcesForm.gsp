@@ -45,6 +45,7 @@
                         <a href="#resourceTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                         </a>
+                        <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal"><i class="btnBestResource img-circle" ></i></button>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -190,6 +191,32 @@
             </form>
         </div>
 
+    <div id="bestResourceModal" class="modal hide fade tags-modal" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>
+                <g:message code="redactintrigue.resource.bestResource" default="Best Resources"/>
+            </h3>
+        </div>
+
+        <div id="modalBestResource" class="modal-body">
+            <select class="form-control" id="selectUniversResource" data-url="<g:createLink controller="GenericResource" action="getBestResources"/>" name="univerTag">
+                <option></option>
+                <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
+                    <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
+                </g:each>
+            </select>
+            <br>
+            <ul id="listContainerResource" class="unstyled">
+                <li id="templateBestResource" class="hidden">TEMPLATE</li>
+            </ul>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Ok</button>
+        </div>
+    </div>
+
         <g:each in="${plotInstance.genericResources}" var="resource">
             <div class="tab-pane" id="resource_${resource.id}">
                 <form name="updateResource_${resource.id}" data-url="<g:createLink controller="GenericResource" action="Update" id="${resource.id}"/>">
@@ -220,6 +247,7 @@
                             <a href="#resourceTagsModal_${resource.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                             </a>
+                            <button data-target="#bestResourceModal" type="button" data-form="updateResource_${resource.id}" class="btnBestResource bestResource" data-toggle="modal"><i class="btnBestResource img-circle" ></i></button>
                         </div>
                     </div>
 
