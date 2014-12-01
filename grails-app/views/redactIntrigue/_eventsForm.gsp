@@ -238,7 +238,9 @@
                     </div>
                 </div>
 
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
+                </g:plotOwner>
             </form>
         </div>
 

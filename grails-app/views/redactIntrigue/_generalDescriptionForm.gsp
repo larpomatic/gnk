@@ -210,9 +210,9 @@
                     </div>
                 </div>
                 <fieldset class="buttons text-center">
-                    <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
+                    <g:plotOwner idOwner="${plotInstance.user.id}">
                         <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
-                    </g:hasRights>
+                    </g:plotOwner>
 
                     %{--<g:actionSubmit class="delete btn btn-danger" action="delete"--}%
                                     %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%

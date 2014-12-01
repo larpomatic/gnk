@@ -26,7 +26,7 @@ class RightsUserTagLib {
         User user = (User) session.getAttribute("user")
         User currentuser = User.findById(user.id)
         int idOwner = Integer.valueOf(attrs.idOwner)
-        if ((currentuser.id != idOwner || !rightsService.hasRight(currentuser.gright, right.MINTRIGUEMODIFY.value())) && !rightsService.hasRight(currentuser.gright, right.INTRIGUEMODIFY.value())){
+        if ((currentuser.id == idOwner && rightsService.hasRight(currentuser.gright, right.MINTRIGUEMODIFY.value())) || rightsService.hasRight(currentuser.gright, right.INTRIGUEMODIFY.value())){
             out << body()
         }
     }
