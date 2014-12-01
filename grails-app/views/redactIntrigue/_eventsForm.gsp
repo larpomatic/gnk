@@ -238,9 +238,9 @@
                     </div>
                 </div>
 
-                <g:plotOwner idOwner="${plotInstance.user.id}">
+                %{--<g:plotOwner idOwner="${plotInstance.user.id}">--}%
                     <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
-                </g:plotOwner>
+                %{--</g:plotOwner>--}%
             </form>
         </div>
 

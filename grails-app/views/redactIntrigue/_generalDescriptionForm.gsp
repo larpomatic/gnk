@@ -210,7 +210,7 @@
                     </div>
                 </div>
                 <fieldset class="buttons text-center">
-                    <g:plotOwner idOwner="${plotInstance.user.id}">
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
                         <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
                     </g:plotOwner>
 
