@@ -14,7 +14,7 @@
 
 <body>
 
-<div role="main">
+<div role="main" class="administration">
 <h3><g:message code="default.title.statistic.user"/></h3>
 
 <g:message code="default.title.user"/>: ${user.firstname} ${user.lastname} <br/>

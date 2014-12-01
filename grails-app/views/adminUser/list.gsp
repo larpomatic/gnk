@@ -31,7 +31,7 @@
     </form>
 </g:form>
 
-<div role="main">
+<div role="main" class="administration">
     <br/>
     <g:hasRights lvlright="${right.USERMODIFY.value()}">
     <g:link action="createUser" type="button" class="btn btn-primary"><g:message code="default.action.creatUser"/></g:link>

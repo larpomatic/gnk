@@ -25,7 +25,7 @@
 
 </ul>
 
-<div role="main">
+<div role="main" class="administration">
     <h3><g:message code="default.title.my.profil"/></h3>
     <g:if test="${flash.error}">
         <div class="alert alert-error" style="display: block">${flash.error}</div>

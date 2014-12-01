@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag" %>
 <div id="modals">
 <g:each status="id" in="${Tag.list()}" var="tag">
-    <div id="modal${tag.id}" class="modal hide fade" style="width: 800px; margin-left: -400px;"
+    <div id="modal${tag.id}" class="modal hide" style="width: 800px; margin-left: -400px;"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <div id="fa-container${tag.id}">

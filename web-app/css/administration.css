@@ -1,8 +1,8 @@
 
-.normal-txt{
+.administration .normal-txt {
     color: #080808;
 }
-label{
+.administration label {
     display: block;
     width: 39%;
     font-size: 16px;
@@ -11,35 +11,37 @@ label{
     float: left;
     padding-left: 5%;
 }
-#passwordSection{
+.administration #passwordSection {
 
 }
 
-#passwordSection > .clear{
+.administration #passwordSection > .clear {
     clear: both;
-    height: 0; overflow: hidden;
+    height: 0;
+    overflow: hidden;
 }
 
-#profilSection > .clear{
+.administration #profilSection > .clear {
     clear: both;
-    height: 0; overflow: hidden;
+    height: 0;
+    overflow: hidden;
 }
-.indentProfil{
+.administration .indentProfil {
     background-color: #F1F1F1;
     border-radius: 10px 10px 10px 10px;
     padding-top: 5%;
     height: inherit;
 }
-.indentPassword{
+.administration .indentPassword {
     padding-top: 8%;
     background-color: #F1F1F1;
     border-radius: 10px 10px 10px 10px;
     padding-bottom: 3.8%;
 }
-.center{
+.administration .center {
     margin-left: 40%;
 }
 
-.right{
+.administration .right {
     margin-left: 100%;
 }
