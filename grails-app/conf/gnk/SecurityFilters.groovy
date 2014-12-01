@@ -1,26 +1,50 @@
 package gnk
 
 import org.gnk.admin.right
+import org.gnk.cookie.CookieService
 import org.gnk.rights.RightsService
 import org.gnk.user.User
+
+import javax.servlet.http.Cookie
 
 class SecurityFilters {
 
     RightsService rightsService;
+    CookieService cookieService;
     def filters = {
         consolSQLfilter(controller: 'consolSql', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTSHOW.value())
-                    def right2 = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                    if (!right1 || !right2) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTSHOW.value())
+                def right2 = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
+                if (!currentuser || !right1 || !right2) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -32,15 +56,35 @@ class SecurityFilters {
         tagfilter(controller: 'tag', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -52,15 +96,35 @@ class SecurityFilters {
         tagRelationfilter(controller: 'tagRelation', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -71,15 +135,35 @@ class SecurityFilters {
         userfilter(controller: 'user', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -90,34 +174,35 @@ class SecurityFilters {
         adminUserfilter(controller: 'adminUser', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.USEROPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
-            }
-            after = { Map model ->
-
-            }
-            afterView = { Exception e ->
-            }
-        }
-        redacIntriguefilter(controller: 'redactIntrigue', action: '*') {
-            before = {
-                User user = (User) session.getAttribute("user")
-                if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
-                    }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.USEROPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
                 }
+                return true
             }
             after = { Map model ->
 
@@ -128,15 +213,35 @@ class SecurityFilters {
         roletopersofilter(controller: 'roleToPerso', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -147,15 +252,35 @@ class SecurityFilters {
         selectIntriguefilter(controller: 'selectIntrigue', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -166,15 +291,35 @@ class SecurityFilters {
         redactIntriguefilter(controller: 'redactIntrigue', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
+                if ( !currentuser || !right) {
+                   redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -185,15 +330,35 @@ class SecurityFilters {
         rolefilter(controller: 'role', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -204,15 +369,35 @@ class SecurityFilters {
         dbCoherencefilter(controller: 'dbCoherence', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -223,15 +408,35 @@ class SecurityFilters {
         dtdImportfilter(controller: 'dtdImport', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -242,15 +447,35 @@ class SecurityFilters {
         genericPlacefilter(controller: 'genericPlace', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -261,15 +486,35 @@ class SecurityFilters {
         genericResourcefilter(controller: 'genericResource', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -299,15 +544,35 @@ class SecurityFilters {
         plotfilter(controller: 'plot', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -318,15 +583,35 @@ class SecurityFilters {
         publicationfilter(controller: 'publication', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -337,14 +622,35 @@ class SecurityFilters {
         placefilter(controller: 'place', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
+                    }
                 }
+                user = (User) session.getAttribute("user")
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if (!right) {
+                if ( !currentuser || !right) {
                     redirect(controller: "login", action: "denied")
+                    return false
                 }
+                return true
             }
             after = { Map model ->
 
@@ -355,15 +661,35 @@ class SecurityFilters {
         relationfilter(controller: 'relation', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -374,15 +700,35 @@ class SecurityFilters {
         substitutionfilter(controller: 'substitution', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -393,15 +739,35 @@ class SecurityFilters {
         resourcefilter(controller: 'resource', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -412,15 +778,35 @@ class SecurityFilters {
         placefilter(controller: 'place', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -431,15 +817,35 @@ class SecurityFilters {
         xmlDtdfilter(controller: 'xmlDtd', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -450,16 +856,36 @@ class SecurityFilters {
         consolfilter(controller: 'console', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTMODIF.value())
-                    def right2 = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                    if (!right1 || !right2) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
+                def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTMODIF.value())
+                if ( !currentuser || !right || !right1) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -470,15 +896,35 @@ class SecurityFilters {
         buildInfofilter(controller: 'buildInfo', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
