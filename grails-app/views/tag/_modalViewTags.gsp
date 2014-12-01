@@ -1,9 +1,22 @@
 <%@ page import="org.gnk.tag.Tag" %>
-<g:each status="i" in="${Tag.list()}" var="tag">
+<div id="modals">
+<g:each status="id" in="${Tag.list()}" var="tag">
     <div id="modal${tag.id}" class="modal hide fade" style="width: 800px; margin-left: -400px;"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
+            <div id="fa-container${tag.id}">
+            <div id="fa${tag.id}">
+                <g:each in="${listTagParent[tag.id]}" var="tagParent">
+                    <a id="tagparent${tagParent.id}" onclick="goTo(${tagParent.id}, ${tag.id})"
+                      >${tagParent.name.encodeAsHTML()}</a> >
+                </g:each>
+                <a id="tagparent${tag.id}" onclick="goTo(${tag.id}, ${tag.id})"
+                >${tag.name.encodeAsHTML()}</a>
+            </div>
+            </div>
+
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
             <h3 id="myModalLabel">Détail de l'utilisation du tag ${tag.name.encodeAsHTML()}</h3>
         </div>
 
@@ -55,15 +68,15 @@
                 <g:set var="index" value="${0}"/>
                 <g:each in="${org.gnk.roletoperso.Role.list()}" var="role">
                     <g:each in="${role.roleHasTags}" var="roleHasTags">
-                    <tr>
-                        <g:if test="${roleHasTags.tag.equals(tag)}">
-                            <g:set var="index" value="${index + 1}"/>
-                            <td>${index}</td>
-                            <td>${role.code}</td>
-                            <td>${role.description}</td>
-                            <td>${roleHasTags.weight}%</td>
-                        </g:if>
-                    </tr>
+                        <tr>
+                            <g:if test="${roleHasTags.tag.equals(tag)}">
+                                <g:set var="index" value="${index + 1}"/>
+                                <td>${index}</td>
+                                <td>${role.code}</td>
+                                <td>${role.description}</td>
+                                <td>${roleHasTags.weight}%</td>
+                            </g:if>
+                        </tr>
                     </g:each>
                 </g:each>
                 <tbody>
@@ -153,3 +166,18 @@
         </div>
     </div>
 </g:each>
+</div>
+
+<script>
+    function goTo(tagPid, tagId) {
+        if(tagId != tagPid){
+            $('#fa-container' + tagPid).children('#fa' + tagId).remove();
+            $('#fa' + tagId).clone().appendTo('#fa-container' + tagPid);
+            $('#fa' + tagPid).remove();
+        }
+        $("#modals").children().each(function(){
+            $(this).modal('hide');
+        });
+        $("#modal"+tagPid).modal('show');
+    }
+</script>

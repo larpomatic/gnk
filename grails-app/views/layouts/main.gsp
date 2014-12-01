@@ -19,6 +19,8 @@
         <!-- DataTables CSS -->
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
     %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'administration.css')}" type="text/css">
+        %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
 	</head>
 	<body>
         <div class="gnk">

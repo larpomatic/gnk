@@ -126,3 +126,11 @@ p:first-letter {
     padding-right: inherit;
     font-weight: inherit;
 }
+
+.btn-submit {
+    position: absolute;
+}
+
+.profil-margin {
+    padding-left: 3%;
+}

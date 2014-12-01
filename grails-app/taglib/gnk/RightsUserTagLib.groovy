@@ -13,13 +13,11 @@ class RightsUserTagLib {
         if (rightsService.hasRight(currentuser.gright, right))
             out << body()
     }
-    def hasRightsRedirect = { attrs, body ->
-        User user = session.getAttribute("user") as User
+    def hasNotRights = { attrs, body ->
+        User user = session.getAttribute("user")
         User currentuser = User.findById(user.id)
         int right = Integer.valueOf(attrs.lvlright)
-        if (rightsService.hasRight(currentuser.gright , right))
+        if (!rightsService.hasRight(currentuser.gright, right))
             out << body()
-        else
-            response.sendRedirect("../../login/denied")
     }
 }

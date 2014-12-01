@@ -1,12 +1,20 @@
 package org.gnk.user
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.admin.right
+import org.gnk.rights.RightsService
 import org.springframework.security.access.annotation.Secured
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
+import java.util.Date
+
 import javax.servlet.http.Cookie
+import java.util.logging.SimpleFormatter
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class UserController {
+    RightsService rightsService
     UserService userService
 
     def
@@ -15,6 +23,7 @@ class UserController {
     }
 
     def profil(){
+
         User user = session.getAttribute("user")
 
         if (!user){
@@ -23,11 +32,17 @@ class UserController {
             redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "profil", controllerredirect : "user"])
             return false
         } else {
+            int disabled = 0
         User currentuser = User.findById(user.id)
         int rightuser = currentuser.gright
-
+        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value())){
+            disabled = 1;
+        }
         List<Boolean> lb = userService.instperm(rightuser)
-        [currentuser : currentuser , lb : lb]
+            Date date = currentuser.lastConnexion
+            DateFormat dateFormat = new SimpleDateFormat("EEEE, d MMM yyyy")
+           String dateDesign = dateFormat.format(date).toString()
+        [currentuser : currentuser , lb : lb, date : dateDesign, disabled : disabled]
         }
     }
 
@@ -71,18 +86,31 @@ class UserController {
         User currentuser = User.findById(user.id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
             currentuser.password = newpassword
-        if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){
-            currentuser.firstname = params.firstnamemodif
+            flash.mpassword = "votre mot de passe été modifié"
         }
-        if (params.lastnamemodif && params.lastnamemodif != currentuser.lastname){
-            currentuser.lastname = params.lastnamemodif
-
-        }
-        if (params.usernamemodif && params.usernamemodif != currentuser.username){
-            if (User.findByUsername((String)params.usernamemodif) == null){
-                currentuser.username = params.usernamemodif;
+        else {
+            if (params.firstnamemodif && params.firstnamemodif != currentuser.firstname){
+                currentuser.firstname = params.firstnamemodif
+                flash.mfirstname = "votre prénom a bien été modifié"
+            }
+            else {
+                if (params.lastnamemodif && params.lastnamemodif != currentuser.lastname){
+                    currentuser.lastname = params.lastnamemodif
+                    flash.mlastname = "votre nom de famille a bien été modifié"
+                }
+                else {
+                    if (params.usernamemodif && params.usernamemodif != currentuser.username){
+                        if (User.findByUsername((String)params.usernamemodif) == null){
+                            currentuser.username = params.usernamemodif;
+                        }
+                        flash.musername = "votre login/email a été modifiée"
+                    }
+                    else {
+                        flash.error = "erreur champ vide ou invalid";
+                    }
+                }
             }
         }
         currentuser.save()
