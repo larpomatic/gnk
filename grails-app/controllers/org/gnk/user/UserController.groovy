@@ -35,7 +35,7 @@ class UserController {
             int disabled = 0
         User currentuser = User.findById(user.id)
         int rightuser = currentuser.gright
-        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value())){
+        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value()) && !rightsService.hasRight(user.gright, right.RIGHTMODIF.value())){
             disabled = 1;
         }
         List<Boolean> lb = userService.instperm(rightuser)

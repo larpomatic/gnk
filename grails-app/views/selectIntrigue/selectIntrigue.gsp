@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.selectintrigue.Plot"%>
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +13,12 @@
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.min.js"/>
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
-    <g:render template="subNav"/>
+    <g:render template="subNav" model="['right': right]"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
 		<legend><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></legend>
 
 				<g:if test="${!screenStep || screenStep == '0'}">
-					<g:render template="step0_createGn" />
+					<g:render template="step0_createGn"/>
 				</g:if>
 				<g:if test="${screenStep == '1'}">
 					<g:render template="step1_result" />

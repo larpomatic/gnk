@@ -329,20 +329,39 @@ function initializeTextEditor() {
             description[description.length - 1] == ' ' || description[description.length - 1] == '\r')) {
             description = description.substring(0, description.length - 1)
         }
-        description = description.replace(/\n/g, '<br>');
-        description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="');
-        description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="');
-        description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="');
-        description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="');
-        description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
-        description = description.replace(/&gt;/g, '</span>');
-        description = "<div>" + description + "</div>";
+        description = "<div>" + convertDescription(description) + "</div>";
         var html = $(description);
         $("span br", html).remove();
         description = html.html();
         $(this).html(description);
     });
     initializePopover();
+}
+
+function convertDescription(description) {
+    description = description.replace(/\n/g, '<br>');
+    description = description.replace(/&lt;l:Art:/g, '<span class="label label-warning" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Pos:/g, '<span class="label label-warning" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:none:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Art:/g, '<span class="label label-important" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&gt;/g, '</span>');
+    return description;
 }
 
 // on remplace les span html dans une description par des balises

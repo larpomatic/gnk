@@ -14,9 +14,9 @@
 
 <body>
 
-<div role="main">
+<div role="main" class="administration">
 <g:if test="${flash.error}">
-<div class="alert alert-error" style="display: block">${flash.error}</div>
+    <div class="alert alert-error" style="display: block">${flash.error}</div>
 </g:if>
 <g:if test="${flash.success}">
     <div class="message alert-success" style="display: block">${flash.success}</div>
@@ -29,10 +29,11 @@
         <div class="span6">
             <div class="indentProfil">
                 <div class="row profil-margin">
-                    <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
+                    <g:form method="post" controller="adminUser" action="modifyUser" id="${user.id}">
                         <label for="lastname"><g:message code="default.profil.lastname"/> :</label>
                         <g:hasRights lvlright="${right.USERMODIFY.value()}">
-                            <input type="text" name="lastnamemodif" id="lastname" class="form-control" placeholder='${user.lastname}'/>
+                            <input type="text" name="lastnamemodif" id="lastname" class="form-control"
+                                   placeholder='${user.lastname}'/>
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-submit " type="submit"><g:message
                                         code="default.action.modify"/></button>
@@ -45,7 +46,7 @@
                 </div>
 
                 <div class="row profil-margin">
-                    <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
+                    <g:form method="post" controller="adminUser" action="modifyUser" id="${user.id}">
                         <label for="firstname"><g:message code="default.profil.firstname"/> :</label>
                         <g:hasRights lvlright="${right.USERMODIFY.value()}">
                             <input type="text" name="firstnamemodif" id="firstname" class="form-control"
@@ -62,7 +63,7 @@
                 </div>
 
                 <div class="row profil-margin">
-                    <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
+                    <g:form method="post" controller="adminUser" action="modifyUser" id="${user.id}">
                         <label for="email"><g:message code="default.profil.email"/> :</label>
                         <g:hasRights lvlright="${right.USERMODIFY.value()}">
                             <input type="text" name="usernamemodif" id="email" class="form-control"
@@ -86,7 +87,7 @@
                     <div class="row profil-margin">
 
                         <div class="row profil-margin">
-                            <g:form method="post" controller="adminUser" action="modifyUser" id = "${user.id}">
+                            <g:form method="post" controller="adminUser" action="modifyUser" id="${user.id}">
                                 <label for="cpassword"><g:message
                                         code="default.action.changedPassword"/>  :</label> <input
                                     type="password" id="cpassword" name="passwordChanged"
@@ -169,6 +170,7 @@
         </div>
     </g:hasRights>
 </g:hasRights>
-<g:link type="button" class="btn btn-primary btn-large right" action="list"><g:message code="default.action.back"/></g:link>
+<g:link type="button" class="btn btn-primary btn-large right" action="list"><g:message
+        code="default.action.back"/></g:link>
 </body>
 </html>

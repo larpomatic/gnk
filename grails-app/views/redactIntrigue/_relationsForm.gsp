@@ -100,7 +100,9 @@
                     <div id="relationRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRelation"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRelation"/>
+                </g:plotOwner>
             </form>
         </div>
 
@@ -123,14 +125,16 @@
                                     </g:else>
                                     ${relationFrom.role2.code}
                                 </span>
-                                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
-                                        data-url="<g:createLink controller="Relation" action="Delete" id="${relationFrom.id}"/>" data-object="relation" data-id="${relationFrom.id}">
-                                    <i class="icon-remove pull-right"></i>
-                                </button>
+                                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
+                                            data-url="<g:createLink controller="Relation" action="Delete" id="${relationFrom.id}"/>" data-object="relation" data-id="${relationFrom.id}">
+                                        <i class="icon-remove pull-right"></i>
+                                    </button>
+                                </g:plotOwner>
                             </div>
                             <div id="collapseRelation${role.id}-${relationFrom.id}" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <g:render template="updateRelation" model="['relationFrom':relationFrom, 'role':role, 'isRole1':true]" />
+                                    <g:render template="updateRelation" model="['relationFrom':relationFrom, 'role':role, 'isRole1':true, 'plotInstance': plotInstance, 'right': right]" />
                                 </div>
                             </div>
                         </div>
@@ -152,14 +156,16 @@
                                         </g:else>
                                         ${relationTo.role1.code}
                                     </span>
-                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
-                                            data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
-                                        <i class="icon-remove pull-right"></i>
-                                    </button>
+                                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                                        <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
+                                                data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
+                                            <i class="icon-remove pull-right"></i>
+                                        </button>
+                                    </g:plotOwner>
                                 </div>
                                 <div id="collapseRelation${role.id}-${relationTo.id}" class="accordion-body collapse">
                                     <div class="accordion-inner">
-                                        <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false]" />
+                                        <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false, 'plotInstance': plotInstance, 'right': right]" />
                                     </div>
                                 </div>
                             </div>
@@ -175,14 +181,16 @@
                                         <span><g:img dir="images/redactIntrigue/relations" file="leftArrow.png" /></span>
                                         ${relationTo.role1.code}
                                     </span>
-                                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
-                                            data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
-                                        <i class="icon-remove pull-right"></i>
-                                    </button>
+                                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                                        <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger pull-right" title="Supprimer la relation?"
+                                                data-url="<g:createLink controller="Relation" action="Delete" id="${relationTo.id}"/>" data-object="relation" data-id="${relationTo.id}">
+                                            <i class="icon-remove pull-right"></i>
+                                        </button>
+                                    </g:plotOwner>
                                 </div>
                                 <div id="collapseRelation${role.id}-${relationTo.id}" class="accordion-body collapse">
                                     <div class="accordion-inner reverseRelation">
-                                        <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false]" />
+                                        <g:render template="updateRelation" model="['relationFrom':relationTo, 'role':role, 'isRole1':false, 'plotInstance': plotInstance, 'right': right]" />
                                     </div>
                                 </div>
                             </div>

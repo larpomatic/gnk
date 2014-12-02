@@ -14,10 +14,12 @@
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle?"
-                        data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
-                    <i class="icon-remove pull-right"></i>
-                </button>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle?"
+                            data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
+                        <i class="icon-remove pull-right"></i>
+                    </button>
+                </g:plotOwner>
             </li>
         </g:each>
     </ul>
@@ -111,7 +113,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
+                </g:plotOwner>
             </form>
         </div>
 
@@ -344,7 +348,9 @@
                             <button class="btn" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
-                    <input type="button" name="Update" data-id="${role.id}" value="Update" class="btn btn-primary updateRole"/>
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" data-id="${role.id}" value="Update" class="btn btn-primary updateRole"/>
+                    </g:plotOwner>
                 </form>
             </div>
         </g:each>

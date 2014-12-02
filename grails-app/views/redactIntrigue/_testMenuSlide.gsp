@@ -75,31 +75,31 @@
 
                 <div id="textes">
                     <div class="container">
-                        <g:render template="generalDescriptionForm"/>
+                        <g:render template="generalDescriptionForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="rolesForm"/>
+                        <g:render template="rolesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="placesForm"/>
+                        <g:render template="placesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="resourcesForm"/>
+                        <g:render template="resourcesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="relationsForm"/>
+                        <g:render template="relationsForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="pastScenesForm"/>
+                        <g:render template="pastScenesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="eventsForm"/>
+                        <g:render template="eventsForm" model="['right':right]"/>
                     </div>
                 </div>
             </div>
