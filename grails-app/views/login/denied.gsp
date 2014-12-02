@@ -1,3 +1,4 @@
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <head>
 <meta name='layout' content='main' />
 <title><g:message code="springSecurity.denied.title" /></title>
