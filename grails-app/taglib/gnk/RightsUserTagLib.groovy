@@ -32,4 +32,14 @@ class RightsUserTagLib {
             out << body()
         }
     }
+    def NotplotOwner = { attrs, body ->
+        User user = (User) session.getAttribute("user")
+        User currentuser = User.findById(user.id)
+        int idOwner = Integer.valueOf(attrs.idOwner)
+        int right1 = Integer.valueOf(attrs.lvlright)
+        int right2 = Integer.valueOf(attrs.lvlrightAdmin)
+        if ((currentuser.id != idOwner || !rightsService.hasRight(currentuser.gright, right1)) && !rightsService.hasRight(currentuser.gright, right2)){
+            out << body()
+        }
+    }
 }
