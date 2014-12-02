@@ -1,15 +1,44 @@
-.trueIMG {
-    background: url(../images/redactIntrigue/list/true.png) no-repeat;
+.true {
+    background: url(../images/redactIntrigue/list/true.png);
     background-size: 100%;
     width: 30px;
     height: 30px;
-    cursor: pointer;
+    margin: auto;
+    vertical-align: middle;
 }
 
-.falseIMG {
-    background: url(../images/redactIntrigue/list/false.png) no-repeat;
+.false {
+    background: url(../images/redactIntrigue/list/false.png);
     background-size: 100%;
     width: 30px;
     height: 30px;
-    cursor: pointer;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.public {
+    background: url(../images/redactIntrigue/list/public.png);
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.draft {
+    background: url(../images/redactIntrigue/list/draft.png);
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.event {
+    background: url(../images/redactIntrigue/list/event.png);
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    vertical-align: middle;
 }

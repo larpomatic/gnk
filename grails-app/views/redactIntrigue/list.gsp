@@ -39,10 +39,19 @@
                             <g:message code="plot.description.label" default="Description" />
                         </th>
                         <th>
-                            <g:message code="plot.isEvenemential.label" default="Is Evenemential" />
+                            <g:message code="plot.author.label" default="Author" />
                         </th>
                         <th>
-                            <g:message code="plot.isMainstream.label" default="Is Mainstream" />
+                            <g:message code="plot.isEvenemential.label" default="Evenemential" />
+                        </th>
+                        <th>
+                            <g:message code="plot.isMainstream.label" default="Mainstream" />
+                        </th>
+                        <th>
+                            <g:message code="plot.isPublic.label" default="Public" />
+                        </th>
+                        <th>
+                            <g:message code="plot.isDraft.label" default="Draft" />
                         </th>
 					</tr>
 				</thead>
@@ -61,12 +70,25 @@
 						<td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>
 					
 						<td>${fieldValue(bean: plotInstance, field: "description")}</td>
-					
-						<td><i class="trueIMG img-circle"></i></td>
-					
-						<td><g:formatBoolean boolean="${plotInstance.isMainstream}" /></td>
-					
-					</tr>
+
+                        <td>${plotInstance.user.firstname + " " + plotInstance.user.lastname}</td>
+
+						<td align="center" style="vertical-align: middle"><div class="${plotInstance.isEvenemential} img-circle">
+                            <div class="hidden">${plotInstance.isEvenemential}></div>
+                        </div></td>
+
+                        <td align="center" style="vertical-align: middle"><div class="${plotInstance.isMainstream} img-circle">
+                            <div class="hidden">${plotInstance.isMainstream}</div>
+                        </div></td>
+
+                        <td align="center" style="vertical-align: middle"><div class="${plotInstance.isPublic} img-circle">
+                            <div class="hidden">${plotInstance.isPublic}</div>
+                        </div></td>
+
+                        <td align="center" style="vertical-align: middle"><div class="${plotInstance.isDraft} img-circle">
+                            <div class="hidden">${plotInstance.isDraft}</div>
+                        </div></td>
+                    </tr>
 				</g:each>
 				</tbody>
 			</table>
