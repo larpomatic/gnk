@@ -32,7 +32,8 @@ class RightsUserTagLib {
             out << body()
         }
     }
-    def NotplotOwner = { attrs, body ->
+
+    def notPlotOwner = { attrs, body ->
         User user = (User) session.getAttribute("user")
         User currentuser = User.findById(user.id)
         int idOwner = Integer.valueOf(attrs.idOwner)

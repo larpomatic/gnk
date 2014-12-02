@@ -52,9 +52,13 @@
 				<tbody>
 				<g:each in="${plotInstanceList}" status="i" var="plotInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
 						<td>
-                           <g:link action="show" id="${plotInstance.id}">${fieldValue(bean: plotInstance, field: "name")}</g:link>
+                            <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEOPEN.value()}" lvlrightAdmin="${right.INTRIGUEOPEN.value()}">
+                                <g:link action="show" id="${plotInstance.id}">${fieldValue(bean: plotInstance, field: "name")}</g:link>
+                            </g:plotOwner>
+                            <g:notPlotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEOPEN.value()}" lvlrightAdmin="${right.INTRIGUEOPEN.value()}">
+                                ${fieldValue(bean: plotInstance, field: "name")}
+                            </g:notPlotOwner>
                         </td>
 					
 						<td>
