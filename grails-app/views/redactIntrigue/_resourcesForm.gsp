@@ -10,10 +10,12 @@
                 <a href="#resource_${genericResource.id}" data-toggle="tab">
                     ${genericResource.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la ressource?"
-                        data-url="<g:createLink controller="GenericResource" action="Delete" id="${genericResource.id}"/>" data-object="resource" data-id="${genericResource.id}">
-                    <i class="icon-remove pull-right"></i>
-                </button>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la ressource?"
+                            data-url="<g:createLink controller="GenericResource" action="Delete" id="${genericResource.id}"/>" data-object="resource" data-id="${genericResource.id}">
+                        <i class="icon-remove pull-right"></i>
+                    </button>
+                </g:plotOwner>
             </li>
         </g:each>
     </ul>
@@ -187,7 +189,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertResource"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertResource"/>
+                </g:plotOwner>
             </form>
         </div>
 
@@ -403,7 +407,9 @@
                             <button class="btn" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
-                    <input type="button" name="Update" data-id="${resource.id}" value="Update" class="btn btn-primary updateResource"/>
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" data-id="${resource.id}" value="Update" class="btn btn-primary updateResource"/>
+                    </g:plotOwner>
                 </form>
             </div>
         </g:each>
