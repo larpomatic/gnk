@@ -11,10 +11,12 @@
                 <a href="#event_${event.id}" data-toggle="tab">
                     ${event.timing}% - ${event.name?.encodeAsHTML()}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
-                        data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
-                    <i class="icon-remove pull-right"></i>
-                </button>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer l'évènement?"
+                            data-url="<g:createLink controller="Event" action="Delete" id="${event.id}"/>" data-object="event" data-id="${event.id}">
+                        <i class="icon-remove pull-right"></i>
+                    </button>
+                </g:plotOwner>
             </li>
         </g:each>
     </ul>
@@ -238,9 +240,9 @@
                     </div>
                 </div>
 
-                %{--<g:plotOwner idOwner="${plotInstance.user.id}">--}%
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
                     <input type="button" name="Insert" value="Insert" class="btn btn-primary insertEvent"/>
-                %{--</g:plotOwner>--}%
+                </g:plotOwner>
             </form>
         </div>
 
@@ -481,8 +483,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-
-                <input type="button" name="Update" data-id="${event.id}" value="Update" class="btn btn-primary updateEvent"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Update" data-id="${event.id}" value="Update" class="btn btn-primary updateEvent"/>
+                </g:plotOwner>
             </form>
         </div>
     </g:each>
