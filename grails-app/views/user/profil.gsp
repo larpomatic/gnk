@@ -184,15 +184,12 @@
     </g:hasRights>
 </div>
 <script type="text/javascript">
-     $(document).ready(function () {
-         var a = document.getElementById("disabledValue");
 
-        for (var i = 0; i < 24; i++) {
-            if (a == "1") {
-                document.getElementById('c' + i).disabled = true;
-            } else {
-                document.getElementById('c' + i).disabled = false;
-            }
+    $(function(){
+       var isDisabled = $("#disabledValue").val();
+        for (var i = 0;isDisabled == "1" && i < 24; i++) {
+
+            $("#c"+i).attr("disabled", "disabled");
         }
     });
 </script>
