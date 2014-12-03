@@ -1,8 +1,14 @@
 <div class="row-fluid">
     <div class="span4"><legend>Lieux</legend></div>
+
     <div class="span1"><span class="badge badge-important" id="placesPercentage">0 %</span></div>
-    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a></div>
-    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+
+    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
+    </div>
+
+    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
+                                                                                      file="loader.gif" width="30"
+                                                                                      height="30"/></div>
 </div>
 
 <div id="subPlacesAlertContainer">
@@ -44,10 +50,13 @@
             <td>${place.comment.encodeAsHTML()}</td>
             <!-- Place -->
             <td class="place">
-            <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
-            <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written">
-            <input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">
-            <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
+                <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold"
+                                                                                             disabled="true"
+                                                                                             isEmpty="true"></select><br>
+                <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten"
+                                                                                  class="written">
+                %{--<input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">--}%
+                <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
             <!-- Restart place -->
             <td class="restartPlace" style="text-align: center;">
@@ -61,10 +70,10 @@
 <!-- Modal Views -->
 <!--g:render template="modalViewPlaces" /-->
 
-<g:javascript src="substitution/subPlaces.js" />
+<g:javascript src="substitution/subPlaces.js"/>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         // PlacesJSON
         placesJSON = initPlacesJSON();
 
@@ -102,7 +111,9 @@
         tagArray.push(tag);
         </g:each>
         // END Tags LOOP
-        if (tagArray.length > 0) {place.tags = tagArray;}
+        if (tagArray.length > 0) {
+            place.tags = tagArray;
+        }
         placeArray.push(place);
         </g:each>
         // END Places LOOP
