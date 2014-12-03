@@ -1,5 +1,7 @@
 package org.gnk.substitution.data
 
+import org.gnk.resplacetime.PlaceHasTag
+
 class Place {
 	String id
     String plotId
@@ -8,4 +10,5 @@ class Place {
 	String comment
     // Plot name
 	String plotName
+    List<Tag> placeTags;
 }

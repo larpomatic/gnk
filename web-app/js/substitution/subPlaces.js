@@ -30,6 +30,14 @@ function updatePlacesJSONUser(placesJSON) {
     }
 }
 
+//function calcContrast(placesJSON) {
+//
+//    for (var place in placesJSON) {
+//
+//
+//    }
+//}
+
 // Update place HTML elements
 function updatePlacesView(placesJSON)
 {
@@ -56,7 +64,7 @@ function updatePlacesView(placesJSON)
                 placeSelect.css("background-color", "rgb(108,194,219)").css("color", "#FFF");
                 for (var key in proposedNames) {
                     var name = proposedNames[key];
-                    placeSelect.append($("<option>").attr("value", name).text(name));
+                    placeSelect.append($("<option>").attr("value", name).text(name + 'bite'));
                 }
                 placeSelect.attr("isEmpty", false);
                 placeSelect.attr("disabled", false);
@@ -180,7 +188,6 @@ function selectAllRestartPlaces(restartClass, isToCheck) {
 
 // Initiation of places events
 function initPlacesEvents(url) {
-    debugger
     $("#restartPlaceAll").click( function(){
         // Select all
         if (!(typeof($(this).attr("checked")) == "undefined")) {selectAllRestartResources("restartPlace", true)}

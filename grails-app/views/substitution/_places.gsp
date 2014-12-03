@@ -14,7 +14,8 @@
         <th style="text-align: center;">#</th>
         <th>code</th>
         <th>Plot Name</th>
-        <th>tags</th>
+        <th>Generic place tags</th>
+        <th>Place Tags</th>
         <th>comment</th>
         <th>nom</th>
         <th style="text-align: center;">
@@ -31,12 +32,21 @@
             <td>${place.code}</td>
             <!-- Plot Name -->
             <td>${place.plotName}</td>
-            <!-- Tags -->
+            <!-- Generic Place Tags -->
             <td>
                 <ul class="unstyled">
                     <g:each status="j" in="${place.tagList}" var="tag">
                         <li><strong class="cap">${tag.value.encodeAsHTML()}</strong>
                             (<span class="cap">${tag.family.encodeAsHTML()}</span> / ${tag.weight.encodeAsHTML()})</li>
+                    </g:each>
+                </ul>
+            </td>
+            <!-- Place Tags -->
+            <td>
+                <ul class="unstyled">
+                    <g:each status="j" in="${place.placeTags}" var="tag">
+                        <li><strong class="cap">${tag.rvalue.encodeAsHTML()}</strong>
+                            (<span class="cap">${tag.rfamily.encodeAsHTML()}</span> / ${tag.rweight.encodeAsHTML()})</li>
                     </g:each>
                 </ul>
             </td>
@@ -92,7 +102,8 @@
         place.htmlId = "place${place.id}_plot${place.plotId}"
         // Code
         place.code = "${place.code}"
-        // BEGIN Tags LOOP
+
+        // BEGIN Generic Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${place.tagList}" var="tag">
         var tag = new Object();
@@ -102,7 +113,20 @@
         tagArray.push(tag);
         </g:each>
         // END Tags LOOP
+
+        // BEGIN Place Tags
+        var rTagArray = new Array();
+        <g:each status="j" in="${place.placeTags}" var="tag">
+        var tag = new Object();
+        tag.value = "${tag.rvalue}";
+        tag.family = "${tag.rfamily}";
+        tag.weight = "${tag.rweight}";
+        rTagArray.push(tag);
+        </g:each>
+        // END Place Tags
+
         if (tagArray.length > 0) {place.tags = tagArray;}
+        if (rTagArray.length > 0) {place.rtags = rTagArray;}
         placeArray.push(place);
         </g:each>
         // END Places LOOP
@@ -110,42 +134,5 @@
         jsonObject.places = placeArray;
         return jsonObject;
     }
-    %{--function initPlacesJSON() {--}%
-        %{--var jsonObject = new Object();--}%
-        %{--// Universe--}%
-        %{--jsonObject.universe = "${gnInfo.universe}";--}%
-
-        %{--// BEGIN Places LOOP--}%
-        %{--var placeArray = new Array();--}%
-        %{--<g:each status="i" in="${placeList}" var="place">--}%
-        %{--var place = new Object();--}%
-        %{--// Gn id--}%
-        %{--place.gnId = "${place.id}"--}%
-        %{--// Gn plot id--}%
-        %{--place.gnPlotId = "${place.plotId}"--}%
-        %{--// Gn plot--}%
-        %{--place.plotName = "${place.plotName}"--}%
-        %{--// HTML id--}%
-        %{--place.htmlId = "place${place.id}_plot${place.plotId}"--}%
-        %{--// Code--}%
-        %{--place.code = "${place.code}--}%
-        %{--// BEGIN Tags LOOP--}%
-        %{--var tagArray = new Array();--}%
-        %{--<g:each status="j" in="${place.tagList}" var="tag">--}%
-        %{--var tag = new Object();--}%
-        %{--tag.value = "${tag.value}";--}%
-        %{--tag.family = "${tag.family}";--}%
-        %{--tag.weight = "${tag.weight}";--}%
-        %{--tagArray.push(tag);--}%
-        %{--</g:each>--}%
-        %{--// END Tags LOOP--}%
-        %{--if (tagArray.length > 0) {place.tags = tagArray;}--}%
-        %{--placeArray.push(place);--}%
-        %{--</g:each>--}%
-        %{--// END Places LOOP--}%
-
-        %{--jsonObject.places = placeArray;--}%
-        %{--return jsonObject;--}%
-    %{--}--}%
 </script>
 
