@@ -384,9 +384,7 @@ class IntegrationHandler {
                 }
 
                 if (genericPlaceTags != null && placeTags != null) {
-                    println("Before calc")
                     calcDiffBetweenGenericPlaceTagsAndPlaceTags(genericPlaceTags, placeTags)
-                    println("After calc")
                 }
 
                 for (i in resultList) {
