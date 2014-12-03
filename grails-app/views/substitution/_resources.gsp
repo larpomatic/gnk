@@ -18,8 +18,13 @@
     <thead>
     <tr class="upper">
         <th style="text-align: center;">#</th>
+<<<<<<< HEAD
         <th>Code</th>
         <th>Plot name</th>
+=======
+        <th>code</th>
+        <th>type</th>
+>>>>>>> FETCH_HEAD
         <th>tags</th>
         <th>comment</th>
         <th>propriétaire</th>

@@ -2,11 +2,15 @@ package org.gnk.resplacetime
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagService
 import org.gnk.tag.Tag
+import org.gnk.tag.Univers
 
 class GenericPlaceController {
+
+    PlaceService placeService;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -36,6 +40,50 @@ class GenericPlaceController {
         object.put("genericPlaceTagList", jsonTagList);
         render(contentType: "application/json") {
             object
+        }
+    }
+
+    def getBestPlaces() {
+        org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+
+        String univer_name = params.get("univerTag");
+
+        if (univer_name == null || univer_name == "")
+            return;
+
+        List<com.gnk.substitution.Tag> tags = new ArrayList<>();
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.value = tag.name;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+        genericplace.setTagList(tags);
+        genericplace = placeService.findReferentialPlace(genericplace, univer_name);
+        genericplace.resultList;
+        String result = "";
+        int i = 0;
+
+        JSONObject object = new JSONObject();
+        for (ReferentialPlace refe in genericplace.resultList)
+        {
+            i++;
+            if (i <= 5) {
+                result += refe.name + "#";
+                object.put("val", refe.name);
+            }
+        }
+        if (result != "")
+            result = result.substring(0, result.length() - 1);
+        object.put("value", result);
+        render(contentType: "application/json") {
+            object;
         }
     }
 
@@ -89,8 +137,7 @@ class GenericPlaceController {
         if (params.containsKey("placeObject")) {
             ObjectType objectType = ObjectType.findById(params.placeObject as Integer);
             newGenericPlace.objectType = objectType;
-        }
-        else {
+        } else {
             ObjectType objectType = ObjectType.findById(1);
             newGenericPlace.objectType = objectType;
         }
@@ -99,7 +146,7 @@ class GenericPlaceController {
         } else {
             return false
         }
-        if(newGenericPlace.extTags != null) {
+        if (newGenericPlace.extTags != null) {
             HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();
             GenericPlaceHasTag.deleteAll(genericPlaceHasTag);

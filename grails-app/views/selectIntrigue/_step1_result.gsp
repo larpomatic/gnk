@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.gn.Gn; org.gnk.selectintrigue.Plot" %>
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <h3>
     <g:message code="selectintrigue.step1.name"
                default="SelectIntrigue result"/>
@@ -232,11 +233,13 @@
         </div>
     </div>
     <fieldset class="buttons">
-    <g:actionSubmit class="btn btn-primary" action="selectIntrigue"
-                    value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
-    <g:actionSubmit class="btn btn-primary" action="goToRoleToPerso"
-                value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
+        <g:hasRights lvlright="${right.MGNMODIFY.value()}">
+            <g:actionSubmit class="btn btn-primary" action="selectIntrigue"
+                        value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+            <g:actionSubmit class="btn btn-primary" action="goToRoleToPerso"
+                    value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
+        </g:hasRights>
+    </fieldset>
 </g:form>
-</fieldset>
 
 

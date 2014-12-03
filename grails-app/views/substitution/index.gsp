@@ -12,6 +12,7 @@
 
     <g:hiddenField name="gnId" value="${gnId}"/>
     <div class="form-actions">
+    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
     <button id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index">
     ${message(code: 'navbar.publication', default: 'Publication')}</button>
     </div>

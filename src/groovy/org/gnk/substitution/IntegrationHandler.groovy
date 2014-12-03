@@ -380,7 +380,11 @@ class IntegrationHandler {
             if (pastsceneJson.absoluteMinute != "") {pastsceneTime.absoluteMinute = pastsceneJson.absoluteMinute as Integer}
 
             // Call service
-            pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate)
+            if (pastsceneJson.isUpdate != null && pastsceneJson.isUpdate == "yes") {
+                pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, true)
+            } else {
+                pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, false)
+            }
 
             // Update json
             JSONObject date = new JSONObject();
@@ -398,10 +402,14 @@ class IntegrationHandler {
             // Create eventTime
             EventTime eventTime = new EventTime()
             eventTime.timing = eventJson.timing as Integer
+            if (eventJson.absoluteYear != "") {eventTime.absoluteYear = eventJson.absoluteYear as Integer}
+            if (eventJson.absoluteMonth != "") {eventTime.absoluteMonth = eventJson.absoluteMonth as Integer}
+            if (eventJson.absoluteDay != "") {eventTime.absoluteDay = eventJson.absoluteDay as Integer}
+            if (eventJson.absoluteHour != "") {eventTime.absoluteHour = eventJson.absoluteHour as Integer}
+            if (eventJson.absoluteMinute != "") {eventTime.absoluteMinute = eventJson.absoluteMinute as Integer}
 
             // Call service
             eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration)
-
             // Update json
             JSONObject date = new JSONObject();
             if (eventTime.absoluteYear != null) {date.put("year", eventTime.absoluteYear as String)}

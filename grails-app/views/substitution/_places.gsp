@@ -110,42 +110,5 @@
         jsonObject.places = placeArray;
         return jsonObject;
     }
-    %{--function initPlacesJSON() {--}%
-        %{--var jsonObject = new Object();--}%
-        %{--// Universe--}%
-        %{--jsonObject.universe = "${gnInfo.universe}";--}%
-
-        %{--// BEGIN Places LOOP--}%
-        %{--var placeArray = new Array();--}%
-        %{--<g:each status="i" in="${placeList}" var="place">--}%
-        %{--var place = new Object();--}%
-        %{--// Gn id--}%
-        %{--place.gnId = "${place.id}"--}%
-        %{--// Gn plot id--}%
-        %{--place.gnPlotId = "${place.plotId}"--}%
-        %{--// Gn plot--}%
-        %{--place.plotName = "${place.plotName}"--}%
-        %{--// HTML id--}%
-        %{--place.htmlId = "place${place.id}_plot${place.plotId}"--}%
-        %{--// Code--}%
-        %{--place.code = "${place.code}--}%
-        %{--// BEGIN Tags LOOP--}%
-        %{--var tagArray = new Array();--}%
-        %{--<g:each status="j" in="${place.tagList}" var="tag">--}%
-        %{--var tag = new Object();--}%
-        %{--tag.value = "${tag.value}";--}%
-        %{--tag.family = "${tag.family}";--}%
-        %{--tag.weight = "${tag.weight}";--}%
-        %{--tagArray.push(tag);--}%
-        %{--</g:each>--}%
-        %{--// END Tags LOOP--}%
-        %{--if (tagArray.length > 0) {place.tags = tagArray;}--}%
-        %{--placeArray.push(place);--}%
-        %{--</g:each>--}%
-        %{--// END Places LOOP--}%
-
-        %{--jsonObject.places = placeArray;--}%
-        %{--return jsonObject;--}%
-    %{--}--}%
 </script>
 

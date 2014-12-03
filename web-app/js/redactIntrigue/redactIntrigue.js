@@ -1,5 +1,10 @@
 $(function(){
     var element;
+
+    $('body').keydown(function(e) {
+       keyhandler(e);
+    });
+
     initConfirm();
 
     initDeleteButton();
@@ -22,6 +27,18 @@ $(function(){
     initializeTextEditor();
 
     initializeClosingPopover();
+
+    // on supprimer le role staff des select dans l'onglet relation
+    $('select[name="relationTo"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
+    $('select[name="relationFrom"] option').each(function() {
+        if ($(this).html().toLowerCase() == "staff") {
+            $(this).remove();
+        }
+    });
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
     $('.updatePlot').click(function() {
@@ -73,47 +90,27 @@ $(function(){
 
     initModifyTag();
 
-    //insert html span into textEditors
+    initSpanCreation();
+});
+
+//insert html span into textEditors
+function initSpanCreation() {
+    $(".buttonRichTextEditor").unbind('click');
     $('.buttonRichTextEditor').click(function() {
         setCarretPos();
         if ($(this).closest("ul").hasClass("roleSelector")) {
-            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
-            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html() + '</span>');
+            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
-        var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-            '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
-            '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-        $('.label[contenteditable="false"]:not(.label-success)').popover({
-            html: 'true',
-            placement: 'top',
-            content: spanPopover,
-            container: "body",
-            delay: { "show": 0, "hide": 0 }
-        });
-        var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-            '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-            '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-            '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-            '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-        $('.label[contenteditable="false"].label-success').popover({
-            html: 'true',
-            placement: 'top',
-            content: spanPopoverRole,
-            container: "body",
-            delay: { "show": 0, "hide": 0 }
-        });
         initializePopover();
         return false;
     });
-});
+}
 
 function initQuickObjects() {
     //permet d'ajouter rapidement une ressource, lieu ou role
@@ -215,6 +212,7 @@ function appendEntity(entity, value, label, flag, id) {
     if (flag != "") {
         createNotification("info", "ajout réussi.", "Votre entité a bien été ajoutée, vous pourrez la compléter ultérieurement.");
     }
+    initSpanCreation();
 }
 
 //evite de descendre quand on clique sur un bouton du menu
@@ -331,46 +329,39 @@ function initializeTextEditor() {
             description[description.length - 1] == ' ' || description[description.length - 1] == '\r')) {
             description = description.substring(0, description.length - 1)
         }
-        description = description.replace(/\n/g, '<br>');
-        description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="');
-        description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="');
-        description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="');
-        description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="');
-        description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
-        description = description.replace(/&gt;/g, '</span>');
-        description = "<div>" + description + "</div>";
+        description = "<div>" + convertDescription(description) + "</div>";
         var html = $(description);
         $("span br", html).remove();
         description = html.html();
         $(this).html(description);
-        $('.label[contenteditable="false"]').attr("data-content", spanPopover);
-    });
-    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"]:not(.label-success)').popover({
-        html: 'true',
-        placement: 'top',
-        content: spanPopover,
-        container: "body",
-        delay: { "show": 0, "hide": 0 }
-    });
-    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-    '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"].label-success').popover({
-        html: 'true',
-        placement: 'top',
-        content: spanPopoverRole,
-        container: "body",
-        delay: { "show": 0, "hide": 0 }
     });
     initializePopover();
+}
+
+function convertDescription(description) {
+    description = description.replace(/\n/g, '<br>');
+    description = description.replace(/&lt;l:Art:/g, '<span class="label label-warning" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:Pos:/g, '<span class="label label-warning" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:none:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Art:/g, '<span class="label label-important" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&gt;/g, '</span>');
+    return description;
 }
 
 // on remplace les span html dans une description par des balises
@@ -405,6 +396,32 @@ function updateAllDescription(formlist) {
 }
 
 function initializePopover() {
+    var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"]:not(.label-success)').popover({
+        html: 'true',
+        placement: 'bottom',
+        content: spanPopover,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+    $('.label[contenteditable="false"].label-success').popover({
+        html: 'true',
+        placement: 'bottom',
+        content: spanPopoverRole,
+        container: "body",
+        delay: { "show": 0, "hide": 0 }
+    });
+
     $('.label[contenteditable="false"]').on("shown.bs.popover", function () {
         if ($('.popover').size() > 1) {
             $(this).popover('hide');
@@ -442,4 +459,15 @@ function initializeClosingPopover() {
             }
         }
     });
+}
+
+function keyhandler(e) {
+    var key = e.keyCode
+    if (key == 8)
+    {
+        var d = e.srcElement || e.target;
+        if ($(d).hasClass("richTextEditor")) {
+            e.preventDefault();
+        }
+    }
 }

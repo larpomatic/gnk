@@ -1,6 +1,6 @@
 package org.gnk.selenium
 
-import com.sun.tools.doclets.internal.toolkit.resources.doclets
+//import com.sun.tools.doclets.internal.toolkit.resources.doclets
 import grails.test.mixin.TestFor
 import org.gnk.selectintrigue.SelectIntrigueController
 import org.openqa.selenium.By

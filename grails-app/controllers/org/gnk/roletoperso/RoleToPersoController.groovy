@@ -26,6 +26,19 @@ class RoleToPersoController {
         [characters: characterService.characters]
     }
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "selectIntrigue";
+        gn.characterSet = null;
+        gn.nonPlayerCharSet = null;
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
+    }
+
     def roleToPerso() {
         final gnIdStr = params.gnId
         assert (gnIdStr != "null" && (gnIdStr as String).isInteger())
@@ -233,6 +246,7 @@ class RoleToPersoController {
         gn.nonPlayerCharSet.each { charact ->
             //print("AGE_2 :" + charact.age + " for IDs :")
         }
+
         /***********/
         /**FIN AGE**/
         /***********/
@@ -410,6 +424,7 @@ class RoleToPersoController {
             int INTERVAL = 5
             int age = 1;
             GenericEvent lastGE = null
+            System.out.println("AGE : " + character.age)
             while (age < character.age) {
                 // Créer Past scene
                 //def query = GenericEvent.where {
@@ -480,21 +495,6 @@ class RoleToPersoController {
             character.addRole(roleForLife)
             gn.addPlot(p)
         }
-    }
-
-    def management(Long id) {
-        if (id && id >= 0) {
-            gnInstance = Gn.get(id)
-        }
-        [screenStep: 0, plotTagList: PlotTag.list(), universList: Univers.list(), characters: characterService.characters]
-    }
-
-    def edit(Long id) {
-        def Character c
-        if (id && id >= 0) {
-            c = characterService.getCharacter(id as int)
-        }
-        [screenStep: 0, roles: c.roles, plotTagList: PlotTag.list(), universList: Univers.list(), character: c]
     }
 
     def save() {
