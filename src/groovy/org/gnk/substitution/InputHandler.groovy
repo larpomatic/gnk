@@ -20,6 +20,7 @@ class InputHandler {
     List<Place> placeList
     List<Pastscene> pastsceneList
     List<Event> eventList
+    org.gnk.ressplacetime.GenericResource genericResource
 
     public void parseGN(String gnString) {
         // Reader
@@ -361,27 +362,6 @@ class InputHandler {
         def plot = org.gnk.selectintrigue.Plot.get(plotId)
         // Plot name
         place.plotName = plot.name
-        println("plot name set")
-
-        //placeTags
-        place.placeTags = []
-        if (genericPlace.proposedPlaces == null)
-            println("proposed places is NULL")
-        for (Place realPlace : genericPlace.proposedPlaces) {
-            println("Entering in the proposed places")
-            if (realPlace.extTags) {
-                for (PlaceHasTag placeHasTag : realPlace.extTags) {
-                    println("Entering in the place has tag")
-                    Tag tagData = new Tag()
-
-                    tagData.value = placeHasTag.tag.name
-                    tagData.family = placeHasTag.tag.parent.name
-                    tagData.weight = placeHasTag.weight as Integer
-
-                    place.placeTags.add(tagData)
-                }
-            }
-        }
 
         return place
     }

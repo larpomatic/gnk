@@ -1,8 +1,14 @@
 <div class="row-fluid">
     <div class="span4"><legend>Lieux</legend></div>
+
     <div class="span1"><span class="badge badge-important" id="placesPercentage">0 %</span></div>
-    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a></div>
-    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+
+    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
+    </div>
+
+    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
+                                                                                      file="loader.gif" width="30"
+                                                                                      height="30"/></div>
 </div>
 
 <div id="subPlacesAlertContainer">
@@ -12,12 +18,11 @@
     <thead>
     <tr class="upper">
         <th style="text-align: center;">#</th>
-        <th>Code |</th>
-        <th>Plot Name |</th>
-        <th>Generic place |</th>
-        <th>Place |</th>
-        <th>Comment |</th>
-        <th>Nom |</th>
+        <th>code</th>
+        <th>Plot Name</th>
+        <th>Generic place</th>
+        <th>comment</th>
+        <th>nom</th>
         <th style="text-align: center;">
             A RELANCER <input id="restartPlaceAll" type="checkbox" disabled="true" style="float: right;">
         </th>
@@ -41,23 +46,17 @@
                     </g:each>
                 </ul>
             </td>
-            <!-- Place Tags -->
-            <td>
-                <ul class="unstyled">
-                    <g:each status="j" in="${place.placeTags}" var="tag">
-                        <li><strong class="cap">${tag.rvalue.encodeAsHTML()}</strong>
-                            (<span class="cap">${tag.rfamily.encodeAsHTML()}</span> / ${tag.rweight.encodeAsHTML()})</li>
-                    </g:each>
-                </ul>
-            </td>
             <!-- Comment -->
             <td>${place.comment.encodeAsHTML()}</td>
             <!-- Place -->
             <td class="place">
-            <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
-            <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written">
-            <input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">
-            <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
+                <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold"
+                                                                                             disabled="true"
+                                                                                             isEmpty="true"></select><br>
+                <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten"
+                                                                                  class="written">
+                %{--<input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">--}%
+                <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
             </td>
             <!-- Restart place -->
             <td class="restartPlace" style="text-align: center;">
@@ -71,10 +70,10 @@
 <!-- Modal Views -->
 <!--g:render template="modalViewPlaces" /-->
 
-<g:javascript src="substitution/subPlaces.js" />
+<g:javascript src="substitution/subPlaces.js"/>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         // PlacesJSON
         placesJSON = initPlacesJSON();
 
@@ -114,19 +113,9 @@
         </g:each>
         // END Tags LOOP
 
-        // BEGIN Place Tags
-        var rTagArray = new Array();
-        <g:each status="j" in="${place.placeTags}" var="tag">
-        var tag = new Object();
-        tag.value = "${tag.rvalue}";
-        tag.family = "${tag.rfamily}";
-        tag.weight = "${tag.rweight}";
-        rTagArray.push(tag);
-        </g:each>
-        // END Place Tags
-
-        if (tagArray.length > 0) {place.tags = tagArray;}
-        if (rTagArray.length > 0) {place.rtags = rTagArray;}
+        if (tagArray.length > 0) {
+            place.tags = tagArray;
+        }
         placeArray.push(place);
         </g:each>
         // END Places LOOP
