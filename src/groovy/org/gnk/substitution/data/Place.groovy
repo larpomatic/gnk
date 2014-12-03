@@ -10,5 +10,6 @@ class Place {
 	String comment
     // Plot name
 	String plotName
-    List<Tag> placeTags;
+    List<Tag> placeTags
+    String objectType
 }

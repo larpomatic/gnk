@@ -122,27 +122,11 @@ class Plot {
 	}
 
     public boolean hasPlotTag(Tag parPlotTag) {
-        if (parPlotTag instanceof HibernateProxy) {
-            Hibernate.initialize(parPlotTag);
-            parPlotTag = (Tag) ((HibernateProxy) parPlotTag).getHibernateLazyInitializer().getImplementation();
-        }
-        for (PlotHasTag plotHasPlotTag : extTags) {
-            if (plotHasPlotTag.tag == parPlotTag) {
-                return true;
-            }
-        }
-        return false;
+        return (PlotHasTag.findByTagAndPlot(parPlotTag, this) != null)
     }
 
     public getPlotHasTag(Tag tag) {
-        List<PlotHasTag> plotHasTags = PlotHasTag.createCriteria().list {
-            like("plot", this)
-            like("tag", tag)
-        }
-        if (plotHasTags.size() == 0) {
-            return null;
-        }
-        return plotHasTags.first();
+        return PlotHasTag.findByTagAndPlot(tag, this);
     }
 
 //    public boolean hasUnivers(Tag tagUnivers) {

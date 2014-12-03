@@ -54,10 +54,10 @@ function updateRelation() {
                 if (data.isupdate) {
                     Handlebars.registerHelper('encodeAsHtml', function(value) {
                         value = value.replace(/>/g, '</span>');
-                        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
-                        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
-                        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-                        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+                        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
+                        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
+                        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
+                        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
                         return new Handlebars.SafeString(value);
                     });
                     if ((roleFromIdRelation == data.relation.RoleFromId.toString())) {
@@ -119,6 +119,7 @@ function updateRelation() {
                         updateButton.attr("data-wasBijective", "true");
                         initConfirm();
                         updateRelation();
+                        initializePopover();
                     }
                     var plotFullscreenEditable = $('.plotScreen .fullScreenEditable').first();
                     $('.btn-group', plotFullscreenEditable).clone().prependTo('#accordionRelation' + data.relation.RoleFromId + ' .accordion-group[data-relation="' + data.relation.id + '"]' + ' .fullScreenEditable');
@@ -180,10 +181,10 @@ function emptyRelationForm() {
 function createNewRelationPanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
         value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" contenteditable="false">');
-        value = value.replace(/<o:/g, '<span class="label label-important" contenteditable="false">');
-        value = value.replace(/<i:/g, '<span class="label label-success" contenteditable="false">');
-        value = value.replace(/<u:/g, '<span class="label label-default" contenteditable="false">');
+        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
+        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
+        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
+        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/relationPanel'];
@@ -227,4 +228,6 @@ function createNewRelationPanel(data) {
         $('#collapseRelation'+data.relation.RoleFromId+'-'+data.relation.id+' #relationTo option[value="'+ data.relation.RoleToId +'"]').attr("selected", "selected");
 //    }
     $('.accordion-group[data-relation="' + data.relation.id + '"] #relationType option[value="'+ data.relation.RoleRelationTypeId +'"]').attr("selected", "selected");
+
+    initializePopover();
 }

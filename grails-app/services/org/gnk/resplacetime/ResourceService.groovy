@@ -1,12 +1,11 @@
 package org.gnk.resplacetime
 
-// Import des classes Groovy
-import org.gnk.ressplacetime.GenericResource
-import org.gnk.ressplacetime.ReferentialResource
 import com.gnk.substitution.Tag
-import org.gnk.tag.TagService
+import org.gnk.ressplacetime.GenericResource
 
-import java.text.Collator
+// Import des classes Groovy
+import org.gnk.ressplacetime.ReferentialResource
+import org.gnk.tag.TagService
 
 class ResourceService {
 

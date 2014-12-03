@@ -41,7 +41,7 @@ class Role implements Comparable {
 
     static constraints = {
         code maxSize: 45
-        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG"]
+        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG", "STF"]
     }
 
     static mapping = {
@@ -61,12 +61,7 @@ class Role implements Comparable {
     }
 
     public boolean hasRoleTag(Tag parRoleTag) {
-        for (RoleHasTag roleHasRoleTag : roleHasTags) {
-            if (roleHasRoleTag.tag == parRoleTag) {
-                return true;
-            }
-        }
-        return false;
+        return (RoleHasTag.findByTagAndRole(parRoleTag, this) != null);
     }
 
     public Plot getterPlot() {
@@ -160,6 +155,11 @@ class Role implements Comparable {
         return (type != null && type.toUpperCase().equals("TPJ"))
     }
 
+    // Check if the role is STAF
+    public boolean isSTF() {
+        return (type != null && type.toUpperCase().equals("STF"))
+    }
+
     // Check if the role is Personnage Joueur Générique (cf balise OTHER)
     public boolean isPJG() {
         return (type != null && type.toUpperCase().equals("PJG"))
@@ -187,14 +187,7 @@ class Role implements Comparable {
     }
 
     public getRoleHasTag(Tag tag) {
-        List<RoleHasTag> roleHasTags = RoleHasTag.createCriteria().list {
-            like("role", this)
-            like("tag", tag)
-        }
-        if (roleHasTags.size() == 0) {
-            return null;
-        }
-        return roleHasTags.first();
+        return RoleHasTag.findByTagAndRole(tag, this);
     }
 
     public getRoleHasEvent(Event event) {

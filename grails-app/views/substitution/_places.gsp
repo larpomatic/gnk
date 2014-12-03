@@ -12,12 +12,12 @@
     <thead>
     <tr class="upper">
         <th style="text-align: center;">#</th>
-        <th>code</th>
-        <th>Plot Name</th>
-        <th>Generic place tags</th>
-        <th>Place Tags</th>
-        <th>comment</th>
-        <th>nom</th>
+        <th>Code |</th>
+        <th>Plot Name |</th>
+        <th>Generic place |</th>
+        <th>Place |</th>
+        <th>Comment |</th>
+        <th>Nom |</th>
         <th style="text-align: center;">
             A RELANCER <input id="restartPlaceAll" type="checkbox" disabled="true" style="float: right;">
         </th>

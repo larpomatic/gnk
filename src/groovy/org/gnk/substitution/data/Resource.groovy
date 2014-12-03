@@ -9,4 +9,5 @@ class Resource {
 	String comment
     // Plot name
     String plot
+    String objectType
 }

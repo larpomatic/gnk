@@ -15,35 +15,68 @@ class TagController {
     }
 
     def list(Integer max, Integer offset, String sort) {
+//<<<<<<< HEAD
+//
+//        Tag parent = Tag.get(params.Tag_select as Integer)
+//        String parentName = parent == null ? "" : parent.name
+//
+//        if (params.showChildren)
+//            {
+//                session.tagParent = parent.id
+//
+//                List<Tag> resultList = new ArrayList<Tag>()
+//                resultList.addAll(parent.children)
+//                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+//            }
+//        else
+//        {
+//            max = max ?: 10
+//            offset = offset ?: 0
+//            sort = sort ?: 'name'
+//            params.order = params.order ?: 'asc'
+//
+//            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+//                if (sort.indexOf('tagFamily.') == 0) {
+//                    tagFamily {
+//                        order(sort.split('\\.')[1], params.order)
+//                    }
+//                } else
+//                    order(sort, params.order as String)
+//            }
+//            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+//        }
+//=======
+        max = max ?: 10
+        offset = offset ?: 0
+        sort = sort ?: 'name'
+        params.order = params.order ?: 'asc'
 
-        Tag parent = Tag.get(params.Tag_select as Integer)
-        String parentName = parent == null ? "" : parent.name
-
-        if (params.showChildren)
-            {
-                session.tagParent = parent.id
-
-                List<Tag> resultList = new ArrayList<Tag>()
-                resultList.addAll(parent.children)
-                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+        List<Tag> tags = Tag.list();
+        Map<Integer, ArrayList<Tag>> mapTagParent= new HashMap<Integer, ArrayList>();
+        for(Tag tag : tags){
+            ArrayList<Tag>  tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null){
+                if (!"".equals(tag.name)){
+                    tagParent.add(t);
+                }
+                t = t.parent;
             }
-        else
-        {
-            max = max ?: 10
-            offset = offset ?: 0
-            sort = sort ?: 'name'
-            params.order = params.order ?: 'asc'
-
-            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
-                if (sort.indexOf('tagFamily.') == 0) {
-                    tagFamily {
-                        order(sort.split('\\.')[1], params.order)
-                    }
-                } else
-                    order(sort, params.order as String)
-            }
-            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
         }
+
+        def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+            if (sort.indexOf('tagFamily.') == 0) {
+                tagFamily {
+                    order(sort.split('\\.')[1], params.order)
+                }
+            } else
+                order(sort, params.order as String)
+        }
+		
+		[ tagInstanceList: resultList, listTagParent : mapTagParent ]
+//>>>>>>> 1bbe1d20a9b563d7dd5a15713bbdb161bcffd4ec
     }
 
     def childrenList(Tag t)

@@ -14,6 +14,7 @@
 
 <body>
 <h1>Création d'un utilisateur</h1>
+<div class="administration">
 <g:form action="createUser">
     <input name="username" type="text" placeholder="Username"/> <br/>
     <input name="firstname" type="text" placeholder="Firstname"/> <br/>
@@ -26,7 +27,7 @@
         <button type="submit" class="btn btn-primary">Valider</button>
     </div>
 </g:form>
-
+</div>
 </div>
 
 </body>

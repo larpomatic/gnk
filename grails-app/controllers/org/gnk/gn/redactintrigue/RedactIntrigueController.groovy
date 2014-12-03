@@ -19,8 +19,7 @@ class RedactIntrigueController {
 	}
 
 	def list(Integer max) {
-		params.max = Math.min(max ?: 10, 100)
-		[plotInstanceList: Plot.list(params), plotInstanceTotal: Plot.count()]
+		[plotInstanceList: Plot.list(), plotInstanceTotal: Plot.count()]
 	}
 
 	def create() {

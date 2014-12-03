@@ -1,7 +1,9 @@
 package org.gnk.adminUser
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.gnk.admin.right
 import org.gnk.cookie.CookieService
+import org.gnk.rights.RightsService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
 import org.gnk.user.UserSecRole
@@ -38,6 +40,7 @@ class AdminUserController {
         redirect(controller: controllerredir, action: actionredir)
     }
     def list(){
+
         User user = session.getAttribute("user")
 
         if (!user){
@@ -54,7 +57,13 @@ class AdminUserController {
         }
         else {
             def c = User.createCriteria()
-            List<User> users = c.list { ilike("username", "%"+name+"%")}
+            List<User> users = c.list {
+                or{
+                    ilike("username", "%"+name+"%")
+                    ilike("firstname", "%"+name+"%")
+                    ilike("lastname", "%"+name+"%")
+                }
+            }
             [users : users]
         }
         }
@@ -144,22 +153,35 @@ class AdminUserController {
         User user = User.findById(id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword))
+        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
             user.password = newpassword
-        if (params.firstnamemodif && params.firstnamemodif != user.firstname){
-            user.firstname = params.firstnamemodif
+            flash.success = "votre mot de passe été modifié"
         }
-        if (params.lastnamemodif && params.lastnamemodif != user.lastname){
-            user.lastname = params.lastnamemodif
-
-        }
-        if (params.usernamemodif && params.usernamemodif != user.username){
-            if (User.findByUsername((String)params.usernamemodif) == null){
-                user.username = params.usernamemodif;
+        else {
+            if (params.firstnamemodif && params.firstnamemodif != user.firstname){
+                user.firstname = params.firstnamemodif
+                flash.success = "votre prénom a bien été modifié"
+            }
+            else {
+                if (params.lastnamemodif && params.lastnamemodif != user.lastname){
+                    user.lastname = params.lastnamemodif
+                    flash.success = "votre nom de famille a bien été modifié"
+                }
+                else {
+                     if (params.usernamemodif && params.usernamemodif != user.username){
+                            if (User.findByUsername((String)params.usernamemodif) == null){
+                                user.username = params.usernamemodif;
+                            }
+                         flash.success = "votre login/email a été modifiée"
+                     }
+                    else {
+                         flash.error = "erreur champ vide ou invalid";
+                     }
+                }
             }
         }
         user.save()
-        redirect( action: "edit", params: "user : ${user.id}")
+        redirect(action: "edit", params: "user : ${user.id}")
     }
 
     def deleteUser(int id){
