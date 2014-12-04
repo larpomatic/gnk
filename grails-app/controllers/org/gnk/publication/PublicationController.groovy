@@ -37,6 +37,14 @@ class PublicationController {
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         gn.step = "substitution";
+        /*
+        Set<Firstname> firstnameSet
+    Set<Name> lastnameSet
+
+    Set<Resource> resourceSet
+    Set<Place> placeSet
+         */
+
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
         gn.save(flush: true);
@@ -808,7 +816,7 @@ class PublicationController {
                 for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
                     Integer time = roleHasPastscene.pastscene.timingRelative
                     String unit = roleHasPastscene.pastscene.unitTimingRelative
-
+                    /*
                     if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1) {
                         time = 365
                     }
@@ -821,6 +829,7 @@ class PublicationController {
                     if (!time) {
                         time = 1
                     }
+                    */
                     roleHasPastsceneList.put(time, roleHasPastscene)
                 }
             }
@@ -828,25 +837,45 @@ class PublicationController {
             for (Integer i = roleHasPastsceneList.values().size() - 1; i > 0; i--) {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
                 String unit = roleHasPastscene.pastscene.unitTimingRelative
-//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-//                {
-//                    unit = "an"
-//                }
-//                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-//                {
-//                    unit = "années"
-//                }
-//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
-//                    unit = "jour"
-//                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
-//                    unit = "jours"
-//                if (unit.toLowerCase().startsWith("m"))
-//                {
-//                    unit = "mois"
-//                }
-//                String GnFixDate = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
+/*
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+                {
+                    unit = "an"
+                }
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+                {
+                    unit = "années"
+                }
+                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+                    unit = "jour"
+                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+                    unit = "jours"
+                if (unit.toLowerCase().startsWith("m"))
+                {
+                    unit = "mois"
+                }
+                wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
+*/
+
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
+                {
+                    unit = "an"
+                }
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
+                {
+                    unit = "années"
+                }
+                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
+                    unit = "jour"
+                if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
+                    unit = "jours"
+                if (unit.toLowerCase().startsWith("m"))
+                {
+                    unit = "mois"
+                }
+                String GnRelat = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
                 String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
-                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + roleHasPastscene.pastscene.title)
+                wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
 

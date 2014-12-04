@@ -194,6 +194,13 @@ function initResourcesEvents(url) {
         // Unban Resource
         unbanResource.click( (function(resourceHtmlId){
             return function() {
+
+//                $('.resource #customResource').each(function() {
+//                    if ($(this).val().length == 0) {
+//                        var jsonObject = new Object();
+//                    }
+//                    });
+
                 if(typeof($(this).attr("disabled")) == "undefined") {
                     // Find resourceJSON in resourceArray with resourceHtmlId
                     var resourceJSON = null;
@@ -246,6 +253,13 @@ function initResourcesEvents(url) {
 
             // Enable selectAll
             $("#restartResourceAll").removeAttr("disabled");
+            $("#restartResourceAll").removeAttr("disabled");
+
+
+
+            $("#customResource").each(function() {
+                $("#customResource").removeAttr("disabled")
+            });
 
             // Show loader
             $("#resourcesLoader").show();

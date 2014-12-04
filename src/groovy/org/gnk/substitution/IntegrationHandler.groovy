@@ -7,6 +7,9 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
 import org.gnk.naming.NamingService
 import org.gnk.naming.PersoForNaming
+import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.resplacetime.ResourceService
 import org.gnk.resplacetime.PlaceService
 import org.gnk.resplacetime.TimeService
@@ -21,6 +24,7 @@ import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.substitution.data.RelationCharacter
 
 class IntegrationHandler {
+    Map<String, Integer> resultList = new HashMap<>()
 
     public JSONObject namingIntegration(JSONObject charJsonObject) {
         String universe = charJsonObject.get("universe")
@@ -30,7 +34,7 @@ class IntegrationHandler {
         LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>>()
 
         // CharForNamingList construction from json
-        for(characterJson in charJsonObject.characters) {
+        for (characterJson in charJsonObject.characters) {
             PersoForNaming charForNaming = new PersoForNaming()
 
             charForNaming.universe = universe
@@ -42,7 +46,7 @@ class IntegrationHandler {
             // Tags
             List<Tag> tagList = []
             Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
-            for(tagJson in characterJson.tags) {
+            for (tagJson in characterJson.tags) {
                 Tag tag = new Tag()
                 org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
@@ -50,10 +54,10 @@ class IntegrationHandler {
                 tag.type = tagJson.family
                 tag.weight = tagJson.weight as Integer
                 ntag.name = tagJson.value
-                ntag = org.gnk.tag.Tag.createCriteria().list{
+                ntag = org.gnk.tag.Tag.createCriteria().list {
                     maxResults(1)
-                    eq ('name', tagJson.value)
-                    }[0]
+                    eq('name', tagJson.value)
+                }[0]
 
                 tagList.add(tag)
                 persoTagList.put(ntag, tag.weight)
@@ -66,14 +70,14 @@ class IntegrationHandler {
             charForNaming.relationList = new LinkedList<RelationCharacter>()
 
             for (rel in characterJson.relationList) {
-                RelationCharacter relationChar = new  RelationCharacter()
+                RelationCharacter relationChar = new RelationCharacter()
                 relationChar.role1 = rel.role1
                 relationChar.role2 = rel.role2
                 relationChar.type = rel.type
                 relationChar.isHidden = rel.isHidden
                 relationChar.isBijective = rel.isBijective
 
-                if (rel.isBijective){
+                if (rel.isBijective) {
                     org.apache.commons.lang3.tuple.Pair<String, RelationCharacter> tuple
                     tuple.key = rel.role2
                     tuple.value = relationChar
@@ -117,9 +121,9 @@ class IntegrationHandler {
             tagForNamingList.add(persoTagList)
         }
 
-       for(c in charForNamingList){
-            for(t in tupleList){
-                if(t.key.equals(c.code)){
+        for (c in charForNamingList) {
+            for (t in tupleList) {
+                if (t.key.equals(c.code)) {
                     c.relationList.add(t.value)
                 }
             }
@@ -132,11 +136,11 @@ class IntegrationHandler {
         // END NAMING CALL
 
         // Update json
-        for(characterJson in charJsonObject.characters) {
+        for (characterJson in charJsonObject.characters) {
             String gn_Id = characterJson.gnId
             PersoForNaming charForNaming = null
 
-            for (charForNamingIt in charForNamingList){
+            for (charForNamingIt in charForNamingList) {
                 if (charForNamingIt.code == gn_Id) {
                     charForNaming = charForNamingIt
                     break
@@ -184,13 +188,14 @@ class IntegrationHandler {
         List<GenericResource> genericResourceList = []
 
         // GenericResourceList construction from json
-        for(resourceJson in resourceJsonObject.resources) {
+        for (resourceJson in resourceJsonObject.resources) {
+
             GenericResource genericResource = new GenericResource()
 
             genericResource.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
 
             List<Tag> tagList = []
-            for(tagJson in resourceJson.tags) {
+            for (tagJson in resourceJson.tags) {
                 Tag tag = new Tag()
 
                 tag.value = tagJson.value
@@ -224,7 +229,7 @@ class IntegrationHandler {
         // RESOURCE SERVICE CALL
         ResourceService resourceService = new ResourceService()
         //print "Universe : " + universe
-        for(genericResource in genericResourceList) {
+        for (genericResource in genericResourceList) {
             if (genericResource.resultList.isEmpty()) {
                 //print "GenericResource IN : " + genericResource
                 genericResource = resourceService.findReferentialResource(genericResource, universe)
@@ -234,11 +239,11 @@ class IntegrationHandler {
         // END RESOURCE SERVICE CALL
 
         // Update json
-        for(resourceJson in resourceJsonObject.resources) {
+        for (resourceJson in resourceJsonObject.resources) {
             String code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
             GenericResource genericResource = null
 
-            for (genericResourceIt in genericResourceList){
+            for (genericResourceIt in genericResourceList) {
                 if (genericResourceIt.code == code) {
                     genericResource = genericResourceIt
                     break
@@ -265,18 +270,37 @@ class IntegrationHandler {
         return resourceJsonObject
     }
 
+    public Map<String, Integer> calcDiffBetweenGenericPlaceTagsAndPlaceTags(Map<String, Integer> gpTags, Map<String, Integer> pTags) {
+
+        for (gpt in gpTags) {
+            for (pt in pTags) {
+                Integer res = 0
+                Integer nbTag = 0
+                for (p in pTags) {
+                    if (p.key == p.key)
+                        nbTag += 100
+                    resultList.put(pt.key, res += Math.abs(p.value).intValue())
+                }
+                pt.value = (pt.value / nbTag) * 100
+            }
+        }
+        return resultList
+    }
+
     public JSONObject placeIntegration(JSONObject placeJsonObject) {
         String universe = placeJsonObject.get("universe")
         List<GenericPlace> genericPlaceList = []
 
         // GenericPlaceList construction from json
-        for(placeJson in placeJsonObject.places) {
+        for (placeJson in placeJsonObject.places) {
+
+            println("JSON OBJECT: " + placeJson)
             GenericPlace genericPlace = new GenericPlace()
 
             genericPlace.code = "res" + placeJson.gnId + "_plot" + placeJson.gnPlotId
 
             List<Tag> tagList = []
-            for(tagJson in placeJson.tags) {
+            for (tagJson in placeJson.tags) {
                 Tag tag = new Tag()
 
                 tag.value = tagJson.value
@@ -310,36 +334,64 @@ class IntegrationHandler {
         // PLACE SERVICE CALL
         PlaceService placeService = new PlaceService()
         //print "Universe : " + universe
-        for(genericPlace in genericPlaceList) {
+        for (genericPlace in genericPlaceList) {
             if (genericPlace.resultList.isEmpty()) {
                 //print "GenericPlace IN : " + genericPlace
                 genericPlace = placeService.findReferentialPlace(genericPlace, universe)
                 //print "GenericPlace OUT : " + genericPlace
+//                genericPlace.resultList.first().name
             }
         }
         // END PLACE SERVICE CALL
 
         // Update json
-        for(placeJson in placeJsonObject.places) {
+        for (placeJson in placeJsonObject.places) {
+
+            // Nom du genericPlaceHasTag, Poids
+            Map<String, Integer> genericPlaceTags = new HashMap<>()
+            Map<String, Integer> placeTags = new HashMap<>()
+
             String code = "res" + placeJson.gnId + "_plot" + placeJson.gnPlotId
             GenericPlace genericPlace = null
 
-            for (genericPlaceIt in genericPlaceList){
+            for (genericPlaceIt in genericPlaceList) {
                 if (genericPlaceIt.code == code) {
                     genericPlace = genericPlaceIt
                     break
                 }
             }
 
+            // On fait la liste contenant tous les genericPlace
+            for (tag in placeJson.tags) {
+                println("Generic Place: " + tag.value + " " + tag.weight)
+                genericPlaceTags.put(tag.value as String, tag.weight as Integer)
+            }
+
             // Name
             placeJson.remove("proposedNames")
             if (genericPlace.resultList != null && !genericPlace.resultList.isEmpty()) {
                 JSONArray proposedNames = new JSONArray()
-                for (referentialPlace in genericPlace.resultList) {
+                for (referentialPlace in genericPlace.resultList) { // Generic Place
                     proposedNames.put(referentialPlace.name)
+                    for (Tag p in referentialPlace.tagList) { // place
+                        placeTags.put(referentialPlace.name, p.weight)
+                    }
                 }
+
+                if (genericPlaceTags != null && placeTags != null) {
+                    calcDiffBetweenGenericPlaceTagsAndPlaceTags(genericPlaceTags, placeTags)
+                }
+
+                for (i in resultList) {
+                    for (int j = 0; j < proposedNames.length(); j++) {
+                        if (i.key == proposedNames[j])
+                            proposedNames[j] = proposedNames[j] + " - " + i.value + "%"
+                    }
+                }
+
                 placeJson.put("proposedNames", proposedNames)
             }
+
             // TOREMOVE
             else {
                 JSONArray proposedNames = new JSONArray()
@@ -361,54 +413,106 @@ class IntegrationHandler {
         // TIME SERVICE CALL
         TimeService timeService = new TimeService()
         // Pastscene
-        for(pastsceneJson in dateJsonObject.pastscenes) {
+        for (pastsceneJson in dateJsonObject.pastscenes) {
             // Create pastceneTime
             PastsceneTime pastsceneTime = new PastsceneTime()
             pastsceneTime.relativeDateValue = null
-            if (pastsceneJson.relativeTime != "") {pastsceneTime.relativeDateValue = pastsceneJson.relativeTime as Integer}
+            if (pastsceneJson.relativeTime != "") {
+                pastsceneTime.relativeDateValue = pastsceneJson.relativeTime as Integer
+            }
             pastsceneTime.relativeDateUnit = null
-            if (pastsceneJson.relativeDateUnit != "") {pastsceneTime.relativeDateUnit = pastsceneJson.relativeTimeUnit}
+            if (pastsceneJson.relativeDateUnit != "") {
+                pastsceneTime.relativeDateUnit = pastsceneJson.relativeTimeUnit
+            }
             pastsceneTime.absoluteYear = null
-            if (pastsceneJson.absoluteYear != "") {pastsceneTime.absoluteYear = pastsceneJson.absoluteYear as Integer}
+            if (pastsceneJson.absoluteYear != "") {
+                pastsceneTime.absoluteYear = pastsceneJson.absoluteYear as Integer
+            }
             pastsceneTime.absoluteMonth = null
-            if (pastsceneJson.absoluteMonth != "") {pastsceneTime.absoluteMonth = pastsceneJson.absoluteMonth as Integer}
+            if (pastsceneJson.absoluteMonth != "") {
+                pastsceneTime.absoluteMonth = pastsceneJson.absoluteMonth as Integer
+            }
             pastsceneTime.absoluteDay = null
-            if (pastsceneJson.absoluteDay != "") {pastsceneTime.absoluteDay = pastsceneJson.absoluteDay as Integer}
+            if (pastsceneJson.absoluteDay != "") {
+                pastsceneTime.absoluteDay = pastsceneJson.absoluteDay as Integer
+            }
             pastsceneTime.absoluteHour = null
-            if (pastsceneJson.absoluteHour != "") {pastsceneTime.absoluteHour = pastsceneJson.absoluteHour as Integer}
+            if (pastsceneJson.absoluteHour != "") {
+                pastsceneTime.absoluteHour = pastsceneJson.absoluteHour as Integer
+            }
             pastsceneTime.absoluteMinute = null
-            if (pastsceneJson.absoluteMinute != "") {pastsceneTime.absoluteMinute = pastsceneJson.absoluteMinute as Integer}
+            if (pastsceneJson.absoluteMinute != "") {
+                pastsceneTime.absoluteMinute = pastsceneJson.absoluteMinute as Integer
+            }
 
             // Call service
-            pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate)
+            if (pastsceneJson.isUpdate != null && pastsceneJson.isUpdate == "yes") {
+                pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, true)
+            } else {
+                pastsceneTime = timeService.pastsceneRealDate(pastsceneTime, gnBeginDate, false)
+            }
 
             // Update json
             JSONObject date = new JSONObject();
-            if (pastsceneTime.absoluteYear != null) {date.put("year", pastsceneTime.absoluteYear as String)}
-            if (pastsceneTime.absoluteMonth != null) {date.put("month", pastsceneTime.absoluteMonth as String)}
-            if (pastsceneTime.absoluteDay != null) {date.put("day", pastsceneTime.absoluteDay as String)}
-            if (pastsceneTime.absoluteHour != null) {date.put("hours", pastsceneTime.absoluteHour as String)}
-            if (pastsceneTime.absoluteMinute != null) {date.put("minutes", pastsceneTime.absoluteMinute as String)}
+            if (pastsceneTime.absoluteYear != null) {
+                date.put("year", pastsceneTime.absoluteYear as String)
+            }
+            if (pastsceneTime.absoluteMonth != null) {
+                date.put("month", pastsceneTime.absoluteMonth as String)
+            }
+            if (pastsceneTime.absoluteDay != null) {
+                date.put("day", pastsceneTime.absoluteDay as String)
+            }
+            if (pastsceneTime.absoluteHour != null) {
+                date.put("hours", pastsceneTime.absoluteHour as String)
+            }
+            if (pastsceneTime.absoluteMinute != null) {
+                date.put("minutes", pastsceneTime.absoluteMinute as String)
+            }
 
 
             pastsceneJson.put("date", date)
         }
         // Event
-        for(eventJson in dateJsonObject.events) {
+        for (eventJson in dateJsonObject.events) {
             // Create eventTime
             EventTime eventTime = new EventTime()
             eventTime.timing = eventJson.timing as Integer
+            if (eventJson.absoluteYear != "") {
+                eventTime.absoluteYear = eventJson.absoluteYear as Integer
+            }
+            if (eventJson.absoluteMonth != "") {
+                eventTime.absoluteMonth = eventJson.absoluteMonth as Integer
+            }
+            if (eventJson.absoluteDay != "") {
+                eventTime.absoluteDay = eventJson.absoluteDay as Integer
+            }
+            if (eventJson.absoluteHour != "") {
+                eventTime.absoluteHour = eventJson.absoluteHour as Integer
+            }
+            if (eventJson.absoluteMinute != "") {
+                eventTime.absoluteMinute = eventJson.absoluteMinute as Integer
+            }
 
             // Call service
             eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration)
-
             // Update json
             JSONObject date = new JSONObject();
-            if (eventTime.absoluteYear != null) {date.put("year", eventTime.absoluteYear as String)}
-            if (eventTime.absoluteMonth != null) {date.put("month", eventTime.absoluteMonth as String)}
-            if (eventTime.absoluteDay != null) {date.put("day", eventTime.absoluteDay as String)}
-            if (eventTime.absoluteHour != null) {date.put("hours", eventTime.absoluteHour as String)}
-            if (eventTime.absoluteMinute != null) {date.put("minutes", eventTime.absoluteMinute as String)}
+            if (eventTime.absoluteYear != null) {
+                date.put("year", eventTime.absoluteYear as String)
+            }
+            if (eventTime.absoluteMonth != null) {
+                date.put("month", eventTime.absoluteMonth as String)
+            }
+            if (eventTime.absoluteDay != null) {
+                date.put("day", eventTime.absoluteDay as String)
+            }
+            if (eventTime.absoluteHour != null) {
+                date.put("hours", eventTime.absoluteHour as String)
+            }
+            if (eventTime.absoluteMinute != null) {
+                date.put("minutes", eventTime.absoluteMinute as String)
+            }
 
             eventJson.put("date", date)
         }

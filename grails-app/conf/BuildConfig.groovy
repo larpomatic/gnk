@@ -42,6 +42,8 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
+        compile 'org.javatuples:javatuples:1.2'
+
         runtime 'mysql:mysql-connector-java:5.1.22'
         runtime 'org.docx4j:docx4j:2.7.1'
 

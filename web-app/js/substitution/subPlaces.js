@@ -180,6 +180,7 @@ function selectAllRestartPlaces(restartClass, isToCheck) {
 
 // Initiation of places events
 function initPlacesEvents(url) {
+    debugger
     $("#restartPlaceAll").click( function(){
         // Select all
         if (!(typeof($(this).attr("checked")) == "undefined")) {selectAllRestartResources("restartPlace", true)}

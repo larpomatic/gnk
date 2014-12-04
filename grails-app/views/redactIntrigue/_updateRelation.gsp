@@ -83,14 +83,16 @@
         </div>
     </div>
     %{--<g:textArea name="relationDescription" id="relationDescription" value="${relationFrom.description}" rows="5" cols="100"/>--}%
-    <g:if test="${isRole1}">
-        <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role1?.id}"
-               data-oldRoleToId="${relationFrom.role2?.id}" value="Update" class="btn btn-primary updateRelation"
-               data-wasBijective="${relationFrom.isBijective}"/>
-    </g:if>
-    <g:else>
-        <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role2?.id}"
-               data-oldRoleToId="${relationFrom.role1?.id}" value="Update" class="btn btn-primary updateRelation"
-               data-wasBijective="${relationFrom.isBijective}"/>
-    </g:else>
+    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+        <g:if test="${isRole1}">
+            <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role1?.id}"
+                   data-oldRoleToId="${relationFrom.role2?.id}" value="Update" class="btn btn-primary updateRelation"
+                   data-wasBijective="${relationFrom.isBijective}"/>
+        </g:if>
+        <g:else>
+            <input type="button" name="Update" data-id="${relationFrom.id}" data-roleFromId="${relationFrom.role2?.id}"
+                   data-oldRoleToId="${relationFrom.role1?.id}" value="Update" class="btn btn-primary updateRelation"
+                   data-wasBijective="${relationFrom.isBijective}"/>
+        </g:else>
+    </g:plotOwner>
 </form>

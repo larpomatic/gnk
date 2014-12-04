@@ -5,6 +5,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
+import org.gnk.tag.TagRelevant
 import org.gnk.tag.TagService
 import org.gnk.tag.Univers
 import org.gnk.user.User
@@ -22,7 +23,7 @@ class Plot {
     private static List<Tag> tagList
     public static List getTagList() {
 
-        return TagService.getPlotTagQuery()
+        return getPlotTagQuery()
     }
 
 
@@ -121,27 +122,11 @@ class Plot {
 	}
 
     public boolean hasPlotTag(Tag parPlotTag) {
-        if (parPlotTag instanceof HibernateProxy) {
-            Hibernate.initialize(parPlotTag);
-            parPlotTag = (Tag) ((HibernateProxy) parPlotTag).getHibernateLazyInitializer().getImplementation();
-        }
-        for (PlotHasTag plotHasPlotTag : extTags) {
-            if (plotHasPlotTag.tag == parPlotTag) {
-                return true;
-            }
-        }
-        return false;
+        return (PlotHasTag.findByTagAndPlot(parPlotTag, this) != null)
     }
 
     public getPlotHasTag(Tag tag) {
-        List<PlotHasTag> plotHasTags = PlotHasTag.createCriteria().list {
-            like("plot", this)
-            like("tag", tag)
-        }
-        if (plotHasTags.size() == 0) {
-            return null;
-        }
-        return plotHasTags.first();
+        return PlotHasTag.findByTagAndPlot(tag, this);
     }
 
 //    public boolean hasUnivers(Tag tagUnivers) {
@@ -193,5 +178,17 @@ class Plot {
             }
         }
         return pipCoreOkNumber;
+    }
+
+    def static List<Tag> getPlotTagQuery() {
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantPlot) {
+                result.add(child);
+            }
+        }
+        return result;
     }
 }

@@ -3,6 +3,9 @@ $(function(){
 
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
+        if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "STF") {
+            $('form[name="newRoleForm"] input[name="roleCode"]').val("Staff");
+        }
         var form = $('form[name="newRoleForm"]');
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
@@ -22,9 +25,7 @@ $(function(){
                     };
                     var html = template(context);
                     $('.roleScreen > ul').append(html);
-                    if (!data.role.code.lowercase == "staff") {
-                        updateRoleRelation(data);
-                    }
+                    updateRoleRelation(data);
                     initConfirm();
                     initDeleteButton();
                     emptyRoleForm();
@@ -32,7 +33,7 @@ $(function(){
                     initSearchBoxes();
                     initModifyTag();
                     stopClosingDropdown();
-                    if (!data.role.code.lowercase == "staff") {
+                    if (!data.role.type == "STF") {
                         appendEntity("role", data.role.code, "success", "", data.role.id);
                     }
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
@@ -70,47 +71,72 @@ function updateRole() {
     // modifie un role dans la base
     $('.updateRole').click(function() {
         var roleId = $(this).attr("data-id");
-        var form = $('form[name="updateRole_' + roleId + '"]');
-        var description = $('.richTextEditor', form).html();
-        description = transformDescription(description);
-        $('.descriptionContent', form).val(description);
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
-                    initializeTextEditor();
-                    $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
-                    $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
-                    $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
-                    $('.eventScreen a[href*="#eventRole'+data.object.id +'"]').html(data.object.name);
-                    $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                    $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
-                        var relationImage = $(this).html();
-                        $(this).parent().html(relationImage + " " + data.object.name);
-                    });
-                    $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
-                    $('.richTextEditor span.label-success').each(function() {
-                        if ($(this).html().trim() == data.object.oldname) {
-                            $(this).html(data.object.name);
-                        }
-                    });
-                }
-                else {
+        var roleName = $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val();
+        var roleType = $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').val();
+        if (roleType == "STF") {
+            $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val("Staff");
+        }
+        if (($('.richTextEditor span.label-success:contains("' + roleName + '")').size() > 0) && (roleType == "STF")) {
+            createNotification("danger", "création échouée.", "Ce rôle ne peut pas être staff car il est présent dans des descriptions.");
+        }
+        else if (($('.relationScreen .accordion-heading span[data-roleid="'+roleId+'"]').size() > 0) && (roleType == "STF")) {
+            createNotification("danger", "création échouée.", "Ce rôle ne peut pas être staff car il possède des relations.");
+        }
+        else {
+            if (roleType == "STF") {
+                $('.roleSelector li[data-id="'+roleId+'"]').remove();
+                $('select[name="relationFrom"] option[value="' + roleId + '"]').remove();
+                $('select[name="relationTo"] option[value="' + roleId + '"]').remove();
+            }
+            else if ($('.roleSelector li[data-id="'+roleId+'"]').size() == 0) {
+                appendEntity("role", roleName, "success", "", roleId);
+                $('select[name="relationFrom"]').append('<option value="' + roleId + '">' + roleName + '</option>');
+                $('select[name="relationTo"]').append('<option value="' + roleId + '">' + roleName + '</option>');
+            }
+            var form = $('form[name="updateRole_' + roleId + '"]');
+            var description = $('.richTextEditor', form).html();
+            description = transformDescription(description);
+            $('.descriptionContent', form).val(description);
+            $.ajax({
+                type: "POST",
+                url: form.attr("data-url"),
+                data: form.serialize(),
+                dataType: "json",
+                success: function(data) {
+                    if (data.object.isupdate) {
+                        createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                        $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option').removeAttr("selected");
+                        $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option[value="'+data.object.type+'"]').attr("selected", "selected");
+                        initializeTextEditor();
+                        $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
+                        $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
+                        $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
+                        $('.eventScreen a[href*="#eventRole'+data.object.id +'"]').html(data.object.name);
+                        $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                        $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                        $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
+                        $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                        $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                        $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
+                            var relationImage = $(this).html();
+                            $(this).parent().html(relationImage + " " + data.object.name);
+                        });
+                        $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                        $('.richTextEditor span.label-success').each(function() {
+                            if ($(this).html().trim() == data.object.oldname) {
+                                $(this).html(data.object.name);
+                            }
+                        });
+                    }
+                    else {
+                        createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                    }
+                },
+                error: function() {
                     createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
                 }
-            },
-            error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-            }
-        })
+            })
+        }
     });
 }
 
@@ -152,6 +178,7 @@ function removeRole(object) {
                     $('.roleLi .badge').html(nbRoles);
                     $('.addRole').trigger("click");
                     $('.roleSelector li[data-id="' + object.attr("data-id") + '"]').remove();
+                    $('form[name="updateRole_' + object.attr("data-id") + '"]').remove();
                     $('.richTextEditor span.label-success').each(function() {
                         if ($(this).html() == name) {
                             $(this).remove();

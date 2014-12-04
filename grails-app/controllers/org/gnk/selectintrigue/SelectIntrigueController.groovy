@@ -159,6 +159,7 @@ class SelectIntrigueController {
 		}
 
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
+        nonTreatedPlots.removeAll(selectedEvenementialPlotInstanceList);
         if (gnInstance && gnInstance.bannedPlotSet)
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
 

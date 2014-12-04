@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,7 +11,7 @@
         <div>
 		    <a href="#list-plot" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         </div>
-        <g:render template="subNav"/>
+        <g:render template="subNav" model="['right': right]"/>
 		<div id="list-gn" class="content scaffold-list" role="main">
 			<legend><g:message code="default.list.label" args="[entityName]" /></legend>
 			<g:if test="${flash.message}">
@@ -26,7 +27,14 @@
 				<tbody>
 				<g:each in="${gnInstanceList}" status="i" var="gnInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td><g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link></td>
+						<td>
+                            <g:hasRights lvlright="${right.MGNOPEN.value()}">
+                                <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
+                            </g:hasRights>
+                            <g:hasNotRights lvlright="${right.MGNOPEN.value()}">
+                                ${fieldValue(bean: gnInstance, field: "name")}
+                            </g:hasNotRights>
+                        </td>
 						<td><g:formatDate date="${gnInstance.date}" /></td>
 					</tr>
 				</g:each>
