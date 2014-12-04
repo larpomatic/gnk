@@ -1,5 +1,6 @@
 package org.gnk.publication
 
+import org.apache.commons.codec.binary.Base64
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -81,6 +82,10 @@ class PublicationController {
 
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
+        def imgsrc = params.imgsrc as String
+        imgsrc = imgsrc.replace("data:image/png;base64,","")
+        def imgsrc2 = params.imgsrc2 as String
+        println("ImgSrc : " + imgsrc2)   // lorsque imgsrc2 n'existe pas -> imgsrc2 = null // Lorsque imgsrc2 est vide -> imgsrc2 = ""
         def id = params.gnId as Integer
         String tmpWord = params.templateWordSelect as String
        // Gn getGn = null
@@ -101,11 +106,29 @@ class PublicationController {
             folder.mkdirs()
         }
 
-        File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
+        String fileName = folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}"
+        File output = new File(fileName + ".docx")
+
+        String GlobalRelationGraphFileName = ""
+        if (!imgsrc.isEmpty())
+            GlobalRelationGraphFileName = fileName + ".png"
+
+
+        if (!GlobalRelationGraphFileName.isEmpty())
+        {
+            byte[] data = Base64.decodeBase64(imgsrc);
+            try {
+                OutputStream stream = new FileOutputStream(GlobalRelationGraphFileName)
+                stream.write(data);
+                stream.close()
+            } catch (Exception e) {
+                e.stackTrace();
+            }
+        }
 
         publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
         wordWriter = new WordWriter(tmpWord, publicationFolder)
-        wordWriter.wordMLPackage = createPublication()
+        wordWriter.wordMLPackage = createPublication(GlobalRelationGraphFileName)
         wordWriter.wordMLPackage.save(output)
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -144,12 +167,13 @@ class PublicationController {
                 charactersList: createPlayersList(),
                 gnId: id,
                 universName: uniName,
-                templateWordList: templateWordList
+                templateWordList: templateWordList,
+                relationjson: "[{\"id\":\"Blake Cromwell\",\"name\":\"Blake Cromwell\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Blake Cromwell\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Mortimer Williams\",\"name\":\"Mortimer Williams\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Mortimer Williams\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Rachel Althrop\",\"name\":\"Rachel Althrop\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"triangle\"},\"adjacencies\":[{\"nodeTo\":\"Blake Cromwell\",\"nodeFrom\":\"Rachel Althrop\",\"data\":{\"lien\":\" Amitié\"}}]},{\"id\":\"Norbert Travis\",\"name\":\"Norbert Travis\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Blake Cromwell\",\"nodeFrom\":\"Norbert Travis\",\"data\":{\"lien\":\" Amitié\"}},{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Norbert Travis\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Flora Mirren\",\"name\":\"Flora Mirren\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Flora Mirren\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Jane Farewell\",\"name\":\"Jane Farewell\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Jane Farewell\",\"data\":{\"lien\":\" Connaît\"}}]}]"
         ]
     }
 
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication() {
+    public WordprocessingMLPackage createPublication(String GlobalRelationGraphFile) {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -160,7 +184,7 @@ class PublicationController {
         createPitchOrga()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
-        createPlayersTable()
+        createPlayersTable(GlobalRelationGraphFile)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
         createPlotTable()
@@ -199,7 +223,7 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des personnages pour les organisateurs
-    def createPlayersTable() {
+    def createPlayersTable(String imgFile) {
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -338,6 +362,12 @@ class PublicationController {
         }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
+
+        if (!imgFile.isEmpty())
+        {
+            wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
+            wordWriter.addImage(imgFile)
+        }
     }
 
     def createPlayersList() {

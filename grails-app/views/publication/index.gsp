@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <g:javascript library='jquery' />
     <meta name="layout" content="main">
     <title><g:message code="navbar.publication" /></title>
 </head>
@@ -9,15 +10,17 @@
 
 <br><br>
 <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
-<div class="row-fluid">
-    <div class="span3">
-        <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
+<div class="row-fluid" id="hidTest">
+    <div class="span4">
+        <form id="exportWordButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
             <input type="hidden" value="${gnId}" name="gnId"/>
             <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
+            <input id="imgsrc" type="hidden" value="" name="imgsrc"/>
             <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
         </form>
     </div>
 
+    <div class="span4">
     Template Word :
     <select class="bold" isempty="false" onchange="document.getElementById('templateWordSelect').value = this.value">
         <g:each in="${templateWordList}" var="templateWord">
@@ -29,6 +32,11 @@
             </g:else>
         </g:each>
     </select>
+    </div>
+<br><br>
+        <FORM>
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..."
+        </FORM>
 
 </div>
 <div class="row-fluid">
@@ -74,6 +82,25 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
 
 
 <h3>Synthèse des personnages du GN</h3>
+
+<div class="row-fluid" id="RelationGraphContainer" >
+    <div class="span12" id="Relations">
+        <div class="panel panel-default">
+            <div style="overflow: auto; height:500px;" id="container">
+                <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
+                <div id="infovis">
+                </div>
+                <div id="right-container">
+                    <div id="inner-details"></div>
+                </div>
+                <g:render template="/publication/relationGraph"></g:render>
+            </div>
+            <div class="legend">
+            </div>
+        </br>
+        </div>
+    </div>
+</div>
 <TABLE BORDER="1" CELLPADDING="10">
     <TR>
         <TH> NOM - Prenom </TH>
@@ -95,41 +122,27 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
 
 
 
-
 <script type="text/javascript">
-    $(document).ready(function() {
-        // Export CSV
-        $("#exportPersoCSVSubButton").submit(function(){
-                return true;
-        });
-        $("#exportJoueurCSVSubButton").submit(function(){
-                return true;
-        });
-
-        // Validate substitution
-        $("#validateSubButton").click( function(){
-                var subJSON = new Object();
-                subJSON.gnDbId = ${gnId};
-                subJSON.subCharacter = charsJSON.characters;
-                subJSON.subResource = resourcesJSON.resources;
-                subJSON.subPlace = placesJSON.places;
-                subJSON.subDate = datesJSON;
-                subJSON.templateWord = ${templateWordSelect}
-
-                // Form creation and submit
-                var form = $("<form>");
-                form.attr({method: "POST", action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"});
-                var inputJSON = $("<input>");
-                inputJSON.attr({type: "hidden", name: "subJSON", value: JSON.stringify(subJSON)});
-                inputJSON.attr({type : "hidden", name: "templateWordSelected", value: getSelectValue('templateWordSelect')})
-                form.append(inputJSON);
-                $("body").append(form);
-                form.submit();
-        });
+    document.getElementById('RelationGraphContainer').style.display ="none";
+    $("#IncludeGraphRelation").click(function(){
+        if(document.getElementById("IncludeGraphRelation").checked == true) {
+        document.getElementById('RelationGraphContainer').style.display = "";
+        html2canvas($("#RelationGraphContainer"),
+                {
+                    onrendered: function(canvas)
+                    {
+                        var img = canvas.toDataURL("image/png");
+                        document.getElementById('imgsrc').value = img;
+                    }
+                });
+        } else {
+            document.getElementById("imgsrc").value = null;
+            document.getElementById('RelationGraphContainer').style.display ="none";
+        }
     });
 </script>
-
-
-
 </body>
+
+
+
 </html>
