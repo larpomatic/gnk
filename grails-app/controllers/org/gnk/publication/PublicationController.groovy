@@ -80,6 +80,45 @@ class PublicationController {
         return collectPublicationInfo(id)
     }
 
+
+    public collectPublicationInfo(def id) {
+        ArrayList<String> pitchOrgaList = new ArrayList<String>()
+        for (Plot p : gn.selectedPlotSet)
+            if (p.pitchOrga != null) {
+                substituteRolesAndPlotDescription(p)
+                pitchOrgaList.add(p.name)
+                pitchOrgaList.add(p.pitchOrga)
+            }
+
+        ArrayList<String> templateWordList = new ArrayList<String>()
+        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        File folder = new File(publicationFolder);
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            templateWordList.add("DEFAULT")
+        } else {
+            for (int i = 0; i < listOfFiles.length; i++)
+                if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
+                    templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
+        }
+        String relationjson = params.relationjson
+        String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
+        [
+                title: gn.name,
+                subtitle: createSubTile(),
+                GNinfo1: "Le GN se déroule dans l'Univers de : " + uniName + ".",
+                GNinfo2: "Il débute à " + getPrintableDate(gn.date) + " et dure " + gn.duration.toString() + " heures.",
+                msgCharacters: PitchOrgaMsgCharacters(),
+                pitchOrgaList: pitchOrgaList,
+                charactersList: createPlayersList(),
+                gnId: id,
+                universName: uniName,
+                templateWordList: templateWordList,
+                relationjson: relationjson
+        ]
+    }
+
+
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
         def imgsrc = params.imgsrc as String
@@ -136,41 +175,7 @@ class PublicationController {
         response.outputStream << output.newInputStream()
     }
 
-    public collectPublicationInfo(def id) {
-        ArrayList<String> pitchOrgaList = new ArrayList<String>()
-        for (Plot p : gn.selectedPlotSet)
-            if (p.pitchOrga != null) {
-                substituteRolesAndPlotDescription(p)
-                pitchOrgaList.add(p.name)
-                pitchOrgaList.add(p.pitchOrga)
-            }
 
-        ArrayList<String> templateWordList = new ArrayList<String>()
-        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
-        File folder = new File(publicationFolder);
-        File[] listOfFiles = folder.listFiles();
-        if (listOfFiles == null) {
-            templateWordList.add("DEFAULT")
-        } else {
-            for (int i = 0; i < listOfFiles.length; i++)
-                if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
-                    templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
-        }
-        String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
-        [
-                title: gn.name,
-                subtitle: createSubTile(),
-                GNinfo1: "Le GN se déroule dans l'Univers de : " + uniName + ".",
-                GNinfo2: "Il débute à " + getPrintableDate(gn.date) + " et dure " + gn.duration.toString() + " heures.",
-                msgCharacters: PitchOrgaMsgCharacters(),
-                pitchOrgaList: pitchOrgaList,
-                charactersList: createPlayersList(),
-                gnId: id,
-                universName: uniName,
-                templateWordList: templateWordList,
-                relationjson: "[{\"id\":\"Blake Cromwell\",\"name\":\"Blake Cromwell\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Blake Cromwell\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Mortimer Williams\",\"name\":\"Mortimer Williams\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Mortimer Williams\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Rachel Althrop\",\"name\":\"Rachel Althrop\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"triangle\"},\"adjacencies\":[{\"nodeTo\":\"Blake Cromwell\",\"nodeFrom\":\"Rachel Althrop\",\"data\":{\"lien\":\" Amitié\"}}]},{\"id\":\"Norbert Travis\",\"name\":\"Norbert Travis\",\"data\":{\"\$color\":\"#0040FF\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Blake Cromwell\",\"nodeFrom\":\"Norbert Travis\",\"data\":{\"lien\":\" Amitié\"}},{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Norbert Travis\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Flora Mirren\",\"name\":\"Flora Mirren\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Flora Mirren\",\"data\":{\"lien\":\" Connaît\"}}]},{\"id\":\"Jane Farewell\",\"name\":\"Jane Farewell\",\"data\":{\"\$color\":\"#FE2EC8\",\"\$type\":\"circle\"},\"adjacencies\":[{\"nodeTo\":\"Bastian Phillips\",\"nodeFrom\":\"Jane Farewell\",\"data\":{\"lien\":\" Connaît\"}}]}]"
-        ]
-    }
 
     // Méthode principale de la génération des documents
     public WordprocessingMLPackage createPublication(String GlobalRelationGraphFile) {

@@ -193,9 +193,8 @@ class SubstitutionController {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
             }
-
             // Go to publication
-            redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
+            redirect(controller: "publication", action: "index", params: [gnId: gnDbId, relationjson: subJSON.globalRelationGraph])
 
         }
     }
