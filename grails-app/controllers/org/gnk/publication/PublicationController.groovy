@@ -15,6 +15,7 @@ import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.roletoperso.Character
+import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasTag
@@ -109,8 +110,8 @@ class PublicationController {
                 if (listOfFiles[i].isFile() && listOfFiles[i].getName().endsWith(".docx"))
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
-        String relationjson = params.relationjson
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
+        Graph rgs = new Graph(gn)
         [
                 title: gn.name,
                 subtitle: createSubTile(),
@@ -122,7 +123,8 @@ class PublicationController {
                 gnId: id,
                 universName: uniName,
                 templateWordList: templateWordList,
-                relationjson: relationjson
+//                relationjson: rgs.create_graph_publication(gn)
+                relationjson: rgs.buildCharGraphJSON(rgs.nodeList.first())
         ]
     }
 
