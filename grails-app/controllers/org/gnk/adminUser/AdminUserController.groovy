@@ -17,12 +17,12 @@ class AdminUserController {
     UserService userService
     CookieService cookieService
 
-    def checkcookie(){
+    def checkcookie() {
 
         Cookie[] cookies = request.getCookies()
-        if (cookies){
-            Cookie cookie =  cookies.find {it.name == "prcgn"}
-            if (cookie){
+        if (cookies) {
+            Cookie cookie = cookies.find { it.name == "prcgn" }
+            if (cookie) {
                 String username = cookieService.cookieusern(cookie.value)
                 User currentuser = User.findByUsername(username)
                 if (cookieService.isAuth(currentuser.password, cookieService.cookiepassword(cookie.value)))
@@ -39,48 +39,48 @@ class AdminUserController {
         String controllerredir = params.get("controllerredirect")
         redirect(controller: controllerredir, action: actionredir)
     }
-    def list(){
+
+    def list() {
 
         User user = session.getAttribute("user")
 
-        if (!user){
+        if (!user) {
             params.setProperty("redirectaction", "profil")
             params.setProperty("redirectcontroller", "user")
-            redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect : "list", controllerredirect : "adminUser"])
+            redirect(controller: "adminUser", action: "checkcookie", params: [actionredirect: "list", controllerredirect: "adminUser"])
             return false
         } else {
-        GrailsParameterMap param = params
-        def name = param.usersearch
-        if ("".equals(name) || null == name ){
-            List<User> users = User.list()
-            [users : users]
-        }
-        else {
-            def c = User.createCriteria()
-            List<User> users = c.list {
-                or{
-                    ilike("username", "%"+name+"%")
-                    ilike("firstname", "%"+name+"%")
-                    ilike("lastname", "%"+name+"%")
+            GrailsParameterMap param = params
+            def name = param.usersearch
+            if ("".equals(name) || null == name) {
+                List<User> users = User.list()
+                [users: users]
+            } else {
+                def c = User.createCriteria()
+                List<User> users = c.list {
+                    or {
+                        ilike("username", "%" + name + "%")
+                        ilike("firstname", "%" + name + "%")
+                        ilike("lastname", "%" + name + "%")
+                    }
                 }
+                [users: users]
             }
-            [users : users]
-        }
         }
     }
 
-    def edit (long id){
+    def edit(long id) {
         User user
-        if (id != null && id != 0){
+        if (id != null && id != 0) {
             user = User.findById(id)
             session.setAttribute("id_user_check", id)
         } else {
-                if (!session.getAttribute("id_user_check")){
-                    redirect(action: "list")
-                    return false
-                }else{
-                    int iduser = session.getAttribute("id_user_check")
-                    user = User.findById(iduser)
+            if (!session.getAttribute("id_user_check")) {
+                redirect(action: "list")
+                return false
+            } else {
+                int iduser = session.getAttribute("id_user_check")
+                user = User.findById(iduser)
             }
         }
         int rightuser = user.gright
@@ -88,35 +88,39 @@ class AdminUserController {
         if (newpassword && newpassword.size() > 5)
             user.password = newpassword
         List<Boolean> lb = userService.instperm(rightuser)
-        [user:user, lb : lb]
+        [user: user, lb: lb]
     }
 
-    def changeperm(long id){
+    def changeperm(long id) {
 
         List<Boolean> lb = []
         User user = User.findById(id)
 
-        for (int i = 0; i < 24; i++)
-        {
+        for (int i = 0; i < 24; i++) {
             StringBuilder s = new StringBuilder()
             s.append("checkbox")
             s.append(i)
             String checkb = s.toString()
             GrailsParameterMap param = getParams()
-            if (param.get(checkb) != null)
-            {
+            if (param.get(checkb) != null) {
                 lb.add(true)
             } else {
                 lb.add(false)
             }
         }
+        if (user.gright != userService.changeright(lb)) {
+            flash.success = "Le niveau de droit à bien été mis à jour"
+        } else {
+            flash.error = "Le niveau de droit est identique";
+        }
         user.gright = userService.changeright(lb)
         user.save(failOnError: true)
         redirect(controller: "adminUser", action: "edit")
     }
-    def lock(long id){
+
+    def lock(long id) {
         User user = User.findById(id)
-        if (user.accountLocked == true){
+        if (user.accountLocked == true) {
             user.accountLocked = false
         } else {
             user.accountLocked = true
@@ -124,77 +128,81 @@ class AdminUserController {
 
         redirect controller: "adminUser", action: "list"
     }
-    def statistic(long id){
+
+    def statistic(long id) {
         User user = User.findById(id)
-        if (!id){
-            redirect (action: "list")
+        if (!id) {
+            redirect(action: "list")
             return false
         }
         List<Plot> plots = Plot.list()
         int countPublicPlot = 0;
         int countPrivatePlot = 0;
         int countDraftPlot = 0;
-        for (int i = 0; i < plots.size(); i++){
-            if (plots[i].user.id == user.id){
-                if (plots[i].isPublic){
+        for (int i = 0; i < plots.size(); i++) {
+            if (plots[i].user.id == user.id) {
+                if (plots[i].isPublic) {
                     countPublicPlot++
                 } else {
-                    if (plots[i].isDraft){
+                    if (plots[i].isDraft) {
                         countDraftPlot++
                     } else {
-                    countPrivatePlot++
+                        countPrivatePlot++
                     }
                 }
             }
         }
-        [user:user, countPublicPlot:countPublicPlot, countPrivatePlot:countPrivatePlot, countDraftPlot:countDraftPlot]
+        [user: user, countPublicPlot: countPublicPlot, countPrivatePlot: countPrivatePlot, countDraftPlot: countDraftPlot]
     }
-    def modifyUser(long id){
+
+    def modifyUser(long id) {
         User user = User.findById(id)
         String newpassword = params.passwordChanged
         String confirmpassword = params.passwordChangedConfirm
-        if (newpassword && newpassword.size() > 3 &&  confirmpassword && confirmpassword.equals(newpassword)){
-            user.password = newpassword
-            flash.success = "votre mot de passe été modifié"
-        }
+        if (confirmpassword && newpassword)
+            if (newpassword && newpassword.size() > 3 && confirmpassword && confirmpassword.equals(newpassword)) {
+                user.password = newpassword
+                flash.success = "Votre mot de passe a bien été modifié"
+            } else {
+                if (newpassword.size() <= 3) {
+                    flash.error = "Mot de passe trop court (mininum 3 caractères)"
+                }
+                else
+                {
+                    flash.error = "Votre Mot de passe et sa confirmation sont différents"
+                }
+            }
         else {
-            if (params.firstnamemodif && params.firstnamemodif != user.firstname){
-                user.firstname = params.firstnamemodif
-                flash.success = "votre prénom a bien été modifié"
-            }
-            else {
-                if (params.lastnamemodif && params.lastnamemodif != user.lastname){
+            if (params.firstnamemodif && params.firstnamemodif != user.firstname
+                    || params.lastnamemodif && params.lastnamemodif != user.lastname
+                    || params.usernamemodif && params.usernamemodif != user.username) {
+                if (params.firstnamemodif)
+                    user.firstname = params.firstnamemodif
+                if (params.lastnamemodif)
                     user.lastname = params.lastnamemodif
-                    flash.success = "votre nom de famille a bien été modifié"
-                }
-                else {
-                     if (params.usernamemodif && params.usernamemodif != user.username){
-                            if (User.findByUsername((String)params.usernamemodif) == null){
-                                user.username = params.usernamemodif;
-                            }
-                         flash.success = "votre login/email a été modifiée"
-                     }
-                    else {
-                         flash.error = "erreur champ vide ou invalid";
-                     }
-                }
+                if (params.usernamemodif)
+                    user.username = params.usernamemodif
+                flash.success = "Vos modifications ont bien été prises en compte"
+            } else {
+                flash.error = "erreur champ vide ou invalid";
             }
         }
-        user.save()
+
+        user.save(failOnError: true)
         redirect(action: "edit", params: "user : ${user.id}")
     }
 
-    def deleteUser(int id){
-     User user = User.findById(id)
-     User newUser = User.findByUsername("admin@gnk.com")
-     ArrayList<Plot> plots = Plot.findAllByUser(user)
-     for (Plot p : plots){
-         p.user = newUser
-         p.save(flush: true)
-     }
+    def deleteUser(int id) {
+        User user = User.findById(id)
+        User newUser = User.findByUsername("admin@gnk.com")
+        ArrayList<Plot> plots = Plot.findAllByUser(user)
+        for (Plot p : plots) {
+            p.user = newUser
+            p.save(flush: true)
+        }
 
-     UserSecRole userSecRoles = UserSecRole.findAllByUser(user)
-        for (UserSecRole userSecRole : userSecRoles){
+        UserSecRole userSecRoles = UserSecRole.findAllByUser(user)
+        for (UserSecRole userSecRole : userSecRoles) {
             userSecRole.delete()
         }
         user.delete();
@@ -202,16 +210,16 @@ class AdminUserController {
         redirect(action: "list")
     }
 
-    def createUser (){
+    def createUser() {
         String username = params.username
         String firstname = params.firstname
         String lastname = params.lastname
         String password = params.password
         String passwordRepeat = params.passwordRepeat
 
-        if (username && firstname && lastname && password && passwordRepeat && !User.findByUsername(username)){
+        if (username && firstname && lastname && password && passwordRepeat && !User.findByUsername(username)) {
 
-            User nUser = new  User()
+            User nUser = new User()
             nUser.username = username
             nUser.firstname = firstname
             nUser.lastname = lastname
@@ -221,7 +229,7 @@ class AdminUserController {
             nUser.countConnexion = 0
             nUser.lastConnexion = new Date()
             nUser.save(failOnError: true)
-            redirect (action: "list")
+            redirect(action: "list")
         }
 
     }
