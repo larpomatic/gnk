@@ -18,6 +18,8 @@
                 </th>
             </g:hasRights>
         </g:hasRights>
+        <th>Tag fils</th>
+
     </tr>
     </thead>
     <tbody>
@@ -45,6 +47,16 @@
                     </td>
                 </g:hasRights>
             </g:hasRights>
+            <td>
+                <g:form controller="tag" action="list">
+                    <select name="childrenTag">
+                        <g:each in="${tagInstance.children}" var="tag">
+                            <option value= ${tag.id}><${tag.name}</option>
+                        </g:each>
+                    </select>
+                    <button type="submit" class="btn btn-small btn-primary">Soumettre</button>
+                </g:form>
+            </td>
         </tr>
     </g:each>
     </tbody>

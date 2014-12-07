@@ -237,6 +237,5 @@ class AdminUserController {
             nUser.save(failOnError: true)
             redirect(action: "list")
         }
-
     }
 }
