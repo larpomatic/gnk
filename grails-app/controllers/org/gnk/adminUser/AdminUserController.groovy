@@ -91,7 +91,8 @@ class AdminUserController {
             user.password = newpassword
         List<Boolean> lb = userService.instperm(rightuser)
         int disabled = 0
-        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value()) && !rightsService.hasRight(user.gright, right.RIGHTMODIF.value())) {
+        User currentuser = (User) session.getAttribute("user")
+        if (rightsService.hasRight(currentuser.gright, right.RIGHTSHOW.value()) && !rightsService.hasRight(currentuser.gright, right.RIGHTMODIF.value())) {
             disabled = 1;
         }
         [user: user, lb: lb, disabled : disabled]
