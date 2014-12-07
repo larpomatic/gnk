@@ -71,7 +71,13 @@ class UserController {
                     lb.add(false)
                 }
             }
+            if (user.gright != userService.changeright(lb)) {
+                flash.success = "Le niveau de droit à bien été mis à jour"
+            } else {
+                flash.error = "Le niveau de droit est identique";
+            }
             currentuser.gright = userService.changeright(lb)
+
             user.gright = userService.changeright(lb)
             currentuser.save(failOnError: true)
             session.setAttribute("user", user)
@@ -108,7 +114,7 @@ class UserController {
                     currentuser.username = params.usernamemodif
                 flash.success = "Vos modifications ont  a bien été prises en compte"
             } else {
-                flash.error = "erreur champ vide ou invalid";
+                flash.error = "erreur champ vide / invalide / identique";
             }
         }
         currentuser.save(failOnError: true)

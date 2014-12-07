@@ -42,7 +42,21 @@ class TagController {
                 } else
                     order(sort, params.order as String)
             }
-            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+            List<Tag> tags = Tag.list();
+            Map<Integer, ArrayList<Tag>> mapTagParent= new HashMap<Integer, ArrayList>();
+            for(Tag tag : tags){
+                ArrayList<Tag>  tagParent = new ArrayList<Tag>();
+                Tag t = tag.parent;
+                while (t != null){
+                    if (!"".equals(tag.name)){
+                        tagParent.add(t);
+                    }
+                    t = t.parent;
+                }
+                tagParent = tagParent.reverse();
+                mapTagParent.put(tag.id, tagParent);
+            }
+            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName, listTagParent : mapTagParent ]
         }
     }
 

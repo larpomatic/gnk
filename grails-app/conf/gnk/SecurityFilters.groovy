@@ -1,5 +1,6 @@
 package gnk
 
+import grails.plugins.springsecurity.SpringSecurityService
 import org.gnk.admin.right
 import org.gnk.cookie.CookieService
 import org.gnk.rights.RightsService
@@ -11,6 +12,8 @@ class SecurityFilters {
 
     RightsService rightsService;
     CookieService cookieService;
+    SpringSecurityService springSecurityService
+
     def filters = {
         consolSQLfilter(controller: 'consolSql', action: '*') {
             before = {
@@ -167,7 +170,7 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
