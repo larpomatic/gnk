@@ -41,7 +41,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTSHOW.value())
@@ -85,7 +86,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
@@ -128,7 +130,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
@@ -171,6 +174,7 @@ class SecurityFilters {
                 user = (User) session.getAttribute("user")
                 if (!user){
                     user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
@@ -212,7 +216,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.USEROPEN.value())
@@ -254,7 +259,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -296,7 +302,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -338,7 +345,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
@@ -380,7 +388,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -422,7 +431,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -464,7 +474,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -506,7 +517,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
@@ -548,7 +560,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -590,7 +603,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -632,7 +646,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -674,7 +689,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -716,7 +732,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -758,7 +775,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -800,7 +818,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if (!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -842,7 +861,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if(!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -884,7 +904,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if(!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -926,7 +947,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if(!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
@@ -968,7 +990,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if(!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
@@ -1011,7 +1034,8 @@ class SecurityFilters {
                 }
                 user = (User) session.getAttribute("user")
                 if(!user){
-                    return false
+                    user = (User) springSecurityService.getCurrentUser()
+                    session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
