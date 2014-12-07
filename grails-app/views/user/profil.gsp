@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        </g:hasRights>
+        </g:hasRights> 
     </div>
     <g:message code="default.lastConnection.label"/> : ${date}
     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">

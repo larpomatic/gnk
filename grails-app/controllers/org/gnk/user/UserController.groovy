@@ -111,7 +111,6 @@ class UserController {
                 flash.error = "erreur champ vide ou invalid";
             }
         }
-
         currentuser.save(failOnError: true)
         redirect(action: "profil")
     }

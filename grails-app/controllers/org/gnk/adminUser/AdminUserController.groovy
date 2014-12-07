@@ -187,7 +187,6 @@ class AdminUserController {
                 flash.error = "erreur champ vide ou invalid";
             }
         }
-
         user.save(failOnError: true)
         redirect(action: "edit", params: "user : ${user.id}")
     }
