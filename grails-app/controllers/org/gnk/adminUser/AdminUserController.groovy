@@ -184,7 +184,7 @@ class AdminUserController {
                     user.username = params.usernamemodif
                 flash.success = "Vos modifications ont bien été prises en compte"
             } else {
-                flash.error = "erreur champ vide ou invalide / identique";
+                flash.error = "erreur le champ est vide / invalide / identique";
             }
         }
         user.save(failOnError: true)
