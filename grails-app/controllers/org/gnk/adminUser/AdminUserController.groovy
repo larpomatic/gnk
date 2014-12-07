@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie
 class AdminUserController {
     UserService userService
     CookieService cookieService
+    RightsService  rightsService
 
     def checkcookie() {
 
@@ -83,12 +84,17 @@ class AdminUserController {
                 user = User.findById(iduser)
             }
         }
+
         int rightuser = user.gright
         String newpassword = params.passwordChanged
         if (newpassword && newpassword.size() > 5)
             user.password = newpassword
         List<Boolean> lb = userService.instperm(rightuser)
-        [user: user, lb: lb]
+        int disabled = 0
+        if (rightsService.hasRight(user.gright, right.RIGHTSHOW.value()) && !rightsService.hasRight(user.gright, right.RIGHTMODIF.value())) {
+            disabled = 1;
+        }
+        [user: user, lb: lb, disabled : disabled]
     }
 
     def changeperm(long id) {

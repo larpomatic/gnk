@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        </g:hasRights> 
+        </g:hasRights>
     </div>
     <g:message code="default.lastConnection.label"/> : ${date}
     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
@@ -170,17 +170,19 @@
                 </tr>
                 </thead>
             </table>
-            <button type="submit" class="btn btn-default">Valider</button>
+            <g:hasRights lvlright="${right.RIGHTMODIF.value()}">
+                <button type="submit" class="btn btn-default">Valider</button>
+            </g:hasRights>
         </g:form>
     </g:hasRights>
 </div>
 <script type="text/javascript">
 
-    $(function(){
-       var isDisabled = $("#disabledValue").val();
-        for (var i = 0;isDisabled == "1" && i < 24; i++) {
+    $(function () {
+        var isDisabled = $("#disabledValue").val();
+        for (var i = 0; isDisabled == "1" && i < 24; i++) {
 
-            $("#c"+i).attr("disabled", "disabled");
+            $("#c" + i).attr("disabled", "disabled");
         }
     });
 </script>
