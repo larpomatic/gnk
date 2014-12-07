@@ -37,6 +37,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTSHOW.value())
                 def right2 = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
@@ -78,6 +81,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
                 if ( !currentuser || !right) {
@@ -118,6 +124,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
                 if ( !currentuser || !right) {
@@ -157,6 +166,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
                 if ( !currentuser || !right) {
@@ -196,6 +208,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.USEROPEN.value())
                 if ( !currentuser || !right) {
@@ -235,6 +250,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -274,6 +292,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -313,6 +334,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
                 if ( !currentuser || !right) {
@@ -352,6 +376,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -391,6 +418,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -430,6 +460,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -469,6 +502,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
                 if ( !currentuser || !right) {
@@ -508,6 +544,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -525,15 +564,38 @@ class SecurityFilters {
         pastScenefilter(controller: 'pastScene', action: '*') {
             before = {
                 User user = (User) session.getAttribute("user")
+                Cookie cookie
                 if (user == null) {
-                    redirect(controller: "home", action: "index")
-                } else {
-                    User currentuser = User.findById(user.id)
-                    def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                    if (!right) {
-                        redirect(controller: "login", action: "denied")
+                    Cookie[] cookies = request.getCookies()
+                    if (cookies) {
+                        cookie = cookies.find { it.name == "gnk_cookie" }
+                        if (cookie) {
+                            Cookie cookie1 = cookies.find { it.name == "prcgn" }
+                            String password = cookieService.cookiepassword(cookie1.getValue())
+                            String login = cookieService.cookieusern(cookie1.getValue())
+                            User testuser = User.findByUsername(login);
+                            if (testuser && cookieService.isAuth(password, testuser.password)) {
+                                session.setAttribute("user", testuser)
+                            }
+                            else
+                            {
+                                redirect(controller: "logout", action: "index")
+                                return false
+                            }
+                        }
                     }
                 }
+                user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
+                User currentuser = User.findById(user.id)
+                def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
+                if ( !currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
+                    return false
+                }
+                return true
             }
             after = { Map model ->
 
@@ -566,6 +628,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -605,6 +670,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -644,6 +712,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -683,6 +754,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -722,6 +796,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if (!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -761,6 +838,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if(!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -800,6 +880,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if(!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -839,6 +922,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if(!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {
@@ -878,6 +964,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if(!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
                 def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTMODIF.value())
@@ -918,6 +1007,9 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
+                if(!user){
+                    return false
+                }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
                 if ( !currentuser || !right) {

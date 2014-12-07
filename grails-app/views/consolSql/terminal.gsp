@@ -197,18 +197,19 @@
             </p>
         </div>
     </g:form>
+    <h3><g:message code="gnk.consol.Delete"/></h3>
     <g:form action="deleteRequest" method="post">
         <div id="delSelect">
-        <select name="categoryname" id="categorynameD" data-url="<g:createLink controller="consolSql" action="getSubCategory"/>">
+        <label><g:message code="gnk.consol.cat"/></label><select name="categoryname" id="categorynameD" data-url="<g:createLink controller="consolSql" action="getSubCategory"/>">
             <option value=""></option>
             <g:each in="${listCategory}" var="l">
                 <option value="${l.id}">${l.name}</option>
             </g:each>
         </select><br/>
-            <select name="subcategory" id="subcategoryD" data-url="<g:createLink controller="consolSql" action="getRequest"/>">
+            <label><g:message code="gnk.consol.subcat"/></label><select name="subcategory" id="subcategoryD" data-url="<g:createLink controller="consolSql" action="getRequest"/>">
                 <option value=""></option>
             </select><br/>
-            <select name="requestname" id="requestnameD">
+            <label><g:message code="gnk.consol.request"/></label> <select name="requestname" id="requestnameD">
                 <option value=""></option>
             </select><br/>
         </div>
