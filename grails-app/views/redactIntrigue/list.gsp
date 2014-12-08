@@ -93,7 +93,7 @@
                         </div></td>
 
                         <td align="center" style="vertical-align: middle"><div class="${plotInstance.isDraft} img-circle">
-                            <div class="hidden">${plotInstance.isDraft}</div>
+                            <div class="hidden">${plotInstance.isDraft</div>
                         </div></td>
                     </tr>
 				</g:each>
