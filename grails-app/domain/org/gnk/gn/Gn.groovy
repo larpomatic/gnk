@@ -75,6 +75,7 @@ class Gn {
 	Set<Plot> bannedPlotSet
     Set<Character> characterSet
     Set<Character> nonPlayerCharSet
+    Set<Character> stafCharSet
 	int nbPlayers
 	int nbMen
 	int nbWomen
