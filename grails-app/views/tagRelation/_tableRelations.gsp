@@ -37,5 +37,5 @@
 </table>
 
 <!-- Modal Views -->
-<g:render template="../tag/modalViewTags" />
+<g:render template="../tag/modalViewTags" model="[listTagParent : listTagParent]"/>
 <g:render template="modaleditViewTags" />

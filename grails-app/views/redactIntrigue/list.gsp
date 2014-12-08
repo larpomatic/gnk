@@ -92,6 +92,7 @@
                             <div class="hidden">${plotInstance.isPublic}</div>
                         </div></td>
 
+
                         <td align="center" style="vertical-align: middle"><div class="${plotInstance.isDraft} img-circle">
                             <div class="hidden">${plotInstance.isDraft}</div>
                         </div></td>

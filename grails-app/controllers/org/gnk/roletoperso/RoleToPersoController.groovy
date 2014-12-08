@@ -272,6 +272,10 @@ class RoleToPersoController {
         RelationshipGraphService graph = new RelationshipGraphService();
         String json_relation = graph.create_graph(gn);
 
+        //Graph graph = new Graph(gn)
+        //String json_relation = graph.buildGlobalGraphJSON();
+
+
         ArrayList<String> values = new ArrayList<>();
         ArrayList<String> values_relation = new ArrayList<>();
         for (Character c in gn.characterSet)

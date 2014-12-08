@@ -1,5 +1,6 @@
 package org.gnk.publication
 
+import org.apache.commons.codec.binary.Base64
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -14,6 +15,7 @@ import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.roletoperso.Character
+import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasTag
@@ -87,39 +89,6 @@ class PublicationController {
         return collectPublicationInfo(id)
     }
 
-    // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
-    def publication = {
-        def id = params.gnId as Integer
-        String tmpWord = params.templateWordSelect as String
-       // Gn getGn = null
-        if (!id.equals(null))
-            gn = Gn.get(id)
-        if (gn.equals(null)) {
-            print "Error : GN not found"
-            return
-        }
-
-        gnk = new GNKDataContainerService()
-        gnk.ReadDTD(gn)
-       // gn = gnk.gn
-
-        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
-        def folder = new File(folderName)
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-
-        File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-
-        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
-        wordWriter = new WordWriter(tmpWord, publicationFolder)
-        wordWriter.wordMLPackage = createPublication()
-        wordWriter.wordMLPackage.save(output)
-
-        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-        response.outputStream << output.newInputStream()
-    }
 
     public collectPublicationInfo(def id) {
         ArrayList<String> pitchOrgaList = new ArrayList<String>()
@@ -142,6 +111,10 @@ class PublicationController {
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
+        Graph graph = new Graph(gn)
+        ArrayList<String> JsonList = new ArrayList<String>()
+        for (org.gnk.roletoperso.Node node : graph.nodeList)
+            JsonList.add(graph.buildCharGraphJSON(node))
         [
                 title: gn.name,
                 subtitle: createSubTile(),
@@ -152,12 +125,70 @@ class PublicationController {
                 charactersList: createPlayersList(),
                 gnId: id,
                 universName: uniName,
-                templateWordList: templateWordList
+                templateWordList: templateWordList,
+                globalrelationjson: graph.buildGlobalGraphJSON(),
+                relationjsonlist: JsonList
         ]
     }
 
+
+    // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
+    def publication = {
+        ArrayList<String> imgSrcList = new ArrayList<String>()
+        imgSrcList = params.get("imgsrc").replace("data:image/png;base64,","").split(";;")
+        def id = params.gnId as Integer
+        String tmpWord = params.templateWordSelect as String
+       // Gn getGn = null
+        if (!id.equals(null))
+            gn = Gn.get(id)
+        if (gn.equals(null)) {
+            print "Error : GN not found"
+            return
+        }
+
+        gnk = new GNKDataContainerService()
+        gnk.ReadDTD(gn)
+       // gn = gnk.gn
+
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        String fileName = folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}"
+        File output = new File(fileName + ".docx")
+
+        ArrayList<String> imgFileNameList = new ArrayList<String>()
+        int i = 0
+        for (String imgb64 : imgSrcList){
+            String relationGraphFileName = fileName + "-" + i.toString() + ".png"
+            i++
+            imgFileNameList.add(relationGraphFileName)
+            byte[] data = Base64.decodeBase64(imgb64);
+            try {
+                OutputStream stream = new FileOutputStream(relationGraphFileName)
+                stream.write(data);
+                stream.close()
+            } catch (Exception e) {
+                e.stackTrace();
+            }
+        }
+
+        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        wordWriter = new WordWriter(tmpWord, publicationFolder)
+        wordWriter.wordMLPackage = createPublication("")
+        wordWriter.wordMLPackage.save(output)
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
+        response.outputStream << output.newInputStream()
+    }
+
+
+
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication() {
+    public WordprocessingMLPackage createPublication(String GlobalRelationGraphFile) {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -168,7 +199,7 @@ class PublicationController {
         createPitchOrga()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
-        createPlayersTable()
+        createPlayersTable(GlobalRelationGraphFile)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
         createPlotTable()
@@ -207,7 +238,7 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des personnages pour les organisateurs
-    def createPlayersTable() {
+    def createPlayersTable(String imgFile) {
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -346,6 +377,12 @@ class PublicationController {
         }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
+
+        if (!imgFile.isEmpty())
+        {
+            wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
+            wordWriter.addImage(imgFile)
+        }
     }
 
     def createPlayersList() {
