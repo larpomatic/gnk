@@ -18,6 +18,9 @@
                 </th>
             </g:hasRights>
         </g:hasRights>
+        <th>
+            Tag fils
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -45,6 +48,11 @@
                     </td>
                 </g:hasRights>
             </g:hasRights>
+            <td>
+                <a href="#tagListmodal${tagInstance.id}" class="btn" data-toggle="modal">
+                    Tag fils
+                </a>
+            </td>
         </tr>
     </g:each>
     </tbody>
@@ -53,3 +61,4 @@
 <!-- Modal Views -->
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
+<g:render template="detailTagChildren"/>

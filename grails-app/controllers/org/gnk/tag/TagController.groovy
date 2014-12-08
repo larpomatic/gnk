@@ -15,7 +15,20 @@ class TagController {
     }
 
     def list(Integer max, Integer offset, String sort) {
-
+        List<Tag> tags = Tag.list();
+        Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        for (Tag tag : tags) {
+            ArrayList<Tag> tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null) {
+                if (!"".equals(tag.name)) {
+                    tagParent.add(t);
+                }
+                t = t.parent;
+            }
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
+        }
         Tag parent = Tag.get(params.Tag_select as Integer)
         String parentName = parent == null ? "" : parent.name
 
@@ -42,7 +55,7 @@ class TagController {
                 } else
                     order(sort, params.order as String)
             }
-            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName , listTagParent:mapTagParent]
         }
     }
 

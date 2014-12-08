@@ -7,6 +7,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.gn.Gn
 import org.gnk.roletoperso.Character;
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
 
@@ -64,8 +65,11 @@ class SubstitutionController {
         gn.step = "substitution";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save(flush: true);
-        RelationshipGraphService graphservice = new RelationshipGraphService();
-        String json = graphservice.create_graph(gn);
+        //RelationshipGraphService graphservice = new RelationshipGraphService();
+        //String json = graphservice.create_graph(gn);
+
+        Graph graph = new Graph(gn)
+        String json = graph.buildGlobalGraphJSON();
 
         [gnInfo : inputHandler.gnInfo,
         characterList : inputHandler.characterList,
@@ -193,9 +197,8 @@ class SubstitutionController {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
             }
-
             // Go to publication
-            redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
+            redirect(controller: "publication", action: "index", params: [gnId: gnDbId, relationjson: subJSON.globalRelationGraph])
 
         }
     }

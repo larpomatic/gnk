@@ -30,17 +30,8 @@
     <g:if test="${flash.error}">
         <div class="alert alert-error" style="display: block">${flash.error}</div>
     </g:if>
-    <g:if test="${flash.mlastname}">
-        <div class="message alert-success" style="display: block">${flash.mlastname}</div>
-    </g:if>
-    <g:if test="${flash.mpassword}">
-        <div class="message alert-success" style="display: block">${flash.mpassword}</div>
-    </g:if>
-    <g:if test="${flash.mfrstname}">
-        <div class="message alert-success" style="display: block">${flash.mfirstname}</div>
-    </g:if>
-    <g:if test="${flash.mpassword}">
-        <div class="message alert-success" style="display: block">${flash.mpassword}</div>
+    <g:if test="${flash.success}">
+        <div class="message alert-success" style="display: block">${flash.success}</div>
     </g:if>
     <div class="row-fluid">
         <div class="span6">
@@ -179,17 +170,19 @@
                 </tr>
                 </thead>
             </table>
-            <button type="submit" class="btn btn-default">Valider</button>
+            <g:hasRights lvlright="${right.RIGHTMODIF.value()}">
+                <button type="submit" class="btn btn-default">Valider</button>
+            </g:hasRights>
         </g:form>
     </g:hasRights>
 </div>
 <script type="text/javascript">
 
-    $(function(){
-       var isDisabled = $("#disabledValue").val();
-        for (var i = 0;isDisabled == "1" && i < 24; i++) {
+    $(function () {
+        var isDisabled = $("#disabledValue").val();
+        for (var i = 0; isDisabled == "1" && i < 24; i++) {
 
-            $("#c"+i).attr("disabled", "disabled");
+            $("#c" + i).attr("disabled", "disabled");
         }
     });
 </script>

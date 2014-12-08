@@ -507,6 +507,50 @@
     </div>
 </div>
 
+<div class="accordion" id="accordionSTF">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordionSTF"
+               href="#collapseSTF">
+                <g:message code="roletoperso.gestionSTF"
+                           default="Management of STF characters"/>
+            </a>
+        </div>
+
+        <div id="collapseSTF" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th><g:message code="roletoperso.character"
+                                       default="Character"/></th>
+                        <th><g:message code="roletoperso.roleCode"
+                                       default="Role code"/></th>
+                        <th><g:message code="roletoperso.roleType"
+                                       default="Character Type"/></th>
+                        <th><g:message code="roletoperso.description"
+                                       default="Description"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${PHJList}" var="STF">
+                        <g:if test="${(((Character) STF).isSTF() == true)}">
+                            <tr id="${"line" + ((Character) STF).getDTDId()}">
+                                <td>CHAR-${((Character) STF).getDTDId()}</td>
+                                <td>${((Character) STF).rolesToString()}</td>
+                                <td>${((Character) STF).type}</td>
+                                <td>${((Character) STF).getSelectedRoles().first().description}</td>
+                            </tr>
+                        </g:if>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal -->
 <div id="fusionModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="fusionModalLabel" aria-hidden="true">
     <div class="modal-header">
