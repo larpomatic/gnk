@@ -24,8 +24,21 @@ class TagRelationController {
                         order(sort, params.order as String)
                     }
         }
-
-        [tagRelationInstanceList: resultList]
+        List<Tag> tags = Tag.list();
+        Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        for (Tag tag : tags) {
+            ArrayList<Tag> tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null) {
+                if (!"".equals(tag.name)) {
+                    tagParent.add(t);
+                }
+                t = t.parent;
+            }
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
+        }
+        [tagRelationInstanceList: resultList, listTagParent : mapTagParent]
     }
 
     def create() {

@@ -10,7 +10,7 @@
     <div class="modal-body">
         <ul class="tagList">
             <g:each in="${tag}" status="i" var="tagInstance">
-                <g:render template="TagTreeDetails" model="[tagInstance: tagInstance]"/>
+                <g:render template="TagTreeDetails" model="[tagInstance: tagInstance, tagInstanceId : 'first']"/>
             </g:each>
         </ul>
     </div>
