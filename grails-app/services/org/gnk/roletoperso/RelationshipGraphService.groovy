@@ -4,6 +4,8 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
 
+import java.lang.reflect.Array
+
 /**
  * Created by nicolas on 06/10/2014.
  */

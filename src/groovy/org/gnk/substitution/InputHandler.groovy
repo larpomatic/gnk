@@ -242,8 +242,8 @@ class InputHandler {
                 resource.code = genericResource.code
                 // Comment
                 resource.comment = genericResource.comment
-                // ObjectType
-                resource.objectType = genericResource.objectType.type
+                // Plot name
+                resource.plot = plot.name
 
                 // TagList
                 resource.tagList = []
@@ -339,8 +339,6 @@ class InputHandler {
         place.code = genericPlace.code
         // Comment
         place.comment = genericPlace.comment
-        // Type
-        place.objectType = genericPlace.objectType.type
 
         // TagList
         place.tagList = []
@@ -357,7 +355,9 @@ class InputHandler {
         }
 
         // Plot
-        place.plot = null
+        def plot = org.gnk.selectintrigue.Plot.get(plotId)
+        // Plot name
+        place.plotName = plot.name
 
         return place
     }
