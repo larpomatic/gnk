@@ -66,7 +66,7 @@
                 </div>
                 <div class="span4">
                     <a href="#rolePastScenesModal_{{ role.id }}" class="btn" data-toggle="modal">
-                        Choisir les scènes passées
+                        Voir les scènes passées
                     </a>
                 </div>
                 <div class="span1">
@@ -76,7 +76,7 @@
                 </div>
                 <div class="span4">
                     <a href="#roleEventsModal_{{ role.id }}" class="btn" data-toggle="modal">
-                        Choisir les évènements
+                        Voir les évènements
                     </a>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     {{#each role.eventList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}"
+                                <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}"
                                    href="#collapseEvent{{ ../role.id }}-{{ eventId }}" data-eventId="{{ eventId }}">
                                     {{eventTiming}}% - {{ eventName }}
                                 </a>
@@ -141,7 +141,7 @@
                                             Description
                                         </label>
                                     </div>
-                                    <textarea disabled="disabled" name="roleHasEventDescription{{ eventId }}" rows="5" cols="100">
+                                    <textarea class="spanLabel" disabled="disabled" name="roleHasEventDescription{{ eventId }}" rows="5" cols="100">
                                         {{{ description }}}
                                     </textarea>
                                 </div>
@@ -168,10 +168,9 @@
                     {{#each role.pastsceneList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
+                                <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
                                    href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
 
-                                    <!--###PASTSCENECHANGE-->
                                     En {{pastsceneYear}} le {{pastsceneDay}} {{pastsceneMonth}} à {{pastsceneHour}}h {{pastsceneMinute}} -
 
                                     {{ pastsceneTitle }}
@@ -194,7 +193,7 @@
                                             Description
                                         </label>
                                     </div>
-                                    <textarea disabled="disabled" name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100">
+                                    <textarea class="spanLabel" disabled="disabled" name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100">
                                         {{{ description }}}
                                     </textarea>
                                 </div>

@@ -186,9 +186,6 @@ class PastSceneController {
             if (it.key.startsWith("roleHasPastSceneTitle")) {
                 Role role = Role.get((it.key - "roleHasPastSceneTitle") as Integer);
                 RoleHasPastscene roleHasPastscene = createRoleHasPastscene(role, newPastscene);
-//                if (roleHasPastscene) {
-//                    newPastscene.addToRoleHasPastscenes(roleHasPastscene);
-//                }
             }
         }
         newPastscene.save(flush: true);

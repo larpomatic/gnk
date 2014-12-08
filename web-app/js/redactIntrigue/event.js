@@ -48,6 +48,8 @@ $(function(){
                         language: 'fr',
                         pickSeconds: false
                     });
+                    initSpanLabel('.leftMenuList .spanLabel[href="#event_' + data.event.id + '"]');
+                    initSpanLabel('roleScreen .spanLabel[data-eventid="' + data.event.id + '"]');
                     $('form[name="updateEvent_' + data.event.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });

@@ -4,12 +4,10 @@
     {{else}}
     <div class="accordion-heading">
     {{/if}}
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ role.roleId }}"
+        <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionPastScene{{ role.roleId }}"
            href="#collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" data-pastsceneId="{{ pastscene.id }}">
 
-            <!--###PASTSCENECHANGE-->
             {{#pastSceneTime pastscene}}{{/pastSceneTime}}
-            <!--En {{pastscene.absoluteYear}} le {{pastscene.absoluteDay}} {{pastscene.absoluteMonthLetters}} à {{pastscene.absoluteHour}}h {{pastscene.absoluteMinute}} --->
 
             {{ pastscene.title }}
         </a>
