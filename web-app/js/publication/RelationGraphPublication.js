@@ -36,472 +36,26 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 
 function init(){
+
+
+ }
+
+function initGraph(relationjson, idInfovis, index){
+    $("#infovis-canvaswidget").remove();
+    //alert("init("+relationjson+index+")");
+    var ind = parseInt(index, 10) + 1
+    if (document.getElementById(relationjson+index) == null){
+        alert("Tous les graphes relationnels ont été chargés")
+        document.getElementById('relationGraphLoader').display.style = "none";
+        return;
+    }
     // init data
-
-    var str = $("#relationjson").val();
-
+    var str = $("#"+relationjson+index).val();
     var json = JSON.parse(str);
-
-    var json2 = [
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode1",
-                    "nodeFrom": "graphnode0",
-                    "data": { "lien": "papa"}
-                },
-                {
-                    "nodeTo": "graphnode3",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode2",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode4",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode10",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode6",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode11",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode12",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode13",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode14",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode15",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode16",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode17",
-                    "nodeFrom": "graphnode0",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#83548B",
-                "$type": "circle"
-            },
-            "id": "graphnode0",
-            "name": "graphnode0"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode2",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode3",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode4",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode5",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode6",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode7",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode8",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode9",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode10",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode11",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode12",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode13",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode14",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode15",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode16",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode17",
-                    "nodeFrom": "graphnode1",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#83548B",
-                "$type": "star"
-            },
-            "id": "graphnode1",
-            "name": "graphnode1"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode3",
-                    "nodeFrom": "graphnode2",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode5",
-                    "nodeFrom": "graphnode2",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode9",
-                    "nodeFrom": "graphnode2",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode18",
-                    "nodeFrom": "graphnode2",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#EBB056",
-                "$type": "circle"
-            },
-            "id": "graphnode2",
-            "name": "graphnode2"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode5",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode9",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode10",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode6",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode11",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode12",
-                    "nodeFrom": "graphnode3",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#70A35E",
-                "$type": "triangle"
-            },
-            "id": "graphnode3",
-            "name": "graphnode3"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#70A35E",
-                "$type": "star"
-            },
-            "id": "graphnode4",
-            "name": "graphnode4"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode9",
-                    "nodeFrom": "graphnode5",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "star"
-            },
-            "id": "graphnode5",
-            "name": "graphnode5"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode10",
-                    "nodeFrom": "graphnode6",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode11",
-                    "nodeFrom": "graphnode6",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "star"
-            },
-            "id": "graphnode6",
-            "name": "graphnode6"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "triangle"
-            },
-            "id": "graphnode7",
-            "name": "graphnode7"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#EBB056",
-                "$type": "star"
-            },
-            "id": "graphnode8",
-            "name": "graphnode8"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#70A35E",
-                "$type": "triangle"
-            },
-            "id": "graphnode9",
-            "name": "graphnode9"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode11",
-                    "nodeFrom": "graphnode10",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#83548B",
-                "$type": "triangle"
-            },
-            "id": "graphnode10",
-            "name": "graphnode10"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "triangle"
-            },
-            "id": "graphnode11",
-            "name": "graphnode11"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#70A35E",
-                "$type": "square"
-            },
-            "id": "graphnode12",
-            "name": "graphnode12"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode14",
-                    "nodeFrom": "graphnode13",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "square"
-            },
-            "id": "graphnode13",
-            "name": "graphnode13"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#70A35E",
-                "$type": "square"
-            },
-            "id": "graphnode14",
-            "name": "graphnode14"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode16",
-                    "nodeFrom": "graphnode15",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode17",
-                    "nodeFrom": "graphnode15",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#C74243",
-                "$type": "circle"
-            },
-            "id": "graphnode15",
-            "name": "graphnode15"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode17",
-                    "nodeFrom": "graphnode16",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#EBB056",
-                "$type": "circle"
-            },
-            "id": "graphnode16",
-            "name": "graphnode16"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#83548B",
-                "$type": "triangle"
-            },
-            "id": "graphnode17",
-            "name": "graphnode17"
-        },
-        {
-            "adjacencies": [
-                {
-                    "nodeTo": "graphnode19",
-                    "nodeFrom": "graphnode18",
-                    "data": {}
-                },
-                {
-                    "nodeTo": "graphnode20",
-                    "nodeFrom": "graphnode18",
-                    "data": {}
-                }
-            ],
-            "data": {
-                "$color": "#C74243",
-                "$type": "circle"
-            },
-            "id": "graphnode18",
-            "name": "graphnode18"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#EBB056",
-                "$type": "star"
-            },
-            "id": "graphnode19",
-            "name": "graphnode19"
-        },
-        {
-            "adjacencies": [],
-            "data": {
-                "$color": "#416D9C",
-                "$type": "circle"
-            },
-            "id": "graphnode20",
-            "name": "graphnode20"
-        }
-    ];
-    // end
-    // init ForceDirected
-
-
-
-
-
 
     var fd = new $jit.ForceDirected({
         //id of the visualization container
-        injectInto: 'infovis',
-        //Enable zooming and panning
-        //with scrolling and DnD
+        injectInto: idInfovis,
         Navigation: {
             enable: true,
             type: 'Native',
@@ -557,34 +111,17 @@ function init(){
             // Create a 'name' and 'close' buttons and add them
             // to the main node label
             var nameContainer = document.createElement('span'),
-                closeButton = document.createElement('span'),
                 style = nameContainer.style;
             nameContainer.className = 'name';
             nameContainer.innerHTML = node.name;
-            closeButton.className = 'close';
-            closeButton.innerHTML = '';
             domElement.appendChild(nameContainer);
-            domElement.appendChild(closeButton);
             style.fontSize = "0.8em";
-            style.color = "#ddd";
+            style.color = "#000000";
             //Fade the node and its connections when
-            //clicking the close button
-            closeButton.onclick = function() {
-                node.setData('alpha', 0, 'end');
-                node.eachAdjacency(function(adj) {
-                    adj.setData('alpha', 0, 'end');
-                });
-                fd.fx.animate({
-                    modes: ['node-property:alpha',
-                        'edge-property:alpha'],
-                    duration: 500
-                });
-            };
             //Toggle a node selection when clicking
             //its name. This is done by animating some
             //node styles like its dimension and the color
             //and lineWidth of its adjacencies.
-
             nameContainer.onclick = function() {
                 //set final styles
                 fd.graph.eachNode(function(n) {
@@ -635,7 +172,7 @@ function init(){
             var w = domElement.offsetWidth;
             style.left = (left - w / 2) + 'px';
             style.top = (top + 10) + 'px';
-            style.display = '';
+            style.display = "";
         }
     });
     // load JSON data.
@@ -645,23 +182,27 @@ function init(){
         iter: 40,
         property: 'end',
         onStep: function(perc){
-           // Log.write(perc + '% loaded...');
+            // Log.write(perc + '% loaded...');
         },
         onComplete: function(){
-         //   Log.write('done');
+            //   Log.write('done');
             fd.animate({
                 modes: ['linear'],
-                transition: $jit.Trans.Elastic.easeOut,
-                duration: 2500
+                duration: 0
             });
+            setTimeout(function() {
+                    html2canvas($("#RelationGraphContainer"),
+                    {
+                        onrendered: function(canvas)
+                        {
+                            var img = canvas.toDataURL("image/png");
+                            document.getElementById('imgsrc').value = document.getElementById('imgsrc').value + ";;" +img;
+                        }
+                    }); setTimeout(function () {initGraph("relationjson", idInfovis, ind);},50);
+                },50);
+
+
         }
     });
     // end
-}
-
-function getImageFromCanvas(){
-    var img = new Image();
-    var c = document.getElementById("infovis-canvas");
-    img.src = c.toDataURL("image/png");
-    return img;
 }

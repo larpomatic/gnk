@@ -33,11 +33,16 @@
         </g:each>
     </select>
     </div>
+    <g:set var="counter" value="${1}" />
+    <g:each in="${relationjsonlist}" var="reljson">
+        <g:hiddenField id="relationjson${counter}" name="relationjson${counter}" value="${reljson}"/>
+        <g:set var="counter" value="${counter + 1}" />
+    </g:each>
 <br><br>
         <FORM>
-            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..."
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..." (chargement ${counter} secondes)
         </FORM>
-
+    <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div>
 <div class="row-fluid">
     <div class="span3">
@@ -82,16 +87,12 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
 
 
 <h3>Synthèse des personnages du GN</h3>
-
 <div class="row-fluid" id="RelationGraphContainer" >
     <div class="span12" id="Relations">
         <div class="panel panel-default">
             <div style="overflow: auto; height:500px;" id="container">
-                <g:hiddenField id="relationjson" name="relationjson" value="${relationjson}"/>
+                <g:hiddenField id="relationjson0" name="relationjson0" value="${globalrelationjson}"/>
                 <div id="infovis">
-                </div>
-                <div id="right-container">
-                    <div id="inner-details"></div>
                 </div>
                 <g:render template="/publication/relationGraph"></g:render>
             </div>
@@ -101,6 +102,8 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         </div>
     </div>
 </div>
+
+
 <TABLE BORDER="1" CELLPADDING="10">
     <TR>
         <TH> NOM - Prenom </TH>
@@ -126,18 +129,13 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
     document.getElementById('RelationGraphContainer').style.display ="none";
     $("#IncludeGraphRelation").click(function(){
         if(document.getElementById("IncludeGraphRelation").checked == true) {
-        document.getElementById('RelationGraphContainer').style.display = "";
-        html2canvas($("#RelationGraphContainer"),
-                {
-                    onrendered: function(canvas)
-                    {
-                        var img = canvas.toDataURL("image/png");
-                        document.getElementById('imgsrc').value = img;
-                    }
-                });
+            document.getElementById('RelationGraphContainer').style.display = "";
+            document.getElementById('relationGraphLoader').style.display = "";
+            initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
             document.getElementById("imgsrc").value = null;
             document.getElementById('RelationGraphContainer').style.display ="none";
+            document.getElementById('relationGraphLoader').style.display ="none";
         }
     });
 </script>

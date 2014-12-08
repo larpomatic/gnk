@@ -111,7 +111,10 @@ class PublicationController {
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
-        Graph rgs = new Graph(gn)
+        Graph graph = new Graph(gn)
+        ArrayList<String> JsonList = new ArrayList<String>()
+        for (org.gnk.roletoperso.Node node : graph.nodeList)
+            JsonList.add(graph.buildCharGraphJSON(node))
         [
                 title: gn.name,
                 subtitle: createSubTile(),
@@ -123,18 +126,16 @@ class PublicationController {
                 gnId: id,
                 universName: uniName,
                 templateWordList: templateWordList,
-//                relationjson: rgs.create_graph_publication(gn)
-                relationjson: rgs.buildCharGraphJSON(rgs.nodeList.first())
+                globalrelationjson: graph.buildGlobalGraphJSON(),
+                relationjsonlist: JsonList
         ]
     }
 
 
     // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
     def publication = {
-        def imgsrc = params.imgsrc as String
-        imgsrc = imgsrc.replace("data:image/png;base64,","")
-        def imgsrc2 = params.imgsrc2 as String
-        println("ImgSrc : " + imgsrc2)   // lorsque imgsrc2 n'existe pas -> imgsrc2 = null // Lorsque imgsrc2 est vide -> imgsrc2 = ""
+        ArrayList<String> imgSrcList = new ArrayList<String>()
+        imgSrcList = params.get("imgsrc").replace("data:image/png;base64,","").split(";;")
         def id = params.gnId as Integer
         String tmpWord = params.templateWordSelect as String
        // Gn getGn = null
@@ -158,16 +159,15 @@ class PublicationController {
         String fileName = folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}"
         File output = new File(fileName + ".docx")
 
-        String GlobalRelationGraphFileName = ""
-        if (!imgsrc.isEmpty())
-            GlobalRelationGraphFileName = fileName + ".png"
-
-
-        if (!GlobalRelationGraphFileName.isEmpty())
-        {
-            byte[] data = Base64.decodeBase64(imgsrc);
+        ArrayList<String> imgFileNameList = new ArrayList<String>()
+        int i = 0
+        for (String imgb64 : imgSrcList){
+            String relationGraphFileName = fileName + "-" + i.toString() + ".png"
+            i++
+            imgFileNameList.add(relationGraphFileName)
+            byte[] data = Base64.decodeBase64(imgb64);
             try {
-                OutputStream stream = new FileOutputStream(GlobalRelationGraphFileName)
+                OutputStream stream = new FileOutputStream(relationGraphFileName)
                 stream.write(data);
                 stream.close()
             } catch (Exception e) {
@@ -177,7 +177,7 @@ class PublicationController {
 
         publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
         wordWriter = new WordWriter(tmpWord, publicationFolder)
-        wordWriter.wordMLPackage = createPublication(GlobalRelationGraphFileName)
+        wordWriter.wordMLPackage = createPublication("")
         wordWriter.wordMLPackage.save(output)
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
