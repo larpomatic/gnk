@@ -114,6 +114,26 @@ function updateResourcesView(resourcesJSON)
     else if (percent < 100) {badgeClass = "badge-warning"}
     resourcesPercentageSpan.attr("class", "badge " + badgeClass);
     resourcesPercentageSpan.text(Math.round(percent) + " %");
+
+    //    $('.customRessource').click(function(){
+//        var input = $(this).prev();
+//       var content = input.val();
+//        if (content != "") {
+//            // appel ajax vers un controller
+//            $.ajax({
+//                type: "POST",
+//                url: ,//url de ta methode dans le controller,
+//                data: ,// parametre donc le content et peut etre autre chose,
+//                success: function (data) {
+//                    // ajouter une option dans le select
+//                    input.val("");
+//                },
+//                error: function () {
+//
+//                }
+//            });
+//        }
+//    });
 }
 
 // On succes AJAX
