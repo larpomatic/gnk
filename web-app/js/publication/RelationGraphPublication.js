@@ -35,18 +35,17 @@ var labelType, useGradients, nativeTextSupport, animate;
 };*/
 
 
-function init(){
-
-
- }
+function init(){ }
 
 function initGraph(relationjson, idInfovis, index){
     $("#infovis-canvaswidget").remove();
     //alert("init("+relationjson+index+")");
     var ind = parseInt(index, 10) + 1
     if (document.getElementById(relationjson+index) == null){
-        alert("Tous les graphes relationnels ont été chargés")
-        document.getElementById('relationGraphLoader').display.style = "none";
+        addAlert("pubAlertContainer", "alert alert-info", "Information", "Tous les graphes relationnels ont été chargés.")
+        $("#relationGraphLoader").hide();
+        document.getElementById("WordButtonPublication").disabled = false;
+        document.getElementById('RelationGraphContainer').style.display ="none";
         return;
     }
     // init data
@@ -205,4 +204,14 @@ function initGraph(relationjson, idInfovis, index){
         }
     });
     // end
+}
+function addAlert(ContainerId, alertClass, alertHeader, alertMsg) {
+    var subAlertContainer = $("#" + ContainerId);
+    var subAlertDiv = ($("<div></div>"));
+    subAlertDiv.attr("class", alertClass);
+    subAlertDiv.append($("<button type='button' class='close' data-dismiss='alert'>&times;</button>)"));
+    subAlertDiv.append($("<strong>" + alertHeader + " ! </strong>"));
+    subAlertDiv.append($("<span>" + alertMsg + "</span>"));
+    subAlertContainer.append(subAlertDiv);
+    subAlertDiv.delay(5000).fadeOut(2000);
 }
