@@ -20,7 +20,7 @@
 			</div>
 			
 			<g:render template="addRelation" />
-			<g:render template="tableRelations" />
+			<g:render template="tableRelations" model="[listTagParent : listTagParent]" />
 
             <div class="pagination">
                 <g:paginate total="${tagRelationInstanceList.totalCount}" />
