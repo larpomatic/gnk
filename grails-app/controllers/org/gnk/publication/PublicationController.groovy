@@ -974,7 +974,10 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T2", c.firstname + " " + c.lastname)
 
             wordWriter.addStyledParagraphOfText("T3", "Description")
-            // TODO : Trouver la description puis l'ajouter avec : wordWriter.addParagraphOfText(c.description)
+            for (Role r : c.getSelectedRoles()){
+                wordWriter.addStyledParagraphOfText("T4", r.code + " - " + r.type)
+                wordWriter.addParagraphOfText(r.description)
+            }
         }
     }
 
