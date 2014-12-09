@@ -239,6 +239,7 @@ class PublicationController {
         createPJFile(jsoncharlist, fileName)
         createPNJFile(jsoncharlist, fileName)
         createPHJFile(jsoncharlist, fileName)
+        createStaffFolder()
 
         return wordWriter.wordMLPackage
     }
@@ -938,6 +939,45 @@ class PublicationController {
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
+
+    //Création du dossier destiné aux "personnages" dit Staff
+    def createStaffFolder(){
+        HashSet<String> lchar = new HashSet<Character>()
+        for (Character c : gn.staffCharSet)
+            lchar.add(c.lastname + c.firstname)
+        ArrayList<String> lcharSorted = lchar.toList().sort()
+        ArrayList<Character> listStaff = new ArrayList<Character>()
+        for (String cname : lcharSorted)
+            for (Character c2 : gn.staffCharSet)
+                if (cname == (c2.lastname + c2.firstname))
+                    listStaff.add(c2)
+
+        Br br = wordWriter.factory.createBr()
+        br.setType(STBrType.PAGE)
+        wordWriter.addObject(br)
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Staff")
+        wordWriter.addParagraphOfText("Il y a " + listStaff.size() + " personnes dans l'équipe Staff de ce GN dont voici la liste : ")
+        String reslistStaff = ""
+        for (Character c : listStaff)
+            reslistStaff += c.lastname.toUpperCase() + " " + c.firstname + "\n"
+        wordWriter.addParagraphOfText(reslistStaff)
+        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers de l'équipe Staff, triés par ordre Alphabétique, à distribuer aux staff")
+        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        createStaffFile(listStaff)
+    }
+
+    def createStaffFile(ArrayList<Character> listStaff){
+        for (Character c : listStaff) {
+            Br br = wordWriter.factory.createBr()
+            br.setType(STBrType.PAGE)
+            wordWriter.addObject(br)
+            wordWriter.addStyledParagraphOfText("T2", c.firstname + " " + c.lastname)
+
+            wordWriter.addStyledParagraphOfText("T3", "Description")
+            // TODO : Trouver la description puis l'ajouter avec : wordWriter.addParagraphOfText(c.description)
+        }
+    }
+
 
     //Créatiion du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
     def createPitchTablePerso(String typePerso) {
