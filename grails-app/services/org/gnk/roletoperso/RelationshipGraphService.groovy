@@ -58,16 +58,23 @@ class RelationshipGraphService {
                 JSONObject json_colortype = new JSONObject();
                 if (c.isMen())
                     json_colortype.put("\$color", "#0040FF");
-                else if (c.isWomen())
-                    json_colortype.put("\$color", "#FE2EC8");
                 else
-                    json_colortype.put("\$color", "#848484");
+                {
+                    if (c.isWomen())
+                        json_colortype.put("\$color", "#FE2EC8");
+                    else
+                        json_colortype.put("\$color", "#848484");
+                }
                 if (c.isPJ())
                     json_colortype.put("\$type", "circle");
-                else if (c.isPHJ())
-                    json_colortype.put("\$type", "triangle");
                 else
-                    json_colortype.put("\$type", "square")
+                {
+                    if (c.isPHJ())
+                        json_colortype.put("\$type", "triangle");
+                    else
+                        json_colortype.put("\$type", "square");
+                }
+
                 json_object.put("data", json_colortype);
 
                 json_object.put("id", "CHAR" + c.getDTDId());

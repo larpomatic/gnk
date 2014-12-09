@@ -37,8 +37,9 @@ $(function(){
                     createNewPastScenePanel(data);
                     initSearchBoxes();
                     stopClosingDropdown();
-                    initPastSceneRelative();
                     initQuickObjects();
+                    initSpanLabel('.leftMenuList .spanLabel[href="#pastScene_' + data.pastscene.id + '"]');
+                    initSpanLabel('roleScreen .spanLabel[data-pastsceneid="' + data.pastscene.id + '"]');
                     $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });

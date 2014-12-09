@@ -91,7 +91,29 @@ $(function(){
     initModifyTag();
 
     initSpanCreation();
+
+    initSpanLabel('.spanLabel');
 });
+
+//add span on labels like "<i:role>"
+function initSpanLabel(element) {
+    $(element).each(function() {
+        var description = $(this).html();
+        while (description.length != 0 && (description[0] == '\n' ||
+            description[0] == ' ' || description[0] == '\r')) {
+            description = description.substring(1, description.length)
+        }
+        while (description.length != 0 && (description[description.length - 1] == '\n' ||
+            description[description.length - 1] == ' ' || description[description.length - 1] == '\r')) {
+            description = description.substring(0, description.length - 1)
+        }
+        description = "<div>" + convertDescription(description) + "</div>";
+        var html = $(description);
+        $("span br", html).remove();
+        description = html.html();
+        $(this).html(description);
+    });
+}
 
 //insert html span into textEditors
 function initSpanCreation() {
@@ -134,6 +156,7 @@ function stopClosingDropdown() {
 
 //active le bouton "modifier" des fenêtres de tag
 function initModifyTag() {
+    $('.modifyTag').unbind("click");
     $('.modifyTag').click(function() {
         if ($(this).hasClass("push")) {
             $('.modal-body li', $(this).parent().parent()).hide();
@@ -192,6 +215,19 @@ function initConfirm() {
             }
             if (objectButton.attr("data-object") == "relation") {
                 removeRelation(objectButton);
+            }
+            if (objectButton.attr("data-object") == "plot") {
+                $.ajax({
+                   type: "POST",
+                   url: objectButton.attr("data-url"),
+                   dataType: "json",
+                   success: function() {
+                        window.location.href = objectButton.attr("data-redirect");
+                   },
+                    error: function() {
+                        createNotification("danger", "suppression échouée.", "L'intrigue n'a pas pu être supprimée.");
+                    }
+                });
             }
             return false;
         }
@@ -340,6 +376,9 @@ function initializeTextEditor() {
 
 function convertDescription(description) {
     description = description.replace(/\n/g, '<br>');
+    description = description.replace(/&lt;L:/g, '&lt;l:');
+    description = description.replace(/&lt;I:/g, '&lt;i:');
+    description = description.replace(/&lt;O:/g, '&lt;o:');
     description = description.replace(/&lt;l:Art:/g, '<span class="label label-warning" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -401,7 +440,7 @@ function initializePopover() {
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"]:not(.label-success)').popover({
+    $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
         placement: 'bottom',
         content: spanPopover,
@@ -414,7 +453,7 @@ function initializePopover() {
         '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
-    $('.label[contenteditable="false"].label-success').popover({
+    $('.richTextEditor .label[contenteditable="false"].label-success').popover({
         html: 'true',
         placement: 'bottom',
         content: spanPopoverRole,
@@ -422,7 +461,7 @@ function initializePopover() {
         delay: { "show": 0, "hide": 0 }
     });
 
-    $('.label[contenteditable="false"]').on("shown.bs.popover", function () {
+    $('.richTextEditor .label[contenteditable="false"]').on("shown.bs.popover", function () {
         if ($('.popover').size() > 1) {
             $(this).popover('hide');
         }
@@ -450,7 +489,7 @@ function initializePopover() {
 function initializeClosingPopover() {
     $('body').mousedown(function (e) {
         if ($('.popover').size() != 0) {
-            if (!$(element).is(e.target) && $(element).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            if (typeof element !== "undefined" && !$(element).is(e.target) && $(element).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
                 if ($(element).attr("data-tag") == "Per" || $(element).attr("data-tag").match("^M#")) {
                     var newtag = "M#" + $('.popover input[placeholder="Masculin"]').val() + ";F#" + $('.popover input[placeholder="Féminin"]').val() + ";";
                     $(element).attr("data-tag", newtag);

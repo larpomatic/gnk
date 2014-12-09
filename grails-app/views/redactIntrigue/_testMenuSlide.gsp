@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<g:resource dir="css" file="testMenuSlide.css"/>" type="text/css">
 <section id="article27" class="crayon article-css-27 demoTime">
     <div class="pull-right autorField">
-        <g:message code="redactintrigue.autor" default="Autor"/> : ${plotInstance.user.firstname} ${plotInstance.user.lastname}
+        ${plotInstance.user.firstname} ${plotInstance.user.lastname}
     </div>
     <div id="demoWrap">
         <div id="wrap1">

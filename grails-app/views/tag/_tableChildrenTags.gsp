@@ -18,8 +18,9 @@
                 </th>
             </g:hasRights>
         </g:hasRights>
-        <th>Tag fils</th>
-
+        <th>
+            Tag fils
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -48,14 +49,9 @@
                 </g:hasRights>
             </g:hasRights>
             <td>
-                <g:form controller="tag" action="list">
-                    <select name="childrenTag">
-                        <g:each in="${tagInstance.children}" var="tag">
-                            <option value= ${tag.id}><${tag.name}</option>
-                        </g:each>
-                    </select>
-                    <button type="submit" class="btn btn-small btn-primary">Soumettre</button>
-                </g:form>
+                <a href="#tagListmodal${tagInstance.id}" class="btn" data-toggle="modal">
+                    Tag fils
+                </a>
             </td>
         </tr>
     </g:each>
@@ -65,3 +61,4 @@
 <!-- Modal Views -->
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
+<g:render template="detailTagChildren"/>

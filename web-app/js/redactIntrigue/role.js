@@ -33,7 +33,7 @@ $(function(){
                     initSearchBoxes();
                     initModifyTag();
                     stopClosingDropdown();
-                    if (!data.role.type == "STF") {
+                    if (data.role.type != "STF") {
                         appendEntity("role", data.role.code, "success", "", data.role.id);
                     }
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;

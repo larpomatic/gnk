@@ -129,6 +129,10 @@ class Plot {
         return PlotHasTag.findByTagAndPlot(tag, this);
     }
 
+    public getPlotHasTag() {
+        return PlotHasTag.findAllByPlot(this).sort { -it.weight };
+    }
+
 //    public boolean hasUnivers(Tag tagUnivers) {
 //        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
 //            if (plotHasUnivers.univers == parUnivers) {
@@ -190,5 +194,14 @@ class Plot {
             }
         }
         return result;
+    }
+
+    public String getMetric() {
+        String newLigne = "<br />";
+        String role = "Nb Roles : " + this.roles.size();
+        String res = "Nb Ressources : " + this.genericResources.size();
+        String place = "Nb Lieux : " + this.genericPlaces.size();
+        String evt = "Nb Evénements : " + this.events.size();
+        return role + newLigne + res + newLigne + place + newLigne +evt;
     }
 }

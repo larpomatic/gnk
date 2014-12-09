@@ -9,8 +9,13 @@ class Node{
     ArrayList<Edge> edges;
 
     Node(Character c) {
-        this.id = c.firstname + " " + c.lastname.toUpperCase()
-        this.name = c.firstname + " " + c.lastname.toUpperCase()
+        if (c.firstname != null || c.lastname != null) {
+            this.id = c.firstname + " " + c.lastname.toUpperCase()
+            this.name = c.firstname + " " + c.lastname.toUpperCase()
+        } else {
+            this.id = "CHAR-" + c.getDTDId();
+            this.name = "CHAR-" + c.getDTDId();
+        }
         if (c.isMen())
             this.color = "#0040FF"
         else if (c.isWomen())
