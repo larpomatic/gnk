@@ -38,13 +38,15 @@ class PublicationController {
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         gn.step = "substitution";
-        /*
-        Set<Firstname> firstnameSet
-    Set<Name> lastnameSet
 
-    Set<Resource> resourceSet
-    Set<Place> placeSet
-         */
+        gn.setFirstnameSet(null);
+        gn.setLastnameSet(null);
+        gn.setResourceSet(null);
+        gn.setPlaceSet(null);
+
+        gn.step = "substitution";
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");

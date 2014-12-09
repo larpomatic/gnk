@@ -59,7 +59,7 @@
             var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
             var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
             var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
+        if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
             // SubJSON construction
             var subJSON = new Object();
             subJSON.gnDbId = ${gnInfo.dbId};

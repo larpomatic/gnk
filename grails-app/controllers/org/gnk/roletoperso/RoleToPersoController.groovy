@@ -373,6 +373,7 @@ class RoleToPersoController {
          characterList: gn.characterSet,
          allList: algo.gnTPJRoleSet,
          PHJList: gn.nonPlayerCharSet,
+         STFList: gn.staffCharSet,
          characterListToDropDownLock: characterListToDropDownLock,
          evenementialId: evenementialId,
          relationjson: json_relation,

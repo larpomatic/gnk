@@ -72,7 +72,7 @@ public class RoleToPersoProcessing {
             c.setType("STF");
             c.setGender('N');
             c.addRole(r);
-            this.gn.nonPlayerCharSet.add(c);
+            this.gn.staffCharSet.add(c);
         }
     }
 
