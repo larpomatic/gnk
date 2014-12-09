@@ -111,11 +111,12 @@ class PublicationController {
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
-        Graph graph = new Graph(gn)
+        Graph globalGraph = new Graph(gn)
+        Graph charGraph = new Graph(gn,false)
         ArrayList<String> JsonList = new ArrayList<String>()
         ArrayList<String> JsonCharList = new ArrayList<String>()
-        for (org.gnk.roletoperso.Node node : graph.nodeList){
-            JsonList.add(graph.buildCharGraphJSON(node))
+        for (org.gnk.roletoperso.Node node : charGraph.nodeList){
+            JsonList.add(charGraph.buildCharGraphJSON(node))
             JsonCharList.add(node.name)
         }
         [
@@ -129,7 +130,7 @@ class PublicationController {
                 gnId: id,
                 universName: uniName,
                 templateWordList: templateWordList,
-                globalrelationjson: graph.buildGlobalGraphJSON(),
+                globalrelationjson: globalGraph.buildGlobalGraphJSON(),
                 relationjsonlist: JsonList,
                 jsoncharlist : JsonCharList
         ]
@@ -903,7 +904,7 @@ class PublicationController {
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty())
             {
-                wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle du personnage")
+                wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
                 wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
             }
 
