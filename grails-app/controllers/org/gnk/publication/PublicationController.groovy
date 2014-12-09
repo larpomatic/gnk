@@ -141,9 +141,11 @@ class PublicationController {
         ArrayList<String> imgSrcList = new ArrayList<String>()
         imgSrcList = params.get("imgsrc").replace("data:image/png;base64,","").split(";;")
         ArrayList<String> jsoncharlist = new ArrayList<String>()
-        jsoncharlist.add("GLOBAL")
-        jsoncharlist.addAll(params.get("jsoncharlist").toString().replace("[", "").replace("]","").split(", "))
         imgSrcList.remove(new String(""))
+        if (!imgSrcList.isEmpty()){
+            jsoncharlist.add("GLOBAL")
+            jsoncharlist.addAll(params.get("jsoncharlist").toString().replace("[", "").replace("]","").split(", "))
+        }
         def id = params.gnId as Integer
         String tmpWord = params.templateWordSelect as String
        // Gn getGn = null
@@ -196,7 +198,7 @@ class PublicationController {
 
 
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication(ArrayList<String> jsoncharlist, String fileName) {
+    public WordprocessingMLPackage createPublication(ArrayList<String> jsoncharlist , String fileName) {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -710,7 +712,7 @@ class PublicationController {
     }
 
     //Génère le dossier PJ
-    private createPJFile(ArrayList<String> jsoncharlist=null, String fileName=null) {
+    private createPJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
@@ -736,7 +738,7 @@ class PublicationController {
     }
 
     //Génère le dossier PNJ
-    private createPNJFile(ArrayList<String> jsoncharlist=null, String fileName=null) {
+    private createPNJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -762,7 +764,7 @@ class PublicationController {
     }
 
     //Génère le dossier PHJ
-    private createPHJFile(ArrayList<String> jsoncharlist=null, String fileName=null) {
+    private createPHJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -788,7 +790,7 @@ class PublicationController {
     }
 
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
-    private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist=null, String fileName=null) {
+    private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist=[], String fileName=null) {
         for (Character c : listCharacters) {
             Br br = wordWriter.factory.createBr()
             br.setType(STBrType.PAGE)

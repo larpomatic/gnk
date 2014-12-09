@@ -46,6 +46,7 @@ function initGraph(relationjson, idInfovis, index){
         $("#relationGraphLoader").hide();
         document.getElementById("WordButtonPublication").disabled = false;
         document.getElementById('RelationGraphContainer').style.display ="none";
+        document.getElementById("IncludeGraphRelation").disabled = false;
         return;
     }
     // init data

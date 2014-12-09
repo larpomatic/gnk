@@ -135,12 +135,14 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('RelationGraphContainer').style.display = "";
             document.getElementById('relationGraphLoader').style.display = "";
             document.getElementById("WordButtonPublication").disabled = true;
+            document.getElementById("IncludeGraphRelation").disabled = true;
             initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
             document.getElementById("imgsrc").value = null;
             document.getElementById('RelationGraphContainer').style.display ="none";
             document.getElementById('relationGraphLoader').style.display ="none";
             document.getElementById("WordButtonPublication").disabled = false;
+            document.getElementById("IncludeGraphRelation").disabled = false;
         }
     });
 </script>
