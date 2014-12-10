@@ -63,9 +63,9 @@
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						<td>
                             <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEOPEN.value()}" lvlrightAdmin="${right.INTRIGUEOPEN.value()}">
-
-                                <g:link action="show" id="${plotInstance.id}" class="mytool" toggle="tooltip" data-placement="bottom"
-                                        data-original-title="${plotInstance.getMetric()}" title="${plotInstance.name}">${fieldValue(bean: plotInstance, field: "name")}</g:link>
+                                <g:link class="edit mytool" action="edit" id="${plotInstance?.id}" toggle="tooltip" data-placement="bottom" data-original-title="${plotInstance.getMetric()}">
+                                    ${fieldValue(bean: plotInstance, field: "name")}
+                                </g:link>
                             </g:plotOwner>
                             <g:notPlotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEOPEN.value()}" lvlrightAdmin="${right.INTRIGUEOPEN.value()}">
                                 <a href="#" class="mytool" toggle="tooltip" data-placement="bottom" data-original-title="${plotInstance.getMetric()}">${fieldValue(bean: plotInstance, field: "name")}</a>

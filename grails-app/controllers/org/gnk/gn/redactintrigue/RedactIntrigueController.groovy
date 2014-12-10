@@ -69,16 +69,6 @@ class RedactIntrigueController {
 		redirect(action: "show", id: plotInstance.id)
 	}
 
-	def show(Long id) {
-		def plotInstance = Plot.get(id)
-		if (!plotInstance) {
-			redirect(action: "list")
-			return
-		}
-
-		[plotInstance: plotInstance]
-	}
-
 	def edit(Long id) {
 		def plotInstance = Plot.get(id)
 		if (!plotInstance) {
