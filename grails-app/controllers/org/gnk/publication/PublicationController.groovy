@@ -116,10 +116,14 @@ class PublicationController {
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
-        Graph graph = new Graph(gn)
+        Graph globalGraph = new Graph(gn)
+        Graph charGraph = new Graph(gn,false)
         ArrayList<String> JsonList = new ArrayList<String>()
-        for (org.gnk.roletoperso.Node node : graph.nodeList)
-            JsonList.add(graph.buildCharGraphJSON(node))
+        ArrayList<String> JsonCharList = new ArrayList<String>()
+        for (org.gnk.roletoperso.Node node : charGraph.nodeList){
+            JsonList.add(charGraph.buildCharGraphJSON(node))
+            JsonCharList.add(node.name)
+        }
         [
                 title: gn.name,
                 subtitle: createSubTile(),
@@ -131,8 +135,9 @@ class PublicationController {
                 gnId: id,
                 universName: uniName,
                 templateWordList: templateWordList,
-                globalrelationjson: graph.buildGlobalGraphJSON(),
-                relationjsonlist: JsonList
+                globalrelationjson: globalGraph.buildGlobalGraphJSON(),
+                relationjsonlist: JsonList,
+                jsoncharlist : JsonCharList
         ]
     }
 
@@ -141,6 +146,12 @@ class PublicationController {
     def publication = {
         ArrayList<String> imgSrcList = new ArrayList<String>()
         imgSrcList = params.get("imgsrc").replace("data:image/png;base64,","").split(";;")
+        ArrayList<String> jsoncharlist = new ArrayList<String>()
+        imgSrcList.remove(new String(""))
+        if (!imgSrcList.isEmpty()){
+            jsoncharlist.add("GLOBAL")
+            jsoncharlist.addAll(params.get("jsoncharlist").toString().replace("[", "").replace("]","").split(", "))
+        }
         def id = params.gnId as Integer
         String tmpWord = params.templateWordSelect as String
        // Gn getGn = null
@@ -182,7 +193,7 @@ class PublicationController {
 
         publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
         wordWriter = new WordWriter(tmpWord, publicationFolder)
-        wordWriter.wordMLPackage = createPublication("")
+        wordWriter.wordMLPackage = createPublication(jsoncharlist,fileName)
         wordWriter.wordMLPackage.save(output)
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -193,7 +204,7 @@ class PublicationController {
 
 
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication(String GlobalRelationGraphFile) {
+    public WordprocessingMLPackage createPublication(ArrayList<String> jsoncharlist , String fileName) {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -204,7 +215,7 @@ class PublicationController {
         createPitchOrga()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
-        createPlayersTable(GlobalRelationGraphFile)
+        createPlayersTable(jsoncharlist, fileName)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
         createPlotTable()
@@ -228,9 +239,10 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
 
-        createPJFile()
-        createPNJFile()
-        createPHJFile()
+        createPJFile(jsoncharlist, fileName)
+        createPNJFile(jsoncharlist, fileName)
+        createPHJFile(jsoncharlist, fileName)
+        createStaffFolder()
 
         return wordWriter.wordMLPackage
     }
@@ -243,7 +255,7 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des personnages pour les organisateurs
-    def createPlayersTable(String imgFile) {
+    def createPlayersTable(ArrayList<String> jsoncharlist, String fileName) {
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -383,10 +395,10 @@ class PublicationController {
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
 
-        if (!imgFile.isEmpty())
+        if (!jsoncharlist.isEmpty())
         {
             wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
-            wordWriter.addImage(imgFile)
+            wordWriter.addRelationGraph(jsoncharlist, fileName, "GLOBAL")
         }
     }
 
@@ -707,7 +719,7 @@ class PublicationController {
     }
 
     //Génère le dossier PJ
-    private createPJFile() {
+    private createPJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
@@ -729,11 +741,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPJ)
+        createCharactersFile(listPJ,jsoncharlist,fileName)
     }
 
     //Génère le dossier PNJ
-    private createPNJFile() {
+    private createPNJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -755,11 +767,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPNJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages non-joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPNJ)
+        createCharactersFile(listPNJ,jsoncharlist,fileName)
     }
 
     //Génère le dossier PHJ
-    private createPHJFile() {
+    private createPHJFile(ArrayList<String> jsoncharlist=[], String fileName=null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -781,11 +793,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPHJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages Hors-jeu, triés par ordre Alphabétique")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPHJ)
+        createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
-    private createCharactersFile(ArrayList<Character> listCharacters) {
+    private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist=[], String fileName=null) {
         for (Character c : listCharacters) {
             Br br = wordWriter.factory.createBr()
             br.setType(STBrType.PAGE)
@@ -895,6 +907,13 @@ class PublicationController {
 
             }
 
+            // Ajout du Graphe relationnel du personnage
+            if (!jsoncharlist.isEmpty())
+            {
+                wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
+                wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
+            }
+
             if (!hasTags)
                 continue
 
@@ -923,6 +942,48 @@ class PublicationController {
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
+
+    //Création du dossier destiné aux "personnages" dit Staff
+    def createStaffFolder(){
+        HashSet<String> lchar = new HashSet<Character>()
+        for (Character c : gn.staffCharSet)
+            lchar.add(c.lastname + c.firstname)
+        ArrayList<String> lcharSorted = lchar.toList().sort()
+        ArrayList<Character> listStaff = new ArrayList<Character>()
+        for (String cname : lcharSorted)
+            for (Character c2 : gn.staffCharSet)
+                if (cname == (c2.lastname + c2.firstname))
+                    listStaff.add(c2)
+
+        Br br = wordWriter.factory.createBr()
+        br.setType(STBrType.PAGE)
+        wordWriter.addObject(br)
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Staff")
+        wordWriter.addParagraphOfText("Il y a " + listStaff.size() + " personnes dans l'équipe Staff de ce GN dont voici la liste : ")
+        String reslistStaff = ""
+        for (Character c : listStaff)
+            reslistStaff += c.lastname.toUpperCase() + " " + c.firstname + "\n"
+        wordWriter.addParagraphOfText(reslistStaff)
+        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers de l'équipe Staff, triés par ordre Alphabétique, à distribuer aux staff")
+        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        createStaffFile(listStaff)
+    }
+
+    def createStaffFile(ArrayList<Character> listStaff){
+        for (Character c : listStaff) {
+            Br br = wordWriter.factory.createBr()
+            br.setType(STBrType.PAGE)
+            wordWriter.addObject(br)
+            wordWriter.addStyledParagraphOfText("T2", c.firstname + " " + c.lastname)
+
+            wordWriter.addStyledParagraphOfText("T3", "Description")
+            for (Role r : c.getSelectedRoles()){
+                wordWriter.addStyledParagraphOfText("T4", r.code + " - " + r.type)
+                wordWriter.addParagraphOfText(r.description)
+            }
+        }
+    }
+
 
     //Créatiion du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
     def createPitchTablePerso(String typePerso) {

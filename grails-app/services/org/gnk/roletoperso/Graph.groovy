@@ -10,7 +10,7 @@ class Graph {
 
     public ArrayList<Node> nodeList = new ArrayList<Node>()
 
-    Graph(Gn gn) {
+    Graph(Gn gn, boolean getHiddenRelation = true) {
         this.edgeList = new ArrayList<Edge>()
         this.nodeList = new ArrayList<Node>()
         this.gn = gn
@@ -19,7 +19,7 @@ class Graph {
         for (Character c : characters)
             this.addNode(c)
         for (Node n1 : this.nodeList)
-            this.generateEdge(n1)
+            this.generateEdge(n1, getHiddenRelation)
     }
 
     private void addNode(Character c) {
@@ -34,10 +34,14 @@ class Graph {
         n2.edges.add(e2)
     }
 
-    private void generateEdge(Node n1) {
+    private void generateEdge(Node n1, boolean getHiddenRelation = true) {
         for (Node n2 : this.nodeList) {
             if (!n1.id.equals(n2.id)) {
-                String lien1 = n1.c.getRelatedCharactersExceptBijectivesLabel(gn).get(n2.c);
+                String lien1
+                if (getHiddenRelation)
+                    lien1 = n1.c.getRelatedCharactersExceptBijectivesLabel(gn).get(n2.c)
+                else
+                    lien1 = n1.c.getRelatedCharactersExceptBijectivesLabelAndHiddenRelation(gn).get(n2.c)
                 if ((lien1 != null) && (lien1.isEmpty() == false))
                     this.addEdge(n1, n2, lien1)
             }

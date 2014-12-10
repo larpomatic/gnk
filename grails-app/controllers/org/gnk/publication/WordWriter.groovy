@@ -47,6 +47,19 @@ class WordWriter {
         mainPart = wordMLPackage.getMainDocumentPart()
     }
 
+    public void addRelationGraph (ArrayList<String> jsoncharlist, String fileName, String targetedGraph){
+        int i = 0;
+        for (String character : jsoncharlist){
+            if (character.equals(targetedGraph)){
+                this.addImage(fileName + "-" + i.toString() + ".png")
+                return;
+            }
+            else
+                i++
+        }
+        throw new Exception("WordWritter.addRelationGraph : \"" + targetedGraph.toString() + "\" not found")
+    }
+
     public void addImage(String imgFile) throws Exception {
         File file = new File(imgFile)
         // Our utility method wants that as a byte array

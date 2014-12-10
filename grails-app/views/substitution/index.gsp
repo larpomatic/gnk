@@ -67,7 +67,6 @@
             subJSON.subResource = resourcesJSON.resources;
             subJSON.subPlace = placesJSON.places;
             subJSON.subDate = datesJSON;
-            subJSON.globalRelationGraph = document.getElementById("relationjson").value;
 
             // Form creation and submit
             var form = $("<form>");
