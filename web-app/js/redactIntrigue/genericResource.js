@@ -280,7 +280,7 @@ function getBestResource()
                         cont.append(row);
                     }
                 });
-                if (add < 1) {
+                if (add <= 1) {
                     var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
                     var cont = $('#modalBestResource');
                     cont.append(label);

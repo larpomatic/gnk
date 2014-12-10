@@ -154,7 +154,7 @@
 
     <div id="modalBestPlace" class="modal-body">
         <select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
-            <option></option>
+            <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>
             <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
                 <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
             </g:each>
