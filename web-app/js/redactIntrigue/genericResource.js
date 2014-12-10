@@ -258,6 +258,9 @@ function getBestResource()
             .attr("type", "hidden")
             .attr("name", "univerTag").val($(this).val());
         form.append(input);
+
+        $('.ressLoader').css('display', '');
+
         $.ajax({
             type: "POST",
             url: url,
@@ -285,8 +288,10 @@ function getBestResource()
                     var cont = $('#modalBestResource');
                     cont.append(label);
                 }
+                $('.ressLoader').css('display', 'none');
             },
             error: function() {
+                $('.ressLoader').css('display', 'none');
                 createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs ressources correspondant à vos critères.");
             }
         })
