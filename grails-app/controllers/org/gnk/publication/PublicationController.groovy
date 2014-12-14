@@ -17,6 +17,8 @@ import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.resplacetime.Resource
+import org.gnk.ressplacetime.GenericPlace
+import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.Role
@@ -44,12 +46,14 @@ class PublicationController {
         gnData.ReadDTD(gn);
         gn.step = "substitution";
 
-        //gn.setFirstnameSet(new HashSet<Firstname>());
-        //gn.setLastnameSet(new HashSet<Name>());
-        //gn.setResourceSet(new HashSet<Resource>());
-        //gn.setPlaceSet(new HashSet<Place>());
-        //gn.setDtd("");
-        gn.step = "substitution";
+        for (Plot p : gn.getSelectedPlotSet())
+        {
+            for (GenericPlace gnplace : p.getGenericPlaces())
+                gnplace.setResultList(new ArrayList<ReferentialPlace>());
+        }
+        gn.setPlaceSet(new HashSet<Place>());
+
+        //gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
