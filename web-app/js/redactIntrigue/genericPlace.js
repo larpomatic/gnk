@@ -243,6 +243,8 @@ function getBestPlace()
             .attr("name", "univerTag").val($(this).val());
         form.append(input);
 
+        $('.placeLoader').css('display', '');
+
         $.ajax({
             type: "POST",
             url: url,
@@ -270,8 +272,10 @@ function getBestPlace()
                     var cont = $('#modalBestPlace');
                     cont.append(label);
                 }
+                $('.placeLoader').css('display', 'none');
             },
             error: function() {
+                $('.placeLoader').css('display', 'none');
                 createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })

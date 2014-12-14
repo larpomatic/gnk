@@ -16,7 +16,8 @@
             <input type="hidden" value="${gnId}" name="gnId"/>
             <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
             <input id="imgsrc" type="hidden" value="" name="imgsrc"/>
-            <button class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
+            <input id="jsoncharlist" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
+            <button id="WordButtonPublication" class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
         </form>
     </div>
 
@@ -40,9 +41,25 @@
     </g:each>
 <br><br>
         <FORM>
-            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..." (chargement ${counter} secondes)
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..."
         </FORM>
     <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+</div><div id="pubAlertContainer">
+</div>
+<div class="row-fluid" id="RelationGraphContainer" style="none">
+    <div class="span12" id="Relations">
+        <div class="panel panel-default">
+            <div style="overflow: auto; height:500px" id="container">
+                <g:hiddenField id="relationjson0" name="relationjson0" value="${globalrelationjson}"/>
+                <div id="infovis">
+                </div>
+                <g:render template="/publication/relationGraph"></g:render>
+            </div>
+            <div class="legend">
+            </div>
+        </br>
+        </div>
+    </div>
 </div>
 <div class="row-fluid">
     <div class="span3">
@@ -87,21 +104,7 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
 
 
 <h3>Synthèse des personnages du GN</h3>
-<div class="row-fluid" id="RelationGraphContainer" >
-    <div class="span12" id="Relations">
-        <div class="panel panel-default">
-            <div style="overflow: auto; height:500px;" id="container">
-                <g:hiddenField id="relationjson0" name="relationjson0" value="${globalrelationjson}"/>
-                <div id="infovis">
-                </div>
-                <g:render template="/publication/relationGraph"></g:render>
-            </div>
-            <div class="legend">
-            </div>
-        </br>
-        </div>
-    </div>
-</div>
+
 
 
 <TABLE BORDER="1" CELLPADDING="10">
@@ -131,11 +134,15 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         if(document.getElementById("IncludeGraphRelation").checked == true) {
             document.getElementById('RelationGraphContainer').style.display = "";
             document.getElementById('relationGraphLoader').style.display = "";
+            document.getElementById("WordButtonPublication").disabled = true;
+            document.getElementById("IncludeGraphRelation").disabled = true;
             initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
             document.getElementById("imgsrc").value = null;
             document.getElementById('RelationGraphContainer').style.display ="none";
             document.getElementById('relationGraphLoader').style.display ="none";
+            document.getElementById("WordButtonPublication").disabled = false;
+            document.getElementById("IncludeGraphRelation").disabled = false;
         }
     });
 </script>

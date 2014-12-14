@@ -59,7 +59,7 @@
             var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
             var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
             var isDatesReady = prepareDatesJSONForValidation(datesJSON);
-            if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
+        if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
             // SubJSON construction
             var subJSON = new Object();
             subJSON.gnDbId = ${gnInfo.dbId};
@@ -67,7 +67,6 @@
             subJSON.subResource = resourcesJSON.resources;
             subJSON.subPlace = placesJSON.places;
             subJSON.subDate = datesJSON;
-            subJSON.globalRelationGraph = document.getElementById("relationjson").value;
 
             // Form creation and submit
             var form = $("<form>");

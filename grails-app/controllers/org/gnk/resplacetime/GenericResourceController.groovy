@@ -11,7 +11,7 @@ import org.gnk.tag.TagService
 
 class GenericResourceController {
 
-//    ResourceService resourceService;
+    //ResourceService resourceService;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 

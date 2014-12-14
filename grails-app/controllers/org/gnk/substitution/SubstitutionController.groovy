@@ -193,12 +193,13 @@ class SubstitutionController {
             //return
             // Save in DataBase
             gnkDataContainerService.gn.dtd = xmlGN;
+            gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
             }
             // Go to publication
-            redirect(controller: "publication", action: "index", params: [gnId: gnDbId, relationjson: subJSON.globalRelationGraph])
+            redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
     }
