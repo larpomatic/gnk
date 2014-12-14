@@ -224,11 +224,12 @@ class Gn {
         return null;
     }
 
-    Set<Character> getStaffCharSet() {
+    public Set<Character> getStaffCharSet() {
         if (this.staffCharSet == null)
-            this.staffCharSet = new HashSet<>();
+            this.staffCharSet = new HashSet<Character>();
         return staffCharSet
     }
+
 
     void setStaffCharSet(Set<Character> staffCharSet) {
         this.staffCharSet = staffCharSet

@@ -149,6 +149,7 @@ class GnXMLWriterService {
 
 
         final Set<Character> characterSet = gn.getCharacterSet()
+        final Set<Character> stafchar = gn.getStaffCharSet()
         CharacterXMLWriterService characterWriter = new CharacterXMLWriterService()
         if (characterSet != null) {
             for (Character character : characterSet) {
@@ -157,6 +158,10 @@ class GnXMLWriterService {
             }
         }
         for (Character character : gn.getterNonPlayerCharSet()) {
+            Element characterElt = characterWriter.getCharacterElement(doc, character)
+            roleToPersoElement.appendChild(characterElt)
+        }
+        for (Character character : stafchar) {
             Element characterElt = characterWriter.getCharacterElement(doc, character)
             roleToPersoElement.appendChild(characterElt)
         }

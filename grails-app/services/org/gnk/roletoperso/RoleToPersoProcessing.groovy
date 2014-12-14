@@ -63,7 +63,7 @@ public class RoleToPersoProcessing {
 
     private void createSTFCharacter()
     {
-        gn.nonPlayerCharSet.removeAll{ it.type.equals("STF") };
+        gn.setStaffCharSet(new HashSet<Character>());
         int nb = this.gn.nonPlayerCharSet.size() + this.gn.characterSet.size();
         for (Role r in this.gnSTFRoleSet) {
             nb += 1;
@@ -72,7 +72,7 @@ public class RoleToPersoProcessing {
             c.setType("STF");
             c.setGender('N');
             c.addRole(r);
-            this.gn.staffCharSet.add(c);
+            this.gn.getStaffCharSet().add(c);
         }
     }
 
