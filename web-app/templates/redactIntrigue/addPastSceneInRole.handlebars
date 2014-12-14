@@ -9,27 +9,29 @@
 
             {{#pastSceneTime pastscene}}{{/pastSceneTime}}
 
-            {{ pastscene.title }}
+            {{ encodeAsHtml pastscene.title }}
         </a>
     </div>
     <div id="collapsePastScene{{ role.roleId }}-{{ pastscene.id }}" class="accordion-body collapse">
         <div class="accordion-inner">
             <div class="formRow">
-                <div class="span1">
-                    Titre
-                </div>
-                <div class="span8">
-                    <input type="text" disabled="disabled" name="roleHasPastSceneTitle{{ pastscene.id }}" value="{{role.title}}" id="roleHasPastSceneTitle{{ pastscene.id }}">
+                <div class="row formRow text-center">
+                    <label>
+                        Titre
+                    </label>
                 </div>
             </div>
+            <div contenteditable="false" class="text-left richTextEditor textTitle">
+                {{ role.title }}
+            </div>
             <div class="row formRow text-center">
-                <label for="roleDescription">
+                <label>
                     Description
                 </label>
             </div>
-            <textarea disabled="disabled" name="roleHasPastSceneDescription{{ pastscene.id }}" rows="5" cols="100" id="roleHasPastSceneDescription{{ pastscene.id }}">
-                {{role.description}}
-            </textarea>
+            <div contenteditable="false" class="text-left richTextEditor">
+                {{ role.description }}
+            </div>
         </div>
     </div>
 </div>

@@ -82,16 +82,17 @@ class PastSceneController {
                 object(isupdate: saveOrUpdate(pastscene),
                         id: pastscene.id,
                         name: pastscene.title,
-                        year: pastscene.dateYear,
-                        month: g.timeMonth(month: pastscene.dateMonth),
-                        day: pastscene.dateDay,
-                        hour: pastscene.dateHour,
-                        minute: pastscene.dateMinute,
-                        yearIsAbsolute: pastscene.isAbsoluteYear,
-                        monthIsAbsolute: pastscene.isAbsoluteMonth,
-                        dayIsAbsolute: pastscene.isAbsoluteDay,
-                        hourIsAbsolute: pastscene.isAbsoluteHour,
-                        minuteIsAbsolute: pastscene.isAbsoluteMinute
+                        Year: pastscene.dateYear,
+                        MonthLetters: g.timeMonth(month: pastscene.dateMonth),
+                        Month: pastscene.dateMonth,
+                        Day: pastscene.dateDay,
+                        Hour: pastscene.dateHour,
+                        Minute: pastscene.dateMinute,
+                        isAbsoluteYear: pastscene.isAbsoluteYear,
+                        isAbsoluteMonth: pastscene.isAbsoluteMonth,
+                        isAbsoluteDay: pastscene.isAbsoluteDay,
+                        isAbsoluteHour: pastscene.isAbsoluteHour,
+                        isAbsoluteMinute: pastscene.isAbsoluteMinute
                         )
             }
         }

@@ -6,38 +6,44 @@
     {{/if}}
         <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionEvent{{ role.roleId }}"
            href="#collapseEvent{{ role.roleId }}-{{ event.id }}" data-eventId="{{ event.id }}">
-            {{ event.timing }}% - {{ event.name }}
+            {{ event.timing }}% - {{ encodeAsHtml event.name }}
         </a>
     </div>
     <div id="collapseEvent{{ role.roleId }}-{{ event.id }}" class="accordion-body collapse">
         <div class="accordion-inner">
             <div class="formRow">
+                <div class="row formRow text-center">
+                    <label>
+                        Titre
+                    </label>
+                </div>
+            </div>
+            <div contenteditable="false" class="text-left richTextEditor textTitle">
+                {{ role.title }}
+            </div>
+            <div class="formRow text-center">
+                <div class="span4"></div>
+                <div class="span2">
+                    <label>
+                        Est annoncé
+                    </label>
+                </div>
                 <div class="span1">
-                    Titre
-                </div>
-                <div class="span4">
-                    <input disabled="disabled" type="text" name="roleHasEventTitle{{ event.id }}" value="{{role.title}}" id="roleHasEventTitle{{ event.id }}">
-                </div>
-                <div class="span1">
-                    Est annoncé
-                </div>
-                <div class="span4">
                     {{#if role.isAnnounced}}
                         <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ event.id }}" id="roleHasEventannounced{{ event.id }}" checked="checked">
                     {{else}}
                         <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ event.id }}" id="roleHasEventannounced{{ event.id }}">
                     {{/if}}
-
                 </div>
             </div>
             <div class="row formRow text-center">
-                <label for="roleDescription">
+                <label>
                     Description
                 </label>
             </div>
-            <textarea disabled="disabled" name="roleHasEventDescription{{ event.id }}" rows="5" cols="100" id="roleHasEventDescription{{ event.id }}">
-                {{role.description}}
-            </textarea>
+            <div contenteditable="false" class="text-left richTextEditor">
+                {{ role.description }}
+            </div>
         </div>
     </div>
 </div>
