@@ -202,6 +202,6 @@ class Plot {
         String res = "Nb Ressources : " + this.genericResources.size();
         String place = "Nb Lieux : " + this.genericPlaces.size();
         String evt = "Nb Evénements : " + this.events.size();
-        return role + newLigne + res + newLigne + place + newLigne +evt;
+        return "<b>" + this.name + "</b>" + newLigne + role + newLigne + res + newLigne + place + newLigne +evt;
     }
 }

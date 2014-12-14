@@ -7,6 +7,8 @@ import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
+import org.gnk.naming.Firstname
+import org.gnk.naming.Name
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
@@ -42,11 +44,11 @@ class PublicationController {
         gnData.ReadDTD(gn);
         gn.step = "substitution";
 
-        gn.setFirstnameSet(null);
-        gn.setLastnameSet(null);
-        gn.setResourceSet(null);
-        gn.setPlaceSet(null);
-
+        //gn.setFirstnameSet(new HashSet<Firstname>());
+        //gn.setLastnameSet(new HashSet<Name>());
+        //gn.setResourceSet(new HashSet<Resource>());
+        //gn.setPlaceSet(new HashSet<Place>());
+        //gn.setDtd("");
         gn.step = "substitution";
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);

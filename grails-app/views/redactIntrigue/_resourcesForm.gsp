@@ -204,12 +204,14 @@
         </div>
 
         <div id="modalBestResource" class="modal-body">
+            <div class="span1 ressLoader" style="display:none;"></div>
             <select class="form-control" id="selectUniversResource" data-url="<g:createLink controller="GenericResource" action="getBestResources"/>" name="univerTag">
-                <option></option>
+                <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>
                 <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
                     <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
                 </g:each>
             </select>
+            <div class="span1 ressLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
             <br>
             <ul id="listContainerResource" class="unstyled">
                 <li id="templateBestResource" class="hidden">TEMPLATE</li>
