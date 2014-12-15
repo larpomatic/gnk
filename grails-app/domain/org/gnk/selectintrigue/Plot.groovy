@@ -50,7 +50,6 @@ class Plot {
 
     static hasMany = [ events: Event,
             extTags: PlotHasTag,
-            plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
             genericResources: GenericResource,
