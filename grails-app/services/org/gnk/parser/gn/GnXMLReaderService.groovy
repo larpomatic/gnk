@@ -6,7 +6,6 @@ import org.gnk.parser.character.CharacterXMLReaderService
 import org.gnk.roletoperso.Character
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
-import org.gnk.tag.Univers
 
 import java.sql.Timestamp
 

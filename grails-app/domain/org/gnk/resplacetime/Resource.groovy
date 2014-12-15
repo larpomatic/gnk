@@ -18,8 +18,7 @@ class Resource {
 
 //    static belongsTo = [ genericResource: GenericResource] // Dump20131114-version 2.1
 
-	static hasMany = [ extTags: ResourceHasTag,
-	                   resourceHasUniverses: ResourceHasUnivers ]
+	static hasMany = [ extTags: ResourceHasTag]
 
 	static constraints = {
 		name (maxSize: 45)

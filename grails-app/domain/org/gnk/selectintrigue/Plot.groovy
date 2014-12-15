@@ -6,12 +6,7 @@ import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
 import org.gnk.tag.TagRelevant
-import org.gnk.tag.TagService
-import org.gnk.tag.Univers
 import org.gnk.user.User
-import org.hibernate.Hibernate
-import org.hibernate.proxy.HibernateProxy
-import org.hibernate.proxy.HibernateProxyHelper
 
 class Plot {
 
@@ -50,7 +45,6 @@ class Plot {
 
     static hasMany = [ events: Event,
             extTags: PlotHasTag,
-            plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
             genericResources: GenericResource,

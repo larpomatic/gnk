@@ -13,22 +13,20 @@ import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
-import org.gnk.resplacetime.PlaceHasUnivers
+
 import org.gnk.resplacetime.Resource
 import org.gnk.resplacetime.ResourceHasTag
-import org.gnk.resplacetime.ResourceHasUnivers
+
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.roletoperso.RoleHasPastscene
-import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
-import org.gnk.selectintrigue.PlotHasUnivers
+
 import org.gnk.tag.Tag
 //import org.gnk.tag.TagFamily
-import org.gnk.tag.Univers
 
 /**
  * Created with IntelliJ IDEA.
@@ -185,11 +183,11 @@ class GNKImportationService {
         }
 
         // Update PlotHasUniverse
-        List<PlotHasUnivers> plotHasUniversesList = []
-        plot.plotHasUniverses.each {plotHasUnivers ->
-            plotHasUnivers.univers = getUnivers(plotHasUnivers.univers)
-            plotHasUniversesList.add(plotHasUnivers)
-        }
+//        List<PlotHasUnivers> plotHasUniversesList = []
+//        plot.plotHasUniverses.each {plotHasUnivers ->
+//            plotHasUnivers.univers = getUnivers(plotHasUnivers.univers)
+//            plotHasUniversesList.add(plotHasUnivers)
+//        }
         plotBDD.plotHasUniverses = []
         plotHasUniversesList.each {plotHasUniverse ->
             plotBDD.addToPlotHasUniverses(plotHasUniverse)
@@ -248,8 +246,8 @@ class GNKImportationService {
         return tagBDD
     }
 
-    private Univers getUnivers(Univers univers){
-        Univers universBDD = Univers.findByName(univers.name)
+    private Tag getUnivers(Tag univers){
+        Tag universBDD = Tag.findByName(univers.name)
 
         if (!universBDD)
             universBDD = univers
@@ -349,12 +347,12 @@ class GNKImportationService {
             placeBDD.addToExtTags(placeHasTag)
         }
         
-        // Update placeHasUniverses
-        List<PlaceHasUnivers> placeHasUniverses = []
-        place.placeHasUniverses.each { placeHasUnivers ->
-            placeHasUnivers.univers = getUnivers(placeHasUnivers.univers)
-            placeHasUniverses.add(placeHasUnivers)
-        }
+//        // Update placeHasUniverses
+//        List<PlaceHasUnivers> placeHasUniverses = []
+//        place.placeHasUniverses.each { placeHasUnivers ->
+//            placeHasUnivers.univers = getUnivers(placeHasUnivers.univers)
+//            placeHasUniverses.add(placeHasUnivers)
+//        }
         placeBDD.placeHasUniverses = []
         placeHasUniverses.each {placeHasUniverse ->
             placeBDD.addToPlaceHasUniverses(placeHasUniverse)
@@ -531,12 +529,12 @@ class GNKImportationService {
             resourceBDD.addToExtTags(resourceHasTag)
         }
         
-        // Updated resourceHasUniverses
-        List<ResourceHasUnivers> resourceHasUniverses = []
-        resource.resourceHasUniverses.each { resourceHasUnivers ->
-            resourceHasUnivers.univers = getUnivers(resourceHasUnivers.univers)
-            resourceHasUniverses.add(resourceHasUnivers)
-        }
+//        // Updated resourceHasUniverses
+//        List<ResourceHasUnivers> resourceHasUniverses = []
+//        resource.resourceHasUniverses.each { resourceHasUnivers ->
+//            resourceHasUnivers.univers = getUnivers(resourceHasUnivers.univers)
+//            resourceHasUniverses.add(resourceHasUnivers)
+//        }
         resourceBDD.resourceHasUniverses = []
         resourceHasUniverses.each {resourceHasUniverse ->
             resourceBDD.addToResourceHasUniverses(resourceHasUniverse)

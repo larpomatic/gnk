@@ -1,8 +1,6 @@
 package org.gnk.roletoperso
 
 import com.esotericsoftware.minlog.Log
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.genericevent.GenericEvent
 import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
@@ -10,7 +8,7 @@ import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.tag.TagService
-import org.gnk.tag.Univers
+
 import org.gnk.tag.Tag
 
 class RoleToPersoController {

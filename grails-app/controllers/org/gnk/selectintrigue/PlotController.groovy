@@ -2,9 +2,6 @@ package org.gnk.selectintrigue
 
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
-import org.gnk.tag.Univers
-import sun.nio.cs.StreamEncoder
-
 
 class PlotController {
 

@@ -20,8 +20,7 @@ class Place {
 
     static belongsTo = [genericPlace: GenericPlace]
 
-	static hasMany = [ extTags: PlaceHasTag,
-	                   placeHasUniverses: PlaceHasUnivers]
+	static hasMany = [ extTags: PlaceHasTag]
 
 	static constraints = {
 		name maxSize: 45

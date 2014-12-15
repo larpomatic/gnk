@@ -313,12 +313,16 @@ class InputHandler {
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
+                else
+                    println("InputHandler: Generic place is null ?")
             }
             for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
+                else
+                    println("InputHandler: Generic place is null ?")
             }
         }
     }
