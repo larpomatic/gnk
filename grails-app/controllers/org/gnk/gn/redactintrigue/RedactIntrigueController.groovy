@@ -15,10 +15,9 @@ import org.gnk.roletoperso.RoleHasTag
 import org.gnk.roletoperso.RoleRelationType
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
-import org.gnk.selectintrigue.PlotHasUnivers
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService;
-import org.gnk.tag.Univers
+
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder

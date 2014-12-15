@@ -83,14 +83,14 @@ class PlaceService {
                     }
 
                     // Universe information addition
-                    if (placeHasTag.place.placeHasUniverses)
-                    {
-                        LinkedList<PlaceHasUnivers> placeHasUniversesList = placeHasTag.place.placeHasUniverses
-                        for (PlaceHasUnivers placeHasUnivers : placeHasUniversesList) {
-                            String universe = placeHasUnivers.univers.name
-                            referentialPlace.universeList.add(universe)
-                        }
-                    }
+//                    if (placeHasTag.place.placeHasUniverses)
+//                    {
+//                        LinkedList<PlaceHasUnivers> placeHasUniversesList = placeHasTag.place.placeHasUniverses
+//                        for (PlaceHasUnivers placeHasUnivers : placeHasUniversesList) {
+//                            String universe = placeHasUnivers.univers.name
+//                            referentialPlace.universeList.add(universe)
+//                        }
+//                    }
 
                     referentialPlacesList.add(referentialPlace)
                 }

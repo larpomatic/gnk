@@ -5,6 +5,7 @@ import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.roletoperso.RoleHasRelationWithRole
@@ -19,6 +20,7 @@ class InputHandler {
     List<Place> placeList
     List<Pastscene> pastsceneList
     List<Event> eventList
+    org.gnk.ressplacetime.GenericResource genericResource
 
     public void parseGN(String gnString) {
         // Reader
@@ -38,8 +40,7 @@ class InputHandler {
         createData(gnInst)
     }
 
-    private void changeCharSex(Gn gn, List<String> sexes)
-    {
+    private void changeCharSex(Gn gn, List<String> sexes) {
         for (org.gnk.roletoperso.Character c in gn.getterCharacterSet()) {
             String sex = sexes.find { it.toString().startsWith(c.getDTDId() + "-") };
             if ((sex != null) && (sex != "false") && (sex != "") && (sex != "NO")) {
@@ -129,7 +130,7 @@ class InputHandler {
     private void createCharacterList(Gn gnInst) {
         characterList = []
 
-        for(character in gnInst.characterSet) {
+        for (character in gnInst.characterSet) {
             Character characterData = new Character()
 
             // Id
@@ -156,14 +157,14 @@ class InputHandler {
             characterData.relationList = []
             String r1 = ""
             String r2 = ""
-            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
+            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()) {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
-                        || (rrr.getterRoleRelationType().name).equals("Mariage")){
+                        || (rrr.getterRoleRelationType().name).equals("Mariage")) {
                     RelationCharacter relationChar = new RelationCharacter()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
-                    if(!r1.equals("") && !r2.equals("")){
+                    if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
                         relationChar.role1 = r1
                         relationChar.role2 = r2
@@ -176,7 +177,7 @@ class InputHandler {
 
             characterList.add(characterData)
         }
-        for(character in gnInst.nonPlayerCharSet) {
+        for (character in gnInst.nonPlayerCharSet) {
             Character characterData = new Character()
 
             // Id
@@ -203,14 +204,14 @@ class InputHandler {
             characterData.relationList = []
             String r1 = ""
             String r2 = ""
-            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()){
+            for (RoleHasRelationWithRole rrr : character.getRelations(false)?.keySet()) {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
-                        || (rrr.getterRoleRelationType().name).equals("Mariage")){
+                        || (rrr.getterRoleRelationType().name).equals("Mariage")) {
                     RelationCharacter relationChar = new RelationCharacter()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
-                    if(!r1.equals("") && !r2.equals("")){
+                    if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
                         relationChar.role1 = r1
                         relationChar.role2 = r2
@@ -229,7 +230,7 @@ class InputHandler {
         resourceList = []
 
         // Iterate generic resources
-        for(plot in gnInst.selectedPlotSet) {
+        for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
 
             for (GenericResource genericResource : plot.genericResources) {
@@ -244,6 +245,8 @@ class InputHandler {
                 resource.comment = genericResource.comment
                 // Plot name
                 resource.plot = plot.name
+                // ObjectType
+                resource.objectType = genericResource.objectType.type
 
                 // TagList
                 resource.tagList = []
@@ -303,25 +306,29 @@ class InputHandler {
     private void createPlaceList(Gn gnInst) {
         placeList = []
 
-        for(plot in gnInst.selectedPlotSet) {
+        for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
-            for(pastScene in plot.pastescenes) {
+            for (pastScene in plot.pastescenes) {
                 GenericPlace genericPlace = pastScene.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
+                else
+                    println("InputHandler: Generic place is null ?")
             }
-            for(event in plot.events) {
+            for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
+                else
+                    println("InputHandler: Generic place is null ?")
             }
         }
     }
 
     private Boolean isGenericPlaceInList(List<Place> placeList, String plotId, String genericPlaceId) {
-        for(genericPlace in placeList) {
+        for (genericPlace in placeList) {
             if (genericPlace.plotId == plotId && genericPlace.id == genericPlaceId) {
                 return true;
             }
@@ -345,7 +352,6 @@ class InputHandler {
         if (genericPlace.extTags) {
             for (GenericPlaceHasTag genericPlaceHasTag : genericPlace.extTags) {
                 Tag tagData = new Tag()
-
                 tagData.value = genericPlaceHasTag.tag.name
                 tagData.family = genericPlaceHasTag.tag.parent.name
                 tagData.weight = genericPlaceHasTag.weight as Integer
@@ -366,9 +372,9 @@ class InputHandler {
     private void createPastsceneList(Gn gnInst) {
         pastsceneList = []
 
-        for(plot in gnInst.selectedPlotSet) {
+        for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
-            for(pastscene in plot.pastescenes) {
+            for (pastscene in plot.pastescenes) {
                 Pastscene pastsceneData = new Pastscene()
 
                 // Id
@@ -398,9 +404,9 @@ class InputHandler {
     private void createEventList(Gn gnInst) {
         eventList = []
 
-        for(plot in gnInst.selectedPlotSet) {
+        for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
-            for(event in plot.events) {
+            for (event in plot.events) {
                 Event eventData = new Event()
 
                 // Id

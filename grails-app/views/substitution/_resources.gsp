@@ -63,7 +63,7 @@
                 </select>
                 <input type="text" id="customResource" class="written" disabled="disabled"
                        placeholder="Add a custom resource">
-                <a class="btn unban" title="Create the custom resource"><i class="icon-arrow-left"></i></a>
+                <a class="btn unban customRessource" title="Create the custom resource"><i class="icon-arrow-left"></i></a>
             </td>
             <!-- Restart resource -->
             <td class="restartResource" style="text-align: center;">

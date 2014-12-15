@@ -101,7 +101,8 @@
         place.htmlId = "place${place.id}_plot${place.plotId}"
         // Code
         place.code = "${place.code}"
-        // BEGIN Tags LOOP
+
+        // BEGIN Generic Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${place.tagList}" var="tag">
         var tag = new Object();

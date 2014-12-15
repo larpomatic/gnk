@@ -218,6 +218,7 @@ function initResourcesEvents(url) {
 //                $('.resource #customResource').each(function() {
 //                    if ($(this).val().length == 0) {
 //                        var jsonObject = new Object();
+//
 //                    }
 //                    });
 
