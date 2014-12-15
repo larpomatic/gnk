@@ -6,10 +6,12 @@
 <div class="modal-header">
     <div id="fa-container${tag.id}" class="tagRefLink">
         <div id="fa${tag.id}">
+            <g:if test="${listTagParent != null}">
             <g:each in="${listTagParent[tag.id]}" var="tagParent">
                 <a id="tagparent${tagParent.id}"
                    onclick="goTo(${tagParent.id}, ${tag.id})">${tagParent.name.encodeAsHTML()}</a> >
             </g:each>
+            </g:if>
             <a id="tagparent${tag.id}" onclick="goTo(${tag.id}, ${tag.id})">${tag.name.encodeAsHTML()}</a>
         </div>
     </div>
