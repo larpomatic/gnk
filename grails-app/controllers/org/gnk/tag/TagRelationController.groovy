@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class TagRelationController {
 
+    TagSearchService tagSearchService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -38,7 +39,17 @@ class TagRelationController {
             tagParent = tagParent.reverse();
             mapTagParent.put(tag.id, tagParent);
         }
-        [tagRelationInstanceList: resultList, listTagParent : mapTagParent]
+        PagedResultList trs = session.getAttribute("trs")
+        for (int i = 0; trs && i < trs.size(); i++) {
+            TagRelation tagR = trs.get(i)
+            tagR = tagR.merge()
+            tagR.save(flush: true)
+            if (tagR.isAttached()) {
+                tagR.attach()
+            }
+        }
+        session.removeAttribute("trs");
+        [tagRelationInstanceList: resultList, listTagParent: mapTagParent, trs: trs]
     }
 
     def create() {
@@ -191,10 +202,60 @@ class TagRelationController {
             tagR.isBijective = false;
         }
         int newWeight = Integer.parseInt(tagWeightInput)
-        if (newWeight != tagR.weight){
+        if (newWeight != tagR.weight) {
             tagR.weight = newWeight
         }
         tagR.save()
-        redirect (action: "list")
+        redirect(action: "list")
+    }
+
+    def search(Integer max, Integer offset, String sort) {
+        String t1name = params.tag1Rel;
+        String t2name = params.tag2Rel;
+        int type = Integer.parseInt(params.selectTypeRelation)
+        max = max ?: 10
+        offset = offset ?: 0
+        sort = sort ?: 'name'
+        params.order = params.order ?: 'asc'
+        Tag t1 = null
+        Tag t2 = null
+        List<Tag> tags1 = null
+        List<Tag> tags2 = null
+        PagedResultList tagRelations = null;
+        if ("".equals(t1name) && "".equals(t2name)) {
+            tagRelations = null
+        } else {
+            if (t1name.indexOf("%") == -1 && t1name.indexOf("?") == -1) {
+                t1 = Tag.findByName(t1name);
+            } else {
+                tags1 = tagSearchService.searchTag(t1name)
+            }
+            if (t2name.indexOf("%") == -1 && t2name.indexOf("?") == -1) {
+                t2 = Tag.findByName(t2name);
+            } else {
+                tags2 = tagSearchService.searchTag(t2name)
+            }
+            if (tags1 == null && tags2 == null) {
+                tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, t1, t2, max, offset, sort);
+            } else {
+                if ((t1 && t2 == null) && (tags2 && tags1 == null)) {
+                    tagRelations = tagSearchService.searchTagandListTag(type, tags2, t1, max, offset, sort)
+                }
+                if ((t2 && t1 == null) && (tags1 && tags2 == null)) {
+                    tagRelations = tagSearchService.searchTagandListTag(type, tags1, t2, max, offset, sort)
+                }
+                if (tags1 != null && tags2 != null) {
+                    tagRelations = tagSearchService.searchtwoListTag(type, tags1, tags2, max, offset, sort)
+                }
+                if (tags1 != null && t2 == null && t1 == null) {
+                    tagRelations = tagSearchService.searchoneListTag(type, tags1, max, offset, sort)
+                }
+                if (tags2 != null && t2 == null && t1 == null) {
+                    tagRelations = tagSearchService.searchoneListTag(type, tags2, max, offset, sort)
+                }
+            }
+        }
+        session.setAttribute("trs", tagRelations);
+        redirect(action: "list");
     }
 }
