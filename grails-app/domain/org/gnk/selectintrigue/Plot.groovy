@@ -136,13 +136,13 @@ class Plot {
 //        return false;
 //    }
 
-    public boolean isUniversGeneric() {
-        int i = 0;
-        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
-            i++;
-        }
-        return i == 0;
-    }
+//    public boolean isUniversGeneric() {
+//        int i = 0;
+//        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
+//            i++;
+//        }
+//        return i == 0;
+//    }
 
     public int getNbMinMen () {
         int number = 0;

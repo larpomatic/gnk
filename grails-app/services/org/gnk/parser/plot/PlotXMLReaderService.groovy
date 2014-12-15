@@ -5,7 +5,6 @@ import org.gnk.parser.event.EventXMLReaderService
 import org.gnk.parser.pastscene.PastSceneXMLReaderService
 import org.gnk.parser.place.GenericPlaceXMLReaderService
 import org.gnk.parser.resource.GenericResourceXMLReaderService
-import org.gnk.parser.textualclue.GenericTextualClueXMLReaderService
 import org.gnk.parser.role.RoleXMLReaderService
 import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.Event
