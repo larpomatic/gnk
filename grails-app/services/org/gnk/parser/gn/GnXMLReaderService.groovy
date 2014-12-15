@@ -148,12 +148,19 @@ class GnXMLReaderService {
 
             Set<Character> characterSet = dataContainer.gn.getCharacterSet()
             Set<Character> nonPlayerCharSet = dataContainer.gn.getterNonPlayerCharSet();
+            Set<Character> stafCharSet = dataContainer.gn.getStaffCharSet();
             if (characterSet == null) {
                 characterSet = new HashSet<Character>()
                 dataContainer.gn.setCharacterSet(characterSet)
             }
+            if (stafCharSet == null) {
+                stafCharSet = new HashSet<Character>();
+                dataContainer.gn.setStaffCharSet(stafCharSet)
+            }
             if (character.isPJ())
                 characterSet.add(character)
+            else if (character.isSTF())
+                stafCharSet.add(character)
             else
                 nonPlayerCharSet.add(character)
         }

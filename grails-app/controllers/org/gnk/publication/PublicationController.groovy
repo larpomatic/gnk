@@ -1,11 +1,14 @@
 package org.gnk.publication
 
+import org.apache.commons.codec.binary.Base64
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
+import org.gnk.naming.Firstname
+import org.gnk.naming.Name
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Event
@@ -13,13 +16,19 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.Resource
+import org.gnk.ressplacetime.GenericPlace
+import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Character
+import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
+import org.hibernate.annotations.GenericGenerator
+
 import java.text.DateFormat;
 
 class PublicationController {
@@ -36,13 +45,17 @@ class PublicationController {
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         gn.step = "substitution";
-        /*
-        Set<Firstname> firstnameSet
-    Set<Name> lastnameSet
 
-    Set<Resource> resourceSet
-    Set<Place> placeSet
-         */
+        for (Plot p : gn.getSelectedPlotSet())
+        {
+            for (GenericPlace gnplace : p.getGenericPlaces())
+                gnplace.setResultList(new ArrayList<ReferentialPlace>());
+        }
+        gn.setPlaceSet(new HashSet<Place>());
+
+        //gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
@@ -54,7 +67,7 @@ class PublicationController {
         for (Character character in gn.nonPlayerCharSet) {
             sexes.add("sexe_" + character.getDTDId() as String);
         }
-        redirect(controller: 'substitution', action:'index', params: [gnId: id as String, sexe: sexes]);
+        redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
     }
 
     def index() {
@@ -87,39 +100,6 @@ class PublicationController {
         return collectPublicationInfo(id)
     }
 
-    // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
-    def publication = {
-        def id = params.gnId as Integer
-        String tmpWord = params.templateWordSelect as String
-       // Gn getGn = null
-        if (!id.equals(null))
-            gn = Gn.get(id)
-        if (gn.equals(null)) {
-            print "Error : GN not found"
-            return
-        }
-
-        gnk = new GNKDataContainerService()
-        gnk.ReadDTD(gn)
-       // gn = gnk.gn
-
-        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
-        def folder = new File(folderName)
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-
-        File output = new File(folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-
-        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
-        wordWriter = new WordWriter(tmpWord, publicationFolder)
-        wordWriter.wordMLPackage = createPublication()
-        wordWriter.wordMLPackage.save(output)
-
-        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-        response.outputStream << output.newInputStream()
-    }
 
     public collectPublicationInfo(def id) {
         ArrayList<String> pitchOrgaList = new ArrayList<String>()
@@ -142,6 +122,14 @@ class PublicationController {
                     templateWordList.add(listOfFiles[i].getName().replace(".docx", "").replace(" (Univers)", ""));
         }
         String uniName = gn.univers.name.replace(" (Univers)", "").replace("/", "-")
+        Graph globalGraph = new Graph(gn)
+        Graph charGraph = new Graph(gn, false)
+        ArrayList<String> JsonList = new ArrayList<String>()
+        ArrayList<String> JsonCharList = new ArrayList<String>()
+        for (org.gnk.roletoperso.Node node : charGraph.nodeList) {
+            JsonList.add(charGraph.buildCharGraphJSON(node))
+            JsonCharList.add(node.name)
+        }
         [
                 title: gn.name,
                 subtitle: createSubTile(),
@@ -152,12 +140,74 @@ class PublicationController {
                 charactersList: createPlayersList(),
                 gnId: id,
                 universName: uniName,
-                templateWordList: templateWordList
+                templateWordList: templateWordList,
+                globalrelationjson: globalGraph.buildGlobalGraphJSON(),
+                relationjsonlist: JsonList,
+                jsoncharlist: JsonCharList
         ]
     }
 
+    // Méthode qui permet de générer les documents et de les télécharger pour l'utilisateur
+    def publication = {
+        ArrayList<String> imgSrcList = new ArrayList<String>()
+        imgSrcList = params.get("imgsrc").replace("data:image/png;base64,", "").split(";;")
+        ArrayList<String> jsoncharlist = new ArrayList<String>()
+        imgSrcList.remove(new String(""))
+        if (!imgSrcList.isEmpty()) {
+            jsoncharlist.add("GLOBAL")
+            jsoncharlist.addAll(params.get("jsoncharlist").toString().replace("[", "").replace("]", "").split(", "))
+        }
+        def id = params.gnId as Integer
+        String tmpWord = params.templateWordSelect as String
+        // Gn getGn = null
+        if (!id.equals(null))
+            gn = Gn.get(id)
+        if (gn.equals(null)) {
+            print "Error : GN not found"
+            return
+        }
+
+        gnk = new GNKDataContainerService()
+        gnk.ReadDTD(gn)
+        // gn = gnk.gn
+
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        String fileName = folderName + "${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}"
+        File output = new File(fileName + ".docx")
+
+        ArrayList<String> imgFileNameList = new ArrayList<String>()
+        int i = 0
+        for (String imgb64 : imgSrcList) {
+            String relationGraphFileName = fileName + "-" + i.toString() + ".png"
+            i++
+            imgFileNameList.add(relationGraphFileName)
+            byte[] data = Base64.decodeBase64(imgb64);
+            try {
+                OutputStream stream = new FileOutputStream(relationGraphFileName)
+                stream.write(data);
+                stream.close()
+            } catch (Exception e) {
+                e.stackTrace();
+            }
+        }
+
+        publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        wordWriter = new WordWriter(tmpWord, publicationFolder)
+        wordWriter.wordMLPackage = createPublication(jsoncharlist, fileName)
+        wordWriter.wordMLPackage.save(output)
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
+        response.outputStream << output.newInputStream()
+    }
+
     // Méthode principale de la génération des documents
-    public WordprocessingMLPackage createPublication() {
+    public WordprocessingMLPackage createPublication(ArrayList<String> jsoncharlist, String fileName) {
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -168,7 +218,7 @@ class PublicationController {
         createPitchOrga()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
-        createPlayersTable()
+        createPlayersTable(jsoncharlist, fileName)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
         createPlotTable()
@@ -192,9 +242,10 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
 
-        createPJFile()
-        createPNJFile()
-        createPHJFile()
+        createPJFile(jsoncharlist, fileName)
+        createPNJFile(jsoncharlist, fileName)
+        createPHJFile(jsoncharlist, fileName)
+        createStaffFolder()
 
         return wordWriter.wordMLPackage
     }
@@ -207,7 +258,7 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des personnages pour les organisateurs
-    def createPlayersTable() {
+    def createPlayersTable(ArrayList<String> jsoncharlist, String fileName) {
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -346,6 +397,11 @@ class PublicationController {
         }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
+
+        if (!jsoncharlist.isEmpty()) {
+            wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
+            wordWriter.addRelationGraph(jsoncharlist, fileName, "GLOBAL")
+        }
     }
 
     def createPlayersList() {
@@ -665,7 +721,7 @@ class PublicationController {
     }
 
     //Génère le dossier PJ
-    private createPJFile() {
+    private createPJFile(ArrayList<String> jsoncharlist = [], String fileName = null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
@@ -687,11 +743,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPJ)
+        createCharactersFile(listPJ, jsoncharlist, fileName)
     }
 
     //Génère le dossier PNJ
-    private createPNJFile() {
+    private createPNJFile(ArrayList<String> jsoncharlist = [], String fileName = null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -713,11 +769,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPNJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages non-joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPNJ)
+        createCharactersFile(listPNJ, jsoncharlist, fileName)
     }
 
     //Génère le dossier PHJ
-    private createPHJFile() {
+    private createPHJFile(ArrayList<String> jsoncharlist = [], String fileName = null) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -739,11 +795,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPHJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages Hors-jeu, triés par ordre Alphabétique")
         wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
-        createCharactersFile(listPHJ)
+        createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
-    private createCharactersFile(ArrayList<Character> listCharacters) {
+    private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
         for (Character c : listCharacters) {
             Br br = wordWriter.factory.createBr()
             br.setType(STBrType.PAGE)
@@ -822,20 +878,17 @@ class PublicationController {
                 wordWriter.addStyledParagraphOfText("T4", "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit + " : " + roleHasPastscene.pastscene.title)
 */
 
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
-                {
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1) {
                     unit = "an"
                 }
-                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1)
-                {
+                if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative > 1) {
                     unit = "années"
                 }
                 if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative <= 1)
                     unit = "jour"
                 if ((unit.toLowerCase().startsWith("d") || unit.toLowerCase().startsWith("j")) && roleHasPastscene.pastscene.timingRelative > 1)
                     unit = "jours"
-                if (unit.toLowerCase().startsWith("m"))
-                {
+                if (unit.toLowerCase().startsWith("m")) {
                     unit = "mois"
                 }
                 String GnRelat = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
@@ -851,6 +904,12 @@ class PublicationController {
                     break
                 }
 
+            }
+
+            // Ajout du Graphe relationnel du personnage
+            if (!jsoncharlist.isEmpty()) {
+                wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
+                wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
             }
 
             if (!hasTags)
@@ -876,9 +935,74 @@ class PublicationController {
                     wordWriter.addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
                 }
             }
-            // todo: Relations wordWriter.addStyledParagraphOfText("T3", "Mes relations")
 
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
+        }
+    }
+
+    //Création du dossier destiné aux "personnages" dit Staff
+    def createStaffFolder() {
+        Br br = wordWriter.factory.createBr()
+        br.setType(STBrType.PAGE)
+        wordWriter.addObject(br)
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Staff")
+        wordWriter.addParagraphOfText("Il y a " + gn.staffCharSet.size() + " personnes dans l'équipe Staff de ce GN")
+        wordWriter.addParagraphOfText("\n\n")
+        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers de cette équipe, à distribuer aux staff")
+        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        createStaffFile(new ArrayList<Character>(gn.staffCharSet))
+    }
+
+    def createStaffFile(ArrayList<Character> listStaff) {
+        int i = 1
+        for (Character c : listStaff) {
+            Br br = wordWriter.factory.createBr()
+            br.setType(STBrType.PAGE)
+            wordWriter.addObject(br)
+            wordWriter.addStyledParagraphOfText("T2", "Staff #" + i.toString())
+            wordWriter.addParagraphOfText("Type : " + c.type)
+
+            // L'événnementiel du staff
+            wordWriter.addStyledParagraphOfText("T3", "Evénementiel")
+            Map<Integer, Event> events = new TreeMap<Integer, Event>();
+            // Substitution pour l'evennementiel du staff
+            for (Plot p : gn.selectedPlotSet)
+                for (Event e : p.events) {
+                    HashMap<String, Role> rolesNames = new HashMap<>()
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(e.plot.DTDId))
+                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                    substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                    if (e.name)
+                        e.name = substitutionPublication.replaceAll(e.name)
+                    events.put(e.timing, e)
+                }
+
+            // Publication de l'evennementiel du staff
+            for (Plot p : gn.selectedPlotSet)
+                for (Event e : p.events)
+                    for (Role r : c.selectedRoles)
+                        if (r.plot.DTDId.equals(e.plot.DTDId)) {
+                            wordWriter.addStyledParagraphOfText("T4", p.name)
+                            wordWriter.addParagraphOfText(p.description)
+                            wordWriter.addStyledParagraphOfText("T5", "Votre rôle : " + r.code)
+                            wordWriter.addParagraphOfText(r.type + " - " + r.description)
+                            // Les ressources du staff liés à son évennementiel
+                            wordWriter.addStyledParagraphOfText("T5", "Vos ressources")
+                            boolean hasRessource = false
+                            for (GenericResource gr : gnk.genericResourceMap.values())
+                                if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.id)) {
+                                    hasRessource = true
+                                    String pubResource = (gr.code?gr.code + " - ":"")
+                                    pubResource += (gr.description?gr.description + " - ":"")
+                                    pubResource += (gr.comment?gr.comment + " - ":"")
+                                    pubResource += (gr.selectedResource.name?gr.selectedResource.name:"")
+                                    pubResource += (gr.selectedResource.description && !gr.selectedResource.name.equals(gr.selectedResource.description)?" - " + gr.selectedResource.description:"")
+                                    wordWriter.addParagraphOfText(pubResource)
+                                }
+                            (hasRessource?:wordWriter.addParagraphOfText("Vous ne possédez aucun objet lié à cet événement"))
+                        }
+            i++
         }
     }
 

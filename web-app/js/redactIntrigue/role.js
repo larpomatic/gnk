@@ -33,7 +33,7 @@ $(function(){
                     initSearchBoxes();
                     initModifyTag();
                     stopClosingDropdown();
-                    if (!data.role.type == "STF") {
+                    if (data.role.type != "STF") {
                         appendEntity("role", data.role.code, "success", "", data.role.id);
                     }
                     var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
@@ -122,7 +122,7 @@ function updateRole() {
                             $(this).parent().html(relationImage + " " + data.object.name);
                         });
                         $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
-                        $('.richTextEditor span.label-success').each(function() {
+                        $('span.label-success').each(function() {
                             if ($(this).html().trim() == data.object.oldname) {
                                 $(this).html(data.object.name);
                             }
@@ -231,12 +231,19 @@ function createNewRolePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
-        value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
-        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
-        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
-        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        value = convertHTMLRegisterHelper(value);
         return new Handlebars.SafeString(value);
+    });
+    Handlebars.registerHelper('pastSceneTime', function(pastscene) {
+        var res = "";
+        var globalList = buildDateList(pastscene);
+        res = buildRelativeString(globalList, pastscene, res);
+        if (globalList.relativeList.length != 0 && globalList.absoluteList.length != 0) {
+            res += ", ";
+        }
+        res = buildAbsoluteString(globalList, res, pastscene);
+        res += " - ";
+        return res;
     });
     var template = Handlebars.templates['templates/redactIntrigue/rolePanel'];
     var context = {

@@ -14,7 +14,7 @@ class ResourceService {
 
     /* Exposed Methods */
 
-    def GenericResource findReferentialResource (GenericResource genericResource, String univers) {
+    GenericResource findReferentialResource (GenericResource genericResource, String univers) {
         LinkedList<Tag> tagsList
         Tag typeTag = null
         Integer maximumRate = 0

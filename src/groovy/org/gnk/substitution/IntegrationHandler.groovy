@@ -272,20 +272,15 @@ class IntegrationHandler {
 
     public Map<String, Integer> calcDiffBetweenGenericPlaceTagsAndPlaceTags(Map<String, Integer> gpTags, Map<String, Integer> pTags) {
 
-        println("BIP BIP")
         for (gpt in gpTags) {
-            println("Valeur du Generic Place: " + gpt.key)
             for (pt in pTags) {
                 Integer res = 0
                 Integer nbTag = 0
                 for (p in pTags) {
-                    println("Nom du tag: " + p.key)
-                    println("Poids du tag: " + p.value)
                     if (p.key == p.key)
                         nbTag += 100
                     resultList.put(pt.key, res += Math.abs(p.value).intValue())
                 }
-                println("Valeur du diviseur: " + nbTag)
                 pt.value = (pt.value / nbTag) * 100
             }
         }
@@ -299,7 +294,6 @@ class IntegrationHandler {
         // GenericPlaceList construction from json
         for (placeJson in placeJsonObject.places) {
 
-            println("JSON OBJECT: " + placeJson)
             GenericPlace genericPlace = new GenericPlace()
 
             genericPlace.code = "res" + placeJson.gnId + "_plot" + placeJson.gnPlotId
@@ -376,24 +370,25 @@ class IntegrationHandler {
             placeJson.remove("proposedNames")
             if (genericPlace.resultList != null && !genericPlace.resultList.isEmpty()) {
                 JSONArray proposedNames = new JSONArray()
-                for (referentialPlace in genericPlace.resultList) { // Generic Place
-                    proposedNames.put(referentialPlace.name)
-                    for (Tag p in referentialPlace.tagList) { // place
-                        placeTags.put(referentialPlace.name, p.weight)
-                    }
+                for (referentialPlace in genericPlace.resultList) { // Place
+                    proposedNames.put(referentialPlace.name + " - " + (referentialPlace.matchingRate / 10) + "%")
+//                    for (Tag p in referentialPlace.tagList) {
+//                        // A VERIFIER
+//                        placeTags.put(referentialPlace.name, p.weight)
+//                        // FIN A VERIFIER
+//                    }
                 }
 
-                if (genericPlaceTags != null && placeTags != null) {
-                    calcDiffBetweenGenericPlaceTagsAndPlaceTags(genericPlaceTags, placeTags)
-                }
+//                if (genericPlaceTags != null && placeTags != null) {
+//                    calcDiffBetweenGenericPlaceTagsAndPlaceTags(genericPlaceTags, placeTags)
+//                }
 
-                for (i in resultList) {
-                    for (int j = 0; j < proposedNames.length(); j++) {
-                        if (i.key == proposedNames[j])
-                            proposedNames[j] = proposedNames[j] + " - " + i.value + "%"
-                    }
-                }
-
+//                for (i in resultList) {
+//                    for (int j = 0; j < proposedNames.length(); j++) {
+//                        if (i.key == proposedNames[j])
+//                            proposedNames[j] = proposedNames[j] + " - " +  + "%"
+//                    }
+//                }
                 placeJson.put("proposedNames", proposedNames)
             }
 

@@ -7,7 +7,7 @@
         </li>
         <g:each in="${plotInstance.pastescenes}" status="i5" var="pastScene">
             <li class="leftMenuList">
-                <a href="#pastScene_${pastScene.id}" data-toggle="tab">
+                <a href="#pastScene_${pastScene.id}" data-toggle="tab" class="spanLabel">
                     ${pastScene.title?.encodeAsHTML()}
                 </a>
                 <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">

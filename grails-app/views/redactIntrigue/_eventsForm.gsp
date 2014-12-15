@@ -8,7 +8,7 @@
         </li>
         <g:each in="${plotInstance.events.sort{it.timing}}" status="i5" var="event">
             <li class="leftMenuList">
-                <a href="#event_${event.id}" data-toggle="tab">
+                <a href="#event_${event.id}" data-toggle="tab" class="spanLabel">
                     ${event.timing}% - ${event.name?.encodeAsHTML()}
                 </a>
                 <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">

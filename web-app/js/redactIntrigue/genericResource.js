@@ -93,7 +93,7 @@ function updateResource() {
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
                     initializeTextEditor();
-                    $('.richTextEditor span.label-important').each(function() {
+                    $('span.label-important').each(function() {
                         if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
@@ -193,11 +193,7 @@ function createNewGenericResourcePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function(value) {
-        value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
-        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
-        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
-        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        value = convertHTMLRegisterHelper(value);
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericResourcePanel'];
@@ -258,6 +254,9 @@ function getBestResource()
             .attr("type", "hidden")
             .attr("name", "univerTag").val($(this).val());
         form.append(input);
+
+        $('.ressLoader').css('display', '');
+
         $.ajax({
             type: "POST",
             url: url,
@@ -280,13 +279,15 @@ function getBestResource()
                         cont.append(row);
                     }
                 });
-                if (add < 1) {
+                if (add <= 1) {
                     var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
                     var cont = $('#modalBestResource');
                     cont.append(label);
                 }
+                $('.ressLoader').css('display', 'none');
             },
             error: function() {
+                $('.ressLoader').css('display', 'none');
                 createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs ressources correspondant à vos critères.");
             }
         })

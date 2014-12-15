@@ -115,7 +115,7 @@ function updateResourcesView(resourcesJSON)
     resourcesPercentageSpan.attr("class", "badge " + badgeClass);
     resourcesPercentageSpan.text(Math.round(percent) + " %");
 
-//    $('.customRessource').click(function(){
+    //    $('.customRessource').click(function(){
 //        var input = $(this).prev();
 //       var content = input.val();
 //        if (content != "") {

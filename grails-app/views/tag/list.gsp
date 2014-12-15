@@ -18,9 +18,8 @@
 			    <g:render template="addTagIntoFamily" />
             </g:hasRights>
 			<g:render template="tableChildrenTags" model="[listTagParent : listTagParent]" />
-
 			<div class="pagination">
-				<g:paginate total="${tagInstanceList.size()}" />
+				<g:paginate total="${tagInstanceList.totalCount}" />
 			</div>
 		</div>
 	</body>

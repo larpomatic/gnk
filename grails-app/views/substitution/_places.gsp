@@ -20,7 +20,7 @@
         <th style="text-align: center;">#</th>
         <th>code</th>
         <th>Plot Name</th>
-        <th>Generic place</th>
+        <th>tags</th>
         <th>comment</th>
         <th>nom</th>
         <th style="text-align: center;">
@@ -37,7 +37,7 @@
             <td>${place.code}</td>
             <!-- Plot Name -->
             <td>${place.plotName}</td>
-            <!-- Generic Place Tags -->
+            <!-- Tags -->
             <td>
                 <ul class="unstyled">
                     <g:each status="j" in="${place.tagList}" var="tag">
@@ -112,7 +112,6 @@
         tagArray.push(tag);
         </g:each>
         // END Tags LOOP
-
         if (tagArray.length > 0) {
             place.tags = tagArray;
         }

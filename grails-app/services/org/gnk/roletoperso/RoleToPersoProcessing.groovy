@@ -7,6 +7,7 @@ import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
 import org.gnk.tag.TagService
+import sun.nio.cs.StreamDecoder
 import sun.rmi.runtime.Log;
 
 import java.util.*;
@@ -24,6 +25,7 @@ public class RoleToPersoProcessing {
     private Set<Role> gnNPCRoleSet;
     public Set<Role> gnTPJRoleSet;
     public Set<Role> gnPJGRoleSet;
+    public Set<Role> gnSTFRoleSet;
     private Map<Role, String> unAttribuedRoleWithSettedSex;
 
 
@@ -51,10 +53,27 @@ public class RoleToPersoProcessing {
         associateRolesToCharacters();
         // add rôle OTHER
         addPJG();
+        // Create & add STF Role
+        createSTFCharacter();
         // Harmonize Sex -- Warning to relation type
         //reHarmonizeRole();
         //LOG.info("\t</Algo>");
 
+    }
+
+    private void createSTFCharacter()
+    {
+        gn.setStaffCharSet(new HashSet<Character>());
+        int nb = this.gn.nonPlayerCharSet.size() + this.gn.characterSet.size();
+        for (Role r in this.gnSTFRoleSet) {
+            nb += 1;
+            Character c = new Character();
+            c.setDTDId(nb);
+            c.setType("STF");
+            c.setGender('N');
+            c.addRole(r);
+            this.gn.getStaffCharSet().add(c);
+        }
     }
 
     private void reHarmonizeRole()
@@ -522,6 +541,7 @@ public class RoleToPersoProcessing {
         gnNPCRoleSet = new HashSet<Role>();
         gnTPJRoleSet = new HashSet<Role>();
         gnPJGRoleSet = new HashSet<Role>();
+        gnSTFRoleSet = new HashSet<Role>();
 
         assert (gn != null);
         if (gn == null) {
@@ -558,6 +578,9 @@ public class RoleToPersoProcessing {
                 } else if (role.isPJG()) {
                     gnPJGRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
+                } else if (role.isSTF()) {
+                    gnSTFRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is STF and not added to role set to process");
                 } else {
 
                     gnNPCRoleSet.add(role);
