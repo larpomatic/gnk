@@ -28,8 +28,13 @@
                         <li class="badge badge-info">
                             <g:form class="form-small">
                                 <g:hiddenField name="id" value="${resourceHasResourceTags.id}" />
+                                <g:if test="${Tag.findByName("Tag Univers").id == resourceHasResourceTags.tag.parent.id}">
+                                    <span style="color:#ffffff"> ${resourceHasResourceTags.tag.name} ${resourceHasResourceTags.weight}%</span>
+                                </g:if>
+                                <g:else>
+                                    <span style="color:black">${resourceHasResourceTags.tag.name} ${resourceHasResourceTags.weight}%</span>
+                                </g:else>
 
-                                ${resourceHasResourceTags.tag.name} ${resourceHasResourceTags.weight}%
 
                                 <g:actionSubmit class="icon-remove remove-action" controller="ressource" action="deleteTag" value=" " onclick="return confirm('${message(code: 'adminRef.resource.deleteTag')}');" />
                             </g:form>
@@ -37,23 +42,6 @@
 					</g:each>
 				</ul>
 			</td>
-		
-			<td>
-				<ul class="inline">
-					<g:each in="${resourceInstance.resourceHasUniverses.toArray()}" status="j" var="resourceHasUniverses">
-						<span class="badge badge-info">
-							<li class="label label-info">
-								<g:form class="form-small">
-									<g:hiddenField name="id" value="${resourceHasUniverses.id}" />
-									${resourceHasUniverses.univers.name} ${resourceHasUniverses.weight}%
-									<g:actionSubmit class="icon-remove remove-action" controller="ressource" action="deleteUnivers" value=" " onclick="return confirm('${message(code: 'adminRef.resource.deleteUnivers')}');" />
-								</g:form>
-							</li>
-						</span>
-					</g:each>
-				</ul>
-			</td>
-
 			<td>
 				<g:form>
 					<fieldset class="buttons">

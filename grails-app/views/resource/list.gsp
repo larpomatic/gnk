@@ -20,8 +20,7 @@
 
 			<g:render template="addResource" />
 			<g:render template="addTagToResource" />
-			<g:render template="addResourceToUnivers" />
-			<g:render template="tableResources" />
+			<g:render template="tableResources" model="[resourceInstanceList : resourceInstanceList]"/>
 			<div class="pagination">
 				<g:paginate total="${resourceInstanceTotal}" />
 			</div>

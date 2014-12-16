@@ -20,7 +20,7 @@ class ResourceController {
 		if (params.Univers_select.equals("") || params.Resource_select.equals(""))
 		{
 				print "Invalid params"
-				flash.message = messadge(code: 'Erreur : Il faut choisir un univers et une ressource !')
+				flash.message = message(code: 'Erreur : Il faut choisir un univers et une ressource !')
 				redirect(action: "list")
 				return
 		}
@@ -72,31 +72,9 @@ class ResourceController {
 		resourceHasUniversInstance.save()
 		redirect(action: "list")
 	}
-	
-	def deleteUnivers()
-	{
-		ResourceHasTag resourceHasTagInstance = null
-		for (ResourceHasTag resourceHasUnivers : ResourceHasTag.list())
-		{
-			if (resourceHasUnivers.id.toInteger().equals(params.idResourceHasUniverses.toInteger()))
-			{
-				resourceHasTagInstance = resourceHasUnivers
-				break
-			}
-		}
-		
-		if (resourceHasTagInstance.equals(null))
-		{
-			print "Error : resourceHasUniversInstance not found"
-			redirect(action: "list")
-			return
-		}
-		
-		resourceHasTagInstance.delete()
-		redirect(action: "list")
-	}
-	
-	def deleteResource()
+
+
+    def deleteResource()
 	{
 		Resource resourceInstance
 		for (Resource res : Resource.list()) {
@@ -146,7 +124,7 @@ class ResourceController {
 		resourceInstance.name = params.name
 		resourceInstance.description = params.desc
 		resourceInstance.gender = params.gender_select
-        resourceInstance.genericResource = GenericResource.get(params.genericResource_select)
+        // voir dump 2013 (domainclass Resource resourceInstance.genericResource = GenericResource.get(params.genericResource_select)
 
         if (!resourceInstance.save(flush: true)) {
             render(view: "create", model: [resourceInstance: resourceInstance])

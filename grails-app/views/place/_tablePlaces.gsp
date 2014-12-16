@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.resplacetime.Place" %>
+<%@ page import="org.gnk.tag.Tag; org.gnk.resplacetime.Place" %>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -26,7 +26,12 @@
                         <li class="badge badge-info">
                             <g:form class="form-small">
                                 <g:hiddenField name="id" value="${placeHasTags.id}" />
-                                ${placeHasTags.tag.name} ${placeHasTags.weight}%
+                                <g:if test="${Tag.findByName("Tag Univers").id == placeHasTags.tag.parent.id}">
+                                    <span style="color:#ffffff"> ${placeHasTags.tag.name} ${placeHasTags.weight}%</span>
+                                </g:if>
+                                <g:else>
+                                    <span style="color:black">${placeHasTags.tag.name} ${placeHasTags.weight}%</span>
+                                </g:else>
                                 <g:actionSubmit class="icon-remove remove-action" controller="place" action="deleteTag" value=" " onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');" />
                             </g:form>
                         </li>
@@ -34,21 +39,7 @@
                 </ul>
             </td>
 
-            <td>
-                <ul class="inline">
-                    <g:each in="${placeInstance.placeHasUniverses.toArray()}" status="j" var="placeHasUniverses">
-                        <span class="badge badge-info">
-                            <li class="label label-info">
-                                <g:form class="form-small">
-                                    <g:hiddenField name="id" value="${placeHasUniverses.id}" />
-                                    ${placeHasUniverses.univers.name} ${placeHasUniverses.weight}%
-                                    <g:actionSubmit class="icon-remove remove-action" controller="place" action="deleteUnivers" value=" " onclick="return confirm('${message(code: 'adminRef.place.deleteUnivers')}');" />
-                                </g:form>
-                            </li>
-                        </span>
-                    </g:each>
-                </ul>
-            </td>
+
 
             <td>${fieldValue(bean: placeInstance, field: "gender")}</td>
 

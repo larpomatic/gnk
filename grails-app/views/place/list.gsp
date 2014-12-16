@@ -16,10 +16,11 @@
             <g:render template="../infosAndErrors" />
             <g:render template="addPlaces" />
             <g:render template="addTagToPlace" />
-            <g:render template="addPlaceToUnivers" />
-            <g:render template="tablePlaces" />
+            <g:render template="tablePlaces" model="[placeInstanceList : placeInstanceList]" />
 
-
+        <div class="pagination">
+            <g:paginate total="${placeInstanceTotal}" />
+        </div>
 		</div>
 	</body>
 </html>
