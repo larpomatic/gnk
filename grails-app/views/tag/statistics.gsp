@@ -1,5 +1,5 @@
 <%@ page import=" org.gnk.roletoperso.Role; org.gnk.resplacetime.Resource; org.gnk.tag.Tag" %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 	<head>
 		<meta name="layout" content="main">
