@@ -426,16 +426,12 @@ class RoleToPersoController {
             GenericEvent lastGE = null
             System.out.println("AGE : " + character.age)
             while (age < character.age) {
-                // Créer Past scene
-                //def query = GenericEvent.where {
-                //    averageAge in (age-3)..(age+3)
-                //}
+
+                /* STEP 1 on parcours les events qui existent */
                 def query = GenericEvent.where {
                     ageMin <= age && ageMax >= age
                 }
-                //def query2 = GenericEvent.where {
-                //    averageAge == 0
-                //}
+
                 ArrayList<GenericEvent> listEvent = query.findAll()
                 Collections.shuffle(listEvent)
                 lastGE = listEvent.first()
