@@ -3,7 +3,7 @@
 
 <legend>Administration des ressources existantes</legend>
 
-<table class="table table-bordered">
+<table id="listTable" class="table table-bordered">
     <thead>
     <tr>
         <g:sortableColumn property="name" title="${message(code: 'resource.name.label', default: 'Nom')}"/>

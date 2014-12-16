@@ -15,7 +15,6 @@
 			<g:render template="../infosAndErrors" />
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
 			    <g:render template="addTags" />
-			    <g:render template="addTagIntoFamily" />
             </g:hasRights>
 			<g:render template="tableChildrenTags" model="[listTagParent : listTagParent]" />
 			<div class="pagination">

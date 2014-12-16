@@ -1,5 +1,5 @@
 <%@ page import="org.gnk.admin.right; org.gnk.tag.Tag; org.gnk.resplacetime.Place" %>
-<table class="table table-bordered">
+<table id="listTable" class="table table-bordered">
     <thead>
     <tr>
 
