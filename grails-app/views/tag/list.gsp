@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.tag.Tag" %>
+<%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,19 +13,26 @@
             </fieldset>
 
 			<g:render template="../infosAndErrors" />
-			<g:render template="addTags" />
-			<g:render template="addTagIntoFamily" />
-			<g:render template="tableChildrenTags" />
-			
+            <g:hasRights lvlright="${right.REFMODIFY.value()}">
+			    <g:render template="addTags" />
+            </g:hasRights>
+			<g:render template="tableChildrenTags" model="[listTagParent : listTagParent]" />
 			<div class="pagination">
 				<g:paginate total="${tagInstanceList.totalCount}" />
 			</div>
 		</div>
-	</body>
+
+    <script type="application/javascript">
+        $(function(){
+            $("#listTable").DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            });
+        });
+    </script>
+    </body>
 </html>
-
-
-
 
 
 

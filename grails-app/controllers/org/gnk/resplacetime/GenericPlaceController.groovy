@@ -6,7 +6,6 @@ import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagService
 import org.gnk.tag.Tag
-import org.gnk.tag.Univers
 
 class GenericPlaceController {
 

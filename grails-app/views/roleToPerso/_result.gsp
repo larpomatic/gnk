@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.roletoperso.RoleHasRelationWithRole; org.gnk.roletoperso.Role" %>
+<%@ page import="groovy.json.JsonBuilder; org.codehaus.groovy.grails.web.json.JSONObject; org.gnk.roletoperso.RoleHasRelationWithRole; org.gnk.roletoperso.Role" %>
 <%@ page import="org.gnk.roletoperso.Character" %>
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.gn.Gn" %>
@@ -103,8 +103,9 @@
             <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
 
                 <td>
-                    <a href="#"
+                    <a href="#roleModal-${((Role) role).getDTDId()}"  data-toggle="modal"
                        title="${((Role) role).description}">${((Role) role).code}</a>
+                    <g:render template="roleModal" model="['role': role]" />
                 </td>
                 <td><g:link controller="redactIntrigue" action="edit"
                             id="${((Role) role).plot?.id}" target="_blank">
@@ -467,7 +468,13 @@
                         <g:if test="${(((Character) PHJ).isPHJ() == true) || (((Character) PHJ).isPNJ() == true)}">
                             <tr id="${"line" + ((Character) PHJ).getDTDId()}">
                                 <td>CHAR-${((Character) PHJ).getDTDId()}</td>
-                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}">${((Character) PHJ).rolesToString()}</td>
+                                <td id="td_CHAR-${((Character) PHJ).getDTDId()}">
+                                    <g:each in="${((Character) PHJ).getSelectedRoles()}" var="role">
+                                        <a href="#roleModal-${((Role) role).getDTDId()}"  data-toggle="modal"
+                                           title="${((Role) role).description}">${((Role) role).code}</a>
+                                        <g:render template="roleModal" model="['role': role]" />
+                                    </g:each>
+                                </td>
                                 <td id="td_CHAR-${((Character) PHJ).getDTDId()}-TYPE">${((Character) PHJ).type}</td>
                                 <td style="text-align: center">
                                     <g:if test="${((Character) PHJ).getGender() == 'M'}">
@@ -493,10 +500,58 @@
                                     </g:else>
                                 </td>
                                 <td style="text-align: center">
-                                    <a href="#fusionModal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn btn-primary fusion_modale" data-toggle="modal">
+                                    <a href="#fusionModal"  data-toggle="modal" data-id="${((Character) PHJ).getDTDId()}" role="button" class="btn btn-primary fusion_modale">
                                         <g:message code="roletoperso.fusion" default="Merge"></g:message>
                                     </a>
                                 </td>
+                            </tr>
+                        </g:if>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordionSTF">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordionSTF"
+               href="#collapseSTF">
+                <g:message code="roletoperso.gestionSTF"
+                           default="Management of STF characters"/>
+            </a>
+        </div>
+
+        <div id="collapseSTF" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th><g:message code="roletoperso.character"
+                                       default="Character"/></th>
+                        <th><g:message code="roletoperso.roleCode"
+                                       default="Role code"/></th>
+                        <th><g:message code="roletoperso.roleType"
+                                       default="Character Type"/></th>
+                        <th><g:message code="roletoperso.description"
+                                       default="Description"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${STFList}" var="STF">
+                        <g:if test="${(((Character) STF).isSTF() == true)}">
+                            <tr id="${"line" + ((Character) STF).getDTDId()}">
+                                <td>CHAR-${((Character) STF).getDTDId()}</td>
+                                <td>
+                                    <a href="#roleModal-${((Character) STF).getSelectedRoles().first().getDTDId()}"  data-toggle="modal"
+                                       title="${((Character) STF).getSelectedRoles().first().description}">${((Character) STF).getSelectedRoles().first().code}</a>
+                                    <g:render template="roleModal" model="['role': ((Character) STF).getSelectedRoles().first()]" />
+                                </td>
+                                <td>${((Character) STF).type}</td>
+                                <td>${((Character) STF).getSelectedRoles().first().description}</td>
                             </tr>
                         </g:if>
                     </g:each>
@@ -682,7 +737,7 @@
                 $("#fusionModal").modal('hide');
                 var upd_name = '#td_' + selected_char;
                 var upd_type = '#td_' + selected_char + "-TYPE";
-                $(upd_name).html(data.object.roles)
+                $(upd_name).html(data.object.roles);
                 $(upd_type).html(data.object.type)
                 $("#modaloption option").each(function()
                 {

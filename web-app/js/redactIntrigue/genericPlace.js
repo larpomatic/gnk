@@ -85,7 +85,7 @@ function updatePlace() {
                     $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                     $('select[name="pastScenePlace"] option[value="' + data.object.id + '"]').html(data.object.name);
                     initializeTextEditor();
-                    $('.richTextEditor span.label-warning').each(function () {
+                    $('span.label-warning').each(function () {
                         if ($(this).html().trim() == data.object.oldname) {
                             $(this).html(data.object.name);
                         }
@@ -188,11 +188,7 @@ function createNewGenericPlacePanel(data) {
         return out;
     });
     Handlebars.registerHelper('encodeAsHtml', function (value) {
-        value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
-        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
-        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
-        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        value = convertHTMLRegisterHelper(value);
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];
@@ -247,6 +243,8 @@ function getBestPlace()
             .attr("name", "univerTag").val($(this).val());
         form.append(input);
 
+        $('.placeLoader').css('display', '');
+
         $.ajax({
             type: "POST",
             url: url,
@@ -274,8 +272,10 @@ function getBestPlace()
                     var cont = $('#modalBestPlace');
                     cont.append(label);
                 }
+                $('.placeLoader').css('display', 'none');
             },
             error: function() {
+                $('.placeLoader').css('display', 'none');
                 createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })

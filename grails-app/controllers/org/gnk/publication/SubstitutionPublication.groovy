@@ -26,26 +26,18 @@ class SubstitutionPublication {
         this.rolesNames = rolesNames
         this.placeList = placeList
         this.genericResourceList = genericResourceList
-//        println("===================== Generic Ressource =========")
-//        for (GenericResource genericResource : genericResourceList)
-//        {
-//            if (genericResource.genericRessourceHasIngameClue != null)
-//                println(genericResource.selectedResource.name+"==INGAME CLUE : " + genericResource.genericRessourceHasIngameClue.title)
-//            else
-//                println(genericResource.selectedResource.name)
-//        }
-//        println("===================== Place ======================")
-//        for (Place place : placeList)
-//        {
-//            if (place.genericPlace == null)
-//                continue
-//            println(place.genericPlace.code)
-//        }
-//        println("===================== Role =====================")
-//        for (Map.Entry<String, Role> map : rolesNames.entrySet())
-//        {
-//            println(map.key)
-//        }
+        println("===================== Place ======================")
+        for (Place place : placeList)
+        {
+            if (place.genericPlace == null)
+                continue
+            println(place.genericPlace.code)
+        }
+        println("===================== Role =====================")
+        for (Map.Entry<String, Role> map : rolesNames.entrySet())
+        {
+            println(map.key)
+        }
     }
 
     def String replaceAll (String input)
@@ -106,6 +98,7 @@ class SubstitutionPublication {
     {
         for (Place place : placeList)
         {
+            print("contenu de placeList: " + place.name)
             if (place.genericPlace == null)
                 continue
             if (place.genericPlace.code.toUpperCase().equals(code))

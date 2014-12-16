@@ -40,22 +40,10 @@ class GenericPlace {
     }
 
     public boolean hasGenericPlaceTag(Tag parGenericPlaceTag) {
-        for (GenericPlaceHasTag genericPlaceHasPlaceTag : extTags) {
-            if (genericPlaceHasPlaceTag.tag == parGenericPlaceTag) {
-                return true;
-            }
-        }
-        return false;
+        return (GenericPlaceHasTag.findByTagAndGenericPlace(parGenericPlaceTag, this) != null)
     }
 
     public getGenericPlaceHasTag(Tag tag) {
-        List<GenericPlaceHasTag> genericPlaceHasTags = GenericPlaceHasTag.createCriteria().list {
-            like("genericPlace", this)
-            like("tag", tag)
-        }
-        if (genericPlaceHasTags.size() == 0) {
-            return null;
-        }
-        return genericPlaceHasTags.first();
+        return GenericPlaceHasTag.findByTagAndGenericPlace(tag, this);
     }
 }

@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.selectintrigue.Plot"%>
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,7 @@
 		<h1>
 			<g:message code="default.edit.label" args="[entityName]" />
 		</h1>
-        <g:render template="testMenuSlide" />
+        <g:render template="testMenuSlide" model="['right': right]" />
 	</div>
 </body>
 </html>

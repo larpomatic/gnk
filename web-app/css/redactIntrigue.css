@@ -11,7 +11,7 @@
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
 #edit-plot textarea,
-#edit-plot select:not(#selectUnivers)
+#edit-plot select:not(#selectUnivers):not(#selectUniversResource)
 {
     /*font-family: 'Shadows Into Light', cursive !important;*/
     font-size: 24px !important;
@@ -20,7 +20,7 @@
 
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
-#edit-plot select:not(#selectUnivers) {
+#edit-plot select:not(#selectUnivers):not(#selectUniversResource) {
     border: 0;
     outline: none;
     /*letter-spacing: 3px;*/
@@ -187,7 +187,7 @@
 }
 
 .richTextEditor.textTitle {
-    min-height: inherit;
+    min-height: 40px;
 }
 
 .btnFullScreen {
@@ -205,6 +205,14 @@
 
 .btnBestPlace {
     background: url(../images/redactIntrigue/place/place.png) no-repeat;
+    background-size: 100%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.btnBestResource {
+    background: url(../images/redactIntrigue/resource/resource.png) no-repeat;
     background-size: 100%;
     width: 30px;
     height: 30px;
@@ -278,6 +286,15 @@
 .MFfields input {
     width: 61px;
     margin: 0 !important;
+}
+
+.popover {
+    z-index: 999999999 !important;
+}
+
+#edit-plot .spanLabel {
+    float: none;
+    margin: 0;
 }
 
 @font-face {

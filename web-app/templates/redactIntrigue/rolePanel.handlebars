@@ -54,6 +54,7 @@
                         <option value="PHJ">Personnage Non Joueur (Hors jeu)</option>
                         <option value="TPJ">Tout Personnage Joueur</option>
                         <option value="PJG">Personnage Joueur Générique</option>
+                        <option value="STF">Personnage Staff</option>
                     </select>
                 </div>
             </div>
@@ -65,7 +66,7 @@
                 </div>
                 <div class="span4">
                     <a href="#rolePastScenesModal_{{ role.id }}" class="btn" data-toggle="modal">
-                        Choisir les scènes passées
+                        Voir les scènes passées
                     </a>
                 </div>
                 <div class="span1">
@@ -75,7 +76,7 @@
                 </div>
                 <div class="span4">
                     <a href="#roleEventsModal_{{ role.id }}" class="btn" data-toggle="modal">
-                        Choisir les évènements
+                        Voir les évènements
                     </a>
                 </div>
             </div>
@@ -106,33 +107,36 @@
                     {{#each role.eventList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}"
+                                <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionEvent{{ ../role.id }}"
                                    href="#collapseEvent{{ ../role.id }}-{{ eventId }}" data-eventId="{{ eventId }}">
-                                    {{eventTiming}}% - {{ eventName }}
+                                    {{eventTiming}}% - {{ encodeAsHtml eventName }}
                                 </a>
                             </div>
                             <div id="collapseEvent{{ ../role.id }}-{{ eventId }}" class="accordion-body collapse">
                                 <div class="accordion-inner">
                                     <div class="formRow">
-                                        <div class="span1">
+                                        <div class="row formRow text-center">
                                             <label>
                                                 Titre
                                             </label>
                                         </div>
-                                        <div class="span4">
-                                            <input disabled="disabled" type="text" name="roleHasEventTitle{{ eventId }}" value="{{ title }}"/>
-                                        </div>
-                                        <div class="span1">
+                                    </div>
+                                    <div contenteditable="false" class="text-left richTextEditor textTitle">
+                                        {{{ title }}}
+                                    </div>
+                                    <div class="formRow text-center">
+                                        <div class="span4"></div>
+                                        <div class="span2">
                                             <label>
                                                 Est annoncé
                                             </label>
                                         </div>
-                                        <div class="span4">
-                                        {{#if isAnnounced}}
-                                            <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ eventId }}" checked="checked"/>
-                                        {{else}}
-                                            <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ eventId }}" />
-                                        {{/if}}
+                                        <div class="span1">
+                                            {{#if isAnnounced}}
+                                                <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ eventId }}" checked="checked"/>
+                                            {{else}}
+                                                <input disabled="disabled" type="checkbox" name="roleHasEventannounced{{ eventId }}" />
+                                            {{/if}}
                                         </div>
                                     </div>
                                     <div class="row formRow text-center">
@@ -140,9 +144,9 @@
                                             Description
                                         </label>
                                     </div>
-                                    <textarea disabled="disabled" name="roleHasEventDescription{{ eventId }}" rows="5" cols="100">
+                                    <div contenteditable="false" class="text-left richTextEditor">
                                         {{{ description }}}
-                                    </textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -167,35 +171,34 @@
                     {{#each role.pastsceneList}}
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
+                                <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionPastScene{{ ../role.id }}"
                                    href="#collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" data-pastsceneId="{{ pastsceneId }}">
 
-                                    <!--###PASTSCENECHANGE-->
-                                    En {{pastsceneYear}} le {{pastsceneDay}} {{pastsceneMonth}} à {{pastsceneHour}}h {{pastsceneMinute}} -
+                                    {{#pastSceneTime this}}{{/pastSceneTime}}
 
-                                    {{ pastsceneTitle }}
+                                    {{ encodeAsHtml pastsceneTitle }}
                                 </a>
                             </div>
                             <div id="collapsePastScene{{ ../role.id }}-{{ pastsceneId }}" class="accordion-body collapse">
                                 <div class="accordion-inner">
                                     <div class="formRow">
-                                        <div class="span1">
+                                        <div class="row formRow text-center">
                                             <label>
                                                 Titre
                                             </label>
                                         </div>
-                                        <div class="span8">
-                                            <input disabled="disabled" type="text" name="roleHasPastSceneTitle{{ pastsceneId }}" value="{{ title }}"/>
-                                        </div>
+                                    </div>
+                                    <div contenteditable="false" class="text-left richTextEditor textTitle">
+                                        {{{ title }}}
                                     </div>
                                     <div class="row formRow text-center">
                                         <label>
                                             Description
                                         </label>
                                     </div>
-                                    <textarea disabled="disabled" name="roleHasPastSceneDescription{{ pastsceneId }}" rows="5" cols="100">
+                                    <div contenteditable="false" class="text-left richTextEditor">
                                         {{{ description }}}
-                                    </textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>

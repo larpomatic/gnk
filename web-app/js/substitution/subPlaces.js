@@ -4,7 +4,7 @@ function updatePlacesJSONUser(placesJSON) {
         var place = placeArray[key];
 
         // Place HTML element
-        var placeElement =  $("#" + place.htmlId);
+        var placeElement = $("#" + place.htmlId);
 
         // Update place
         var placeSelect = placeElement.children(".place").eq(0).children("select").eq(0);
@@ -31,8 +31,7 @@ function updatePlacesJSONUser(placesJSON) {
 }
 
 // Update place HTML elements
-function updatePlacesView(placesJSON)
-{
+function updatePlacesView(placesJSON) {
     // Counters
     var nbOK = 0;
     var nbKO = 0;
@@ -42,7 +41,7 @@ function updatePlacesView(placesJSON)
         var place = placeArray[key];
 
         // Place HTML Element
-        var placeElement =  $("#" + place.htmlId);
+        var placeElement = $("#" + place.htmlId);
 
         // Update place
         if (typeof(place.selectedName) == "undefined") {
@@ -97,8 +96,12 @@ function updatePlacesView(placesJSON)
         }
 
         // Update counters
-        if (!(typeof(place.proposedNames) == "undefined")) {nbOK += 1;}
-        else {nbKO += 1;}
+        if (!(typeof(place.proposedNames) == "undefined")) {
+            nbOK += 1;
+        }
+        else {
+            nbKO += 1;
+        }
     }
 
     // Update percentage
@@ -110,8 +113,12 @@ function updatePlacesView(placesJSON)
     }
     var placesPercentageSpan = $("#placesPercentage");
     var badgeClass = "badge-success";
-    if (percent < 50) {badgeClass = "badge-important"}
-    else if (percent < 100) {badgeClass = "badge-warning"}
+    if (percent < 50) {
+        badgeClass = "badge-important"
+    }
+    else if (percent < 100) {
+        badgeClass = "badge-warning"
+    }
     placesPercentageSpan.attr("class", "badge " + badgeClass);
     placesPercentageSpan.text(Math.round(percent) + " %");
 }
@@ -148,7 +155,7 @@ function preparePlacesJSONForValidation(placesJSON) {
         var place = placeArray[key];
 
         // Place HTML element
-        var placeElement =  $("#" + place.htmlId);
+        var placeElement = $("#" + place.htmlId);
 
         // Update name
         var placeWritten = document.getElementById("placeWritten");
@@ -170,9 +177,9 @@ function preparePlacesJSONForValidation(placesJSON) {
 
 // Select, unselect all restart
 function selectAllRestartPlaces(restartClass, isToCheck) {
-    $("." + restartClass).each( function() {
+    $("." + restartClass).each(function () {
         var restartInput = $(this).eq(0).children("input").eq(0);
-        if(typeof(restartInput.attr("disabled")) == "undefined") {
+        if (typeof(restartInput.attr("disabled")) == "undefined") {
             restartInput.attr("checked", isToCheck);
         }
     });
@@ -180,11 +187,15 @@ function selectAllRestartPlaces(restartClass, isToCheck) {
 
 // Initiation of places events
 function initPlacesEvents(url) {
-    $("#restartPlaceAll").click( function(){
+    $("#restartPlaceAll").click(function () {
         // Select all
-        if (!(typeof($(this).attr("checked")) == "undefined")) {selectAllRestartResources("restartPlace", true)}
+        if (!(typeof($(this).attr("checked")) == "undefined")) {
+            selectAllRestartResources("restartPlace", true)
+        }
         // Unselect all
-        else {selectAllRestartResources("restartPlace", false)}
+        else {
+            selectAllRestartResources("restartPlace", false)
+        }
     });
 
     // Unban buttons
@@ -192,14 +203,14 @@ function initPlacesEvents(url) {
     for (var key in placeArray) {
         var place = placeArray[key];
         var placeHtmlId = place.htmlId
-        var placeElement =  $("#" + placeHtmlId);
+        var placeElement = $("#" + placeHtmlId);
 
         var unbanPlace = placeElement.children(".place").eq(0).children("a").eq(0);
 
         // Unban Place
-        unbanPlace.click( (function(placeHtmlId){
-            return function() {
-                if(typeof($(this).attr("disabled")) == "undefined") {
+        unbanPlace.click((function (placeHtmlId) {
+            return function () {
+                if (typeof($(this).attr("disabled")) == "undefined") {
                     // Find placeJSON in placeArray with placeHtmlId
                     var placeJSON = null;
                     var placeArray = placesJSON.places;
@@ -222,7 +233,7 @@ function initPlacesEvents(url) {
                     delete placeJSON.bannedNames;
 
                     // Resource HTML Element
-                    var placeElement =  $("#" + placeHtmlId);
+                    var placeElement = $("#" + placeHtmlId);
                     // Update Place
                     // Select
                     var placeSelect = placeElement.children(".place").eq(0).children("select").eq(0);
@@ -243,7 +254,7 @@ function initPlacesEvents(url) {
     }
 
     // Run places substitution
-    $("#runSubPlacesButton").click( function(){
+    $("#runSubPlacesButton").click(function () {
         if (!isSubPlacesRunning) {
             isSubPlacesRunning = true;
             // Update JSON with user selection

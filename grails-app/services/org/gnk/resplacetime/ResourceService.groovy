@@ -1,12 +1,11 @@
 package org.gnk.resplacetime
 
-// Import des classes Groovy
-import org.gnk.ressplacetime.GenericResource
-import org.gnk.ressplacetime.ReferentialResource
 import com.gnk.substitution.Tag
-import org.gnk.tag.TagService
+import org.gnk.ressplacetime.GenericResource
 
-import java.text.Collator
+// Import des classes Groovy
+import org.gnk.ressplacetime.ReferentialResource
+import org.gnk.tag.TagService
 
 class ResourceService {
 
@@ -15,7 +14,7 @@ class ResourceService {
 
     /* Exposed Methods */
 
-    def GenericResource findReferentialResource (GenericResource genericResource, String univers) {
+    GenericResource findReferentialResource (GenericResource genericResource, String univers) {
         LinkedList<Tag> tagsList
         Tag typeTag = null
         Integer maximumRate = 0
@@ -86,14 +85,14 @@ class ResourceService {
                     }
 
                     // Universe information addition
-                    if (resourceHasTag.resource.resourceHasUniverses)
-                    {
-                        LinkedList<ResourceHasUnivers> resourceHasUniversesList = resourceHasTag.resource.resourceHasUniverses
-                        for (ResourceHasUnivers resourceHasUnivers : resourceHasUniversesList) {
-                            String universe = resourceHasUnivers.univers.name
-                            referentialResource.universeList.add(universe)
-                        }
-                    }
+//                    if (resourceHasTag.resource.resourceHasUniverses)
+//                    {
+//                        LinkedList<ResourceHasUnivers> resourceHasUniversesList = resourceHasTag.resource.resourceHasUniverses
+//                        for (ResourceHasUnivers resourceHasUnivers : resourceHasUniversesList) {
+//                            String universe = resourceHasUnivers.univers.name
+//                            referentialResource.universeList.add(universe)
+//                        }
+//                    }
 
                     referentialResourcesList.add(referentialResource)
                 }

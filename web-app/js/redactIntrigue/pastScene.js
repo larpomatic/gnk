@@ -37,8 +37,9 @@ $(function(){
                     createNewPastScenePanel(data);
                     initSearchBoxes();
                     stopClosingDropdown();
-                    initPastSceneRelative();
                     initQuickObjects();
+                    initSpanLabel('.leftMenuList .spanLabel[href="#pastScene_' + data.pastscene.id + '"]');
+                    initSpanLabel('roleScreen .spanLabel[data-pastsceneid="' + data.pastscene.id + '"]');
                     $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
@@ -82,31 +83,34 @@ function updatePastScene() {
             success: function(data) {
                 if (data.object.isupdate) {
                     createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
-                    $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
+                    $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html(convertHTMLRegisterHelper(data.object.name));
                     $('select[name="pastScenePredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
-
-                    <!--###PASTSCENECHANGE-->
-                    $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html($('<div/>').text(
-                        "En " + data.object.year + " le " + data.object.day + " " + data.object.month + " à " + data.object.hour + "h "
-                            + data.object.minute + " - " + data.object.name
-                    ).html());
-
+                    var resDate = "";
+                    var globalList = buildDateList(data.object);
+                    resDate = buildRelativeString(globalList, data.object, resDate);
+                    if (globalList.relativeList.length != 0 && globalList.absoluteList.length != 0) {
+                        resDate += ", ";
+                    }
+                    resDate = buildAbsoluteString(globalList, resDate, data.object);
+                    $('.roleScreen a[data-pastsceneId="' + data.object.id + '"]').html(
+                        resDate + " - " + convertHTMLRegisterHelper(data.object.name)
+                    );
                     $('#pastsceneRolesModal' + data.object.id + ' div[id*="roleHasPastSceneTitleRichTextEditor"]', form).each(function() {
                         var roleId = $('.titleContent', $(this).closest(".tab-pane")).attr("name").replace("roleHasPastSceneTitle", "");
                         if ($(this).html() == "") {
                             $('a[href="#pastsceneRole' + roleId + "_" + data.object.id + '"]', form).parent().removeClass("alert-success");
                             $('.roleScreen a[href="#collapsePastScene' + roleId + '-' + data.object.id + '"]').parent().removeClass("alert-success");
-                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' input[type="text"]').val("");
-                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' textarea').html("");
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' .textTitle').html("");
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' .richTextEditor:not(.textTitle)').html("");
                         }
                         else {
                             $('a[href="#pastsceneRole' + roleId + "_" + data.object.id + '"]', form).parent().addClass("alert-success");
                             $('.roleScreen a[href="#collapsePastScene' + roleId + '-' + data.object.id + '"]').parent().addClass("alert-success");
-                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' input[type="text"]').val(
-                                $('input[name="roleHasPastSceneTitle' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' .textTitle').html(
+                                convertHTMLRegisterHelper($('input[name="roleHasPastSceneTitle' + roleId + '"]', $(this).closest(".tab-pane")).val())
                             );
-                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' textarea').html(
-                                $('input[name="roleHasPastSceneDescription' + roleId + '"]', $(this).closest(".tab-pane")).val()
+                            $('.roleScreen #collapsePastScene' + roleId + '-' + data.object.id + ' .richTextEditor:not(.textTitle)').html(
+                                convertHTMLRegisterHelper($('input[name="roleHasPastSceneDescription' + roleId + '"]', $(this).closest(".tab-pane")).val())
                             );
                         }
                     });
@@ -170,11 +174,7 @@ function emptyPastSceneForm() {
 // créé un tab-pane de la nouvelle scène passée
 function createNewPastScenePanel(data) {
     Handlebars.registerHelper('encodeAsHtml', function(value) {
-        value = value.replace(/>/g, '</span>');
-        value = value.replace(/<l:/g, '<span class="label label-warning" data-tag="');
-        value = value.replace(/<o:/g, '<span class="label label-important" data-tag="');
-        value = value.replace(/<i:/g, '<span class="label label-success" data-tag="');
-        value = value.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+        value = convertHTMLRegisterHelper(value);
         return new Handlebars.SafeString(value);
     });
     Handlebars.registerHelper('ifNull', function(value, options) {
@@ -225,7 +225,8 @@ function createNewPastScenePanel(data) {
         html = template(context);
         $('.roleScreen div[id*="rolePastScenesModal"] #accordionPastScene' + roleId).append(html);
     });
-    initializePopover();
+    initializeTextEditor();
+//    initializePopover();
 }
 
 function buildAbsoluteString(globalList, res, pastscene) {

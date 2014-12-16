@@ -18,7 +18,6 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role);
-//        role = Role.findAllWhere("code": role.getCode(), "plot": plot).first();
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
@@ -105,11 +104,12 @@ class RoleController {
             }
             jsonPastscene.put("pastsceneId", pastscene.id);
             jsonPastscene.put("pastsceneTitle", pastscene.title);
-            jsonPastscene.put("pastsceneYear", pastscene.dateYear);
-            jsonPastscene.put("pastsceneMonth", g.timeMonth(month: pastscene.dateMonth));
-            jsonPastscene.put("pastsceneDay", pastscene.dateDay);
-            jsonPastscene.put("pastsceneHour", pastscene.dateHour);
-            jsonPastscene.put("pastsceneMinute", pastscene.dateMinute);
+            jsonPastscene.put("Year", pastscene.dateYear);
+            jsonPastscene.put("Month", pastscene.getDateMonth());
+            jsonPastscene.put("MonthLetters", g.timeMonth(month: pastscene.dateMonth));
+            jsonPastscene.put("Day", pastscene.dateDay);
+            jsonPastscene.put("Hour", pastscene.dateHour);
+            jsonPastscene.put("Minute", pastscene.dateMinute);
             jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
             jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
             jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
@@ -128,6 +128,7 @@ class RoleController {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(role),
                         id: role.id,
+                        type: role.type,
                         name: role.code,
                         oldname: oldname)
             }
@@ -162,7 +163,7 @@ class RoleController {
 			return false
 		}
 		if (params.containsKey("roleType") && (params.roleType == "PJ" || params.roleType == "PNJ" || params.roleType == "PHJ"
-        || params.roleType == "PJG" || params.roleType == "TPJ")) {
+        || params.roleType == "PJG" || params.roleType == "TPJ" || params.roleType == "STF")) {
 			newRole.type = params.roleType
 		} else {
 			return false
@@ -174,23 +175,8 @@ class RoleController {
 		} else {
 			newRole.roleHasTags = new HashSet<RoleHasTag>()
 		}
-//        if(newRole.roleHasEvents != null) {
-//            HashSet<RoleHasEvent> roleHasEvents = newRole.roleHasEvents;
-//            newRole.roleHasEvents.clear();
-//            RoleHasEvent.deleteAll(roleHasEvents);
-//        } else {
-//            newRole.roleHasEvents = new HashSet<RoleHasEvent>()
-//        }
-//        if(newRole.roleHasPastscenes != null) {
-//            HashSet<RoleHasPastscene> roleHasPastscenes = newRole.roleHasPastscenes;
-//            newRole.roleHasPastscenes.clear();
-//            RoleHasPastscene.deleteAll(roleHasPastscenes);
-//        } else {
-//            newRole.roleHasPastscenes = new HashSet<RoleHasPastscene>()
-//        }
         newRole.save(flush: true);
 
-//        newRole = Role.findAllWhere("code": newRole.getCode()).first();
         params.each {
             if (it.key.startsWith("roleTags_")) {
                 RoleHasTag roleHasTag = new RoleHasTag();

@@ -3,10 +3,7 @@ package org.gnk.selectintrigue
 import org.gnk.gn.GnHasConvention
 import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
-import org.gnk.parser.gn.GnXMLReaderService
 import org.gnk.parser.gn.GnXMLWriterService
-import org.gnk.roletoperso.RoleToPersoController
-import org.omg.CORBA.Request
 import org.springframework.security.access.annotation.Secured
 
 import java.text.ParseException
@@ -14,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.Map.Entry
 
 import org.gnk.gn.Gn;
-import org.gnk.tag.Univers;
+
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
@@ -159,6 +156,7 @@ class SelectIntrigueController {
 		}
 
         nonTreatedPlots.removeAll(selectedPlotInstanceList)
+        nonTreatedPlots.removeAll(selectedEvenementialPlotInstanceList);
         if (gnInstance && gnInstance.bannedPlotSet)
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
 

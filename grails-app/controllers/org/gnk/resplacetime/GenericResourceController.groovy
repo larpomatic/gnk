@@ -2,6 +2,7 @@ package org.gnk.resplacetime
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
@@ -9,6 +10,8 @@ import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 
 class GenericResourceController {
+
+    //ResourceService resourceService;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -217,6 +220,57 @@ class GenericResourceController {
         }
         render(contentType: "application/json") {
             object(isdelete: isDelete)
+        }
+    }
+
+    def getBestResources() {
+        org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
+
+        String univer_name = params.get("univerTag");
+
+        if (univer_name == null || univer_name == "")
+            return;
+
+        List<com.gnk.substitution.Tag> tags = new ArrayList<>();
+        params.each {
+            if (it.key.startsWith("resourceTags_")) {
+                com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
+                Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.value = tag.name;
+                    subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
+                    subtag.type = tag.parent.name;
+                    if (tag.parent.id == 33096)
+                    {
+                        tags.add(tags.size(), subtag);
+                    }
+                    else {
+                        tags.add(0, subtag);
+                    }
+                }
+            }
+        }
+        genericressource.setTagList(tags);
+        ResourceService resourceService = new ResourceService();
+        genericressource = resourceService.findReferentialResource(genericressource, univer_name);
+
+        String result = "";
+        int i = 0;
+
+        JSONObject object = new JSONObject();
+        for (ReferentialResource refe in genericressource.resultList)
+        {
+            i++;
+            if (i <= 5) {
+                result += refe.name + "#";
+                object.put("val", refe.name);
+            }
+        }
+        if (result != "")
+            result = result.substring(0, result.length() - 1);
+        object.put("value", result);
+        render(contentType: "application/json") {
+            object;
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.gnk.selenium
 
-import com.sun.tools.doclets.internal.toolkit.resources.doclets
+//import com.sun.tools.doclets.internal.toolkit.resources.doclets
 import grails.test.mixin.TestFor
 import org.gnk.selectintrigue.SelectIntrigueController
 import org.openqa.selenium.By
@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.firefox.FirefoxDriver
 
 /**
- * Created by pico on 19/05/2014.
+ *
  */
 @TestFor(SelectIntrigueController)
 class CheckGnTests {
