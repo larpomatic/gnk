@@ -1,6 +1,6 @@
 <%@ page import="org.gnk.resplacetime.Place" %>
+<%@ page import="org.gnk.admin.right" %>
 <%@ page import="org.gnk.resplacetime.GenericPlace" %>
-
 <div id="create-resource" class="content scaffold-create" role="main">
     <legend>Création d'un nouveau lieu</legend>
 
@@ -33,7 +33,9 @@
                             noSelection="['':'-Lieu générique-']"/>
                 </div>
             </div>
-            <g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}" />
+            <g:hasRights lvlright="${right.REFMODIFY.value()}">
+                <g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}" />
+            </g:hasRights>
         </form>
     </g:form>
 </div>

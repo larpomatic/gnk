@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.tag.Tag; org.gnk.resplacetime.Place" %>
+<%@ page import="org.gnk.admin.right; org.gnk.tag.Tag; org.gnk.resplacetime.Place" %>
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -32,7 +32,9 @@
                                 <g:else>
                                     <span style="color:black">${placeHasTags.tag.name} ${placeHasTags.weight}%</span>
                                 </g:else>
-                                <g:actionSubmit class="icon-remove remove-action" controller="place" action="deleteTag" value=" " onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');" />
+                                <g:hasRights lvlright="${right.REFDELETE.value()}">
+                                    <g:actionSubmit class="icon-remove remove-action" controller="place" action="deleteTag" value=" " onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');" />
+                                </g:hasRights>
                             </g:form>
                         </li>
                     </g:each>

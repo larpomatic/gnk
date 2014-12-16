@@ -1,5 +1,5 @@
 
-<%@ page import="org.gnk.resplacetime.Resource" %>
+<%@ page import="org.gnk.resplacetime.Resource; org.gnk.admin.right" %>
 <!DOCTYPE html>
 <html>
 	<head>
