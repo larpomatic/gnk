@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.tag.Univers; org.gnk.roletoperso.Role; org.gnk.resplacetime.Resource; org.gnk.tag.Tag" %>
+<%@ page import=" org.gnk.roletoperso.Role; org.gnk.resplacetime.Resource; org.gnk.tag.Tag" %>
 <!DOCTYPE html>
 <html>
 	<head>
