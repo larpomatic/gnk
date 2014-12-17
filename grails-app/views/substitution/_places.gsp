@@ -6,7 +6,7 @@
     <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
     </div>
 
-    <div class="span2"><a href="#modalFusionPlace" role="button" class="btn btn-warning" data-toggle="modal"><i
+    <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbutton" class="btn btn-warning" data-toggle="modal"><i
             class="icon-play icon-white"></i> FUSION</a>
     </div>
 
@@ -90,22 +90,25 @@
                 <div class="span3">
                     <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
                     <select name="placeMergeable1" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
-                    <option value="-1"></option>
+                    <option id="reset1" value="-1"></option>
                     <g:each in="${placeList}" var="p">
                         <option value="${p.code}">${p.code}</option>
                     </g:each>
                 </select><br/>
+                    <div id="com1">
 
-                    <g:textArea name="placeMergeable1com" id="placeMergeable1com" disabled="disabled" value=""/>
+                    </div>
                 </div>
+
 
                 <div class="span3">
                     <label><g:message code="redactintrigue.place.mergeablePlace2"/></label>
                     <select name="placeMergeable2" disabled="disabled" id="placeMergeable2">
-                    <option value="-1"></option>
+                    <option id="reset2" value="-1"></option>
                 </select><br/>
+                    <div id="com2">
 
-                    <g:textArea name="placeMergeable2com" id="placeMergeable2com" disabled="disabled" value="test"/>
+                    </div>
                 </div>
             </div>
             <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
@@ -159,8 +162,11 @@
         var loop = $("#loopPlaceList");
         var useless = $("#fusiontbodyplace");
         var place1 = $("#placeMergeable1");
+        var reset1 = $("#reset1");
+        var reset2 = $("#reset2");
         var place2 =$("#placeMergeable2");
-
+        reset1.prop("selected", true)
+        reset2.prop("selected", true)
         $.ajax({
             type: "POST",
             url: useless.attr("data-url"),
@@ -190,21 +196,31 @@
         var place1 = $("#placeMergeable1");
         var place2 = $("#placeMergeable2");
         var placel = $("#placeList");
-        var com1 = $("#placeMergeable1com");
-        var com2 = $("#placeMergeable2com");
+        var com1 = $("#com1");
+        var com2 = $("#com2");
 
         $('option:not([value="-1"])', place2).remove();
         if(place1.val() != "-1"){
             place2.prop("disabled", false);
+            var comment1 = $(".placeUnity td:contains("+place1.val()+")").next().html();
+            var tags1 = $(".placeUnity td:contains("+place1.val()+")").next().next().html();
+            com1.html("Comment : <br/>"+comment1 + "<br/><br/>" + "Liste des Tags : <br/>"+ tags1)
         }
         else
         {
             place2.prop("disabled", true);
-            com1.attr("value", "")
+            com1.html()
         }
-        if(place2.val() == "-1"){
-            com2.attr("value", "")
+        if(place2.val() != "-1"){
+            var tags2 = $(".placeUnity td:contains("+place2.val()+")").next().next().html();
+            var comment2 = $(".placeUnity td:contains("+place2.val()+")").next().html();
+            com2.html("Comment : <br/>"+comment2 +"<br/><br/>" + "Liste des Tags : <br/>"+tags2)
         }
+        else
+        {
+            com2.html()
+        }
+
 
         $.ajax({
             type: "POST",

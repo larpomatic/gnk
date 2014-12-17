@@ -269,7 +269,7 @@ class SubstitutionController {
 
         placeList.remove(p1)
         placeList.remove(p2)
-        p1.comment = p1.comment + Prop + p2.comment
+        p1.comment = p1.comment + System.getProperty("line.separator") + p2.comment
         List<Tag> placeTags1 = p1.tagList
         List<Tag> placeTags2 = p2.tagList;
         List<Tag> newplaceTags = new ArrayList<>()
