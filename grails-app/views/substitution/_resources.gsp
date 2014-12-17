@@ -22,7 +22,7 @@
         <th>Plot name</th>
         <th>tags</th>
         <th>comment</th>
-        <th>propriétaire</th>
+        <th>Appartient à</th>
         <th>nom</th>
         <th style="text-align: center;">
             A RELANCER <input id="restartResourceAll" type="checkbox" disabled="true" style="float: right;">

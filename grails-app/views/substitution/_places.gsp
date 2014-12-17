@@ -153,6 +153,17 @@
                 // BEGIN Tags LOOP
                 place.tags = new Array();
                 placesJSON.places.push(place);
+
+//                var placeArray = placesJSON.places;
+//                for (var key in placeArray) {
+//                    var place = placeArray[key];
+//                    var proposedNames = place.proposedNames
+//                    for (var key in proposedNames) {
+//                        var name = proposedNames[key];
+//                        proposedNames[key] = name.substring(0, name.lastIndexOf(" -"));
+//                    }
+//                }
+
                 placesList.append($("<option>").attr("value", content).text(content));
                 $(this).prev().val('');
             }

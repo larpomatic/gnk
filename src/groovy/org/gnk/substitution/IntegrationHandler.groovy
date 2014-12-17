@@ -362,7 +362,6 @@ class IntegrationHandler {
 
             // On fait la liste contenant tous les genericPlace
                 for (tag in placeJson.tags) {
-                    println("Generic Place: " + tag.value + " " + tag.weight)
                   genericPlaceTags.put(tag.value as String, tag.weight as Integer)
                 }
 

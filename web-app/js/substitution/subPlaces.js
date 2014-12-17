@@ -63,6 +63,9 @@ function updatePlacesView(placesJSON) {
                 // Update name restart
                 restartPlaceInput.attr("disabled", false);
                 restartPlaceInput.attr("checked", false);
+//                for (var key in proposedNames) {
+//                .substr(0, proposedNames[key].lastIndexOf(" -"))
+//                }
             }
             else {
                 // Update name select
