@@ -252,7 +252,6 @@ class SubstitutionController {
     }
 
     def merged() {
-        print params
         String code1 = params.place1
         String code2 = params.place2
         List<Place> placeList = session.getAttribute("placeList")
