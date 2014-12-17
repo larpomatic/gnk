@@ -16,10 +16,20 @@
             <g:render template="../infosAndErrors" />
             <g:render template="addPlaces" />
             <g:render template="addTagToPlace" />
-            <g:render template="addPlaceToUnivers" />
-            <g:render template="tablePlaces" />
+            <g:render template="tablePlaces" model="[placeInstanceList : placeInstanceList]" />
 
-
+        <div class="pagination">
+            <g:paginate total="${placeInstanceTotal}" />
+        </div>
 		</div>
+    <script type="application/javascript">
+        $(function(){
+            $("#listTable").DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            });
+        });
+    </script>
 	</body>
 </html>

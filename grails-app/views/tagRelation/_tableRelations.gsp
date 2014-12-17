@@ -11,7 +11,13 @@
 		</tr>
 	</thead>
 	<tbody>
-	<g:each in="${TagRelation.list()}" status="i" var="tagRelationInstance">
+    <g:if test="${trs != null}">
+        <g:set var="tagRelations" value="${trs}"/>
+    </g:if>
+    <g:else>
+        <g:set var="tagRelations" value="${TagRelation.list()}"/>
+    </g:else>
+	<g:each in="${tagRelations}" status="i" var="tagRelationInstance">
 		<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 			<td><a href="#modal${tagRelationInstance.tag1.id}" role="button" class="btn" data-toggle="modal">${fieldValue(bean: tagRelationInstance, field: "tag1")}</a></td>
 			<td><a href="#modal${tagRelationInstance.tag2.id}" role="button" class="btn" data-toggle="modal">${fieldValue(bean: tagRelationInstance, field: "tag2")}</a></td>
