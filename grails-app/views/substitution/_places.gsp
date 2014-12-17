@@ -6,6 +6,10 @@
     <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
     </div>
 
+    <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbutton" class="btn btn-warning" data-toggle="modal"><i
+            class="icon-play icon-white"></i> FUSION</a>
+    </div>
+
     <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
                                                                                       file="loader.gif" width="30"
                                                                                       height="30"/></div>
@@ -28,9 +32,9 @@
         </th>
     </tr>
     </thead>
-    <tbody>
-    <g:each status="i" in="${placeList}" var="place">
-        <tr id="place${place.id}_plot${place.plotId}">
+    <tbody id="fusiontbodyplace" data-url="<g:createLink controller='substitution' action='merged'/>">
+    <g:each id="loopPlaceList" status="i" in="${placeList}" var="place"  >
+        <tr id="place${place.id}_plot${place.plotId}" class="placeUnity">
             <!-- # -->
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code -->
@@ -69,6 +73,52 @@
 </table>
 
 <!-- Modal Views -->
+<div id="modalFusionPlace" class="modal hide fade" style="width: 800px; margin-left: -400px;"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h3>Fusion</h3>
+    </div>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+    <div class="modal-body">
+        <g:form action="merged">
+            <div class="row">
+                <input type="hidden" id="placeList" value="${placeList}">
+                <input type="hidden" id="gnId" value="${gnId}">
+
+
+                <div class="span3">
+                    <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
+                    <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
+                    <option id="reset1" value="-1"></option>
+                    <g:each in="${placeList}" var="p">
+                        <option value="${p.code}">${p.code}</option>
+                    </g:each>
+                </select><br/>
+                    <div id="com1">
+
+                    </div>
+                </div>
+
+
+                <div class="span3">
+                    <label><g:message code="redactintrigue.place.mergeablePlace2"/></label>
+                    <select name="placeMergeable2" class="placeMergeable" disabled="disabled" id="placeMergeable2">
+                    <option id="reset2" value="-1"></option>
+                </select><br/>
+                    <div id="com2">
+
+                    </div>
+                </div>
+            </div>
+            <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
+        </g:form>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+</div>
+
 <!--g:render template="modalViewPlaces" /-->
 
 <g:javascript src="substitution/subPlaces.js"/>
@@ -108,7 +158,83 @@
             }
         });
     });
+    $("#fusionButton").click(function () {
+        var loop = $("#loopPlaceList");
+        var useless = $("#fusiontbodyplace");
+        var place1 = $("#placeMergeable1");
+        var reset1 = $("#reset1");
+        var reset2 = $("#reset2");
+        var place2 =$("#placeMergeable2");
+        reset1.prop("selected", true)
+        reset2.prop("selected", true)
+        $.ajax({
+            type: "POST",
+            url: useless.attr("data-url"),
+            dataType: "json",
+            data: {place1 : place1.val(), place2 : place2.val()},
+            success: function (place) {
+//                loop.attr("in",placeList)
+                $(".placeUnity td:contains("+place1.val()+")").closest("tr").remove();
+                $(".placeUnity td:contains("+place2.val()+")").closest("tr").remove();
+                var template = Handlebars.templates['templates/substitution/place'];
+                var context = {
+                    place: place,
+                    i : $(".placeUnity").size() + 1
+                };
+                var html = template(context);
+                $('#fusiontbodyplace').append(html);
+                var count = 1;
+                $('.placeUnity').each(function() {
+                    $("td:first-child", this).html(count);
+                    count++;
+                });
+            }
+        })
+    });
+    $("#placeMergeable2").change(function () {
+        var place2 = $("#placeMergeable2");
+        var com2 = $("#com2");
+        if(place2.val() != "-1"){
+            var tags2 = $(".placeUnity td:contains("+place2.val()+")").next().next().html();
+            var comment2 = $(".placeUnity td:contains("+place2.val()+")").next().html();
+            com2.html("Comment : <br/>"+comment2 +"<br/><br/>" + "Liste des Tags : <br/>"+tags2)
+        }
+        else
+        {
+            com2.html("")
+        }
+    });
+    $("#placeMergeable1").change(function () {
+        var place1 = $("#placeMergeable1");
+        var place2 = $("#placeMergeable2");
+        var placel = $("#placeList");
+        var com1 = $("#com1");
 
+        $('option:not([value="-1"])', place2).remove();
+        if(place1.val() != "-1"){
+            place2.prop("disabled", false);
+            var comment1 = $(".placeUnity td:contains("+place1.val()+")").next().html();
+            var tags1 = $(".placeUnity td:contains("+place1.val()+")").next().next().html();
+            com1.html("Comment : <br/>"+comment1 + "<br/><br/>" + "Liste des Tags : <br/>"+ tags1)
+        }
+        else
+        {
+            place2.prop("disabled", true);
+            com1.html("")
+        }
+        $.ajax({
+            type: "POST",
+            url: place1.attr("data-url"),
+            dataType: "json",
+            data: { place1: place1.val(), placel : placel.val()},
+            success: function (placeList) {
+                console.log("le code" + placeList.Class);
+                $(placeList).each(function () {
+                    place2.append('<option value="' + this.code + '">' + this.code + '</option>');
+                });
+            }
+        })
+    });
     function initPlacesJSON() {
         var jsonObject = new Object();
         // Universe

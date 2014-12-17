@@ -296,7 +296,7 @@ class InputHandler {
         return false;
     }
 
-    private Place createPlace(GenericPlace genericPlace, String plotId) {
+    public Place createPlace(GenericPlace genericPlace, String plotId) {
         Place place = new Place();
         // Id
         place.id = genericPlace.DTDId

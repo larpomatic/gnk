@@ -42,7 +42,7 @@
             <g:render template="resources"/>
         </div>
         <div class="tab-pane" id="tab3">
-            <g:render template="places" />
+            <g:render template="places" model="[placeList:placeList, gnId : gnId]"/>
         </div>
         <div class="tab-pane" id="tab4">
             <g:render template="dates" />
