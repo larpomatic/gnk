@@ -909,7 +909,10 @@ class PublicationController {
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
-                wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
+                String charName = c.firstname + " " + c.lastname.toUpperCase()
+                wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
+                Graph charGraph = new Graph(gn, false)
+                wordWriter.addParagraphOfText(charGraph.getRelation(charName))
             }
 
             if (!hasTags)
