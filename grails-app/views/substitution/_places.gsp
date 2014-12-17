@@ -51,12 +51,13 @@
             <!-- Place -->
             <td class="place">
                 <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold"
-                                                                                             disabled="true"
+                                                                                             disabled="disabled"
                                                                                              isEmpty="true"></select><br>
-                <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten"
+                <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten" disabled="disabled"
                                                                                   class="written">
-                %{--<input type="radio" name="${place}Radio" id="manualPlace" ><input type="text" id="placeManual" class="written" placeholder="Add a custom place">--}%
-                <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
+                <input type="text" id="customPlace" class="written" disabled="disabled" placeholder="Add a custom place">
+                %{--<a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>--}%
+                <button class="btn customPlace" title="Create the custom place" type="button" data-plot-id="${place.plotId}" data-id="${place.id}"><i class="icon-arrow-left"></i></button>
             </td>
             <!-- Restart place -->
             <td class="restartPlace" style="text-align: center;">
@@ -80,6 +81,32 @@
         isSubPlacesRunning = false;
 
         initPlacesEvents("${g.createLink(controller:'substitution', action:'getSubPlaces')}")
+
+        $('.customPlace').click(function(){
+
+            var input = $(this).prev();
+            var content = input.val();
+            var placesList = $("select", $(this).parent());
+            var genericId = $(this).attr("data-id");
+            var plotId = $(this).attr("data-plot-id");
+
+            if (content != "") {
+                var place = new Object();
+                // Gn id
+                place.gnId = ${gnInfo.dbId}
+                    // Gn plot id
+                place.gnPlotId = plotId;
+                // HTML id
+                place.htmlId = "place"+genericId+"_plot" + plotId;
+                // Code
+                place.code = content;
+                // BEGIN Tags LOOP
+                place.tags = new Array();
+                placesJSON.places.push(place);
+                placesList.append($("<option>").attr("value", content).text(content));
+                $(this).prev().val('');
+            }
+        });
     });
 
     function initPlacesJSON() {
