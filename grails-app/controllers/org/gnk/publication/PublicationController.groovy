@@ -171,6 +171,10 @@ class PublicationController {
         gnk.ReadDTD(gn)
         // gn = gnk.gn
 
+        for (Place place: gn.placeSet){
+            place.name = place.name.substring(0, place.name.lastIndexOf(" -"))
+        }
+
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
         if (!folder.exists()) {
@@ -515,7 +519,7 @@ class PublicationController {
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlace, p.name)
+            wordWriter.addTableCell(tableRowPlace, p.name.substring(0, p.name.lastIndexOf(" -")))
             if (p.genericPlace) {
                 String typeStr = p.genericPlace.code
                 if (p.genericPlace.objectType != null)
@@ -663,7 +667,7 @@ class PublicationController {
                 wordWriter.addTableCell(tableRowRes, p.name)
                 if (e.genericPlace)
                     if (e.genericPlace.selectedPlace)
-                        wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
+                        wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name.substring(0, e.genericPlace.selectedPlace.name.lastIndexOf(" -")))
                     else
                         wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
                 else
@@ -1382,7 +1386,7 @@ class PublicationController {
             wordWriter.addTableCell(tableRowEvent, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
             wordWriter.addTableCell(tableRowEvent, e.name)
             if (e.genericPlace && e.genericPlace.proposedPlaces && e.genericPlace.proposedPlaces.size() > 0)
-                wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name)
+                wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name.substring(0, e.genericPlace.proposedPlaces[0].name.lastIndexOf(" -")))
             else
                 wordWriter.addTableCell(tableRowEvent, "")
             wordWriter.addTableCell(tableRowEvent, e.plot.name)
