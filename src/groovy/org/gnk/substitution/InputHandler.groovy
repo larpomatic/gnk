@@ -306,6 +306,8 @@ class InputHandler {
         place.code = genericPlace.code
         // Comment
         place.comment = genericPlace.comment
+        // ObjectType
+        place.objectType = genericPlace.objectType.type
 
         // TagList
         place.tagList = []

@@ -19,6 +19,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>Code</th>
+        <th>Type</th>
         <th>Plot name</th>
         <th>tags</th>
         <th>comment</th>
@@ -36,6 +37,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td>${resource.code}</td>
+            <!-- objectType -->
+            <td>${resource.objectType}</td>
             <!-- Plot name -->
             <td>${resource.plot}</td>
             <!-- Tags -->

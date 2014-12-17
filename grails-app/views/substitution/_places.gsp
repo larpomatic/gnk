@@ -23,6 +23,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
+        <th>Type</th>
         <th>Plot Name</th>
         <th>tags</th>
         <th>comment</th>
@@ -39,6 +40,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code -->
             <td>${place.code}</td>
+            <!-- ObjectType -->
+            <td>${place.objectType}</td>
             <!-- Plot Name -->
             <td>${place.plotName}</td>
             <!-- Tags -->
