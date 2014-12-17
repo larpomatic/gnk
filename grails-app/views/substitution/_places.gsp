@@ -89,7 +89,7 @@
 
                 <div class="span3">
                     <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
-                    <select name="placeMergeable1" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
+                    <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
                     <option id="reset1" value="-1"></option>
                     <g:each in="${placeList}" var="p">
                         <option value="${p.code}">${p.code}</option>
@@ -103,7 +103,7 @@
 
                 <div class="span3">
                     <label><g:message code="redactintrigue.place.mergeablePlace2"/></label>
-                    <select name="placeMergeable2" disabled="disabled" id="placeMergeable2">
+                    <select name="placeMergeable2" class="placeMergeable" disabled="disabled" id="placeMergeable2">
                     <option id="reset2" value="-1"></option>
                 </select><br/>
                     <div id="com2">
@@ -191,13 +191,24 @@
             }
         })
     });
-
+    $("#placeMergeable2").change(function () {
+        var place2 = $("#placeMergeable2");
+        var com2 = $("#com2");
+        if(place2.val() != "-1"){
+            var tags2 = $(".placeUnity td:contains("+place2.val()+")").next().next().html();
+            var comment2 = $(".placeUnity td:contains("+place2.val()+")").next().html();
+            com2.html("Comment : <br/>"+comment2 +"<br/><br/>" + "Liste des Tags : <br/>"+tags2)
+        }
+        else
+        {
+            com2.html("")
+        }
+    });
     $("#placeMergeable1").change(function () {
         var place1 = $("#placeMergeable1");
         var place2 = $("#placeMergeable2");
         var placel = $("#placeList");
         var com1 = $("#com1");
-        var com2 = $("#com2");
 
         $('option:not([value="-1"])', place2).remove();
         if(place1.val() != "-1"){
@@ -209,19 +220,8 @@
         else
         {
             place2.prop("disabled", true);
-            com1.html()
+            com1.html("")
         }
-        if(place2.val() != "-1"){
-            var tags2 = $(".placeUnity td:contains("+place2.val()+")").next().next().html();
-            var comment2 = $(".placeUnity td:contains("+place2.val()+")").next().html();
-            com2.html("Comment : <br/>"+comment2 +"<br/><br/>" + "Liste des Tags : <br/>"+tags2)
-        }
-        else
-        {
-            com2.html()
-        }
-
-
         $.ajax({
             type: "POST",
             url: place1.attr("data-url"),
