@@ -1,7 +1,9 @@
 package org.gnk.publication
 
+import org.docx4j.dml.wordprocessingDrawing.Inline
 import org.docx4j.jaxb.Context
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart
 import org.docx4j.wml.CTBorder
 import org.docx4j.wml.HpsMeasure
@@ -44,6 +46,65 @@ class WordWriter {
         }
         mainPart = wordMLPackage.getMainDocumentPart()
     }
+
+    public void addRelationGraph (ArrayList<String> jsoncharlist, String fileName, String targetedGraph){
+        int i = 0;
+        for (String character : jsoncharlist){
+            if (character.equals(targetedGraph)){
+                this.addImage(fileName + "-" + i.toString() + ".png")
+                return;
+            }
+            else
+                i++
+        }
+        throw new Exception("WordWritter.addRelationGraph : \"" + targetedGraph.toString() + "\" not found")
+    }
+
+    public void addImage(String imgFile) throws Exception {
+        File file = new File(imgFile)
+        // Our utility method wants that as a byte array
+        java.io.InputStream is = new java.io.FileInputStream(file );
+        long length = file.length();
+        // You cannot create an array using a long type.
+        // It needs to be an int type.
+        if (length > Integer.MAX_VALUE) {
+            System.out.println("File too large!!");
+        }
+        byte[] bytes = new byte[(int)length];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+                && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+        // Ensure all the bytes have been read in
+        if (offset < bytes.length) {
+            System.out.println("Could not completely read file "+file.getName());
+        }
+        is.close();
+
+        String filenameHint = null;
+        String altText = null;
+        int id1 = 0;
+        int id2 = 1;
+
+        BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(this.wordMLPackage, bytes);
+
+        Inline inline = imagePart.createImageInline( filenameHint, altText,
+                id1, id2, false);
+
+        // Now add the inline in w:p/w:r/w:drawing
+        org.docx4j.wml.ObjectFactory factory = Context.getWmlObjectFactory();
+        org.docx4j.wml.P  p = factory.createP();
+        org.docx4j.wml.R  run = factory.createR();
+        p.getContent().add(run);
+        org.docx4j.wml.Drawing drawing = factory.createDrawing();
+        run.getContent().add(drawing);
+        drawing.getAnchorOrInline().add(inline);
+
+        this.wordMLPackage.getMainDocumentPart().addObject(p);
+    }
+
 
     def void addParagraphOfText(String text)
     {

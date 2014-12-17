@@ -1,16 +1,15 @@
 package org.gnk.roletoperso
 
 import com.esotericsoftware.minlog.Log
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.genericevent.GenericEvent
+import org.gnk.genericevent.GenericEventCanImplyTag
 import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.tag.TagService
-import org.gnk.tag.Univers
+
 import org.gnk.tag.Tag
 
 class RoleToPersoController {
@@ -272,6 +271,10 @@ class RoleToPersoController {
         RelationshipGraphService graph = new RelationshipGraphService();
         String json_relation = graph.create_graph(gn);
 
+        //Graph graph = new Graph(gn)
+        //String json_relation = graph.buildGlobalGraphJSON();
+
+
         ArrayList<String> values = new ArrayList<>();
         ArrayList<String> values_relation = new ArrayList<>();
         for (Character c in gn.characterSet)
@@ -369,6 +372,7 @@ class RoleToPersoController {
          characterList: gn.characterSet,
          allList: algo.gnTPJRoleSet,
          PHJList: gn.nonPlayerCharSet,
+         STFList: gn.staffCharSet,
          characterListToDropDownLock: characterListToDropDownLock,
          evenementialId: evenementialId,
          relationjson: json_relation,
@@ -380,6 +384,17 @@ class RoleToPersoController {
     public void addLifeEvents(Gn gn) {
         for (Character character : gn.getCharacterSet()) {
             // Créer un plot
+            /*
+            character.selectedRoles.each { role ->
+                System.out.println("ROLE ("+character.firstname+") : " + role.description);
+                role.roleHasPastscenes.each { ps ->
+                    System.out.println("ps - ("+ps.pastscene.timingRelative +"("+ps.pastscene.unitTimingRelative+")"+") - " +ps.pastscene.description);
+                }
+            }
+            */
+            character.getTags().each {t->
+                System.out.println("t("+t.key.id+"):"+t.key+" "+t.value)
+            }
             int dummyInt = 999897
             Plot p = new Plot()
             p.creationDate = gn.getSelectedPlotSet().first().creationDate
@@ -426,42 +441,74 @@ class RoleToPersoController {
             GenericEvent lastGE = null
             System.out.println("AGE : " + character.age)
             while (age < character.age) {
-                // Créer Past scene
-                //def query = GenericEvent.where {
-                //    averageAge in (age-3)..(age+3)
-                //}
+
+                /* STEP 1 on parcours les events qui existent */
                 def query = GenericEvent.where {
                     ageMin <= age && ageMax >= age
                 }
-                //def query2 = GenericEvent.where {
-                //    averageAge == 0
-                //}
+
                 ArrayList<GenericEvent> listEvent = query.findAll()
                 Collections.shuffle(listEvent)
-                lastGE = listEvent.first()
-                //Vérification duplicata
-                // On parcours les resultats de la requete
-                for (GenericEvent ge : listEvent) {
-                    // On parcours ceux qu'on a déjà pour voir si ils existent
-                    lastGE = ge
-                    boolean exist = false
+                ArrayList<GenericEvent> listEventCopy = new ArrayList<GenericEvent>(listEvent);
+
+                // On enlève tous les events déjà utilisé
+                for (GenericEvent ge : listEventCopy) {
                     if (p.roles.size() > 0) {
                         for (RoleHasPastscene selectedPastScene : p.roles.first().roleHasPastscenes) {
                             if (selectedPastScene.description == ge.description) {
-                                exist = true
+                                listEvent.remove(ge)
                             }
                         }
                     }
-                    if (exist == false)
-                        break
                 }
-                if (lastGE == null) {
-                    // Debut, on associe un GE
-                    //GenericEvent.findByAverageAge(age)
 
+                if (listEvent.size() == 0) {
+                    // La c'est le cas ou on a eu pu trouver aucun event qui n'ai pas déjà été selectionné,
+                    // du coup on en prend un qu'on a déjà par defaut
+                    lastGE = listEventCopy.first();
                 } else {
-                    // On trouve un GE en fonction du GE précédent
+                    // On choisi parmi les ceux qui n'ont pas été choisi
+                    GenericEvent bestGE = null;
+                    ArrayList<Integer> listDesIdDeGEDispo = new ArrayList<Integer>();
+                    int diffValueBetweenGEandTAG = 300;
+                    for (GenericEvent ge : listEvent)
+                        listDesIdDeGEDispo.add(ge.id)
 
+                    for (GenericEvent ge : listEvent) {
+                        character.getTags().each { charTag ->
+                            def queryTag = GenericEventCanImplyTag.where {
+                                tag.id == charTag.key.id
+                            }
+                            ArrayList<GenericEventCanImplyTag> genericImplyTags = queryTag.findAll()
+
+                            for (GenericEventCanImplyTag gecit : genericImplyTags) {
+                                boolean isdispo = false;
+                                // Est ce que il est disponible dans la liste
+                                for (GenericEvent e : listEvent) {
+                                    if (e.description == gecit.genericEvent.description) {
+                                        isdispo = true
+                                        break;
+                                    }
+                                }
+                                if (!isdispo) {
+                                    //System.out.println("OUI CA CONTIENT DEJA")
+                                } else {
+                                    int diff = Math.abs((charTag.value + 100) - (gecit.value + 100));
+                                    //System.out.println("diff:" + diff + "/" + diffValueBetweenGEandTAG)
+                                    if (diffValueBetweenGEandTAG > diff) {
+                                        // On est sur un GE qui est plus apte que les autres.
+                                        diffValueBetweenGEandTAG = diff;
+                                        bestGE = gecit.genericEvent;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (bestGE != null) {
+                        lastGE = bestGE
+                    } else {
+                        lastGE = listEvent.first();
+                    }
                 }
 
                 Pastscene pastSceneLife = new Pastscene()
@@ -488,7 +535,7 @@ class RoleToPersoController {
             }
             p.roles.each { ps ->
                 ps.roleHasPastscenes.each { rhpsfez ->
-                    System.out.print(rhpsfez.description)
+                    System.out.print(rhpsfez.pastscene.description+"-"+rhpsfez.description)
                 }
             }
             System.out.print("____")

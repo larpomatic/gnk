@@ -114,6 +114,7 @@ function updateResourcesView(resourcesJSON)
     else if (percent < 100) {badgeClass = "badge-warning"}
     resourcesPercentageSpan.attr("class", "badge " + badgeClass);
     resourcesPercentageSpan.text(Math.round(percent) + " %");
+
 }
 
 // On succes AJAX
@@ -184,16 +185,30 @@ function initResourcesEvents(url) {
 
     // Unban buttons
     var resourceArray = resourcesJSON.resources;
+
+//    if (customResource != null){
+//
+//        resourceArray.add(customResource);
+//    }
+
     for (var key in resourceArray) {
         var resource = resourceArray[key];
         var resourceHtmlId = resource.htmlId
         var resourceElement =  $("#" + resourceHtmlId);
 
-        var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0);
+        var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0)
 
         // Unban Resource
         unbanResource.click( (function(resourceHtmlId){
             return function() {
+
+//                $('.resource #customResource').each(function() {
+//                    if ($(this).val().length == 0) {
+//                        var jsonObject = new Object();
+//
+//                    }
+//                    });
+
                 if(typeof($(this).attr("disabled")) == "undefined") {
                     // Find resourceJSON in resourceArray with resourceHtmlId
                     var resourceJSON = null;
@@ -246,6 +261,13 @@ function initResourcesEvents(url) {
 
             // Enable selectAll
             $("#restartResourceAll").removeAttr("disabled");
+            $("#restartResourceAll").removeAttr("disabled");
+
+
+
+            $("#customResource").each(function() {
+                $("#customResource").removeAttr("disabled")
+            });
 
             // Show loader
             $("#resourcesLoader").show();

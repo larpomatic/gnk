@@ -1,8 +1,14 @@
 <div class="row-fluid">
     <div class="span4"><legend>Lieux</legend></div>
+
     <div class="span1"><span class="badge badge-important" id="placesPercentage">0 %</span></div>
-    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a></div>
-    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+
+    <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
+    </div>
+
+    <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
+                                                                                      file="loader.gif" width="30"
+                                                                                      height="30"/></div>
 </div>
 
 <div id="subPlacesAlertContainer">
@@ -13,7 +19,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>code</th>
-        <th>type</th>
+        <th>Plot Name</th>
         <th>tags</th>
         <th>comment</th>
         <th>nom</th>
@@ -27,12 +33,10 @@
         <tr id="place${place.id}_plot${place.plotId}">
             <!-- # -->
             <td style="text-align: center;">${i + 1}</td>
-            <!-- Code - modal button -->
-            <td><a href="#modalPla${i + 1}" role="button" class="btn" data-toggle="modal">PLA-${place.id.encodeAsHTML()}_${place.plotId.encodeAsHTML()}</a></td>
-            <!-- Type -->
-            <td center>
-                ${place.objectType}
-            </td>
+            <!-- Code -->
+            <td>${place.code}</td>
+            <!-- Plot Name -->
+            <td>${place.plotName}</td>
             <!-- Tags -->
             <td>
                 <ul class="unstyled">
@@ -46,11 +50,15 @@
             <td>${place.comment.encodeAsHTML()}</td>
             <!-- Place -->
             <td class="place">
-            <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold" disabled="true" isEmpty="true"></select><br>
-            <input type="radio" name="${place}Radio" id="writtenPlace" ><input type="text" id="placeWritten" class="written">
-            <a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>
-            </td>-
-
+                <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold"
+                                                                                             disabled="disabled"
+                                                                                             isEmpty="true"></select><br>
+                <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten" disabled="disabled"
+                                                                                  class="written">
+                <input type="text" id="customPlace" class="written" disabled="disabled" placeholder="Add a custom place">
+                %{--<a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>--}%
+                <button class="btn customPlace" title="Create the custom place" type="button" data-plot-id="${place.plotId}" data-id="${place.id}"><i class="icon-arrow-left"></i></button>
+            </td>
             <!-- Restart place -->
             <td class="restartPlace" style="text-align: center;">
                 <input type="checkbox" name="option" value="unlock" disabled="true">
@@ -63,16 +71,42 @@
 <!-- Modal Views -->
 <!--g:render template="modalViewPlaces" /-->
 
-<g:javascript src="substitution/subPlaces.js" />
+<g:javascript src="substitution/subPlaces.js"/>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         // PlacesJSON
         placesJSON = initPlacesJSON();
 
         isSubPlacesRunning = false;
 
         initPlacesEvents("${g.createLink(controller:'substitution', action:'getSubPlaces')}")
+
+        $('.customPlace').click(function(){
+
+            var input = $(this).prev();
+            var content = input.val();
+            var placesList = $("select", $(this).parent());
+            var genericId = $(this).attr("data-id");
+            var plotId = $(this).attr("data-plot-id");
+
+            if (content != "") {
+                var place = new Object();
+                // Gn id
+                place.gnId = ${gnInfo.dbId}
+                    // Gn plot id
+                place.gnPlotId = plotId;
+                // HTML id
+                place.htmlId = "place"+genericId+"_plot" + plotId;
+                // Code
+                place.code = content;
+                // BEGIN Tags LOOP
+                place.tags = new Array();
+                placesJSON.places.push(place);
+                placesList.append($("<option>").attr("value", content).text(content));
+                $(this).prev().val('');
+            }
+        });
     });
 
     function initPlacesJSON() {
@@ -88,11 +122,14 @@
         place.gnId = "${place.id}"
         // Gn plot id
         place.gnPlotId = "${place.plotId}"
+        // Gn plot
+        place.plotName = "${place.plotName}"
         // HTML id
         place.htmlId = "place${place.id}_plot${place.plotId}"
         // Code
         place.code = "${place.code}"
-        // BEGIN Tags LOOP
+
+        // BEGIN Generic Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${place.tagList}" var="tag">
         var tag = new Object();
@@ -102,7 +139,9 @@
         tagArray.push(tag);
         </g:each>
         // END Tags LOOP
-        if (tagArray.length > 0) {place.tags = tagArray;}
+        if (tagArray.length > 0) {
+            place.tags = tagArray;
+        }
         placeArray.push(place);
         </g:each>
         // END Places LOOP

@@ -14,10 +14,12 @@
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle?"
-                        data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
-                    <i class="icon-remove pull-right"></i>
-                </button>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer le rôle?"
+                            data-url="<g:createLink controller="Role" action="Delete" id="${role.id}"/>" data-object="role" data-id="${role.id}">
+                        <i class="icon-remove pull-right"></i>
+                    </button>
+                </g:plotOwner>
             </li>
         </g:each>
     </ul>
@@ -111,7 +113,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertRole"/>
+                </g:plotOwner>
             </form>
         </div>
 
@@ -178,7 +182,7 @@
                         </div>
                         <div class="span4">
                             <a href="#rolePastScenesModal_${role.id}" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.role.choosePastScenes" default="Choose past Scene"/>
+                                <g:message code="redactintrigue.role.choosePastScenes" default="See past Scene"/>
                             </a>
                         </div>
                         <div class="span1">
@@ -188,7 +192,7 @@
                         </div>
                         <div class="span4">
                             <a href="#roleEventsModal_${role.id}" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.role.chooseEvents" default="Choose events"/>
+                                <g:message code="redactintrigue.role.chooseEvents" default="See events"/>
                             </a>
                         </div>
                     </div>
@@ -225,28 +229,31 @@
                                         <g:else>
                                             <div class="accordion-heading">
                                         </g:else>
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEvent${role.id}"
+                                            <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionEvent${role.id}"
                                                href="#collapseEvent${role.id}-${event.id}" data-eventId="${event.id}">
-                                                ${event.timing}% - ${event.name}
+                                                ${event.timing}% - ${event.name?.encodeAsHTML()}
                                             </a>
                                         </div>
                                         <div id="collapseEvent${role.id}-${event.id}" class="accordion-body collapse">
                                             <div class="accordion-inner">
                                                 <div class="formRow">
-                                                    <div class="span1">
+                                                    <div class="row formRow text-center">
                                                         <label>
                                                             <g:message code="redactintrigue.role.roleTitle" default="Title"/>
                                                         </label>
                                                     </div>
-                                                    <div class="span4">
-                                                        <g:textField disabled="disabled" name="roleHasEventTitle${event.id}" value="${role?.getRoleHasEvent(event)?.title}"/>
-                                                    </div>
-                                                    <div class="span1">
+                                                </div>
+                                                <div contenteditable="false" class="text-left richTextEditor textTitle">
+                                                    ${role?.getRoleHasEvent(event)?.title?.encodeAsHTML()}
+                                                </div>
+                                                <div class="formRow text-center">
+                                                    <div class="span4"></div>
+                                                    <div class="span2">
                                                         <label>
                                                             <g:message code="redactintrigue.role.roleAnnonced" default="Is Annonced"/>
                                                         </label>
                                                     </div>
-                                                    <div class="span4">
+                                                    <div class="span1">
                                                         <g:checkBox disabled="disabled" name="roleHasEventannounced${event.id}" checked="${role?.getRoleHasEvent(event)?.isAnnounced}"/>
                                                     </div>
                                                 </div>
@@ -255,7 +262,9 @@
                                                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                                                     </label>
                                                 </div>
-                                                <g:textArea disabled="disabled" name="roleHasEventDescription${event.id}" value="${role.getRoleHasEvent(event)?.description}" rows="5" cols="100"/>
+                                                <div contenteditable="false" class="text-left richTextEditor">
+                                                    ${role.getRoleHasEvent(event)?.description?.encodeAsHTML()}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +294,7 @@
                                         <g:else>
                                             <div class="accordion-heading">
                                         </g:else>
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
+                                            <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
                                                href="#collapsePastScene${role.id}-${pastscene.id}" data-pastsceneId="${pastscene.id}">
 
                                                 <g:pastsceneTime pastsceneId="${pastscene.id}"/>
@@ -294,19 +303,23 @@
                                         <div id="collapsePastScene${role.id}-${pastscene.id}" class="accordion-body collapse">
                                             <div class="accordion-inner">
                                                 <div class="formRow">
-                                                    <div class="span1">
-                                                        <g:message code="redactintrigue.role.roleTitle" default="Title"/>
-                                                    </div>
-                                                    <div class="span8">
-                                                        <g:textField disabled="disabled" name="roleHasPastSceneTitle${pastscene.id}" value="${role?.getRoleHasPastScene(pastscene)?.title}"/>
+                                                    <div class="row formRow text-center">
+                                                        <label>
+                                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                        </label>
                                                     </div>
                                                 </div>
+                                                <div contenteditable="false" class="text-left richTextEditor textTitle">
+                                                    ${role?.getRoleHasPastScene(pastscene)?.title?.encodeAsHTML()}
+                                                </div>
                                                 <div class="row formRow text-center">
-                                                    <label for="roleDescription">
+                                                    <label>
                                                         <g:message code="redactintrigue.role.roleDescription" default="Description"/>
                                                     </label>
                                                 </div>
-                                                <g:textArea disabled="disabled" name="roleHasPastSceneDescription${pastscene.id}" value="${role?.getRoleHasPastScene(pastscene)?.description}" rows="5" cols="100"/>
+                                                <div contenteditable="false" class="text-left richTextEditor">
+                                                    ${role?.getRoleHasPastScene(pastscene)?.description?.encodeAsHTML()}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -344,7 +357,9 @@
                             <button class="btn" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
-                    <input type="button" name="Update" data-id="${role.id}" value="Update" class="btn btn-primary updateRole"/>
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" data-id="${role.id}" value="Update" class="btn btn-primary updateRole"/>
+                    </g:plotOwner>
                 </form>
             </div>
         </g:each>

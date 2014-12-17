@@ -5,12 +5,8 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
-import org.gnk.tag.TagService
-import org.gnk.tag.Univers
+import org.gnk.tag.TagRelevant
 import org.gnk.user.User
-import org.hibernate.Hibernate
-import org.hibernate.proxy.HibernateProxy
-import org.hibernate.proxy.HibernateProxyHelper
 
 class Plot {
 
@@ -22,7 +18,7 @@ class Plot {
     private static List<Tag> tagList
     public static List getTagList() {
 
-        return TagService.getPlotTagQuery()
+        return getPlotTagQuery()
     }
 
 
@@ -49,7 +45,6 @@ class Plot {
 
     static hasMany = [ events: Event,
             extTags: PlotHasTag,
-            plotHasUniverses: PlotHasUnivers,
             roles: Role,
             pastescenes: Pastscene,
             genericResources: GenericResource,
@@ -128,6 +123,10 @@ class Plot {
         return PlotHasTag.findByTagAndPlot(tag, this);
     }
 
+    public getPlotHasTag() {
+        return PlotHasTag.findAllByPlot(this).sort { -it.weight };
+    }
+
 //    public boolean hasUnivers(Tag tagUnivers) {
 //        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
 //            if (plotHasUnivers.univers == parUnivers) {
@@ -137,13 +136,13 @@ class Plot {
 //        return false;
 //    }
 
-    public boolean isUniversGeneric() {
-        int i = 0;
-        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
-            i++;
-        }
-        return i == 0;
-    }
+//    public boolean isUniversGeneric() {
+//        int i = 0;
+//        for (PlotHasUnivers plotHasUnivers : plotHasUniverses) {
+//            i++;
+//        }
+//        return i == 0;
+//    }
 
     public int getNbMinMen () {
         int number = 0;
@@ -177,5 +176,26 @@ class Plot {
             }
         }
         return pipCoreOkNumber;
+    }
+
+    def static List<Tag> getPlotTagQuery() {
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            if (tagRelevant && tagRelevant.relevantPlot) {
+                result.add(child);
+            }
+        }
+        return result;
+    }
+
+    public String getMetric() {
+        String newLigne = "<br />";
+        String role = "Nb Roles : " + this.roles.size();
+        String res = "Nb Ressources : " + this.genericResources.size();
+        String place = "Nb Lieux : " + this.genericPlaces.size();
+        String evt = "Nb Evénements : " + this.events.size();
+        return "<b>" + this.name + "</b>" + newLigne + role + newLigne + res + newLigne + place + newLigne +evt;
     }
 }

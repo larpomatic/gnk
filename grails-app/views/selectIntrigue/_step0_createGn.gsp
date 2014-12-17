@@ -1,5 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.gn.Gn" %>
+<%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 
 <style type="text/css">
 input {
@@ -183,11 +184,15 @@ select {
     </fieldset>
 
     <div class="form-actions">
-        <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
+        <g:hasRights lvlright="${right.MGNMODIFY.value()}">
+            <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
                         value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-        <g:actionSubmit action="delete" class="btn btn-primary"
+        </g:hasRights>
+        <g:hasRights lvlright="${right.MGNDELETE.value()}">
+            <g:actionSubmit action="delete" class="btn btn-primary"
                         value="${message(code: 'default.button.delete.label', default: 'Delete')}"
                         formnovalidate=""
                         onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+        </g:hasRights>
     </div>
 </g:form>

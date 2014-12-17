@@ -75,6 +75,7 @@ class Gn {
 	Set<Plot> bannedPlotSet
     Set<Character> characterSet
     Set<Character> nonPlayerCharSet
+    Set<Character> staffCharSet
 	int nbPlayers
 	int nbMen
 	int nbWomen
@@ -221,5 +222,16 @@ class Gn {
                 return c;
         }
         return null;
+    }
+
+    public Set<Character> getStaffCharSet() {
+        if (this.staffCharSet == null)
+            this.staffCharSet = new HashSet<Character>();
+        return staffCharSet
+    }
+
+
+    void setStaffCharSet(Set<Character> staffCharSet) {
+        this.staffCharSet = staffCharSet
     }
 }

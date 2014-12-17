@@ -2,53 +2,83 @@ package org.gnk.tag
 
 import org.gnk.administration.DbCoherenceController
 import org.springframework.security.access.annotation.Secured
+import org.gnk.tag.TagService
+import org.springframework.web.context.request.RequestContextHolder
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class TagController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+    TagService tagService
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: "list", params: "params")
     }
 
     def list(Integer max, Integer offset, String sort) {
-        max = max ?: 10
-        offset = offset ?: 0
-        sort = sort ?: 'name'
-        params.order = params.order ?: 'asc'
-
-        def resultList = Tag.createCriteria().list(max: max, offset: offset) {
-            if (sort.indexOf('tagFamily.') == 0) {
-                tagFamily {
-                    order(sort.split('\\.')[1], params.order)
+        List<Tag> tags = Tag.list();
+        Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        for (Tag tag : tags) {
+            ArrayList<Tag> tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null) {
+                if (!"".equals(tag.name)) {
+                    tagParent.add(t);
                 }
-            } else
-                order(sort, params.order as String)
+                t = t.parent;
+            }
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
         }
-		
-		[ tagInstanceList: resultList ]
+        Tag parent = Tag.get(params.Tag_select as Integer)
+        String parentName = parent == null ? "" : parent.name
+
+        if (params.showChildren)
+            {
+                session.tagParent = parent.id
+
+                List<Tag> resultList = new ArrayList<Tag>()
+                resultList.addAll(parent.children)
+                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
+            }
+        else
+        {
+            max = max ?: 10
+            offset = offset ?: 0
+            sort = sort ?: 'name'
+            params.order = params.order ?: 'asc'
+
+            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+                if (sort.indexOf('tagFamily.') == 0) {
+                    tagFamily {
+                        order(sort.split('\\.')[1], params.order)
+                    }
+                } else
+                    order(sort, params.order as String)
+            }
+            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName , listTagParent:mapTagParent]
+        }
     }
 
-    def findChildren(org.gnk.tag.Tag t) {
-        def tags = org.gnk.tag.Tag.findAllWhere(parent: t)
+    def childrenList(Tag t)
+    {
+        t = t ?: params.Tag_select
+
+        def resultList = findChildren(t)
+
+        [tagInstanceList: resultList]
+    }
+
+    def findChildren(Tag t) {
+
+        def tags = Tag.findAllWhere(parent: t)
         def tagsTmp = new ArrayList()
         tagsTmp.addAll(tags)
         if (tagsTmp == null)
             return tags
-        for (org.gnk.tag.Tag tag : tagsTmp) {
+        for (Tag tag : tagsTmp) {
             tags.addAll(findChildren(tag))
         }
         return tags
-    }
-
-    def listChildren(String parent)
-    {
-        Tag parentTag = Tag.findWhere(name: parent)
-
-        def resultList = findChildren(parentTag)
-
-        [ tagInstanceChildrenList: resultList ]
     }
 	
 //	def listFrom(String tagFamily) {
@@ -81,15 +111,24 @@ class TagController {
             return
 		}
 		
-		if (params.TagFamily_select.equals(""))
-		{
-			flash.message = message(code: 'Erreur : Il faut choisir une famille pour le tag !')
-			redirect(action: "list")
-			return
-		}
+//		if (params.TagFamily_select.equals(""))
+//		{
+//			flash.message = message(code: 'Erreur : Il faut choisir un parent pour le tag !')
+//			redirect(action: "list")
+//			return
+//		}
 
         Tag tagInstance = new Tag(params)
-		String tagFamilyId = params.TagFamily_select
+        //Tag parent = Tag.findWhere(name: params.Tag_parent)
+        Integer parentId = session.tagParent as Integer
+        print("TAGPARENTID: " + parentId)
+        Tag parent = Tag.findWhere(id: parentId)
+
+        if (parent == null)
+            return
+
+        print("Tag parent: " + params.Tag_parent)
+        tagInstance.setParent(parent)
 		
 		for (Tag tag : Tag.list()) 
 		{
@@ -122,7 +161,7 @@ class TagController {
         }
 
         
-        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, tagFamilyInstance.value])
+        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, parent.name])
         redirect(action: "list")
     }
 
@@ -147,58 +186,68 @@ class TagController {
         */
     }
 
-    def addTagIntoFamily()
-	{
-		if (params.TagFamily_select.equals("") || params.Tag_select.equals(""))
-		{
-				print "Invalid params"
-				flash.message = message(code: 'Erreur : Il faut choisir un tag et une famille !')
-				redirect(action: "list")
-				return
-		}
-
-//		TagFamily tagFamilyInstance = null;
-//		Tag tagInstance = null;
-//		for (TagFamily tagFamily : TagFamily.list())
+//    def addTagIntoFamily()
+//	{
+//		if (params.TagFamily_select.equals("") || params.Tag_select.equals(""))
 //		{
-//			if (tagFamily.id == params.TagFamily_select.toInteger())
+//				print "Invalid params"
+//				flash.message = message(code: 'Erreur : Il faut choisir un tag et une famille !')
+//				redirect(action: "list")
+//				return
+//		}
+//
+////		TagFamily tagFamilyInstance = null;
+//		Tag tagInstance = null;
+////		for (TagFamily tagFamily : TagFamily.list())
+////		{
+////			if (tagFamily.id == params.TagFamily_select.toInteger())
+////			{
+////				tagFamilyInstance = tagFamily
+////				break
+////			}
+////		}
+//
+//		for (Tag tag : Tag.list())
+//		{
+//			if (tag.id == params.Tag_select.toInteger())
 //			{
-//				tagFamilyInstance = tagFamily
+//				tagInstance = tag
 //				break
 //			}
 //		}
-		
-		for (Tag tag : Tag.list())
-		{
-			if (tag.id == params.Tag_select.toInteger())
-			{
-				tagInstance = tag
-				break
-			}
-		}
-		
-		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
-		{
-			print "Family or Tag not found"
-			flash.message = message(code: 'Erreur : Tag ou famille invalide !')
-			redirect(action: "list")
-			return
-		}
-		
-		if (tagInstance.tagFamily.value.equals(tagFamilyInstance.value))
-		{
-			print "This relation already exists"
-			flash.message = message(code: 'Erreur : Cette relation existe deja !')
-			redirect(action: "list")
-			return
-		}
-		
-		tagInstance.tagFamily = tagFamilyInstance
-		tagInstance.save()
-		flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.create', args: [tagInstance.name, tagFamilyInstance.value])
+//
+//		if (tagFamilyInstance.equals(null) || tagInstance.equals(null))
+//		{
+//			print "Family or Tag not found"
+//			flash.message = message(code: 'Erreur : Tag ou famille invalide !')
+//			redirect(action: "list")
+//			return
+//		}
+//
+//		tagInstance.tagFamily = tagFamilyInstance
+//		tagInstance.save()
+//		flash.messageInfo = message(code: 'adminRef.tagIntoTagFamily.info.create', args: [tagInstance.name, tagFamilyInstance.value])
+//
+//		redirect(action: "list")
+//	}
 
-		redirect(action: "list")
-	}
+//    def viewChildren() {
+//
+//        Tag tagInstance = null;
+//
+//        if (params.Tag_select.equals("")) {
+//            print "Invalid params"
+//            flash.message = message(code: 'Erreur : Il faut choisir un tag et son parent!')
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        tagInstance = Tag.findWhere(id: (int) params.Tag_select)
+//
+//        List<Tag> children = tagInstance.children
+//        list(children)
+//
+//    }
 	
     def show(Long id) {
         def tagInstance = Tag.get(id)
@@ -326,7 +375,25 @@ class TagController {
 	}
 	
 	def stats(){
-		render(view: "statistics")
+        Tag tagUniverParent = Tag.findByName("Tag Univers");
+        Set<Tag> tagUnivers = tagUniverParent.children
+        Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        List<Tag> tags = Tag.list();
+        for (Tag tag : tags) {
+            ArrayList<Tag> tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null) {
+                if (!"".equals(tag.name)) {
+                    tagParent.add(t);
+                }
+                t = t.parent;
+            }
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
+        }
+
+
+		render(view: "statistics", model: [listTagParent:mapTagParent, tagUniverse: tagUnivers])
 	}
 
     def editRelevantTag(int id){
@@ -365,4 +432,5 @@ class TagController {
         }
         redirect(action : "list")
     }
+
 }

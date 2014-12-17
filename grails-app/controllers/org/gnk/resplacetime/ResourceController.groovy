@@ -1,11 +1,6 @@
 package org.gnk.resplacetime
 
 import org.gnk.tag.Tag
-import org.gnk.tag.Univers
-import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.web.multipart.MultipartFile
-
-import javax.servlet.ServletRequest
 
 class ResourceController {
 
@@ -25,13 +20,13 @@ class ResourceController {
 		if (params.Univers_select.equals("") || params.Resource_select.equals(""))
 		{
 				print "Invalid params"
-				flash.message = messadge(code: 'Erreur : Il faut choisir un univers et une ressource !')
+				flash.message = message(code: 'Erreur : Il faut choisir un univers et une ressource !')
 				redirect(action: "list")
 				return
 		}
 
 		Resource resourceInstance = null;
-		Univers universInstance = null;
+		Tag universInstance = null;
 		for (Resource resource : Resource.list())
 		{
 			if (resource.id == params.Resource_select.toInteger())
@@ -41,7 +36,7 @@ class ResourceController {
 			}
 		}
 		
-		for (Univers univers : Univers.list())
+		for (Tag univers : Tag.list())
 		{
 			if (univers.id == params.Univers_select.toInteger())
 			{
@@ -58,10 +53,10 @@ class ResourceController {
 			return
 		}
 		
-		for (ResourceHasUnivers resourceHasUnivers : resourceInstance.resourceHasUniverses)
+		for (ResourceHasTag resourceHasTags : resourceInstance.extTags)
 		{
-			if ((resourceHasUnivers.univers.id.equals(universInstance.id)
-				&& (resourceHasUnivers.resource.id.equals(resourceInstance.id))))
+			if ((resourceHasTags.resource.id.equals(universInstance.id)
+				&& (resourceHasTags.resource.id.equals(resourceInstance.id))))
 				{
 					print "This relation already exists"
 					flash.message = message(code: 'Erreur : Cette relation existe deja !')
@@ -70,38 +65,16 @@ class ResourceController {
 				}
 		}
 		
-		ResourceHasUnivers resourceHasUniversInstance = new ResourceHasUnivers();
+		ResourceHasTag resourceHasUniversInstance = new ResourceHasTag();
 		resourceHasUniversInstance.resource = resourceInstance
 		resourceHasUniversInstance.univers = universInstance
 		resourceHasUniversInstance.weight = params.weight.toInteger()
 		resourceHasUniversInstance.save()
 		redirect(action: "list")
 	}
-	
-	def deleteUnivers()
-	{
-		ResourceHasUnivers resourceHasUniversInstance = null
-		for (ResourceHasUnivers resourceHasUnivers : ResourceHasUnivers.list())
-		{
-			if (resourceHasUnivers.id.toInteger().equals(params.idResourceHasUniverses.toInteger()))
-			{
-				resourceHasUniversInstance = resourceHasUnivers
-				break
-			}
-		}
-		
-		if (resourceHasUniversInstance.equals(null))
-		{
-			print "Error : resourceHasUniversInstance not found"
-			redirect(action: "list")
-			return
-		}
-		
-		resourceHasUniversInstance.delete()
-		redirect(action: "list")
-	}
-	
-	def deleteResource()
+
+
+    def deleteResource()
 	{
 		Resource resourceInstance
 		for (Resource res : Resource.list()) {
@@ -151,7 +124,7 @@ class ResourceController {
 		resourceInstance.name = params.name
 		resourceInstance.description = params.desc
 		resourceInstance.gender = params.gender_select
-        resourceInstance.genericResource = GenericResource.get(params.genericResource_select)
+        // voir dump 2013 (domainclass Resource resourceInstance.genericResource = GenericResource.get(params.genericResource_select)
 
         if (!resourceInstance.save(flush: true)) {
             render(view: "create", model: [resourceInstance: resourceInstance])
@@ -320,5 +293,6 @@ class ResourceController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'resource.label', default: 'Resource'), id])
             redirect(action: "show", id: id)
         }*/
+
     }
 }

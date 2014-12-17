@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="<g:resource dir="css" file="testMenuSlide.css"/>" type="text/css">
 <section id="article27" class="crayon article-css-27 demoTime">
     <div class="pull-right autorField">
-        <g:message code="redactintrigue.autor" default="Autor"/> : ${plotInstance.user.firstname} ${plotInstance.user.lastname}
+        ${plotInstance.user.firstname} ${plotInstance.user.lastname}
     </div>
     <div id="demoWrap">
         <div id="wrap1">
@@ -75,31 +75,31 @@
 
                 <div id="textes">
                     <div class="container">
-                        <g:render template="generalDescriptionForm"/>
+                        <g:render template="generalDescriptionForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="rolesForm"/>
+                        <g:render template="rolesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="placesForm"/>
+                        <g:render template="placesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="resourcesForm"/>
+                        <g:render template="resourcesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="relationsForm"/>
+                        <g:render template="relationsForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="pastScenesForm"/>
+                        <g:render template="pastScenesForm" model="['right':right]"/>
                     </div>
 
                     <div class="container">
-                        <g:render template="eventsForm"/>
+                        <g:render template="eventsForm" model="['right':right]"/>
                     </div>
                 </div>
             </div>

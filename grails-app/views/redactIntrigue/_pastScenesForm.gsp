@@ -7,13 +7,15 @@
         </li>
         <g:each in="${plotInstance.pastescenes}" status="i5" var="pastScene">
             <li class="leftMenuList">
-                <a href="#pastScene_${pastScene.id}" data-toggle="tab">
+                <a href="#pastScene_${pastScene.id}" data-toggle="tab" class="spanLabel">
                     ${pastScene.title?.encodeAsHTML()}
                 </a>
-                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la scène?"
-                        data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">
-                    <i class="icon-remove pull-right"></i>
-                </button>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger" title="Supprimer la scène?"
+                            data-url="<g:createLink controller="PastScene" action="Delete" id="${pastScene.id}"/>" data-object="pastScene" data-id="${pastScene.id}">
+                        <i class="icon-remove pull-right"></i>
+                    </button>
+                </g:plotOwner>
             </li>
         </g:each>
     </ul>
@@ -185,8 +187,9 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
-
-                <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
+                <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                    <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPastScene"/>
+                </g:plotOwner>
             </form>
         </div>
 
@@ -368,8 +371,9 @@
                             <button class="btn" data-dismiss="modal">Ok</button>
                         </div>
                     </div>
-
-                    <input type="button" name="Update" data-id="${pastScene.id}" value="Update" class="btn btn-primary updatePastScene"/>
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" data-id="${pastScene.id}" value="Update" class="btn btn-primary updatePastScene"/>
+                    </g:plotOwner>
                 </form>
             </div>
         </g:each>

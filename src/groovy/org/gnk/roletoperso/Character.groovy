@@ -312,6 +312,24 @@ class Character {
         return result;
     }
 
+    public Map<Character, String> getRelatedCharactersExceptBijectivesLabelAndHiddenRelation(Gn gnInstance) {
+        final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
+        final Map<Character, String> result = new HashMap<Character, String>(relations.size());
+
+        for (Character character : relations.keySet()) {
+            StringBuilder label = new StringBuilder();
+            for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
+                if (!roleHasRelationWithRole.isHidden)
+                    label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName());
+                else
+                    continue
+            }
+            label.delete(0, 2);
+            result.put(character, label.toString());
+        }
+        return result;
+    }
+
     public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelations(Gn gnInstance) {
         final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
         final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();

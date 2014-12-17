@@ -32,6 +32,7 @@
     </thead>
     <tbody>
     <g:each status="i" in="${characterList}" var="character">
+        <g:if test="${!(((org.gnk.substitution.data.Character) character).type == "STF")}">
         <tr id="char${character.id}">
             <!-- # -->
             <td style="text-align: center;">${i + 1}</td>
@@ -77,6 +78,7 @@
                 <input type="checkbox" disabled="true">
             </td>
         </tr>
+        </g:if>
     </g:each>
     <tbody>
 </table>

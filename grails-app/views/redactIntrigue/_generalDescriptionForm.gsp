@@ -1,5 +1,4 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
-
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
@@ -211,11 +210,14 @@
                     </div>
                 </div>
                 <fieldset class="buttons text-center">
-                    <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
-                    %{--<g:actionSubmit class="delete btn btn-danger" action="delete"--}%
-                                    %{--value="${message(code: 'default.button.delete.label', default: 'Delete')}"--}%
-                                    %{--formnovalidate=""--}%
-                                    %{--onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>--}%
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                        <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
+                    </g:plotOwner>
+                    <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEDELETE.value()}" lvlrightAdmin="${right.INTRIGUEDELETE.value()}">
+                        <input type="button" name="Delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" data-redirect="<g:createLink controller="RedactIntrigue" action="list"/>"
+                               class="btn btn-danger deletePlot" data-toggle="confirmation-popout" data-placement="right" title="Supprimer l'intrigue ?"
+                               data-url="<g:createLink controller="RedactIntrigue" action="delete" id="${plotInstance.id}"/>" data-object="plot"/>
+                    </g:plotOwner>
                 </fieldset>
             </form>
         </div>

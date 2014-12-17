@@ -10,12 +10,14 @@
             <a href="#place_${genericPlace.id}" data-toggle="tab">
                 ${genericPlace.code}
             </a>
-            <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger"
-                    title="Supprimer le lieu?"
-                    data-url="<g:createLink controller="GenericPlace" action="Delete" id="${genericPlace.id}"/>"
-                    data-object="place" data-id="${genericPlace.id}">
-                <i class="icon-remove pull-right"></i>
-            </button>
+            <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                <button data-toggle="confirmation-popout" data-placement="left" class="btn btn-danger"
+                        title="Supprimer le lieu?"
+                        data-url="<g:createLink controller="GenericPlace" action="Delete" id="${genericPlace.id}"/>"
+                        data-object="place" data-id="${genericPlace.id}">
+                    <i class="icon-remove pull-right"></i>
+                </button>
+            </g:plotOwner>
         </li>
     </g:each>
 </ul>
@@ -136,7 +138,9 @@
                 <button class="btn" data-dismiss="modal">Ok</button>
             </div>
         </div>
-        <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPlace"/>
+        <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+            <input type="button" name="Insert" value="Insert" class="btn btn-primary insertPlace"/>
+        </g:plotOwner>
     </form>
 </div>
 
@@ -149,12 +153,14 @@
     </div>
 
     <div id="modalBestPlace" class="modal-body">
+        <div class="span1 placeLoader" style="display:none;"></div>
         <select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
-            <option></option>
+            <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>
             <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
                 <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
             </g:each>
         </select>
+        <div class="span1 placeLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
         <br>
         <ul id="listContainer" class="unstyled">
             <li id="templateBest" class="hidden">TEMPLATE</li>
@@ -295,8 +301,10 @@
                     <button class="btn" data-dismiss="modal">Ok</button>
                 </div>
             </div>
-            <input type="button" name="Update" data-id="${place.id}" value="Update"
-                   class="btn btn-primary updatePlace"/>
+            <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
+                <input type="button" name="Update" data-id="${place.id}" value="Update"
+                       class="btn btn-primary updatePlace"/>
+            </g:plotOwner>
         </form>
     </div>
 </g:each>

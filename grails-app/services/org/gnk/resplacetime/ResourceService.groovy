@@ -14,7 +14,7 @@ class ResourceService {
 
     /* Exposed Methods */
 
-    def GenericResource findReferentialResource (GenericResource genericResource, String univers) {
+    GenericResource findReferentialResource (GenericResource genericResource, String univers) {
         LinkedList<Tag> tagsList
         Tag typeTag = null
         Integer maximumRate = 0
@@ -85,14 +85,14 @@ class ResourceService {
                     }
 
                     // Universe information addition
-                    if (resourceHasTag.resource.resourceHasUniverses)
-                    {
-                        LinkedList<ResourceHasUnivers> resourceHasUniversesList = resourceHasTag.resource.resourceHasUniverses
-                        for (ResourceHasUnivers resourceHasUnivers : resourceHasUniversesList) {
-                            String universe = resourceHasUnivers.univers.name
-                            referentialResource.universeList.add(universe)
-                        }
-                    }
+//                    if (resourceHasTag.resource.resourceHasUniverses)
+//                    {
+//                        LinkedList<ResourceHasUnivers> resourceHasUniversesList = resourceHasTag.resource.resourceHasUniverses
+//                        for (ResourceHasUnivers resourceHasUnivers : resourceHasUniversesList) {
+//                            String universe = resourceHasUnivers.univers.name
+//                            referentialResource.universeList.add(universe)
+//                        }
+//                    }
 
                     referentialResourcesList.add(referentialResource)
                 }
