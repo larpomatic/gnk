@@ -10,4 +10,5 @@
     <g:link class="btn ${controllerName == 'genericPlace' ? 'disabled' : ''}" controller="genericPlace" action="list"><g:message code="adminRef.navbar.genericPlace"/></g:link>
     <g:link class="btn ${(controllerName == 'tag' && actionName == 'stats') ? 'disabled' : ''}" controller="tag" action="stats"><g:message code="adminRef.navbar.stats"/></g:link>
     <g:link class="btn ${(controllerName == 'dbCoherence') ? 'disabled' : ''}" controller="dbCoherence" action="index">Cohérence de la base de données</g:link>
+    <g:link class="btn ${(controllerName == 'social') ? 'disabled' : ''}" controller="social" action="listConventionRule">Convention</g:link>
 </div>
