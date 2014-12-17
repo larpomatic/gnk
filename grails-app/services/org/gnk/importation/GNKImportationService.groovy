@@ -188,10 +188,10 @@ class GNKImportationService {
 //            plotHasUnivers.univers = getUnivers(plotHasUnivers.univers)
 //            plotHasUniversesList.add(plotHasUnivers)
 //        }
-        plotBDD.plotHasUniverses = []
-        plotHasUniversesList.each {plotHasUniverse ->
-            plotBDD.addToPlotHasUniverses(plotHasUniverse)
-        }
+ //       plotBDD.plotHasUniverses = []
+ //       plotHasUniversesList.each {plotHasUniverse ->
+ //           plotBDD.addToPlotHasUniverses(plotHasUniverse)
+  //      }
 
         // Update Events
         List<Event> events = []
