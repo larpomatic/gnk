@@ -115,25 +115,6 @@ function updateResourcesView(resourcesJSON)
     resourcesPercentageSpan.attr("class", "badge " + badgeClass);
     resourcesPercentageSpan.text(Math.round(percent) + " %");
 
-    //    $('.customRessource').click(function(){
-//        var input = $(this).prev();
-//       var content = input.val();
-//        if (content != "") {
-//            // appel ajax vers un controller
-//            $.ajax({
-//                type: "POST",
-//                url: ,//url de ta methode dans le controller,
-//                data: ,// parametre donc le content et peut etre autre chose,
-//                success: function (data) {
-//                    // ajouter une option dans le select
-//                    input.val("");
-//                },
-//                error: function () {
-//
-//                }
-//            });
-//        }
-//    });
 }
 
 // On succes AJAX
@@ -204,12 +185,18 @@ function initResourcesEvents(url) {
 
     // Unban buttons
     var resourceArray = resourcesJSON.resources;
+
+//    if (customResource != null){
+//
+//        resourceArray.add(customResource);
+//    }
+
     for (var key in resourceArray) {
         var resource = resourceArray[key];
         var resourceHtmlId = resource.htmlId
         var resourceElement =  $("#" + resourceHtmlId);
 
-        var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0);
+        var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0)
 
         // Unban Resource
         unbanResource.click( (function(resourceHtmlId){

@@ -315,5 +315,6 @@ class ResourceController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'resource.label', default: 'Resource'), id])
             redirect(action: "show", id: id)
         }*/
+
     }
 }
