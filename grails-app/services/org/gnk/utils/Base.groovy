@@ -1,24 +1,5 @@
 package org.gnk.utils
-
-import org.gnk.resplacetime.ObjectType
-import org.gnk.resplacetime.Pastscene
-import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.PlaceHasTag
-import org.gnk.resplacetime.PlaceHasUnivers
-import org.gnk.resplacetime.Resource
-import org.gnk.resplacetime.ResourceHasTag
-import org.gnk.resplacetime.ResourceHasUnivers
-import org.gnk.roletoperso.RoleHasTag
-import org.gnk.selectintrigue.Plot
-import org.gnk.selectintrigue.PlotHasTag
-import org.gnk.selectintrigue.PlotHasUnivers
-import org.gnk.tag.Tag
 //import org.gnk.tag.TagFamily
-import org.gnk.tag.TagRelevant
-import org.gnk.tag.Univers
-import org.hibernate.Hibernate
-import org.hibernate.proxy.HibernateProxy
-
 /**
  * Created by pico on 26/06/2014.
  */

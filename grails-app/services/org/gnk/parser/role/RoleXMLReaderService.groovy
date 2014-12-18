@@ -4,7 +4,12 @@ import org.gnk.parser.RoleXMLNode
 import org.gnk.parser.event.EventXMLReaderService
 import org.gnk.parser.pastscene.PastSceneXMLReaderService
 import org.gnk.parser.tag.TagXMLReaderService
-import org.gnk.roletoperso.*
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasEvent
+import org.gnk.roletoperso.RoleHasPastscene
+import org.gnk.roletoperso.RoleHasRelationWithRole
+import org.gnk.roletoperso.RoleHasTag
+import org.gnk.roletoperso.RoleRelationType
 import org.gnk.selectintrigue.Plot
 
 class RoleXMLReaderService {

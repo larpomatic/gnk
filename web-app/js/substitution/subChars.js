@@ -409,10 +409,14 @@ function initCharsEvents(url) {
 
     // Run characters substitution
     $("#runSubCharactersButton").click( function(){
+        $("#customCharacter").each(function() {
+            $(this).removeAttr("disabled")
+        });
         if (!isSubCharactersRunning) {
             isSubCharactersRunning = true;
             // Update JSON with user selection
             updateCharsJSONUser(charsJSON)
+
 
             // Enable selectAll
             $("#restartFirstnameAll").removeAttr("disabled");

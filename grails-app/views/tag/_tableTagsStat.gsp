@@ -12,7 +12,7 @@
 	<tbody>
 		<g:each in="${Tag.list()}" status="i" var="tagInstance">
 			<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-				<td><g:link action="show" id="${tagInstance.id}">${tagInstance.name}</g:link></td>
+				<td><g:link action="show" id="${tagInstance.id}">${tagInstance.name.encodeAsHTML()}</g:link></td>
 				<td>
 					<ul class="inline">
   						<span class="label label-info">
@@ -29,4 +29,4 @@
 </table>
 
 <!-- Modal Views -->
-<g:render template="modalViewTags" />
+<g:render template="modalViewTags" model="[listTagParent : listTagParent]"/>

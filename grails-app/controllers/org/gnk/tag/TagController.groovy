@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder
 class TagController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+    TagService tagService
     def index() {
         redirect(action: "list", params: "params")
     }
@@ -375,7 +375,25 @@ class TagController {
 	}
 	
 	def stats(){
-		render(view: "statistics")
+        Tag tagUniverParent = Tag.findByName("Tag Univers");
+        Set<Tag> tagUnivers = tagUniverParent.children
+        Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        List<Tag> tags = Tag.list();
+        for (Tag tag : tags) {
+            ArrayList<Tag> tagParent = new ArrayList<Tag>();
+            Tag t = tag.parent;
+            while (t != null) {
+                if (!"".equals(tag.name)) {
+                    tagParent.add(t);
+                }
+                t = t.parent;
+            }
+            tagParent = tagParent.reverse();
+            mapTagParent.put(tag.id, tagParent);
+        }
+
+
+		render(view: "statistics", model: [listTagParent:mapTagParent, tagUniverse: tagUnivers])
 	}
 
     def editRelevantTag(int id){
@@ -414,4 +432,5 @@ class TagController {
         }
         redirect(action : "list")
     }
+
 }

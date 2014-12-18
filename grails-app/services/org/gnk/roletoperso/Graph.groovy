@@ -121,7 +121,8 @@ class Graph {
             JSONObject json_object2 = new JSONObject();
             JSONObject json_colortype2 = new JSONObject();
             json_colortype2.put("\$color", e.n2.color);
-            json_colortype2.put("\$type", e.n2.type);
+//            json_colortype2.put("\$type", e.n2.type); -> Les personnage ne peuvent pas savoir de quels type sont les autres joueurs
+            json_colortype2.put("\$type", "circle");
             json_object2.put("data", json_colortype2);
 
             json_object2.put("id", e.n2.id);
@@ -131,6 +132,28 @@ class Graph {
 
 
         return json_array.toString()
+    }
+
+    public String getRelation(String name){
+        Node n1 = null;
+        for (Node n : this.nodeList){
+            if(n.name.equals(name)){
+                n1 = n
+                break
+            }
+        }
+        if (n1==null){
+            return "Aucunes relations"
+        }
+        String res = ""
+        if (!n1.edges.isEmpty()){
+            for (Edge e: n1.edges){
+                if (e.isHidden)
+                    continue
+                res += e.lien + " -> " + (e.n1.name.equals(n1.name)?e.n2.name:e.n1.name) + "\n"
+            }
+        }
+        return (res.isEmpty()?"Aucunes relations":res)
     }
 
     @Override

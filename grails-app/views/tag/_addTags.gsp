@@ -1,4 +1,5 @@
 <%@ page import="org.gnk.tag.Tag" %>
+<%@ page import="org.gnk.admin.right" %>
 %{--<%@ page import="org.gnk.tag.TagFamily" %>--}%
 <div id="create-tag" class="content scaffold-create" role="main">
 	<legend>${message(code: 'adminRef.tag.newTag')}</legend>
@@ -15,7 +16,10 @@
                   %{--noSelection="['':'-Choix de la famille de tag-']"/>--}%
                 </div>
    			</div>
+            <g:hasRights lvlright="${right.REFMODIFY.value()}">
 			<g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}" />
+            </g:hasRights>
+
 		</form>
 	</g:form>
 </div>

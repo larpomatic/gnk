@@ -1,9 +1,7 @@
 package org.gnk.resplacetime
 
-import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.springframework.dao.DataIntegrityViolationException
-import org.gnk.tag.Univers
 
 class PlaceController {
 
@@ -39,26 +37,6 @@ class PlaceController {
         redirect(action: "list")
     }
 
-    def addPlaceToUnivers() {
-        Place placeInstance = Place.get(params.place_select)
-        Univers universInstance = Univers.get(params.univers_select)
-
-        PlaceHasUnivers placeHasUniversInstance = new PlaceHasUnivers()
-        placeHasUniversInstance.univers = universInstance
-        placeHasUniversInstance.place = placeInstance
-        placeHasUniversInstance.weight = Integer.parseInt(params.weight)
-
-        if (!placeHasUniversInstance.save(flush: true)) {
-            print placeHasUniversInstance.errors.allErrors
-            render(view: "list")
-            flash.message = "Erreur lors de l'ajout du lieu dans l'univers"
-            return
-        }
-
-        flash.messageInfo = message(code: 'adminRef.genericPlace.info.addIntoUnivers', args: [placeInstance.name, universInstance.name])
-        redirect(action: "list")
-    }
-
 
     def addTagToPlace() {
         Place placeInstance = Place.get(params.place_select)
@@ -80,13 +58,6 @@ class PlaceController {
 
     }
 
-    def deleteUnivers() {
-        PlaceHasUnivers placeHasUniversInstance = PlaceHasUnivers.get(params.id)
-        placeHasUniversInstance.delete()
-        flash.messageInfo = message(code: 'adminRef.genericPlace.info.deleteUnivers', args: [placeHasUniversInstance.place.name, placeHasUniversInstance.univers.name])
-        redirect(action: "list")
-
-    }
 
     def deleteTag() {
         PlaceHasTag placeHasTagInstance = PlaceHasTag.get(params.id)

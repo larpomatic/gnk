@@ -98,7 +98,7 @@ class SubstitutionPublication {
     {
         for (Place place : placeList)
         {
-            print("contenu de placeList: " + place.name)
+//            print("contenu de placeList: " + place.name)
             if (place.genericPlace == null)
                 continue
             if (place.genericPlace.code.toUpperCase().equals(code))

@@ -1,5 +1,4 @@
-<%@ page import="org.gnk.tag.Univers; org.gnk.roletoperso.Role; org.gnk.resplacetime.Resource; org.gnk.tag.Tag" %>
-%{--<%@ page import="org.gnk.tag.TagFamily" %>--}%
+<%@ page import=" org.gnk.roletoperso.Role; org.gnk.resplacetime.Resource; org.gnk.tag.Tag" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,8 +14,7 @@
 			<h4>${message(code: 'adminRef.tag.stats.global')}</h4>
 			<ul>
 				<li>Nombre de tags dans la base : ${Tag.count()}</li>
-				%{--<li>Nombre de familles de tag dans la base : ${TagFamily.count()}</li>--}%
-                <li>Nombre d'univers dans la base : ${Univers.count()}</li>
+                <li>Nombre de tags "Univer" dans la base : ${tagUniverse.size()}</li>
                 <li>Nombre de rôles dans la base : ${Role.count()}</li>
                 <li>Nombre de ressources dans la base : ${Resource.count()}</li>
 			</ul>
@@ -28,10 +26,9 @@
 
             <div class="row">
                 <div class="span6">
-                    <g:render template="tableTagsStat" />
+                    <g:render template="tableTagsStat" model="[listTagParent : listTagParent]"/>
                 </div>
                 <div class="span6">
-                    %{--<g:render template="../tagFamily/tableTagFamiliesStat" />--}%
                 </div>
             </div>
         </div>

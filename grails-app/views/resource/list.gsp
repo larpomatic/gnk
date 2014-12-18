@@ -1,5 +1,5 @@
 
-<%@ page import="org.gnk.resplacetime.Resource" %>
+<%@ page import="org.gnk.resplacetime.Resource; org.gnk.admin.right" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -20,11 +20,19 @@
 
 			<g:render template="addResource" />
 			<g:render template="addTagToResource" />
-			<g:render template="addResourceToUnivers" />
-			<g:render template="tableResources" />
+			<g:render template="tableResources" model="[resourceInstanceList : resourceInstanceList]"/>
 			<div class="pagination">
 				<g:paginate total="${resourceInstanceTotal}" />
 			</div>
 		</div>
+    <script type="application/javascript">
+        $(function(){
+            $("#listTable").DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            });
+        });
+    </script>
 	</body>
 </html>

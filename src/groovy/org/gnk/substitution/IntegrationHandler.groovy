@@ -361,9 +361,9 @@ class IntegrationHandler {
             }
 
             // On fait la liste contenant tous les genericPlace
-//            for (tag in placeJson.tags) {
-//                genericPlaceTags.put(tag.value as String, tag.weight as Integer)
-//            }
+                for (tag in placeJson.tags) {
+                  genericPlaceTags.put(tag.value as String, tag.weight as Integer)
+                }
 
             // Name
             placeJson.remove("proposedNames")
@@ -388,7 +388,6 @@ class IntegrationHandler {
 //                            proposedNames[j] = proposedNames[j] + " - " +  + "%"
 //                    }
 //                }
-
                 placeJson.put("proposedNames", proposedNames)
             }
 

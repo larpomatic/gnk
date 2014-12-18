@@ -19,10 +19,11 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>Code</th>
+        <th>Type</th>
         <th>Plot name</th>
         <th>tags</th>
         <th>comment</th>
-        <th>propriétaire</th>
+        <th>Appartient à</th>
         <th>nom</th>
         <th style="text-align: center;">
             A RELANCER <input id="restartResourceAll" type="checkbox" disabled="true" style="float: right;">
@@ -36,6 +37,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td>${resource.code}</td>
+            <!-- objectType -->
+            <td>${resource.objectType}</td>
             <!-- Plot name -->
             <td>${resource.plot}</td>
             <!-- Tags -->
@@ -63,7 +66,7 @@
                 </select>
                 <input type="text" id="customResource" class="written" disabled="disabled"
                        placeholder="Add a custom resource">
-                <a class="btn unban" title="Create the custom resource"><i class="icon-arrow-left"></i></a>
+                <button type="button" class="btn customRessource" data-plot-id="${resource.plotId}" data-id="${resource.id}" title="Create the custom resource"><i class="icon-arrow-left"></i></button>
             </td>
             <!-- Restart resource -->
             <td class="restartResource" style="text-align: center;">
@@ -80,7 +83,6 @@
 <g:javascript src="substitution/subResources.js"/>
 
 <script type="text/javascript">
-    debugger
     $(document).ready(function () {
         // ResourcesJSON
         resourcesJSON = initResourcesJSON();
@@ -88,6 +90,30 @@
         isSubResourcesRunning = false;
 
         initResourcesEvents("${g.createLink(controller:'substitution', action:'getSubResources')}")
+
+        $('.customRessource').click(function(){
+            var input = $(this).prev();
+            var content = input.val();
+            var resourcesList = $("select", $(this).parent());
+            var genericId = $(this).attr("data-id");
+            var plotId = $(this).attr("data-plot-id");
+            if (content != "") {
+                var resource = new Object();
+                // Gn id
+                resource.gnId = ${gnInfo.dbId}
+                // Gn plot id
+                resource.gnPlotId = plotId;
+                // HTML id
+                resource.htmlId = "res"+genericId+"_plot" + plotId;
+                // Code
+                resource.code = content;
+                // BEGIN Tags LOOP
+                resource.tags = new Array();
+                resourcesJSON.resources.push(resource);
+                resourcesList.append($("<option>").attr("value", content).text(content));
+                $(this).prev().val('');
+            }
+        });
 
         $('.resource #customResource').keyup(function () {
 
@@ -148,9 +174,6 @@
 
         jsonObject.resources = resourceArray;
         return jsonObject;
-        debugger
     }
-    debugger
-
 </script>
 
