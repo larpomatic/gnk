@@ -67,18 +67,6 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${resourceInstance?.resourceHasUniverses}">
-				<li class="fieldcontain">
-					<span id="resourceHasUniverses-label" class="property-label"><g:message code="resource.resourceHasUniverses.label" default="Resource Has Universes" /></span>
-					
-						<g:each in="${resourceInstance.resourceHasUniverses}" var="r">
-						<span class="property-value" aria-labelledby="resourceHasUniverses-label"><g:link controller="resourceHasUnivers" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${resourceInstance?.resourceHasresourceTags}">
 				<li class="fieldcontain">
 					<span id="resourceHasresourceTags-label" class="property-label"><g:message code="resource.resourceHasresourceTags.label" default="Resource Hasresource Tags" /></span>

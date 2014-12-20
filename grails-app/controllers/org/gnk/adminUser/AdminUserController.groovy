@@ -3,6 +3,7 @@ package org.gnk.adminUser
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.gnk.admin.right
 import org.gnk.cookie.CookieService
+import org.gnk.gn.GnHasUser
 import org.gnk.rights.RightsService
 import org.gnk.selectintrigue.Plot
 import org.gnk.user.User
@@ -159,7 +160,8 @@ class AdminUserController {
                 }
             }
         }
-        [user: user, countPublicPlot: countPublicPlot, countPrivatePlot: countPrivatePlot, countDraftPlot: countDraftPlot]
+        int count = GnHasUser.findAllByUser(user).size();
+        [user: user, countPublicPlot: countPublicPlot, countPrivatePlot: countPrivatePlot, countDraftPlot: countDraftPlot, count : count]
     }
 
     def modifyUser(long id) {
