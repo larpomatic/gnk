@@ -22,7 +22,7 @@
 <g:message code="default.title.nbIntrigPub"/> : ${countPublicPlot} <br/>
 <g:message code="default.title.nbIntrigPri"/> : ${countPrivatePlot} <br/>
 <g:message code="default.title.nbIntrigDraft"/> : ${countDraftPlot} <br/>
-<g:message code="default.title.gn.nb"/> : ${count} <br/>
+<g:message code="default.title.nb.gn"/> : ${count} <br/>
 <g:message code="default.title.nbConnection"/> : ${user.countConnexion}<br/>
 
 <g:link type="button" class="btn-primary btn btn-large left" action="edit" id="{user.id}"><g:message code="default.action.back"/></g:link><br/>
