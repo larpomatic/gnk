@@ -64,12 +64,6 @@ class ResourceController {
 					return
 				}
 		}
-		
-		ResourceHasTag resourceHasUniversInstance = new ResourceHasTag();
-		resourceHasUniversInstance.resource = resourceInstance
-		resourceHasUniversInstance.univers = universInstance
-		resourceHasUniversInstance.weight = params.weight.toInteger()
-		resourceHasUniversInstance.save()
 		redirect(action: "list")
 	}
 
@@ -114,7 +108,7 @@ class ResourceController {
 		{
 			if (res.name.equals(params.name[0]))
 			{
-				flash.message = message(code: 'Erreur : Une ressource de ce nom existe d�j� !')
+				flash.message = message(code: 'Erreur : Une ressource de ce nom existe déjà !')
 				redirect(action: "list")
 				return
 			}

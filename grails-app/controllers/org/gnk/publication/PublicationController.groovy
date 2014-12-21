@@ -44,14 +44,14 @@ class PublicationController {
         Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
-        gn.step = "substitution";
+        //gn.step = "substitution";
 
-        for (Plot p : gn.getSelectedPlotSet())
+       /* for (Plot p : gn.getSelectedPlotSet())
         {
             for (GenericPlace gnplace : p.getGenericPlaces())
                 gnplace.setResultList(new ArrayList<ReferentialPlace>());
         }
-        gn.setPlaceSet(new HashSet<Place>());
+        gn.setPlaceSet(new HashSet<Place>());*/
 
         //gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -913,7 +913,10 @@ class PublicationController {
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
-                wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
+                String charName = c.firstname + " " + c.lastname.toUpperCase()
+                wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
+                Graph charGraph = new Graph(gn, false)
+                wordWriter.addParagraphOfText(charGraph.getRelation(charName))
             }
 
             if (!hasTags)

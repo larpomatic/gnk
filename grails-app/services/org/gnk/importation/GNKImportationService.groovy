@@ -535,10 +535,10 @@ class GNKImportationService {
 //            resourceHasUnivers.univers = getUnivers(resourceHasUnivers.univers)
 //            resourceHasUniverses.add(resourceHasUnivers)
 //        }
-        resourceBDD.resourceHasUniverses = []
-        resourceHasUniverses.each {resourceHasUniverse ->
-            resourceBDD.addToResourceHasUniverses(resourceHasUniverse)
-        }
+   //     resourceBDD.resourceHasUniverses = []
+    //    resourceHasUniverses.each {resourceHasUniverse ->
+      //      resourceBDD.addToResourceHasUniverses(resourceHasUniverse)
+    //    }
 
         return resourceBDD
     }

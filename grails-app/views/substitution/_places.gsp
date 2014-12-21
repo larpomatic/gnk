@@ -6,7 +6,7 @@
     <div class="span2"><a id="runSubPlacesButton" class="btn btn-info"><i class="icon-play icon-white"></i> LANCER</a>
     </div>
 
-    <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbutton" class="btn btn-warning" data-toggle="modal"><i
+    <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbuttonmodal" class="btn btn-warning" data-toggle="modal"><i
             class="icon-play icon-white"></i> FUSION</a>
     </div>
 
@@ -172,15 +172,23 @@
             }
         });
     });
+
+    $("#fusionbuttonmodal").click(function () {
+        var reset1 = $("#reset1");
+        var reset2 = $("#reset2");
+        reset1.prop("selected", true)
+        reset2.prop("selected", true)
+        var com2 = $("#com2");
+        var com1 = $("#com1");
+        com2.html("");
+        com1.html("")
+    });
+
     $("#fusionButton").click(function () {
         var loop = $("#loopPlaceList");
         var useless = $("#fusiontbodyplace");
         var place1 = $("#placeMergeable1");
-        var reset1 = $("#reset1");
-        var reset2 = $("#reset2");
         var place2 =$("#placeMergeable2");
-        reset1.prop("selected", true)
-        reset2.prop("selected", true)
         $.ajax({
             type: "POST",
             url: useless.attr("data-url"),
@@ -242,7 +250,6 @@
             dataType: "json",
             data: { place1: place1.val(), placel : placel.val()},
             success: function (placeList) {
-                console.log("le code" + placeList.Class);
                 $(placeList).each(function () {
                     place2.append('<option value="' + this.code + '">' + this.code + '</option>');
                 });

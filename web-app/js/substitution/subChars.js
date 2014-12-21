@@ -210,7 +210,7 @@ function reloadgraph() {
         var firstname = $("td.firstname select", this).val();
         var lastname = $("td.lastname select", this).val();
         var code = $("td.code a", this).html();
-        code = code.replace(/\-/g, '');
+        //code = code.replace(/\-/g, '');
         if ((firstname != null) && (lastname != null))
         {
             old_json = old_json.replace(new RegExp(code, 'g'), firstname + " " + lastname);
@@ -232,6 +232,8 @@ function onSuccessAjaxChars(data, textStatus, jqXHR) {
     updateCharsView(charsJSON);
 
     addAlert("subCharsAlertContainer", "alert alert-info", "Information", "La substitution des personnages a été effectuée.")
+
+    debugger;
 
     reloadgraph();
 }
