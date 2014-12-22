@@ -19,6 +19,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>Code</th>
+        <th>En Jeux ?</th>
         <th>Type</th>
         <th>Plot name</th>
         <th>tags</th>
@@ -37,6 +38,8 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td>${resource.code}</td>
+            <!-- In Game ? -->
+            <td>${resource.isInGame}</td>
             <!-- objectType -->
             <td>${resource.objectType}</td>
             <!-- Plot name -->
@@ -155,6 +158,8 @@
         resource.htmlId = "res${resource.id}_plot${resource.plotId}"
         // Code
         resource.code = "${resource.code}"
+        // Is in game
+        resource.isInGame = "${resource.isInGame}"
         // BEGIN Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${resource.tagList}" var="tag">
