@@ -220,12 +220,14 @@ class PublicationController {
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
         wordWriter.addStyledParagraphOfText("ST", createSubTile())
-        wordWriter.addStyledParagraphOfText("T1", "Synthèse pour les organisateurs")
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Organisateur")
+        wordWriter.addStyledParagraphOfText("ST", "Ne lisez ce qui suit QUE si vous faites partie de l'organisation du GN\"\n" +
+                "VOUS NE POUVEZ LIRE CE SUIT SI VOUS ÊTES JOUEUR(SE)S")
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des pitchs des Intrigues du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Introduction")
         createPitchOrga()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
@@ -306,14 +308,14 @@ class PublicationController {
                     for (Role r : c.selectedRoles) {
                         substituteRolesAndPlotDescription(r.getterPlot())
                         if (resRoles == "Aucun Rôle")
-                            resRoles = r.code + " : " + r.description
+                            resRoles = "- " + r.code + " : " + r.description
                         else
-                            resRoles += "; " + r.code + " : " + r.description
+                            resRoles += "\r- " + r.code + " : " + r.description
                         for (RoleHasTag rht : r.roleHasTags) {
                             if (resTag == "Aucune indication")
-                                resTag = rht.tag.name + " (" + rht.weight + "%)"
+                                resTag = "- " + rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -1049,8 +1051,8 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)", "") + ".")
-        wordWriter.addParagraphOfText("Il débute le " + getPrintableDate(gn.date) + " et dure " + gn.duration.toString() + " heures.")
+        wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers " + gn.univers.name.replace("(Univers)", "") + ".")
+        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler le "+ getPrintableDate(gn.date) + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
 
         // Comptage PJ
         String msgCharacters = PitchOrgaMsgCharacters()
@@ -1058,7 +1060,7 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
             if (p.pitchOrga != null) {
-                wordWriter.addStyledParagraphOfText("T3", p.name)
+                wordWriter.addStyledParagraphOfText("T5", p.name)
                 substituteRolesAndPlotDescription(p)
                 wordWriter.addParagraphOfText(p.pitchOrga)
             }
