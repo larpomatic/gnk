@@ -397,12 +397,13 @@ class OutputHandler {
             // Update pastscene absolute date
             JSONObject dateJSON = pastsceneJSON.date
 
-
-            if (dateJSON.year != null ) {pastscene.absoluteYear = dateJSON.year as Integer}
-            if (dateJSON.month != null ) {pastscene.absoluteMonth = dateJSON.month as Integer}
-            if (dateJSON.day != null ) {pastscene.absoluteDay = dateJSON.day as Integer}
-            if (dateJSON.hours != null ) {pastscene.absoluteHour = dateJSON.hours as Integer}
-            if (dateJSON.minutes != null ) {pastscene.absoluteMinute = dateJSON.minutes as Integer}
+            if (dateJSON != null){
+                if (dateJSON.year != null ) {pastscene.absoluteYear = dateJSON.year as Integer}
+                if (dateJSON.month != null ) {pastscene.absoluteMonth = dateJSON.month as Integer}
+                if (dateJSON.day != null ) {pastscene.absoluteDay = dateJSON.day as Integer}
+                if (dateJSON.hours != null ) {pastscene.absoluteHour = dateJSON.hours as Integer}
+                if (dateJSON.minutes != null ) {pastscene.absoluteMinute = dateJSON.minutes as Integer}
+            }
 
             // On doit mettre à jour le relative time avec l'absolute saisie lors de la substitution car c'est celui qui est pris en compte pour la publication
             (new TimeService()).updateRelativeTimeFromAbsolute(pastscene, gnInst.t0Date)
