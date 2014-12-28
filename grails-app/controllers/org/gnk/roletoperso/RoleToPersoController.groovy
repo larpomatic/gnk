@@ -250,8 +250,8 @@ class RoleToPersoController {
         /**FIN AGE**/
         /***********/
 
-        // Life
-        addLifeEvents(gn)
+        // Life desactivated until it works
+        // addLifeEvents(gn)
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
