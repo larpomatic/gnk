@@ -41,8 +41,8 @@ select {
                         code="selectintrigue.step0.gnArchitecture" default="Architecture"/>
                 </label></td>
                 <td><g:select name="gnArchitechture" id="gnArchitechture"
-                              from="${['Mainstream', 'Parallelisé']}" keys="${[true, false]}"
-                              value="${gnInstance?.isMainstream}" required=""/></td>
+                              from="${['Parallelisé', 'Mainstream']}" keys="${[true, false]}"
+                              value="${!gnInstance?.isMainstream}" required=""/></td>
 
 
                 <td><label for="gnUnivers"><g:message
@@ -115,7 +115,7 @@ select {
                 <td>
                     <div class="input-append">
                         <input type="text" id="gnDateHour" name="gnDateHour" placeholder="jj/mm/aaaa hh:mm"
-                               required="required"
+                               required="required" pattern="\d{1,2}/\d{1,2}/\d{4}( \d{2}:\d{2})?"
                                value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.date)}"/>
                         <g:if test="${formatDate(format: 'G', date: gnInstance?.date) == 'BC'}">
                             <input type="hidden" name="gnDateHourUnity" value="-"/>
@@ -137,7 +137,7 @@ select {
                 <td>
                     <div class="input-append">
                         <input type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
-                               required="required"
+                               required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}"
                                value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
                         <g:if test="${formatDate(format: 'G', date: gnInstance?.t0Date) == 'BC'}">
                             <input type="hidden" name="t0DateHourUnity" value="-"/>
