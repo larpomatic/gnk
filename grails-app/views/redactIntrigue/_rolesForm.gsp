@@ -221,7 +221,7 @@
 
                         <div class="modal-body">
                             <div class="accordion" id="accordionEvent${role.id}">
-                                <g:each in="${plotInstance.events}" var="event">
+                                <g:each in="${plotInstance.events.sort{it.timing}}" var="event">
                                     <div class="accordion-group">
                                         <g:if test="${role?.getRoleHasEvent(event)?.title}">
                                             <div class="accordion-heading alert-success">
