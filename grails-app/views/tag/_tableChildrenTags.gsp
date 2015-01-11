@@ -52,6 +52,10 @@
                 <a href="#tagListmodal${tagInstance.id}" class="btn" data-toggle="modal">
                     Tag fils
                 </a>
+                <a href="#addchildmodal" class="btn btn-primary" id="buttonAdd" data-toggle="modal">
+                    +
+                </a>
+                <input type="hidden" id="idParent" name="idParent" value="${tagInstance.id}">
             </td>
         </tr>
     </g:each>
@@ -62,3 +66,24 @@
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
 <g:render template="detailTagChildren"/>
+
+<div id="addchildmodal" class="modal hide fade" style="width: 400px; margin-left: -400px;"
+     role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Editer les Tags Relevant</h3>
+    </div>
+    <g:form action="save">
+
+        <input type="hidden" id="idParentSave" name="idParentSave">
+        <div class="modal-body">
+        <label>Nom du fils<input id="nameTag" name="nameTag"/></label>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Valider</button>
+            <a class="btn" data-dismiss="modal" aria-hidden="true">Annuler</a>
+        </div>
+    </g:form>
+</div>
+
+<g:javascript src="tag/addTagChild.js"/>
