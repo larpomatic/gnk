@@ -411,6 +411,11 @@ class TagController {
         } else {
             tagRelevant.relevantRole = false;
         }
+        int idparent = Integer.parseInt(params.tagParentChoice);
+        Tag tagParent = Tag.findById(idparent)
+        if(idparent != -1){
+            tag.parent = tagParent;
+        }
         redirect(action : "list")
     }
 
