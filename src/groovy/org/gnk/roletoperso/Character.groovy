@@ -304,7 +304,8 @@ class Character {
         for (Character character : relations.keySet()) {
             StringBuilder label = new StringBuilder();
             for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
-                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName());
+                //label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName());
+                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName() + " (" + roleHasRelationWithRole.getDescription() + ")");
             }
             label.delete(0, 2);
             result.put(character, label.toString());

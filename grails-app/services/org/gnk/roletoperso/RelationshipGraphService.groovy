@@ -29,6 +29,11 @@ class RelationshipGraphService {
                 if (c != c2)
                 {
                     String lien1 = c.getRelatedCharactersExceptBijectivesLabel(gn).get(c2);
+                    if (lien1 != null) {
+                        lien1 = lien1.replaceAll("<", "");
+                        lien1 = lien1.replaceAll("i:", "");
+                        lien1 = lien1.replaceAll(">", "");
+                    }
                     //String lien2 = c2.getRelatedCharactersExceptBijectivesLabel(gn).get(c);
                     if ((lien1 != null) && (lien1.isEmpty() == false))
                     {
@@ -84,6 +89,7 @@ class RelationshipGraphService {
         }
 
         json_relation = json_array.toString();
+
         return json_relation;
     }
 }
