@@ -305,7 +305,7 @@ class Character {
             StringBuilder label = new StringBuilder();
             for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
                 //label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName());
-                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName() + " (" + roleHasRelationWithRole.getDescription() + ")");
+                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName() + " (" + roleHasRelationWithRole.getDescription());
             }
             label.delete(0, 2);
             result.put(character, label.toString());
@@ -433,6 +433,15 @@ class Character {
 
     public void addplotid_role(List<Integer> list) {
         this.plotid_role.addAll(list);
+    }
+
+    public void initPlotID() {
+        this.plotid_role.clear();
+        for (Role role : this.getSelectedRoles()) {
+            if (!role.isTPJ()) {
+                plotid_role.add(role.plotId as Integer);
+            }
+        }
     }
 
     public Set<Plot> getPlotSet() {

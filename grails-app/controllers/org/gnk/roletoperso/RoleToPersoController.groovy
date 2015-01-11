@@ -12,6 +12,8 @@ import org.gnk.tag.TagService
 
 import org.gnk.tag.Tag
 
+import java.util.logging.Logger
+
 class RoleToPersoController {
 
     CharacterService characterService
@@ -58,6 +60,9 @@ class RoleToPersoController {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()
             character1.getBannedRoles().clear()
+            character1.getSelectedPJG().clear();
+            character1.getSpecificRoles().clear();
+            character1.getplotid_role().clear();
         }
 
         int mainstreamId = 0;
@@ -113,7 +118,7 @@ class RoleToPersoController {
                         }
                     }
                 }
-            } else if (key.startsWith("lock_on") && it.value != "") {
+            } else if (key.startsWith("lock_on") && !it.value.equals("")) {
                 String[] str = key.split("_")
                 assert (str.length > 2)
                 if ((str[str.length - 1] as String).isInteger() && (str[str.length - 2] as String).isInteger() && (str[str.length - 3] as String).isInteger()) {
