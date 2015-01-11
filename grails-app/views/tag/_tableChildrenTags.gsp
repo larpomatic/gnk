@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <legend>${message(code: 'adminRef.tag.list')}</legend>
 
-<table class="table table-bordered">
+<table id="listTable" class="table table-bordered">
     <thead>
     <tr>
         <th>#</th>

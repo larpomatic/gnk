@@ -14,7 +14,7 @@ class TagController {
         redirect(action: "list", params: "params")
     }
 
-    def list(Integer max, Integer offset, String sort) {
+    def list(String sort) {
         List<Tag> tags = Tag.list();
         Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
         for (Tag tag : tags) {
@@ -42,12 +42,10 @@ class TagController {
             }
         else
         {
-            max = max ?: 10
-            offset = offset ?: 0
             sort = sort ?: 'name'
             params.order = params.order ?: 'asc'
 
-            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+            def resultList = Tag.createCriteria().list() {
                 if (sort.indexOf('tagFamily.') == 0) {
                     tagFamily {
                         order(sort.split('\\.')[1], params.order)
