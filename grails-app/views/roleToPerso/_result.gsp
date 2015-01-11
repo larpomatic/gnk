@@ -626,7 +626,7 @@
                                 <td>
                                     <a href="#roleModal-${((Character) STF).getSelectedRoles().first().getDTDId()}"  data-toggle="modal"
                                        title="${((Character) STF).getSelectedRoles().first().description}">${((Character) STF).getSelectedRoles().first().code}</a>
-                                    <g:render template="roleModal" model="['role': ((Character) STF).getSelectedRoles().first()]" />
+                                    <g:render template="roleù" model="['role': ((Character) STF).getSelectedRoles().first()]" />
                                 </td>
                                 <td>${((Character) STF).type}</td>
                                 <td>${((Character) STF).getSelectedRoles().first().description}</td>
@@ -676,11 +676,13 @@
     </div>
 </div>
 
+<div class="form-actions">
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
-
+<div class="span1">
 <g:actionSubmit class="btn btn-primary" action="roleToPerso"
                 value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+</div>
 </g:form>
 
 <g:form method="post" controller="substitution">
@@ -691,11 +693,12 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-    <div class="form-actions">
+    <div class="span1">
         <g:actionSubmit class="btn btn-primary" action="index"
                         value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
     </div>
 </g:form>
+</div>
 
 <script>
     $(".fusion_modale").click(function() {
