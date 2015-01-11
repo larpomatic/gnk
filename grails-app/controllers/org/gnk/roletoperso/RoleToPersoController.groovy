@@ -369,7 +369,7 @@ class RoleToPersoController {
             values_relation = new ArrayList<>(set);
         }
         [gnInstance: gn,
-         characterList: gn.characterSet,
+         characterList: gn.characterSet.sort { it.getDTDId() },
          allList: algo.gnTPJRoleSet,
          PHJList: gn.nonPlayerCharSet,
          STFList: gn.staffCharSet,
