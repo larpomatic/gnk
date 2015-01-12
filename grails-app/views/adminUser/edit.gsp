@@ -110,7 +110,7 @@
         </g:hasRights>
     </div>
     <g:link class="btn btn-warning" controller="adminUser" action="statistic" id="${user.id}">
-        <g:message code="default.statistique"/>
+        <g:message code="default.user.statistique"/>
     </g:link>
     <g:hasRights lvlright="${right.RIGHTSHOW.value()}">
         <h3><g:message code="default.profil.right"/>:</h3>

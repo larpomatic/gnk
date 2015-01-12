@@ -10,4 +10,5 @@ class Resource {
     // Plot name
     String plot
     String objectType
+    boolean isInGame
 }

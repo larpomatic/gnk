@@ -566,7 +566,8 @@ function init(){
             domElement.appendChild(nameContainer);
             domElement.appendChild(closeButton);
             style.fontSize = "0.8em";
-            style.color = "#ddd";
+            //style.color = "#ddd";
+            style.color = "#000000";
             //Fade the node and its connections when
             //clicking the close button
             closeButton.onclick = function() {

@@ -1,15 +1,25 @@
 package org.gnk.substitution
 
 import grails.converters.JSON
+import grails.gorm.PagedResultList
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.importation.GNKImportationService
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.gn.Gn
+import org.gnk.resplacetime.GenericPlace
 import org.gnk.roletoperso.Character;
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
+import org.gnk.substitution.data.Event
+import org.gnk.substitution.data.GnInformation
+import org.gnk.substitution.data.Pastscene
+import org.gnk.substitution.data.Place
+import org.gnk.substitution.data.Resource
+import org.gnk.substitution.data.Tag
+import sun.launcher.resources.launcher_pt_BR
 
 class SubstitutionController {
 
@@ -28,27 +38,28 @@ class SubstitutionController {
         for (Plot plot in gn.selectedPlotSet) {
             if (plot.isEvenemential) {
                 evenementialId = Plot.findByName(plot.name).id;
-            }
-            else if (plot.isMainstream && gn.isMainstream) {
-                mainstreamId = Plot.findByName(plot.name).id;;
+            } else if (plot.isMainstream && gn.isMainstream) {
+                mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        redirect(controller: 'roleToPerso', action:'roleToPerso', params: [gnId: id as String,
+        redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
                 selectedMainstream: mainstreamId as String,
                 selectedEvenemential: evenementialId as String]);
     }
 
     def index() {
+
         InputHandler inputHandler = new InputHandler()
         final gnIdStr = params.gnId
-        
+        if (gnIdStr == null) {
+            gnIdStr = session.getAttribute("gnId")
+        }
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
             String fileContent = new File(xmlGnTestPath).text
             inputHandler.parseGN(fileContent)
-        }
-        else {
+        } else {
             Integer gnDbId = gnIdStr as Integer;
             List<String> sexes = params.sexe;
             //Gn gn = changeCharSex(gnDbId, sexes);
@@ -71,17 +82,24 @@ class SubstitutionController {
         Graph graph = new Graph(gn)
         String json = graph.buildGlobalGraphJSON();
 
-        [gnInfo : inputHandler.gnInfo,
-        characterList : inputHandler.characterList,
-        resourceList : inputHandler.resourceList,
-        placeList : inputHandler.placeList,
-        pastsceneList : inputHandler.pastsceneList,
-        eventList : inputHandler.eventList,
-        relationjson : json,
-        gnId : gnIdStr,
-        ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
+        session.setAttribute("placeList", inputHandler.placeList)
+        //test
+        GnInformation gnInfo = inputHandler.gnInfo
+        List<Character> characterList = inputHandler.characterList
+        List<Resource> resourceList = inputHandler.resourceList
+        List<Place> placeList = inputHandler.placeList
+        List<Pastscene> pastsceneList = inputHandler.pastsceneList
+        List<Event> eventList = inputHandler.eventList
+        [gnInfo: gnInfo,
+                characterList: characterList,
+                resourceList: resourceList,
+                placeList: placeList,
+                pastsceneList: pastsceneList,
+                eventList: eventList,
+                relationjson: json,
+                gnId: gnIdStr,
+                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
     }
-
     /*private void changeCharSex(Gn gn, List<String> sexes)
     {
         //Gn gn = Gn.get(gnId);
@@ -161,8 +179,7 @@ class SubstitutionController {
         if (gnDbId == -1) {
             String fileContent = new File(xmlGnTestPath).text
             gnkDataContainerService.ReadDTD(fileContent)
-        }
-        else {
+        } else {
             gnkDataContainerService.ReadDTD(Gn.get(gnDbId))
         }
 
@@ -187,8 +204,7 @@ class SubstitutionController {
 
         if (gnDbId == -1) {
             render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")
-        }
-        else {
+        } else {
             //render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")
             //return
             // Save in DataBase
@@ -202,5 +218,145 @@ class SubstitutionController {
             redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
+    }
+
+    def getMergeablePlaces() {
+        List<Place> lPlace = session.getAttribute("placeList")
+        String placestr = params.place1
+
+        if (!placestr.equals("-1")) {
+            List<Place> nlist = new ArrayList<Place>();
+            Place p;
+            for (Place place : lPlace) {
+                if (place.code.equals(placestr)) {
+                    p = place;
+                    break;
+                }
+            }
+            for (Place place : lPlace) {
+                if (place.plotId != p.plotId) {
+                    nlist.add(place)
+                }
+            }
+            JSONArray jsonList = new JSONArray();
+            for (Place place : nlist) {
+                JSONObject jsonsub = new JSONObject();
+                jsonsub.put("plotId", place.plotId);
+                jsonsub.put("code", place.code);
+                jsonList.add(jsonsub);
+            }
+            render(contentType: "application/json") {
+                jsonList
+            }
+        }
+    }
+
+    def merged() {
+        String code1 = params.place1
+        String code2 = params.place2
+        List<Place> placeList = session.getAttribute("placeList")
+        Place p1;
+        Place p2;
+        for(Place place1 : placeList){
+            if (place1.code.equals(code1)){
+                p1 = place1
+            }
+            if (place1.code.equals(code2)) {
+                p2 = place1
+            }
+        }
+
+        placeList.remove(p1)
+        placeList.remove(p2)
+        p1.comment = p1.comment + System.getProperty("line.separator") + p2.comment
+        List<Tag> placeTags1 = p1.tagList
+        List<Tag> placeTags2 = p2.tagList;
+        List<Tag> newplaceTags = new ArrayList<>()
+        for (Tag t2 : placeTags2){
+            for (Tag t1 : placeTags1){
+                if (t2.value.equals(t1.value)){
+                    Tag t = new Tag()
+                    t.family = t2.family
+                    t.value = t2.value
+                    t.status = t
+                    t.weight = (t2.weight + t1.weight)/2
+                    newplaceTags.add(t)
+                }
+                else
+                {
+                    newplaceTags.add(t2)
+                }
+            }
+        }
+        p1.placeTags = newplaceTags
+        JSONArray jsonArray = new JSONArray()
+        JSONObject jsonsub = new JSONObject();
+        jsonsub.put("plotId", p1.plotId);
+        jsonsub.put("code", p1.code);
+        jsonsub.put("id", p1.id);
+        jsonsub.put("comment", p1.comment);
+        jsonsub.put("plotName", p1.plotName);
+        for(Tag tag : p1.tagList){
+            JSONObject tagsub = new JSONObject()
+            tagsub.put("family", tag.family)
+            tagsub.put("value", tag.value)
+            tagsub.put("weight", tag.weight)
+            tagsub.put("status", tag.status)
+            jsonArray.add(tagsub)
+        }
+        jsonsub.put("tags", jsonArray);
+        render(contentType: "application/json") {
+            jsonsub
+        }
+        /*
+        GNKImportationService gnkImportationService
+        final gnId = params.gnId
+        session.setAttribute("gnId", gnId)
+        Gn gn = Gn.get(gnId as Integer)
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+
+        Map<Integer, GenericPlace> gPlace = gnData.genericPlaceMap
+        GenericPlace p1;
+        GenericPlace p2;
+        ArrayList<Integer> cles = gPlace.keySet().toArray();
+        ArrayList<GenericPlace> listplace = new ArrayList<>()
+        Iterator it = cles.iterator();
+        while (it.hasNext()) {
+            Integer cle = it.next();
+            GenericPlace place = gPlace.get(cle); // tu peux typer plus finement ici
+
+            if (place.code.equals(params.placeMergeable1)) {
+                p1 = place;
+
+            } else {
+                if (place.code.equals(params.placeMergeable2)) {
+                    p2 = place;
+                    p2.id = cle
+                }
+                else{
+                    listplace.add(place)
+                }
+            }
+        }
+        p1.comment = p1.comment + "\n" + p2.comment;
+        if (p1.extTags && p2.extTags)
+            p2.extTags = gnkImportationService.mergedTag(p1.extTags, p2.extTags);
+        else{
+            if(p2){
+                p1.extTags = p2.extTags
+            }
+        }
+
+
+        gPlace.remove(p2.id)
+        gnData.setGenericPlaceMap(gPlace)
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+        gn.save()
+        session.setAttribute("listPlace", listplace)
+        redirect(action: "index1")
+        */
+
     }
 }

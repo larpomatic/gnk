@@ -63,6 +63,9 @@ function updatePlacesView(placesJSON) {
                 // Update name restart
                 restartPlaceInput.attr("disabled", false);
                 restartPlaceInput.attr("checked", false);
+//                for (var key in proposedNames) {
+//                .substr(0, proposedNames[key].lastIndexOf(" -"))
+//                }
             }
             else {
                 // Update name select
@@ -262,6 +265,10 @@ function initPlacesEvents(url) {
 
             // Enable selectAll
             $("#restartPlaceAll").removeAttr("disabled");
+
+            $("#customPlace").each(function() {
+                $("#customPlace").removeAttr("disabled")
+            });
 
             // Show loader
             $("#placesLoader").show();

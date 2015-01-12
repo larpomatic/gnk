@@ -247,6 +247,7 @@ class InputHandler {
                 resource.plot = plot.name
                 // ObjectType
                 resource.objectType = genericResource.objectType.type
+                resource.isInGame = genericResource.isIngameClue()
 
                 // TagList
                 resource.tagList = []
@@ -263,42 +264,6 @@ class InputHandler {
                 }
                 resourceList.add(resource)
             }
-//            for(org.gnk.roletoperso.Role role : plot.roles) {
-//                if (role.roleHasEvents) {
-//                    for (RoleHasEvent roleHasEvent : role.roleHasEvents) {
-//                        if (roleHasEvent.roleHasEventHasGenericResources) {
-//                            for (RoleHasEventHasGenericResource roleHasEventHasGenericResource : roleHasEvent.roleHasEventHasGenericResources) {
-//                                GenericResource genericResource = roleHasEventHasGenericResource.genericResource
-//
-//                                Resource resource = new Resource()
-//                                // Id
-//                                resource.id = genericResource.DTDId
-//                                // Plot id
-//                                resource.plotId = plotId
-//                                // Code
-//                                resource.code = genericResource.code
-//                                // Comment
-//                                resource.comment = genericResource.comment
-//
-//                                // TagList
-//                                resource.tagList = []
-//                                if (genericResource.extTags) {
-//                                    for (GenericResourceHasTag genericResourceHasTag : genericResource.extTags) {
-//                                        Tag tagData = new Tag()
-//
-//                                        tagData.value = genericResourceHasTag.tag.name
-//                                        tagData.family = genericResourceHasTag.tag.tagFamily.value
-//                                        tagData.weight = genericResourceHasTag.weight as Integer
-//
-//                                        resource.tagList.add(tagData)
-//                                    }
-//                                }
-//                                resourceList.add(resource)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
@@ -313,16 +278,12 @@ class InputHandler {
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
-                else
-                    println("InputHandler: Generic place is null ?")
             }
             for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
-                else
-                    println("InputHandler: Generic place is null ?")
             }
         }
     }
@@ -336,7 +297,7 @@ class InputHandler {
         return false;
     }
 
-    private Place createPlace(GenericPlace genericPlace, String plotId) {
+    public Place createPlace(GenericPlace genericPlace, String plotId) {
         Place place = new Place();
         // Id
         place.id = genericPlace.DTDId
@@ -346,6 +307,8 @@ class InputHandler {
         place.code = genericPlace.code
         // Comment
         place.comment = genericPlace.comment
+        // ObjectType
+        place.objectType = genericPlace.objectType.type
 
         // TagList
         place.tagList = []

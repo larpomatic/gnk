@@ -44,14 +44,14 @@ class PublicationController {
         Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
-        gn.step = "substitution";
+        //gn.step = "substitution";
 
-        for (Plot p : gn.getSelectedPlotSet())
+       /* for (Plot p : gn.getSelectedPlotSet())
         {
             for (GenericPlace gnplace : p.getGenericPlaces())
                 gnplace.setResultList(new ArrayList<ReferentialPlace>());
         }
-        gn.setPlaceSet(new HashSet<Place>());
+        gn.setPlaceSet(new HashSet<Place>());*/
 
         //gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -171,6 +171,14 @@ class PublicationController {
         gnk.ReadDTD(gn)
         // gn = gnk.gn
 
+        for (Place place: gn.placeSet){
+            int lastIndexOf = place.name.lastIndexOf(" -")
+            if (lastIndexOf != -1)
+                place.name = place.name.substring(0, lastIndexOf)
+            else
+                place.name = place.name
+        }
+
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
         def folder = new File(folderName)
         if (!folder.exists()) {
@@ -212,12 +220,14 @@ class PublicationController {
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
         wordWriter.addStyledParagraphOfText("ST", createSubTile())
-        wordWriter.addStyledParagraphOfText("T1", "Synthèse pour les organisateurs")
+        wordWriter.addStyledParagraphOfText("T1", "Dossier Organisateur")
+        wordWriter.addStyledParagraphOfText("ST", "Ne lisez ce qui suit QUE si vous faites partie de l'organisation du GN\"\n" +
+                "VOUS NE POUVEZ LIRE CE SUIT SI VOUS ÊTES JOUEUR(SE)S")
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des pitchs des Intrigues du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Introduction")
         createPitchOrga()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
@@ -298,14 +308,14 @@ class PublicationController {
                     for (Role r : c.selectedRoles) {
                         substituteRolesAndPlotDescription(r.getterPlot())
                         if (resRoles == "Aucun Rôle")
-                            resRoles = r.code + " : " + r.description
+                            resRoles = "- " + r.code + " : " + r.description
                         else
-                            resRoles += "; " + r.code + " : " + r.description
+                            resRoles += "\r- " + r.code + " : " + r.description
                         for (RoleHasTag rht : r.roleHasTags) {
                             if (resTag == "Aucune indication")
-                                resTag = rht.tag.name + " (" + rht.weight + "%)"
+                                resTag = "- " + rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableCell(tableRowCharacter, resRoles)
@@ -515,7 +525,11 @@ class PublicationController {
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlace, p.name)
+            int lastIndexOf = p.name.lastIndexOf(" -")
+            if (lastIndexOf != -1)
+                wordWriter.addTableCell(tableRowPlace, p.name.substring(0, lastIndexOf))
+            else
+                wordWriter.addTableCell(tableRowPlace, p.name)
             if (p.genericPlace) {
                 String typeStr = p.genericPlace.code
                 if (p.genericPlace.objectType != null)
@@ -544,7 +558,7 @@ class PublicationController {
             ArrayList<GenericResource> tmpList = new ArrayList<GenericResource>()
             ArrayList<String> nameList = new ArrayList<String>()
             for (GenericResource gr : PList) {
-                if (gr.objectType.id == i) {
+                if (gr.objectType.id == i && gr.selectedResource != null) {
                     nameList.add(gr.selectedResource.name)
                 }
             }
@@ -662,8 +676,13 @@ class PublicationController {
                 wordWriter.addTableCell(tableRowRes, e.name)
                 wordWriter.addTableCell(tableRowRes, p.name)
                 if (e.genericPlace)
-                    if (e.genericPlace.selectedPlace)
-                        wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
+                    if (e.genericPlace.selectedPlace){
+                        int lastIndexOf = e.genericPlace.selectedPlace.name.lastIndexOf(" -")
+                        if (lastIndexOf != -1)
+                            wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name.substring(0, lastIndexOf))
+                        else
+                            wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
+                    }
                     else
                         wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
                 else
@@ -851,7 +870,12 @@ class PublicationController {
                         time = 1
                     }
                     */
-                    roleHasPastsceneList.put(time, roleHasPastscene)
+                    try{
+                        roleHasPastsceneList.put(time, roleHasPastscene)
+                    } catch (Exception e) {
+                        continue
+                    }
+
                 }
             }
 
@@ -909,7 +933,10 @@ class PublicationController {
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
-                wordWriter.addRelationGraph(jsoncharlist, fileName, c.firstname + " " + c.lastname.toUpperCase())
+                String charName = c.firstname + " " + c.lastname.toUpperCase()
+                wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
+                Graph charGraph = new Graph(gn, false)
+                wordWriter.addParagraphOfText(charGraph.getRelation(charName))
             }
 
             if (!hasTags)
@@ -1024,8 +1051,8 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers de : " + gn.univers.name.replace("(Univers)", "") + ".")
-        wordWriter.addParagraphOfText("Il débute le " + getPrintableDate(gn.date) + " et dure " + gn.duration.toString() + " heures.")
+        wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers " + gn.univers.name.replace("(Univers)", "") + ".")
+        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler le "+ getPrintableDate(gn.date) + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
 
         // Comptage PJ
         String msgCharacters = PitchOrgaMsgCharacters()
@@ -1033,7 +1060,7 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet)
             if (p.pitchOrga != null) {
-                wordWriter.addStyledParagraphOfText("T3", p.name)
+                wordWriter.addStyledParagraphOfText("T5", p.name)
                 substituteRolesAndPlotDescription(p)
                 wordWriter.addParagraphOfText(p.pitchOrga)
             }
@@ -1378,8 +1405,13 @@ class PublicationController {
             //wordWriter.addTableCell(tableRowEvent, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
             wordWriter.addTableCell(tableRowEvent, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
             wordWriter.addTableCell(tableRowEvent, e.name)
-            if (e.genericPlace && e.genericPlace.proposedPlaces && e.genericPlace.proposedPlaces.size() > 0)
-                wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name)
+            if (e.genericPlace && e.genericPlace.proposedPlaces && e.genericPlace.proposedPlaces.size() > 0){
+                int lastIndexOf = e.genericPlace.proposedPlaces[0].name.lastIndexOf(" -")
+                if (lastIndexOf != -1)
+                    wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name.substring(0, lastIndexOf))
+                else
+                    wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name)
+            }
             else
                 wordWriter.addTableCell(tableRowEvent, "")
             wordWriter.addTableCell(tableRowEvent, e.plot.name)

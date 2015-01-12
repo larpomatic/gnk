@@ -21,7 +21,6 @@ class Plot {
         return getPlotTagQuery()
     }
 
-
     String name
     //  float plotVersion
 

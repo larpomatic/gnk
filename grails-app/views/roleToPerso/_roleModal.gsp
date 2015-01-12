@@ -7,7 +7,7 @@
     </div>
     <div class="modal-body">
         <div class="row-fluid">
-            <table class="table table-striped">
+            <table class="table table-striped" style="border-bottom: 1pt solid lightgrey; border-top: 1pt solid lightgrey; border-left: 1pt solid lightgrey; border-right: 1pt solid lightgrey">
                 <tbody>
                 <tr>
                     <td>Intrigue :</td>

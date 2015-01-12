@@ -42,8 +42,13 @@ class Graph {
                     lien1 = n1.c.getRelatedCharactersExceptBijectivesLabel(gn).get(n2.c)
                 else
                     lien1 = n1.c.getRelatedCharactersExceptBijectivesLabelAndHiddenRelation(gn).get(n2.c)
-                if ((lien1 != null) && (lien1.isEmpty() == false))
+
+                if ((lien1 != null) && (lien1.isEmpty() == false)) {
+                    lien1 = lien1.replaceAll("<", "");
+                    lien1 = lien1.replaceAll("i:", "");
+                    lien1 = lien1.replaceAll(">", "");
                     this.addEdge(n1, n2, lien1)
+                }
             }
         }
     }
@@ -121,7 +126,8 @@ class Graph {
             JSONObject json_object2 = new JSONObject();
             JSONObject json_colortype2 = new JSONObject();
             json_colortype2.put("\$color", e.n2.color);
-            json_colortype2.put("\$type", e.n2.type);
+//            json_colortype2.put("\$type", e.n2.type); -> Les personnage ne peuvent pas savoir de quels type sont les autres joueurs
+            json_colortype2.put("\$type", "circle");
             json_object2.put("data", json_colortype2);
 
             json_object2.put("id", e.n2.id);
@@ -131,6 +137,28 @@ class Graph {
 
 
         return json_array.toString()
+    }
+
+    public String getRelation(String name){
+        Node n1 = null;
+        for (Node n : this.nodeList){
+            if(n.name.equals(name)){
+                n1 = n
+                break
+            }
+        }
+        if (n1==null){
+            return "Aucunes relations"
+        }
+        String res = ""
+        if (!n1.edges.isEmpty()){
+            for (Edge e: n1.edges){
+                if (e.isHidden)
+                    continue
+                res += e.lien + " -> " + (e.n1.name.equals(n1.name)?e.n2.name:e.n1.name) + "\n"
+            }
+        }
+        return (res.isEmpty()?"Aucunes relations":res)
     }
 
     @Override

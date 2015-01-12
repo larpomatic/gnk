@@ -98,10 +98,10 @@ class RedactIntrigueController {
             isupdate = false;
 		}
 		plotInstance.properties = params
-		plotInstance.description = params.plotDescription
-        plotInstance.pitchOrga = params.plotPitchOrga
-        plotInstance.pitchPj = params.plotPitchPj
-        plotInstance.pitchPnj = params.plotPitchPnj
+		plotInstance.description = params.plotDescription == "" ? null : params.plotDescription;
+        plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
+        plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
+        plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;
         if (plotInstance.extTags) {
             HashSet<PlotHasTag> plotHasTags = plotInstance.extTags;
             PlotHasTag.deleteAll(plotHasTags);

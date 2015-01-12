@@ -117,6 +117,7 @@ class RoleXMLWriterService {
             relationElt.setAttribute("type", roleRelation.getRoleRelationType().getName())
             relationElt.setAttribute("is_bijective", roleRelation.getIsBijective().toString())
             relationElt.setAttribute("weight", roleRelation.getWeight().toString())
+            relationElt.setAttribute("description", roleRelation.getDescription());
             relationsElt.appendChild(relationElt)
         }
         return relationsElt;
