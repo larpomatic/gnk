@@ -235,23 +235,27 @@ class TagRelationController {
             } else {
                 tags2 = tagSearchService.searchTag(t2name)
             }
-            if (tags1 == null && tags2 == null) {
-                tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, t1, t2, max, offset, sort);
+            if (t1name && t2name && (!t1 || !t2)) {
+                tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, null, null, max, offset, sort)
             } else {
-                if ((t1 && t2 == null) && (tags2 && tags1 == null)) {
-                    tagRelations = tagSearchService.searchTagandListTag(type, tags2, t1, max, offset, sort)
-                }
-                if ((t2 && t1 == null) && (tags1 && tags2 == null)) {
-                    tagRelations = tagSearchService.searchTagandListTag(type, tags1, t2, max, offset, sort)
-                }
-                if (tags1 != null && tags2 != null) {
-                    tagRelations = tagSearchService.searchtwoListTag(type, tags1, tags2, max, offset, sort)
-                }
-                if (tags1 != null && t2 == null && t1 == null) {
-                    tagRelations = tagSearchService.searchoneListTag(type, tags1, max, offset, sort)
-                }
-                if (tags2 != null && t2 == null && t1 == null) {
-                    tagRelations = tagSearchService.searchoneListTag(type, tags2, max, offset, sort)
+                if (tags1 == null && tags2 == null) {
+                    tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, t1, t2, max, offset, sort);
+                } else {
+                    if ((t1 && t2 == null) && (tags2 && tags1 == null)) {
+                        tagRelations = tagSearchService.searchTagandListTag(type, tags2, t1, max, offset, sort)
+                    }
+                    if ((t2 && t1 == null) && (tags1 && tags2 == null)) {
+                        tagRelations = tagSearchService.searchTagandListTag(type, tags1, t2, max, offset, sort)
+                    }
+                    if (tags1 != null && tags2 != null) {
+                        tagRelations = tagSearchService.searchtwoListTag(type, tags1, tags2, max, offset, sort)
+                    }
+                    if (tags1 != null && t2 == null && t1 == null) {
+                        tagRelations = tagSearchService.searchoneListTag(type, tags1, max, offset, sort)
+                    }
+                    if (tags2 != null && t2 == null && t1 == null) {
+                        tagRelations = tagSearchService.searchoneListTag(type, tags2, max, offset, sort)
+                    }
                 }
             }
         }

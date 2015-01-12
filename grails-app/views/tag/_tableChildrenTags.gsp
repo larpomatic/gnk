@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <legend>${message(code: 'adminRef.tag.list')}</legend>
 
-<table class="table table-bordered">
+<table id="listTable" class="table table-bordered">
     <thead>
     <tr>
         <th>#</th>
@@ -52,6 +52,12 @@
                 <a href="#tagListmodal${tagInstance.id}" class="btn" data-toggle="modal">
                     Tag fils
                 </a>
+                <g:hasRights lvlright="${right.REFMODIFY.value()}">
+                    <a href="#addchildmodal" class="btn btn-primary" id="buttonAdd" data-toggle="modal">
+                        +
+                    </a>
+                </g:hasRights>
+                <input type="hidden" id="idParent" name="idParent" value="${tagInstance.id}">
             </td>
         </tr>
     </g:each>
@@ -62,3 +68,7 @@
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
 <g:render template="detailTagChildren"/>
+<g:render template="addTags"/>
+
+
+<g:javascript src="tag/addTagChild.js"/>

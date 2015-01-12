@@ -14,7 +14,7 @@ class TagController {
         redirect(action: "list", params: "params")
     }
 
-    def list(Integer max, Integer offset, String sort) {
+    def list(String sort) {
         List<Tag> tags = Tag.list();
         Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
         for (Tag tag : tags) {
@@ -42,12 +42,10 @@ class TagController {
             }
         else
         {
-            max = max ?: 10
-            offset = offset ?: 0
             sort = sort ?: 'name'
             params.order = params.order ?: 'asc'
 
-            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+            def resultList = Tag.createCriteria().list() {
                 if (sort.indexOf('tagFamily.') == 0) {
                     tagFamily {
                         order(sort.split('\\.')[1], params.order)
@@ -103,36 +101,14 @@ class TagController {
     }
 
     def save() {
-		if (params.name.equals(""))
-		{
-			print "Invalid params"
-			flash.message = message(code: 'Erreur : Le nom du tag ne peut etre vide !')
-            redirect(action: "list")
-            return
-		}
-		
-//		if (params.TagFamily_select.equals(""))
-//		{
-//			flash.message = message(code: 'Erreur : Il faut choisir un parent pour le tag !')
-//			redirect(action: "list")
-//			return
-//		}
-
-        Tag tagInstance = new Tag(params)
-        //Tag parent = Tag.findWhere(name: params.Tag_parent)
-        Integer parentId = session.tagParent as Integer
-        print("TAGPARENTID: " + parentId)
-        Tag parent = Tag.findWhere(id: parentId)
-
-        if (parent == null)
-            return
-
-        print("Tag parent: " + params.Tag_parent)
-        tagInstance.setParent(parent)
-		
+		int idparent = Integer.parseInt(params.idParentSave);
+        Tag tagParent = Tag.findById(idparent);
+        Tag newTag = new Tag();
+        String name = params.nameTag
+        newTag.name = name;
 		for (Tag tag : Tag.list()) 
 		{
-			if (tagInstance.name.toLowerCase().equals(tag.name.toLowerCase()))
+			if (newTag.name.toLowerCase().equals(tag.name.toLowerCase()))
 			{
 				print "Tag already exist"
 				flash.message = message(code: 'Erreur : Un tag avec le meme nom existe deja !')
@@ -140,7 +116,12 @@ class TagController {
 	            return
 			}
 		}
-
+        newTag.children = new HashSet<>();
+        newTag.extPlaceTags = new HashSet<>();
+        newTag.extPlotTags = new HashSet<>();
+        newTag.extResourceTags = new HashSet<>();
+        newTag.extRoleTags = new HashSet<>();
+        newTag.parent = tagParent;
 //		TagFamily tagFamilyInstance = null;
 //		tagFamilyInstance = TagFamily.get(tagFamilyId)
 //
@@ -155,13 +136,13 @@ class TagController {
 //		// Creates the relation between the tag and the family
 //		tagInstance.tagFamily = tagFamilyInstance
 		
-        if (!tagInstance.save(flush: true)) {
-            render(view: "create", model: [tagInstance: tagInstance])
+        if (!newTag.save(flush: true)) {
+            render(view: "create", model: [tagInstance: newTag])
             return
         }
 
         
-        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, parent.name])
+        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [newTag.name, tagParent.name])
         redirect(action: "list")
     }
 
@@ -429,6 +410,11 @@ class TagController {
             tagRelevant.relevantRole = true;
         } else {
             tagRelevant.relevantRole = false;
+        }
+        int idparent = Integer.parseInt(params.tagParentChoice);
+        Tag tagParent = Tag.findById(idparent)
+        if(idparent != -1){
+            tag.parent = tagParent;
         }
         redirect(action : "list")
     }
