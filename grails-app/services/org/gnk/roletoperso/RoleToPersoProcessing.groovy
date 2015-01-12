@@ -40,12 +40,12 @@ public class RoleToPersoProcessing {
         }
         this.gn = gn;
         unAttribuedRoleWithSettedSex = new HashMap<Role, String>();
-        if (this.gnTPJRoleSet != null)
+        /*if (this.gnTPJRoleSet != null)
             this.gnTPJRoleSet.clear();
         if (this.gnSTFRoleSet != null)
             this.gnSTFRoleSet.clear();
         if (this.gnPJGRoleSet != null)
-            this.gnPJGRoleSet.clear();
+            this.gnPJGRoleSet.clear();*/
         process();
         LOG.info("</R2P>");
     }
@@ -70,7 +70,7 @@ public class RoleToPersoProcessing {
     private void createSTFCharacter()
     {
         gn.setStaffCharSet(new HashSet<Character>());
-        int nb = this.gn.nonPlayerCharSet.size() + this.gn.characterSet.size();
+        int nb = this.gn.getterNonPlayerCharSet().size() + this.gn.getterCharacterSet().size();
         for (Role r in this.gnSTFRoleSet) {
             nb += 1;
             Character c = new Character();
@@ -549,12 +549,12 @@ public class RoleToPersoProcessing {
         gnPJGRoleSet = new HashSet<Role>();
         gnSTFRoleSet = new HashSet<Role>();
 
-        if (this.gnTPJRoleSet != null)
+        /*if (this.gnTPJRoleSet != null)
             this.gnTPJRoleSet.clear();
         if (this.gnSTFRoleSet != null)
             this.gnSTFRoleSet.clear();
         if (this.gnPJGRoleSet != null)
-            this.gnPJGRoleSet.clear();
+            this.gnPJGRoleSet.clear();*/
 
         assert (gn != null);
         if (gn == null) {
