@@ -256,7 +256,7 @@ class RoleToPersoController {
         /***********/
 
         // Life desactivated until it works
-        // addLifeEvents(gn)
+        //addLifeEvents(gn)
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -517,25 +517,29 @@ class RoleToPersoController {
                     }
                 }
 
-                Pastscene pastSceneLife = new Pastscene()
-                pastSceneLife.plot = p
-                pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
-                pastSceneLife.description = "Past Scene de " + age
-                pastSceneLife.isPublic = true
-                pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
-                pastSceneLife.unitTimingRelative = "Y"
-                pastSceneLife.timingRelative = character.age - age
+                if (lastGE != null) { // On ajoute l'event
+                    Pastscene pastSceneLife = new Pastscene()
+                    pastSceneLife.plot = p
+                    pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
+                    pastSceneLife.description = "Past Scene de " + age
+                    pastSceneLife.isPublic = true
+                    pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
+                    // Ca il faut changer
+                    pastSceneLife.dateYear = character.age - age
+                    pastSceneLife.unitTimingRelative = "Y"
+                    pastSceneLife.timingRelative = character.age - age
 
-                // Associer past Scene au rôle, Role Has Past Scene
-                RoleHasPastscene rhpsLife = new RoleHasPastscene()
-                rhpsLife.description = lastGE.description//listEvent.first().description
-                rhpsLife.role = roleForLife
-                rhpsLife.pastscene = pastSceneLife
-                rhpsLife.title = "Evénement passé"
+                    // Associer past Scene au rôle, Role Has Past Scene
+                    RoleHasPastscene rhpsLife = new RoleHasPastscene()
+                    rhpsLife.description = lastGE.description//listEvent.first().description
+                    rhpsLife.role = roleForLife
+                    rhpsLife.pastscene = pastSceneLife
+                    rhpsLife.title = "Evénement passé"
 
-                roleForLife.roleHasPastscenes.add(rhpsLife)
-                p.roles.add(roleForLife)
-                p.pastescenes.add(pastSceneLife)
+                    roleForLife.roleHasPastscenes.add(rhpsLife)
+                    p.roles.add(roleForLife)
+                    p.pastescenes.add(pastSceneLife)
+                }
 
                 age += INTERVAL + (((new Random()).nextInt() % 2))
             }
