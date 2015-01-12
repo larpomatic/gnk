@@ -497,6 +497,7 @@ class RoleToPersoController {
                                     //System.out.println("diff:" + diff + "/" + diffValueBetweenGEandTAG)
                                     if (diffValueBetweenGEandTAG > diff) {
                                         // On est sur un GE qui est plus apte que les autres.
+                                        System.out.println("L'event (" + gecit.genericEvent.description + ") match")
                                         diffValueBetweenGEandTAG = diff;
                                         bestGE = gecit.genericEvent;
                                     }

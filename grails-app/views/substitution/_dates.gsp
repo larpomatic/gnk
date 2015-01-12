@@ -102,6 +102,7 @@
         // HTML id
         pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
         // Time
+
         pastscene.relativeTime = "${pastscene.relativeTime}";
         pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
         pastscene.absoluteYear = "${pastscene.absoluteYear}";

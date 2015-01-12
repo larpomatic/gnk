@@ -13,4 +13,9 @@ class Pastscene {
     Integer absoluteDay
     Integer absoluteHour
     Integer absoluteMin
+    boolean isYearAbsolute
+    boolean isMonthAbsolute
+    boolean isDayAbsolute
+    boolean isHourAbsolute
+    boolean isMinuteAbsolute
 }
