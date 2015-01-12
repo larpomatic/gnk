@@ -109,6 +109,8 @@ class Gn {
     public boolean addPlot(Plot plot) {
         if ((plot.isEvenemential) && (this.selectedPlotSet != null))
             this.selectedPlotSet.removeAll { it.isEvenemential == true };
+        if (this.selectedPlotSet == null)
+            this.selectedPlotSet = new HashSet<Plot>();
         selectedPlotSet.add(plot);
     }
 
