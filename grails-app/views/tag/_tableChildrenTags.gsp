@@ -37,14 +37,8 @@
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <td>
-                        <g:form>
-                            <fieldset class="buttons">
-                                <g:hiddenField name="idTag" value="${tagInstance?.id}"/>
-                                <g:actionSubmit class="btn btn-warning" action="deleteTag"
-                                                value="${message(code: 'default.delete')}"
-                                                onclick="return confirm('${message(code: 'adminRef.tag.deleteTag')}');"/>
-                            </fieldset>
-                        </g:form>
+                        <input type="hidden" name="idTag" value="${tagInstance?.id}"/>
+                        <button class="deleteTagbtn btn btn-warning">${message(code: 'default.delete')}</button>
                     </td>
                 </g:hasRights>
             </g:hasRights>
@@ -53,7 +47,7 @@
                     Tag fils
                 </a>
                 <g:hasRights lvlright="${right.REFMODIFY.value()}">
-                    <a href="#addchildmodal" class="btn btn-primary" id="buttonAdd" data-toggle="modal">
+                    <a href="#addchildmodal" class="btn btn-primary buttonAdd" data-toggle="modal">
                         +
                     </a>
                 </g:hasRights>
@@ -63,7 +57,7 @@
     </g:each>
     </tbody>
 </table>
-
+<input type="hidden" name="idTagurl" id="idTagurl" data-url="<g:createLink controller="tag" action="deleteTag"/>"/>
 <!-- Modal Views -->
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
@@ -71,4 +65,3 @@
 <g:render template="addTags"/>
 
 
-<g:javascript src="tag/addTagChild.js"/>

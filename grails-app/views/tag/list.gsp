@@ -27,6 +27,8 @@
             });
         });
     </script>
+    <g:javascript src="tag/addTagChild.js"/>
+    <g:javascript src="tag/deleteTag.js"/>
     </body>
 </html>
 
