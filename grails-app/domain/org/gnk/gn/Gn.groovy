@@ -109,9 +109,21 @@ class Gn {
     public boolean addPlot(Plot plot) {
         if ((plot.isEvenemential) && (this.selectedPlotSet != null))
             this.selectedPlotSet.removeAll { it.isEvenemential == true };
-        if (this.selectedPlotSet == null)
-            this.selectedPlotSet = new HashSet<Plot>();
+//        if (this.selectedPlotSet == null)
+//            this.selectedPlotSet = new HashSet<Plot>();
         selectedPlotSet.add(plot);
+    }
+
+    public boolean removePlot(Plot plot) {
+        Plot plotToRemove = null;
+        for (Plot gnPlot : selectedPlotSet) {
+            if (gnPlot.name == plot.name) {
+                plotToRemove = gnPlot;
+            }
+        }
+        if (plotToRemove) {
+            selectedPlotSet.remove(plotToRemove);
+        }
     }
 
     public boolean hasTag(Tag parTag, String tagListName = "BaseTags") {

@@ -191,7 +191,6 @@ class SelectIntrigueController {
                 new GNKDataContainerService().ReadDTD(gnInstance)
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
-                HashSet<Plot> selectedPlot = new HashSet<Plot>();
                 params.each {
                     if (it.key.startsWith("plot_status_") && it.value != "3") {
                         // Locked = 1, Banned= 2, Selected = 3
@@ -200,18 +199,14 @@ class SelectIntrigueController {
                             lockedPlot.add(plot)
                         } else if (it.value == "2") {
                             bannedPlot.add(plot)
-                        } else {
-                            selectedPlot.add(plot);
                         }
                     } else if (it.key.startsWith("keepBanned_")) {
                         final Plot plotToBan = Plot.get((it.key - "keepBanned_") as Integer)
                         bannedPlot.add(plotToBan);
                         lockedPlot.remove(plotToBan);
-                        selectedPlot.remove(plotToBan);
                     } else if (it.key.startsWith("toLock_")) {
                         final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
                         lockedPlot.add(plotToLock);
-                        selectedPlot.add(plotToLock);
                         bannedPlot.remove(plotToLock);
                     }
                     else if (it.key.startsWith("selected_evenemential")) {
@@ -221,7 +216,12 @@ class SelectIntrigueController {
                         mainstreamId = it.value as Integer;
                     }
                 }
-                gnInstance.selectedPlotSet = selectedPlot;
+                for (Plot plot : lockedPlot) {
+                    gnInstance.addPlot(plot);
+                }
+                for (Plot plot : bannedPlot) {
+                    gnInstance.removePlot(plot);
+                }
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
                 gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
