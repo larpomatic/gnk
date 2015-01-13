@@ -18,7 +18,7 @@ class TagRelationController {
         offset = offset ?: 0
         sort = sort ?: 'name'
         params.order = params.order ?: 'asc'
-
+        int isResult = -1;
         def resultList = TagRelation.createCriteria().list(max: max, offset: offset) {
             tag1
                     {
@@ -36,12 +36,19 @@ class TagRelationController {
                 }
                 t = t.parent;
             }
+
             tagParent = tagParent.reverse();
             mapTagParent.put(tag.id, tagParent);
         }
         PagedResultList trs = session.getAttribute("trs")
-        for (int i = 0; trs && i < trs.size(); i++) {
-            TagRelation tagR = trs.get(i)
+        if (session.getAttribute("tmpsearch") == 0)
+            isResult = session.getAttribute("tmpsearch");
+
+        if (trs != null){
+            isResult = 1;
+        }
+
+        for (TagRelation tagR : trs){
             tagR = tagR.merge()
             tagR.save(flush: true)
             if (tagR.isAttached()) {
@@ -49,6 +56,17 @@ class TagRelationController {
             }
         }
         session.removeAttribute("trs");
+        if (params.search) {
+            if (!"".equals(params.msg1) && "".equals(params.msg2))
+                flash.message = message(code: 'adminRef.info.tagRelation.Nexist.one', args: [params.msg1])
+            if ("".equals(params.msg1) && !"".equals(params.msg2))
+                flash.message = message(code: 'adminRef.info.tagRelation.Nexist.one', args: [params.msg2])
+            if (!"".equals(params.msg1) && !"".equals(params.msg2))
+                flash.message = message(code: 'adminRef.info.tagRelation.Nexist.two', args: [params.msg1, params.msg2])
+            if (isResult == 0)
+                flash.message = message(code: 'adminRef.info.tagRelation.Nexist')
+            params.search = false;
+        }
         [tagRelationInstanceList: resultList, listTagParent: mapTagParent, trs: trs]
     }
 
@@ -57,7 +75,6 @@ class TagRelationController {
     }
 
     def addRelation() {
-        print params
         Boolean bijective = true
         if (!params.bijective)
             bijective = false
@@ -212,6 +229,8 @@ class TagRelationController {
     def search(Integer max, Integer offset, String sort) {
         String t1name = params.tag1Rel;
         String t2name = params.tag2Rel;
+        String message1 = "";
+        String message2 = "";
         int type = Integer.parseInt(params.selectTypeRelation)
         max = max ?: 10
         offset = offset ?: 0
@@ -219,25 +238,43 @@ class TagRelationController {
         params.order = params.order ?: 'asc'
         Tag t1 = null
         Tag t2 = null
+
+        session.setAttribute("tmpsearch", 0)
+        boolean error = false;
         List<Tag> tags1 = null
         List<Tag> tags2 = null
         PagedResultList tagRelations = null;
         if ("".equals(t1name) && "".equals(t2name)) {
+            session.setAttribute("tmpsearch", 1)
             tagRelations = null
         } else {
             if (t1name.indexOf("%") == -1 && t1name.indexOf("?") == -1) {
                 t1 = Tag.findByName(t1name);
+                if (!t1 && !"".equals(t1name)) {
+                    message1 = t1name
+                    error = true;
+                }
             } else {
                 tags1 = tagSearchService.searchTag(t1name)
+                if (tags1.size() == 0){
+                    message1 = t1name
+                    error = true;
+                }
             }
             if (t2name.indexOf("%") == -1 && t2name.indexOf("?") == -1) {
                 t2 = Tag.findByName(t2name);
+                if (!t2 && !"".equals(t2name)) {
+                    message2 = t2name
+                    error = true;
+                }
             } else {
                 tags2 = tagSearchService.searchTag(t2name)
+                if (tags2.size() == 0){
+                    message2 = t2name
+                    error = true;
+                }
             }
-            if (t1name && t2name && (!t1 || !t2)) {
-                tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, null, null, max, offset, sort)
-            } else {
+            if (!error) {
                 if (tags1 == null && tags2 == null) {
                     tagRelations = tagSearchService.manageReturnSearchTagRealtion(type, t1, t2, max, offset, sort);
                 } else {
@@ -250,16 +287,17 @@ class TagRelationController {
                     if (tags1 != null && tags2 != null) {
                         tagRelations = tagSearchService.searchtwoListTag(type, tags1, tags2, max, offset, sort)
                     }
-                    if (tags1 != null && t2 == null && t1 == null) {
+                    if (tags1 != null && t2 == null && t1 == null && tags2 == null) {
                         tagRelations = tagSearchService.searchoneListTag(type, tags1, max, offset, sort)
                     }
-                    if (tags2 != null && t2 == null && t1 == null) {
+                    if (tags2 != null && t2 == null && t1 == null && tags1 == null) {
                         tagRelations = tagSearchService.searchoneListTag(type, tags2, max, offset, sort)
                     }
                 }
             }
         }
+
         session.setAttribute("trs", tagRelations);
-        redirect(action: "list");
+        redirect(action: "list", params: [msg1: message1, msg2: message2, search: true]);
     }
 }
