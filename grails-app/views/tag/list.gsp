@@ -27,6 +27,7 @@
             });
         });
     </script>
+    <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
     <g:javascript src="tag/addTagChild.js"/>
     <g:javascript src="tag/deleteTag.js"/>
     </body>
