@@ -287,13 +287,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
