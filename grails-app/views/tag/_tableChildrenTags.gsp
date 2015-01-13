@@ -38,7 +38,7 @@
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <td>
                         <input type="hidden" name="idTag" value="${tagInstance?.id}"/>
-                        <button class="deleteTagbtn btn btn-warning">${message(code: 'default.delete')}</button>
+                        <button data-toggle="confirmation-popout" data-placement="left" class="deleteTagbtn btn btn-warning">${message(code: 'default.delete')}</button>
                     </td>
                 </g:hasRights>
             </g:hasRights>

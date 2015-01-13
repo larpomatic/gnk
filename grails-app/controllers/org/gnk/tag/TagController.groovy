@@ -1,6 +1,7 @@
 package org.gnk.tag
 
 import org.gnk.administration.DbCoherenceController
+import org.gnk.resplacetime.PlaceHasTag
 import org.springframework.security.access.annotation.Secured
 import org.gnk.tag.TagService
 import org.springframework.web.context.request.RequestContextHolder
@@ -136,7 +137,7 @@ class TagController {
             render(view: "create", model: [tagInstance: newTag])
             return
         }
-        if (tagParent.children.size() == 1){
+        if (tagParent.children.size() == 1) {
             TagRelevant tagRelevant1 = new TagRelevant();
             tagRelevant1.relevantFirstname = false;
             tagRelevant1.relevantLastname = false;
@@ -354,14 +355,34 @@ class TagController {
     def deleteTag() {
         int idTag = Integer.parseInt(params.idTag);
         def tagInstance = Tag.findById(idTag)
-        print "name " + tagInstance.name
-        TagRelevant tr = TagRelevant.findByTag(tagInstance);
-        if (tr){
-            tr.delete(flush: true);
+
+        if (tagInstance.children.size() > 0) {
+            flash.message = message(code: 'adminRef.tag.info.delete.fail', args: [tagInstance.name])
+        } else {
+            TagRelevant tr = TagRelevant.findByTag(tagInstance);
+            if (tr) {
+                tr.delete(flush: true);
+            }
+            for (int i = 0; tagInstance.extPlaceTags; i++){
+                ((PlaceHasTag)tagInstance.extPlaceTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extPlotTags; i++){
+                ((PlaceHasTag)tagInstance.extPlotTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extResourceTags; i++){
+                ((PlaceHasTag)tagInstance.extResourceTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extRoleTags; i++){
+                ((PlaceHasTag)tagInstance.extRoleTags.toArray()[i]).delete()
+            }
+            tagInstance.parent = null;
+            flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
+            tagInstance.delete(flush: true)
+            render(contentType: "text/html") {
+                "OK"
+            }
         }
-        flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
-        tagInstance.delete(flush: true)
-        }
+    }
 
     def stats() {
         Tag tagUniverParent = Tag.findByName("Tag Univers");
@@ -425,7 +446,7 @@ class TagController {
         Tag tagParent = Tag.findById(idparent)
         if (idparent != -1) {
             tag.parent = tagParent;
-            if (tagParent.children.size() == 1){
+            if (tagParent.children.size() == 1) {
                 TagRelevant tagRelevant1 = new TagRelevant();
                 tagRelevant1.relevantFirstname = false;
                 tagRelevant1.relevantLastname = false;

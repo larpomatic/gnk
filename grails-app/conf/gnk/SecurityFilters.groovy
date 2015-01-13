@@ -30,9 +30,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -40,7 +38,7 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
@@ -75,9 +73,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -85,13 +81,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -119,9 +115,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -129,13 +123,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -162,9 +156,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -172,13 +164,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.PROFILOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -205,9 +197,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -215,13 +205,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.USEROPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -248,9 +238,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -258,13 +246,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -291,9 +279,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -334,9 +320,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -344,14 +328,14 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MINTRIGUEOPEN.value())
-                if ( !currentuser || !right) {
-                   redirect(controller: "login", action: "denied")
+                if (!currentuser || !right) {
+                    redirect(controller: "login", action: "denied")
                     return false
                 }
                 return true
@@ -377,9 +361,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -387,13 +369,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -420,9 +402,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -430,13 +410,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -463,9 +443,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -473,13 +451,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -506,9 +484,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -516,13 +492,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -549,9 +525,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -559,13 +533,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -592,9 +566,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -602,13 +574,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -635,9 +607,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -645,13 +615,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -678,9 +648,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -688,13 +656,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -721,9 +689,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -731,13 +697,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -764,9 +730,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -774,13 +738,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -807,9 +771,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -817,13 +779,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if (!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -850,9 +812,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -860,13 +820,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if(!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -893,9 +853,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -903,13 +861,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if(!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -936,9 +894,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -946,13 +902,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if(!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -979,9 +935,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -989,14 +943,14 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if(!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.REFOPEN.value())
                 def right1 = rightsService.hasRight(currentuser.gright, right.RIGHTMODIF.value())
-                if ( !currentuser || !right || !right1) {
+                if (!currentuser || !right || !right1) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
@@ -1023,9 +977,7 @@ class SecurityFilters {
                             User testuser = User.findByUsername(login);
                             if (testuser && cookieService.isAuth(password, testuser.password)) {
                                 session.setAttribute("user", testuser)
-                            }
-                            else
-                            {
+                            } else {
                                 redirect(controller: "logout", action: "index")
                                 return false
                             }
@@ -1033,13 +985,13 @@ class SecurityFilters {
                     }
                 }
                 user = (User) session.getAttribute("user")
-                if(!user){
+                if (!user) {
                     user = (User) springSecurityService.getCurrentUser()
                     session.setAttribute("user", user)
                 }
                 User currentuser = User.findById(user.id)
                 def right = rightsService.hasRight(currentuser.gright, right.MGNOPEN.value())
-                if ( !currentuser || !right) {
+                if (!currentuser || !right) {
                     redirect(controller: "login", action: "denied")
                     return false
                 }
