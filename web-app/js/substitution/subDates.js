@@ -216,7 +216,7 @@ function updateDatesJSONUser(dateJSON) {
                 sendJSON(datesJSON, url, onSuccessAjaxDates, onErrorAjaxDates, completeAjaxDates);
             }
             // Send JSON to controller
-           // sendJSON(datesJSON, url, onSuccessAjaxDates, onErrorAjaxDates, completeAjaxDates);
+            // sendJSON(datesJSON, url, onSuccessAjaxDates, onErrorAjaxDates, completeAjaxDates);
         }
     }
 
