@@ -29,7 +29,8 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
 import org.hibernate.annotations.GenericGenerator
 
-import java.text.DateFormat;
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -230,16 +231,20 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Scénario")
+        wordWriter.addStyledParagraphOfText("T3", "Synthèse des Intrigues")
         createPlotTable()
+        wordWriter.addStyledParagraphOfText("T3", "Implication personnage")
+        createPlayersTableImplication()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse de l'événementiel du GN")
         createEventsTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux")
         createPlaceTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Resources Logistiques")
+        wordWriter.addStyledParagraphOfText("T3", "Synthèse")
         createResTable()
 
         // Liste Ingame CLues
@@ -273,13 +278,13 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "NOM - Prenom")
-        wordWriter.addTableCell(tableRow, "Nb PIP Total")
-        wordWriter.addTableCell(tableRow, "Type")
-        wordWriter.addTableCell(tableRow, "Sexe")
-        wordWriter.addTableCell(tableRow, "Age")
-        wordWriter.addTableCell(tableRow, "Role(s)")
-        wordWriter.addTableCell(tableRow, "Indication(s) personnage")
+        wordWriter.addTableStyledCell(tableRow, "NOM - Prenom", "Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Nb PIP Total", "Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Type","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Sexe","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Age","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Role(s)","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Indication(s) personnage","Table1L")
 
         table.getContent().add(tableRow);
 
@@ -294,12 +299,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
 
@@ -318,8 +323,8 @@ class PublicationController {
                                 resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -338,12 +343,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -358,8 +363,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -378,12 +383,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -398,8 +403,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -615,12 +620,12 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Description")
         wordWriter.addTableCell(tableRow, "Commentaire")
         wordWriter.addTableCell(tableRow, "Indication(s) Ressource")
+        wordWriter.addTableCell(tableRow, "Détenu par")
+        wordWriter.addTableCell(tableRow, "Indices textuel")
 
         table.getContent().add(tableRow);
 
         for (GenericResource genericResource : GROTList + GRList) {
-//            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
-//            {
             Tr tableRowRes = wordWriter.factory.createTr()
 
             if (genericResource.selectedResource)
@@ -645,9 +650,21 @@ class PublicationController {
                 resTag += grht.tag.name + "(" + grht.weight + "%); "
             }
             wordWriter.addTableCell(tableRowRes, resTag)
-
+            String possessedByCharacters = ""
+            if (genericResource.getPossessedByRole() != null){
+                for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                    for (Role r : c.selectedRoles){
+                        if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()){
+                            possessedByCharacters = (possessedByCharacters.isEmpty()?"":", ") c.firstname + " " + c.lastname.toUpperCase()
+                        }
+                    }
+                }
+            } else {
+                possessedByCharacters = "personne"
+            }
+            wordWriter.addTableCell(tableRowRes, possessedByCharacters)
+            wordWriter.addTableCell(tableRowRes, (genericResource.isIngameClue()?"oui":""))
             table.getContent().add(tableRowRes);
-//            }
         }
         wordWriter.addBorders(table)
 
@@ -1085,7 +1102,7 @@ class PublicationController {
         Tr tableRow = wordWriter.factory.createTr()
 
         wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers " + gn.univers.name.replace("(Univers)", "") + ".")
-        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler le "+ getPrintableDate(gn.date) + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
+        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler "+ getPrintableDate(gn.date,"'le' dd MMMM yyyy 'à' HH'h'mm") + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
 
         // Comptage PJ
         String msgCharacters = PitchOrgaMsgCharacters()
@@ -1190,8 +1207,17 @@ class PublicationController {
             {
                 Tr tableRowPlot = wordWriter.factory.createTr()
                 wordWriter.addTableCell(tableRowPlot, genericResource.code + " - " + genericResource.comment)
-                if (genericResource.possessedByRole != null)
-                    wordWriter.addTableCell(tableRowPlot, genericResource.possessedByRole.code) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                if (genericResource.getPossessedByRole() != null){
+                    String possessedByCharacters = ""
+                    for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                        for (Role r : c.selectedRoles){
+                            if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()){
+                                possessedByCharacters += (possessedByCharacters.isEmpty()?genericResource.getPossessedByRole().code + " : ":", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            }
+                        }
+                    }
+                    wordWriter.addTableCell(tableRowPlot, possessedByCharacters)
+                }
                 else
                     wordWriter.addTableCell(tableRowPlot, "Personne")
                 table.getContent().add(tableRowPlot);
@@ -1240,23 +1266,48 @@ class PublicationController {
 
         table.getContent().add(tableRow);
 
+        //Priorisation des plot événementiels
+        for (Plot p : gn.selectedPlotSet) {
+            if (p.name == "Life")
+                continue
+            if (p.isEvenemential){
+                Tr tableRowPlot = wordWriter.factory.createTr()
+                wordWriter.addTableCell(tableRowPlot, p.name)
+                wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
+                String tags = "Evènementiel"
+                if (p.isMainstream)
+                    tags += " - Mainstream"
+                tags += " : "
+                boolean first = true
+                for (PlotHasTag plotHasTag : p.extTags) {
+                    if (!first)
+                        tags += "; "
+                    else
+                        first = false
+                    tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
+                }
+                wordWriter.addTableCell(tableRowPlot, tags.toString())
+
+                substituteRolesAndPlotDescription(p)
+
+                String description = new String(p.description.getBytes("UTF-8"), "UTF-8")
+                wordWriter.addTableCell(tableRowPlot, description)
+                table.getContent().add(tableRowPlot);
+            }
+        }
+
+        //Puis, le même traitement sur les plots non événementiels
         for (Plot p : gn.selectedPlotSet) {
             //Ignorer Life
-            if (p.name == "Life")
+            if (p.name == "Life" || p.isEvenemential)
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             String tags = ""
-            if (p.isEvenemential)
-                tags += "Evènementiel"
-            if (p.isEvenemential && p.isMainstream)
-                tags += " - "
             if (p.isMainstream)
-                tags += "Mainstream"
-            if (p.isEvenemential || p.isMainstream)
-                tags += " : "
+                tags += "Mainstream : "
             boolean first = true
             for (PlotHasTag plotHasTag : p.extTags) {
                 if (!first)
@@ -1274,6 +1325,36 @@ class PublicationController {
             table.getContent().add(tableRowPlot);
         }
 
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table);
+    }
+
+    def createPlayersTableImplication(){
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
+        wordWriter.addTableCell(tableRow, "Implication des Personnages")
+        table.getContent().add(tableRow);
+
+        for (Plot p : gn.selectedPlotSet) {
+            if (p.name == "Life")
+                continue
+            Tr tableRowPlot = wordWriter.factory.createTr()
+            wordWriter.addTableCell(tableRowPlot, p.name)
+            String playerImplication =""
+            HashSet roles = p.getRoles()
+            for (Role r1 : roles){
+                for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                    for (Role r2 : c.selectedRoles){
+                        if (r1.DTDId == r2.DTDId){
+                            playerImplication += (playerImplication.isEmpty()?"":"\n") + c.firstname + " " + c.lastname.toUpperCase() + " : " + r1.description
+                        }
+                    }
+                }
+            }
+            wordWriter.addTableCell(tableRowPlot,playerImplication)
+            table.getContent().add(tableRowPlot);
+        }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
     }
@@ -1718,11 +1799,17 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
-        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                format1,
-                format2,
-                new Locale("FR", "fr"));
-        return shortDateFormat.format(date)
+    private String getPrintableDate(Date date, String formater = null, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
+        if (formater == null)
+        {
+            DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
+                    format1,
+                    format2,
+                    new Locale("FR", "fr"));
+            return shortDateFormat.format(date)
+        } else {
+            return new SimpleDateFormat(formater).format(date)
+        }
+
     }
 }
