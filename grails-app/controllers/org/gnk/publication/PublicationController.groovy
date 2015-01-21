@@ -1208,23 +1208,48 @@ class PublicationController {
 
         table.getContent().add(tableRow);
 
+        //Priorisation des plot événementiels
+        for (Plot p : gn.selectedPlotSet) {
+            if (p.name == "Life")
+                continue
+            if (p.isEvenemential){
+                Tr tableRowPlot = wordWriter.factory.createTr()
+                wordWriter.addTableCell(tableRowPlot, p.name)
+                wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
+                String tags = "Evènementiel"
+                if (p.isMainstream)
+                    tags += " - Mainstream"
+                tags += " : "
+                boolean first = true
+                for (PlotHasTag plotHasTag : p.extTags) {
+                    if (!first)
+                        tags += "; "
+                    else
+                        first = false
+                    tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
+                }
+                wordWriter.addTableCell(tableRowPlot, tags.toString())
+
+                substituteRolesAndPlotDescription(p)
+
+                String description = new String(p.description.getBytes("UTF-8"), "UTF-8")
+                wordWriter.addTableCell(tableRowPlot, description)
+                table.getContent().add(tableRowPlot);
+            }
+        }
+
+        //Puis, le même traitement sur les plots non événementiels
         for (Plot p : gn.selectedPlotSet) {
             //Ignorer Life
-            if (p.name == "Life")
+            if (p.name == "Life" || p.isEvenemential)
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
             wordWriter.addTableCell(tableRowPlot, p.name)
             wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             String tags = ""
-            if (p.isEvenemential)
-                tags += "Evènementiel"
-            if (p.isEvenemential && p.isMainstream)
-                tags += " - "
             if (p.isMainstream)
-                tags += "Mainstream"
-            if (p.isEvenemential || p.isMainstream)
-                tags += " : "
+                tags += "Mainstream : "
             boolean first = true
             for (PlotHasTag plotHasTag : p.extTags) {
                 if (!first)
