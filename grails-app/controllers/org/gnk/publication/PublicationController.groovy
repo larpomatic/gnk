@@ -231,8 +231,11 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des Intrigues du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Scénario")
+        wordWriter.addStyledParagraphOfText("T3", "Synthèse des Intrigues")
         createPlotTable()
+        wordWriter.addStyledParagraphOfText("T3", "Implication personnage")
+        createPlayersTableImplication()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse de l'événementiel du GN")
         createEventsTable()
@@ -1267,6 +1270,36 @@ class PublicationController {
             table.getContent().add(tableRowPlot);
         }
 
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table);
+    }
+
+    def createPlayersTableImplication(){
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
+        wordWriter.addTableCell(tableRow, "Implication des Personnages")
+        table.getContent().add(tableRow);
+
+        for (Plot p : gn.selectedPlotSet) {
+            if (p.name == "Life")
+                continue
+            Tr tableRowPlot = wordWriter.factory.createTr()
+            wordWriter.addTableCell(tableRowPlot, p.name)
+            String playerImplication =""
+            HashSet roles = p.getRoles()
+            for (Role r1 : roles){
+                for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                    for (Role r2 : c.selectedRoles){
+                        if (r1.DTDId == r2.DTDId){
+                            playerImplication += (playerImplication.isEmpty()?"":"\n") + c.firstname + " " + c.lastname.toUpperCase() + " : " + r1.description
+                        }
+                    }
+                }
+            }
+            wordWriter.addTableCell(tableRowPlot,playerImplication)
+            table.getContent().add(tableRowPlot);
+        }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
     }
