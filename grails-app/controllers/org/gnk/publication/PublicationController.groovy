@@ -240,7 +240,7 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse de l'événementiel du GN")
         createEventsTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux")
         createPlaceTable()
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
