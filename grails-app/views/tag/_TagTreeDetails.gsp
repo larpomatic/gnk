@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="pull-right" style="margin-top: 3px; margin-right: 3px">
-                    <a href="#modal${tagInstance.id}" data-dismiss="modal" class="btn btn-small"
+                    <a href="#modal${tagInstance.id}" class="btn btn-small"
                        data-toggle="modal">Détail</a>
                 </div>
             </div>

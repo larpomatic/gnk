@@ -1,10 +1,13 @@
 package org.gnk.selectintrigue
 
 import org.gnk.gn.GnHasConvention
+import org.gnk.gn.GnHasUser
 import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -194,14 +197,13 @@ class SelectIntrigueController {
                         Plot plot = Plot.get((it.key - "plot_status_") as Integer);
                         if (it.value == "1") {
                             lockedPlot.add(plot)
-                        } else {
+                        } else if (it.value == "2") {
                             bannedPlot.add(plot)
                         }
                     } else if (it.key.startsWith("keepBanned_")) {
                         final Plot plotToBan = Plot.get((it.key - "keepBanned_") as Integer)
                         bannedPlot.add(plotToBan);
                         lockedPlot.remove(plotToBan);
-
                     } else if (it.key.startsWith("toLock_")) {
                         final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
                         lockedPlot.add(plotToLock);
@@ -214,19 +216,12 @@ class SelectIntrigueController {
                         mainstreamId = it.value as Integer;
                     }
                 }
-
-                HashSet<Plot> selectedPlot = gnInstance.selectedPlotSet;
-                for (Plot plot in lockedPlot) {
-                    if (!gnInstance.selectedPlotSet.contains(plot)) {
-                        selectedPlot.add(plot);
-                    }
+                for (Plot plot : lockedPlot) {
+                    gnInstance.addPlot(plot);
                 }
-                for (Plot plot in bannedPlot) {
-                    if (gnInstance.selectedPlotSet.contains(plot)) {
-                        selectedPlot.remove(plot);
-                    }
+                for (Plot plot : bannedPlot) {
+                    gnInstance.removePlot(plot);
                 }
-                gnInstance.selectedPlotSet = selectedPlot;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
                 gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
@@ -254,7 +249,11 @@ class SelectIntrigueController {
 
 	def save() {
 		Gn gnInstance = new Gn(params)
-
+        GnHasUser gnHasUser = new GnHasUser();
+        gnHasUser.isCreator = true;
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        gnHasUser.user = org.gnk.user.User.findByUsername(currentUsername);
         GnHasConvention gnHasConvention = new GnHasConvention()
         if (params.convention) {
             gnHasConvention.version = 1
@@ -483,6 +482,9 @@ class SelectIntrigueController {
     public Calendar isValidDate(String dateToValidate, String dateFromat){
         if(dateToValidate == null){
             return null;
+        }
+        if (dateToValidate.indexOf(":") == -1) {
+            dateToValidate = dateToValidate + " 00:00";
         }
         SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
         sdf.setLenient(false);

@@ -4,43 +4,60 @@
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
             <h3 id="myModalLabel">Editer les Tags Relevant</h3>
         </div>
         <g:form action="editRelevantTag" id="${tag.id}">
-        <div class="modal-body">
-            <g:if test="${tag.getTagRelevant()}">
-            <table>
-                <tr>
-                    <td>RelevantPlace</td>
-                    <td><g:checkBox name="checkboxRelevantPlace" value="${tag.getTagRelevant().relevantPlace}"/></td>
-                </tr>
-                <tr>
-                    <td>RelevantFirstName</td>
-                    <td><g:checkBox name="checkboxRelevantFirstName" value="${tag.getTagRelevant().relevantFirstname}"/></td>
-                </tr>
-                <tr>
-                    <td>RelevantLastName</td>
-                    <td> <g:checkBox name="checkboxRelevantLastName" value="${tag.getTagRelevant().relevantLastname}"/></td>
-                </tr>
-                <tr><td>RelevantPlot</td>
-                    <td><g:checkBox name="checkboxRelevantPlot" value="${tag.getTagRelevant().relevantPlot}"/></td>
-                </tr>
-                <tr>
-                    <td>RelevantResource</td>
-                    <td> <g:checkBox name="checkboxRelevantResource" value="${tag.getTagRelevant().relevantResource}"/></td>
-                </tr>
-                <tr>
-                    <td>RelevantRole</td>
-                    <td> <g:checkBox name="checkboxRelevantRole" value="${tag.getTagRelevant().relevantRole}"/></td>
-                </tr>
-            </table>
-            </g:if>
-        </div>
+            <div class="modal-body">
+                <g:if test="${tag.getTagRelevant()}">
+                    <table>
+                        <tr>
+                            <td>RelevantPlace</td>
+                            <td><g:checkBox name="checkboxRelevantPlace"
+                                            value="${tag.getTagRelevant().relevantPlace}"/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantFirstName</td>
+                            <td><g:checkBox name="checkboxRelevantFirstName"
+                                            value="${tag.getTagRelevant().relevantFirstname}"/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantLastName</td>
+                            <td><g:checkBox name="checkboxRelevantLastName"
+                                            value="${tag.getTagRelevant().relevantLastname}"/></td>
+                        </tr>
+                        <tr><td>RelevantPlot</td>
+                            <td><g:checkBox name="checkboxRelevantPlot"
+                                            value="${tag.getTagRelevant().relevantPlot}"/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantResource</td>
+                            <td><g:checkBox name="checkboxRelevantResource"
+                                            value="${tag.getTagRelevant().relevantResource}"/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantRole</td>
+                            <td><g:checkBox name="checkboxRelevantRole"
+                                            value="${tag.getTagRelevant().relevantRole}"/></td>
+                        </tr>
+                    </table>
+                </g:if>
+                <label>
+                    <select id="tagParentChoice" name="tagParentChoice">
+                        <option value="-1"></option>
+                        <g:each in="${tagInstanceList}" var="tag1">
+                            <g:if test="${tag1.id != tag.id}">
+                                <option value="${tag1.id}">${tag1.name.encodeAsHTML()}</option>
+                            </g:if>
+                        </g:each>
+                    </select>
+                </label>
+            </div>
 
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="submit">Valider</button>
-            <a class="btn" data-dismiss="modal" aria-hidden="true">Annuler</a>
-        </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Valider</button>
+                <a class="btn" data-dismiss="modal" aria-hidden="true">Annuler</a>
+            </div>
         </g:form>
     </div>
 </g:each>

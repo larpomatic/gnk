@@ -40,6 +40,12 @@ public class RoleToPersoProcessing {
         }
         this.gn = gn;
         unAttribuedRoleWithSettedSex = new HashMap<Role, String>();
+        /*if (this.gnTPJRoleSet != null)
+            this.gnTPJRoleSet.clear();
+        if (this.gnSTFRoleSet != null)
+            this.gnSTFRoleSet.clear();
+        if (this.gnPJGRoleSet != null)
+            this.gnPJGRoleSet.clear();*/
         process();
         LOG.info("</R2P>");
     }
@@ -64,7 +70,7 @@ public class RoleToPersoProcessing {
     private void createSTFCharacter()
     {
         gn.setStaffCharSet(new HashSet<Character>());
-        int nb = this.gn.nonPlayerCharSet.size() + this.gn.characterSet.size();
+        int nb = this.gn.getterNonPlayerCharSet().size() + this.gn.getterCharacterSet().size();
         for (Role r in this.gnSTFRoleSet) {
             nb += 1;
             Character c = new Character();
@@ -543,6 +549,13 @@ public class RoleToPersoProcessing {
         gnPJGRoleSet = new HashSet<Role>();
         gnSTFRoleSet = new HashSet<Role>();
 
+        /*if (this.gnTPJRoleSet != null)
+            this.gnTPJRoleSet.clear();
+        if (this.gnSTFRoleSet != null)
+            this.gnSTFRoleSet.clear();
+        if (this.gnPJGRoleSet != null)
+            this.gnPJGRoleSet.clear();*/
+
         assert (gn != null);
         if (gn == null) {
             LOG.error("R2P : initRoles -> gn is null");
@@ -572,17 +585,10 @@ public class RoleToPersoProcessing {
                 } else if (role.isPJ()) {
                     roles.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
-                } else if (role.isTPJ()) {
-                    gnTPJRoleSet.add(role);
-                    LOG.trace("\t\t\trole : " + role.getterCode() + " is TPJ and not added to role set to process");
-                } else if (role.isPJG()) {
-                    gnPJGRoleSet.add(role);
-                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJG and not added to role set to process");
                 } else if (role.isSTF()) {
                     gnSTFRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is STF and not added to role set to process");
                 } else {
-
                     gnNPCRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PNJ and not added to role set to process");
                 }
@@ -687,8 +693,13 @@ public class RoleToPersoProcessing {
         Function to add all roles PJG to all characters of the plot
      */
     private void addPJG () {
+        ArrayList<Integer> char_id = new ArrayList<Integer>();
         for (Role role : gnPJGRoleSet) {
             for (Character character : gn.getCharacterSet()) {
+                if (!char_id.contains(character.getDTDId())) {
+                    character.initPlotID();
+                    char_id.add(character.getDTDId());
+                }
                 if (character.getplotid_role().contains(role.getPlot().getId()))
                     continue;
                 else

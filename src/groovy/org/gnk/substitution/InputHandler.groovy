@@ -360,6 +360,12 @@ class InputHandler {
                 pastsceneData.absoluteHour = pastscene.dateHour
                 pastsceneData.absoluteMin = pastscene.dateMinute
 
+                pastsceneData.isYearAbsolute = pastscene.isAbsoluteYear
+                pastsceneData.isMonthAbsolute = pastscene.isAbsoluteMonth
+                pastsceneData.isDayAbsolute = pastscene.isAbsoluteDay
+                pastsceneData.isHourAbsolute = pastscene.isAbsoluteHour
+                pastsceneData.isMinuteAbsolute = pastscene.isAbsoluteMinute
+
                 pastsceneList.add(pastsceneData)
             }
         }

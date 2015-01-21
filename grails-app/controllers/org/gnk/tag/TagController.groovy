@@ -1,6 +1,7 @@
 package org.gnk.tag
 
 import org.gnk.administration.DbCoherenceController
+import org.gnk.resplacetime.PlaceHasTag
 import org.springframework.security.access.annotation.Secured
 import org.gnk.tag.TagService
 import org.springframework.web.context.request.RequestContextHolder
@@ -10,11 +11,12 @@ class TagController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     TagService tagService
+
     def index() {
         redirect(action: "list", params: "params")
     }
 
-    def list(Integer max, Integer offset, String sort) {
+    def list(String sort) {
         List<Tag> tags = Tag.list();
         Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
         for (Tag tag : tags) {
@@ -32,22 +34,17 @@ class TagController {
         Tag parent = Tag.get(params.Tag_select as Integer)
         String parentName = parent == null ? "" : parent.name
 
-        if (params.showChildren)
-            {
-                session.tagParent = parent.id
+        if (params.showChildren) {
+            session.tagParent = parent.id
 
-                List<Tag> resultList = new ArrayList<Tag>()
-                resultList.addAll(parent.children)
-                [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName ]
-            }
-        else
-        {
-            max = max ?: 10
-            offset = offset ?: 0
+            List<Tag> resultList = new ArrayList<Tag>()
+            resultList.addAll(parent.children)
+            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName]
+        } else {
             sort = sort ?: 'name'
             params.order = params.order ?: 'asc'
 
-            def resultList = Tag.createCriteria().list(max: max, offset: offset) {
+            def resultList = Tag.createCriteria().list() {
                 if (sort.indexOf('tagFamily.') == 0) {
                     tagFamily {
                         order(sort.split('\\.')[1], params.order)
@@ -55,12 +52,11 @@ class TagController {
                 } else
                     order(sort, params.order as String)
             }
-            [ tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName , listTagParent:mapTagParent]
+            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName, listTagParent: mapTagParent]
         }
     }
 
-    def childrenList(Tag t)
-    {
+    def childrenList(Tag t) {
         t = t ?: params.Tag_select
 
         def resultList = findChildren(t)
@@ -80,7 +76,7 @@ class TagController {
         }
         return tags
     }
-	
+
 //	def listFrom(String tagFamily) {
 //		TagFamily family
 //		List<Tag> result = []
@@ -98,48 +94,30 @@ class TagController {
 //	}
 
     def create() {
-		
+
         [tagInstance: new Tag(params)]
     }
 
     def save() {
-		if (params.name.equals(""))
-		{
-			print "Invalid params"
-			flash.message = message(code: 'Erreur : Le nom du tag ne peut etre vide !')
-            redirect(action: "list")
-            return
-		}
-		
-//		if (params.TagFamily_select.equals(""))
-//		{
-//			flash.message = message(code: 'Erreur : Il faut choisir un parent pour le tag !')
-//			redirect(action: "list")
-//			return
-//		}
-
-        Tag tagInstance = new Tag(params)
-        //Tag parent = Tag.findWhere(name: params.Tag_parent)
-        Integer parentId = session.tagParent as Integer
-        print("TAGPARENTID: " + parentId)
-        Tag parent = Tag.findWhere(id: parentId)
-
-        if (parent == null)
-            return
-
-        print("Tag parent: " + params.Tag_parent)
-        tagInstance.setParent(parent)
-		
-		for (Tag tag : Tag.list()) 
-		{
-			if (tagInstance.name.toLowerCase().equals(tag.name.toLowerCase()))
-			{
-				print "Tag already exist"
-				flash.message = message(code: 'Erreur : Un tag avec le meme nom existe deja !')
-	            redirect(action: "list")
-	            return
-			}
-		}
+        int idparent = Integer.parseInt(params.idParentSave);
+        Tag tagParent = Tag.findById(idparent);
+        Tag newTag = new Tag();
+        String name = params.nameTag
+        newTag.name = name;
+        for (Tag tag : Tag.list()) {
+            if (newTag.name.toLowerCase().equals(tag.name.toLowerCase())) {
+                print "Tag already exist"
+                flash.message = message(code: 'Erreur : Un tag avec le meme nom existe deja !')
+                redirect(action: "list")
+                return
+            }
+        }
+        newTag.children = new HashSet<>();
+        newTag.extPlaceTags = new HashSet<>();
+        newTag.extPlotTags = new HashSet<>();
+        newTag.extResourceTags = new HashSet<>();
+        newTag.extRoleTags = new HashSet<>();
+        newTag.parent = tagParent;
 
 //		TagFamily tagFamilyInstance = null;
 //		tagFamilyInstance = TagFamily.get(tagFamilyId)
@@ -154,20 +132,29 @@ class TagController {
 //
 //		// Creates the relation between the tag and the family
 //		tagInstance.tagFamily = tagFamilyInstance
-		
-        if (!tagInstance.save(flush: true)) {
-            render(view: "create", model: [tagInstance: tagInstance])
+
+        if (!newTag.save(flush: true)) {
+            render(view: "create", model: [tagInstance: newTag])
             return
         }
-
-        
-        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [tagInstance.name, parent.name])
+        if (tagParent.children.size() == 1) {
+            TagRelevant tagRelevant1 = new TagRelevant();
+            tagRelevant1.relevantFirstname = false;
+            tagRelevant1.relevantLastname = false;
+            tagRelevant1.relevantPlace = false;
+            tagRelevant1.relevantPlot = false;
+            tagRelevant1.relevantResource = false;
+            tagRelevant1.relevantRole = false;
+            tagRelevant1.tag = tagParent;
+            tagRelevant1.save(failOnError: true);
+        }
+        flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [newTag.name, tagParent.name])
         redirect(action: "list")
     }
 
     private void isTagApplicable(Tag tagInstance) {
-		// FIXME Changement de Base
-		/*
+        // FIXME Changement de Base
+        /*
         if (params.isPlotTag) {
             PlotTag plotTag = new PlotTag()
             plotTag.tag = tagInstance
@@ -248,7 +235,7 @@ class TagController {
 //        list(children)
 //
 //    }
-	
+
     def show(Long id) {
         def tagInstance = Tag.get(id)
         if (!tagInstance) {
@@ -282,8 +269,8 @@ class TagController {
         if (version != null) {
             if (tagInstance.version > version) {
                 tagInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'tag.label', default: 'Tag')] as Object[],
-                          "Another user has updated this Tag while you were editing")
+                        [message(code: 'tag.label', default: 'Tag')] as Object[],
+                        "Another user has updated this Tag while you were editing")
                 render(view: "edit", model: [tagInstance: tagInstance])
                 return
             }
@@ -307,8 +294,8 @@ class TagController {
             redirect(action: "list")
             return
         }
-		// FIXME Changement de Base
-		/*
+        // FIXME Changement de Base
+        /*
         try {
             tagInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'tag.label', default: 'Tag'), id])
@@ -319,7 +306,7 @@ class TagController {
             redirect(action: "show", id: id)
         }*/
     }
-	
+
 //	def deleteFamily(Long idTag, Long idFamily) {
 //		TagFamily tagFamilyInstance = null;
 //		Tag tagInstance = null;
@@ -364,17 +351,40 @@ class TagController {
 //		print("The family was not deleted. Possible error ?")
 //		redirect(action: "list")
 //	}
-	
-	def deleteTag(Long idTag) {
 
-		def tagInstance = Tag.get(idTag)
-		print "name " + tagInstance.name
-		tagInstance.delete()
-		flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
-		redirect(action: "list")
-	}
-	
-	def stats(){
+    def deleteTag() {
+        int idTag = Integer.parseInt(params.idTag);
+        def tagInstance = Tag.findById(idTag)
+
+        if (tagInstance.children.size() > 0) {
+            flash.message = message(code: 'adminRef.tag.info.delete.fail', args: [tagInstance.name])
+        } else {
+            TagRelevant tr = TagRelevant.findByTag(tagInstance);
+            if (tr) {
+                tr.delete(flush: true);
+            }
+            for (int i = 0; tagInstance.extPlaceTags; i++){
+                ((PlaceHasTag)tagInstance.extPlaceTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extPlotTags; i++){
+                ((PlaceHasTag)tagInstance.extPlotTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extResourceTags; i++){
+                ((PlaceHasTag)tagInstance.extResourceTags.toArray()[i]).delete()
+            }
+            for (int i = 0; tagInstance.extRoleTags; i++){
+                ((PlaceHasTag)tagInstance.extRoleTags.toArray()[i]).delete()
+            }
+            tagInstance.parent = null;
+            flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
+            tagInstance.delete(flush: true)
+            render(contentType: "text/html") {
+                "OK"
+            }
+        }
+    }
+
+    def stats() {
         Tag tagUniverParent = Tag.findByName("Tag Univers");
         Set<Tag> tagUnivers = tagUniverParent.children
         Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
@@ -393,44 +403,62 @@ class TagController {
         }
 
 
-		render(view: "statistics", model: [listTagParent:mapTagParent, tagUniverse: tagUnivers])
-	}
+        render(view: "statistics", model: [listTagParent: mapTagParent, tagUniverse: tagUnivers])
+    }
 
-    def editRelevantTag(int id){
+    def editRelevantTag(int id) {
 
         Tag tag = Tag.findById(id)
         TagRelevant tagRelevant = tag.getTagRelevant()
-        if(params.checkboxRelevantPlace){
-            tagRelevant.relevantPlace = true;
-        } else {
-            tagRelevant.relevantPlace = false;
+        if (tagRelevant) {
+            if (params.checkboxRelevantPlace) {
+                tagRelevant.relevantPlace = true;
+            } else {
+                tagRelevant.relevantPlace = false;
+            }
+            if (params.checkboxRelevantFirstName) {
+                tagRelevant.relevantFirstname = true;
+            } else {
+                tagRelevant.relevantFirstname = false;
+            }
+            if (params.checkboxRelevantLastname) {
+                tagRelevant.relevantLastname = true;
+            } else {
+                tagRelevant.relevantLastname = false;
+            }
+            if (params.checkboxRelevantPlot) {
+                tagRelevant.relevantPlot = true;
+            } else {
+                tagRelevant.relevantPlot = false;
+            }
+            if (params.checkboxRelevantResource) {
+                tagRelevant.relevantResource = true;
+            } else {
+                tagRelevant.relevantResource = false;
+            }
+            if (params.checkboxRelevantRole) {
+                tagRelevant.relevantRole = true;
+            } else {
+                tagRelevant.relevantRole = false;
+            }
         }
-        if(params.checkboxRelevantFirstName){
-            tagRelevant.relevantFirstname = true;
-        } else {
-            tagRelevant.relevantFirstname = false;
+        int idparent = Integer.parseInt(params.tagParentChoice);
+        Tag tagParent = Tag.findById(idparent)
+        if (idparent != -1) {
+            tag.parent = tagParent;
+            if (tagParent.children.size() == 1) {
+                TagRelevant tagRelevant1 = new TagRelevant();
+                tagRelevant1.relevantFirstname = false;
+                tagRelevant1.relevantLastname = false;
+                tagRelevant1.relevantPlace = false;
+                tagRelevant1.relevantPlot = false;
+                tagRelevant1.relevantResource = false;
+                tagRelevant1.relevantRole = false;
+                tagRelevant1.tag = tagParent;
+                tagRelevant1.save(failOnError: true);
+            }
         }
-        if(params.checkboxRelevantLastname){
-            tagRelevant.relevantLastname = true;
-        } else {
-            tagRelevant.relevantLastname = false;
-        }
-        if(params.checkboxRelevantPlot){
-            tagRelevant.relevantPlot= true;
-        } else {
-            tagRelevant.relevantPlot = false;
-        }
-        if(params.checkboxRelevantResource){
-            tagRelevant.relevantResource = true;
-        } else {
-            tagRelevant.relevantResource = false;
-        }
-        if(params.checkboxRelevantRole){
-            tagRelevant.relevantRole = true;
-        } else {
-            tagRelevant.relevantRole = false;
-        }
-        redirect(action : "list")
+        redirect(action: "list")
     }
 
 }

@@ -1,25 +1,24 @@
 <%@ page import="org.gnk.tag.Tag" %>
 <%@ page import="org.gnk.admin.right" %>
 %{--<%@ page import="org.gnk.tag.TagFamily" %>--}%
-<div id="create-tag" class="content scaffold-create" role="main">
-	<legend>${message(code: 'adminRef.tag.newTag')}</legend>
-	<g:form action="save" >
-		<form class="form-inline">
-			<div class="row">
-                <div class="span4">${message(code: 'adminRef.tag.tagName')} : <g:textField name="name" maxlength="45" value="${tagInstance?.name}"/></div>
-                <div class="span3">
-                %{--<g:select--}%
-                  %{--name="TagFamily_select"--}%
-                  %{--optionKey="id"--}%
-                  %{--optionValue="value"--}%
-                  %{--from="${TagFamily.list()}"--}%
-                  %{--noSelection="['':'-Choix de la famille de tag-']"/>--}%
-                </div>
-   			</div>
-            <g:hasRights lvlright="${right.REFMODIFY.value()}">
-			<g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}" />
-            </g:hasRights>
+<div id="addchildmodal" class="modal hide fade" style="width: 400px; margin-left: -400px;"
+     role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 
-		</form>
-	</g:form>
+        <h3 id="myModalLabel">Ajouter un Tag en fils</h3>
+    </div>
+    <g:form action="save">
+
+        <input type="hidden" id="idParentSave" name="idParentSave"/>
+
+        <div class="modal-body">
+            <label>Nom du tag : <input id="nameTag" name="nameTag"/></label>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Valider</button>
+                <a class="btn" data-dismiss="modal" aria-hidden="true">Annuler</a>
+            </div>
+        </div>
+    </g:form>
 </div>

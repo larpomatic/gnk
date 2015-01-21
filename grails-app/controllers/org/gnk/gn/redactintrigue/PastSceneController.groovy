@@ -216,8 +216,6 @@ class PastSceneController {
         roleHasPastscene.title = params.get("roleHasPastSceneTitle" + role.id).toString().trim();
         roleHasPastscene.description = params.get("roleHasPastSceneDescription" + role.id).toString().trim();
         roleHasPastscene.save(flush: true);
-//        role.addToRoleHasPastscenes(roleHasPastscene);
-//        role.save(flush: true);
         return roleHasPastscene;
     }
 
