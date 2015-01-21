@@ -243,7 +243,8 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux")
         createPlaceTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Synthèse logistique du GN")
+        wordWriter.addStyledParagraphOfText("T2", "Resources Logistiques")
+        wordWriter.addStyledParagraphOfText("T3", "Synthèse")
         createResTable()
 
         // Liste Ingame CLues
