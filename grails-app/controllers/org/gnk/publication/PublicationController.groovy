@@ -1183,7 +1183,7 @@ class PublicationController {
                             }
                         }
                     }
-                    wordWriter.addTableCell(tableRowPlot, possessedByCharacters) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                    wordWriter.addTableCell(tableRowPlot, possessedByCharacters)
                 }
                 else
                     wordWriter.addTableCell(tableRowPlot, "Personne")
