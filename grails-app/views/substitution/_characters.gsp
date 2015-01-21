@@ -50,7 +50,7 @@
                 <!-- Gender -->
                 <td class="gender upper" style="text-align: center;">${character.gender.encodeAsHTML()}</td>
                 <!-- Tags -->
-                <td class="charTags">
+                <td class="charTags" style="width: 450px">
                     <ul class="unstyled">
                         <g:each status="j" in="${character.tagList}" var="tag">
                             <li><strong class="cap">${tag.value.encodeAsHTML()}</strong>
@@ -58,7 +58,6 @@
                                 <input class="lockTag" class="btn-danger" type="checkbox">
                                 <!-- Ban Tag -->
                                 <input class="banTag" type="checkbox">
-                                <br>
                                 (<span class="cap">${tag.family.encodeAsHTML()}</span> / ${tag.weight.encodeAsHTML()})
                             </li>
                         </g:each>

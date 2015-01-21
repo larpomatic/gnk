@@ -46,4 +46,9 @@ class GenericPlace {
     public getGenericPlaceHasTag(Tag tag) {
         return GenericPlaceHasTag.findByTagAndGenericPlace(tag, this);
     }
+
+//    boolean isIngameClue()
+//    {
+//        return ((this.code != null) || (this.comment != null)) && ((!this.code.isEmpty()) || (!this.comment.isEmpty()))
+//    }
 }

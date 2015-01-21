@@ -36,6 +36,7 @@ class Pastscene {
     //*************
     Integer timingRelative
     String unitTimingRelative
+    /*
     def correctTimingVariables()
     {
         if (dateYear == isAbsoluteYear && unitTimingRelative.toLowerCase().startsWith("y"))
@@ -54,6 +55,7 @@ class Pastscene {
             isAbsoluteDay = false
         }
     }
+    */
     //*************
     //*************
     //*************
@@ -115,7 +117,7 @@ class Pastscene {
 
     public Date getAbsoluteDate(Date t0Date)
     {
-        correctTimingVariables()
+        //correctTimingVariables()
         Calendar calendar = new GregorianCalendar()
         calendar.setTime(t0Date)
         if (dateYear != null)
@@ -161,6 +163,7 @@ class Pastscene {
 
     public String printDate(Date t0Date)
     {
+        return "Le "
         Date d = getAbsoluteDate(t0Date);
         SimpleDateFormat formater = null;
         if (dateHour > 0 || dateMinute > 0 || isAbsoluteHour || isAbsoluteMinute)

@@ -309,6 +309,8 @@ class InputHandler {
         place.comment = genericPlace.comment
         // ObjectType
         place.objectType = genericPlace.objectType.type
+//        // In Gane
+//        place.isInGame = genericPlace.
 
         // TagList
         place.tagList = []
