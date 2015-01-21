@@ -354,8 +354,23 @@ class OutputHandler {
                 }
                 // Gn update
                 genericPlace.selectedPlace = selectedPlace
+                int lastIndexOf = selectedPlace.name.lastIndexOf(" -")
+                if (lastIndexOf != -1)
+                    selectedPlace.name = selectedPlace.name.substring(0, lastIndexOf)
                 genericPlace.proposedPlaces = proposedPlaces
+                for (Place p in proposedPlaces)
+                {
+                    lastIndexOf = p.name.lastIndexOf(" -")
+                    if (lastIndexOf != -1)
+                        p.name = p.name.substring(0, lastIndexOf)
+                }
                 genericPlace.bannedPlaces = bannedPlaces
+                for (Place p in bannedPlaces)
+                {
+                    lastIndexOf = p.name.lastIndexOf(" -")
+                    if (lastIndexOf != -1)
+                        p.name = p.name.substring(0, lastIndexOf)
+                }
             }
         }
     }

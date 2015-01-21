@@ -166,6 +166,12 @@ class WordWriter {
         table.getTblPr().setTblBorders(borders);
     }
 
+    /**
+     * Ajoute une ligne au tableau en style normal ce qui peut être trop gros dans des tableaux avec beaucoup d'informations...
+     *
+     * @deprecated utiliser addTableStyledCell(String Style, Tr tableRow, String Content) à la place
+     */
+    @Deprecated
     def addTableCell(Tr tableRow, String content) {
         Tc tableCell = factory.createTc();
         String[] lines = content.split("\n")
@@ -174,7 +180,7 @@ class WordWriter {
         tableRow.getContent().add(tableCell);
     }
 
-    def addTableStyledCell(Tr tableRow, String content, String Style) {
+    def addTableStyledCell(String Style, Tr tableRow, String content) {
         Tc tableCell = factory.createTc();
         String[] lines = content.split("\n")
         for (String line : lines)
