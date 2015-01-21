@@ -44,7 +44,8 @@ class NamingService
                 NameAndWeight maxname
                 LinkedList<Firstname> fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
                 Integer rankTag = 0;
-                LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight>()
+                //LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight>()
+                List<NameAndWeight> fnweight = new ArrayList<NameAndWeight>()
 
                 for (Tag persotag : tmp.tag )
                 {
@@ -63,7 +64,11 @@ class NamingService
                     }
                 }
 
-                //print("ON")
+                Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
+                for (Tag t : tmp.getTag()) {
+                    tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
+                }
+
                 for (Firstname fn : fnlist){
                     Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
                     Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
@@ -72,33 +77,26 @@ class NamingService
                             challengerTagList.put(fnHasTag.getTag(), fnHasTag.getWeight());
                         }
 
-                        Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
-                        for (Tag t : tmp.getTag()) {
-                            tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
-                        }
-
                         //calcule la correspondance d'un prenom avec le caractere
                         rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
-                //print("OFF")
 
                 if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
 
-                /*for(NameAndWeight nw : fnweight){
-                    print(nw.weight + " : " + nw.name)
-                }*/
+                Collections.sort(fnweight)
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                 while (fnweight.size() > 0)
                 {
-                    maxname = fnweight.first
+                    /*maxname = fnweight.first
                     for (NameAndWeight nw : fnweight)
                     {
                         if (maxname.weight < nw.weight)
                             maxname = nw
-                    }
+                    }*/
+                    maxname = fnweight.last()
                     if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
                     {
                         tmp.selectedFirstnames.add(maxname.name)
@@ -114,8 +112,6 @@ class NamingService
                 if (!tmp.selectedFirstnames.isEmpty())
                     usedFirstName.add(tmp.selectedFirstnames.first())
             }
-            //print("     FN " + tmp)
-            //****CONVENTION**********************************************
 
             if (!tmp.relationList.empty){
                 List<List<Object>> res = (new ConventionVisitorService()).visit(tmp, doneperso, gn_id)
@@ -129,8 +125,14 @@ class NamingService
             if (tmp.is_selectedName && tmp.selectedNames.isEmpty())
             {
                 NameAndWeight maxname
-                LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight>()
+                //LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight>()
+                List<NameAndWeight> nweight = new ArrayList<NameAndWeight>()
                 Integer rankTag = 0;
+
+                Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
+                for (Tag t : tmp.getTag()) {
+                    tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
+                }
 
                 for (Name n : nlist){
                     Set<NameHasTag> nHasTags = n.getExtTags();
@@ -138,11 +140,6 @@ class NamingService
                     if (nHasTags != null) {
                         for (NameHasTag nHasTag : nHasTags) {
                             challengerTagList.put(nHasTag.getTag(), nHasTag.getWeight());
-                        }
-
-                        Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
-                        for (Tag t : tmp.getTag()) {
-                            tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
                         }
 
                         //calcule la correspondance d'un nom avec le caractere
@@ -156,15 +153,17 @@ class NamingService
                 // verifie que les tags sont bien valides
                 if (!nweight.empty)
                 {
+                    Collections.sort(nweight)
                     // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                     while (nweight.size() > 0)
                     {
-                        maxname = nweight.first
+                        /*maxname = nweight.first
                         for (NameAndWeight nw : nweight)
                         {
                             if (maxname.weight < nw.weight)
                                 maxname = nw
-                        }
+                        }*/
+                        maxname = nweight.last()
                         if (!usedName.contains(maxname.name) && !tmp.selectedNames.contains(maxname.name))
                         {
                             tmp.selectedNames.add(maxname.name)
