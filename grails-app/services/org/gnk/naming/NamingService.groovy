@@ -30,10 +30,6 @@ class NamingService
         //liste des noms possibles
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
         Collections.shuffle (nlist)
-        //print(fnlistHomme.size())
-        //print(fnlistFemme.size())
-        //print(nlist.size())
-        //print(persoList.size())
 
         // Pour chaque personnage envoye
         for (PersoForNaming tmp : persoList)
