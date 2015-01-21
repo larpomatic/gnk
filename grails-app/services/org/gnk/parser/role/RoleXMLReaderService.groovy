@@ -129,7 +129,15 @@ class RoleXMLReaderService {
             if (weightStr != "null" && (weightStr as String).isInteger())
                 weight = weightStr as Integer
             assert (weight != null)
-            RoleHasRelationWithRole roleRelation = new RoleHasRelationWithRole(role, receiver, weight, isBijective, relationType);
+
+            // Add Description
+            final String descStr = RELATION.attribute("description")
+            String description;
+            if (descStr != "null")
+                description = descStr;
+
+            //RoleHasRelationWithRole roleRelation = new RoleHasRelationWithRole(role, receiver, weight, isBijective, relationType);
+            RoleHasRelationWithRole roleRelation = new RoleHasRelationWithRole(role, receiver, weight, isBijective, relationType, null, description);
             role.addToRoleHasRelationWithRolesForRole1Id(roleRelation)
             receiver.addToRoleHasRelationWithRolesForRole2Id(roleRelation)
         }
@@ -213,6 +221,8 @@ class RoleXMLReaderService {
                     weight = RELATION.attribute("weight") as Integer
                 if (RELATION.DESCRIPTION.size() > 0)
                     description = RELATION.DESCRIPTION[0].text()
+                if (description.equals(""))
+                    description = RELATION.attribute("description");
 
                 roleXMLNode.addRelation(roleId, type, isBijective, isExclusive, weight, description)
             }

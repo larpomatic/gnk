@@ -42,8 +42,13 @@ class Graph {
                     lien1 = n1.c.getRelatedCharactersExceptBijectivesLabel(gn).get(n2.c)
                 else
                     lien1 = n1.c.getRelatedCharactersExceptBijectivesLabelAndHiddenRelation(gn).get(n2.c)
-                if ((lien1 != null) && (lien1.isEmpty() == false))
+
+                if ((lien1 != null) && (lien1.isEmpty() == false)) {
+                    lien1 = lien1.replaceAll("<", "");
+                    lien1 = lien1.replaceAll("i:", "");
+                    lien1 = lien1.replaceAll(">", "");
                     this.addEdge(n1, n2, lien1)
+                }
             }
         }
     }

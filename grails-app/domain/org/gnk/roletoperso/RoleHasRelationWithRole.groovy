@@ -43,6 +43,10 @@ class RoleHasRelationWithRole {
         this.description = description
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     public RoleRelationType getterRoleRelationType() {
         return roleRelationType
     }

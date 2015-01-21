@@ -404,6 +404,7 @@ class IntegrationHandler {
 
     public JSONObject dateIntegration(JSONObject dateJsonObject) {
         // Date format
+        // TODO VINCENT : ADAPATER avec le nouveau format
         String dateFormat = "yyyy.MM.dd HH:mm"
 
         Integer gnDuration = dateJsonObject.duration as Integer

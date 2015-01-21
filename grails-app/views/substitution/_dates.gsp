@@ -94,23 +94,34 @@
         // BEGIN Pastscenes LOOP
         var pastsceneArray = new Array();
         <g:each status="i" in="${pastsceneList}" var="pastscene">
-        var pastscene = new Object();
-        // Gn id
-        pastscene.gnId = "${pastscene.id}";
-        // Gn plot id
-        pastscene.gnPlotId = "${pastscene.plotId}";
-        // HTML id
-        pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
-        // Time
-        pastscene.relativeTime = "${pastscene.relativeTime}";
-        pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
-        pastscene.absoluteYear = "${pastscene.absoluteYear}";
-        pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
-        pastscene.absoluteDay = "${pastscene.absoluteDay}";
-        pastscene.absoluteHour = "${pastscene.absoluteHour}";
-        pastscene.absoluteMinute = "${pastscene.absoluteMin}";
-        pastscene.isUpdate = "";
-        pastsceneArray.push(pastscene);
+            var pastscene = new Object();
+            // Gn id
+            pastscene.gnId = "${pastscene.id}";
+            // Gn plot id
+            pastscene.gnPlotId = "${pastscene.plotId}";
+            // HTML id
+            pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
+            // Time
+
+            // DOIT ËTRE SUPP
+            pastscene.relativeTime = "${pastscene.relativeTime}";
+            pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
+            pastscene.absoluteYear = "${pastscene.absoluteYear}";
+            pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
+            pastscene.absoluteDay = "${pastscene.absoluteDay}";
+            pastscene.absoluteHour = "${pastscene.absoluteHour}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
+            // FIN DOIT ETRE SUPP
+
+
+            pastscene.isYearAbsolute = "${pastscene.isYearAbsolute}";
+            pastscene.isMonthAbsolute = "${pastscene.isMonthAbsolute}";
+            pastscene.isDayAbsolute = "${pastscene.isDayAbsolute}";
+            pastscene.isHourAbsolute = "${pastscene.isHourAbsolute}";
+            pastscene.isMinuteAbsolute = "${pastscene.isMinuteAbsolute}";
+
+            pastscene.isUpdate = "";
+            pastsceneArray.push(pastscene);
         </g:each>
         // END Pastscenes LOOP
         jsonObject.pastscenes = pastsceneArray;

@@ -12,6 +12,8 @@ import org.gnk.tag.TagService
 
 import org.gnk.tag.Tag
 
+import java.util.logging.Logger
+
 class RoleToPersoController {
 
     CharacterService characterService
@@ -58,6 +60,9 @@ class RoleToPersoController {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()
             character1.getBannedRoles().clear()
+            character1.getSelectedPJG().clear();
+            character1.getSpecificRoles().clear();
+            character1.getplotid_role().clear();
         }
 
         int mainstreamId = 0;
@@ -113,7 +118,7 @@ class RoleToPersoController {
                         }
                     }
                 }
-            } else if (key.startsWith("lock_on") && it.value != "") {
+            } else if (key.startsWith("lock_on") && !it.value.equals("")) {
                 String[] str = key.split("_")
                 assert (str.length > 2)
                 if ((str[str.length - 1] as String).isInteger() && (str[str.length - 2] as String).isInteger() && (str[str.length - 3] as String).isInteger()) {
@@ -250,8 +255,8 @@ class RoleToPersoController {
         /**FIN AGE**/
         /***********/
 
-        // Life
-        addLifeEvents(gn)
+        // Life desactivated until it works
+        //addLifeEvents(gn)
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -369,7 +374,7 @@ class RoleToPersoController {
             values_relation = new ArrayList<>(set);
         }
         [gnInstance: gn,
-         characterList: gn.characterSet,
+         characterList: gn.characterSet.sort { it.getDTDId() },
          allList: algo.gnTPJRoleSet,
          PHJList: gn.nonPlayerCharSet,
          STFList: gn.staffCharSet,
@@ -497,6 +502,7 @@ class RoleToPersoController {
                                     //System.out.println("diff:" + diff + "/" + diffValueBetweenGEandTAG)
                                     if (diffValueBetweenGEandTAG > diff) {
                                         // On est sur un GE qui est plus apte que les autres.
+                                        System.out.println("L'event (" + gecit.genericEvent.description + ") match")
                                         diffValueBetweenGEandTAG = diff;
                                         bestGE = gecit.genericEvent;
                                     }
@@ -511,25 +517,29 @@ class RoleToPersoController {
                     }
                 }
 
-                Pastscene pastSceneLife = new Pastscene()
-                pastSceneLife.plot = p
-                pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
-                pastSceneLife.description = "Past Scene de " + age
-                pastSceneLife.isPublic = true
-                pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
-                pastSceneLife.unitTimingRelative = "Y"
-                pastSceneLife.timingRelative = character.age - age
+                if (lastGE != null) { // On ajoute l'event
+                    Pastscene pastSceneLife = new Pastscene()
+                    pastSceneLife.plot = p
+                    pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
+                    pastSceneLife.description = "Past Scene de " + age
+                    pastSceneLife.isPublic = true
+                    pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
+                    // Ca il faut changer
+                    pastSceneLife.dateYear = character.age - age
+                    pastSceneLife.unitTimingRelative = "Y"
+                    pastSceneLife.timingRelative = character.age - age
 
-                // Associer past Scene au rôle, Role Has Past Scene
-                RoleHasPastscene rhpsLife = new RoleHasPastscene()
-                rhpsLife.description = lastGE.description//listEvent.first().description
-                rhpsLife.role = roleForLife
-                rhpsLife.pastscene = pastSceneLife
-                rhpsLife.title = "Evénement passé"
+                    // Associer past Scene au rôle, Role Has Past Scene
+                    RoleHasPastscene rhpsLife = new RoleHasPastscene()
+                    rhpsLife.description = lastGE.description//listEvent.first().description
+                    rhpsLife.role = roleForLife
+                    rhpsLife.pastscene = pastSceneLife
+                    rhpsLife.title = "Evénement passé"
 
-                roleForLife.roleHasPastscenes.add(rhpsLife)
-                p.roles.add(roleForLife)
-                p.pastescenes.add(pastSceneLife)
+                    roleForLife.roleHasPastscenes.add(rhpsLife)
+                    p.roles.add(roleForLife)
+                    p.pastescenes.add(pastSceneLife)
+                }
 
                 age += INTERVAL + (((new Random()).nextInt() % 2))
             }

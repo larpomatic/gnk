@@ -229,7 +229,7 @@ class TagSearchService {
             }
         }
         Set<TagRelation> s = new HashSet<TagRelation>();
-        for (int i = 0; i < tr.size(); i++) {
+        for (int i = 0; tr && i < tr.size(); i++) {
             if (!s.add(tr.get(i))) {
                 tr.remove(i)
             }

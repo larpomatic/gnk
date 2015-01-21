@@ -175,16 +175,18 @@
                 </thead>
                 <tbody>
                 <g:each in="${nonTreatedPlots}" status="i" var="plotInstance">
-                    <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+                    <g:if test="${!plotInstance.isEvenemential}">
+                        <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                        <td><g:link controller="redactIntrigue" action="edit"
-                                    id="${plotInstance.id}" target="_blank">
-                            ${fieldValue(bean: plotInstance, field: "name")}
-                        </g:link></td>
-                        <td>
-                            <g:checkBox name="toLock_${plotInstance.id}" checked="false"/>
-                        </td>
-                    </tr>
+                            <td><g:link controller="redactIntrigue" action="edit"
+                                        id="${plotInstance.id}" target="_blank">
+                                ${fieldValue(bean: plotInstance, field: "name")}
+                            </g:link></td>
+                            <td>
+                                <g:checkBox name="toLock_${plotInstance.id}" checked="false"/>
+                            </td>
+                        </tr>
+                    </g:if>
                 </g:each>
                 </tbody>
             </table>

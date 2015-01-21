@@ -1,7 +1,7 @@
 <%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <legend>${message(code: 'adminRef.tag.list')}</legend>
 
-<table class="table table-bordered">
+<table id="listTable" class="table table-bordered">
     <thead>
     <tr>
         <th>#</th>
@@ -37,14 +37,8 @@
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <td>
-                        <g:form>
-                            <fieldset class="buttons">
-                                <g:hiddenField name="idTag" value="${tagInstance?.id}"/>
-                                <g:actionSubmit class="btn btn-warning" action="deleteTag"
-                                                value="${message(code: 'default.delete')}"
-                                                onclick="return confirm('${message(code: 'adminRef.tag.deleteTag')}');"/>
-                            </fieldset>
-                        </g:form>
+                        <input type="hidden" name="idTag" value="${tagInstance?.id}"/>
+                        <button data-toggle="confirmation-popout" data-placement="left" class="deleteTagbtn btn btn-warning">${message(code: 'default.delete')}</button>
                     </td>
                 </g:hasRights>
             </g:hasRights>
@@ -52,13 +46,22 @@
                 <a href="#tagListmodal${tagInstance.id}" class="btn" data-toggle="modal">
                     Tag fils
                 </a>
+                <g:hasRights lvlright="${right.REFMODIFY.value()}">
+                    <a href="#addchildmodal" class="btn btn-primary buttonAdd" data-toggle="modal">
+                        +
+                    </a>
+                </g:hasRights>
+                <input type="hidden" id="idParent" name="idParent" value="${tagInstance.id}">
             </td>
         </tr>
     </g:each>
     </tbody>
 </table>
-
+<input type="hidden" name="idTagurl" id="idTagurl" data-url="<g:createLink controller="tag" action="deleteTag"/>"/>
 <!-- Modal Views -->
 <g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
 <g:render template="detailTagChildren"/>
+<g:render template="addTags"/>
+
+

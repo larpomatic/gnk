@@ -1,6 +1,8 @@
 package org.gnk.substitution.data
 
+// Utilisé pour la substitution, ici AbsoluteYear == dateYear etc etc
 class Pastscene {
+
     String id
     String plotId
     String plotName
@@ -13,4 +15,9 @@ class Pastscene {
     Integer absoluteDay
     Integer absoluteHour
     Integer absoluteMin
+    Boolean isYearAbsolute
+    Boolean isMonthAbsolute
+    Boolean isDayAbsolute
+    Boolean isHourAbsolute
+    Boolean isMinuteAbsolute
 }

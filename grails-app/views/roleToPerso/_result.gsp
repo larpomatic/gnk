@@ -44,6 +44,84 @@
 <g:hiddenField name="gnDTD" value="${gnInstance?.dtd}"/>
 <g:hiddenField name="version" value="${gnInstance?.version}"/>
 <div class="container-fluid">
+<g:if test="${(tagcompatibility != null) || (tagrelationcompatibility != null)}">
+    <br/>
+    <div class="accordion" id="accordionStat">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse"
+                   data-parent="#accordionStat"
+                   href="#collapseStat">
+                    <g:message code="roletoperso.Stat"
+                               default="Tag Relation Problems"/>
+                </a>
+            </div>
+            <div id="collapseStat" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <g:if test="${tagcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Tag1 - Name</th>
+                                <th>Tag1 - Valeur</th>
+                                <th>Tag2 - Name</th>
+                                <th>Tag2 - Valeur</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <td>${((String)string).split("#")[3]}</td>
+                                    <td>${((String)string).split("#")[4]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+
+                    <g:if test="${tagrelationcompatibility != null}">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Character</th>
+                                <th>Relation 1</th>
+                                <th>Relation 2</th>
+                                <th>Compatibilité</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <g:each in="${tagrelationcompatibility}" var="string">
+                                <tr>
+                                    <td>CHAR-${((String)string).split("#")[0]}</td>
+                                    <td>${((String)string).split("#")[1]}</td>
+                                    <td>${((String)string).split("#")[2]}</td>
+                                    <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
+                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
+                                    </g:if>
+                                    <g:else>
+                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
+                                    </g:else>
+                                </tr>
+                            </g:each>
+                            </tbody>
+                        </table>
+                    </g:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</g:if>
 <g:each in="${characterList}" status="characterIter" var="character">
 
 <g:if test="${characterIter % 2 == 0}">
@@ -548,7 +626,7 @@
                                 <td>
                                     <a href="#roleModal-${((Character) STF).getSelectedRoles().first().getDTDId()}"  data-toggle="modal"
                                        title="${((Character) STF).getSelectedRoles().first().description}">${((Character) STF).getSelectedRoles().first().code}</a>
-                                    <g:render template="roleModal" model="['role': ((Character) STF).getSelectedRoles().first()]" />
+                                    <g:render template="roleù" model="['role': ((Character) STF).getSelectedRoles().first()]" />
                                 </td>
                                 <td>${((Character) STF).type}</td>
                                 <td>${((Character) STF).getSelectedRoles().first().description}</td>
@@ -598,88 +676,13 @@
     </div>
 </div>
 
-<g:if test="${(tagcompatibility != null) || (tagrelationcompatibility != null)}">
-    <div class="accordion" id="accordionStat">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse"
-                   data-parent="#accordionStat"
-                   href="#collapseStat">
-                    <g:message code="roletoperso.Stat"
-                               default="Tag Relation Problems"/>
-                </a>
-            </div>
-            <div id="collapseStat" class="accordion-body collapse">
-                <div class="accordion-inner">
-                    <g:if test="${tagcompatibility != null}">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Character</th>
-                                <th>Tag1 - Name</th>
-                                <th>Tag1 - Valeur</th>
-                                <th>Tag2 - Name</th>
-                                <th>Tag2 - Valeur</th>
-                                <th>Compatibilité</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <g:each in="${tagcompatibility}" var="string">
-                                <tr>
-                                    <td>CHAR-${((String)string).split("#")[0]}</td>
-                                    <td>${((String)string).split("#")[1]}</td>
-                                    <td>${((String)string).split("#")[2]}</td>
-                                    <td>${((String)string).split("#")[3]}</td>
-                                    <td>${((String)string).split("#")[4]}</td>
-                                    <g:if test="${Integer.parseInt(((String)string).split("#")[5]) < -50}">
-                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[5]} %</td>
-                                    </g:if>
-                                    <g:else>
-                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[5]} %</td>
-                                    </g:else>
-                                </tr>
-                            </g:each>
-                            </tbody>
-                        </table>
-                    </g:if>
-
-                    <g:if test="${tagrelationcompatibility != null}">
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Character</th>
-                                <th>Relation 1</th>
-                                <th>Relation 2</th>
-                                <th>Compatibilité</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <g:each in="${tagrelationcompatibility}" var="string">
-                                <tr>
-                                    <td>CHAR-${((String)string).split("#")[0]}</td>
-                                    <td>${((String)string).split("#")[1]}</td>
-                                    <td>${((String)string).split("#")[2]}</td>
-                                    <g:if test="${Integer.parseInt(((String)string).split("#")[3]) < -50}">
-                                        <td style="background-color: #F2DEDE">${((String)string).split("#")[3]} %</td>
-                                    </g:if>
-                                    <g:else>
-                                        <td style="background-color: #FCF8E3">${((String)string).split("#")[3]} %</td>
-                                    </g:else>
-                                </tr>
-                            </g:each>
-                            </tbody>
-                        </table>
-                    </g:if>
-                </div>
-            </div>
-        </div>
-    </div>
-</g:if>
+<div class="form-actions">
 <g:hiddenField name="selectedEvenemential" class="selectedEvenemential" value="${evenementialId}"/>
 <g:hiddenField name="selectedMainstream" class="selectedMainstream" value="${mainstreamId}"/>
-
+<div class="span1">
 <g:actionSubmit class="btn btn-primary" action="roleToPerso"
                 value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+</div>
 </g:form>
 
 <g:form method="post" controller="substitution">
@@ -690,11 +693,12 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-    <div class="form-actions">
+    <div class="span1">
         <g:actionSubmit class="btn btn-primary" action="index"
                         value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
     </div>
 </g:form>
+</div>
 
 <script>
     $(".fusion_modale").click(function() {

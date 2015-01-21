@@ -106,7 +106,12 @@ class RoleController {
             jsonPastscene.put("pastsceneTitle", pastscene.title);
             jsonPastscene.put("Year", pastscene.dateYear);
             jsonPastscene.put("Month", pastscene.getDateMonth());
-            jsonPastscene.put("MonthLetters", g.timeMonth(month: pastscene.dateMonth));
+            if (pastscene.dateMonth == null || pastscene.dateMonth.equals("") || (pastscene.dateMonth as Integer) > 12) {
+                jsonPastscene.put("MonthLetters", "");
+            }
+            else {
+                jsonPastscene.put("MonthLetters", g.timeMonth(month: pastscene.dateMonth));
+            }
             jsonPastscene.put("Day", pastscene.dateDay);
             jsonPastscene.put("Hour", pastscene.dateHour);
             jsonPastscene.put("Minute", pastscene.dateMinute);

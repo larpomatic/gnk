@@ -13,13 +13,9 @@
             </fieldset>
 
 			<g:render template="../infosAndErrors" />
-            <g:hasRights lvlright="${right.REFMODIFY.value()}">
-			    <g:render template="addTags" />
-            </g:hasRights>
+
 			<g:render template="tableChildrenTags" model="[listTagParent : listTagParent]" />
-			<div class="pagination">
-				<g:paginate total="${tagInstanceList.totalCount}" />
-			</div>
+
 		</div>
 
     <script type="application/javascript">
@@ -31,6 +27,9 @@
             });
         });
     </script>
+    <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
+    <g:javascript src="tag/addTagChild.js"/>
+    <g:javascript src="tag/deleteTag.js"/>
     </body>
 </html>
 
