@@ -16,7 +16,7 @@
     <thead>
     <tr class="upper">
         <th style="text-align: center;">#</th>
-        <th>Nom de la Cpnvention</th>
+        <th>Nom de la Convention</th>
         <th>Règles</th>
         <th>Supprimer</th>
     </tr>
@@ -30,7 +30,7 @@
             <td class="cap">${conv.description}</td>
             <!-- edition -->
             <td>
-                <a href="#editmodal${conv.id}" role="button" class="btn" data-toggle="modal">Editer</a>
+                <a href="#editmodalrule${conv.id}" role="button" class="btn" data-toggle="modal">Editer</a>
             </td>
             <!-- suppression -->
             <td>
@@ -46,9 +46,7 @@
     </tbody>
 
 </table>
-
 <!-- Modal Views -->
 <g:render template="modalEditConventionRule"/>
-
 </body>
 </html>
