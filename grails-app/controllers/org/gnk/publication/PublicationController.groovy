@@ -870,7 +870,9 @@ class PublicationController {
             Map<Integer, RoleHasPastscene> roleHasPastsceneList = new TreeMap<>()
 
             for (Role r : c.getSelectedRoles()) {
+                r.roleHasPastscenes.
                 for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
+
                     Integer time = roleHasPastscene.pastscene.timingRelative
                     String unit = roleHasPastscene.pastscene.unitTimingRelative
                     /*
