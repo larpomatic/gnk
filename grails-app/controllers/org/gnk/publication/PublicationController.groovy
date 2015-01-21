@@ -248,7 +248,7 @@ class PublicationController {
         createResTable()
 
         // Liste Ingame CLues
-        wordWriter.addStyledParagraphOfText("T2", "Liste des Indices en Jeu")
+        wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
         createICTableOrga()
 
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
@@ -315,12 +315,12 @@ class PublicationController {
                         if (resRoles == "Aucun Rôle")
                             resRoles = "- " + r.code + " : " + r.description
                         else
-                            resRoles += "\r- " + r.code + " : " + r.description
+                            resRoles += "\n- " + r.code + " : " + r.description
                         for (RoleHasTag rht : r.roleHasTags) {
                             if (resTag == "Aucune indication")
                                 resTag = "- " + rht.tag.name + " (" + rht.weight + "%)"
                             else
-                                resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
+                                resTag += "\n- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
                     wordWriter.addTableStyledCell("small",tableRowCharacter, resRoles)
@@ -1075,12 +1075,24 @@ class PublicationController {
         String msgCharacters = PitchOrgaMsgCharacters()
         wordWriter.addParagraphOfText(msgCharacters)
 
+        // On affiche d'abord les intrigue evennementiel
         for (Plot p : gn.selectedPlotSet)
+            if (p.pitchOrga != null && p.isEvenemential) {
+                wordWriter.addStyledParagraphOfText("T5", p.name)
+                substituteRolesAndPlotDescription(p)
+                wordWriter.addParagraphOfText(p.pitchOrga)
+            }
+
+        // Puis on affiche les autres intrigues
+        for (Plot p : gn.selectedPlotSet){
+            if (p.isEvenemential) // car déjà traité dans la boucle for d'avant
+                continue
             if (p.pitchOrga != null) {
                 wordWriter.addStyledParagraphOfText("T5", p.name)
                 substituteRolesAndPlotDescription(p)
                 wordWriter.addParagraphOfText(p.pitchOrga)
             }
+        }
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
     }
@@ -1163,7 +1175,6 @@ class PublicationController {
 
     // Création du tableau de synthèse listant tous les ingames clues du GN pour les Orga
     def createICTableOrga() {
-        wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
         wordWriter.addTableStyledCell("Table1L",tableRow, "Indice en Jeu")
