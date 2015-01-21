@@ -104,14 +104,15 @@
             // Time
 
             // DOIT ËTRE SUPP
-            pastscene.relativeTime = "${pastscene.relativeTime}";
-            pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
+            //pastscene.relativeTime = "${pastscene.relativeTime}";
+            //pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
+            // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
             pastscene.absoluteMinute = "${pastscene.absoluteMin}";
-            // FIN DOIT ETRE SUPP
+
 
 
             pastscene.isYearAbsolute = "${pastscene.isYearAbsolute}";

@@ -256,7 +256,7 @@ class RoleToPersoController {
         /***********/
 
         // Life desactivated until it works
-        //addLifeEvents(gn)
+        addLifeEvents(gn)
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -526,8 +526,11 @@ class RoleToPersoController {
                     pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
                     // Ca il faut changer
                     pastSceneLife.dateYear = character.age - age
+                    pastSceneLife.isAbsoluteYear = false
+                    /*
                     pastSceneLife.unitTimingRelative = "Y"
                     pastSceneLife.timingRelative = character.age - age
+                    */
 
                     // Associer past Scene au rôle, Role Has Past Scene
                     RoleHasPastscene rhpsLife = new RoleHasPastscene()

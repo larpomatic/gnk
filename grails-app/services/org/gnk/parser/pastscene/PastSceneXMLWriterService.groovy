@@ -92,6 +92,7 @@ class PastSceneXMLWriterService {
     private Element getPastsceneTimeElementForPlot(Document doc, Pastscene pastscene) {
         Element timeElt = doc.createElement("TIME")
 
+        /*
         Element relativeTimeElt = doc.createElement("RELATIVE")
         if (pastscene.timingRelative == null)
             relativeTimeElt.setAttribute("time", "")
@@ -102,6 +103,7 @@ class PastSceneXMLWriterService {
         else
             relativeTimeElt.setAttribute("time_unit", pastscene.unitTimingRelative)
         timeElt.appendChild(relativeTimeElt)
+        */
 
         Element absoluteTimeElt = doc.createElement("ABSOLUTE")
         if (pastscene.dateYear == null)
@@ -124,6 +126,30 @@ class PastSceneXMLWriterService {
             absoluteTimeElt.setAttribute("minute", "")
         else
             absoluteTimeElt.setAttribute("minute", pastscene.dateMinute.toString())
+
+        // ABSOLUTE
+        if (pastscene.isAbsoluteYear == null)
+            absoluteTimeElt.setAttribute("isAbsoluteYear", "false")
+        else
+            absoluteTimeElt.setAttribute("isAbsoluteYear", pastscene.isAbsoluteYear.toString())
+
+        if (pastscene.isAbsoluteMonth == null)
+            absoluteTimeElt.setAttribute("isAbsoluteMonth", "false")
+        else
+            absoluteTimeElt.setAttribute("isAbsoluteMonth", pastscene.isAbsoluteMonth.toString())
+        if (pastscene.isAbsoluteDay == null)
+            absoluteTimeElt.setAttribute("isAbsoluteDay", "false")
+        else
+            absoluteTimeElt.setAttribute("isAbsoluteDay", pastscene.isAbsoluteDay.toString())
+        if (pastscene.isAbsoluteHour == null)
+            absoluteTimeElt.setAttribute("isAbsoluteHour", "false")
+        else
+            absoluteTimeElt.setAttribute("isAbsoluteHour", pastscene.isAbsoluteHour.toString())
+        if (pastscene.isAbsoluteMinute == null)
+            absoluteTimeElt.setAttribute("isAbsoluteMinute", "false")
+        else
+            absoluteTimeElt.setAttribute("isAbsoluteMinute", pastscene.isAbsoluteMinute.toString())
+
         timeElt.appendChild(absoluteTimeElt)
 
         return timeElt
