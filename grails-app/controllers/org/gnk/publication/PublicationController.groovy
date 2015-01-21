@@ -278,13 +278,13 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableStyledCell(tableRow, "NOM - Prenom", "Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Nb PIP Total", "Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Type","Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Sexe","Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Age","Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Role(s)","Table1L")
-        wordWriter.addTableStyledCell(tableRow, "Indication(s) personnage","Table1L")
+        wordWriter.addTableStyledCell("Table1L", tableRow, "NOM - Prenom")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nb PIP Total")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Type")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Sexe")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Age")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Role(s)")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indication(s) personnage")
 
         table.getContent().add(tableRow);
 
@@ -299,12 +299,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
+                    wordWriter.addTableStyledCell("Table1C",tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.gender)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
 
@@ -323,8 +323,8 @@ class PublicationController {
                                 resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resRoles)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -343,12 +343,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
+                    wordWriter.addTableStyledCell("Table1C", tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.gender)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -363,8 +363,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resRoles)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -383,12 +383,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
+                    wordWriter.addTableStyledCell("Table1C", tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.nbPIP.toString())
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
 
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.gender)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, c.getAge().toString())
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -403,8 +403,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
-                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resRoles)
+                    wordWriter.addTableStyledCell("small",tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -522,32 +522,32 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Nom du lieu")
-        wordWriter.addTableCell(tableRow, "Type du lieu")
-        wordWriter.addTableCell(tableRow, "Description")
-        wordWriter.addTableCell(tableRow, "Indication(s) lieu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nom du lieu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Type du lieu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Description")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indication(s) lieu")
 
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr()
             int lastIndexOf = p.name.lastIndexOf(" -")
             if (lastIndexOf != -1)
-                wordWriter.addTableCell(tableRowPlace, p.name.substring(0, lastIndexOf))
+                wordWriter.addTableStyledCell("Table1C",tableRowPlace, p.name.substring(0, lastIndexOf))
             else
-                wordWriter.addTableCell(tableRowPlace, p.name)
+                wordWriter.addTableStyledCell("Table1C",tableRowPlace, p.name)
             if (p.genericPlace) {
                 String typeStr = p.genericPlace.code
                 if (p.genericPlace.objectType != null)
                     typeStr += " (" + p.genericPlace.objectType.type + ")"
-                wordWriter.addTableCell(tableRowPlace, typeStr)
+                wordWriter.addTableStyledCell("small",tableRowPlace, typeStr)
             } else
-                wordWriter.addTableCell(tableRowPlace, "[Pas de type de lieu]")
-            wordWriter.addTableCell(tableRowPlace, p.description)
+                wordWriter.addTableStyledCell("small",tableRowPlace, "[Pas de type de lieu]")
+            wordWriter.addTableStyledCell("small",tableRowPlace, p.description)
             String resTag = ""
             for (PlaceHasTag pht : p.extTags) {
                 resTag += pht.tag.name + "(" + pht.weight + "%); "
             }
-            wordWriter.addTableCell(tableRowPlace, resTag)
+            wordWriter.addTableStyledCell("small",tableRowPlace, resTag)
 
 
             table.getContent().add(tableRowPlace)
@@ -615,13 +615,13 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Nom de la ressource")
-        wordWriter.addTableCell(tableRow, "Type")
-        wordWriter.addTableCell(tableRow, "Description")
-        wordWriter.addTableCell(tableRow, "Commentaire")
-        wordWriter.addTableCell(tableRow, "Indication(s) Ressource")
-        wordWriter.addTableCell(tableRow, "Détenu par")
-        wordWriter.addTableCell(tableRow, "Indices textuel")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nom de la ressource")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Type")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Description")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Commentaire")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indication(s) Ressource")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Détenu par")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indices textuel")
 
         table.getContent().add(tableRow);
 
@@ -629,27 +629,27 @@ class PublicationController {
             Tr tableRowRes = wordWriter.factory.createTr()
 
             if (genericResource.selectedResource)
-                wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.name)
+                wordWriter.addTableStyledCell("Table1C",tableRowRes, genericResource.selectedResource.name)
             else
-                wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
+                wordWriter.addTableStyledCell("Table1C",tableRowRes, "Ressource liée à la ressource générique non trouvée")
 
             String typeStr = genericResource.code
             if (genericResource.objectType != null)
                 typeStr += " (" + genericResource.objectType.type + ")"
-            wordWriter.addTableCell(tableRowRes, typeStr)
+            wordWriter.addTableStyledCell("small",tableRowRes, typeStr)
 
             if (genericResource.selectedResource)
-                wordWriter.addTableCell(tableRowRes, genericResource.selectedResource.description)
+                wordWriter.addTableStyledCell("small",tableRowRes, genericResource.selectedResource.description)
             else
-                wordWriter.addTableCell(tableRowRes, "Ressource liée à la ressource générique non trouvée")
+                wordWriter.addTableStyledCell("small",tableRowRes, "Ressource liée à la ressource générique non trouvée")
 
-            wordWriter.addTableCell(tableRowRes, genericResource.comment)
+            wordWriter.addTableStyledCell("small",tableRowRes, genericResource.comment)
 
             String resTag = ""
             for (GenericResourceHasTag grht : genericResource.extTags) {
                 resTag += grht.tag.name + "(" + grht.weight + "%); "
             }
-            wordWriter.addTableCell(tableRowRes, resTag)
+            wordWriter.addTableStyledCell("small",tableRowRes, resTag)
             String possessedByCharacters = ""
             if (genericResource.getPossessedByRole() != null){
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
@@ -662,8 +662,8 @@ class PublicationController {
             } else {
                 possessedByCharacters = "personne"
             }
-            wordWriter.addTableCell(tableRowRes, possessedByCharacters)
-            wordWriter.addTableCell(tableRowRes, (genericResource.isIngameClue()?"oui":""))
+            wordWriter.addTableStyledCell("small",tableRowRes, possessedByCharacters)
+            wordWriter.addTableStyledCell("small",tableRowRes, (genericResource.isIngameClue()?"oui":""))
             table.getContent().add(tableRowRes);
         }
         wordWriter.addBorders(table)
@@ -676,37 +676,37 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Date")
-        wordWriter.addTableCell(tableRow, "Titre")
-        wordWriter.addTableCell(tableRow, "Intrigue concernée")
-        wordWriter.addTableCell(tableRow, "Lieu")
-        wordWriter.addTableCell(tableRow, "Description")
-        wordWriter.addTableCell(tableRow, "Personnages et objets présents")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Date")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Titre")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Intrigue concernée")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Lieu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Description")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Personnages et objets présents")
 
         table.getContent().add(tableRow);
 
         for (Plot p : gn.selectedPlotSet) {
             for (Event e : p.events) {
                 Tr tableRowRes = wordWriter.factory.createTr()
-                //wordWriter.addTableCell(tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
-                wordWriter.addTableCell(tableRowRes, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
-                wordWriter.addTableCell(tableRowRes, e.name)
-                wordWriter.addTableCell(tableRowRes, p.name)
+                //wordWriter.addTableStyledCell("small",tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+                wordWriter.addTableStyledCell("Table1C",tableRowRes, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
+                wordWriter.addTableStyledCell("small",tableRowRes, e.name)
+                wordWriter.addTableStyledCell("small",tableRowRes, p.name)
                 if (e.genericPlace)
                     if (e.genericPlace.selectedPlace){
                         int lastIndexOf = e.genericPlace.selectedPlace.name.lastIndexOf(" -")
                         if (lastIndexOf != -1)
-                            wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name.substring(0, lastIndexOf))
+                            wordWriter.addTableStyledCell("small",tableRowRes, e.genericPlace.selectedPlace.name.substring(0, lastIndexOf))
                         else
-                            wordWriter.addTableCell(tableRowRes, e.genericPlace.selectedPlace.name)
+                            wordWriter.addTableStyledCell("small",tableRowRes, e.genericPlace.selectedPlace.name)
                     }
                     else
-                        wordWriter.addTableCell(tableRowRes, e.genericPlace.code)
+                        wordWriter.addTableStyledCell("small",tableRowRes, e.genericPlace.code)
                 else
-                    wordWriter.addTableCell(tableRowRes, "[Lieu générique]")
+                    wordWriter.addTableStyledCell("small",tableRowRes, "[Lieu générique]")
 
                 substituteEvent(p, e)
-                wordWriter.addTableCell(tableRowRes, e.description)
+                wordWriter.addTableStyledCell("small",tableRowRes, e.description)
 
                 String charactersAndRessources = ""
                 for (Role r : p.roles) {
@@ -721,9 +721,9 @@ class PublicationController {
                     charactersAndRessources += gR.selectedResource.name + ", "
                 }
                 if (charactersAndRessources)
-                    wordWriter.addTableCell(tableRowRes, charactersAndRessources)
+                    wordWriter.addTableStyledCell("small",tableRowRes, charactersAndRessources)
                 else
-                    wordWriter.addTableCell(tableRowRes, " ")
+                    wordWriter.addTableStyledCell("small",tableRowRes, " ")
                 table.getContent().add(tableRowRes);
             }
         }
@@ -1166,14 +1166,14 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
-        wordWriter.addTableCell(tableRow, "Indice en Jeu")
-        wordWriter.addTableCell(tableRow, "Détenu au début du Jeu par")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indice en Jeu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Détenu au début du Jeu par")
         table.getContent().add(tableRow);
         for (GenericResource genericResource : gnk.genericResourceMap.values())
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
                 Tr tableRowPlot = wordWriter.factory.createTr()
-                wordWriter.addTableCell(tableRowPlot, genericResource.code + " - " + genericResource.comment)
+                wordWriter.addTableStyledCell("Table1C",tableRowPlot, genericResource.code + " - " + genericResource.comment)
                 if (genericResource.getPossessedByRole() != null){
                     String possessedByCharacters = ""
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
@@ -1183,10 +1183,10 @@ class PublicationController {
                             }
                         }
                     }
-                    wordWriter.addTableCell(tableRowPlot, possessedByCharacters)
+                    wordWriter.addTableStyledCell("small",tableRowPlot, possessedByCharacters)
                 }
                 else
-                    wordWriter.addTableCell(tableRowPlot, "Personne")
+                    wordWriter.addTableStyledCell("small",tableRowPlot, "Personne")
                 table.getContent().add(tableRowPlot);
             }
         wordWriter.addBorders(table)
@@ -1224,11 +1224,10 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-
-        wordWriter.addTableCell(tableRow, "Nb PIP")
-        wordWriter.addTableCell(tableRow, "Indication(s) Intrigue")
-        wordWriter.addTableCell(tableRow, "Résumé/Description")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nom de l'intrigue")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nb PIP")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Indication(s) Intrigue")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Résumé/Description")
 
 
         table.getContent().add(tableRow);
@@ -1239,8 +1238,8 @@ class PublicationController {
                 continue
             if (p.isEvenemential){
                 Tr tableRowPlot = wordWriter.factory.createTr()
-                wordWriter.addTableCell(tableRowPlot, p.name)
-                wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
+                wordWriter.addTableStyledCell("Table1C",tableRowPlot, p.name)
+                wordWriter.addTableStyledCell("small",tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
                 String tags = "Evènementiel"
                 if (p.isMainstream)
                     tags += " - Mainstream"
@@ -1253,12 +1252,12 @@ class PublicationController {
                         first = false
                     tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
                 }
-                wordWriter.addTableCell(tableRowPlot, tags.toString())
+                wordWriter.addTableStyledCell("small",tableRowPlot, tags.toString())
 
                 substituteRolesAndPlotDescription(p)
 
                 String description = new String(p.description.getBytes("UTF-8"), "UTF-8")
-                wordWriter.addTableCell(tableRowPlot, description)
+                wordWriter.addTableStyledCell("small",tableRowPlot, description)
                 table.getContent().add(tableRowPlot);
             }
         }
@@ -1269,8 +1268,8 @@ class PublicationController {
             if (p.name == "Life" || p.isEvenemential)
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlot, p.name)
-            wordWriter.addTableCell(tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
+            wordWriter.addTableStyledCell("small",tableRowPlot, p.name)
+            wordWriter.addTableStyledCell("small",tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             String tags = ""
             if (p.isMainstream)
@@ -1283,12 +1282,12 @@ class PublicationController {
                     first = false
                 tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
             }
-            wordWriter.addTableCell(tableRowPlot, tags.toString())
+            wordWriter.addTableStyledCell("small",tableRowPlot, tags.toString())
 
             substituteRolesAndPlotDescription(p)
 
             String description = new String(p.description.getBytes("UTF-8"), "UTF-8")
-            wordWriter.addTableCell(tableRowPlot, description)
+            wordWriter.addTableStyledCell("small",tableRowPlot, description)
             table.getContent().add(tableRowPlot);
         }
 
@@ -1299,15 +1298,15 @@ class PublicationController {
     def createPlayersTableImplication(){
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
-        wordWriter.addTableCell(tableRow, "Nom de l'intrigue")
-        wordWriter.addTableCell(tableRow, "Implication des Personnages")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nom de l'intrigue")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Implication des Personnages")
         table.getContent().add(tableRow);
 
         for (Plot p : gn.selectedPlotSet) {
             if (p.name == "Life")
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlot, p.name)
+            wordWriter.addTableStyledCell("Table1C",tableRowPlot, p.name)
             String playerImplication =""
             HashSet roles = p.getRoles()
             for (Role r1 : roles){
@@ -1319,7 +1318,7 @@ class PublicationController {
                     }
                 }
             }
-            wordWriter.addTableCell(tableRowPlot,playerImplication)
+            wordWriter.addTableStyledCell("small",tableRowPlot,playerImplication)
             table.getContent().add(tableRowPlot);
         }
         wordWriter.addBorders(table)
@@ -1373,12 +1372,12 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Intrigue")
-        wordWriter.addTableCell(tableRow, "Personnage impliqué")
-        wordWriter.addTableCell(tableRow, "Code rôle")
-        wordWriter.addTableCell(tableRow, "Nombre de PIP intrigue")
-        wordWriter.addTableCell(tableRow, "Nombre de PIP relations")
-        wordWriter.addTableCell(tableRow, "Description du rôle")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Intrigue")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Personnage impliqué")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Code rôle")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nombre de PIP intrigue")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Nombre de PIP relations")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Description du rôle")
 
         table.getContent().add(tableRow);
 
@@ -1387,13 +1386,13 @@ class PublicationController {
             if (p.name == "Life")
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
-            wordWriter.addTableCell(tableRowPlot, p.name)
+            wordWriter.addTableStyledCell("Table1C",tableRowPlot, p.name)
 
             boolean first = true
             for (Role r : p.roles) {
                 if (!first) {
                     tableRowPlot = wordWriter.factory.createTr()
-                    wordWriter.addTableCell(tableRowPlot, "")
+                    wordWriter.addTableStyledCell("Table1C",tableRowPlot, "")
                 }
 
                 String characterName = ""
@@ -1423,11 +1422,11 @@ class PublicationController {
                     characterName = "Tous les personnages joués"
                 if (characterName.equals(""))
                     print "Erreur : nom du personnage non trouvé"
-                wordWriter.addTableCell(tableRowPlot, characterName)
-                wordWriter.addTableCell(tableRowPlot, r.code)
-                wordWriter.addTableCell(tableRowPlot, r.pipi.toString())
-                wordWriter.addTableCell(tableRowPlot, r.pipr.toString())
-                wordWriter.addTableCell(tableRowPlot, r.description)
+                wordWriter.addTableStyledCell("small",tableRowPlot, characterName)
+                wordWriter.addTableStyledCell("small",tableRowPlot, r.code)
+                wordWriter.addTableStyledCell("small",tableRowPlot, r.pipi.toString())
+                wordWriter.addTableStyledCell("small",tableRowPlot, r.pipr.toString())
+                wordWriter.addTableStyledCell("small",tableRowPlot, r.description)
 
                 table.getContent().add(tableRowPlot);
                 first = false
@@ -1444,11 +1443,11 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "Timing événementiel")
-        wordWriter.addTableCell(tableRow, "Titre")
-        wordWriter.addTableCell(tableRow, "Lieu")
-        wordWriter.addTableCell(tableRow, "Intrigue concernée")
-        wordWriter.addTableCell(tableRow, "Evènement annoncé")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Timing événementiel")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Titre")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Lieu")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Intrigue concernée")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Evènement annoncé")
         table.getContent().add(tableRow);
 
         Map<Integer, Event> events = new TreeMap<Integer, Event>();
@@ -1481,22 +1480,22 @@ class PublicationController {
 
         for (Event e : events.values()) {
             Tr tableRowEvent = wordWriter.factory.createTr()
-            //wordWriter.addTableCell(tableRowEvent, e.timing.toString())
+            //wordWriter.addTableStyledCell("small",tableRowEvent, e.timing.toString())
             //Todo: Indiquer l'horaire absolu (pour le moment le parser correspondant n'existe pas donc les champs absolus sont nuls
-            //wordWriter.addTableCell(tableRowEvent, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
-            wordWriter.addTableCell(tableRowEvent, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
-            wordWriter.addTableCell(tableRowEvent, e.name)
+            //wordWriter.addTableStyledCell("small",tableRowEvent, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
+            wordWriter.addTableStyledCell("Table1C",tableRowEvent, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
+            wordWriter.addTableStyledCell("small",tableRowEvent, e.name)
             if (e.genericPlace && e.genericPlace.proposedPlaces && e.genericPlace.proposedPlaces.size() > 0){
                 int lastIndexOf = e.genericPlace.proposedPlaces[0].name.lastIndexOf(" -")
                 if (lastIndexOf != -1)
-                    wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name.substring(0, lastIndexOf))
+                    wordWriter.addTableStyledCell("small",tableRowEvent, e.genericPlace.proposedPlaces[0].name.substring(0, lastIndexOf))
                 else
-                    wordWriter.addTableCell(tableRowEvent, e.genericPlace.proposedPlaces[0].name)
+                    wordWriter.addTableStyledCell("small",tableRowEvent, e.genericPlace.proposedPlaces[0].name)
             }
             else
-                wordWriter.addTableCell(tableRowEvent, "")
-            wordWriter.addTableCell(tableRowEvent, e.plot.name)
-            wordWriter.addTableCell(tableRowEvent, e.isPlanned ? "Oui" : "Non")
+                wordWriter.addTableStyledCell("small",tableRowEvent, "")
+            wordWriter.addTableStyledCell("small",tableRowEvent, e.plot.name)
+            wordWriter.addTableStyledCell("small",tableRowEvent, e.isPlanned ? "Oui" : "Non")
             table.getContent().add(tableRowEvent);
         }
 
