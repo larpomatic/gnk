@@ -8,7 +8,7 @@ import org.hibernate.FetchMode;
 class NamingService
 {
     // Nombre de prenom ou de nom a renvoyer
-    Integer selectionNumber = 3
+    Integer selectionNumber = 6
     // Pour �viter de renvoyer toujours le meme prenom en choix 1
     LinkedList<String> usedFirstName = new LinkedList<String>()
     // Pour �viter de renvoyer toujours le meme nom en choix 1
@@ -100,14 +100,18 @@ class NamingService
                             maxname = nw
                     }
                     if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
+                    {
                         tmp.selectedFirstnames.add(maxname.name)
+                        if (tmp.selectedFirstnames.size() > 3)
+                            usedFirstName.add(tmp.selectedFirstnames.last())
+                    }
                     fnweight.remove(maxname)
 
                     if (tmp.selectedFirstnames.size() >= selectionNumber)
                         break
                 }
 
-                if (tmp.selectedFirstnames.first())
+                if (!tmp.selectedFirstnames.isEmpty())
                     usedFirstName.add(tmp.selectedFirstnames.first())
             }
             //print("     FN " + tmp)
@@ -161,16 +165,18 @@ class NamingService
                             if (maxname.weight < nw.weight)
                                 maxname = nw
                         }
-                        if (tmp.bannedNames.contains(maxname.name))
-                            continue
-                        if (!usedName.contains(maxname.name) && !tmp.selectedNames.add(maxname.name))
+                        if (!usedName.contains(maxname.name) && !tmp.selectedNames.contains(maxname.name))
+                        {
                             tmp.selectedNames.add(maxname.name)
+                            if (tmp.selectedNames.size() > 3)
+                                usedName.add(tmp.selectedNames.last())
+                        }
                         nweight.remove(maxname)
 
                         if (tmp.selectedNames.size() >= selectionNumber)
                             break
                     }
-                    if (tmp.selectedNames.first())
+                    if (!tmp.selectedNames.isEmpty())
                         usedName.add(tmp.selectedNames.first())
                 }
             }
