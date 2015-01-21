@@ -274,13 +274,13 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableCell(tableRow, "NOM - Prenom")
-        wordWriter.addTableCell(tableRow, "Nb PIP Total")
-        wordWriter.addTableCell(tableRow, "Type")
-        wordWriter.addTableCell(tableRow, "Sexe")
-        wordWriter.addTableCell(tableRow, "Age")
-        wordWriter.addTableCell(tableRow, "Role(s)")
-        wordWriter.addTableCell(tableRow, "Indication(s) personnage")
+        wordWriter.addTableStyledCell(tableRow, "NOM - Prenom", "Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Nb PIP Total", "Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Type","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Sexe","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Age","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Role(s)","Table1L")
+        wordWriter.addTableStyledCell(tableRow, "Indication(s) personnage","Table1L")
 
         table.getContent().add(tableRow);
 
@@ -295,12 +295,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
 
@@ -319,8 +319,8 @@ class PublicationController {
                                 resTag += "\r- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -339,12 +339,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -359,8 +359,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }
@@ -379,12 +379,12 @@ class PublicationController {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
 
-                    wordWriter.addTableCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
-                    wordWriter.addTableCell(tableRowCharacter, c.nbPIP.toString())
-                    wordWriter.addTableCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname, "Table1C")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.nbPIP.toString(), "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.isPJ() ? "PJ" : c.isPNJ() ? "PNJ" : "PHJ", "small")
 
-                    wordWriter.addTableCell(tableRowCharacter, c.gender)
-                    wordWriter.addTableCell(tableRowCharacter, c.getAge().toString())
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.gender, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, c.getAge().toString(), "small")
                     String resRoles = "Aucun Rôle"
                     String resTag = "Aucune indication"
                     for (Role r : c.selectedRoles) {
@@ -399,8 +399,8 @@ class PublicationController {
                                 resTag += "; " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-                    wordWriter.addTableCell(tableRowCharacter, resRoles)
-                    wordWriter.addTableCell(tableRowCharacter, resTag)
+                    wordWriter.addTableStyledCell(tableRowCharacter, resRoles, "small")
+                    wordWriter.addTableStyledCell(tableRowCharacter, resTag, "small")
                     table.getContent().add(tableRowCharacter)
                     break;
                 }

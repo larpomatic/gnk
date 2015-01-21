@@ -174,6 +174,14 @@ class WordWriter {
         tableRow.getContent().add(tableCell);
     }
 
+    def addTableStyledCell(Tr tableRow, String content, String Style) {
+        Tc tableCell = factory.createTc();
+        String[] lines = content.split("\n")
+        for (String line : lines)
+            tableCell.getContent().add(wordMLPackage.getMainDocumentPart().createStyledParagraphOfText(Style, line));
+        tableRow.getContent().add(tableCell);
+    }
+
     def alterStyleSheet() {
         StyleDefinitionsPart styleDefinitionsPart =
             wordMLPackage.getMainDocumentPart().getStyleDefinitionsPart();
