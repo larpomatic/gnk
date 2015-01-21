@@ -29,7 +29,8 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
 import org.hibernate.annotations.GenericGenerator
 
-import java.text.DateFormat;
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -1052,7 +1053,7 @@ class PublicationController {
         Tr tableRow = wordWriter.factory.createTr()
 
         wordWriter.addParagraphOfText("Le GN se déroule dans l'Univers " + gn.univers.name.replace("(Univers)", "") + ".")
-        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler le "+ getPrintableDate(gn.date) + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
+        wordWriter.addParagraphOfText("Au début du GN, la scène est censée se dérouler "+ getPrintableDate(gn.date,"'le' dd MMMM yyyy 'à' HH'h'mm") + ". La durée du GN est estimée à "+gn.duration.toString()+" heures.")
 
         // Comptage PJ
         String msgCharacters = PitchOrgaMsgCharacters()
@@ -1685,11 +1686,17 @@ class PublicationController {
     }
 
 
-    private String getPrintableDate(Date date, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
-        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-                format1,
-                format2,
-                new Locale("FR", "fr"));
-        return shortDateFormat.format(date)
+    private String getPrintableDate(Date date, String formater = null, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
+        if (formater == null)
+        {
+            DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
+                    format1,
+                    format2,
+                    new Locale("FR", "fr"));
+            return shortDateFormat.format(date)
+        } else {
+            return new SimpleDateFormat(formater).format(date)
+        }
+
     }
 }
