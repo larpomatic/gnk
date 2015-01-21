@@ -67,11 +67,11 @@
 					
 				</li>
 				</g:if>
-				<g:if test="${resourceInstance?.resourceHasresourceTags}">
+				<g:if test="${resourceInstance?.extTags}">
 				<li class="fieldcontain">
 					<span id="resourceHasresourceTags-label" class="property-label"><g:message code="resource.resourceHasresourceTags.label" default="Resource Hasresource Tags" /></span>
 					
-						<g:each in="${resourceInstance.resourceHasresourceTags}" var="r">
+						<g:each in="${resourceInstance.extTags}" var="r">
 						<span class="property-value" aria-labelledby="resourceHasresourceTags-label"><g:link controller="resourceHasResourceTag" action="show" id="${r.id}">${r?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					

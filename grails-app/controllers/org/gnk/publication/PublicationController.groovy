@@ -934,6 +934,9 @@ class PublicationController {
                 }
                 String GnRelat = "Il y a " + roleHasPastscene.pastscene.timingRelative + " " + unit
                 String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
+                int lastIndexOf = roleHasPastscene.pastscene.title.lastIndexOf(" -")
+                if (lastIndexOf != -1)
+                    roleHasPastscene.pastscene.title = roleHasPastscene.pastscene.title.substring(0, lastIndexOf)
                 wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
                 wordWriter.addParagraphOfText(roleHasPastscene.description)
             }
