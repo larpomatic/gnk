@@ -620,12 +620,12 @@ class PublicationController {
         wordWriter.addTableCell(tableRow, "Description")
         wordWriter.addTableCell(tableRow, "Commentaire")
         wordWriter.addTableCell(tableRow, "Indication(s) Ressource")
+        wordWriter.addTableCell(tableRow, "Détenu par")
+        wordWriter.addTableCell(tableRow, "Indices textuel")
 
         table.getContent().add(tableRow);
 
         for (GenericResource genericResource : GROTList + GRList) {
-//            if (!genericResource.isIngameClue())// Si la générique ressource N'EST PAS un ingame clue alors je l'affiche
-//            {
             Tr tableRowRes = wordWriter.factory.createTr()
 
             if (genericResource.selectedResource)
@@ -650,9 +650,21 @@ class PublicationController {
                 resTag += grht.tag.name + "(" + grht.weight + "%); "
             }
             wordWriter.addTableCell(tableRowRes, resTag)
-
+            String possessedByCharacters = ""
+            if (genericResource.getPossessedByRole() != null){
+                for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                    for (Role r : c.selectedRoles){
+                        if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()){
+                            possessedByCharacters = (possessedByCharacters.isEmpty()?"":", ") c.firstname + " " + c.lastname.toUpperCase()
+                        }
+                    }
+                }
+            } else {
+                possessedByCharacters = "personne"
+            }
+            wordWriter.addTableCell(tableRowRes, possessedByCharacters)
+            wordWriter.addTableCell(tableRowRes, (genericResource.isIngameClue()?"oui":""))
             table.getContent().add(tableRowRes);
-//            }
         }
         wordWriter.addBorders(table)
 
@@ -1162,8 +1174,17 @@ class PublicationController {
             {
                 Tr tableRowPlot = wordWriter.factory.createTr()
                 wordWriter.addTableCell(tableRowPlot, genericResource.code + " - " + genericResource.comment)
-                if (genericResource.possessedByRole != null)
-                    wordWriter.addTableCell(tableRowPlot, genericResource.possessedByRole.code) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                if (genericResource.getPossessedByRole() != null){
+                    String possessedByCharacters = ""
+                    for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet){
+                        for (Role r : c.selectedRoles){
+                            if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()){
+                                possessedByCharacters += (possessedByCharacters.isEmpty()?genericResource.getPossessedByRole().code + " : ":", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            }
+                        }
+                    }
+                    wordWriter.addTableCell(tableRowPlot, possessedByCharacters) // TODO trouver le nom du détenteur plutot que de mettre le code du role
+                }
                 else
                     wordWriter.addTableCell(tableRowPlot, "Personne")
                 table.getContent().add(tableRowPlot);
