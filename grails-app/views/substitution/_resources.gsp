@@ -19,7 +19,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>Code</th>
-        <th>En Jeux ?</th>
+        %{--<th>En Jeux ?</th>--}%
         <th>Type</th>
         <th>Plot name</th>
         <th>tags</th>
@@ -38,9 +38,9 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code - modal button -->
             <td>${resource.code}</td>
-            <!-- In Game ? -->
-            <td>${resource.isInGame}</td>
-            <!-- objectType -->
+            %{--<!-- In Game ? -->--}%
+            %{--<td>${resource.isInGame}</td>--}%
+            <!-- Type -->
             <td>${resource.objectType}</td>
             <!-- Plot name -->
             <td>${resource.plot}</td>

@@ -40,7 +40,7 @@
             <td style="text-align: center;">${i + 1}</td>
             <!-- Code -->
             <td>${place.code}</td>
-            <!-- ObjectType -->
+            <!-- Type -->
             <td>${place.objectType}</td>
             <!-- Plot Name -->
             <td>${place.plotName}</td>
