@@ -248,7 +248,7 @@ class PublicationController {
         createResTable()
 
         // Liste Ingame CLues
-        wordWriter.addStyledParagraphOfText("T3", "Liste des Indices en Jeu")
+        wordWriter.addStyledParagraphOfText("T3", "Indices Textuels")
         createICTableOrga()
 
         wordWriter.addStyledParagraphOfText("T1", "Événementiel Détaillé")
