@@ -247,7 +247,7 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T3", "Synthèse")
         createResTable()
 
-        // Liste Ingame CLues
+        // Liste Ingame CLues & détail
         wordWriter.addStyledParagraphOfText("T3", "Indices Textuels")
         createICTableOrga()
 
@@ -1263,9 +1263,13 @@ class PublicationController {
 
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
-                wordWriter.addParagraphOfText(genericResource.code + " - " + genericResource.comment)
-                wordWriter.addStyledParagraphOfText("titleIC", genericResource.title)
-                wordWriter.addStyledParagraphOfText("contentIC", genericResource.description)
+                wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
+                if (genericResource.fromRole)
+                    wordWriter.addStyledParagraphOfText("clueFrom", "De " + genericResource.fromRole.code)
+                if (genericResource.toRole)
+                    wordWriter.addStyledParagraphOfText("clueTo", "Pour " + genericResource.toRole.code)
+                wordWriter.addStyledParagraphOfText("clueTitle", genericResource.title)
+                wordWriter.addStyledParagraphOfText("clueDescription", genericResource.description)
             }
     }
 
