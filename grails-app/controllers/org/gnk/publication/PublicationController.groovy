@@ -617,8 +617,7 @@ class PublicationController {
 
         wordWriter.addTableStyledCell("Table1L",tableRow, "Nom de la ressource")
         wordWriter.addTableStyledCell("Table1L",tableRow, "Type")
-        wordWriter.addTableStyledCell("Table1L",tableRow, "Description")
-        wordWriter.addTableStyledCell("Table1L",tableRow, "Commentaire")
+        wordWriter.addTableStyledCell("Table1L",tableRow, "Descriptions")
         wordWriter.addTableStyledCell("Table1L",tableRow, "Indication(s) Ressource")
         wordWriter.addTableStyledCell("Table1L",tableRow, "Détenu par")
         wordWriter.addTableStyledCell("Table1L",tableRow, "Indices textuel")
@@ -638,12 +637,10 @@ class PublicationController {
                 typeStr += " (" + genericResource.objectType.type + ")"
             wordWriter.addTableStyledCell("small",tableRowRes, typeStr)
 
+            String resDescritpion = "Ressource liée à la ressource générique non trouvée\n"
             if (genericResource.selectedResource)
-                wordWriter.addTableStyledCell("small",tableRowRes, genericResource.selectedResource.description)
-            else
-                wordWriter.addTableStyledCell("small",tableRowRes, "Ressource liée à la ressource générique non trouvée")
-
-            wordWriter.addTableStyledCell("small",tableRowRes, genericResource.comment)
+                resDescritpion = (genericResource.selectedResource.description.isEmpty()? "" :genericResource.selectedResource.description + "\n")
+            wordWriter.addTableStyledCell("small",tableRowRes,genericResource.comment + resDescritpion)
 
             String resTag = ""
             for (GenericResourceHasTag grht : genericResource.extTags) {
