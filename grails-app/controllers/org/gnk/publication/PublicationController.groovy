@@ -1294,15 +1294,12 @@ class PublicationController {
                 if (p.isMainstream)
                     tags += " - Mainstream"
                 tags += " : "
-                boolean first = true
                 for (PlotHasTag plotHasTag : p.extTags) {
-                    if (!first)
-                        tags += "; "
-                    else
-                        first = false
-                    tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
+                    if (plotHasTag.tag.parent.name.equals("Tag Univers") &&  !plotHasTag.tag.name.equals(gn.univers.name))
+                        continue
+                    tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") " + "\n"
                 }
-                wordWriter.addTableStyledCell("small",tableRowPlot, tags.toString())
+                wordWriter.addTableStyledCell("small",tableRowPlot, tags.substring(0, tags.length()-1))
 
                 substituteRolesAndPlotDescription(p)
 
@@ -1324,15 +1321,12 @@ class PublicationController {
             String tags = ""
             if (p.isMainstream)
                 tags += "Mainstream : "
-            boolean first = true
             for (PlotHasTag plotHasTag : p.extTags) {
-                if (!first)
-                    tags += "; "
-                else
-                    first = false
-                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") "
+                if (plotHasTag.tag.parent.name.equals("Tag Univers") &&  !plotHasTag.tag.name.equals(gn.univers.name))
+                    continue
+                tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") " + "\n"
             }
-            wordWriter.addTableStyledCell("small",tableRowPlot, tags.toString())
+            wordWriter.addTableStyledCell("small",tableRowPlot, tags.substring(0, tags.length()-1))
 
             substituteRolesAndPlotDescription(p)
 
