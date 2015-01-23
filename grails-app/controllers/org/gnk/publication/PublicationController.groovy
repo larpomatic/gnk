@@ -998,6 +998,26 @@ class PublicationController {
                 wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
                 Graph charGraph = new Graph(gn, false)
                 wordWriter.addParagraphOfText(charGraph.getRelation(charName))
+                wordWriter.addStyledParagraphOfText("T4", "Synthèses des personnages connus")
+
+                Tbl table = wordWriter.factory.createTbl()
+                Tr tableRow = wordWriter.factory.createTr()
+
+                wordWriter.addTableStyledCell("Table1L", tableRow, "Nom")
+                wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
+                wordWriter.addTableStyledCell("Table1L", tableRow, "Lien")
+                table.getContent().add(tableRow);
+                HashMap <String,String> cMap = charGraph.getRelationList(charName)
+                for (String char2 : cMap.keySet()){
+                    Tr tableRowChar = wordWriter.factory.createTr()
+                    String link = cMap.get(char2)
+                    wordWriter.addTableStyledCell("Table1C", tableRowChar, char2)
+                    wordWriter.addTableStyledCell("small", tableRowChar, "description")
+                    wordWriter.addTableStyledCell("small", tableRowChar, link)
+                    table.getContent().add(tableRowChar);
+                }
+                wordWriter.addBorders(table)
+                wordWriter.addObject(table)
             }
 
             if (!hasTags)
