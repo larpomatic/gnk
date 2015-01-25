@@ -248,10 +248,10 @@ class Character {
                 tagMap.put(tagKey, weight)
             }
         }
-        if (isMen())
+        /*if (isMen())
             tagMap.put(Tag.findByName("Homme") , TagService.LOCKED);
         if (isWomen())
-            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);
+            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);*/
         return tagMap
     }
 

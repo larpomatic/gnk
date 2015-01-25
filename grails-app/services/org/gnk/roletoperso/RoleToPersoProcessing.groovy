@@ -40,15 +40,10 @@ public class RoleToPersoProcessing {
         }
         this.gn = gn;
         unAttribuedRoleWithSettedSex = new HashMap<Role, String>();
-        /*if (this.gnTPJRoleSet != null)
-            this.gnTPJRoleSet.clear();
-        if (this.gnSTFRoleSet != null)
-            this.gnSTFRoleSet.clear();
-        if (this.gnPJGRoleSet != null)
-            this.gnPJGRoleSet.clear();*/
         process();
         LOG.info("</R2P>");
     }
+
 
     private void process() {
         LOG.info("\t<Algo>");
@@ -62,7 +57,7 @@ public class RoleToPersoProcessing {
         // Create & add STF Role
         createSTFCharacter();
         // Harmonize Sex -- Warning to relation type
-        //reHarmonizeRole();
+        reHarmonizeRole();
         //LOG.info("\t</Algo>");
 
     }
@@ -86,8 +81,8 @@ public class RoleToPersoProcessing {
     {
         int nb_men = gn.getNbMen();
         int nb_women = gn.getNbWomen();
-        TreeMap<Integer, Character> women_list = new TreeMap<Integer, Character>();
-        TreeMap<Integer, Character> men_list = new TreeMap<Integer, Character>();
+        Map<Integer, Character> women_list = new HashMap<Integer, Character>();
+        Map<Integer, Character> men_list = new HashMap<Integer, Character>();
         for (Character c : gn.getterCharacterSet())
         {
             Map<Tag, Integer> tags = c.getTags();
@@ -99,8 +94,6 @@ public class RoleToPersoProcessing {
                     wMen += tags.get(t);
                 if (t.getName() == "Femme")
                     wWomen += tags.get(t);
-                if ((wWomen != 0) && (wMen != 0))
-                    break;
             }
             if (wWomen > wMen) {
                 LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "F");
@@ -108,38 +101,50 @@ public class RoleToPersoProcessing {
                 nb_women -= 1;
                 women_list.put(wWomen - wMen, c);
             }
-            else {
+            if (wMen > wWomen) {
                 LOG.info("Harmonize Character " + c.getDTDId() + " FROM " + c.getGender() + " TO " + "M");
                 c.setGender("M");
                 nb_men -= 1;
                 men_list.put(wMen - wWomen, c);
             }
+            if (wMen == wWomen) {
+                if (c.isMen()) {
+                    men_list.put(0, c);
+                    nb_men -= 1;
+                }
+                else {
+                    women_list.put(0, c);
+                    nb_women -= 1;
+                }
+            }
         }
-        if ((nb_men > 0) || (nb_women > 0))
-        {
-            TreeMap<Integer, Character> pblm_sex;
-            int lim = 0;
-            String gender = "";
-            if (nb_men > 0) {
-                pblm_sex = men_list;
-                lim = nb_men;
-                gender = "F";
+        if (nb_men > 0) {
+            LOG.info("NEED MORE MEN");
+            List<Integer> dif = new ArrayList<Integer>();
+            dif.addAll(women_list.keySet());
+            dif.sort { a, b -> a.compareTo(b)};
+            while (nb_men > 0) {
+                Character change = women_list.get(dif.first());
+                LOG.info("BEST : " + dif.first());
+                dif.remove(0);
+                nb_men -= 1;
+                change.setGender("M");
+                LOG.info("Harmonize : CHAR-" + change.getDTDId() + " To M");
             }
-            else {
-                pblm_sex = women_list;
-                lim = nb_women;
-                gender = "M";
+        }
+        if (nb_women > 0) {
+            LOG.info("NEED MORE WOMEN");
+            List<Integer> dif = new ArrayList<Integer>();
+            dif.addAll(men_list.keySet());
+            dif.sort { a, b -> a.compareTo(b)};
+            while (nb_women > 0) {
+                Character change = men_list.get(dif.first());
+                LOG.info("BEST : " + dif.first());
+                dif.remove(0);
+                nb_women -= 1;
+                change.setGender("F");
+                LOG.info("Harmonize : CHAR-" + change.getDTDId() + " To F");
             }
-
-            while (lim > 0)
-            {
-                lim -= 1;
-                Character chara = pblm_sex.firstEntry().getValue();
-                chara.setGender(gender);
-                LOG.info("URGENT HARMONIZE : Character " + chara.getDTDId() + " TO " + gender);
-                pblm_sex.remove(pblm_sex.firstEntry().getKey());
-            }
-
         }
     }
 
@@ -548,13 +553,6 @@ public class RoleToPersoProcessing {
         gnTPJRoleSet = new HashSet<Role>();
         gnPJGRoleSet = new HashSet<Role>();
         gnSTFRoleSet = new HashSet<Role>();
-
-        /*if (this.gnTPJRoleSet != null)
-            this.gnTPJRoleSet.clear();
-        if (this.gnSTFRoleSet != null)
-            this.gnSTFRoleSet.clear();
-        if (this.gnPJGRoleSet != null)
-            this.gnPJGRoleSet.clear();*/
 
         assert (gn != null);
         if (gn == null) {
