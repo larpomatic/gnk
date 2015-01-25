@@ -90,7 +90,7 @@
                 <input type="hidden" id="gnId" value="${gnId}">
 
 
-                <div class="span3">
+                <div class="span3"  id="tagListurl" data-url="<g:createLink controller='substitution' action='tagList'/>">
                     <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
                     <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
                     <option id="reset1" value="-1"></option>
@@ -125,7 +125,7 @@
 <!--g:render template="modalViewPlaces" /-->
 
 <g:javascript src="substitution/subPlaces.js"/>
-
+<g:javascript src="substitution/subPlaceFusion.js"/>
 <script type="text/javascript">
     $(document).ready(function () {
         // PlacesJSON
@@ -173,89 +173,7 @@
         });
     });
 
-    $("#fusionbuttonmodal").click(function () {
-        var reset1 = $("#reset1");
-        var reset2 = $("#reset2");
-        reset1.prop("selected", true)
-        reset2.prop("selected", true)
-        var com2 = $("#com2");
-        var com1 = $("#com1");
-        com2.html("");
-        com1.html("")
-    });
 
-    $("#fusionButton").click(function () {
-        var loop = $("#loopPlaceList");
-        var useless = $("#fusiontbodyplace");
-        var place1 = $("#placeMergeable1");
-        var place2 =$("#placeMergeable2");
-        $.ajax({
-            type: "POST",
-            url: useless.attr("data-url"),
-            dataType: "json",
-            data: {place1 : place1.val(), place2 : place2.val()},
-            success: function (place) {
-//                loop.attr("in",placeList)
-                $(".placeUnity td:contains("+place1.val()+")").closest("tr").remove();
-                $(".placeUnity td:contains("+place2.val()+")").closest("tr").remove();
-                var template = Handlebars.templates['templates/substitution/place'];
-                var context = {
-                    place: place,
-                    i : $(".placeUnity").size() + 1
-                };
-                var html = template(context);
-                $('#fusiontbodyplace').append(html);
-                var count = 1;
-                $('.placeUnity').each(function() {
-                    $("td:first-child", this).html(count);
-                    count++;
-                });
-            }
-        })
-    });
-    $("#placeMergeable2").change(function () {
-        var place2 = $("#placeMergeable2");
-        var com2 = $("#com2");
-        if(place2.val() != "-1"){
-            var tags2 = $(".placeUnity td:contains("+place2.val()+")").next().next().html();
-            var comment2 = $(".placeUnity td:contains("+place2.val()+")").next().html();
-            com2.html("Comment : <br/>"+comment2 +"<br/><br/>" + "Liste des Tags : <br/>"+tags2)
-        }
-        else
-        {
-            com2.html("")
-        }
-    });
-    $("#placeMergeable1").change(function () {
-        var place1 = $("#placeMergeable1");
-        var place2 = $("#placeMergeable2");
-        var placel = $("#placeList");
-        var com1 = $("#com1");
-
-        $('option:not([value="-1"])', place2).remove();
-        if(place1.val() != "-1"){
-            place2.prop("disabled", false);
-            var comment1 = $(".placeUnity td:contains("+place1.val()+")").next().html();
-            var tags1 = $(".placeUnity td:contains("+place1.val()+")").next().next().html();
-            com1.html("Comment : <br/>"+comment1 + "<br/><br/>" + "Liste des Tags : <br/>"+ tags1)
-        }
-        else
-        {
-            place2.prop("disabled", true);
-            com1.html("")
-        }
-        $.ajax({
-            type: "POST",
-            url: place1.attr("data-url"),
-            dataType: "json",
-            data: { place1: place1.val(), placel : placel.val()},
-            success: function (placeList) {
-                $(placeList).each(function () {
-                    place2.append('<option value="' + this.code + '">' + this.code + '</option>');
-                });
-            }
-        })
-    });
     function initPlacesJSON() {
         var jsonObject = new Object();
         // Universe

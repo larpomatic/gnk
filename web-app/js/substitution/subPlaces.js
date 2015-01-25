@@ -266,7 +266,7 @@ function initPlacesEvents(url) {
             // Enable selectAll
             $("#restartPlaceAll").removeAttr("disabled");
 
-            $("#customPlace").each(function() {
+            $("#customPlace").each(function () {
                 $("#customPlace").removeAttr("disabled")
             });
 

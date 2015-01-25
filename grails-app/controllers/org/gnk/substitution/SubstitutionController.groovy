@@ -359,4 +359,31 @@ class SubstitutionController {
         */
 
     }
+
+    def tagList(){
+        String code = params.tagscode
+        List<Place> placeList = session.getAttribute("placeList")
+        Place p1;
+
+        for(Place place1 : placeList){
+            if (place1.code.equals(code)){
+                p1 = place1
+            }
+        }
+        List<Tag> placeTags = p1.tagList
+        placeTags = placeTags.sort(){Math.abs(it.weight)}
+        placeTags = placeTags.reverse()
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray()
+        JSONObject jsonsub = new JSONObject();
+        for (Tag tag : placeTags){
+            jsonsub.put("code", tag.value);
+            jsonsub.put("value", tag.weight);
+            jsonArray.add(jsonsub)
+        }
+        json.put("tags", jsonArray)
+        render(contentType: "application/json") {
+            jsonsub
+        }
+    }
 }
