@@ -18,7 +18,7 @@
                 <li>Nombre de rôles dans la base : ${Role.count()}</li>
                 <li>Nombre de ressources dans la base : ${Resource.count()}</li>
 			</ul>
-			
+            <input type="hidden" id="path" value="<g:resource dir="images/tag" file="true.png"/>"/>
 			<h4>${message(code: 'adminRef.tag.stats.detail')}</h4>
 			
 			<div>Le module de statistiques est encore en version 0.1 et ne gère pas les statistiques détaillées. </div>

@@ -1,7 +1,15 @@
 package org.gnk.tag
 
+import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.gnk.administration.DbCoherenceController
 import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.ResourceHasTag
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasTag
+import org.gnk.selectintrigue.PlotHasTag
+
+//import org.json.JSONArray
 import org.springframework.security.access.annotation.Secured
 import org.gnk.tag.TagService
 import org.springframework.web.context.request.RequestContextHolder
@@ -363,17 +371,17 @@ class TagController {
             if (tr) {
                 tr.delete(flush: true);
             }
-            for (int i = 0; tagInstance.extPlaceTags; i++){
-                ((PlaceHasTag)tagInstance.extPlaceTags.toArray()[i]).delete()
+            for (int i = 0; tagInstance.extPlaceTags; i++) {
+                ((PlaceHasTag) tagInstance.extPlaceTags.toArray()[i]).delete()
             }
-            for (int i = 0; tagInstance.extPlotTags; i++){
-                ((PlaceHasTag)tagInstance.extPlotTags.toArray()[i]).delete()
+            for (int i = 0; tagInstance.extPlotTags; i++) {
+                ((PlaceHasTag) tagInstance.extPlotTags.toArray()[i]).delete()
             }
-            for (int i = 0; tagInstance.extResourceTags; i++){
-                ((PlaceHasTag)tagInstance.extResourceTags.toArray()[i]).delete()
+            for (int i = 0; tagInstance.extResourceTags; i++) {
+                ((PlaceHasTag) tagInstance.extResourceTags.toArray()[i]).delete()
             }
-            for (int i = 0; tagInstance.extRoleTags; i++){
-                ((PlaceHasTag)tagInstance.extRoleTags.toArray()[i]).delete()
+            for (int i = 0; tagInstance.extRoleTags; i++) {
+                ((PlaceHasTag) tagInstance.extRoleTags.toArray()[i]).delete()
             }
             tagInstance.parent = null;
             flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
@@ -461,4 +469,101 @@ class TagController {
         redirect(action: "list")
     }
 
+    def showInformation() {
+        int idTag = Integer.parseInt(params.idTag);
+        Tag tag = Tag.findById(idTag)
+        JSONObject jsonMain = new JSONObject()
+        JSONArray jsonParent = new JSONArray()
+        JSONArray jsonRess = new JSONArray()
+        JSONArray jsonRole = new JSONArray()
+        JSONArray jsonPlot = new JSONArray()
+        JSONArray jsonRelation = new JSONArray()
+        Tag tmp = tag
+        while (tmp.parentId != 0 && tmp.parent != null) {
+            JSONObject parent = new JSONObject();
+            parent.put("idparent", tmp.parentId);
+            parent.put("nameparent", tmp.parent.name.encodeAsHTML())
+            tmp = tmp.parent
+            jsonParent.put(parent)
+        }
+        int tmpnb = 1
+        for (ResourceHasTag res : tag.extResourceTags) {
+
+            JSONObject resjson = new JSONObject();
+            resjson.put("index", tmpnb);
+            resjson.put("name", res.resource.name)
+            resjson.put("gender", res.resource.gender)
+            resjson.put("description", res.resource.description)
+            resjson.put("weight", res.weight)
+            jsonRess.put(resjson)
+            tmpnb++;
+        }
+        tmpnb = 1
+        for (Role role : Role.list()) {
+            for (RoleHasTag rolehasTag : role.roleHasTags) {
+                if (rolehasTag.tag.equals(tag)) {
+                    JSONObject rolejson = new JSONObject();
+                    rolejson.put("index", tmpnb);
+                    rolejson.put("code", role.code)
+                    rolejson.put("description", role.description)
+                    rolejson.put("weight", rolehasTag.weight)
+                    jsonRole.put(rolejson)
+                    tmpnb++;
+                }
+            }
+        }
+        tmpnb = 1
+        for (PlotHasTag plotTag : tag.extPlotTags) {
+
+            JSONObject plotjson = new JSONObject();
+            plotjson.put("index", tmpnb);
+            plotjson.put("name", plotTag.plot.name)
+            plotjson.put("description", plotTag.plot.description)
+            plotjson.put("username", plotTag.plot.user.username)
+            plotjson.put("weight", plotTag.weight)
+            jsonPlot.put(plotjson)
+            tmpnb++;
+        }
+        tmpnb = 1
+        for (TagRelation tagR : TagRelation.findByTag1(tag)) {
+
+            JSONObject tagRjson = new JSONObject();
+            tagRjson.put("index", tmpnb);
+            tagRjson.put("nameOtherTag", tagR.tag2.name)
+            tagRjson.put("description", tagR.weight)
+            jsonRelation.put(tagRjson)
+            tmpnb++;
+        }
+        for (TagRelation tagR : TagRelation.findByTag2(tag)) {
+            JSONObject tagRjson = new JSONObject();
+            tagRjson.put("index", tmpnb);
+            tagRjson.put("nameOtherTag", tagR.tag1.name)
+            tagRjson.put("weight", tagR.weight)
+            jsonRelation.put(tagRjson)
+            tmpnb++;
+        }
+        jsonMain.put("name", tag.name)
+        jsonMain.put("id", tag.id)
+        jsonMain.put("parents", jsonParent)
+        jsonMain.put("nbRelations", TagRelation.findAllByTag1(tag).size() + TagRelation.findAllByTag2(tag).size())
+        jsonMain.put("nbRess", tag.extResourceTags.size())
+        jsonMain.put("nbRoles", tag.extRoleTags.size())
+        jsonMain.put("nbPlots", tag.extPlotTags.size())
+        jsonMain.put("relations", jsonRelation)
+        jsonMain.put("ress", jsonRess)
+        jsonMain.put("plots", jsonPlot)
+        jsonMain.put("roles", jsonRole)
+        jsonMain.put("tagRelevant", tag.tagRelevant)
+        if (tag.tagRelevant) {
+            jsonMain.put("tagRelevantFn", tag.tagRelevant.relevantFirstname)
+            jsonMain.put("tagRelevantLn", tag.tagRelevant.relevantLastname)
+            jsonMain.put("tagRelevantRs", tag.tagRelevant.relevantResource)
+            jsonMain.put("tagRelevantPlot", tag.tagRelevant.relevantPlot)
+            jsonMain.put("tagRelevantPlace", tag.tagRelevant.relevantPlace)
+            jsonMain.put("tagRelevantRole", tag.tagRelevant.relevantRole)
+        }
+        render(contentType: "application/json") {
+            jsonMain
+        }
+    }
 }
