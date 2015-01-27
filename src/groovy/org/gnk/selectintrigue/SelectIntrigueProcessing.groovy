@@ -84,6 +84,17 @@ public class SelectIntrigueProcessing {
     }
 
     public isEvenementialIsCompatible(Plot plot) {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
+        if (currentUser == null) {
+            return false;
+        }
+        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
+            return false;
+        }
+        if (plot.getIsDraft())
+            return false;
         int countWomen = 0;
         int countMen = 0;
         int countOthers = 0;

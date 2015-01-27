@@ -5,7 +5,7 @@
                 <g:message code="redactintrigue.pastScene.addPastScene" default="New object"/>
             </a>
         </li>
-        <g:each in="${plotInstance.pastescenes}" status="i5" var="pastScene">
+        <g:each in="${pastscenes}" status="i5" var="pastScene">
             <li class="leftMenuList">
                 <a href="#pastScene_${pastScene.id}" data-toggle="tab" class="spanLabel">
                     ${pastScene.title?.encodeAsHTML()}
@@ -193,7 +193,7 @@
             </form>
         </div>
 
-        <g:each in="${plotInstance.pastescenes}" var="pastScene">
+        <g:each in="${pastscenes}" var="pastScene">
             <div class="tab-pane" id="pastScene_${pastScene.id}">
                 <form name="updatePastScene_${pastScene.id}" data-url="<g:createLink controller="PastScene" action="Update" id="${pastScene.id}"/>">
                     <g:hiddenField name="id" value="${pastScene.id}"/>

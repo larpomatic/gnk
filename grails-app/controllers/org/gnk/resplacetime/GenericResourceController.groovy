@@ -138,7 +138,7 @@ class GenericResourceController {
         newGenericResource.version = 1;
         newGenericResource.dateCreated = new Date();
         newGenericResource.lastUpdated = new Date();
-        if (params.containsKey("resourceTitle") && params.resourceTitle != "") {
+        if (params.containsKey("resourceIsClue")) {
             newGenericResource.title = params.resourceTitle;
             if (params.containsKey("resourceRolePossessor")) {
                 Integer possessorId = params.resourceRolePossessor as Integer;
@@ -159,8 +159,14 @@ class GenericResourceController {
                 newGenericResource.description = params.resourceDescription;
             }
         }
+        else if (newGenericResource.title != null) {
+            newGenericResource.title = null;
+            newGenericResource.possessedByRole = null;
+            newGenericResource.fromRole = null;
+            newGenericResource.toRole = null;
+            newGenericResource.description = null;
+        }
         newGenericResource.save(flush: true);
-//        newGenericResource = GenericResource.findAllWhere("code": newGenericResource.getCode()).first();
 
         params.each {
             if (it.key.startsWith("resourceTags_")) {

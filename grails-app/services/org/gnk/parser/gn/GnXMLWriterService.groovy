@@ -204,6 +204,7 @@ class GnXMLWriterService {
 
     private Element getAuthorsElement(Document doc, Gn gn) {
         Element authors = doc.createElement("AUTHORS");
+        Date now = new Date();
 
         if (gn.gnHasUsers) {
             Integer i = 0;
@@ -211,9 +212,9 @@ class GnXMLWriterService {
                 User author = authorP.user;
                 Element authorElement = doc.createElement("AUTHOR");
                 authorElement.setAttribute("id", i.toString());
-                authorElement.setAttribute("db_id", author.id);
-                authorElement.setAttribute("last_edit_date", authorP.lastUpdated);
-                authorElement.setAttribute("is_creator", authorP.isCreator);
+                authorElement.setAttribute("db_id", authorP.userId.toString());
+                authorElement.setAttribute("last_edit_date", authorP.lastUpdated == null ? now.time.toString() : authorP.lastUpdated.time.toString());
+                authorElement.setAttribute("is_creator", authorP.isCreator ? "true" : "false");
                 authors.appendChild(authorElement);
                 i++;
             }

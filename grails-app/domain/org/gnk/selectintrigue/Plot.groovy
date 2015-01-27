@@ -32,8 +32,8 @@ class Plot {
     Boolean isMainstream
     Boolean isPublic
     Boolean isDraft
-	Date creationDate
-	Date updatedDate
+//	Date creationDate
+//	Date updatedDate
 	String description
 	User user
 

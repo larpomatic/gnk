@@ -165,8 +165,8 @@ class GNKImportationService {
             plotBDD.isDraft = plot.isDraft
             plotBDD.isEvenemential = plot.isEvenemential
             plotBDD.isPublic = plot.isPublic
-            plotBDD.creationDate = plot.creationDate
-            plotBDD.updatedDate = plot.updatedDate
+            plotBDD.dateCreated = plot.dateCreated
+            plotBDD.lastUpdated = plot.lastUpdated
         }
         else
             plotBDD = plot

@@ -5,6 +5,8 @@ import org.gnk.gn.GnHasUser
 import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.roletoperso.Role
+import org.gnk.roletoperso.RoleHasTag
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -239,6 +241,136 @@ class SelectIntrigueController {
                 selectedEvenemential: evenementialId as String]);
     }
 
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "selectIntrigue";
+        gn.characterSet = null;
+        gn.nonPlayerCharSet = null;
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        TagService tagService = new TagService();
+        Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
+        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>();
+        Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>();
+        Set<Plot> bannedPlotSet = new HashSet<Plot>();
+        int evenementialId = 0;
+        int mainstreamId = 0;
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
+        for (Plot plot : Plot.list()) {
+            if (currentUser == null) {
+                continue;
+            }
+            if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
+                continue;
+            }
+            if (plot.getIsDraft())
+                continue;
+            if (plot.isEvenemential && isEvenementialIsCompatible(plot, gn)) {
+                selectedEvenementialPlotInstanceList.add(plot);
+                for (Plot gnPlot : gn.selectedPlotSet) {
+                    if (plot.name == gnPlot.name) {
+                        evenementialId = plot.id;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (plot.isMainstream) {
+                for (Plot gnPlot : gn.selectedPlotSet) {
+                    if (plot.name == gnPlot.name) {
+                        mainstreamId = plot.id;
+                        break;
+                    }
+                }
+            }
+            Boolean isselected = false;
+            Boolean isbanned = false;
+            for (Plot gnPlot : gn.selectedPlotSet) {
+                if (plot.name == gnPlot.name) {
+                    isselected = true;
+                    break;
+                }
+            }
+            for (Plot gnPlot : gn.bannedPlotSet) {
+                if (plot.name == gnPlot.name) {
+                    isbanned = true;
+                    break;
+                }
+            }
+            if (!isselected && !isbanned) {
+                if (plot.isMainstream) {
+                    selectedMainstreamPlotInstanceList.add(plot);
+                }
+                nonTreatedPlots.add(plot);
+            }
+
+        }
+        for (Plot gnPlot : gn.selectedPlotSet) {
+            if (gnPlot.name != "Life" && !gnPlot.isEvenemential) {
+                Plot plot = Plot.findByNameAndDateCreated(gnPlot.name, gnPlot.dateCreated);
+                selectedPlotInstanceList.add(plot);
+                nonTreatedPlots.remove(plot);
+            }
+        }
+        for (Plot gnPlot : gn.bannedPlotSet) {
+            Plot plot = Plot.findByNameAndDateCreated(gnPlot.name, gnPlot.dateCreated);
+            bannedPlotSet.add(plot);
+        }
+        List<List<String>> statisticResultList = new ArrayList<List<String>>();
+        render(view: "/selectIntrigue/selectIntrigue", model:
+                [gnInstance: gn,
+                        screenStep: '1',
+                        plotTagList: tagService.getPlotTagQuery(),
+                        universList: tagService.getUniversTagQuery(),
+                        plotInstanceList: selectedPlotInstanceList,
+                        evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
+                        mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
+                        bannedPlotInstanceList: bannedPlotSet,
+                        nonTreatedPlots: nonTreatedPlots,
+                        statisticResultList: statisticResultList,
+                        evenementialId: evenementialId,
+                        mainstreamId: mainstreamId,
+                        conventionList: Convention.list()]);
+    }
+
+    public isEvenementialIsCompatible(Plot plot, gn) {
+        int countWomen = 0;
+        int countMen = 0;
+        int countOthers = 0;
+        for (Role role in plot.roles) {
+            RoleHasTag Man = RoleHasTag.createCriteria().get {
+                like("tag", Tag.createCriteria().get {
+                    like("name", "Homme")
+                    like("version", 2)
+                }.first())
+            }?.first();
+            RoleHasTag Woman = RoleHasTag.createCriteria().get {
+                like("tag", Tag.createCriteria().get {
+                    like("name", "Femme")
+                    like("version", 2)
+                }.first())
+            }?.first();
+            if (Man && (Man.weight == 101)) {
+                countMen++;
+            } else if (Man && Man.weight == -101) {
+                countWomen++;
+            } else if (Woman && Woman.weight == 101) {
+                countWomen++;
+            } else if (Woman && Woman.weight == -101) {
+                countMen++;
+            } else {
+                countOthers++;
+            }
+        }
+        return (countMen + countWomen + countOthers < gn.getNbPlayers());
+    }
+
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
 		List<String> stat = new ArrayList<String>(3)
 		stat.add(name)
@@ -270,7 +402,8 @@ class SelectIntrigueController {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])
 			return
 		}
-
+        gnHasUser.gn = gnInstance;
+        gnHasUser.save(flush: true);
 		flash.message = message(code: 'default.created.message', args: [
 			message(code: 'gn.label', default: 'GN'),
 			gnInstance.id
@@ -513,6 +646,9 @@ class SelectIntrigueController {
 			redirect(action: "list")
 			return
 		}
+        for (GnHasUser gnHasUser : gnInstance.gnHasUsers) {
+            GnHasUser.executeUpdate("delete GnHasUser g where g.gn = " + id);
+        }
 		gnInstance.delete(flush: true)
 		flash.message = message(code: 'default.deleted.message', args: [message(code: 'gn.label', default: 'GN'), id])
 		redirect(action: "list")

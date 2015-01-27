@@ -1,8 +1,11 @@
 package org.gnk.roletoperso
 
 import com.esotericsoftware.minlog.Log
+import org.apache.poi.hssf.record.BOFRecord
+import org.apache.xpath.operations.Bool
 import org.gnk.genericevent.GenericEvent
 import org.gnk.genericevent.GenericEventCanImplyTag
+import org.gnk.naming.Convention
 import org.gnk.resplacetime.Pastscene
 import org.gnk.selectintrigue.Plot
 import org.gnk.gn.Gn
@@ -11,6 +14,8 @@ import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.tag.TagService
 
 import org.gnk.tag.Tag
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 
 import java.util.logging.Logger
 
@@ -27,18 +32,18 @@ class RoleToPersoController {
         [characters: characterService.characters]
     }
 
-    def getBack(Long id) {
-        Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);
-        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "selectIntrigue";
-        gn.characterSet = null;
-        gn.nonPlayerCharSet = null;
-        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
-        gn.save(flush: true);
-        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
-    }
+//    def getBack(Long id) {
+//        Gn gn = Gn.get(id);
+//        final gnData = new GNKDataContainerService();
+//        gnData.ReadDTD(gn);
+//        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+//        gn.step = "selectIntrigue";
+//        gn.characterSet = null;
+//        gn.nonPlayerCharSet = null;
+//        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+//        gn.save(flush: true);
+//        redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"]);
+//    }
 
     def roleToPerso() {
         final gnIdStr = params.gnId
@@ -402,9 +407,8 @@ class RoleToPersoController {
             }
             int dummyInt = 999897
             Plot p = new Plot()
-            p.creationDate = gn.getSelectedPlotSet().first().creationDate
             p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
-            p.updatedDate = gn.getSelectedPlotSet().first().updatedDate
+            p.lastUpdated = gn.getSelectedPlotSet().first().lastUpdated
             p.user = gn.getSelectedPlotSet().first().user
 
             p.isDraft = true
