@@ -32,7 +32,8 @@
                 <input type="hidden" id="idTag" name="idTag" value="${tagInstance.id}"></td>
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <td>
-                    <a href="#editmodal${tagInstance.id}" role="button" class="btn" data-toggle="modal">Editer</a>
+                    <a href="#editmodal" role="button" class="btn editButton" data-toggle="modal">Editer</a>
+                    <input type="hidden" id="idTagedit" name="idTagedit" value="${tagInstance.id}"></td>
                 </td>
             </g:hasRights>
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
@@ -59,10 +60,14 @@
     </tbody>
 </table>
 <input type="hidden" name="idTagurl" id="idTagurl" data-url="<g:createLink controller="tag" action="deleteTag"/>"/>
+<input type="hidden" name="idTagediturl" id="idTagediturl" data-url="<g:createLink controller="tag" action="editTag"/>"/>
 <input type="hidden" name="idTagInformationurl" id="idTagInformationurl" data-url="<g:createLink controller="tag" action="showInformation"/>"/>
 <!-- Modal Views -->
 <g:render template="modaleditViewTags"/>
 <div id="modalViewTag">
+
+</div>
+<div id="modalEditTag">
 
 </div>
 <g:render template="detailTagChildren"/>

@@ -21,6 +21,7 @@ modules = {
         resource url: 'templates/redactIntrigue/addRoleInEvent.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
         resource url: 'templates/substitution/place.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
         resource url: 'templates/tag/modalshow.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
+        resource url: 'templates/tag/modaledit.handlebars', attrs: [type: 'js'], bundle:'bundle_application'
         resource url: 'js/application.js'
     }
 }

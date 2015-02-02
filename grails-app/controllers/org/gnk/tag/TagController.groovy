@@ -414,8 +414,8 @@ class TagController {
         render(view: "statistics", model: [listTagParent: mapTagParent, tagUniverse: tagUnivers])
     }
 
-    def editRelevantTag(int id) {
-
+    def editRelevantTag() {
+        int id = Integer.parseInt(params.idEditRelTag)
         Tag tag = Tag.findById(id)
         TagRelevant tagRelevant = tag.getTagRelevant()
         if (tagRelevant) {
@@ -472,6 +472,7 @@ class TagController {
     def showInformation() {
         int idTag = Integer.parseInt(params.idTag);
         Tag tag = Tag.findById(idTag)
+        ArrayList<Long> parentid = new ArrayList<Long>()
         JSONObject jsonMain = new JSONObject()
         JSONArray jsonParent = new JSONArray()
         JSONArray jsonRess = new JSONArray()
@@ -479,11 +480,17 @@ class TagController {
         JSONArray jsonPlot = new JSONArray()
         JSONArray jsonRelation = new JSONArray()
         Tag tmp = tag
-        while (tmp.parentId != 0 && tmp.parent != null) {
-            JSONObject parent = new JSONObject();
-            parent.put("idparent", tmp.parentId);
-            parent.put("nameparent", tmp.parent.name.encodeAsHTML())
+        while (tmp.parent != null) {
+            parentid.add(tmp.parentId)
+
             tmp = tmp.parent
+        }
+        parentid = parentid.reverse()
+        for (Long idparent : parentid){
+            Tag tagParent = Tag.findById(idparent.toInteger())
+            JSONObject parent = new JSONObject();
+            parent.put("idparent", tagParent.id);
+            parent.put("nameparent", tagParent.name.encodeAsHTML())
             jsonParent.put(parent)
         }
         int tmpnb = 1
@@ -562,6 +569,35 @@ class TagController {
             jsonMain.put("tagRelevantPlace", tag.tagRelevant.relevantPlace)
             jsonMain.put("tagRelevantRole", tag.tagRelevant.relevantRole)
         }
+        render(contentType: "application/json") {
+            jsonMain
+        }
+    }
+
+    def editTag(){
+        int idTag = Integer.parseInt(params.idTag);
+        Tag tag = Tag.findById(idTag)
+        JSONArray jsonTags = new JSONArray()
+        JSONObject jsonMain = new JSONObject()
+        jsonMain.put("tagRelevant", tag.tagRelevant)
+        if (tag.tagRelevant) {
+            jsonMain.put("tagRelevantFn", tag.tagRelevant.relevantFirstname.toString())
+            jsonMain.put("tagRelevantLn", tag.tagRelevant.relevantLastname.toString())
+            jsonMain.put("tagRelevantRs", tag.tagRelevant.relevantResource.toString())
+            jsonMain.put("tagRelevantPlot", tag.tagRelevant.relevantPlot.toString())
+            jsonMain.put("tagRelevantPlace", tag.tagRelevant.relevantPlace.toString())
+            jsonMain.put("tagRelevantRole", tag.tagRelevant.relevantRole.toString())
+        }
+        for (Tag tag1 : Tag.list()){
+            if (tag.id != tag1.id){
+                JSONObject tagjson = new JSONObject();
+                tagjson.put("name" , tag1.name)
+                tagjson.put("id" , tag1.id)
+                jsonTags.add(tagjson)
+            }
+        }
+        jsonMain.put("id", tag.id)
+        jsonMain.put("tags", jsonTags)
         render(contentType: "application/json") {
             jsonMain
         }

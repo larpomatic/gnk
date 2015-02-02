@@ -1,0 +1,55 @@
+<div id="modalsEdit">
+    <div id="editmodal{{jsonTag.id}}" class="modal hide fade" style="width: 800px; margin-left: -400px;"
+         tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+            <h3 id="myModalLabel">Editer les Tags Relevant</h3>
+        </div>
+        <form method="post" action="/gnk/tag/editRelevantTag">
+            <input type="hidden"  name="idEditRelTag" id="idEditRelTag" value="{{jsonTag.id}}"/>
+            <div class="modal-body">
+                {{#if jsonTag.tagRelevant}}
+                    <table>
+                        <tr>
+                            <td>RelevantPlace</td>
+                            <td> <input name="checkboxRelevantPlace" type="checkbox" {{isTagPL}}/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantFirstName</td>
+                            <td><input name="checkboxRelevantFirstName" type="checkbox" {{isTagFN}}/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantLastName</td>
+                            <td><input name="checkboxRelevantLastName" type="checkbox" {{isTagLN}}/></td>
+                        </tr>
+                        <tr><td>RelevantPlot</td>
+                            <td><input name="checkboxRelevantPlot" type="checkbox" {{isTagPlot}}/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantResource</td>
+                            <td><input name="checkboxRelevantResource" type="checkbox" {{isTagRS}}/></td>
+                        </tr>
+                        <tr>
+                            <td>RelevantRole</td>
+                            <td><input name="checkboxRelevantRole" type="checkbox" {{isTagRL}}/></td>
+                        </tr>
+                    </table>
+                {{/if}}
+                <label>
+                    <select id="tagParentChoice" name="tagParentChoice">
+                        <option value="-1"></option>
+                        {{#each jsonTag.tags}}
+                                <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </label>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Valider</button>
+                <a class="btn" data-dismiss="modal" aria-hidden="true">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
