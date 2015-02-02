@@ -247,7 +247,6 @@ class InputHandler {
                 resource.plot = plot.name
                 // ObjectType
                 resource.objectType = genericResource.objectType.type
-                resource.isInGame = genericResource.isIngameClue()
 
                 // TagList
                 resource.tagList = []
