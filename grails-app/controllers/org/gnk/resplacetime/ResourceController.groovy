@@ -138,6 +138,18 @@ class ResourceController {
 
         [resourceInstance: resourceInstance]
     }
+
+    def showByName(String name) {
+        Resource r = Resource.findByName(params.name)
+        def resourceInstance = Resource.get(r.id)
+        if (!resourceInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'resource.label', default: 'Resource'), r.id])
+            redirect(action: "list")
+            return
+        }
+
+        [resourceInstance: resourceInstance]
+    }
 	
 	def addTagToResource()
 	{

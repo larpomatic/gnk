@@ -93,11 +93,11 @@
                 <div class="span3"  id="tagListurl" data-url="<g:createLink controller='substitution' action='tagList'/>">
                     <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
                     <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
-                    <option id="reset1" value="-1"></option>
-                    <g:each in="${placeList}" var="p">
-                        <option value="${p.code}">${p.code}</option>
-                    </g:each>
-                </select><br/>
+                        <option id="reset1" value="-1"></option>
+                        <g:each in="${placeList}" var="p">
+                            <option value="${p.code}">${p.code}</option>
+                        </g:each>
+                    </select><br/>
                     <div id="com1">
 
                     </div>
@@ -107,8 +107,8 @@
                 <div class="span3">
                     <label><g:message code="redactintrigue.place.mergeablePlace2"/></label>
                     <select name="placeMergeable2" class="placeMergeable" disabled="disabled" id="placeMergeable2">
-                    <option id="reset2" value="-1"></option>
-                </select><br/>
+                        <option id="reset2" value="-1"></option>
+                    </select><br/>
                     <div id="com2">
 
                     </div>
@@ -148,7 +148,7 @@
                 // Gn id
                 place.gnId = ${gnInfo.dbId}
                     // Gn plot id
-                place.gnPlotId = plotId;
+                        place.gnPlotId = plotId;
                 // HTML id
                 place.htmlId = "place"+genericId+"_plot" + plotId;
                 // Code
@@ -215,4 +215,3 @@
         return jsonObject;
     }
 </script>
-

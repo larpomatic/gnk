@@ -64,6 +64,7 @@
             <td class="resource">
                 <select class="bold" disabled="disabled" isEmpty="true">
                 </select>
+            <button type="button" class="btn viewDetails" title="Voir les details">Voir les details</button>
                 <input type="text" id="customResource" class="written" disabled="disabled"
                        placeholder="Add a custom resource">
                 <button type="button" class="btn customRessource" data-plot-id="${resource.plotId}" data-id="${resource.id}" title="Create the custom resource"><i class="icon-arrow-left"></i></button>
@@ -90,6 +91,15 @@
         isSubResourcesRunning = false;
 
         initResourcesEvents("${g.createLink(controller:'substitution', action:'getSubResources')}")
+
+        $('.viewDetails').click(function(){
+            var input = $(this).prev();
+            var content = input.val();
+            if (content != "") {
+                window.open("/gnk/resource/showByName?name=" + content);
+                %{--redirect("${g.createLink(controller: 'Resource', action: 'showByName', params: [name: 'Arc'])}");--}%
+            }
+        });
 
         $('.customRessource').click(function(){
             var input = $(this).prev();

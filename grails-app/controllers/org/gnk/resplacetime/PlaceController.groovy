@@ -80,6 +80,18 @@ class PlaceController {
         [placeInstance: placeInstance]
     }
 
+    def showByName(String name) {
+        Place p = Place.findByName(params.name)
+        def placeInstance = Place.get(p.id)
+        if (!placeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'place.label', default: 'Place'), p.id])
+            redirect(action: "list")
+            return
+        }
+
+        [resourceInstance: placeInstance]
+    }
+
     def edit(Long id) {
         def placeInstance = Place.get(id)
         if (!placeInstance) {
