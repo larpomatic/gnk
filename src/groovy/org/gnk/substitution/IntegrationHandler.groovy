@@ -415,35 +415,80 @@ class IntegrationHandler {
         // Pastscene
         for (pastsceneJson in dateJsonObject.pastscenes) {
             // Create pastceneTime
+            Calendar calPastScene = gnBeginDate.toCalendar()
+            // TODO il faut mettre dans le PastsceneTime créé tout en absolute en fonction du pastscene reçu.
             PastsceneTime pastsceneTime = new PastsceneTime()
             pastsceneTime.relativeDateValue = null
-            if (pastsceneJson.relativeTime != "") {
+            pastsceneTime.relativeDateUnit = null
+            /*if (pastsceneJson.relativeTime != "") {
                 pastsceneTime.relativeDateValue = pastsceneJson.relativeTime as Integer
             }
-            pastsceneTime.relativeDateUnit = null
+
             if (pastsceneJson.relativeDateUnit != "") {
                 pastsceneTime.relativeDateUnit = pastsceneJson.relativeTimeUnit
             }
+            */
             pastsceneTime.absoluteYear = null
             if (pastsceneJson.absoluteYear != "") {
-                pastsceneTime.absoluteYear = pastsceneJson.absoluteYear as Integer
+
+                if (pastsceneJson.isYearAbsolute == "true") {
+                    //pastsceneTime.absoluteYear = pastsceneJson.absoluteYear as Integer
+                    calPastScene.set(Calendar.YEAR, pastsceneJson.absoluteYear as Integer)
+                } else {
+                    //pastsceneTime.absoluteYear = gnBeginDate.getAt(Calendar.YEAR) - (pastsceneJson.absoluteYear as Integer)
+                    calPastScene.add(Calendar.YEAR, -(pastsceneJson.absoluteYear as Integer))
+                }
+
             }
+
             pastsceneTime.absoluteMonth = null
             if (pastsceneJson.absoluteMonth != "") {
-                pastsceneTime.absoluteMonth = pastsceneJson.absoluteMonth as Integer
+                if (pastsceneJson.isMonthAbsolute  == "true") {
+                    calPastScene.set(Calendar.MONTH, pastsceneJson.absoluteMonth as Integer)
+                } else {
+                    calPastScene.add(Calendar.MONTH, - (pastsceneJson.absoluteMonth as Integer))
+                }
             }
+
             pastsceneTime.absoluteDay = null
             if (pastsceneJson.absoluteDay != "") {
-                pastsceneTime.absoluteDay = pastsceneJson.absoluteDay as Integer
+                if (pastsceneJson.isDayAbsolute  == "true") {
+                    //pastsceneTime.absoluteDay = pastsceneJson.absoluteDay as Integer
+                    calPastScene.set(Calendar.DAY_OF_MONTH, pastsceneJson.absoluteDay as Integer)
+                } else {
+                    calPastScene.add(Calendar.DAY_OF_MONTH, - (pastsceneJson.absoluteDay as Integer))
+                    //pastsceneTime.absoluteDay = gnBeginDate.getAt(Calendar.DAY_OF_MONTH) - (pastsceneJson.absoluteDay as Integer)
+                }
             }
+
             pastsceneTime.absoluteHour = null
             if (pastsceneJson.absoluteHour != "") {
-                pastsceneTime.absoluteHour = pastsceneJson.absoluteHour as Integer
+                if (pastsceneJson.isHourAbsolute  == "true") {
+                    calPastScene.set(Calendar.HOUR, pastsceneJson.absoluteHour as Integer)
+                } else {
+                    calPastScene.add(Calendar.HOUR, - (pastsceneJson.absoluteHour as Integer))
+                }
             }
             pastsceneTime.absoluteMinute = null
+
             if (pastsceneJson.absoluteMinute != "") {
-                pastsceneTime.absoluteMinute = pastsceneJson.absoluteMinute as Integer
+                if (pastsceneJson.isMinuteAbsolute  == "true") {
+                    calPastScene.set(Calendar.MINUTE, pastsceneJson.absoluteMinute as Integer)
+                } else {
+                    calPastScene.add(Calendar.MINUTE, - (pastsceneJson.absoluteMinute as Integer))
+                }
             }
+
+            pastsceneTime.absoluteYear = calPastScene.getAt(Calendar.YEAR)
+            pastsceneTime.absoluteMonth = calPastScene.getAt(Calendar.MONTH)
+            pastsceneTime.absoluteDay = calPastScene.getAt(Calendar.DAY_OF_MONTH)
+            pastsceneTime.absoluteHour = calPastScene.getAt(Calendar.HOUR)
+            pastsceneTime.absoluteMinute = calPastScene.getAt(Calendar.MINUTE)
+            pastsceneJson.isYearAbsolute = "true"
+            pastsceneJson.isMonthAbsolute = "true"
+            pastsceneJson.isDayAbsolute = "true"
+            pastsceneJson.isHourAbsolute = "true"
+            pastsceneJson.isMinuteAbsolute = "true"
 
             // Call service
             if (pastsceneJson.isUpdate != null && pastsceneJson.isUpdate == "yes") {

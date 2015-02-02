@@ -39,6 +39,8 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Rechercher</button>
+        <br/>
+        Le caractère '%' est utilisé pour les expressions régulière (il remplace aucun, un ou plusieurs caractères)
     </g:form>
     <div>
         <g:render template="../infosAndErrors"/>

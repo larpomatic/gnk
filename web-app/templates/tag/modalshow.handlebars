@@ -1,0 +1,246 @@
+<div id="modals">
+<div id="modalValue{{jsonTag.id}}" class="modal hide" style="width: 800px; margin-left: -400px; z-index: 9999;"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+    <div id="fa-container{{jsonTag.id}}" class="tagRefLink">
+        <div id="fa{{jsonTag.id}}">
+            {{#if jsonTag.parents}}
+                {{#each jsonTag.parents}}
+                    <a id="tagparent{{idparent}}" class="fa" data-id1="{{idparent}}"  data-id="{{../jsonTag.id}}">{{{nameparent}}}</a> >
+                {{/each}}
+                <a id="tagparent{{jsonTag.id}}" class="fa" data-id1="{{jsonTag.id}}"  data-id="{{jsonTag.id}}">{{{jsonTag.name}}}</a>
+            {{/if}}
+        </div>
+    </div>
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+    <h3 id="myModalLabel">Détail de l'utilisation du tag {{jsonTag.name}}</h3>
+</div>
+
+<div class="modal-body">
+
+<div class="accordion" id="accordion{{jsonTag.id}}plot">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordion{{jsonTag.id}}plot"
+               href="#collapse{{jsonTag.id}}plot"><h4 class="cap">{{jsonTag.nbPlots}} Intrigues</h4>
+            </a>
+        </div>
+
+        <div id="collapse{{jsonTag.id}}plot" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="upper">
+                        <th>#</th>
+                        <th>nom de l'intrigue</th>
+                        <th>description de l'intrigue</th>
+                        <th>login du créateur de l'intrigue</th>
+                        <th>poids du tag</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each jsonTag.plots}}
+                        <tr>
+                            {{#if weight}}
+                                <td>{{index}}</td>
+                                <td>{{name}}</td>
+                                <td>{{description}}</td>
+                                <td>{{username}}</td>
+                                <td>{{weight}}%</td>
+                            {{else}}
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordion{{jsonTag.id}}role">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordion{{jsonTag.id}}role"
+               href="#collapse{{jsonTag.id}}role"><h4 class="cap">{{jsonTag.nbRoles}} Rôles</h4>
+            </a>
+        </div>
+
+        <div id="collapse{{jsonTag.id}}role" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="upper">
+                        <th>#</th>
+                        <th>code du rôle</th>
+                        <th>description du rôle</th>
+                        <th>poids du tag</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each jsonTag.roles}}
+                            <tr>
+                                {{#if weight}}
+                                    <td>{{index}}</td>
+                                    <td>{{code}}</td>
+                                    <td>{{description}}</td>
+                                    <td>{{weight}}%</td>
+                                {{/if}}
+                            </tr>
+                    {{/each}}
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordion{{jsonTag.id}}ress">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordion{{jsonTag.id}}ress"
+               href="#collapse{{jsonTag.id}}ress"><h4 class="cap">{{jsonTag.nbRess}} Ressources</h4>
+            </a>
+        </div>
+
+        <div id="collapse{{jsonTag.id}}ress" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="upper">
+                        <th>#</th>
+                        <th>nom de la ressource</th>
+                        <th>genre de la ressource</th>
+                        <th>description de la ressource</th>
+                        <th>poids du tag</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each jsonTag.ress}}
+                        <tr>
+                            {{#if weight}}
+                                <td>{{index}}</td>
+                                <td>{{name}}</td>
+                                <td>{{gender}}</td>
+                                <td>{{description}}</td>
+                                <td>{{weight}}%</td>
+                            {{else}}
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordion{{jsonTag.id}}rel">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse"
+               data-parent="#accordion{{jsonTag.id}}rel"
+               href="#collapse{{jsonTag.id}}rel"><h4
+                    class="cap">{{jsonTag.nbRelations}} Relations entre tag</h4>
+            </a>
+        </div>
+
+        <div id="collapse{{jsonTag.id}}rel" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="upper">
+                        <th>#</th>
+                        <th>nom de l'autre tag</th>
+                        <th>pourcentage de compatibilité</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each jsonTag.relations}}
+                        <tr>
+                            {{#if weight}}
+                                <td>{{index}}</td>
+                                <td>{{nameOtherTag}}</td>
+                                <td>{{weight}}</td>
+                            {{else}}
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                                <td/>
+                            {{/if}}
+                        </tr>
+                    {{/each}}
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{#if jsonTag.tagRelevant}}
+
+    <table class="table table-condensed" style="width: 25%">
+        <thead>
+        <tr class="upper">
+            <th>TagRelevant</th>
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>RelevantFirstname</td>
+            <td>{{#if jsonTag.tagRelevantFn}}
+                <img  src="{{src}}"/>
+            {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td>RelevantLastname</td>
+            <td>{{#if jsonTag.tagRelevantLn}}
+                <img  src="{{src}}"/>
+            {{/if}}</td>
+        </tr>
+        <tr>
+            <td>RelevantResource</td>
+            <td>{{#if jsonTag.tagRelevantRes}}
+                <img  src="{{src}}"/>
+            {{/if}}</td>
+        </tr>
+        <tr>
+            <td>RelevantPlot</td>
+            <td>{{#if jsonTag.tagRelevantPlot}}
+                <img  src="{{src}}"/>
+            {{/if}}</td>
+        </tr>
+        <tr>
+            <td>RelevantRole</td>
+            <td>{{#if jsonTag.tagRelevantRole}}
+                <img  src={{src}}/>
+            {{/if}}</td>
+        </tr>
+        <tbody>
+    </table>
+{{/if}}
+</div>
+
+<div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+</div>
+</div>
+</div>

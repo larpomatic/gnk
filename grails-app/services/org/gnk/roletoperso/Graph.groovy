@@ -161,6 +161,28 @@ class Graph {
         return (res.isEmpty()?"Aucunes relations":res)
     }
 
+    public HashMap<String, String> getRelationList(String name){
+        HashMap<String,String> res = new HashMap<String,String>();
+        Node n1 = null;
+        for (Node n : this.nodeList){
+            if(n.name.equals(name)){
+                n1 = n
+                break
+            }
+        }
+        if (n1==null){
+            return res
+        }
+        if (!n1.edges.isEmpty()){
+            for (Edge e: n1.edges){
+                if (e.isHidden)
+                    continue
+                res.put((e.n1.name.equals(n1.name)?e.n2.name:e.n1.name),e.lien)
+            }
+        }
+        return res
+    }
+
     @Override
     public String toString() {
         return this.buildGlobalGraphJSON()

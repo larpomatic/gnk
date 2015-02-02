@@ -28,7 +28,8 @@
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>${i + 1}</td>
             <td>${fieldValue(bean: tagInstance, field: "name")}</td>
-            <td><a href="#modal${tagInstance.id}" role="button" class="btn" data-toggle="modal">voir le détail</a></td>
+            <td><a href="#modalValue" role="button" class="btn  valueButton" data-toggle="modal">voir le détail</a>
+                <input type="hidden" id="idTag" name="idTag" value="${tagInstance.id}"></td>
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <td>
                     <a href="#editmodal${tagInstance.id}" role="button" class="btn" data-toggle="modal">Editer</a>
@@ -58,9 +59,12 @@
     </tbody>
 </table>
 <input type="hidden" name="idTagurl" id="idTagurl" data-url="<g:createLink controller="tag" action="deleteTag"/>"/>
+<input type="hidden" name="idTagInformationurl" id="idTagInformationurl" data-url="<g:createLink controller="tag" action="showInformation"/>"/>
 <!-- Modal Views -->
-<g:render template="modalViewTags" model="[listTagParent: listTagParent]"/>
 <g:render template="modaleditViewTags"/>
+<div id="modalViewTag">
+
+</div>
 <g:render template="detailTagChildren"/>
 <g:render template="addTags"/>
 

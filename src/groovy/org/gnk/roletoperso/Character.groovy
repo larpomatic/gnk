@@ -248,10 +248,10 @@ class Character {
                 tagMap.put(tagKey, weight)
             }
         }
-        if (isMen())
+        /*if (isMen())
             tagMap.put(Tag.findByName("Homme") , TagService.LOCKED);
         if (isWomen())
-            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);
+            tagMap.put(Tag.findByName("Femme") , TagService.LOCKED);*/
         return tagMap
     }
 
@@ -305,7 +305,7 @@ class Character {
             StringBuilder label = new StringBuilder();
             for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
                 //label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName());
-                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName() + " (" + roleHasRelationWithRole.getDescription());
+                label.append(" - ").append(roleHasRelationWithRole.getterRoleRelationType().getterName() + " (" + roleHasRelationWithRole.getDescription() + ") ");
             }
             label.delete(0, 2);
             result.put(character, label.toString());

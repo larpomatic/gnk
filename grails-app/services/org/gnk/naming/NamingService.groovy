@@ -30,10 +30,6 @@ class NamingService
         //liste des noms possibles
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
         Collections.shuffle (nlist)
-        //print(fnlistHomme.size())
-        //print(fnlistFemme.size())
-        //print(nlist.size())
-        //print(persoList.size())
 
         // Pour chaque personnage envoye
         for (PersoForNaming tmp : persoList)
@@ -182,6 +178,7 @@ class NamingService
             //print("     LN " + tmp)
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
+            print("Perso Done !")
         }
         return doneperso
     }
@@ -207,9 +204,10 @@ class NamingService
             }
             fetchMode("firstname", FetchMode.EAGER)
         }
+        print(fnlist.size())
         if(fnlist.isEmpty() || fnlist.size() < (persoList.size() * 1))
         {
-            fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 500])
+            fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 100])
             return (fnlist)
         }
         return fnlist
@@ -232,7 +230,7 @@ class NamingService
         }
         if(nlist.isEmpty() || nlist.size() < (persoList.size() * 1))
         {
-            nlist += Name.findAll("from Name order by rand()", [max: 500])
+            nlist += Name.findAll("from Name order by rand()", [max: 100])
             return (nlist)
         }
         return nlist

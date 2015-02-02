@@ -73,7 +73,7 @@
                         </td>
 					
 						<td>
-                            ${plotInstance.creationDate.format("dd/MM/yyyy")}
+                            ${plotInstance.dateCreated.format("dd/MM/yyyy")}
                         </td>
 					
 						<td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>

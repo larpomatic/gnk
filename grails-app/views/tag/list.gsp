@@ -6,6 +6,7 @@
 		<title>${message(code: 'adminRef.tag.title')}</title>
 	</head>
 	<body>
+    <input type="hidden" id="path" value="<g:resource dir="images/tag" file="true.png"/>"/>
         <g:render template="subNav" />
 		<div id="list-tag" class="content scaffold-list" role="main">
             <fieldset>
@@ -30,6 +31,7 @@
     <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
     <g:javascript src="tag/addTagChild.js"/>
     <g:javascript src="tag/deleteTag.js"/>
+    <g:javascript src="tag/modalTag.js"/>
     </body>
 </html>
 

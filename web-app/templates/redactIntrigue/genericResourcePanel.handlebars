@@ -106,14 +106,17 @@
                 </div>
                 <div class="span3">
                     {{#if genericResource.clue}}
-                        <input type="checkbox" name="resourceIsClue" checked="checked" id="resourceIsClue" disabled="disabled">
+                        <input type="checkbox" name="resourceIsClue" checked="checked" id="resourceIsClue">
                     {{else}}
-                        <input type="checkbox" name="resourceIsClue" id="resourceIsClue" disabled="disabled">
+                        <input type="checkbox" name="resourceIsClue" id="resourceIsClue">
                     {{/if}}
                 </div>
             </div>
             {{#if genericResource.clue}}
                 <div class="row formRow clueRow">
+            {{else}}
+                <div class="row formRow clueRow hidden">
+            {{/if}}
                     <div class="span1">
                         <label for="resourceTitle">
                             Titre
@@ -132,7 +135,12 @@
                         </select>
                     </div>
                 </div>
+
+            {{#if genericResource.clue}}
                 <div class="row formRow clueRow">
+            {{else}}
+                <div class="row formRow clueRow hidden">
+            {{/if}}
                     <div class="span1">
                         <label for="resourceRoleFrom">
                             Du rôle
@@ -152,18 +160,29 @@
                         </select>
                     </div>
                 </div>
+
+            {{#if genericResource.clue}}
                 <div class="row formRow text-center clueRow">
+            {{else}}
+                <div class="row formRow text-center clueRow hidden">
+            {{/if}}
+
                     <label for="resourceDescription">
                         Description
                     </label>
                 </div>
-                <div class="fullScreenEditable">
+
+            {{#if genericResource.clue}}
+                <div class="fullScreenEditable clueRow">
+            {{else}}
+                <div class="fullScreenEditable clueRow hidden">
+            {{/if}}
+
                     <!-- Editor -->
                     <div id="clueRichTextEditor{{ genericResource.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                         {{ encodeAsHtml genericResource.description }}
                     </div>
                 </div>
-            {{/if}}
         </div>
 
         <div id="resourceCluesModal_{{ genericResource.id }}" class="modal hide fade" tabindex="-1">

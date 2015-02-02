@@ -32,11 +32,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${plotInstance?.creationDate}">
+				<g:if test="${plotInstance?.dateCreated}">
 				<li class="fieldcontain">
 					<span id="creationDate-label" class="property-label"><g:message code="plot.creationDate.label" default="Creation Date" /></span>
 					
-						<span class="property-value" aria-labelledby="creationDate-label"><g:formatDate date="${plotInstance?.creationDate}" /></span>
+						<span class="property-value" aria-labelledby="creationDate-label"><g:formatDate date="${plotInstance?.dateCreated}" /></span>
 					
 				</li>
 				</g:if>
@@ -148,11 +148,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${plotInstance?.updatedDate}">
+				<g:if test="${plotInstance?.lastUpdated}">
 				<li class="fieldcontain">
 					<span id="updatedDate-label" class="property-label"><g:message code="plot.updatedDate.label" default="Updated Date" /></span>
 					
-						<span class="property-value" aria-labelledby="updatedDate-label"><g:formatDate date="${plotInstance?.updatedDate}" /></span>
+						<span class="property-value" aria-labelledby="updatedDate-label"><g:formatDate date="${plotInstance?.lastUpdated}" /></span>
 					
 				</li>
 				</g:if>

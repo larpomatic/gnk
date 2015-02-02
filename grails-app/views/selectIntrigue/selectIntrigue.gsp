@@ -20,7 +20,7 @@
             <g:render template="step0_createGn"/>
         </g:if>
         <g:if test="${screenStep == '1'}">
-            <g:render template="step1_result" />
+            <g:render template="/selectIntrigue/step1_result" />
         </g:if>
 	</div>
 </body>

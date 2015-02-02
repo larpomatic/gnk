@@ -286,7 +286,7 @@
 
                         <div class="modal-body">
                             <div class="accordion" id="accordionPastScene${role.id}">
-                                <g:each in="${plotInstance.pastescenes}" var="pastscene">
+                                <g:each in="${pastscenes}" var="pastscene">
                                     <div class="accordion-group">
                                         <g:if test="${role?.getRoleHasPastScene(pastscene)?.title}">
                                             <div class="accordion-heading alert-success">

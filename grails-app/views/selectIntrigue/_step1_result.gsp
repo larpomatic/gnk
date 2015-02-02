@@ -35,7 +35,7 @@
                     </g:link>
                 </td>
                 <g:radioGroup name="plot_status_${plotInstance.id}" values="[1, 2, 3]"
-                              value="${((Gn)gnInstance).getLockedPlotSet().contains(plotInstance) ? "1" : (((Gn)gnInstance).getBannedPlotSet().contains(plotInstance) ? "2" : "3")}">
+                              value="${((Gn)gnInstance).getLockedPlotSet()?.contains(plotInstance) ? "1" : (((Gn)gnInstance).getBannedPlotSet()?.contains(plotInstance) ? "2" : "3")}">
                     <td>
                         ${it.radio}
                     </td>

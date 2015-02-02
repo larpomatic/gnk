@@ -36,6 +36,13 @@
                             </g:hasNotRights>
                         </td>
 						<td><g:formatDate date="${gnInstance.date}" /></td>
+                        <td>
+                            <g:hasRights lvlright="${right.MGNDELETE.value()}">
+                                <g:link action="delete" id="${gnInstance.id}" class="btn btn-danger">
+                                    <g:message code="default.delete" default="Delete" />
+                                </g:link>
+                            </g:hasRights>
+                        </td>
 					</tr>
 				</g:each>
 				</tbody>

@@ -14,60 +14,60 @@ $(function(){
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
         var description = $('#clueRichTextEditor', form).html();
-description = transformDescription(description);
-$('.descriptionContent', form).val(description);
-$.ajax({
-    type: "POST",
-    url: form.attr("data-url"),
-    data: form.serialize(),
-    dataType: "json",
-    success: function(data) {
-        if (data.iscreate) {
-            createNotification("success", "Création réussie.", "Votre ressource a bien été ajouté.");
-            var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericResource'];
-            var context = {
-                resourceId: String(data.genericResource.id),
-                resourceName: data.genericResource.code
-            };
-            var html = template(context);
-            $('.resourceScreen > ul').append(html);
-            initConfirm();
-            initDeleteButton();
-            emptyGenericResourceForm();
-            createNewGenericResourcePanel(data);
-            initSearchBoxes();
-            initModifyTag();
-            stopClosingDropdown();
-            appendEntity("resource", data.genericResource.code, "important", "", data.genericResource.id);
-            initQuickObjects();
-            var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
-            $('.resourceLi .badge').html(nbGenericResources);
-            updateResource();
-            $('form[name="updateResource_' + data.genericResource.id + '"] .btnFullScreen').click(function() {
-                $(this).parent().parent().toggleClass("fullScreenOpen");
-            });
-            var spanList = $('.richTextEditor span.label-default').filter(function() {
-                return $(this).text() == data.genericResource.code;
-            });
-            spanList.each(function() {
-                $(this).removeClass("label-default").addClass("label-important");
-            });
-            $('.resourceSelector li[data-id=""]').each(function() {
-                if ($("a", $(this)).html().trim() == data.genericResource.code + ' <i class="icon-warning-sign"></i>') {
-                    $(this).remove();
+        description = transformDescription(description);
+        $('.descriptionContent', form).val(description);
+        $.ajax({
+            type: "POST",
+            url: form.attr("data-url"),
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                if (data.iscreate) {
+                    createNotification("success", "Création réussie.", "Votre ressource a bien été ajouté.");
+                    var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericResource'];
+                    var context = {
+                        resourceId: String(data.genericResource.id),
+                        resourceName: data.genericResource.code
+                    };
+                    var html = template(context);
+                    $('.resourceScreen > ul').append(html);
+                    initConfirm();
+                    initDeleteButton();
+                    emptyGenericResourceForm();
+                    createNewGenericResourcePanel(data);
+                    initSearchBoxes();
+                    initModifyTag();
+                    stopClosingDropdown();
+                    appendEntity("resource", data.genericResource.code, "important", "", data.genericResource.id);
+                    initQuickObjects();
+                    var nbGenericResources = parseInt($('.resourceLi .badge').html()) + 1;
+                    $('.resourceLi .badge').html(nbGenericResources);
+                    updateResource();
+                    $('form[name="updateResource_' + data.genericResource.id + '"] .btnFullScreen').click(function() {
+                        $(this).parent().parent().toggleClass("fullScreenOpen");
+                    });
+                    var spanList = $('.richTextEditor span.label-default').filter(function() {
+                        return $(this).text() == data.genericResource.code;
+                    });
+                    spanList.each(function() {
+                        $(this).removeClass("label-default").addClass("label-important");
+                    });
+                    $('.resourceSelector li[data-id=""]').each(function() {
+                        if ($("a", $(this)).html().trim() == data.genericResource.code + ' <i class="icon-warning-sign"></i>') {
+                            $(this).remove();
+                        }
+                    });
+                    updateAllDescription($.unique(spanList.closest("form")));
                 }
-            });
-            updateAllDescription($.unique(spanList.closest("form")));
-        }
-        else {
-            createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
-        }
-    },
-    error: function() {
-        createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
-    }
-})
-});
+                else {
+                    createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+                }
+            },
+            error: function() {
+                createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+            }
+        })
+        });
 });
 
 // modifie une ressource dans la base
@@ -91,7 +91,12 @@ function updateResource() {
                     createNotification("success", "Modifications réussies.", "Votre ressource a bien été modifiée.");
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
-                    $('.eventScreen tbody td[data-id="'+data.object.id+'"]').html(data.object.name);
+                    $('.eventScreen tbody td[data-id="' + data.object.id + '"]').html(data.object.name);
+                    var checked = $('.resourceScreen form[name="updateResource_' + data.object.id + '"] #resourceIsClue:checked').size();
+                    if (checked == 0) {
+                        $('.resourceScreen form[name="updateResource_' + data.object.id + '"] #resourceTitle').val("");
+                        $('.resourceScreen form[name="updateResource_' + data.object.id + '"] .richTextEditor').html("");
+                    }
                     initializeTextEditor();
                     $('span.label-important').each(function() {
                         if ($(this).html().trim() == data.object.oldname) {
@@ -167,7 +172,7 @@ function emptyGenericResourceForm() {
     $('form[name="newResourceForm"] .search-query').val("");
     $('form[name="newResourceForm"] .modalLi').show();
     $('form[name="newResourceForm"] .clueRow').addClass("hidden");
-    $('form[name="newResourceForm"] #resourceRichTextEditor').html("");
+    $('form[name="newResourceForm"] .richTextEditor').html("");
 }
 
 // créé un tab-pane de la nouvelle ressource
@@ -211,6 +216,9 @@ function createNewGenericResourcePanel(data) {
     $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRolePossessor option[value="'+ data.genericResource.possessedByRoleId +'"]').attr("selected", "selected");
     $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleFrom option[value="'+ data.genericResource.fromRoleId +'"]').attr("selected", "selected");
     $('form[name="updateResource_' + data.genericResource.id + '"] #resourceRoleTo option[value="'+ data.genericResource.toRoleId +'"]').attr("selected", "selected");
+    $('form[name="updateResource_' + data.genericResource.id + '"] input[name="resourceIsClue"]').click(function() {
+        $('.clueRow', $(this).closest("form")).toggleClass("hidden");
+    });
     for (var key in data.genericResource.tagList) {
         $('#resourceTagsModal_' + data.genericResource.id + " #resourceTags" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).attr('checked', 'checked');
         $('#resourceTagsModal_' + data.genericResource.id + " #resourceTagsWeight" + data.genericResource.id + "_" + data.genericResource.tagList[key].id).val(data.genericResource.tagList[key].weight);

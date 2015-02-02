@@ -96,9 +96,9 @@ class PlotXMLReaderService {
         if (PLOT.attribute("author") != "null")
             plotRes.user = User.findWhere(id: PLOT.attribute("author") as Integer)
         if (PLOT.attribute("creation_date") != "null")
-            plotRes.creationDate = new Date(new Timestamp(PLOT.attribute("creation_date") as Long).getTime())
+            plotRes.dateCreated = new Date(new Timestamp(PLOT.attribute("creation_date") as Long).getTime())
         if (PLOT.attribute("last_update_date") != "null")
-            plotRes.updatedDate = new Date(new Timestamp(PLOT.attribute("last_update_date") as Long).getTime())
+            plotRes.lastUpdated = new Date(new Timestamp(PLOT.attribute("last_update_date") as Long).getTime())
 
         return plotRes
     }

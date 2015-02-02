@@ -1,5 +1,6 @@
 package org.gnk.gn.redactintrigue
 
+import org.apache.poi.hwpf.usermodel.DateAndTime
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
@@ -43,13 +44,13 @@ class RedactIntrigueController {
         String currentUsername = user.getUsername();
         User currentUser = User.findByUsername(currentUsername);
 		def plotInstance = new Plot(params)
-		plotInstance.creationDate = new Date();
+		plotInstance.dateCreated = new Date();
 		plotInstance.description = "";
 		plotInstance.isEvenemential = false;
 		plotInstance.isMainstream = false;
 		plotInstance.isPublic = false;
 		plotInstance.isDraft = true;
-		plotInstance.updatedDate = new Date();
+		plotInstance.lastUpdated = new Date();
 		plotInstance.user = currentUser;
 		if (!plotInstance.save(flush: true)) {
 			render(view: "create", model: [plotInstance: plotInstance])
@@ -81,7 +82,9 @@ class RedactIntrigueController {
 			screen = (screen - 48)	 
 		}
         TagService tagService = new TagService();
+        List<Pastscene> pastscenes = new ArrayList<Pastscene>(orderPastscenes(plotInstance).values());
 		[plotInstance: plotInstance,
+                pastscenes: pastscenes,
                 plotTagList: tagService.getPlotTagQuery(),
                 plotUniversList: tagService.getUniversTagQuery(),
                 roleTagList: tagService.getRoleTagQuery(),
@@ -90,6 +93,46 @@ class RedactIntrigueController {
                 relationTypes: RoleRelationType.list(),
                 screenStep: screen]
 	}
+
+    public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
+        TreeMap<Long, Pastscene> pastscenes = new TreeMap<Long, Pastscene>();
+        for (Pastscene pastscene : plot.pastescenes) {
+            Calendar c = Calendar.getInstance();
+            if (pastscene.dateYear && pastscene.isAbsoluteYear) {
+                c.set(Calendar.YEAR, pastscene.dateYear);
+            }
+            else if (pastscene.dateYear && !pastscene.isAbsoluteYear) {
+                c.add(Calendar.YEAR, pastscene.dateYear * -1)
+            }
+            if (pastscene.dateMonth && pastscene.isAbsoluteMonth) {
+                c.set(Calendar.MONTH, pastscene.dateMonth);
+            }
+            else if (pastscene.dateMonth && !pastscene.isAbsoluteMonth) {
+                c.add(Calendar.MONTH, pastscene.dateMonth * -1)
+            }
+            if (pastscene.dateDay && pastscene.isAbsoluteDay) {
+                c.set(Calendar.DAY_OF_MONTH, pastscene.dateDay);
+            }
+            else if (pastscene.dateDay && !pastscene.isAbsoluteDay) {
+                c.add(Calendar.DAY_OF_MONTH, pastscene.dateDay * -1)
+            }
+            if (pastscene.dateHour && pastscene.isAbsoluteHour) {
+                c.set(Calendar.HOUR_OF_DAY, pastscene.dateHour);
+            }
+            else if (pastscene.dateHour && !pastscene.isAbsoluteHour) {
+                c.add(Calendar.HOUR_OF_DAY, pastscene.dateHour * -1)
+            }
+            if (pastscene.dateMinute && pastscene.isAbsoluteMinute) {
+                c.set(Calendar.MINUTE, pastscene.dateMinute);
+            }
+            else if (pastscene.dateMinute && !pastscene.isAbsoluteMinute) {
+                c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
+            }
+            Long millis = c.getTimeInMillis();
+            pastscenes.put(millis, pastscene);
+        }
+        return pastscenes;
+    }
 
 	def update(Long id) {
         def isupdate = true;

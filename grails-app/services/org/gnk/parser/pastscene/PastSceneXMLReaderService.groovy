@@ -202,8 +202,14 @@ class PastSceneXMLReaderService {
                 pastsceneRes.dateDay = ABSOLUTE.attribute("day") as Integer
             if (ABSOLUTE.attribute("hour") != "null" && (ABSOLUTE.attribute("hour") as String).isInteger())
                 pastsceneRes.dateHour = ABSOLUTE.attribute("hour") as Integer
-            if (ABSOLUTE.attribute("min") != "null" && (ABSOLUTE.attribute("min") as String) != null && (ABSOLUTE.attribute("min") as String).isInteger())
-                pastsceneRes.dateMinute = ABSOLUTE.attribute("min") as Integer
+            if (ABSOLUTE.attribute("minute") != "null" && (ABSOLUTE.attribute("minute") as String) != null && (ABSOLUTE.attribute("minute") as String).isInteger())
+                pastsceneRes.dateMinute = ABSOLUTE.attribute("minute") as Integer
+
+            pastsceneRes.isAbsoluteYear = (ABSOLUTE.attribute("isAbsoluteYear") == "true")
+            pastsceneRes.isAbsoluteMonth = (ABSOLUTE.attribute("isAbsoluteMonth") == "true")
+            pastsceneRes.isAbsoluteDay = (ABSOLUTE.attribute("isAbsoluteDay") == "true")
+            pastsceneRes.isAbsoluteHour = (ABSOLUTE.attribute("isAbsoluteHour") == "true")
+            pastsceneRes.isAbsoluteMinute = (ABSOLUTE.attribute("isAbsoluteMinute") == "true")
         }
     }
     /* !Construction Methods */

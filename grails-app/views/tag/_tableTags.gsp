@@ -45,4 +45,3 @@
 </table>
 
 <!-- Modal Views -->
-<g:render template="modalViewTags" />

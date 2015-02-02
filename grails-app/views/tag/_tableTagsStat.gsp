@@ -21,12 +21,15 @@
 					</ul>
 				</td>
                 <td>
-                    <a href="#modal${tagInstance.id}" role="button" class="btn" data-toggle="modal">voir le détail</a>
+                    <a href="#modalValue${tagInstance.id}" role="button" class="btn valueButton" data-toggle="modal">voir le détail</a>
+                    <input type="hidden" id="idTag" name="idTag" value="${tagInstance.id}">
                 </td>
 			</tr>
 		</g:each>
 	</tbody>
 </table>
-
+<input type="hidden" name="idTagInformationurl" id="idTagInformationurl" data-url="<g:createLink controller="tag" action="showInformation"/>"/>
 <!-- Modal Views -->
-<g:render template="modalViewTags" model="[listTagParent : listTagParent]"/>
+<div id="modalViewTag">
+</div>
+<g:javascript src="tag/modalTag.js"/>

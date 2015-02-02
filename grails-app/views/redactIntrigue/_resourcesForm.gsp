@@ -164,7 +164,6 @@
                     <div id="clueRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
-                %{--<g:textArea name="resourceDescription" id="resourceDescription" value="" rows="5" cols="100" class="hidden clueRow"/>--}%
 
                 <div id="resourceTagsModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
@@ -319,15 +318,19 @@
                         </div>
                         <div class="span3">
                             <g:if test="${resource.title != null}">
-                                <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled" checked="true" />
+                                <g:checkBox name="resourceIsClue" id="resourceIsClue" checked="true" />
                             </g:if>
                             <g:else>
-                                <g:checkBox name="resourceIsClue" id="resourceIsClue" disabled="disabled"/>
+                                <g:checkBox name="resourceIsClue" id="resourceIsClue"/>
                             </g:else>
                         </div>
                     </div>
                     <g:if test="${resource.title != null}">
                         <div class="row formRow clueRow">
+                    </g:if>
+                    <g:else>
+                        <div class="row formRow clueRow hidden">
+                    </g:else>
                             <div class="span1">
                                 <label for="resourceTitle">
                                     <g:message code="redactintrigue.resource.resourceTitle" default="Title"/>
@@ -346,7 +349,13 @@
                                           optionKey="id" optionValue="code" value="${resource.possessedByRole?.id}"/>
                             </div>
                         </div>
+
+                    <g:if test="${resource.title != null}">
                         <div class="row formRow clueRow">
+                    </g:if>
+                    <g:else>
+                        <div class="row formRow clueRow hidden">
+                    </g:else>
                             <div class="span1">
                                 <label for="resourceRoleFrom">
                                     <g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>
@@ -366,13 +375,24 @@
                                           optionKey="id" optionValue="code" value="${resource.toRole?.id}"/>
                             </div>
                         </div>
-                        <div class="row formRow text-center clueRow">
+
+                        <g:if test="${resource.title != null}">
+                            <div class="row formRow text-center clueRow">
+                        </g:if>
+                        <g:else>
+                            <div class="row formRow text-center clueRow hidden">
+                        </g:else>
                             <label for="resourceDescription">
                                 <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
                             </label>
                         </div>
 
-                        <div class="fullScreenEditable clueRow">
+                        <g:if test="${resource.title != null}">
+                            <div class="fullScreenEditable clueRow">
+                        </g:if>
+                        <g:else>
+                            <div class="fullScreenEditable clueRow hidden">
+                        </g:else>
                             <g:render template="dropdownButtons" />
 
                             <!-- Editor -->
@@ -380,8 +400,6 @@
                                 ${resource.description?.encodeAsHTML()}
                             </div>
                         </div>
-                        %{--<g:textArea name="resourceDescription" value="${resource.description}" id="resourceDescription" rows="5" cols="100" class="clueRow"/>--}%
-                    </g:if>
 
                     <div id="resourceTagsModal_${resource.id}" class="modal hide fade tags-modal" tabindex="-1">
                         <div class="modal-header">
