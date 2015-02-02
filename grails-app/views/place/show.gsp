@@ -40,15 +40,15 @@
 					
 				</li>
 				</g:if>
-			
-				<g:if test="${placeInstance?.description}">
-				<li class="fieldcontain">
-					<span id="description-label" class="property-label"><g:message code="place.description.label" default="Description" /></span>
-					
-						<span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${placeInstance}" field="description"/></span>
-					
-				</li>
-				</g:if>
+
+                <g:if test="${placeInstance?.description}">
+                    <li class="fieldcontain">
+                        <span id="description-label" class="property-label"><g:message code="place.description.label" default="Description" /></span>
+
+                        <span class="property-value" aria-labelledby="description-label"><g:fieldValue bean="${placeInstance}" field="description"/></span>
+
+                    </li>
+                </g:if>
 			
 				<g:if test="${placeInstance?.dateCreated}">
 				<li class="fieldcontain">
@@ -59,11 +59,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${placeInstance?.hasTags}">
+				<g:if test="${placeInstance?.extTags}">
 				<li class="fieldcontain">
 					<span id="hasTags-label" class="property-label"><g:message code="place.hasTags.label" default="Has Tags" /></span>
 					
-						<g:each in="${placeInstance.hasTags}" var="h">
+						<g:each in="${placeInstance.extTags}" var="h">
 						<span class="property-value" aria-labelledby="hasTags-label"><g:link controller="placeHasTag" action="show" id="${h.id}">${h?.encodeAsHTML()}</g:link></span>
 						</g:each>
 					
@@ -79,16 +79,16 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${placeInstance?.placeHasUniverses}">
-				<li class="fieldcontain">
-					<span id="placeHasUniverses-label" class="property-label"><g:message code="place.placeHasUniverses.label" default="Place Has Universes" /></span>
-					
-						<g:each in="${placeInstance.placeHasUniverses}" var="p">
-						<span class="property-value" aria-labelledby="placeHasUniverses-label"><g:link controller="placeHasUnivers" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
+				%{--<g:if test="${placeInstance?.placeHasUniverses}">--}%
+				%{--<li class="fieldcontain">--}%
+					%{--<span id="placeHasUniverses-label" class="property-label"><g:message code="place.placeHasUniverses.label" default="Place Has Universes" /></span>--}%
+					%{----}%
+						%{--<g:each in="${placeInstance.placeHasUniverses}" var="p">--}%
+						%{--<span class="property-value" aria-labelledby="placeHasUniverses-label"><g:link controller="placeHasUnivers" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></span>--}%
+						%{--</g:each>--}%
+					%{----}%
+				%{--</li>--}%
+				%{--</g:if>--}%
 			
 			</ol>
 			<g:form>

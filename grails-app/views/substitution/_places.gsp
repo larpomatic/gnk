@@ -59,9 +59,10 @@
             <td class="place">
                 <input type="radio" name="${place}Radio" id="generatedPlace" checked><select class="bold"
                                                                                              disabled="disabled"
-                                                                                             isEmpty="true"></select><br>
+                                                                                             isEmpty="true"></select>
+                <button type="button" class="btn viewPlaceDetails" title="Voir les details">Voir les details</button><br>
                 <input type="radio" name="${place}Radio" id="writtenPlace"><input type="text" id="placeWritten" disabled="disabled"
-                                                                                  class="written">
+                                                                                  class="written"><br>
                 <input type="text" id="customPlace" class="written" disabled="disabled" placeholder="Add a custom place">
                 %{--<a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>--}%
                 <button class="btn customPlace" title="Create the custom place" type="button" data-plot-id="${place.plotId}" data-id="${place.id}"><i class="icon-arrow-left"></i></button>
@@ -134,6 +135,21 @@
         isSubPlacesRunning = false;
 
         initPlacesEvents("${g.createLink(controller:'substitution', action:'getSubPlaces')}")
+
+        $('.viewPlaceDetails').click(function(){
+            var input = $(this).prev();
+            var content = input.val();
+            if (content != "") {
+                var lastIndexOf = content.lastIndexOf(" -");
+                if (lastIndexOf != -1)
+                    content = content.substring(0, lastIndexOf);
+                window.open("/gnk/place/showByName?name=" + content);
+                %{--redirect("${g.createLink(controller: 'Resource', action: 'showByName', params: [name: 'Arc'])}");--}%
+            }
+            else {
+                window.open("/gnk/place/showByName?name=" + content);
+            }
+        });
 
         $('.customPlace').click(function(){
 
@@ -215,3 +231,4 @@
         return jsonObject;
     }
 </script>
+
