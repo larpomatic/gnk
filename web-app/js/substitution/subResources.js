@@ -50,7 +50,7 @@ function updateResourcesView(resourcesJSON)
             resourceSelect.empty();
             var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0);
             var restartResourceInput = resourceElement.children(".restartResource").eq(0).children("input").eq(0);
-            var proposedNames = resource.proposedNames
+            var proposedNames = resource.proposedNames;
             if (!(typeof(proposedNames) == "undefined")) {
                 // Update name select
                 resourceSelect.css("background-color", "rgb(108,194,219)").css("color", "#FFF");
