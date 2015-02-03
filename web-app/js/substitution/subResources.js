@@ -36,7 +36,8 @@ function updateResourcesView(resourcesJSON)
     // Counters
     var nbOK = 0;
     var nbKO = 0;
-
+    var count = 0;
+    var count2 = 0
     var resourceArray = resourcesJSON.resources;
     for (var key in resourceArray) {
         var resource = resourceArray[key];
@@ -51,12 +52,18 @@ function updateResourcesView(resourcesJSON)
             var unbanResource = resourceElement.children(".resource").eq(0).children("a").eq(0);
             var restartResourceInput = resourceElement.children(".restartResource").eq(0).children("input").eq(0);
             var proposedNames = resource.proposedNames;
+            if (proposedNames.length != 1 && count != 0) {
+                proposedNames.pop();
+            }
             if (!(typeof(proposedNames) == "undefined")) {
                 // Update name select
                 resourceSelect.css("background-color", "rgb(108,194,219)").css("color", "#FFF");
                 for (var key in proposedNames) {
                     var name = proposedNames[key];
-                    resourceSelect.append($("<option>").attr("value", name).text(name));
+                    if (count != 0) {
+                        resourceSelect.append($("<option>").attr("value", name).text(name));
+                    }
+                    count++;
                 }
                 resourceSelect.attr("isEmpty", false);
                 resourceSelect.attr("disabled", false);
