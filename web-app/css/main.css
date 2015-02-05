@@ -33,10 +33,12 @@ p:first-letter {
     padding-right: 1px;
     font-weight: 500;
 }
+
 .gnk .brand {
     line-height: 40px;
     margin: 0;
     padding: 0;
+    font-size: 18px;
 }
 
 .gnk .brand-logo {
@@ -44,7 +46,7 @@ p:first-letter {
     background-image: url('../images/login_icon.png');
     height: 30px;
     width: 30px;
-    margin: 3px 0 0 10px;
+    margin: 3px 0 0 0px;
 }
 
 .remove-action {
