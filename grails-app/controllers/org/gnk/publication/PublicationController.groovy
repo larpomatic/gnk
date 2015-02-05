@@ -1343,7 +1343,7 @@ class PublicationController {
             if (p.name == "Life" || p.isEvenemential)
                 continue
             Tr tableRowPlot = wordWriter.factory.createTr()
-            wordWriter.addTableStyledCell("small", tableRowPlot, p.name)
+            wordWriter.addTableStyledCell("Table1C", tableRowPlot, p.name)
             wordWriter.addTableStyledCell("small", tableRowPlot, p.getSumPipRoles(gn.getNbPlayers()).toString())
 
             String tags = ""
