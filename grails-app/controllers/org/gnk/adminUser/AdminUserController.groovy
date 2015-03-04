@@ -6,6 +6,7 @@ import org.gnk.cookie.CookieService
 import org.gnk.gn.GnHasUser
 import org.gnk.rights.RightsService
 import org.gnk.selectintrigue.Plot
+import org.gnk.user.SecRole
 import org.gnk.user.User
 import org.gnk.user.UserSecRole
 import org.gnk.user.UserService
@@ -237,6 +238,10 @@ class AdminUserController {
             nUser.countConnexion = 0
             nUser.lastConnexion = new Date()
             nUser.save(failOnError: true)
+            SecRole userRole = SecRole.findByAuthority("ROLE_USER") ?: new SecRole(authority: "ROLE_USER").save(failOnError: true)
+            if (!nUser.getAuthorities().contains(userRole)) {
+                UserSecRole.create(nUser, userRole, true)
+         }
             redirect(action: "list")
         }
     }
