@@ -918,7 +918,7 @@ class PublicationController {
                     int lastIndexOf = roleHasPastscene.pastscene.title.lastIndexOf(" -")
                     if (lastIndexOf != -1)
                         roleHasPastscene.pastscene.title = roleHasPastscene.pastscene.title.substring(0, lastIndexOf)
-                    wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
+                    wordWriter.addStyledParagraphOfText("T5", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
                     wordWriter.addParagraphOfText(roleHasPastscene.description)
 
                     try {
