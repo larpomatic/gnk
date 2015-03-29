@@ -1,0 +1,22 @@
+TRELLO : Date anlgaise
+
+[PUBLICATION]
+1. Mettre uniquement les tags qui ont été demandé
+
+CAD dans publication j'ai le tag star wars et anglais alors que j'ai choisi uniquement anglais (filtré pour avoir seuelement anglais et non star wars)
+
+
+2. date format anglais + date ecrit en anglais ex april
+
+
+
+[naming]
+
+voir subsititution = une fois lancé l'algo met du temps
+
+gestion des GN : creer avec univers angletaire
+
+
+[Timing]
+
+titre evenementiel -> ordre des date et verifier que date -20ans fonctionne.
