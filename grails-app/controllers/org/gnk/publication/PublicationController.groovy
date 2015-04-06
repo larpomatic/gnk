@@ -648,7 +648,12 @@ class PublicationController {
                 resDescritpion = (genericResource.selectedResource.description.isEmpty() ? "" : genericResource.selectedResource.description + "\n")
 
             //substitution des descriptions des resources
-            substituteRes(genericResource)
+            for (Plot p : gn.selectedPlotSet){
+                for (GenericResource re : p.genericResources)
+                {
+                    substituteRes(p, re)
+                }
+            }
 
             wordWriter.addTableStyledCell("small", tableRowRes, genericResource.comment + resDescritpion)
 
@@ -678,8 +683,8 @@ class PublicationController {
         wordWriter.addObject(table)
     }
 
-    private substituteRes(GenericResource re) {
-        for (Plot p : gn.selectedPlotSet) {
+    private substituteRes(Plot p,GenericResource re) {
+
             HashMap<String, Role> rolesNames = new HashMap<>()
             for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
                 for (Role r : c.selectedRoles) {
@@ -699,8 +704,7 @@ class PublicationController {
             substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
 
             re.comment = substitutionPublication.replaceAll(re.comment)
-
-        }
+        
     }
 
 
@@ -1278,7 +1282,6 @@ class PublicationController {
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
                 Tr tableRowPlot = wordWriter.factory.createTr()
-                substituteRes(genericResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowPlot, genericResource.code + " - " + genericResource.comment)
                 if (genericResource.getPossessedByRole() != null) {
                     String possessedByCharacters = ""
@@ -1315,7 +1318,6 @@ class PublicationController {
                             rolesNames.put(c.firstname + " " + c.lastname, r)
                 substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                 // Fin construction du substitutionPublication
-
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
                 wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
