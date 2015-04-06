@@ -272,8 +272,8 @@ class PublicationController {
     }
 
     def String createSubTile() {
-        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créé à "
-        subtitle += getPrintableDate(gn.dateCreated)
+        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créée "
+        subtitle += getPrintableDate(gn.dateCreated, "'le' dd MMMM yyyy 'à' HH'h'mm")
         subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifié à " + getPrintableDate(gn.lastUpdated))
         return subtitle
     }
@@ -646,6 +646,15 @@ class PublicationController {
             String resDescritpion = "Ressource liée à la ressource générique non trouvée\n"
             if (genericResource.selectedResource)
                 resDescritpion = (genericResource.selectedResource.description.isEmpty() ? "" : genericResource.selectedResource.description + "\n")
+
+            //substitution des descriptions des resources
+            for (Plot p : gn.selectedPlotSet){
+                for (GenericResource re : p.genericResources)
+                {
+                    substituteRes(p, re)
+                }
+            }
+
             wordWriter.addTableStyledCell("small", tableRowRes, genericResource.comment + resDescritpion)
 
             String resTag = ""
@@ -673,6 +682,31 @@ class PublicationController {
 
         wordWriter.addObject(table)
     }
+
+    private substituteRes(Plot p,GenericResource re) {
+
+            HashMap<String, Role> rolesNames = new HashMap<>()
+            for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            // Gestion des pnjs pour la substitution des noms
+            for (Character c : gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+
+            re.comment = substitutionPublication.replaceAll(re.comment)
+        
+    }
+
 
     // Création du tableau Synthèse des personnages du GN des évènements
     def createDetailedEventsTable() {
@@ -1284,7 +1318,6 @@ class PublicationController {
                             rolesNames.put(c.firstname + " " + c.lastname, r)
                 substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                 // Fin construction du substitutionPublication
-
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
                 wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
