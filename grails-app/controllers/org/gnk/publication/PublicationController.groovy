@@ -646,6 +646,10 @@ class PublicationController {
             String resDescritpion = "Ressource liée à la ressource générique non trouvée\n"
             if (genericResource.selectedResource)
                 resDescritpion = (genericResource.selectedResource.description.isEmpty() ? "" : genericResource.selectedResource.description + "\n")
+
+            //substitution des descriptions des resources
+            substituteRes(genericResource)
+
             wordWriter.addTableStyledCell("small", tableRowRes, genericResource.comment + resDescritpion)
 
             String resTag = ""
@@ -673,6 +677,32 @@ class PublicationController {
 
         wordWriter.addObject(table)
     }
+
+    private substituteRes(GenericResource re) {
+        for (Plot p : gn.selectedPlotSet) {
+            HashMap<String, Role> rolesNames = new HashMap<>()
+            for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            // Gestion des pnjs pour la substitution des noms
+            for (Character c : gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+
+            re.comment = substitutionPublication.replaceAll(re.comment)
+
+        }
+    }
+
 
     // Création du tableau Synthèse des personnages du GN des évènements
     def createDetailedEventsTable() {
@@ -1248,6 +1278,7 @@ class PublicationController {
             if (genericResource.isIngameClue()) // Si la générique ressource est un ingame clue alors je l'affiche
             {
                 Tr tableRowPlot = wordWriter.factory.createTr()
+                substituteRes(genericResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowPlot, genericResource.code + " - " + genericResource.comment)
                 if (genericResource.getPossessedByRole() != null) {
                     String possessedByCharacters = ""
