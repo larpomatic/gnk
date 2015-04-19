@@ -1,5 +1,6 @@
 package org.gnk.publication
 import org.apache.commons.codec.binary.Base64
+import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -1008,25 +1009,45 @@ class PublicationController {
 
             wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
             wordWriter.addParagraphOfText("Ce personnage est : ")
+            Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
             for (Role r : c.getSelectedRoles()) {
                 for (RoleHasTag roleHasTag : r.roleHasTags) {
-                    if ((roleHasTag.tag.name.equals("Homme")) || (roleHasTag.tag.name.equals("homme")) || (roleHasTag.tag.name.equals("Femme")) || (roleHasTag.tag.name.equals("femme")))
+                    if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
                         continue
-                    String qualificatif = "";
-                    if (roleHasTag.weight < 0)
-                        qualificatif = "Surtout pas"
-                    if (roleHasTag.weight > 0 && roleHasTag.weight <= 29)
-                        qualificatif = "Un peu"
-                    if (roleHasTag.weight > 29 && roleHasTag.weight <= 59)
-                        qualificatif = "Assez"
-                    if (roleHasTag.weight > 59 && roleHasTag.weight <= 89)
-                        qualificatif = "Vraiment"
-                    if (roleHasTag.weight > 89)
-                        qualificatif = "Très"
-                    wordWriter.addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
+                    int weight = roleHasTag.weight;
+                    if (0 != r.pipi + r.pipr)
+                        weight *= (r.pipi + r.pipr)
+                    if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
+                        MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
+                        charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
+                    } else { // Tag has ever been encountered for this character
+                        MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
+                        weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
+                        weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+                    }
                 }
             }
-
+            Set keys = charHasTagMap.keySet();
+            Iterator it = keys.iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+                MutablePair weightToPipPair = charHasTagMap.get(key);
+                int calculatedWeight = weightToPipPair.getLeft();
+                if (0 != weightToPipPair.getRight())
+                    calculatedWeight /= weightToPipPair.getRight()
+                String qualificatif = "";
+                if (calculatedWeight < 0)
+                    qualificatif = "Surtout pas"
+                if (calculatedWeight > 0 && calculatedWeight <= 29)
+                    qualificatif = "Un peu"
+                if (calculatedWeight > 29 && calculatedWeight <= 59)
+                    qualificatif = "Assez"
+                if (calculatedWeight > 59 && calculatedWeight <= 89)
+                    qualificatif = "Vraiment"
+                if (calculatedWeight > 89)
+                    qualificatif = "Très"
+                wordWriter.addParagraphOfText(qualificatif + " " + key)
+            }
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
