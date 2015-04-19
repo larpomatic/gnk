@@ -390,6 +390,7 @@ function convertDescription(description) {
     description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;i:Nom:/g, '<span class="label label-success" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -449,6 +450,7 @@ function initializePopover() {
     });
     var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Nom">Nom</button></div>'   +
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
@@ -460,6 +462,8 @@ function initializePopover() {
         container: "body",
         delay: { "show": 0, "hide": 0 }
     });
+
+
 
     $('.richTextEditor .label[contenteditable="false"]').on("shown.bs.popover", function () {
         if ($('.popover').size() > 1) {
@@ -527,6 +531,7 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/<o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<i:Nom:/g, '<span class="label label-success" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
