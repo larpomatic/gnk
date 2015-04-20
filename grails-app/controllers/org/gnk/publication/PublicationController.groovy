@@ -1,38 +1,22 @@
 package org.gnk.publication
-
 import org.apache.commons.codec.binary.Base64
+import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
-import org.gnk.naming.Firstname
-import org.gnk.naming.Name
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
-import org.gnk.resplacetime.Event
-import org.gnk.resplacetime.GenericResource
-import org.gnk.resplacetime.GenericResourceHasTag
-import org.gnk.resplacetime.Pastscene
-import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.PlaceHasTag
-import org.gnk.resplacetime.Resource
-import org.gnk.ressplacetime.GenericPlace
-import org.gnk.ressplacetime.ReferentialPlace
-import org.gnk.roletoperso.Character
-import org.gnk.roletoperso.Graph
-import org.gnk.roletoperso.Role
-import org.gnk.roletoperso.RoleHasPastscene
-import org.gnk.roletoperso.RoleHasTag
+import org.gnk.resplacetime.*
+import org.gnk.roletoperso.*
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-import org.hibernate.annotations.GenericGenerator
 
-import javax.validation.constraints.Past
 import java.text.DateFormat
-import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat
 
 class PublicationController {
     final int COLUMN_NUMBER_PERSO = 8
@@ -272,8 +256,8 @@ class PublicationController {
     }
 
     def String createSubTile() {
-        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créée "
-        subtitle += getPrintableDate(gn.dateCreated, "'le' dd MMMM yyyy 'à' HH'h'mm")
+        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créé à "
+        subtitle += getPrintableDate(gn.dateCreated)
         subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifié à " + getPrintableDate(gn.lastUpdated))
         return subtitle
     }
@@ -1026,25 +1010,46 @@ class PublicationController {
          if (params.get("IncludeInterpretationAdvice") != null){
             wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
             wordWriter.addParagraphOfText("Ce personnage est : ")
+            Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
             for (Role r : c.getSelectedRoles()) {
                 for (RoleHasTag roleHasTag : r.roleHasTags) {
-                    if ((roleHasTag.tag.name.equals("Homme")) || (roleHasTag.tag.name.equals("homme")) || (roleHasTag.tag.name.equals("Femme")) || (roleHasTag.tag.name.equals("femme")))
+                    if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
                         continue
-                    String qualificatif = "";
-                    if (roleHasTag.weight < 0)
-                        qualificatif = "Surtout pas"
-                    if (roleHasTag.weight > 0 && roleHasTag.weight <= 29)
-                        qualificatif = "Un peu"
-                    if (roleHasTag.weight > 29 && roleHasTag.weight <= 59)
-                        qualificatif = "Assez"
-                    if (roleHasTag.weight > 59 && roleHasTag.weight <= 89)
-                        qualificatif = "Vraiment"
-                    if (roleHasTag.weight > 89)
-                        qualificatif = "Très"
-                    wordWriter.addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
+                    int weight = roleHasTag.weight;
+                    if (0 != r.pipi + r.pipr)
+                        weight *= (r.pipi + r.pipr)
+                    if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
+                        MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
+                        charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
+                    } else { // Tag has ever been encountered for this character
+                        MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
+                        weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
+                        weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+                    }
                 }
             }
         }
+            Set keys = charHasTagMap.keySet();
+            Iterator it = keys.iterator();
+            while (it.hasNext()) {
+                String key = it.next();
+                MutablePair weightToPipPair = charHasTagMap.get(key);
+                int calculatedWeight = weightToPipPair.getLeft();
+                if (0 != weightToPipPair.getRight())
+                    calculatedWeight /= weightToPipPair.getRight()
+                String qualificatif = "";
+                if (calculatedWeight < 0)
+                    qualificatif = "Surtout pas"
+                if (calculatedWeight > 0 && calculatedWeight <= 29)
+                    qualificatif = "Un peu"
+                if (calculatedWeight > 29 && calculatedWeight <= 59)
+                    qualificatif = "Assez"
+                if (calculatedWeight > 59 && calculatedWeight <= 89)
+                    qualificatif = "Vraiment"
+                if (calculatedWeight > 89)
+                    qualificatif = "Très"
+                wordWriter.addParagraphOfText(qualificatif + " " + key)
+            }
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
