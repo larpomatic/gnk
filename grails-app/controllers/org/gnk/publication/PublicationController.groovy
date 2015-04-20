@@ -1007,8 +1007,8 @@ class PublicationController {
                 wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
                 wordWriter.addTableStyledCell("Table1L", tableRow, "Lien")
                 table.getContent().add(tableRow);
-                HashMap <String,String> cMap = charGraph.getRelationList(charName)
-                for (String char2 : cMap.keySet()){
+                HashMap<String, String> cMap = charGraph.getRelationList(charName)
+                for (String char2 : cMap.keySet()) {
                     Tr tableRowChar = wordWriter.factory.createTr()
                     String link = cMap.get(char2)
                     wordWriter.addTableStyledCell("Table1C", tableRowChar, char2)
@@ -1023,6 +1023,7 @@ class PublicationController {
             if (!hasTags)
                 continue
 
+         if (params.get("IncludeInterpretationAdvice") != null){
             wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
             wordWriter.addParagraphOfText("Ce personnage est : ")
             for (Role r : c.getSelectedRoles()) {
@@ -1043,7 +1044,7 @@ class PublicationController {
                     wordWriter.addParagraphOfText(qualificatif + " " + roleHasTag.tag.name)
                 }
             }
-
+        }
             // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
