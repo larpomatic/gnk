@@ -908,7 +908,7 @@ class PublicationController {
                     try {
                         roleHasPastsceneList.put(time, roleHasPastscene)
                     } catch (Exception e) {
-                        continue
+                        continue 
                     }
 
                 }
