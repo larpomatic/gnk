@@ -19,6 +19,7 @@ class Role implements Comparable {
     Integer pipi
     String type
     String description
+    Integer pjgp
     Plot plot
 
     static transients = ["DTDId"]

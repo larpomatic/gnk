@@ -1,6 +1,6 @@
 $(function(){
     updateRole();
-
+    updatePJG();
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "STF") {
@@ -326,4 +326,37 @@ function updateRoleRelation(data) {
     $('select[name="resourceRoleTo"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
     $('.relationScreen .tab-content').append('<div class="tab-pane" id="roleRelation_'+data.role.id+'">'
     + '<div class="accordion" id="accordionRelation'+data.role.id+'"></div></div>');
+}
+
+// Hide or Show the PJG %
+function updatePJG(){
+    var new_pjg = $('form[name="newRoleForm"] #pjg,form[name="newRoleForm"] #rolePJGP')
+    new_pjg.hide();
+
+    $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
+       if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
+       {
+           new_pjg.show();
+       }
+        else {
+           new_pjg.val('0');
+           new_pjg.hide();
+       }
+    })
+    $('.tab-pane').click(function() {
+        var roleId = $(this).attr("data-id");
+        var update_pjg = $('form[name="updateRole_' + roleId + '"] select[name="rolePJGP"]');
+        var roleType = $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').val();
+        update_pjg.hide();
+        $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').change(function(){
+            if (roleType == "PJG")
+            {
+                update_pjg.show();
+            }
+            else {
+                update_pjg.val(0);
+                update_pjg.hide();
+            }
+        });
+    });
 }

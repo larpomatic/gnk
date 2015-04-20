@@ -107,7 +107,7 @@ class Plot {
                 if (role.isTPJ())
                     sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
                 if (role.isPJG())
-                    nbPJG_PIP = role.getPipr() + role.getPipi();
+                    nbPJG_PIP = (role.getPipr() + role.getPipi()) * role.getPjgp() / 100;
 			}
             sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
 		}

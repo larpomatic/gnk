@@ -691,6 +691,7 @@ public class RoleToPersoProcessing {
         Function to add all roles PJG to all characters of the plot
      */
     private void addPJG () {
+        Random rand = new Random()
         ArrayList<Integer> char_id = new ArrayList<Integer>();
         for (Role role : gnPJGRoleSet) {
             for (Character character : gn.getCharacterSet()) {
@@ -700,8 +701,13 @@ public class RoleToPersoProcessing {
                 }
                 if (character.getplotid_role().contains(role.getPlot().getId()))
                     continue;
-                else
-                    character.addRole(role);
+                else {
+                    for (Plot plot : character.getPlotSet())
+                        if (role.getPlotId() != plot.getterId())
+                            if (rand.nextInt(101) <= role.getPjgp())
+                                character.addRole(role)
+
+                }
             }
         }
     }

@@ -53,6 +53,7 @@ class RoleController {
         jsonRole.put("pipi", role.getPipi());
         jsonRole.put("pipr", role.getPipr());
         jsonRole.put("type", role.getType());
+        jsonRole.put("pjgp", role.getPjgp());
         jsonRole.put("description", role.getDescription());
         JSONArray jsonResourceList = new JSONArray();
         for (GenericResource genericResource in plot.genericResources) {
@@ -141,7 +142,8 @@ class RoleController {
 	}
 
 	def saveOrUpdate(Role newRole) {
-		if (params.containsKey("plotId")) {
+
+        if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
 		} else {
@@ -173,6 +175,12 @@ class RoleController {
 		} else {
 			return false
 		}
+        if (params.containsKey("rolePJGP")){
+            newRole.pjgp = params.rolePJGP as Integer
+        } else {
+            if (params.roleType == "PJG")
+            return false
+        }
 		if(newRole.roleHasTags != null) {
             HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
             newRole.roleHasTags.clear();

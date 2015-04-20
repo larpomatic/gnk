@@ -42,6 +42,7 @@ class RoleXMLWriterService {
         rootElement.setAttribute("pipr", role.pipr?.toString());
         rootElement.setAttribute("pipi", role.pipi?.toString());
         rootElement.setAttribute("type", role.type);
+        rootElement.setAttribute("pjgp",role.pjgp?.toString());
 
         return rootElement;
     }
