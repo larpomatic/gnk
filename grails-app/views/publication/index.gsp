@@ -17,8 +17,9 @@
             <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
             <input id="imgsrc" type="hidden" value="" name="imgsrc"/>
             <input id="jsoncharlist" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
-            <button id="WordButtonPublication" class="btn" type="submit" style="visibility: visible"><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
-        </form>
+            <button id="WordButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
+            <INPUT type="checkbox" id="IncludeInterpretationAdvice" name="IncludeInterpretationAdvice" value="false"/> Inclure les conseils d'interprétation
+         </form>
     </div>
 
     <div class="span4">
@@ -41,7 +42,7 @@
     </g:each>
 <br><br>
         <FORM>
-            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez..."
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez...
         </FORM>
     <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div><div id="pubAlertContainer">
@@ -61,6 +62,7 @@
         </div>
     </div>
 </div>
+
 <div class="row-fluid">
     <div class="span3">
         <form id="exportPersoCSVSubButton" action="${g.createLink(controller:'publication', action:'publicationCSV')}" method="POST">
@@ -125,7 +127,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         </TR>
     </g:each>
 </TABLE>
-
 
 
 <script type="text/javascript">
