@@ -1007,53 +1007,52 @@ class PublicationController {
             if (!hasTags)
                 continue
 
-         if (params.get("IncludeInterpretationAdvice") != null){
-            wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
-            wordWriter.addParagraphOfText("Ce personnage est : ")
-            Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
-            for (Role r : c.getSelectedRoles()) {
-                for (RoleHasTag roleHasTag : r.roleHasTags) {
-                    if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
-                        continue
-                    int weight = roleHasTag.weight;
-                    if (0 != r.pipi + r.pipr)
-                        weight *= (r.pipi + r.pipr)
-                    if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
-                        MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
-                        charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
-                    } else { // Tag has ever been encountered for this character
-                        MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
-                        weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
-                        weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+            if (params.get("IncludeInterpretationAdvice") != null) {
+                wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
+                wordWriter.addParagraphOfText("Ce personnage est : ")
+                Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
+                for (Role r : c.getSelectedRoles()) {
+                    for (RoleHasTag roleHasTag : r.roleHasTags) {
+                        if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
+                            continue
+                        int weight = roleHasTag.weight;
+                        if (0 != r.pipi + r.pipr)
+                            weight *= (r.pipi + r.pipr)
+                        if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
+                            MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
+                            charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
+                        } else { // Tag has ever been encountered for this character
+                            MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
+                            weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
+                            weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+                        }
                     }
                 }
+                Set keys = charHasTagMap.keySet();
+                Iterator it = keys.iterator();
+                while (it.hasNext()) {
+                    String key = it.next();
+                    MutablePair weightToPipPair = charHasTagMap.get(key);
+                    int calculatedWeight = weightToPipPair.getLeft();
+                    if (0 != weightToPipPair.getRight())
+                        calculatedWeight /= weightToPipPair.getRight()
+                    String qualificatif = "";
+                    if (calculatedWeight < 0)
+                        qualificatif = "Surtout pas"
+                    if (calculatedWeight > 0 && calculatedWeight <= 29)
+                        qualificatif = "Un peu"
+                    if (calculatedWeight > 29 && calculatedWeight <= 59)
+                        qualificatif = "Assez"
+                    if (calculatedWeight > 59 && calculatedWeight <= 89)
+                        qualificatif = "Vraiment"
+                    if (calculatedWeight > 89)
+                        qualificatif = "Très"
+                    wordWriter.addParagraphOfText(qualificatif + " " + key)
+                }
+                // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
             }
-        }
-            Set keys = charHasTagMap.keySet();
-            Iterator it = keys.iterator();
-            while (it.hasNext()) {
-                String key = it.next();
-                MutablePair weightToPipPair = charHasTagMap.get(key);
-                int calculatedWeight = weightToPipPair.getLeft();
-                if (0 != weightToPipPair.getRight())
-                    calculatedWeight /= weightToPipPair.getRight()
-                String qualificatif = "";
-                if (calculatedWeight < 0)
-                    qualificatif = "Surtout pas"
-                if (calculatedWeight > 0 && calculatedWeight <= 29)
-                    qualificatif = "Un peu"
-                if (calculatedWeight > 29 && calculatedWeight <= 59)
-                    qualificatif = "Assez"
-                if (calculatedWeight > 59 && calculatedWeight <= 89)
-                    qualificatif = "Vraiment"
-                if (calculatedWeight > 89)
-                    qualificatif = "Très"
-                wordWriter.addParagraphOfText(qualificatif + " " + key)
-            }
-            // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
-
     //Création du dossier destiné aux "personnages" dit Staff
     def createStaffFolder() {
         Br br = wordWriter.factory.createBr()
@@ -1556,6 +1555,13 @@ class PublicationController {
 
         }
 
+        events = events.sort {
+            a,b ->
+            Date dateA = new Date(a.value.absoluteYear, a.value.absoluteMonth, a.value.absoluteDay, a.value.absoluteHour, a.value.absoluteMinute);
+            Date dateB = new Date(b.value.absoluteYear, b.value.absoluteMonth, b.value.absoluteDay, b.value.absoluteHour, b.value.absoluteMinute);
+            dateA <=> dateB
+        }
+
         for (Event e : events.values()) {
             Tr tableRowEvent = wordWriter.factory.createTr()
             //wordWriter.addTableStyledCell("small",tableRowEvent, e.timing.toString())
@@ -1613,6 +1619,10 @@ class PublicationController {
                 }
             }
         }
+        pMap = pMap.sort {a,b ->
+                    Date dateA = new Date(a.key.dateYear, a.key.dateMonth,a.key.dateDay,a.key.dateHour,a.key.dateMinute);
+                    Date dateB = new Date(b.key.dateYear, b.key.dateMonth,b.key.dateDay,b.key.dateHour,b.key.dateMinute);
+                    dateA <=> dateB};
 
         for (Pastscene p : pMap.keySet()) {
             Tr tableRowEvent = wordWriter.factory.createTr()
