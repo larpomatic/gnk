@@ -256,9 +256,9 @@ class PublicationController {
     }
 
     def String createSubTile() {
-        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créé à "
-        subtitle += getPrintableDate(gn.dateCreated)
-        subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifié à " + getPrintableDate(gn.lastUpdated))
+        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créée le "
+        subtitle += getPrintableDate(gn.dateCreated, "dd MMMM yyyy 'à' HH'h'mm")
+        subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifiée le " + getPrintableDate(gn.lastUpdated, "dd MMMM yyyy 'à' HH'h'mm"))
         return subtitle
     }
 
