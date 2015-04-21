@@ -450,9 +450,9 @@ function initializePopover() {
     });
     var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Nom">Nom</button></div>'   +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Nom">Nom</button>'   +
+        '<button class="btn btn-small btn-primary" data-tag="Age">Âge</button></div>' +
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
     $('.richTextEditor .label[contenteditable="false"].label-success').popover({
