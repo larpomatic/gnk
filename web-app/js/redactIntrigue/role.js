@@ -212,6 +212,7 @@ function emptyRoleForm() {
     $('form[name="newRoleForm"] .search-query').val("");
     $('form[name="newRoleForm"] .modalLi').show();
     $('form[name="newRoleForm"] #roleRichTextEditor').html("");
+    $('form[name="newRoleForm"] .pjgp').hide();
 }
 
 // créé un tab-pane du nouveau role
@@ -330,8 +331,19 @@ function updateRoleRelation(data) {
 
 // Hide or Show the PJG %
 function updatePJG(){
-    var new_pjg = $('form[name="newRoleForm"] #pjg,form[name="newRoleForm"] #rolePJGP')
+    var new_pjg = $('.pjgp')
     new_pjg.hide();
+
+    $('select[name="roleType"]').change(function(){
+        if ($('select[name="roleType"]').val() == "PJG") {
+            $(this).parent().next().next().show();
+            $(this).parent().next().show();
+        }
+        else{
+            $(this).parent().next().next().hide();
+            $(this).parent().next().hide();
+        }
+    })
 
     $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
        if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
@@ -339,24 +351,7 @@ function updatePJG(){
            new_pjg.show();
        }
         else {
-           new_pjg.val('0');
            new_pjg.hide();
        }
     })
-    $('.tab-pane').click(function() {
-        var roleId = $(this).attr("data-id");
-        var update_pjg = $('form[name="updateRole_' + roleId + '"] select[name="rolePJGP"]');
-        var roleType = $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').val();
-        update_pjg.hide();
-        $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').change(function(){
-            if (roleType == "PJG")
-            {
-                update_pjg.show();
-            }
-            else {
-                update_pjg.val(0);
-                update_pjg.hide();
-            }
-        });
-    });
 }

@@ -630,6 +630,15 @@ class PublicationController {
             String resDescritpion = "Ressource liée à la ressource générique non trouvée\n"
             if (genericResource.selectedResource)
                 resDescritpion = (genericResource.selectedResource.description.isEmpty() ? "" : genericResource.selectedResource.description + "\n")
+
+            //substitution des descriptions des resources
+            for (Plot p : gn.selectedPlotSet){
+                for (GenericResource re : p.genericResources)
+                {
+                    substituteRes(p, re)
+                }
+            }
+
             wordWriter.addTableStyledCell("small", tableRowRes, genericResource.comment + resDescritpion)
 
             String resTag = ""
@@ -658,6 +667,31 @@ class PublicationController {
         wordWriter.addObject(table)
     }
 
+    private substituteRes(Plot p,GenericResource re) {
+
+            HashMap<String, Role> rolesNames = new HashMap<>()
+            for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            // Gestion des pnjs pour la substitution des noms
+            for (Character c : gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+
+            re.comment = substitutionPublication.replaceAll(re.comment)
+
+    }
+
+
     // Création du tableau Synthèse des personnages du GN des évènements
     def createDetailedEventsTable() {
         Tbl table = wordWriter.factory.createTbl()
@@ -674,6 +708,7 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet) {
             for (Event e : p.events) {
+                substituteEvent(p, e)
                 Tr tableRowRes = wordWriter.factory.createTr()
                 //wordWriter.addTableStyledCell("small",tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
@@ -691,7 +726,6 @@ class PublicationController {
                 else
                     wordWriter.addTableStyledCell("small", tableRowRes, "[Lieu générique]")
 
-                substituteEvent(p, e)
                 wordWriter.addTableStyledCell("small", tableRowRes, e.description)
 
                 String charactersAndRessources = ""
