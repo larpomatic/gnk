@@ -691,25 +691,57 @@ public class RoleToPersoProcessing {
         Function to add all roles PJG to all characters of the plot
      */
     private void addPJG () {
-        Random rand = new Random()
         ArrayList<Integer> char_id = new ArrayList<Integer>();
-        for (Role role : gnPJGRoleSet) {
-            for (Character character : gn.getCharacterSet()) {
-                if (!char_id.contains(character.getDTDId())) {
-                    character.initPlotID();
-                    char_id.add(character.getDTDId());
+        int nb_player = gn.getterCharacterSet().size();
+        int nb_pl_plot = 0
+        boolean pjg = true
+        for (Plot plot : gn.selectedPlotSet)
+        {
+            nb_pl_plot = nb_player
+            for (Role role : plot.roles)
+                if (role.type.equals("PJ"))
+                    nb_pl_plot--
+            for (Role role : plot.roles)
+            {
+                if (role.type.equals("PJG"))
+                {
+                    int nb_pjg = (nb_pl_plot  * role.pjgp) / 100
+                        for (Character character : gn.getCharacterSet())
+                        {
+                            if (nb_pjg > 0){
+                                if (!char_id.contains(character.getDTDId())) {
+                                    character.initPlotID();
+                                    char_id.add(character.getDTDId())
+                                }
+                                pjg = true;
+                                for (Role role_pers : character.getSelectedRoles())
+                                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                                        pjg = false
+
+                                if (pjg == true) {
+                                    character.addRole(role)
+                                    if (!character.getplotid_role().contains(plot.getId()))
+                                        character.getplotid_role().add(plot.getId())
+                                    nb_pjg--
+                                }
+                            }
+                        }
                 }
+            }
+        }/*
+        for (Character character : gn.getCharacterSet()) {
+            if (!char_id.contains(character.getDTDId())) {
+                character.initPlotID();
+                char_id.add(character.getDTDId())
+            }
+            for (Role role : gnPJGRoleSet) {
                 if (character.getplotid_role().contains(role.getPlot().getId()))
                     continue;
                 else {
-                    for (Plot plot : character.getPlotSet())
-                        if (role.getPlotId() != plot.getterId())
-                            if (rand.nextInt(101) <= role.getPjgp())
-                                character.addRole(role)
-
+                    character.addRole(role)
                 }
             }
-        }
+        }*/
     }
 
     private class OrderedRoleSet extends TreeSet<Role> {
