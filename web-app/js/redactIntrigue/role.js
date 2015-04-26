@@ -1,4 +1,5 @@
 $(function(){
+
     updateRole();
     updatePJG();
     //ajoute un nouveau role dans la base
@@ -11,11 +12,9 @@ $(function(){
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
         var pjg_tot = 0;
-        pjg_tot += parseInt($('form[name="newRoleForm"] input[name="rolePJGP"]').val());
-            $(' #pjg_per').each(function(){
-                var pjg_per = $($(this).html());
-                pjg_tot = pjg_tot + parseInt(pjg_per.val());
-            });
+        $(' input[name="rolePJGP"]').each(function(){
+            pjg_tot += parseInt($(this).val());
+        });
         if ($('form[name="newRoleForm"] input[name="rolePJGP"]').val() < 0 || parseInt(pjg_tot) > 100)
         {
             createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
@@ -110,13 +109,13 @@ function updateRole() {
             description = transformDescription(description);
 
             $('.descriptionContent', form).val(description);
-            //pjg_tot always hold its initial value; it doesn't refresh for the test (it does in the DB)
-            var pjg_tot=0;
-            $('#pjg_per').each(function(){
-                    var pjg_per = $($(this).html());
-                    pjg_tot = pjg_tot + parseInt(pjg_per.val());
+            var pjgp_tot=0;
+            $(' input[name="rolePJGP"]').each(function(){
+                if (parseInt($(this).val())) {
+                    pjgp_tot += parseInt($(this).val());
+                }
             });
-            if (parseInt(pjg_tot) < 0 || parseInt(pjg_tot) > 100)
+            if (parseInt($('form[name="updateRole_' + roleId + '"] input[name="rolePJGP"]').val()) < 0 || parseInt(pjgp_tot) > 100)
             {
                 createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite..");
             }
@@ -358,7 +357,16 @@ function updateRoleRelation(data) {
 function updatePJG(){
     var new_pjg = $('.pjgp_new')
     new_pjg.hide();
-
+    $('select[name="roleType"]').each(function(){
+        if ($(this).val() == "PJG") {
+            $(this).parent().next().show();
+            $(this).parent().next().next().show();
+        }
+        else{
+            $(this).parent().next().hide();
+            $(this).parent().next().next().hide();
+        }
+    });
     $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
         {
@@ -368,21 +376,21 @@ function updatePJG(){
             new_pjg.hide();
         }
     });
-//Does not work when updating non PJG character; you need to update once as PJG then put the desired value
+
     $('select[name="roleType"]').change(function(){
         var role_id = $(this).attr("data-id");
-        console.log(role_id);
+       // console.log(role_id);
         if (role_id){
             if ($(this).val() == "PJG") {
                 $(this).parent().next().show();
                 $(this).parent().next().next().show();
             }
             else{
+                $(' input[name="rolePJGP"]').val('0');
                 $(this).parent().next().hide();
-                $(this).parent().next().next().hide();
+                $(this).parent().next().next().hide();;
             }
         }
+
     });
-
-
 }
