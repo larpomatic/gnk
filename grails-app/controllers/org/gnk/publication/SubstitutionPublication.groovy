@@ -40,7 +40,7 @@ class SubstitutionPublication {
         if (null == input)
             return null
 
-        if (input.contains("<") || input.contains(">"))
+        if (false == input.contains("<") || false == input.contains(">"))
             return input
 
         while (input.contains("<") && input.contains(">")) {
