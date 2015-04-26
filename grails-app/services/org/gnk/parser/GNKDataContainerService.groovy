@@ -91,9 +91,10 @@ class GNKDataContainerService {
         new GnXMLReaderService().ReadGnDTD(GNK, gn, this)
 
         // GN_DEFINITION
-        if (gn.step.equals("publication")) {
+        //Commented because gn.step no longer take the "publication" value
+        //if (gn.step.equals("publication")) {
             readSubstitution(GNK)
-        }
+       // }
     }
 
     def void SaveDTD(String dtd) {

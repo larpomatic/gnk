@@ -71,6 +71,7 @@ class PublicationController {
         gnk.ReadDTD(gn);
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        //lines below can be commented to go back to substitution step when leaving the GN creation during publication
         gn.step = "publication";
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
         if (!gn.save(flush: true, failOnError: true)) {
