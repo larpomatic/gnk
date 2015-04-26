@@ -728,6 +728,30 @@ public class RoleToPersoProcessing {
                         }
                 }
             }
+            for (Character character : gn.getCharacterSet())
+            {
+                if (!char_id.contains(character.getDTDId())) {
+                character.initPlotID();
+                char_id.add(character.getDTDId())
+                }
+                pjg = true;
+                for (Role role_pers : character.getSelectedRoles())
+                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                        pjg = false
+
+                if (pjg == true) {
+                    for (Role role : plot.roles) {
+                        if (pjg){
+                            if (role.type.equals("PJG")) {
+                                character.addRole(role)
+                                if (!character.getplotid_role().contains(plot.getId()))
+                                    character.getplotid_role().add(plot.getId())
+                                pjg = false
+                            }
+                        }
+                    }
+                }
+            }
         }/*
         for (Character character : gn.getCharacterSet()) {
             if (!char_id.contains(character.getDTDId())) {
