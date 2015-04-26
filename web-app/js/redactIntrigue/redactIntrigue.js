@@ -504,6 +504,8 @@ function initializeClosingPopover() {
     });
 }
 
+// désactive le backspace
+/*
 function keyhandler(e) {
     var key = e.keyCode
     if (key == 8)
@@ -514,6 +516,7 @@ function keyhandler(e) {
         }
     }
 }
+*/
 
 function convertHTMLRegisterHelper(description) {
     description = description.replace(/\n/g, '<br>');
