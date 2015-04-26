@@ -747,7 +747,7 @@ public class RoleToPersoProcessing {
                                 if (!character.getplotid_role().contains(plot.getId()))
                                     character.getplotid_role().add(plot.getId())
                                 pjg = false
-                            }
+                            } 
                         }
                     }
                 }
