@@ -1,11 +1,7 @@
 package org.gnk.publication
-
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.Resource
-import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Role
-
 /**
  * Created with IntelliJ IDEA.
  * User: aurel_000
@@ -40,61 +36,189 @@ class SubstitutionPublication {
         }
     }
 
-    def String replaceAll (String input)
-    {
-        if (input == null)
+    def String replaceAll(String input) {
+        if (null == input)
             return null
-        if (!input.contains("<") || !input.contains(">"))
+
+        if (false == input.contains("<") || false == input.contains(">"))
             return input
 
-        boolean open = false
-        Integer start = null
-        Integer end = null
-        StringBuilder res = new StringBuilder("")
-        StringBuilder tmp = new StringBuilder("")
+        while (input.contains("<") && input.contains(">")) {
+            int begin = input.indexOf('<')
+            int end = input.indexOf('>')
 
-        for (int i = 0; i < input.length(); i++)
-        {
-            char c = input.toCharArray()[i]
-            // Errors
-            if (c == "<" && open)
+            if (begin - end > 0) //Error
                 return null
-            if (c == ">" && !open)
-                return null
-            if (c == "<" && !open)
-            {
-                open = true
-                start = i
+
+            String tag = input.substring(begin, end + 1);
+            //String tag = input.substring(input.indexOf('<'), input.indexOf('>') + 1)
+            String tmp = tag.substring(1, tag.length() - 1).toUpperCase();
+            String[] split = tmp.split(":")
+            String replacement = ""
+
+            if (split[0].equals("L")) {
+                if (split.length == 2) //old tag, for example <i:Hote>
+                    replacement = oldReplacePlace(split[1])
+                else //enhanced syntax
+                    replacement = replacePlace(split[1], split[2])
+            } else if (split[0].equals("I")) {
+                if (split.length == 2) //old tag, for example <i:Hote>
+                    replacement = oldReplaceRole(split[1])
+                else //enhanced syntax
+                    replacement = replaceRole(split[1], split[2])
+            } else if (split[0].equals("O")) {
+                if (split.length == 2) //old tag, for example <i:Hote>
+                    replacement = oldReplaceResource(split[1])
+                else //enhanced syntax
+                    replacement = replaceResource(split[1], split[2])
             }
 
-            if (open)
-                tmp.append(c)
-            if (!open)
-                res.append(c)
+            input = input.replace(tag, replacement);
+        }
 
-            if (c == ">" && open)
-            {
-                open = false
-                end = i
+        return input
+    }
 
-                char switchChar = tmp.toString().charAt(1).charValue().toUpperCase()
-                String code = tmp.toString().substring(3, tmp.length() - 1).toUpperCase()
-                if (switchChar == 'L')
-                    res.append(replacePlace(code))
-                else if (switchChar == 'O')
-                    res.append(replaceResource(code))
-                else if (switchChar == 'I')
-                    res.append(replaceRole(code))
-                else
-                    res.append(tmp.toString())
-                tmp = new StringBuilder()
+    String replaceResource(String syntax, String code) {
+        String replacement = "[Ressource générique]"
+        String gender = ""
+        for (GenericResource genericResource : genericResourceList)
+        {
+            if (genericResource.code.toUpperCase().equals(code)) {
+                replacement = genericResource.selectedResource.name
+                gender = genericResource.selectedResource.gender
             }
         }
 
-        return res
+        //if (gender.isEmpty())
+        //return replacement
+
+        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+
+        switch (syntax) {
+            case "NONE" : return replacement
+            case "ART" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "M" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "F" : return (startsWithVowel) ? "l'" + replacement : "la " + replacement
+                    case "MP" : return "les " + replacement
+                    case "FP" : return "les " + replacement
+                }
+                break
+            case "POS" :
+                switch (gender) {
+                    case "" : return "mon " + replacement
+                    case "M" : return "mon " + replacement
+                    case "F" : return "ma " + replacement
+                    case "MP" : return "mes " + replacement
+                    case "FP" : return "mes " + replacement
+                }
+                break
+            case "NOM" :
+                switch (gender) {
+                    case "" : return "un " + replacement
+                    case "M" : return "un " + replacement
+                    case "F" : return "une " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+            case "PAR" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "M" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "F" : return (startsWithVowel) ? "d'" + replacement : "de la " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+        }
+
+        return replacement
     }
 
-    def private String replacePlace (String code)
+    String replaceRole(String syntax, String code) {
+        String replacement = "[Rôle générique]"
+        for (Map.Entry<String, Role> map : rolesNames.entrySet())
+        {
+            if (map.value.code.toUpperCase().equals(code))
+                replacement = map.key
+        }
+
+        switch (syntax) {
+            case "NONE" : return replacement
+            case "PRE" : return replacement.substring(0, replacement.indexOf(" "))
+            case "PAT" : return replacement.substring(replacement.indexOf(" ") + 1)
+            case "AGE" : return replacement //FIXME
+        }
+
+        return replacement
+    }
+
+    String replacePlace(String syntax, String code) {
+        String replacement = "[Lieu générique]"
+        String gender = ""
+        for (Place place : placeList)
+        {
+            if (null == place.genericPlace)
+                continue
+            if (place.genericPlace.code.toUpperCase().equals(code)) {
+                replacement = place.name
+                gender = place.gender
+            }
+        }
+
+        //if (gender.isEmpty())
+        //return replacement
+
+        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+
+        switch (syntax) {
+            case "NONE" : return replacement
+            case "ART" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "M" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "F" : return (startsWithVowel) ? "l'" + replacement : "la " + replacement
+                    case "MP" : return "les " + replacement
+                    case "FP" : return "les " + replacement
+                }
+                break
+            case "POS" :
+                switch (gender) {
+                    case "" : return "mon " + replacement
+                    case "M" : return "mon " + replacement
+                    case "F" : return "ma " + replacement
+                    case "MP" : return "mes " + replacement
+                    case "FP" : return "mes " + replacement
+                }
+                break
+            case "NOM" :
+                switch (gender) {
+                    case "" : return "un " + replacement
+                    case "M" : return "un " + replacement
+                    case "F" : return "une " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+            case "PAR" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "M" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "F" : return (startsWithVowel) ? "d'" + replacement : "de la " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+        }
+
+        return replacement
+    }
+
+    //Performs substitution between tag and value for old syntax
+    def private String oldReplacePlace (String code)
     {
         for (Place place : placeList)
         {
@@ -109,7 +233,8 @@ class SubstitutionPublication {
         return "[Lieu générique]"
     }
 
-    def private String replaceRole (String input)
+    //Performs substitution between tag and value for old syntax
+    def private String oldReplaceRole (String input)
     {
         for (Map.Entry<String, Role> map : rolesNames.entrySet())
         {
@@ -119,7 +244,8 @@ class SubstitutionPublication {
         return "[Role générique]"
     }
 
-    def private String replaceResource (String code)
+    //Performs substitution between tag and value for old syntax
+    def private String oldReplaceResource (String code)
     {
         for (GenericResource genericResource : genericResourceList)
         {
