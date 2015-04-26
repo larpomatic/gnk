@@ -71,6 +71,7 @@ class PublicationController {
         gnk.ReadDTD(gn);
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        //lines below can be commented to go back to substitution step when leaving the GN creation during publication
         gn.step = "publication";
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
         if (!gn.save(flush: true, failOnError: true)) {
@@ -256,9 +257,9 @@ class PublicationController {
     }
 
     def String createSubTile() {
-        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créé à "
-        subtitle += getPrintableDate(gn.dateCreated)
-        subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifié à " + getPrintableDate(gn.lastUpdated))
+        String subtitle = "Version " + ((gn.version < 10) ? "0." + gn.version : gn.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + gn.version.toString().subSequence(gn.version.toString().size() - 1, gn.version.toString().size())) + " créée le "
+        subtitle += getPrintableDate(gn.dateCreated, "dd MMMM yyyy 'à' HH'h'mm")
+        subtitle += ((gn.lastUpdated == gn.dateCreated) ? "" : " et modifiée le " + getPrintableDate(gn.lastUpdated, "dd MMMM yyyy 'à' HH'h'mm"))
         return subtitle
     }
 
@@ -630,6 +631,15 @@ class PublicationController {
             String resDescritpion = "Ressource liée à la ressource générique non trouvée\n"
             if (genericResource.selectedResource)
                 resDescritpion = (genericResource.selectedResource.description.isEmpty() ? "" : genericResource.selectedResource.description + "\n")
+
+            //substitution des descriptions des resources
+            for (Plot p : gn.selectedPlotSet){
+                for (GenericResource re : p.genericResources)
+                {
+                    substituteRes(p, re)
+                }
+            }
+
             wordWriter.addTableStyledCell("small", tableRowRes, genericResource.comment + resDescritpion)
 
             String resTag = ""
@@ -658,6 +668,31 @@ class PublicationController {
         wordWriter.addObject(table)
     }
 
+    private substituteRes(Plot p,GenericResource re) {
+
+            HashMap<String, Role> rolesNames = new HashMap<>()
+            for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            // Gestion des pnjs pour la substitution des noms
+            for (Character c : gn.nonPlayerCharSet) {
+                for (Role r : c.selectedRoles) {
+                    if (r.plot.DTDId.equals(p.DTDId))
+                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                }
+            }
+
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+
+            re.comment = substitutionPublication.replaceAll(re.comment)
+
+    }
+
+
     // Création du tableau Synthèse des personnages du GN des évènements
     def createDetailedEventsTable() {
         Tbl table = wordWriter.factory.createTbl()
@@ -674,6 +709,7 @@ class PublicationController {
 
         for (Plot p : gn.selectedPlotSet) {
             for (Event e : p.events) {
+                substituteEvent(p, e)
                 Tr tableRowRes = wordWriter.factory.createTr()
                 //wordWriter.addTableStyledCell("small",tableRowRes, e.absoluteHour + "h" + e.absoluteMinute + " le " + e.absoluteDay + "/" + e.absoluteMonth + "/" + e.absoluteYear)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, "Le " + ((e.absoluteDay < 10) ? "0" : "") + e.absoluteDay + " à " + ((e.absoluteHour < 10) ? "0" : "") + e.absoluteHour + "h" + ((e.absoluteMinute < 10) ? "0" : "") + e.absoluteMinute)
@@ -691,7 +727,6 @@ class PublicationController {
                 else
                     wordWriter.addTableStyledCell("small", tableRowRes, "[Lieu générique]")
 
-                substituteEvent(p, e)
                 wordWriter.addTableStyledCell("small", tableRowRes, e.description)
 
                 String charactersAndRessources = ""
@@ -902,7 +937,7 @@ class PublicationController {
                     int lastIndexOf = roleHasPastscene.pastscene.title.lastIndexOf(" -")
                     if (lastIndexOf != -1)
                         roleHasPastscene.pastscene.title = roleHasPastscene.pastscene.title.substring(0, lastIndexOf)
-                    wordWriter.addStyledParagraphOfText("T4", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
+                    wordWriter.addStyledParagraphOfText("T5", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
                     wordWriter.addParagraphOfText(roleHasPastscene.description)
 
                     try {
@@ -991,8 +1026,8 @@ class PublicationController {
                 wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
                 wordWriter.addTableStyledCell("Table1L", tableRow, "Lien")
                 table.getContent().add(tableRow);
-                HashMap <String,String> cMap = charGraph.getRelationList(charName)
-                for (String char2 : cMap.keySet()){
+                HashMap<String, String> cMap = charGraph.getRelationList(charName)
+                for (String char2 : cMap.keySet()) {
                     Tr tableRowChar = wordWriter.factory.createTr()
                     String link = cMap.get(char2)
                     wordWriter.addTableStyledCell("Table1C", tableRowChar, char2)
@@ -1007,51 +1042,52 @@ class PublicationController {
             if (!hasTags)
                 continue
 
-            wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
-            wordWriter.addParagraphOfText("Ce personnage est : ")
-            Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
-            for (Role r : c.getSelectedRoles()) {
-                for (RoleHasTag roleHasTag : r.roleHasTags) {
-                    if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
-                        continue
-                    int weight = roleHasTag.weight;
-                    if (0 != r.pipi + r.pipr)
-                        weight *= (r.pipi + r.pipr)
-                    if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
-                        MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
-                        charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
-                    } else { // Tag has ever been encountered for this character
-                        MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
-                        weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
-                        weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+            if (params.get("IncludeInterpretationAdvice") != null) {
+                wordWriter.addStyledParagraphOfText("T3", "Conseils d'interprétation");
+                wordWriter.addParagraphOfText("Ce personnage est : ")
+                Map<String, MutablePair<Integer, Integer>> charHasTagMap = new HashMap<>()
+                for (Role r : c.getSelectedRoles()) {
+                    for (RoleHasTag roleHasTag : r.roleHasTags) {
+                        if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
+                            continue
+                        int weight = roleHasTag.weight;
+                        if (0 != r.pipi + r.pipr)
+                            weight *= (r.pipi + r.pipr)
+                        if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
+                            MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
+                            charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
+                        } else { // Tag has ever been encountered for this character
+                            MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
+                            weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
+                            weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+                        }
                     }
                 }
+                Set keys = charHasTagMap.keySet();
+                Iterator it = keys.iterator();
+                while (it.hasNext()) {
+                    String key = it.next();
+                    MutablePair weightToPipPair = charHasTagMap.get(key);
+                    int calculatedWeight = weightToPipPair.getLeft();
+                    if (0 != weightToPipPair.getRight())
+                        calculatedWeight /= weightToPipPair.getRight()
+                    String qualificatif = "";
+                    if (calculatedWeight < 0)
+                        qualificatif = "Surtout pas"
+                    if (calculatedWeight > 0 && calculatedWeight <= 29)
+                        qualificatif = "Un peu"
+                    if (calculatedWeight > 29 && calculatedWeight <= 59)
+                        qualificatif = "Assez"
+                    if (calculatedWeight > 59 && calculatedWeight <= 89)
+                        qualificatif = "Vraiment"
+                    if (calculatedWeight > 89)
+                        qualificatif = "Très"
+                    wordWriter.addParagraphOfText(qualificatif + " " + key)
+                }
+                // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
             }
-            Set keys = charHasTagMap.keySet();
-            Iterator it = keys.iterator();
-            while (it.hasNext()) {
-                String key = it.next();
-                MutablePair weightToPipPair = charHasTagMap.get(key);
-                int calculatedWeight = weightToPipPair.getLeft();
-                if (0 != weightToPipPair.getRight())
-                    calculatedWeight /= weightToPipPair.getRight()
-                String qualificatif = "";
-                if (calculatedWeight < 0)
-                    qualificatif = "Surtout pas"
-                if (calculatedWeight > 0 && calculatedWeight <= 29)
-                    qualificatif = "Un peu"
-                if (calculatedWeight > 29 && calculatedWeight <= 59)
-                    qualificatif = "Assez"
-                if (calculatedWeight > 59 && calculatedWeight <= 89)
-                    qualificatif = "Vraiment"
-                if (calculatedWeight > 89)
-                    qualificatif = "Très"
-                wordWriter.addParagraphOfText(qualificatif + " " + key)
-            }
-            // todo : wordWriter.addStyledParagraphOfText("T3", "J'ai sur moi...")
         }
     }
-
     //Création du dossier destiné aux "personnages" dit Staff
     def createStaffFolder() {
         Br br = wordWriter.factory.createBr()
@@ -1554,6 +1590,13 @@ class PublicationController {
 
         }
 
+        events = events.sort {
+            a,b ->
+            Date dateA = new Date(a.value.absoluteYear, a.value.absoluteMonth, a.value.absoluteDay, a.value.absoluteHour, a.value.absoluteMinute);
+            Date dateB = new Date(b.value.absoluteYear, b.value.absoluteMonth, b.value.absoluteDay, b.value.absoluteHour, b.value.absoluteMinute);
+            dateA <=> dateB
+        }
+
         for (Event e : events.values()) {
             Tr tableRowEvent = wordWriter.factory.createTr()
             //wordWriter.addTableStyledCell("small",tableRowEvent, e.timing.toString())
@@ -1611,6 +1654,10 @@ class PublicationController {
                 }
             }
         }
+        pMap = pMap.sort {a,b ->
+                    Date dateA = new Date(a.key.dateYear, a.key.dateMonth,a.key.dateDay,a.key.dateHour,a.key.dateMinute);
+                    Date dateB = new Date(b.key.dateYear, b.key.dateMonth,b.key.dateDay,b.key.dateHour,b.key.dateMinute);
+                    dateA <=> dateB};
 
         for (Pastscene p : pMap.keySet()) {
             Tr tableRowEvent = wordWriter.factory.createTr()

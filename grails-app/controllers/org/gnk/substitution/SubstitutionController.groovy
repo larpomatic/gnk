@@ -209,6 +209,7 @@ class SubstitutionController {
             //return
             // Save in DataBase
             gnkDataContainerService.gn.dtd = xmlGN;
+            //line below can be commented to go back to substitution step when leaving the GN creation during publication
             gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])

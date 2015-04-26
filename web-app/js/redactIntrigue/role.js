@@ -1,6 +1,7 @@
 $(function(){
-    updateRole();
 
+    updateRole();
+    updatePJG();
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "STF") {
@@ -10,60 +11,70 @@ $(function(){
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.iscreate) {
-                    createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
-                    var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiRole'];
-                    var context = {
-                        roleId: String(data.role.id),
-                        roleName: data.role.code
-                    };
-                    var html = template(context);
-                    $('.roleScreen > ul').append(html);
-                    updateRoleRelation(data);
-                    initConfirm();
-                    initDeleteButton();
-                    emptyRoleForm();
-                    createNewRolePanel(data);
-                    initSearchBoxes();
-                    initModifyTag();
-                    stopClosingDropdown();
-                    if (data.role.type != "STF") {
-                        appendEntity("role", data.role.code, "success", "", data.role.id);
-                    }
-                    var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
-                    $('.roleLi .badge').html(nbRoles);
-                    initQuickObjects();
-                    updateRole();
-                    $('form[name="updateRole_' + data.role.id + '"] .btnFullScreen').click(function() {
-                        $(this).parent().parent().toggleClass("fullScreenOpen");
-                    });
-                    var spanList = $('.richTextEditor span.label-default').filter(function() {
-                        return $(this).text() == data.role.code;
-                    });
-                    spanList.each(function() {
-                        $(this).removeClass("label-default").addClass("label-success");
-                    });
-                    $('.roleSelector li[data-id=""]').each(function() {
-                        if ($("a", $(this)).html().trim() == data.role.code + ' <i class="icon-warning-sign"></i>') {
-                            $(this).remove();
+        var pjg_tot = 0;
+        $(' input[name="rolePJGP"]').each(function(){
+            pjg_tot += parseInt($(this).val());
+        });
+        if ($('form[name="newRoleForm"] input[name="rolePJGP"]').val() < 0 || parseInt(pjg_tot) > 100)
+        {
+            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: form.attr("data-url"),
+                data: form.serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.iscreate) {
+                        createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
+                        var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiRole'];
+                        var context = {
+                            roleId: String(data.role.id),
+                            roleName: data.role.code
+                        };
+                        var html = template(context);
+                        $('.roleScreen > ul').append(html);
+                        updateRoleRelation(data);
+                        initConfirm();
+                        initDeleteButton();
+                        emptyRoleForm();
+                        createNewRolePanel(data);
+                        initSearchBoxes();
+                        initModifyTag();
+                        stopClosingDropdown();
+                        if (data.role.type != "STF") {
+                            appendEntity("role", data.role.code, "success", "", data.role.id);
                         }
-                    });
-                    updateAllDescription($.unique(spanList.closest("form")));
-                }
-                else {
+                        var nbRoles = parseInt($('.roleLi .badge').html()) + 1;
+                        $('.roleLi .badge').html(nbRoles);
+                        initQuickObjects();
+                        updateRole();
+                        $('form[name="updateRole_' + data.role.id + '"] .btnFullScreen').click(function () {
+                            $(this).parent().parent().toggleClass("fullScreenOpen");
+                        });
+                        var spanList = $('.richTextEditor span.label-default').filter(function () {
+                            return $(this).text() == data.role.code;
+                        });
+                        spanList.each(function () {
+                            $(this).removeClass("label-default").addClass("label-success");
+                        });
+                        $('.roleSelector li[data-id=""]').each(function () {
+                            if ($("a", $(this)).html().trim() == data.role.code + ' <i class="icon-warning-sign"></i>') {
+                                $(this).remove();
+                            }
+                        });
+                        updateAllDescription($.unique(spanList.closest("form")));
+                    }
+                    else {
+                        createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                    }
+                },
+                error: function () {
                     createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
                 }
-            },
-            error: function() {
-                createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
-            }
-        })
+            })
+        }
     });
 });
 
@@ -96,46 +107,59 @@ function updateRole() {
             var form = $('form[name="updateRole_' + roleId + '"]');
             var description = $('.richTextEditor', form).html();
             description = transformDescription(description);
+
             $('.descriptionContent', form).val(description);
-            $.ajax({
-                type: "POST",
-                url: form.attr("data-url"),
-                data: form.serialize(),
-                dataType: "json",
-                success: function(data) {
-                    if (data.object.isupdate) {
-                        createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
-                        $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option').removeAttr("selected");
-                        $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option[value="'+data.object.type+'"]').attr("selected", "selected");
-                        initializeTextEditor();
-                        $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
-                        $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
-                        $('.pastSceneScreen a[href*="#pastsceneRole'+data.object.id +'"]').html(data.object.name);
-                        $('.eventScreen a[href*="#eventRole'+data.object.id +'"]').html(data.object.name);
-                        $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
-                        $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                        $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
-                        $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
-                        $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
-                        $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function() {
-                            var relationImage = $(this).html();
-                            $(this).parent().html(relationImage + " " + data.object.name);
-                        });
-                        $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
-                        $('span.label-success').each(function() {
-                            if ($(this).html().trim() == data.object.oldname) {
-                                $(this).html(data.object.name);
-                            }
-                        });
-                    }
-                    else {
+            var pjgp_tot=0;
+            $(' input[name="rolePJGP"]').each(function(){
+                if (parseInt($(this).val())) {
+                    pjgp_tot += parseInt($(this).val());
+                }
+            });
+            if (parseInt($('form[name="updateRole_' + roleId + '"] input[name="rolePJGP"]').val()) < 0 || parseInt(pjgp_tot) > 100)
+            {
+                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite..");
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr("data-url"),
+                    data: form.serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.object.isupdate) {
+                            createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                            $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option').removeAttr("selected");
+                            $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option[value="' + data.object.type + '"]').attr("selected", "selected");
+                            initializeTextEditor();
+                            $('.roleScreen .leftMenuList a[href="#role_' + data.object.id + '"]').html(data.object.name);
+                            $('.relationScreen .leftMenuList a[href="#roleRelation_' + data.object.id + '"]').html(data.object.name);
+                            $('.pastSceneScreen a[href*="#pastsceneRole' + data.object.id + '"]').html(data.object.name);
+                            $('.eventScreen a[href*="#eventRole' + data.object.id + '"]').html(data.object.name);
+                            $('select[name="relationFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                            $('select[name="relationTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                            $('select[name="resourceRolePossessor"] option[value="' + data.object.id + '"]').html(data.object.name);
+                            $('select[name="resourceRoleFrom"] option[value="' + data.object.id + '"]').html(data.object.name);
+                            $('select[name="resourceRoleTo"] option[value="' + data.object.id + '"]').html(data.object.name);
+                            $('.relationScreen .accordion-group span[data-roleId="' + data.object.id + '"] span').each(function () {
+                                var relationImage = $(this).html();
+                                $(this).parent().html(relationImage + " " + data.object.name);
+                            });
+                            $('.roleSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
+                            $('span.label-success').each(function () {
+                                if ($(this).html().trim() == data.object.oldname) {
+                                    $(this).html(data.object.name);
+                                }
+                            });
+                        }
+                        else {
+                            createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                        }
+                    },
+                    error: function () {
                         createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
                     }
-                },
-                error: function() {
-                    createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-                }
-            })
+                })
+            }
         }
     });
 }
@@ -212,6 +236,7 @@ function emptyRoleForm() {
     $('form[name="newRoleForm"] .search-query').val("");
     $('form[name="newRoleForm"] .modalLi').show();
     $('form[name="newRoleForm"] #roleRichTextEditor').html("");
+    $('form[name="newRoleForm"] .pjgp_new').hide();
 }
 
 // créé un tab-pane du nouveau role
@@ -326,4 +351,46 @@ function updateRoleRelation(data) {
     $('select[name="resourceRoleTo"]').append('<option value="' + data.role.id + '">' + data.role.code + '</option>');
     $('.relationScreen .tab-content').append('<div class="tab-pane" id="roleRelation_'+data.role.id+'">'
     + '<div class="accordion" id="accordionRelation'+data.role.id+'"></div></div>');
+}
+
+// Hide or Show the PJG %
+function updatePJG(){
+    var new_pjg = $('.pjgp_new')
+    new_pjg.hide();
+    $('select[name="roleType"]').each(function(){
+        if ($(this).val() == "PJG") {
+            $(this).parent().next().show();
+            $(this).parent().next().next().show();
+        }
+        else{
+            $(this).parent().next().hide();
+            $(this).parent().next().next().hide();
+        }
+    });
+    $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
+        if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
+        {
+            new_pjg.show();
+        }
+        else {
+            new_pjg.hide();
+        }
+    });
+
+    $('select[name="roleType"]').change(function(){
+        var role_id = $(this).attr("data-id");
+       // console.log(role_id);
+        if (role_id){
+            if ($(this).val() == "PJG") {
+                $(this).parent().next().show();
+                $(this).parent().next().next().show();
+            }
+            else{
+                $(' input[name="rolePJGP"]').val('0');
+                $(this).parent().next().hide();
+                $(this).parent().next().next().hide();;
+            }
+        }
+
+    });
 }
