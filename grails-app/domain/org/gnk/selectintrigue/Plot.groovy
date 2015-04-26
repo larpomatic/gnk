@@ -97,6 +97,10 @@ class Plot {
         assert (nbPlayer != null);
         int count = 0;
         int nbPJG_PIP = 0;
+        int nbPJ = 0
+        for (Role role : getterRoles())
+            if (role.isPJ())
+                nbPJ++
 		if (!sumPipRolesBuffer){
 			sumPipRolesBuffer = 0;
 			for(Role role : getRoles()) {
@@ -107,7 +111,7 @@ class Plot {
                 if (role.isTPJ())
                     sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
                 if (role.isPJG())
-                    nbPJG_PIP = role.getPipr() + role.getPipi();
+                    nbPJG_PIP = (role.getPipr() + role.getPipi()) * role.getPjgp() / 100 *(nbPlayer - nbPJ);
 			}
             sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
 		}

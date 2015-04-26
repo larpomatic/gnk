@@ -167,6 +167,10 @@ class RoleXMLReaderService {
         if (ROLE.attribute("type") != "null")
             roleRes.type = ROLE.attribute("type")
 
+
+        if (ROLE.attribute("pjgp") != "null" && (ROLE.attribute("pjgp") as String)?.isInteger() )
+            roleRes.pjgp = ROLE.attribute("pjgp") as Integer
+
         return roleRes
     }
 

@@ -77,6 +77,14 @@
                         <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique', 'Personnage Staff']}"
                                   keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG', 'STF']}" required=""/>
                     </div>
+                        <div class="span1 pjgp_new" >
+                            <label for="rolePJGP">
+                                <g:message code="redactintrigue.role.rolePJGP" default="PJG %"/>
+                            </label>
+                        </div>
+                        <div class="span4 pjgp_new">
+                            <g:field type="number" name="rolePJGP" id="rolePJGP" value="0" required=""/>
+                        </div>
                 </div>
                 <div class="row formRow text-center">
                     <label for="roleDescription">
@@ -171,8 +179,19 @@
                         </div>
                         <div class="span5">
                             <g:select name="roleType" id="roleType" from="${['Personnage Joueur', 'Personnage Non Joueur (En jeu)', 'Personnage Non Joueur (Hors jeu)', 'Tout Personnage Joueur', 'Personnage Joueur Générique', 'Personnage Staff']}"
-                                      keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG', 'STF']}" value="${role.type}" required=""/>
+                                      keys="${['PJ', 'PNJ', 'PHJ', 'TPJ', 'PJG', 'STF']}" value="${role.type}" required="" data-id="${role.id}"/>
                         </div>
+                        <g:if test="${role.type == 'PJG'}">
+                            <div class="span1  " id="pjg">
+                                <label for="rolePJGP">
+                                    <g:message code="redactintrigue.role.rolePJGP" default="PJG %"/>
+                                </label>
+                            </div>
+                            <div class="span4  val_pjg" id="pjg_per">
+                                <g:field type="number" name="rolePJGP" id="rolePJGP" value="${role.pjgp}" required="" data-id="${role.id}"/>
+                            </div>
+                        </g:if>
+
                     </div>
                     <div class="row formRow">
                         <div class="span1">
