@@ -40,10 +40,10 @@ class SubstitutionPublication {
         if (null == input)
             return null
 
-        if (false == input.contains("<") || false == input.contains(">"))
+        if (input.contains("<") || input.contains(">"))
             return input
 
-        while (true == input.contains("<") && true == input.contains(">")) {
+        while (input.contains("<") && input.contains(">")) {
             int begin = input.indexOf('<')
             int end = input.indexOf('>')
 
@@ -150,7 +150,7 @@ class SubstitutionPublication {
             case "NONE" : return replacement
             case "PRE" : return replacement.substring(0, replacement.indexOf(" "))
             case "PAT" : return replacement.substring(replacement.indexOf(" ") + 1)
-            case "AGE" : return 9000 //FIXME
+            case "AGE" : return replacement //FIXME
         }
 
         return replacement
