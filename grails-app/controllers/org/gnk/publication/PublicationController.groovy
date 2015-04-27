@@ -7,7 +7,6 @@ import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
 import org.gnk.gn.Gn
-import org.gnk.naming.Rule
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.*
@@ -218,7 +217,6 @@ class PublicationController {
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
-        //rajouter le tableau des synthèse personnage dans le createPlayersTable
 
         wordWriter.addStyledParagraphOfText("T2", "Scénario")
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des Intrigues")
@@ -269,9 +267,7 @@ class PublicationController {
     def createPlayersTable(ArrayList<String> jsoncharlist, String fileName) {
 
         Tbl table = wordWriter.factory.createTbl()
-        Tbl tableRel = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
-        Tr tableRow2 = wordWriter.factory.createTr()
 
         wordWriter.addTableStyledCell("Table1L", tableRow, "NOM - Prenom")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nb PIP Total")
@@ -281,16 +277,9 @@ class PublicationController {
         wordWriter.addTableStyledCell("Table1L", tableRow, "Role(s)")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Indication(s) personnage")
 
-        wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 1")
-        wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 2")
-        wordWriter.addTableStyledCell("Table1L", tableRow2, "Commentaires")
-
         table.getContent().add(tableRow);
-        tableRel.getContent().add(tableRow2);
 
         HashSet<Character> lchar = new HashSet<Character>()
-        HashSet<Rule> s = new HashSet<Rule>()
-
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
         def listPJ = lchar.toList().sort()
@@ -300,9 +289,6 @@ class PublicationController {
             for (Character c : gn.characterSet) {
                 if ((c.lastname + c.firstname) == cname) {
                     Tr tableRowCharacter = wordWriter.factory.createTr()
-                    Tr tableRow2Character = wordWriter.factory.createTr()
-
-                    wordWriter.addTableStyledCell("Table1C", tableRow2Character, c.lastname.toUpperCase() + " " + c.firstname)
 
                     wordWriter.addTableStyledCell("Table1C", tableRowCharacter, c.lastname.toUpperCase() + " " + c.firstname)
                     wordWriter.addTableStyledCell("small", tableRowCharacter, c.nbPIP.toString())
@@ -328,40 +314,9 @@ class PublicationController {
                                 resTag += "\n- " + rht.tag.name + " (" + rht.weight + "%)"
                         }
                     }
-
                     wordWriter.addTableStyledCell("small", tableRowCharacter, resRoles)
                     wordWriter.addTableStyledCell("small", tableRowCharacter, resTag)
                     table.getContent().add(tableRowCharacter)
-
-                    // remplissage du tableau de synthèse des relations
-                    String resPerso2 = ""
-                    String comRel = ""
-
-                    Map<Character, List<RoleHasRelationWithRole>> mapRel = c.getCharacterRelations(gn);
-                    List<RoleHasRelationWithRole> listRelation = mapRel.get(c);
-
-                    for (RoleHasRelationWithRole relat : listRelation) {
-                        if (comRel == "")
-                            comRel = relat.get()
-                        else
-                            comRel += "\n" + relat.get()
-                    }
-
-                    for (Character c2 : gn.characterSet) {
-                        if (resPerso2 == "")
-                            resPerso2 = c2.lastname.toUpperCase() + " " + c2.firstname
-                        else if (c2 == c)
-                            continue
-                        else
-                            resPerso2 += "\n" + c2.lastname.toUpperCase() + " " + c2.firstname
-                    }
-
-                    wordWriter.addTableStyledCell("small", tableRow2Character, resPerso2)
-                    wordWriter.addTableStyledCell("small", tableRow2Character, comRel)
-
-                    tableRel.getContent().add(tableRow2Character)
-                    // fin remplissage du tableau de synthèse des relations
-
                     break;
                 }
             }
@@ -413,7 +368,6 @@ class PublicationController {
             if (c.isPHJ())
                 lchar.add(c.lastname + c.firstname)
         }
-
         def listPHJ = lchar.toList().sort()
         for (String cname : listPHJ) {
             for (Character c : gn.nonPlayerCharSet) {
@@ -453,10 +407,6 @@ class PublicationController {
         if (!jsoncharlist.isEmpty()) {
             wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
             wordWriter.addRelationGraph(jsoncharlist, fileName, "GLOBAL")
-
-            // rajout du tableau de synthèse des relations personnages seulement si les graphes relationnels sont activés
-            wordWriter.addBorders(tableRel)
-            wordWriter.addObject(tableRel)
         }
     }
 
