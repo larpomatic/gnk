@@ -1,4 +1,6 @@
 package org.gnk.publication
+
+import com.topologi.diffx.event.impl.WordEvent
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
@@ -407,6 +409,35 @@ class PublicationController {
         if (!jsoncharlist.isEmpty()) {
             wordWriter.addStyledParagraphOfText("T3", "Synthèse relationnelle des personnages du GN")
             wordWriter.addRelationGraph(jsoncharlist, fileName, "GLOBAL")
+            Graph charGraph = new Graph(gn, false)
+
+            // initialisation tableau de synthèse des relations personnages
+
+            Tbl tableRel = wordWriter.factory.createTbl()
+            Tr tableRow2 = wordWriter.factory.createTr()
+
+            wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 1")
+            wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 2")
+            wordWriter.addTableStyledCell("Table1L", tableRow2, "Type")
+            tableRel.getContent().add(tableRow2);
+
+
+            for (Character c : gn.characterSet) {
+                String charName = c.firstname + " " + c.lastname.toUpperCase()
+
+                // remplissage tableau de synthèse des relations personnages
+                HashMap<String, String> cMap = charGraph.getRelationList(charName)
+                for (String char2 : cMap.keySet()) {
+                    Tr tableRow2Char = wordWriter.factory.createTr()
+                    String link = cMap.get(char2)
+                    wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName)
+                    wordWriter.addTableStyledCell("small", tableRow2Char, char2)
+                    wordWriter.addTableStyledCell("small", tableRow2Char, link)
+                    tableRel.getContent().add(tableRow2Char);
+                    wordWriter.addBorders(tableRel)
+                }
+            }
+            wordWriter.addObject(tableRel)
         }
     }
 
