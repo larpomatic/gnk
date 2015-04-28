@@ -2,8 +2,10 @@
 package org.gnk.naming
 
 import com.gnk.substitution.Tag
+import org.gnk.tag.TagRelation
 import org.gnk.tag.TagService
-import org.hibernate.FetchMode;
+import org.hibernate.FetchMode
+import org.javatuples.Pair;
 
 class NamingService
 {
@@ -21,6 +23,12 @@ class NamingService
         // pour les tests de naming
         usedFirstName = new LinkedList<String>()
         usedName = new LinkedList<String>()
+        //cache for rank
+        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelation1 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
+        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelation2 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
+
+        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelationL1 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
+        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelationL2 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
 
         // liste des prenoms possibles
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
@@ -74,7 +82,7 @@ class NamingService
                         }
 
                         //calcule la correspondance d'un prenom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(), cacheRelation1, cacheRelation2);
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
@@ -139,7 +147,7 @@ class NamingService
                         }
 
                         //calcule la correspondance d'un nom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(),cacheRelationL1, cacheRelationL2);
                         nweight.add(new NameAndWeight(n.name, rankTag))
                     }
                 }
@@ -179,6 +187,15 @@ class NamingService
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
             print("Perso Done !")
+            print("-------------------------------------------------------------------------------------")
+            for (Map.Entry<Pair<Tag,Tag>,TagRelation> l: cacheRelation1.entrySet()) {
+                print("relation1 : " + l.key.getValue0() + " - relation2 : " +l.key.getValue1() + "weight : " + l.value?.weight)
+            }
+            print("-------------------------------------------------------------------------------------")
+            for (Map.Entry<Pair<Tag,Tag>,TagRelation> l: cacheRelation2.entrySet()) {
+                print("relation1 : " + l.key.getValue0() + " - relation2 : " +l.key.getValue1() + "weight : " + l.value?.weight)
+
+            }
         }
         return doneperso
     }

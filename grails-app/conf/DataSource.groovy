@@ -1,7 +1,8 @@
 hibernate {
     cache.use_second_level_cache = true
-    cache.use_query_cache = false
+    cache.use_query_cache = true
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
+    cache.provider_class='org.hibernate.cache.EhCacheProvider'
 }
 // environment specific settings
 environments {

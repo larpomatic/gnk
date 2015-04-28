@@ -389,7 +389,7 @@ public class RoleToPersoProcessing {
                 challengerTagList.put(rolehasTag.getterTag(), rolehasTag.getterWeight());
             }
         }
-        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags, null, null);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {

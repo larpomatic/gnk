@@ -1,4 +1,5 @@
 package org.gnk.tag
+import org.javatuples.Pair
 
 class TagService {
 
@@ -103,7 +104,12 @@ class TagService {
      * @see org.gnk.roletoperso.RoleToPersoProcessing().getRoleRank()
      */
 
-    public int getTagsMatching(Map<Tag, Integer> refTagList, Map<Tag, Integer> challengerTagList, Map<Tag, Boolean> refLockedBannedTags) {
+    public int getTagsMatching(Map<Tag, Integer> refTagList,
+                               Map<Tag,Integer> challengerTagList,
+                               Map<Tag, Boolean> refLockedBannedTags,
+                               HashMap<Pair<Tag,Tag>,TagRelation> cacheRelation1,
+                               HashMap<Pair<Tag, Tag>,TagRelation> cacheRelation2
+    ) {
         Integer rankTag = 0;
         if (challengerTagList != null) {
             for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
@@ -117,8 +123,32 @@ class TagService {
                     if (refTag == challengerTag.getKey()) {
                         return (challengerTag.getValue() * refTagList.get(refTag)) * 100;
                     }
-                    TagRelation tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
-                    TagRelation tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
+					TagRelation tagRelation1 = null
+                    TagRelation tagRelation2 = null
+
+
+                    if ((cacheRelation1 != null || cacheRelation2 != null)
+                            && cacheRelation1.containsKey(new Pair<Tag,Tag>(challengerTag.getKey(), refTag))
+                            && cacheRelation2.containsKey(new Pair<Tag,Tag>(refTag, challengerTag.getKey())))
+                    {
+                        tagRelation1 = cacheRelation1.get(new Pair<Tag,Tag>(challengerTag.getKey(), refTag))
+                        tagRelation2 = cacheRelation1.get(new Pair<Tag,Tag>(refTag, challengerTag.getKey()))
+                    }
+                    else
+                    {
+                        tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
+                        tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
+
+                        if (cacheRelation1 != null){
+                            cacheRelation1.put(new Pair<Tag,Tag>(challengerTag.getKey(), refTag), tagRelation1)
+                        }
+                        if(cacheRelation2 != null) {
+                            cacheRelation2.put(new Pair<Tag,Tag>(challengerTag.getKey(), refTag), tagRelation2)
+                        }
+
+                    }
+
+
                     int lockSignOfChallengerTag = tagIsLocked(challengerTag) ? 1 : tagIsBanned(challengerTag) ? -1 : 0;
                     Boolean refTagIsLockedOrBanned = refLockedBannedTags.get(refTag);
                     int lockSignOfRefTag = refTagIsLockedOrBanned == null ? 0 : refTagIsLockedOrBanned ? 1 : -1;
