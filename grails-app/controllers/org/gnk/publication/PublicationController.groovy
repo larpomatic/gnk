@@ -592,7 +592,7 @@ class PublicationController {
             nameList = nameList.sort()
             for (String n : nameList)
                 for (GenericResource gr : PList)
-                    if (n == gr.selectedResource.name) {
+                    if (n == gr.selectedResource?.name) {
                         tmpList.add(gr)
                         PList.remove(gr)
                         break
