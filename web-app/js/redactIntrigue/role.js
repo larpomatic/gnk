@@ -17,9 +17,14 @@ $(function(){
         });
         if ($('form[name="newRoleForm"] input[name="rolePJGP"]').val() < 0 || parseInt(pjg_tot) > 100)
         {
-            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, le total des PJG est de "+pjg_tot+" et doit être strictement positif, compris entre 0 et 100%.");
         }
+
         else {
+            if (parseInt(pjg_tot)<100)
+            {
+                createNotification("warning", "Attention", "Le total de PJG ( "+pjg_tot +") est inférieur à 100");
+            }
             $.ajax({
                 type: "POST",
                 url: form.attr("data-url"),
@@ -27,7 +32,9 @@ $(function(){
                 dataType: "json",
                 success: function (data) {
                     if (data.iscreate) {
-                        createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
+                        setTimeout(function(){
+                            createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
+                        },2000);
                         var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiRole'];
                         var context = {
                             roleId: String(data.role.id),
@@ -67,11 +74,15 @@ $(function(){
                         updateAllDescription($.unique(spanList.closest("form")));
                     }
                     else {
-                        createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                        setTimeout(function(){
+                            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                        },2000);
                     }
                 },
                 error: function () {
-                    createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                    setTimeout(function(){
+                        createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                    },2000);
                 }
             })
         }
@@ -111,15 +122,21 @@ function updateRole() {
             $('.descriptionContent', form).val(description);
             var pjgp_tot=0;
             $(' input[name="rolePJGP"]').each(function(){
-                if (parseInt($(this).val())) {
-                    pjgp_tot += parseInt($(this).val());
-                }
+
+                    if (parseInt($(this).val()) && roleId != '') {
+                        pjgp_tot += parseInt($(this).val());
+                    }
+
             });
             if (parseInt($('form[name="updateRole_' + roleId + '"] input[name="rolePJGP"]').val()) < 0 || parseInt(pjgp_tot) > 100)
             {
-                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite..");
+                createNotification("danger", "Modifications échouées.", "le total des PJG est de "+pjgp_tot+" et doit être strictement positif, compris entre 0 et 100%");
             }
             else {
+                if (parseInt(pjgp_tot)<100)
+                {
+                    createNotification("warning", "Attention", "Le total de PJG ( "+pjgp_tot +") est inférieur à 100");
+                }
                 $.ajax({
                     type: "POST",
                     url: form.attr("data-url"),
@@ -127,7 +144,10 @@ function updateRole() {
                     dataType: "json",
                     success: function (data) {
                         if (data.object.isupdate) {
-                            createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                            //delay is here to prevent the first notification to disappear to quickly
+                            setTimeout(function(){
+                                createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
+                            },2000);
                             $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option').removeAttr("selected");
                             $('form[name="updateRole_' + roleId + '"] select[name="roleType"] option[value="' + data.object.type + '"]').attr("selected", "selected");
                             initializeTextEditor();
@@ -152,11 +172,15 @@ function updateRole() {
                             });
                         }
                         else {
-                            createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                            setTimeout(function(){
+                                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                            },2000);
                         }
                     },
                     error: function () {
-                        createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                        setTimeout(function(){
+                            createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                        },2000);
                     }
                 })
             }
@@ -356,6 +380,7 @@ function updateRoleRelation(data) {
 // Hide or Show the PJG %
 function updatePJG(){
     var new_pjg = $('.pjgp_new')
+
     new_pjg.hide();
     $('select[name="roleType"]').each(function(){
         if ($(this).val() == "PJG") {
@@ -368,25 +393,44 @@ function updatePJG(){
         }
     });
     $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
+        var pjg_tot = 0;
+        $(' input[name="rolePJGP"]').each(function(){
+            pjg_tot += parseInt($(this).val());
+        });
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
         {
             new_pjg.show();
+            $('form[name="newRoleForm"] input[name="rolePJGP"]').val(parseInt(100 - pjg_tot));
         }
         else {
+            $('form[name="newRoleForm"] input[name="rolePJGP"]').val("0");
             new_pjg.hide();
         }
     });
 
     $('select[name="roleType"]').change(function(){
         var role_id = $(this).attr("data-id");
+        var pjg_tot = 0;
+        $(' input[name="rolePJGP"]').each(function(){
+            pjg_tot += parseInt($(this).val());
+        });
        // console.log(role_id);
         if (role_id){
             if ($(this).val() == "PJG") {
                 $(this).parent().next().show();
                 $(this).parent().next().next().show();
+                $('input[name="rolePJGP"]').each(function () {
+                    if (role_id == $(this).attr("data-id")){
+                        $(this).val(parseInt(100 - pjg_tot));
+                    }
+                });
             }
             else{
-                $(' input[name="rolePJGP"]').val('0');
+                $('input[name="rolePJGP"]').each(function () {
+                    if (role_id == $(this).attr("data-id")){
+                        $(this).val("0");
+                    }
+                });
                 $(this).parent().next().hide();
                 $(this).parent().next().next().hide();;
             }

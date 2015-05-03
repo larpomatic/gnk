@@ -5,6 +5,7 @@ import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.ObjectType
+import org.gnk.roletoperso.Role
 
 class GenericResourceXMLReaderService {
 
@@ -26,6 +27,15 @@ class GenericResourceXMLReaderService {
 
         // TITLE (INGAME_CLUE) reader
         ReadTitleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        //TOROLE
+        ReadToRoleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        //POSSESSEDBYROLE
+        ReadPossessedByRoleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        //FROMROLE
+        ReadFromRoleNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
 
         // DESCRIPTION (INGAME_CLUE) reader
         ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
@@ -64,6 +74,27 @@ class GenericResourceXMLReaderService {
         assert (RESOURCE.TITLE.size() <= 1)
         if (RESOURCE.TITLE.size() > 0) {
             resourceRes.title=  RESOURCE.TITLE[0].text()
+        }
+    }
+
+    private void ReadToRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.TOROLE.size() <= 1)
+        if (RESOURCE.TOROLE.size() > 0 && RESOURCE.TOROLE[0].text() !="") {
+            resourceRes.toRole=  Role.findById(RESOURCE.TOROLE[0].text() as Integer)
+        }
+    }
+
+
+    private void ReadFromRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.FROMROLE.size() <= 1)
+        if (RESOURCE.FROMROLE.size() > 0  && RESOURCE.FROMROLE[0].text() !="") {
+            resourceRes.fromRole=  Role.findById(RESOURCE.FROMROLE[0].text() as Integer)
+        }
+    }
+    private void ReadPossessedByRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
+        assert (RESOURCE.POSSESSEDBYROLE.size() <= 1)
+        if (RESOURCE.POSSESSEDBYROLE.size() > 0 && RESOURCE.POSSESSEDBYROLE[0].text() !="") {
+            resourceRes.possessedByRole=  Role.findById(RESOURCE.POSSESSEDBYROLE[0].text() as Integer)
         }
     }
 

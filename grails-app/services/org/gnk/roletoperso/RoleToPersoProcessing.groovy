@@ -697,14 +697,30 @@ public class RoleToPersoProcessing {
         boolean pjg = true
         for (Plot plot : gn.selectedPlotSet)
         {
-            nb_pl_plot = nb_player
-            for (Role role : plot.roles)
-                if (role.type.equals("PJ"))
-                    nb_pl_plot--
+            int percent_before = 0
+            ArrayList<Role> pjg_role = new ArrayList<Role>()
             for (Role role : plot.roles)
             {
                 if (role.type.equals("PJG"))
                 {
+                    percent_before += role.pjgp
+                    pjg_role.add(role)
+                }
+            }
+            // The sum of the PJGP must be equal to 100
+            if (percent_before < 100 && percent_before > 0)
+            {
+                for (Role role : pjg_role)
+                {
+                    role.pjgp = role.pjgp * 100 / percent_before;
+                }
+            }
+            nb_pl_plot = nb_player
+            for (Role role : pjg_role)
+                if (role.type.equals("PJ"))
+                    nb_pl_plot--
+            for (Role role : pjg_role)
+            {
                     int nb_pjg = (nb_pl_plot  * role.pjgp) / 100
                         for (Character character : gn.getCharacterSet())
                         {
@@ -726,46 +742,35 @@ public class RoleToPersoProcessing {
                                 }
                             }
                         }
-                }
+
             }
+            // i is here to be able to give different role to the remaining characters
+            int i = 0
             for (Character character : gn.getCharacterSet())
             {
-                if (!char_id.contains(character.getDTDId())) {
-                character.initPlotID();
-                char_id.add(character.getDTDId())
-                }
-                pjg = true;
-                for (Role role_pers : character.getSelectedRoles())
-                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
-                        pjg = false
+                if (pjg_role.size() > 0) {
+                    if (!char_id.contains(character.getDTDId())) {
+                        character.initPlotID();
+                        char_id.add(character.getDTDId())
+                    }
+                    pjg = true;
+                    for (Role role_pers : character.getSelectedRoles())
+                        if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                            pjg = false
 
-                if (pjg == true) {
-                    for (Role role : plot.roles) {
-                        if (pjg){
-                            if (role.type.equals("PJG")) {
-                                character.addRole(role)
-                                if (!character.getplotid_role().contains(plot.getId()))
-                                    character.getplotid_role().add(plot.getId())
-                                pjg = false
-                            } 
-                        }
+
+                    if (pjg == true) {
+                        character.addRole(pjg_role.get(i))
+                        if (!character.getplotid_role().contains(plot.getId()))
+                            character.getplotid_role().add(plot.getId())
+                        pjg = false
+                        i++
+                        if (pjg_role.size() == i)
+                            i = 0;
                     }
                 }
             }
-        }/*
-        for (Character character : gn.getCharacterSet()) {
-            if (!char_id.contains(character.getDTDId())) {
-                character.initPlotID();
-                char_id.add(character.getDTDId())
-            }
-            for (Role role : gnPJGRoleSet) {
-                if (character.getplotid_role().contains(role.getPlot().getId()))
-                    continue;
-                else {
-                    character.addRole(role)
-                }
-            }
-        }*/
+        }
     }
 
     private class OrderedRoleSet extends TreeSet<Role> {

@@ -139,21 +139,33 @@ class SubstitutionPublication {
     }
 
     String replaceRole(String syntax, String code) {
-        String replacement = "[Rôle générique]"
+        String[] character //[fisrtname, lastname, age, gender]
         for (Map.Entry<String, Role> map : rolesNames.entrySet())
         {
             if (map.value.code.toUpperCase().equals(code))
-                replacement = map.key
+                character = map.key.split(";")
+        }
+
+        if (null == character)
+            return "[Rôle générique]"
+
+        if (syntax.contains("M#") && syntax.contains("F#")) {
+            String[] switchGender = syntax.split(";")
+            if (character[3].equals("M"))
+                return switchGender[0].substring(2)
+            else //gender = F
+                return switchGender[1].substring(2)
         }
 
         switch (syntax) {
-            case "NONE" : return replacement
-            case "PRE" : return replacement.substring(0, replacement.indexOf(" "))
-            case "PAT" : return replacement.substring(replacement.indexOf(" ") + 1)
-            case "AGE" : return replacement //FIXME
+            case "NONE" : return character[0] + " " + character[1]
+            case "PRE" : return character[0]
+            case "PAT" : return character[1]
+            case "AGE" : return character[2]
+            case "INIF" : return character[0].substring(0, 1) + ". " + character[1]
         }
 
-        return replacement
+        return "[Rôle générique]"
     }
 
     String replacePlace(String syntax, String code) {
@@ -239,7 +251,8 @@ class SubstitutionPublication {
         for (Map.Entry<String, Role> map : rolesNames.entrySet())
         {
             if (map.value.code.toUpperCase().equals(input))
-                return map.key
+                if (map.key.split(";").length >= 2)
+                    return map.key.split(";")[0] + " " + map.key.split(";")[1]
         }
         return "[Role générique]"
     }
