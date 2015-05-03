@@ -104,12 +104,9 @@ class TagService {
      * @see org.gnk.roletoperso.RoleToPersoProcessing().getRoleRank()
      */
 
-    public int getTagsMatching(Map<Tag, Integer> refTagList,
+    public int getTagsMatching2(Map<Tag, Integer> refTagList,
                                Map<Tag,Integer> challengerTagList,
-                               Map<Tag, Boolean> refLockedBannedTags,
-                               HashMap<Pair<Tag,Tag>,TagRelation> cacheRelation1,
-                               HashMap<Pair<Tag, Tag>,TagRelation> cacheRelation2
-    ) {
+                               Map<Tag, Boolean> refLockedBannedTags) {
         Integer rankTag = 0;
         if (challengerTagList != null) {
             for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
@@ -126,28 +123,8 @@ class TagService {
 					TagRelation tagRelation1 = null
                     TagRelation tagRelation2 = null
 
-
-                    if ((cacheRelation1 != null || cacheRelation2 != null)
-                            && cacheRelation1.containsKey(new Pair<Tag,Tag>(challengerTag.getKey(), refTag))
-                            && cacheRelation2.containsKey(new Pair<Tag,Tag>(refTag, challengerTag.getKey())))
-                    {
-                        tagRelation1 = cacheRelation1.get(new Pair<Tag,Tag>(challengerTag.getKey(), refTag))
-                        tagRelation2 = cacheRelation1.get(new Pair<Tag,Tag>(refTag, challengerTag.getKey()))
-                    }
-                    else
-                    {
-                        tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
-                        tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
-
-                        if (cacheRelation1 != null){
-                            cacheRelation1.put(new Pair<Tag,Tag>(challengerTag.getKey(), refTag), tagRelation1)
-                        }
-                        if(cacheRelation2 != null) {
-                            cacheRelation2.put(new Pair<Tag,Tag>(challengerTag.getKey(), refTag), tagRelation2)
-                        }
-
-                    }
-
+                    tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
+                    tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
 
                     int lockSignOfChallengerTag = tagIsLocked(challengerTag) ? 1 : tagIsBanned(challengerTag) ? -1 : 0;
                     Boolean refTagIsLockedOrBanned = refLockedBannedTags.get(refTag);
@@ -175,6 +152,72 @@ class TagService {
                             int factor = weight / divider;
                             rankTag += (challengerTagWeight * refTagWeight) * factor;
                         }
+                    }
+                }
+            }
+        }
+        return rankTag;
+    }
+
+    public int getTagsMatching(Map<Tag, Integer> refTagList,
+                                Map<Tag,Integer> challengerTagList,
+                                Map<Tag, Boolean> refLockedBannedTags) {
+
+        Integer rankTag = 0;
+        List<Pair<Tag,Tag>> allRelation = []
+
+        if (challengerTagList != null) {
+            for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
+                Boolean tagIsLockedOrBannedForRef = refLockedBannedTags.get(challengerTag.getKey());
+                if (tagIsLockedOrBannedForRef != null) {
+                    if ((tagIsLocked(challengerTag) && !tagIsLockedOrBannedForRef) || (tagIsBanned(challengerTag) && tagIsLockedOrBannedForRef)) {
+                        return Integer.MIN_VALUE;
+                    }
+                }
+                for (Tag refTag : refTagList.keySet()) {
+                    if (refTag == challengerTag.getKey()) {
+                        return (challengerTag.getValue() * refTagList.get(refTag)) * 100;
+                    }
+
+                    allRelation.add(new Pair<Tag, Tag> (challengerTag.getKey(), refTag))
+                    allRelation.add(new Pair<Tag, Tag> (refTag, challengerTag.getKey()))
+                }
+            }
+
+            List<TagRelation> list = []
+            if (!allRelation.isEmpty()){
+                String query = "FROM TagRelation where "
+
+                for (int i = 0; i < allRelation.size(); i++) {
+
+                    if (i != 0){
+                        query += "or"
+                    }
+
+                    query += " tag1.name = '" + allRelation[i].value0 + "' and tag2.name = '" + allRelation[i].value1 +"'"
+                }
+                list = TagRelation.executeQuery(query)
+            }
+
+            for(TagRelation tagRelation1 : list){
+                int lockSignOfChallengerTag = tagIsLocked([tagRelation1.tag1 , tagRelation1.weight]) ? 1 : tagIsBanned([tagRelation1.tag1 , tagRelation1.weight]) ? -1 : 0;
+
+                if (tagRelation1 != null) {
+                    int weight = 0;
+                    int divider = 0;
+                    int lockSignOfTagRelation1 = tagRelation1 == null ? 0 : tagRelation1.isLocked() ? 1 : tagRelation1.isBanned() ? -1 : 0;
+                    if ((lockSignOfChallengerTag * lockSignOfTagRelation1) < 0 || (lockSignOfChallengerTag) < 0) {
+                        return Integer.MIN_VALUE;
+                    }
+                    if (tagRelation1 != null) {
+                        weight += tagRelation1.getterWeight();
+                        divider++;
+                    }
+
+                    if (divider != 0) {
+                        Integer challengerTagWeight = tagRelation1.tag1;
+                        int factor = weight / divider;
+                        rankTag += (challengerTagWeight) * factor;
                     }
                 }
             }

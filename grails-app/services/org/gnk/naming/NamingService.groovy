@@ -2,10 +2,9 @@
 package org.gnk.naming
 
 import com.gnk.substitution.Tag
-import org.gnk.tag.TagRelation
 import org.gnk.tag.TagService
 import org.hibernate.FetchMode
-import org.javatuples.Pair;
+import org.springframework.util.StopWatch
 
 class NamingService
 {
@@ -23,12 +22,10 @@ class NamingService
         // pour les tests de naming
         usedFirstName = new LinkedList<String>()
         usedName = new LinkedList<String>()
-        //cache for rank
-        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelation1 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
-        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelation2 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
 
-        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelationL1 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
-        HashMap<Pair<org.gnk.tag.Tag,org.gnk.tag.Tag>,org.gnk.tag.TagRelation> cacheRelationL2 = new HashMap<org.gnk.tag.Tag,org.gnk.tag.TagRelation>()
+        StopWatch total = new StopWatch()
+
+        total.start()
 
         // liste des prenoms possibles
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
@@ -42,6 +39,10 @@ class NamingService
         // Pour chaque personnage envoye
         for (PersoForNaming tmp : persoList)
         {
+            StopWatch requete = new StopWatch()
+            StopWatch perso = new StopWatch()
+
+            perso.start()
             // Choix des prenoms
             if (tmp.is_selectedFirstName)
             {
@@ -82,7 +83,7 @@ class NamingService
                         }
 
                         //calcule la correspondance d'un prenom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(), cacheRelation1, cacheRelation2);
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
@@ -137,7 +138,8 @@ class NamingService
                 for (Tag t : tmp.getTag()) {
                     tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
                 }
-
+                StopWatch totalRequest = new StopWatch()
+                totalRequest.start()
                 for (Name n : nlist){
                     Set<NameHasTag> nHasTags = n.getExtTags();
                     Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
@@ -145,12 +147,18 @@ class NamingService
                         for (NameHasTag nHasTag : nHasTags) {
                             challengerTagList.put(nHasTag.getTag(), nHasTag.getWeight());
                         }
-
+                        requete.start()
                         //calcule la correspondance d'un nom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(),cacheRelationL1, cacheRelationL2);
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        requete.stop()
+//                        print("requete = " + requete.getTotalTimeSeconds())
+
                         nweight.add(new NameAndWeight(n.name, rankTag))
                     }
                 }
+                totalRequest.stop()
+                 print("totalRequest = " + totalRequest.getTotalTimeSeconds())
+
                 if (nweight.size() < persoList.size())
                     nweight += getRandomName(nlist, persoList)
 
@@ -186,17 +194,14 @@ class NamingService
             //print("     LN " + tmp)
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
-            print("Perso Done !")
-            print("-------------------------------------------------------------------------------------")
-            for (Map.Entry<Pair<Tag,Tag>,TagRelation> l: cacheRelation1.entrySet()) {
-                print("relation1 : " + l.key.getValue0() + " - relation2 : " +l.key.getValue1() + "weight : " + l.value?.weight)
-            }
-            print("-------------------------------------------------------------------------------------")
-            for (Map.Entry<Pair<Tag,Tag>,TagRelation> l: cacheRelation2.entrySet()) {
-                print("relation1 : " + l.key.getValue0() + " - relation2 : " +l.key.getValue1() + "weight : " + l.value?.weight)
 
-            }
+            perso.stop()
+            print("perso = " + perso.getTotalTimeSeconds())
+            print("Perso Done !")
         }
+
+        total.stop()
+        print("total = " + total.getTotalTimeSeconds())
         return doneperso
     }
 
