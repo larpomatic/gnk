@@ -1,7 +1,5 @@
 package org.gnk.substitution.data
 
-import org.gnk.resplacetime.PlaceHasTag
-
 class Place {
 	String id
     String plotId

@@ -1,16 +1,12 @@
 package org.gnk.substitution
-
+import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
-import org.gnk.resplacetime.PlaceHasTag
-import org.gnk.roletoperso.RoleHasEvent
-import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.roletoperso.RoleHasRelationWithRole
-import org.gnk.substitution.data.*;
-import org.gnk.gn.Gn
+import org.gnk.substitution.data.*
 
 class InputHandler {
 

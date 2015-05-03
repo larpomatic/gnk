@@ -1,6 +1,5 @@
 package org.gnk.publication
 
-import com.topologi.diffx.event.impl.WordEvent
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
@@ -705,7 +704,7 @@ class PublicationController {
             for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
                 for (Role r : c.selectedRoles) {
                     if (r.plot.DTDId.equals(p.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                        rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                 }
             }
 
@@ -713,7 +712,7 @@ class PublicationController {
             for (Character c : gn.nonPlayerCharSet) {
                 for (Role r : c.selectedRoles) {
                     if (r.plot.DTDId.equals(p.DTDId))
-                        rolesNames.put(c.firstname + " " + c.lastname, r)
+                        rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                 }
             }
 
@@ -790,7 +789,7 @@ class PublicationController {
         for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId))
-                    rolesNames.put(c.firstname + " " + c.lastname, r)
+                    rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
             }
         }
 
@@ -798,7 +797,7 @@ class PublicationController {
         for (Character c : gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId))
-                    rolesNames.put(c.firstname + " " + c.lastname, r)
+                    rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
             }
         }
 
@@ -1150,7 +1149,7 @@ class PublicationController {
                     HashMap<String, Role> rolesNames = new HashMap<>()
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(e.plot.DTDId))
-                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                            rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                     substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                     if (e.name)
                         e.name = substitutionPublication.replaceAll(e.name)
@@ -1348,11 +1347,11 @@ class PublicationController {
                 for (Character c : gn.characterSet)
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                            rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                 for (Character c : gn.nonPlayerCharSet)
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(genericResource.plot.DTDId))
-                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                            rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                 substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                 // Fin construction du substitutionPublication
 
@@ -1474,7 +1473,7 @@ class PublicationController {
         for (Character c : gn.characterSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId))
-                    rolesNames.put(c.firstname + " " + c.lastname, r)
+                    rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
             }
         }
 
@@ -1482,7 +1481,7 @@ class PublicationController {
         for (Character c : gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId))
-                    rolesNames.put(c.firstname + " " + c.lastname, r)
+                    rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
             }
         }
 
@@ -1600,7 +1599,7 @@ class PublicationController {
                 for (Character c : gn.characterSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.plot.DTDId.equals(e.plot.DTDId))
-                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                            rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                     }
                 }
 
@@ -1608,7 +1607,7 @@ class PublicationController {
                 for (Character c : gn.nonPlayerCharSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.plot.DTDId.equals(e.plot.DTDId))
-                            rolesNames.put(c.firstname + " " + c.lastname, r)
+                            rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
                     }
                 }
 
