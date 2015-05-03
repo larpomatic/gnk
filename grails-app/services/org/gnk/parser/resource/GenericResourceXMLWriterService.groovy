@@ -19,6 +19,10 @@ class GenericResourceXMLWriterService {
         if (genericResource.isIngameClue()) {
             genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
             genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
+            genericResourceElt.appendChild(getGenericResourcePossessedByRoleElement(doc,genericResource))
+            genericResourceElt.appendChild(getGenericResourceFromRoleElement(doc,genericResource))
+            genericResourceElt.appendChild(getGenericResourceToRoleElement(doc,genericResource))
+
         }
 
         return genericResourceElt;
@@ -89,6 +93,39 @@ class GenericResourceXMLWriterService {
         return titleElt
     }
 
+    private Element getGenericResourceToRoleElement(Document doc, GenericResource genericResource) {
+        Element toRoleElt = doc.createElement("TOROLE")
+
+        if (genericResource.toRole) {
+            CDATASection toRoleData = doc.createCDATASection("TOROLE")
+            toRoleData.setData(genericResource.toRole.getId() as String)
+            toRoleElt.appendChild(toRoleData)
+        }
+
+        return toRoleElt
+    }
+    private Element getGenericResourcePossessedByRoleElement(Document doc, GenericResource genericResource) {
+        Element possessedByRoleElt = doc.createElement("POSSESSEDBYROLE")
+
+        if (genericResource.possessedByRole) {
+            CDATASection possessedByRoleData = doc.createCDATASection("POSSESSEDBYROLE")
+            possessedByRoleData.setData(genericResource.possessedByRole.getId() as String)
+            possessedByRoleElt.appendChild(possessedByRoleData)
+        }
+
+        return possessedByRoleElt
+    }
+    private Element getGenericResourceFromRoleElement(Document doc, GenericResource genericResource) {
+        Element fromRoleElt = doc.createElement("FROMROLE")
+
+        if (genericResource.fromRole) {
+            CDATASection fromRoleData = doc.createCDATASection("FROMROLE")
+            fromRoleData.setData(genericResource.fromRole.getId() as String)
+            fromRoleElt.appendChild(fromRoleData)
+        }
+
+        return fromRoleElt
+    }
 
     private Element getGenericResourceDescriptionElement(Document doc, GenericResource genericResource) {
         Element descriptionElt = doc.createElement("DESCRIPTION")
