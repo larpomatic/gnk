@@ -152,9 +152,9 @@ class SubstitutionPublication {
         if (syntax.contains("M#") && syntax.contains("F#")) {
             String[] switchGender = syntax.split(";")
             if (character[3].equals("M"))
-                return switchGender[0].substring(2)
+                return switchGender[0].substring(2).toLowerCase()
             else //gender = F
-                return switchGender[1].substring(2)
+                return switchGender[1].substring(2).toLowerCase()
         }
 
         switch (syntax) {
