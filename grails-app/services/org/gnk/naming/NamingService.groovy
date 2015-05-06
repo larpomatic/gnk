@@ -2,10 +2,11 @@
 package org.gnk.naming
 
 import com.gnk.substitution.Tag
-import org.gnk.tag.TagService
+import org.gnk.tag.TagRelation
 import org.hibernate.FetchMode
 import org.springframework.util.StopWatch
-
+import org.javatuples.Pair
+import org.gnk.tag.TagService
 class NamingService
 {
     // Nombre de prenom ou de nom a renvoyer
@@ -36,26 +37,25 @@ class NamingService
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
         Collections.shuffle (nlist)
 
-        // Pour chaque personnage envoye
-        for (PersoForNaming tmp : persoList)
-        {
-            StopWatch requete = new StopWatch()
-            StopWatch perso = new StopWatch()
+        HashMap<Tag, Tag> referenceRelation = new HashMap<>()
 
-            perso.start()
-            // Choix des prenoms
-            if (tmp.is_selectedFirstName)
-            {
-                NameAndWeight maxname
-                LinkedList<Firstname> fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
-                Integer rankTag = 0;
-                //LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight>()
-                List<NameAndWeight> fnweight = new ArrayList<NameAndWeight>()
+        StringBuilder queryFirstName = new StringBuilder("FROM TagRelation where ")
+        StringBuilder queryName = new StringBuilder("FROM TagRelation where ")
 
-                for (Tag persotag : tmp.tag )
-                {
-                    if (persotag.type.equals("Sexe"))
-                    {
+        LinkedList<Pair<PersoForNaming, LinkedList<Firstname>>> listPersoName = []
+
+        for (PersoForNaming tmp : persoList){
+
+            LinkedList<Firstname> fnlist = null
+
+            if (tmp.is_selectedFirstName) {
+
+                fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
+
+
+                for (Tag persotag : tmp.tag) {
+
+                    if (persotag.type.equals("Sexe")) {
                         if (persotag.weight.equals(-101))
                             if (tmp.getgender() == "F" || tmp.getgender() == "H")
                                 fnlist = tmp.getgender() == "F" ? fnlistHomme : fnlistFemme
@@ -65,42 +65,84 @@ class NamingService
                             fnlist = persotag.value.equals("Homme") ? fnlistHomme : fnlistFemme
                         else
                             fnlist = tmp.getgender() == "M" ? fnlistHomme : fnlistFemme
-                        break;
+                    }
+
+                    for (Firstname fn : fnlist) {
+
+                        Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
+                        if (fnHasTags != null) {
+                            for (FirstnameHasTag fnHasTag : fnHasTags) {
+                                if (!referenceRelation.containsKey(fnHasTag.getTag())
+                                        && referenceRelation[fnHasTag.getTag()] != persotag.getValue()) {
+                                    String relation1 = " tag1.name = '" + fnHasTag.getTag() + "' and tag2.name = '" + persotag.getValue() + "'"
+                                    String relation2 = " tag1.name = '" + persotag.getValue() + "' and tag2.name = '" + fnHasTag.getTag() + "'"
+                                    queryFirstName.append(relation1 + " or " + relation2 + " or ")
+
+                                    referenceRelation.put(fnHasTag.getTag(), persotag.getValue())
+                                    referenceRelation.put(persotag.getValue(), fnHasTag.getTag())
+                                }
+                            }
+                        }
+                    }
+
+                    for (Name n : nlist){
+                        Set<NameHasTag> nHasTags = n.getExtTags();
+                        if (nHasTags != null) {
+                            for (NameHasTag nHasTag : nHasTags) {
+                                if (!referenceRelation.containsKey(nHasTag.getTag())
+                                        && referenceRelation[nHasTag.getTag()] != persotag.getValue()) {
+                                    String relation1 = " tag1.name = '" + nHasTag.getTag() + "' and tag2.name = '" + persotag.getValue() + "'"
+                                    String relation2 = " tag1.name = '" + persotag.getValue() + "' and tag2.name = '" + nHasTag.getTag() + "'"
+                                    queryName.append(relation1 + " or " + relation2 + " or ")
+
+                                    referenceRelation.put(nHasTag.getTag(), persotag.getValue())
+                                    referenceRelation.put(persotag.getValue(), nHasTag.getTag())
+                                }
+                            }
+                        }
                     }
                 }
+            }
+            listPersoName.add(new Pair<PersoForNaming, LinkedList<Firstname>> (tmp, fnlist))
+        }
+
+        queryFirstName.setLength(queryFirstName.size() - 3)
+        String stringQuery1 = queryFirstName.toString()
+        List<TagRelation> AllRelationFirstName = TagRelation.executeQuery(stringQuery1)
+
+
+        queryName.setLength(queryName.size() - 3)
+        String stringQuery2 = queryName.toString()
+        List<TagRelation> AllRelationName = TagRelation.executeQuery(stringQuery2)
+
+        // Pour chaque personnage envoye
+        for (Pair<PersoForNaming, LinkedList<Firstname>> pairPersoName : listPersoName)
+        {
+            PersoForNaming tmp = pairPersoName.value0
+            LinkedList<Firstname> fnlist = pairPersoName.value1
+
+            // Choix des prenoms
+            if (pairPersoName.value1 != null)
+            {
+                NameAndWeight maxname
+                Integer rankTag = 0;
+                List<NameAndWeight> fnweight = new ArrayList<NameAndWeight>()
 
                 Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
                 for (Tag t : tmp.getTag()) {
                     tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
                 }
+                //rank
+                rankTag = PersoFirstNameRank(AllRelationFirstName, fnlist, tagMap, fnweight)
 
-                for (Firstname fn : fnlist){
-                    Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
-                    Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
-                    if (fnHasTags != null) {
-                        for (FirstnameHasTag fnHasTag : fnHasTags) {
-                            challengerTagList.put(fnHasTag.getTag(), fnHasTag.getWeight());
-                        }
 
-                        //calcule la correspondance d'un prenom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
-                        fnweight.add(new NameAndWeight(fn.name, rankTag))
-                    }
-                }
-
-                if (fnweight.empty)
+                    if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
 
                 Collections.sort(fnweight)
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                 while (fnweight.size() > 0)
                 {
-                    /*maxname = fnweight.first
-                    for (NameAndWeight nw : fnweight)
-                    {
-                        if (maxname.weight < nw.weight)
-                            maxname = nw
-                    }*/
                     maxname = fnweight.last()
                     if (!usedFirstName.contains(maxname.name) && !tmp.selectedFirstnames.contains(maxname.name))
                     {
@@ -130,7 +172,6 @@ class NamingService
             if (tmp.is_selectedName && tmp.selectedNames.isEmpty())
             {
                 NameAndWeight maxname
-                //LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight>()
                 List<NameAndWeight> nweight = new ArrayList<NameAndWeight>()
                 Integer rankTag = 0;
 
@@ -138,8 +179,7 @@ class NamingService
                 for (Tag t : tmp.getTag()) {
                     tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
                 }
-                StopWatch totalRequest = new StopWatch()
-                totalRequest.start()
+
                 for (Name n : nlist){
                     Set<NameHasTag> nHasTags = n.getExtTags();
                     Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
@@ -147,17 +187,12 @@ class NamingService
                         for (NameHasTag nHasTag : nHasTags) {
                             challengerTagList.put(nHasTag.getTag(), nHasTag.getWeight());
                         }
-                        requete.start()
                         //calcule la correspondance d'un nom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
-                        requete.stop()
-//                        print("requete = " + requete.getTotalTimeSeconds())
+                        rankTag = PersoNameRank(AllRelationName, nlist, tagMap, nweight)
 
                         nweight.add(new NameAndWeight(n.name, rankTag))
                     }
                 }
-                totalRequest.stop()
-                 print("totalRequest = " + totalRequest.getTotalTimeSeconds())
 
                 if (nweight.size() < persoList.size())
                     nweight += getRandomName(nlist, persoList)
@@ -191,18 +226,50 @@ class NamingService
                         usedName.add(tmp.selectedNames.first())
                 }
             }
-            //print("     LN " + tmp)
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
 
-            perso.stop()
-            print("perso = " + perso.getTotalTimeSeconds())
-            print("Perso Done !")
         }
 
         total.stop()
         print("total = " + total.getTotalTimeSeconds())
         return doneperso
+    }
+
+    private int PersoFirstNameRank(List<TagRelation> AllRelation, LinkedList<Firstname> fnlist, tagMap, ArrayList<NameAndWeight> fnweight) {
+        int rankTag
+        for (Firstname fn : fnlist) {
+            Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
+            Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+            if (fnHasTags != null) {
+                for (FirstnameHasTag fnHasTag : fnHasTags) {
+                    challengerTagList.put(fnHasTag.getTag(), fnHasTag.getWeight());
+                }
+
+                //calcule la correspondance d'un prenom avec le caractere
+                rankTag = (new TagService()).getTagsMatchingCalculate(tagMap, challengerTagList, AllRelation, Collections.emptyMap());
+                fnweight.add(new NameAndWeight(fn.name, rankTag))
+            }
+        }
+        return rankTag
+    }
+
+    private int PersoNameRank(List<TagRelation> AllRelation, LinkedList<Name> nlist, tagMap, ArrayList<NameAndWeight> fnweight) {
+        int rankTag
+        for (Name fn : nlist) {
+            Set<FirstnameHasTag> nHasTags = fn.getExtTags();
+            Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
+            if (nHasTags != null) {
+                for (NameHasTag nHasTag : nHasTags) {
+                    challengerTagList.put(nHasTag.getTag(), nHasTag.getWeight());
+                }
+
+                //calcule la correspondance d'un prenom avec le caractere
+                rankTag = (new TagService()).getTagsMatchingCalculate(tagMap, challengerTagList, AllRelation, Collections.emptyMap());
+                fnweight.add(new NameAndWeight(fn.name, rankTag))
+            }
+        }
+        return rankTag
     }
 
     // recuperer les prenoms de la base de donnees en fonction de l'univers et du genre (+ les neutre)

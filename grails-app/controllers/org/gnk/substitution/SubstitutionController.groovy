@@ -90,6 +90,30 @@ class SubstitutionController {
         List<Place> placeList = inputHandler.placeList
         List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
+
+
+        //sort pastscenes
+//        if (pastsceneList.size() > 0){
+//
+//        pastsceneList.sort {a,b ->
+//            Date dateA = null;
+//            Date dateB = null;
+//
+//            dateA = new Date((a.absoluteYear == null || a.absoluteYear == "") && !a.isYearAbsolute ? 0 : a.absoluteYear as Integer,
+//                    (a.absoluteMonth == null || a.absoluteMonth == "") && !a.isMonthAbsolute ? 0 : a.absoluteMonth as Integer,
+//                    (a.absoluteDay == null || a.absoluteDay == "") && !a.isDayAbsolute ? 0 : a.absoluteDay as Integer,
+//                    (a.absoluteHour == null || a.absoluteHour == "") && !a.isHourAbsolute ? 0 : a.absoluteHour as Integer,
+//                    (a.absoluteMin == null || a.absoluteMin == "") && !a.isMinuteAbsolute ? 0 : a.absoluteMin as Integer);
+//
+//            dateB = new Date((b.absoluteYear == null || b.absoluteYear == "") && !b.isYearAbsolute ? 0 : b.absoluteYear as Integer,
+//                    (b.absoluteMonth == null || b.absoluteMonth == "") && !b.isMonthAbsolute ? 0 : b.absoluteMonth as Integer,
+//                    (b.absoluteDay == null || b.absoluteDay == "") && !b.isDayAbsolute ? 0 : b.absoluteDay as Integer,
+//                    (b.absoluteHour == null || b.absoluteHour == "") && !b.isHourAbsolute ? 0 : b.absoluteHour as Integer,
+//                    (b.absoluteMin == null || b.absoluteMin == "") && !b.isMinuteAbsolute ? 0 : b.absoluteMin as Integer);
+//
+//            dateA <=> dateB};
+//        }
+
         [gnInfo: gnInfo,
                 characterList: characterList,
                 resourceList: resourceList,
