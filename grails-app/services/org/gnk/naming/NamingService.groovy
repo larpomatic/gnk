@@ -228,7 +228,7 @@ class NamingService
             }
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
-
+            print("Perso Done !")
         }
 
         total.stop()
