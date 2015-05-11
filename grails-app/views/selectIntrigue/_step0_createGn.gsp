@@ -78,7 +78,7 @@ select {
                            value="${gnInstance?.pipMax}" type="number"></td>
                 <td>
                     <label for="gnPIPCore">
-                        <g:message code="selectintrigue.step0.gnPIPCore" default="PIP Max"/>
+                        <g:message code="selectintrigue.step0.gnPIPCore" default="PIP Core"/>
                     </label>
                 </td>
                 <td>
