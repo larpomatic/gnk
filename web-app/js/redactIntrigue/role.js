@@ -1,7 +1,7 @@
 $(function(){
-
-    updateRole();
     updatePJG();
+    updateRole();
+
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "STF") {
@@ -44,6 +44,7 @@ $(function(){
                         $('.roleScreen > ul').append(html);
                         updateRoleRelation(data);
                         initConfirm();
+                        updatePJG();
                         initDeleteButton();
                         emptyRoleForm();
                         createNewRolePanel(data);
@@ -123,7 +124,7 @@ function updateRole() {
             var pjgp_tot=0;
             $(' input[name="rolePJGP"]').each(function(){
 
-                    if (parseInt($(this).val()) && roleId != '') {
+                    if (parseInt($(this).val()) && roleId != undefined && $(this).attr("data-id")) {
                         pjgp_tot += parseInt($(this).val());
                     }
 
@@ -261,6 +262,7 @@ function emptyRoleForm() {
     $('form[name="newRoleForm"] .modalLi').show();
     $('form[name="newRoleForm"] #roleRichTextEditor').html("");
     $('form[name="newRoleForm"] .pjgp_new').hide();
+    $('form[name="newRoleForm"] input[name="rolePJGP"]').val(parseInt("0"));
 }
 
 // créé un tab-pane du nouveau role
@@ -358,6 +360,7 @@ function createNewRolePanel(data) {
         $(this).parent().parent().toggleClass("fullScreenOpen");
     });
     initializePopover();
+    updatePJG();
 }
 
 function updateRoleRelation(data) {
@@ -393,48 +396,52 @@ function updatePJG(){
         }
     });
     $('form[name="newRoleForm"] select[name="roleType"]').change(function(){
-        var pjg_tot = 0;
-        $(' input[name="rolePJGP"]').each(function(){
-            pjg_tot += parseInt($(this).val());
+        var pjg_tota = tot();
+        $.when(tot()).done(function(pjg_tota){
+            if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
+            {
+                new_pjg.show();
+                $('form[name="newRoleForm"] input[name="rolePJGP"]').val(parseInt(100 - pjg_tota));
+            }
+            else {
+                $('form[name="newRoleForm"] input[name="rolePJGP"]').val(parseInt("0"));
+                new_pjg.hide();
+            }
         });
-        if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "PJG")
-        {
-            new_pjg.show();
-            $('form[name="newRoleForm"] input[name="rolePJGP"]').val(parseInt(100 - pjg_tot));
-        }
-        else {
-            $('form[name="newRoleForm"] input[name="rolePJGP"]').val("0");
-            new_pjg.hide();
-        }
     });
 
     $('select[name="roleType"]').change(function(){
         var role_id = $(this).attr("data-id");
-        var pjg_tot = 0;
-        $(' input[name="rolePJGP"]').each(function(){
-            pjg_tot += parseInt($(this).val());
-        });
-       // console.log(role_id);
-        if (role_id){
-            if ($(this).val() == "PJG") {
-                $(this).parent().next().show();
-                $(this).parent().next().next().show();
-                $('input[name="rolePJGP"]').each(function () {
-                    if (role_id == $(this).attr("data-id")){
-                        $(this).val(parseInt(100 - pjg_tot));
-                    }
-                });
+        var pjg_tot = tot();
+            if (role_id){
+                if ($(this).val() == "PJG") {
+                    $(this).parent().next().show();
+                    $(this).parent().next().next().show();
+                    $('input[name="rolePJGP"]').each(function () {
+                        if (role_id == $(this).attr("data-id")){
+                            $(this).val(parseInt(100 - pjg_tot));
+                        }
+                    });
+                }
+                else{
+                    $('input[name="rolePJGP"]').each(function () {
+                        if (role_id == $(this).attr("data-id")){
+                            $(this).val(parseInt("0"));
+                        }
+                    });
+                    $(this).parent().next().hide();
+                    $(this).parent().next().next().hide();;
+                }
             }
-            else{
-                $('input[name="rolePJGP"]').each(function () {
-                    if (role_id == $(this).attr("data-id")){
-                        $(this).val("0");
-                    }
-                });
-                $(this).parent().next().hide();
-                $(this).parent().next().next().hide();;
-            }
-        }
-
     });
+}
+function tot (){
+    var pjg_tota = 0;
+    $(' input[name="rolePJGP"]').each(function(){
+        var role_id = $(this).attr("data-id");
+        if (role_id){
+            pjg_tota += parseInt($(this).val());
+        }
+    });
+    return pjg_tota;
 }

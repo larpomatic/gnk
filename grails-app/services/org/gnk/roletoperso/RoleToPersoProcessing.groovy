@@ -716,7 +716,7 @@ public class RoleToPersoProcessing {
                 }
             }
             nb_pl_plot = nb_player
-            for (Role role : pjg_role)
+            for (Role role :plot.getRoles())
                 if (role.type.equals("PJ"))
                     nb_pl_plot--
             for (Role role : pjg_role)
@@ -770,6 +770,7 @@ public class RoleToPersoProcessing {
                     }
                 }
             }
+            pjg_role.clear();
         }
     }
 
