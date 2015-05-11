@@ -338,7 +338,7 @@ function createNewRolePanel(data) {
 
     $('.pastSceneScreen div[id*="pastsceneRole' + data.role.id + '"] .fullScreenEditable .btnFullScreen').click(function() {
         $(this).parent().parent().toggleClass("fullScreenOpen");
-    });
+    }); 
     $('.eventScreen div[id*="eventRolesModal"]').each(function() {
         var eventId = $(this).attr("id");
         eventId = eventId.replace("eventRolesModal", "");
