@@ -417,6 +417,17 @@ class IntegrationHandler {
             // Create pastceneTime
             Calendar calPastScene = gnBeginDate.toCalendar()
             // TODO il faut mettre dans le PastsceneTime créé tout en absolute en fonction du pastscene reçu.
+
+
+            if (pastsceneJson.isYearAbsolute == "false"
+                    && pastsceneJson.absoluteYear != null
+                    && pastsceneJson.absoluteYear != ""
+                    && (pastsceneJson.absoluteYear as Integer) > 1000)
+            {
+                print("year : " + pastsceneJson.absoluteYear)
+                print("htmlId : " + pastsceneJson.htmlId)
+            }
+
             PastsceneTime pastsceneTime = new PastsceneTime()
             pastsceneTime.relativeDateValue = null
             pastsceneTime.relativeDateUnit = null
@@ -464,9 +475,9 @@ class IntegrationHandler {
             pastsceneTime.absoluteHour = null
             if (pastsceneJson.absoluteHour != "") {
                 if (pastsceneJson.isHourAbsolute  == "true") {
-                    calPastScene.set(Calendar.HOUR, pastsceneJson.absoluteHour as Integer)
+                    calPastScene.set(Calendar.HOUR_OF_DAY, pastsceneJson.absoluteHour as Integer)
                 } else {
-                    calPastScene.add(Calendar.HOUR, - (pastsceneJson.absoluteHour as Integer))
+                    calPastScene.add(Calendar.HOUR_OF_DAY, - (pastsceneJson.absoluteHour as Integer))
                 }
             }
             pastsceneTime.absoluteMinute = null
@@ -482,7 +493,7 @@ class IntegrationHandler {
             pastsceneTime.absoluteYear = calPastScene.getAt(Calendar.YEAR)
             pastsceneTime.absoluteMonth = calPastScene.getAt(Calendar.MONTH)
             pastsceneTime.absoluteDay = calPastScene.getAt(Calendar.DAY_OF_MONTH)
-            pastsceneTime.absoluteHour = calPastScene.getAt(Calendar.HOUR)
+            pastsceneTime.absoluteHour = calPastScene.getAt(Calendar.HOUR_OF_DAY)
             pastsceneTime.absoluteMinute = calPastScene.getAt(Calendar.MINUTE)
             pastsceneJson.isYearAbsolute = "true"
             pastsceneJson.isMonthAbsolute = "true"

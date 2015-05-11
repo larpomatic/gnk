@@ -18,6 +18,7 @@ class TagRelation {
     static mapping = {
         id type: 'integer'
         version type: 'integer'
+        cache true
     }
 
     static ArrayList<Tag> findParents(Tag tag)

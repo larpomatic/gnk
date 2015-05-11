@@ -3,7 +3,8 @@ package org.gnk.naming
 
 import com.gnk.substitution.Tag
 import org.gnk.tag.TagService
-import org.hibernate.FetchMode;
+import org.hibernate.FetchMode
+import org.springframework.util.StopWatch;
 
 class NamingService
 {
@@ -21,6 +22,9 @@ class NamingService
         // pour les tests de naming
         usedFirstName = new LinkedList<String>()
         usedName = new LinkedList<String>()
+
+        StopWatch total = new StopWatch()
+        total.start()
 
         // liste des prenoms possibles
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
@@ -180,6 +184,8 @@ class NamingService
             doneperso.add(tmp)
             print("Perso Done !")
         }
+        total.stop()
+        print("total = " + total.getTotalTimeSeconds())
         return doneperso
     }
 
