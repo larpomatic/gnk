@@ -17,7 +17,9 @@
         <th>titre</th>
         <th>Intrigue</th>
         <th>Planifié</th>
-        <th style="text-align: center;">date</th>
+        <g:sortableColumn style="text-align: center;" property="date" title="date"/>
+
+        %{--<th style="text-align: center;">date</th>--}%
     </tr>
     </thead>
     <tbody>
