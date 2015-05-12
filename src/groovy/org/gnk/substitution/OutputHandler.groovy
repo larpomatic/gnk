@@ -1,22 +1,12 @@
 package org.gnk.substitution
-
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.parser.GNKDataContainerService
-import org.gnk.resplacetime.Event
-import org.gnk.resplacetime.GenericPlace
-import org.gnk.resplacetime.Pastscene
-import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.Resource
-import org.gnk.resplacetime.GenericResource
-import org.gnk.resplacetime.TimeService
+import org.gnk.resplacetime.*
 import org.gnk.roletoperso.Character
-import org.gnk.roletoperso.Role
-import org.gnk.roletoperso.RoleHasEvent
-import org.gnk.roletoperso.RoleHasEventHasGenericResource
 
 class OutputHandler {
 
@@ -321,7 +311,11 @@ class OutputHandler {
         // PlaceMap to placeSet
         Set<Place> placeSet = new HashSet<Place>()
         for (el in placeMap) {
-            Place placeDB = Place.findByName(el.value.name)
+            String placeName = el.value.name
+            int index = placeName.lastIndexOf(" -")
+            Place placeDB = Place.findByName(placeName)
+            if (index != -1)
+                placeDB = Place.findByName(placeName.substring(0, index))
             if (placeDB != null) {
                 placeDB.DTDId = el.value.DTDId
                 placeSet.add(placeDB)
