@@ -8,7 +8,7 @@
 <div id="subDatesAlertContainer">
 </div>
 
-<table id="dateTable" class="table table-striped tablesorter">
+<table id="dateTable" class="table table-striped">
     <thead>
     <tr class="upper">
         <th style="text-align: center;">#</th>
@@ -17,9 +17,7 @@
         <th>titre</th>
         <th>Intrigue</th>
         <th>Planifié</th>
-        <g:sortableColumn style="text-align: center;" property="date" title="date"/>
-
-        %{--<th style="text-align: center;">date</th>--}%
+        <th style="text-align: center;">date</th>
     </tr>
     </thead>
     <tbody>
@@ -147,5 +145,6 @@
         jsonObject.events = eventArray;
         return jsonObject;
     }
+
 </script>
 

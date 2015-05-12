@@ -96,7 +96,26 @@ function updateDatesJSONUser(dateJSON) {
         else if (percent < 100) {badgeClass = "badge-warning"}
         datesPercentageSpan.attr("class", "badge " + badgeClass);
         datesPercentageSpan.text(Math.round(percent) + " %");
+
+        sortTable($('#dateTable'), 'asc');
     }
+
+function sortTable($table, order) {
+    var $rows = $('tbody > tr', $table);
+    $rows.sort(function (a, b) {
+        var keyA = new Date($('td:eq(5) input', a)[0].value);
+        var keyB = new Date($('td:eq(5) input', b)[0].value);
+
+        if (order == 'asc') {
+            return (keyA > keyB) ? 1 : 0;
+        } else {
+            return (keyA > keyB) ? 0 : 1;
+        }
+    });
+    $.each($rows, function (index, row) {
+        $table.append(row);
+    });
+}
 
 // Update date HTML element
     function updateDateView(date, dateElement) {
@@ -219,6 +238,7 @@ function updateDatesJSONUser(dateJSON) {
             // sendJSON(datesJSON, url, onSuccessAjaxDates, onErrorAjaxDates, completeAjaxDates);
         }
     }
+
 
 // Init of dates
 function initDateList(url) {
