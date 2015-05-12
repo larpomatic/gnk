@@ -1424,7 +1424,7 @@ class PublicationController {
                     continue
                 tags += plotHasTag.tag.name + " (" + plotHasTag.weight + "%, " + plotHasTag.tag.parent.name + ") " + "\n"
             }
-            wordWriter.addTableStyledCell("small", tableRowPlot, tags.substring(0, tags.length() - 1))
+            wordWriter.addTableStyledCell("small", tableRowPlot, tags)
 
             substituteRolesAndPlotDescription(p)
 
