@@ -31,16 +31,14 @@ class WordWriter {
     public WordprocessingMLPackage wordMLPackage
     public ObjectFactory factory
     public def mainPart
-    public boolean defaultTemplate
 
     public WordWriter(String templateWordSelected, String publicationFolder) {
-        defaultTemplate = false
         this.factory = Context.getWmlObjectFactory()
         try{
 
             this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+templateWordSelected+".docx"))
         } catch (Exception e){
-            defaultTemplate = true
+            this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+"DEFAULT.docx"))
             this.wordMLPackage = WordprocessingMLPackage.createPackage()
             alterStyleSheet()
         }
@@ -123,26 +121,6 @@ class WordWriter {
 
     def void addStyledParagraphOfText(String style, String text)
     {
-        if (defaultTemplate)
-            if (style == "T")
-                style = "Title"
-            else if (style == "ST")
-                style = "Subtitle"
-            else if (style == "T1")
-                style = "Heading1"
-            else if (style == "T2")
-                style = "Heading2"
-            else if (style == "T3")
-                style = "Heading3"
-            else if (style == "T4")
-                style = "Heading4"
-            else if (style == "T5")
-                style = "Heading5"
-            else if (style == "title.ingameclue")
-                style = "Normal"
-            else if (style == "content.ingameclue")
-                style = "Normal"
-
         String[] lines = text.split("\n")
         for (String line : lines)
             this.mainPart.addStyledParagraphOfText(style, line)
