@@ -920,12 +920,29 @@ class PublicationController {
 
             Map<Integer, RoleHasPastscene> roleHasPastsceneList = new TreeMap<>()
 
-            for (Role r : c.getSelectedRoles()) {
-                for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
+            def roles = c.getSelectedRoles()
 
-                    Integer time = roleHasPastscene.pastscene.timingRelative
-                    String unit = roleHasPastscene.pastscene.unitTimingRelative
-                    /*
+            ArrayList<RoleHasPastscene> tmp = new ArrayList<RoleHasPastscene>();
+
+                for (Role r : roles) {
+                    for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
+
+                        Integer time = roleHasPastscene.pastscene.timingRelative
+                        String unit = roleHasPastscene.pastscene.unitTimingRelative
+                        tmp.add(roleHasPastscene);
+                    }
+                }
+
+            tmp = tmp.sort({ a, b ->
+                    Date dateA = new Date(a.pastscene.dateYear, a.pastscene.dateMonth,
+                            a.pastscene.dateDay, a.pastscene.dateHour, a.pastscene.dateMinute);
+                    Date dateB = new Date(b.pastscene.dateYear, b.pastscene.dateMonth,
+                            b.pastscene.dateDay, b.pastscene.dateHour, b.pastscene.dateMinute);
+                    dateA <=> dateB
+                });
+
+            for (RoleHasPastscene roleHasPastscene : tmp) {
+                /*
                     if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1) {
                         time = 365
                     }
@@ -939,43 +956,41 @@ class PublicationController {
                         time = 1
                     }
                     */
-                    String beforeUnit = "";
-                    String beforeValue = "";
+                String beforeUnit = "";
+                String beforeValue = "";
 
-                    if (gn.t0Date.getAt(Calendar.YEAR) == roleHasPastscene.pastscene.dateYear) {
-                        if (gn.t0Date.getAt(Calendar.MONTH) == roleHasPastscene.pastscene.dateMonth) {
-                            if (gn.t0Date.getAt(Calendar.DAY_OF_MONTH) == roleHasPastscene.pastscene.dateDay) {
-                                beforeUnit = "heure(s)"
-                                beforeValue = gn.t0Date.getAt(Calendar.HOUR_OF_DAY) - roleHasPastscene.pastscene.dateHour
-                            } else {
-                                beforeUnit = "jour(s)"
-                                beforeValue = gn.t0Date.getAt(Calendar.DAY_OF_MONTH) - roleHasPastscene.pastscene.dateDay
-                            }
+                if (gn.t0Date.getAt(Calendar.YEAR) == roleHasPastscene.pastscene.dateYear) {
+                    if (gn.t0Date.getAt(Calendar.MONTH) == roleHasPastscene.pastscene.dateMonth) {
+                        if (gn.t0Date.getAt(Calendar.DAY_OF_MONTH) == roleHasPastscene.pastscene.dateDay) {
+                            beforeUnit = "heure(s)"
+                            beforeValue = gn.t0Date.getAt(Calendar.HOUR_OF_DAY) - roleHasPastscene.pastscene.dateHour
                         } else {
-                            beforeUnit = "mois"
-                            beforeValue = gn.t0Date.getAt(Calendar.MONTH) - roleHasPastscene.pastscene.dateMonth
+                            beforeUnit = "jour(s)"
+                            beforeValue = gn.t0Date.getAt(Calendar.DAY_OF_MONTH) - roleHasPastscene.pastscene.dateDay
                         }
                     } else {
-                        beforeUnit = "an(s)"
-                        beforeValue = gn.t0Date.getAt(Calendar.YEAR) - roleHasPastscene.pastscene.dateYear
+                        beforeUnit = "mois"
+                        beforeValue = gn.t0Date.getAt(Calendar.MONTH) - roleHasPastscene.pastscene.dateMonth
                     }
+                } else {
+                    beforeUnit = "an(s)"
+                    beforeValue = gn.t0Date.getAt(Calendar.YEAR) - roleHasPastscene.pastscene.dateYear
+                }
 
-                    String GnRelat = "Il y a " + beforeValue + " " + beforeUnit
-                    String GnFixDate = "Le " + roleHasPastscene.pastscene.dateDay + "/" + roleHasPastscene.pastscene.dateMonth + "/" + roleHasPastscene.pastscene.dateYear + " à " + roleHasPastscene.pastscene.dateHour + "h" + roleHasPastscene.pastscene.dateMinute;
-                    //String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
-                    //le 3 juin 1995: il y a 4 ans, voici le titre de la past
-                    int lastIndexOf = roleHasPastscene.pastscene.title.lastIndexOf(" -")
-                    if (lastIndexOf != -1)
-                        roleHasPastscene.pastscene.title = roleHasPastscene.pastscene.title.substring(0, lastIndexOf)
-                    wordWriter.addStyledParagraphOfText("T5", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
-                    wordWriter.addParagraphOfText(roleHasPastscene.description)
+                String GnRelat = "Il y a " + beforeValue + " " + beforeUnit
+                String GnFixDate = "Le " + roleHasPastscene.pastscene.dateDay + "/" + roleHasPastscene.pastscene.dateMonth + "/" + roleHasPastscene.pastscene.dateYear + " à " + roleHasPastscene.pastscene.dateHour + "h" + roleHasPastscene.pastscene.dateMinute;
+                //String GnFixDate = roleHasPastscene.pastscene.printDate(gn.date)
+                //le 3 juin 1995: il y a 4 ans, voici le titre de la past
+                int lastIndexOf = roleHasPastscene.pastscene.title.lastIndexOf(" -")
+                if (lastIndexOf != -1)
+                    roleHasPastscene.pastscene.title = roleHasPastscene.pastscene.title.substring(0, lastIndexOf)
+                wordWriter.addStyledParagraphOfText("T5", GnFixDate + " : " + GnRelat + ", " + roleHasPastscene.pastscene.title)
+                wordWriter.addParagraphOfText(roleHasPastscene.description)
 
-                    try {
-                        roleHasPastsceneList.put(time, roleHasPastscene)
-                    } catch (Exception e) {
-                        continue
-                    }
-
+                try {
+                    roleHasPastsceneList.put(time, roleHasPastscene)
+                } catch (Exception e) {
+                    continue
                 }
             }
 
