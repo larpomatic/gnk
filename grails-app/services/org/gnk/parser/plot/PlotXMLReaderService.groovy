@@ -142,10 +142,16 @@ class PlotXMLReaderService {
 
         NodeList genericPlaceList = PLOT.GENERIC_PLACES[0].GENERIC_PLACE
 
+        if (plotRes.genericPlaces == null)
+            plotRes.genericPlaces = new ArrayList<GenericPlace>();
+
         genericPlaceList.each { Node GENERIC_PLACE ->
             GenericPlace genericPlace = genericPlaceReader.getGenericPlaceFromNode(GENERIC_PLACE, dataContainer)
-            if (genericPlace.getDTDId() >= 0)
+            if (genericPlace.getDTDId() >= 0) {
                 dataContainer.genericPlaceMap.put(genericPlace.getDTDId(), genericPlace)
+
+                plotRes.genericPlaces.add(genericPlace);
+            }
         }
     }
 
