@@ -418,22 +418,66 @@ class PublicationController {
             wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 1")
             wordWriter.addTableStyledCell("Table1L", tableRow2, "Personnage 2")
             wordWriter.addTableStyledCell("Table1L", tableRow2, "Type")
+            wordWriter.addTableStyledCell("Table1L", tableRow2, "Commentaire")
             tableRel.getContent().add(tableRow2);
 
 
             for (Character c : gn.characterSet) {
                 String charName = c.firstname + " " + c.lastname.toUpperCase()
+/*
+                for (Role r : c.selectedRoles) {
 
-                // remplissage tableau de synthèse des relations personnages
-                HashMap<String, String> cMap = charGraph.getRelationList(charName)
-                for (String char2 : cMap.keySet()) {
+                    // remplissage tableau de synthèse des relations personnages
+                    HashMap<String, String> cMap = charGraph.getRelationList(charName)
+                    for (String char2 : cMap.keySet()) {
+                        Tr tableRow2Char = wordWriter.factory.createTr()
+                        String link = cMap.get(char2)
+                        wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName)
+                        wordWriter.addTableStyledCell("small", tableRow2Char, char2)
+                        wordWriter.addTableStyledCell("small", tableRow2Char, link)
+                        wordWriter.addTableStyledCell("small", tableRow2Char, "description")
+                        tableRel.getContent().add(tableRow2Char);
+                        wordWriter.addBorders(tableRel)
+                    }
+
+                }
+
+
+                HashMap<RoleHasRelationWithRole, Integer> cMap = c.getRelations(1 as boolean)
+                for (RoleHasRelationWithRole char2 : cMap.keySet()) {
                     Tr tableRow2Char = wordWriter.factory.createTr()
-                    String link = cMap.get(char2)
+                    String link = char2.getDescription()
+                    Role one = char2.getterRole1()
+                    Role two = char2.getterRole2()
+                    String name1 = char2.getterRoleRelationType().getName()
+                    String type = char2.getterRoleRelationType().getName()
+                    String typename = type.getterName()
                     wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName)
-                    wordWriter.addTableStyledCell("small", tableRow2Char, char2)
+                    wordWriter.addTableStyledCell("small", tableRow2Char, name1)
+                    wordWriter.addTableStyledCell("small", tableRow2Char, typename)
                     wordWriter.addTableStyledCell("small", tableRow2Char, link)
                     tableRel.getContent().add(tableRow2Char);
                     wordWriter.addBorders(tableRel)
+                }
+*/
+                Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelations(gn);
+                for (Character char2 : map_relation.keySet()) {
+                    String charName2 = char2.getFirstname() + " " + char2.getLastname()
+
+                    for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                        // Test on same character
+                        for (RoleHasRelationWithRole r1 : relation_list) {
+                            Tr tableRow2Char = wordWriter.factory.createTr()
+                            String type = r1.getRoleRelationType().getName()
+                            String link = r1.getDescription()
+                            wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName)
+                            wordWriter.addTableStyledCell("small", tableRow2Char, charName2)
+                            wordWriter.addTableStyledCell("small", tableRow2Char, type)
+                            wordWriter.addTableStyledCell("small", tableRow2Char, link)
+                            tableRel.getContent().add(tableRow2Char);
+                            wordWriter.addBorders(tableRel)
+                        }
+                    }
                 }
             }
             wordWriter.addObject(tableRel)
