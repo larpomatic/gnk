@@ -40,10 +40,8 @@ class WordWriter {
             this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+templateWordSelected+".docx"))
         } catch (Exception e){
             this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+"DEFAULT.docx"))
-            this.wordMLPackage = WordprocessingMLPackage.createPackage()
             alterStyleSheet()
         }
-        this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+"DEFAULT.docx"))
         mainPart = wordMLPackage.getMainDocumentPart()
     }
 
