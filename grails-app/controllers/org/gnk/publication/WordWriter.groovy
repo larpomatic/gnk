@@ -32,16 +32,18 @@ class WordWriter {
     public ObjectFactory factory
     public def mainPart
 
+
+
     public WordWriter(String templateWordSelected, String publicationFolder) {
         this.factory = Context.getWmlObjectFactory()
         try{
-
             this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+templateWordSelected+".docx"))
         } catch (Exception e){
             this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+"DEFAULT.docx"))
             this.wordMLPackage = WordprocessingMLPackage.createPackage()
             alterStyleSheet()
         }
+        this.wordMLPackage = WordprocessingMLPackage.load(new File(publicationFolder+"DEFAULT.docx"))
         mainPart = wordMLPackage.getMainDocumentPart()
     }
 
