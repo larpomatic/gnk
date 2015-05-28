@@ -442,7 +442,6 @@ class PublicationController {
 
                 }
 
-
                 HashMap<RoleHasRelationWithRole, Integer> cMap = c.getRelations(1 as boolean)
                 for (RoleHasRelationWithRole char2 : cMap.keySet()) {
                     Tr tableRow2Char = wordWriter.factory.createTr()
@@ -464,16 +463,35 @@ class PublicationController {
                 for (Character char2 : map_relation.keySet()) {
                     String charName2 = char2.getFirstname() + " " + char2.getLastname()
 
+
+
                     for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
                         // Test on same character
+
                         for (RoleHasRelationWithRole r1 : relation_list) {
                             Tr tableRow2Char = wordWriter.factory.createTr()
+                            Role role1 = r1.getterRole1()
+                            Role role2 = r1.getterRole2()
+
+                            String resRoles = "Aucun Rôle"
+
+                            substituteRolesAndPlotDescription(role1.getterPlot())
+                            if (resRoles == "Aucun Rôle")
+                                resRoles = "- " + role1.code + " : " + role1.description
+                            else
+                                resRoles += "\n- " + role1.code + " : " + role1.description
+
+
+                            Plot p = role1.getterPlot()
+
+                            substituteRolesAndPlotDescription(p)
+
                             String type = r1.getRoleRelationType().getName()
                             String link = r1.getDescription()
-                            wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName)
-                            wordWriter.addTableStyledCell("small", tableRow2Char, charName2)
+                            wordWriter.addTableStyledCell("Table1C", tableRow2Char, charName + " (" + role1.code +")")
+                            wordWriter.addTableStyledCell("small", tableRow2Char, charName2 + " (" + role2.code +")")
                             wordWriter.addTableStyledCell("small", tableRow2Char, type)
-                            wordWriter.addTableStyledCell("small", tableRow2Char, link)
+                            wordWriter.addTableStyledCell("small", tableRow2Char, resRoles)
                             tableRel.getContent().add(tableRow2Char);
                             wordWriter.addBorders(tableRel)
                         }
