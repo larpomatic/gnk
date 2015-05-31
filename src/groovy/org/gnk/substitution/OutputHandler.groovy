@@ -316,11 +316,14 @@ class OutputHandler {
             Place placeDB = Place.findByName(placeName)
             if (index != -1)
                 placeDB = Place.findByName(placeName.substring(0, index))
-            if (placeDB != null) {
+            if (placeDB != null && false == placeSet.contains(placeDB)) {
                 placeDB.DTDId = el.value.DTDId
                 placeSet.add(placeDB)
             }
             else {
+                el.value.gender = placeDB.gender
+                el.value.name = placeDB.name
+                el.value.id = placeDB.id
                 placeSet.add(el.value)
             }
         }
