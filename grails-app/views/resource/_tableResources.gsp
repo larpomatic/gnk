@@ -10,7 +10,7 @@
         <g:sortableColumn property="description"
                           title="${message(code: 'resource.description.label', default: 'Description')}"/>
         <g:sortableColumn property="gender" title="${message(code: 'resource.gender.label', default: 'Genre')}"/>
-        <g:sortableColumn property="tags" title="${message(code: 'resource.dateCreated.label', default: 'Tags')}"/>
+        <g:sortableColumn property="tags" title="${message(code: 'resource.tags.label', default: 'Tags')}"/>
 
         <g:hasRights lvlright="${right.REFDELETE.value()}">
             <th><g:message code="default.delete"/></th>
