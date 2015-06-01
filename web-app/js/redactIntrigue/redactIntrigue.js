@@ -519,6 +519,18 @@ function keyhandler(e) {
 }
 */
 
+function keyhandler(e) {
+    var key = e.keyCode
+    if (key == 8)
+    {
+        var d = e.srcElement || e.target;
+        if ($(d).hasClass("richTextEditor")) {
+            e.preventDefault();
+
+        }
+    }
+}
+
 function convertHTMLRegisterHelper(description) {
     description = description.replace(/\n/g, '<br>');
     description = description.replace(/<L:/g, '<l:');
