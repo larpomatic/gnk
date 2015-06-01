@@ -13,7 +13,7 @@
     <tr class="upper">
         <th style="text-align: center;">#</th>
         <th>type</th>
-        <th>code</th>
+        <th style="display: none">code</th>
         <th>titre</th>
         <th>Intrigue</th>
         <th>Planifié</th>
@@ -28,7 +28,7 @@
             <!-- Type -->
             <th>Scène passée</th>
             <!-- Code - modal button -->
-            <td><a href="#modalPas${i + 1}" role="button" class="btn" data-toggle="modal">PAS-${pastscene.id.encodeAsHTML()}_${pastscene.plotId.encodeAsHTML()}</a></td>
+            <td style="display: none"><a href="#modalPas${i + 1}" role="button" class="btn" data-toggle="modal">PAS-${pastscene.id.encodeAsHTML()}_${pastscene.plotId.encodeAsHTML()}</a></td>
             <!-- Title -->
             <td>${pastscene.title.encodeAsHTML()}</td>
             <!-- Plot -->
@@ -46,7 +46,7 @@
             <!-- Type -->
             <th>Événement</th>
             <!-- Code - modal button -->
-            <td><a href="#modalEve${i + 1}" role="button" class="btn" data-toggle="modal">EVE-${event.id.encodeAsHTML()}_${event.plotId.encodeAsHTML()}</a></td>
+            <td style="display: none"><a href="#modalEve${i + 1}" role="button" class="btn"  data-toggle="modal">EVE-${event.id.encodeAsHTML()}_${event.plotId.encodeAsHTML()}</a></td>
             <!-- Title -->
             <td>${event.title.encodeAsHTML()}</td>
             <!-- Plot -->
