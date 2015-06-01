@@ -129,6 +129,11 @@ class RedactIntrigueController {
                 c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
             }
             Long millis = c.getTimeInMillis();
+            //If we have several scenes at the same time, they will get replaced in the tree
+            pastscenes.each { scene ->
+                    if (scene.key == millis)
+                        millis--
+            }
             pastscenes.put(millis, pastscene);
         }
         return pastscenes;
