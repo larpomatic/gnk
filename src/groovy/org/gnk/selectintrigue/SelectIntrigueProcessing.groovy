@@ -282,6 +282,20 @@ public class SelectIntrigueProcessing {
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
+
+        //Resolving PNJsable
+        for (Role role : roleSet)
+        {
+            if (role.isPJB())
+            {
+                if (roleList.size() < _gn.getNbPlayers()) {
+                    role.setType("PJ")
+                    roleList.add(role)
+                }
+                else
+                    role.setType("PNJ")
+            }
+        }
         for (Role role : roleList) {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
