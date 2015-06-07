@@ -7,6 +7,7 @@ import org.gnk.parser.resource.GenericResourceXMLWriterService
 import org.gnk.parser.role.RoleXMLWriterService
 import org.gnk.parser.textualclue.GenericTextualClueXMLWriterService
 import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
@@ -136,9 +137,9 @@ class PlotXMLWriterService {
 
     private Element getGenericPlacesElement(Document doc, Plot plot) {
         Element genericPlacesElt = doc.createElement("GENERIC_PLACES");
+        final GenericPlaceXMLWriterService genericPlaceWriter = new GenericPlaceXMLWriterService()
 
         if (plot.events) {
-            final GenericPlaceXMLWriterService genericPlaceWriter = new GenericPlaceXMLWriterService()
             for (Event event : plot.events) {
                 if (event.genericPlace != null) {
                     genericPlacesElt.appendChild(genericPlaceWriter.getGenericPlaceElement(doc, event.genericPlace))
@@ -150,6 +151,10 @@ class PlotXMLWriterService {
                     genericPlacesElt.appendChild(genericPlaceWriter.getGenericPlaceElement(doc, pastscene.genericPlace))
                 }
             }
+        }
+
+        for (GenericPlace genericPlace : plot.genericPlaces){
+            genericPlacesElt.appendChild(genericPlaceWriter.getGenericPlaceElement(doc, genericPlace))
         }
 
         return genericPlacesElt;
