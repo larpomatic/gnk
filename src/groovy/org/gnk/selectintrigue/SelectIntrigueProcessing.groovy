@@ -54,7 +54,7 @@ public class SelectIntrigueProcessing {
         for (Plot plot : parAllPlotList) {
             if (plot.getIsEvenemential()) {
                 //si l'intrigue évenementielle n'a pas plus de joueurs que le gn alors on l'ajoute
-                if (isEvenementialIsCompatible(plot)) {
+                if (plotIsCompatible(plot)) {
                     _allEvenementialPlotList.add(plot);
                 }
             } else {
@@ -98,6 +98,7 @@ public class SelectIntrigueProcessing {
         int countWomen = 0;
         int countMen = 0;
         int countOthers = 0;
+        //This function is counting role and not PJ; it need modifications
         for (Role role in plot.roles) {
             RoleHasTag Man = RoleHasTag.createCriteria().get {
                 like("tag", Tag.createCriteria().get {
@@ -265,8 +266,7 @@ public class SelectIntrigueProcessing {
                 }
             }
         }
-        if (!sexFilter(plot))
-            return false;
+
 
         final Set<Role> roleList = new HashSet<Role>();
 
@@ -301,6 +301,9 @@ public class SelectIntrigueProcessing {
                 return false;
             }
         }
+        if (!sexFilter(plot))
+            return false;
+
         return true;
     }
 
