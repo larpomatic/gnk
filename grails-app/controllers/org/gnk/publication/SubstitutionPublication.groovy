@@ -213,13 +213,22 @@ class SubstitutionPublication {
                     case "FP" : return "les " + replacement
                 }
                 break
-            case "POS" :
+            case "POSM" :
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
                     case "F" : return "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
                 }
                 break
             case "NOM" :

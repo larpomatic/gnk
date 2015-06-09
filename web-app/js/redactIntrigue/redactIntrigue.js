@@ -383,14 +383,20 @@ function convertDescription(description) {
     description = description.replace(/&lt;l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Pos:/g, '<span class="label label-warning" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosM:/g, '<span class="label label-warning" data-tag="PosM" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosT:/g, '<span class="label label-warning" data-tag="PosT" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosS:/g, '<span class="label label-warning" data-tag="PosS" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosN:/g, '<span class="label label-warning" data-tag="PosN" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosV:/g, '<span class="label label-warning" data-tag="PosV" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:PosL:/g, '<span class="label label-warning" data-tag="PosL" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:none:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
-    description = description.replace(/&lt;l:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/&lt;l:M#/g, '<span class="label label-warning" data-tag="M#');
     description = description.replace(/&lt;o:Art:/g, '<span class="label label-important" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
-    description = description.replace(/&lt;o:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/&lt;o:M#/g, '<span class="label label-important" data-tag="M#');
     description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:inif:/g, '<span class="label label-success" data-tag="inif" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -441,8 +447,15 @@ function updateAllDescription(formlist) {
 function initializePopover() {
     var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-tag="Pos">Possessif<span class="caret"></span></button>' +
+        '<ul class="dropdown-menu">' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosM">1ere singulier</button></li>' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosT">2eme singulier</button></li>' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosS">3eme singulier</button></li>' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosN">1ere pluriel</button></li>' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosV">2eme pluriel</button></li>' +
+        '<li><button class="btn btn-small btn-primary" data-tag="PosL">3eme pluriel</button></li></ul></div>' +
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
