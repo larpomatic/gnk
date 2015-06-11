@@ -274,6 +274,13 @@ class InputHandler {
                     placeList.add(createPlace(genericPlace, plotId))
                 }
             }
+
+            for (genericPlace in plot.genericPlaces) {
+                if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
+                    placeList.add(createPlace(genericPlace, plotId))
+                }
+            }
+
             for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {

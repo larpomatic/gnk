@@ -384,11 +384,13 @@ function convertDescription(description) {
     description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Pos:/g, '<span class="label label-warning" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:none:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;l:M#/g, '<span class="label label-success" data-tag="M#');
     description = description.replace(/&lt;o:Art:/g, '<span class="label label-important" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:M#/g, '<span class="label label-success" data-tag="M#');
     description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:inif:/g, '<span class="label label-success" data-tag="inif" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:Pat:/g, '<span class="label label-success" data-tag="Pat" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -401,10 +403,12 @@ function convertDescription(description) {
     description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/;:/g, ';" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&gt;/g, '</span>');
+
     return description;
 }
 
 // on remplace les span html dans une description par des balises
+
 function transformDescription(description) {
     description = "<div>" + description + "</div>";
     var html = $(description);
@@ -441,6 +445,8 @@ function initializePopover() {
         '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
@@ -505,7 +511,123 @@ function initializeClosingPopover() {
     });
 }
 
+
+// gère la suppression du backspace
+function keyhandler(e) {
+    var key = e.keyCode;
+    if (key == 8) {
+        // fix backspace bug in FF
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
+        var selection = window.getSelection();
+        if (!selection.isCollapsed || !selection.rangeCount) {
+            return;
+        }
+
+        var curRange = selection.getRangeAt(selection.rangeCount - 1);
+        if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
+            // we are in child selection. The characters of the text node is being deleted
+            return;
+        }
+
+        var range = document.createRange();
+        referenceNode = document.getElementById("editable");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable2");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable3");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable4");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+    }
+};
+
+
+
 // désactive le backspace
+
 /*
 function keyhandler(e) {
     var key = e.keyCode
@@ -513,23 +635,14 @@ function keyhandler(e) {
     {
         var d = e.srcElement || e.target;
         if ($(d).hasClass("richTextEditor")) {
-            e.preventDefault();
+ $('#editfraction').remove();
         }
     }
 }
+
 */
 
-function keyhandler(e) {
-    var key = e.keyCode
-    if (key == 8)
-    {
-        var d = e.srcElement || e.target;
-        if ($(d).hasClass("richTextEditor")) {
-            e.preventDefault();
 
-        }
-    }
-}
 
 function convertHTMLRegisterHelper(description) {
     description = description.replace(/\n/g, '<br>');
@@ -541,6 +654,7 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/<l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<l:Pos:/g, '<span class="label label-warning" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<l:none:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<l:M#/g, '<span class="label label-success" data-tag="M#');
     description = description.replace(/<o:Art:/g, '<span class="label label-important" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');

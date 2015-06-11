@@ -27,6 +27,9 @@ class SubstitutionPlaceXMLWriterService {
                     placesE.appendChild(getGenericPlaceElement(doc, event.genericPlace, plot))
                 }
             }
+            for(GenericPlace gp in plot.genericPlaces) {
+                placesE.appendChild(getGenericPlaceElement(doc, gp, plot))
+            }
         }
 
         return placesE
