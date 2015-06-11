@@ -125,8 +125,10 @@
                                 <g:render template="dropdownButtons" />
 
                                 <!-- Editor -->
-                                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.description?.encodeAsHTML()}
+                                <div id="plotRichTextEditor" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                <div id="editable" contentEditable="true">
+                                        ${plotInstance.description?.encodeAsHTML()}
+                                    </div>
                                 </div>
                             </div>
                         </div>
