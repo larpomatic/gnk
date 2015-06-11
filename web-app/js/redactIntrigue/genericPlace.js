@@ -225,15 +225,13 @@ function createNewGenericPlacePanel(data) {
 // function to get 10 best places depending of tags
 function getBestPlace()
 {
-    $('#newbestPlace').click(function() {
-        $('#selectUnivers').data('status', 'create');
-        $('.bestRow').remove();
-        $('.myselect').remove();
-        $('#selectUnivers').prop('selectedIndex',0);
-        $('#selectUnivers').data('form', 'newPlaceForm');
-    });
 
-    $('#selectUnivers').change(function() {
+       // $('#selectUnivers').data('status', 'create');
+        //$('.bestRow').remove();
+        //$('.myselect').remove();
+        //$('#selectUnivers').prop('selectedIndex',0);
+        //$('#selectUnivers').data('form', 'newPlaceForm');
+    $('#newbestPlace').click(function() {
         var status = $(this).data('status');
         var url = $(this).data('url');
         var form_name = $(this).data('form');
