@@ -522,6 +522,54 @@ function keyhandler(e) {
         if (!selection.isCollapsed || !selection.rangeCount) {
             return;
         }
+        var curRange = selection.getRangeAt(selection.rangeCount - 1);
+        if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
+            // we are in child selection. The characters of the text node is being deleted
+            return;
+        }
+
+        var range = document.createRange();
+
+        referenceNodes = document.getElementsByClassName("editable");
+        // referenceNode = document.getElementsByClassName("editable");
+        for (var i = 0; i < referenceNodes.length; i++) {
+            var referenceNode = referenceNodes[i];
+            console.log(referenceNode);
+            if (selection.anchorNode != referenceNode) {
+                // selection is in character mode. expand it to the whole editable field
+                range.selectNodeContents(referenceNode);
+                range.setEndBefore(selection.anchorNode);
+            } else if (selection.anchorOffset > 0) {
+                range.setEnd(referenceNode, selection.anchorOffset);
+            } else {
+                // reached the beginning of editable field
+                return;
+            }
+            range.setStart(referenceNode, range.endOffset - 1);
+
+            var previousNode = range.cloneContents().lastChild
+
+
+            if (previousNode && previousNode.contentEditable == 'false') {
+                // this is some rich content, e.g. smile. We should help the user to delete it
+                range.deleteContents();
+                event.preventDefault();
+            }
+        }
+    }
+}
+
+
+/*
+$('.editable').on('keydown', function (event) {
+        alert('test');
+    if (window.getSelection && event.which == 8) { // backspace
+        // fix backspace bug in FF
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=685445
+        var selection = window.getSelection();
+        if (!selection.isCollapsed || !selection.rangeCount) {
+            return;
+        }
 
         var curRange = selection.getRangeAt(selection.rangeCount - 1);
         if (curRange.commonAncestorContainer.nodeType == 3 && curRange.startOffset > 0) {
@@ -530,99 +578,28 @@ function keyhandler(e) {
         }
 
         var range = document.createRange();
-        referenceNode = document.getElementById("editable");
-
-        if (selection.anchorNode != referenceNode) {
+        if (selection.anchorNode != this) {
             // selection is in character mode. expand it to the whole editable field
-            range.selectNodeContents(referenceNode);
+            range.selectNodeContents(this);
             range.setEndBefore(selection.anchorNode);
         } else if (selection.anchorOffset > 0) {
-            range.setEnd(referenceNode, selection.anchorOffset);
+            range.setEnd(this, selection.anchorOffset);
         } else {
             // reached the beginning of editable field
             return;
         }
-        range.setStart(referenceNode, range.endOffset - 1);
-
-        var previousNode = range.cloneContents().lastChild
+        range.setStart(this, range.endOffset - 1);
 
 
-        if (previousNode && previousNode.contentEditable == 'false') {
-            // this is some rich content, e.g. smile. We should help the user to delete it
-            range.deleteContents();
-            event.preventDefault();
-        }
-
-        referenceNode = document.getElementById("editable2");
-
-        if (selection.anchorNode != referenceNode) {
-            // selection is in character mode. expand it to the whole editable field
-            range.selectNodeContents(referenceNode);
-            range.setEndBefore(selection.anchorNode);
-        } else if (selection.anchorOffset > 0) {
-            range.setEnd(referenceNode, selection.anchorOffset);
-        } else {
-            // reached the beginning of editable field
-            return;
-        }
-        range.setStart(referenceNode, range.endOffset - 1);
-
-        var previousNode = range.cloneContents().lastChild
-
-
-        if (previousNode && previousNode.contentEditable == 'false') {
-            // this is some rich content, e.g. smile. We should help the user to delete it
-            range.deleteContents();
-            event.preventDefault();
-        }
-
-        referenceNode = document.getElementById("editable3");
-
-        if (selection.anchorNode != referenceNode) {
-            // selection is in character mode. expand it to the whole editable field
-            range.selectNodeContents(referenceNode);
-            range.setEndBefore(selection.anchorNode);
-        } else if (selection.anchorOffset > 0) {
-            range.setEnd(referenceNode, selection.anchorOffset);
-        } else {
-            // reached the beginning of editable field
-            return;
-        }
-        range.setStart(referenceNode, range.endOffset - 1);
-
-        var previousNode = range.cloneContents().lastChild
-
-
-        if (previousNode && previousNode.contentEditable == 'false') {
-            // this is some rich content, e.g. smile. We should help the user to delete it
-            range.deleteContents();
-            event.preventDefault();
-        }
-
-        referenceNode = document.getElementById("editable4");
-
-        if (selection.anchorNode != referenceNode) {
-            // selection is in character mode. expand it to the whole editable field
-            range.selectNodeContents(referenceNode);
-            range.setEndBefore(selection.anchorNode);
-        } else if (selection.anchorOffset > 0) {
-            range.setEnd(referenceNode, selection.anchorOffset);
-        } else {
-            // reached the beginning of editable field
-            return;
-        }
-        range.setStart(referenceNode, range.endOffset - 1);
-
-        var previousNode = range.cloneContents().lastChild
-
-
+        var previousNode = range.cloneContents().lastChild;
         if (previousNode && previousNode.contentEditable == 'false') {
             // this is some rich content, e.g. smile. We should help the user to delete it
             range.deleteContents();
             event.preventDefault();
         }
     }
-};
+});
+*/
 
 
 
