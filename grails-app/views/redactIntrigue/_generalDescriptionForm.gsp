@@ -138,7 +138,9 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                <div id="editable2" contentEditable="true">
                                     ${plotInstance.pitchOrga?.encodeAsHTML()}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +150,9 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                <div id="editable3" contentEditable="true">
                                     ${plotInstance.pitchPj?.encodeAsHTML()}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +162,9 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                                <div id="editable4" contentEditable="true">
                                     ${plotInstance.pitchPnj?.encodeAsHTML()}
+                                    </div>
                                 </div>
                             </div>
                         </div>

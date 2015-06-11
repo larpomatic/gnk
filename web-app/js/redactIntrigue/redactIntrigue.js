@@ -404,7 +404,6 @@ function convertDescription(description) {
     description = description.replace(/;:/g, ';" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&gt;/g, '</span>');
 
-    description = '<p contentEditable="true">' + description + '</p>'
     return description;
 }
 
@@ -532,6 +531,75 @@ function keyhandler(e) {
 
         var range = document.createRange();
         referenceNode = document.getElementById("editable");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable2");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable3");
+
+        if (selection.anchorNode != referenceNode) {
+            // selection is in character mode. expand it to the whole editable field
+            range.selectNodeContents(referenceNode);
+            range.setEndBefore(selection.anchorNode);
+        } else if (selection.anchorOffset > 0) {
+            range.setEnd(referenceNode, selection.anchorOffset);
+        } else {
+            // reached the beginning of editable field
+            return;
+        }
+        range.setStart(referenceNode, range.endOffset - 1);
+
+        var previousNode = range.cloneContents().lastChild
+
+
+        if (previousNode && previousNode.contentEditable == 'false') {
+            // this is some rich content, e.g. smile. We should help the user to delete it
+            range.deleteContents();
+            event.preventDefault();
+        }
+
+        referenceNode = document.getElementById("editable4");
 
         if (selection.anchorNode != referenceNode) {
             // selection is in character mode. expand it to the whole editable field
