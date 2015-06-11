@@ -170,7 +170,7 @@ class RoleController {
 			return false
 		}
 		if (params.containsKey("roleType") && (params.roleType == "PJ" || params.roleType == "PNJ" || params.roleType == "PHJ"
-        || params.roleType == "PJG" || params.roleType == "TPJ" || params.roleType == "STF")) {
+        || params.roleType == "PJG" || params.roleType == "TPJ" || params.roleType == "PJB" || params.roleType == "STF")) {
 			newRole.type = params.roleType
 		} else {
 			return false

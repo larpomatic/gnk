@@ -42,7 +42,7 @@ class Role implements Comparable {
 
     static constraints = {
         code maxSize: 45
-        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG", "STF"]
+        type maxSize: 3, inList: ["PJ", "PNJ", "PHJ", "TPJ", "PJG", "PJB", "STF"]
     }
 
     static mapping = {
@@ -156,6 +156,10 @@ class Role implements Comparable {
         return (type != null && type.toUpperCase().equals("TPJ"))
     }
 
+    //Check if the role is Personnage PNJsable
+    public boolean isPJB(){
+        return (type != null && type.toUpperCase().equals("PJB"))
+    }
     // Check if the role is STAF
     public boolean isSTF() {
         return (type != null && type.toUpperCase().equals("STF"))
