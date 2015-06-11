@@ -129,6 +129,13 @@ class RedactIntrigueController {
                 c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
             }
             Long millis = c.getTimeInMillis();
+            //If we have several scenes at the same time, they will no longer get replaced in the tree.
+            // There is no need to make another loop if there is several scene with the same time since we are making
+            // a depth first road.
+            pastscenes.each { scene ->
+                    if (scene.key == millis)
+                        millis--
+            }
             pastscenes.put(millis, pastscene);
         }
         return pastscenes;

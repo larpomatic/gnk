@@ -964,14 +964,14 @@ class PublicationController {
             }
             wordWriter.addStyledParagraphOfText("T2", c.firstname + " " + c.lastname)
 
+            wordWriter.addStyledParagraphOfText("T3", "Contexte du GN")
+            createPitchTablePerso(typePerso)
+
             wordWriter.addStyledParagraphOfText("T3", "Profil")
             String sex = c.gender.toUpperCase().equals("M") ? "Homme" : "Femme"
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
-
-            wordWriter.addStyledParagraphOfText("T3", "Introduction")
-            createPitchTablePerso(typePerso)
 
             //Todo: Ajouter les relations entre les personnages
 
