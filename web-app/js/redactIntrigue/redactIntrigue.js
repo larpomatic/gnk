@@ -447,8 +447,7 @@ function updateAllDescription(formlist) {
 function initializePopover() {
     var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
         '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small dropdown-toggle" data-toggle="dropdown" data-tag="Pos">Possessif<span class="caret"></span></button>' +
+        '<div class="specialTag"><button class="btn btn-small dropdown-toggle none" data-toggle="dropdown" data-tag="Pos">Possessif<span class="caret"></span></button>' +
         '<ul class="dropdown-menu">' +
         '<li><button class="btn btn-small btn-primary" data-tag="PosM">1ere singulier</button></li>' +
         '<li><button class="btn btn-small btn-primary" data-tag="PosT">2eme singulier</button></li>' +
@@ -456,7 +455,8 @@ function initializePopover() {
         '<li><button class="btn btn-small btn-primary" data-tag="PosN">1ere pluriel</button></li>' +
         '<li><button class="btn btn-small btn-primary" data-tag="PosV">2eme pluriel</button></li>' +
         '<li><button class="btn btn-small btn-primary" data-tag="PosL">3eme pluriel</button></li></ul></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
+        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
+        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
