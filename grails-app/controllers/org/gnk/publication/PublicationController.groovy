@@ -2,6 +2,7 @@ package org.gnk.publication
 
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
+import org.docx4j.convert.out.pdf.PdfConversion
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
