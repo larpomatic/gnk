@@ -429,7 +429,7 @@
                     <g:render template="dropdownButtons" />
 
                 <!-- Editor -->
-                    <div id="clueRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    <div id="clueRichTextEditor1" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                         ${resource.fromRoleText?.encodeAsHTML()}
                     </div>
                 </div>
@@ -453,7 +453,7 @@
                     <g:render template="dropdownButtons" />
 
                 <!-- Editor -->
-                    <div id="clueRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    <div id="clueRichTextEditor2" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                         ${resource.toRoleText?.encodeAsHTML()}
                     </div>
                 </div>

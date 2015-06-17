@@ -13,10 +13,10 @@ $(function(){
         var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
-        var fromRoleText = $('#clueRichTextEditor', form).html();
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
         fromRoleText = transformDescription(fromRoleText);
         $('.fromRoleTextContent', form).val(fromRoleText);
-        var toRoleText = $('#clueRichTextEditor', form).html();
+        var toRoleText = $('#clueRichTextEditor2', form).html();
         toRoleText = transformDescription(toRoleText);
         $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor', form).html();
@@ -87,10 +87,10 @@ function updateResource() {
         var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
-        var fromRoleText = $('#clueRichTextEditor' + genericResourceId, form).html();
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
         fromRoleText = transformDescription(fromRoleText);
         $('.fromRoleTextContent', form).val(fromRoleText);
-        var toRoleText = $('#clueRichTextEditor' + genericResourceId, form).html();
+        var toRoleText = $('#clueRichTextEditor2', form).html();
         toRoleText = transformDescription(toRoleText);
         $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor' + genericResourceId, form).html();

@@ -83,10 +83,10 @@ class GenericResourceController {
 //            jsonGenericResource.put("toRoleId", genericResource.getToRole().id);
 //            jsonGenericResource.put("toRoleName", genericResource.getToRole().code);
 //        }
-        if (genericResource.fromRole) {
+        if (genericResource.fromRoleText) {
             jsonGenericResource.put("fromRoleText", genericResource.getFromRoleText());
         }
-        if (genericResource.toRole) {
+        if (genericResource.toRoleText) {
             jsonGenericResource.put("toRoleText", genericResource.getToRoleText());
         }
         if (genericResource.description) {
@@ -169,19 +169,22 @@ class GenericResourceController {
 
             if (params.containsKey("resourceRoleFrom")) {
                 newGenericResource.fromRoleText = params.resourceRoleFrom;
+                print(params.resourceRoleFrom);
             }
             if (params.containsKey("resourceRoleTo")) {
                 newGenericResource.toRoleText = params.resourceRoleTo;
+                print(params.resourceRoleTo);
             }
             if (params.containsKey("resourceDescription")) {
                 newGenericResource.description = params.resourceDescription;
+                print(params.resourceDescription);
             }
         }
         else if (newGenericResource.title != null) {
             newGenericResource.title = null;
             newGenericResource.possessedByRole = null;
-            newGenericResource.fromRole = null;
-            newGenericResource.toRole = null;
+            newGenericResource.fromRoleText = null;
+            newGenericResource.toRoleText = null;
             newGenericResource.description = null;
         }
         newGenericResource.save(flush: true);

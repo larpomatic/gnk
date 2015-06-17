@@ -182,7 +182,7 @@
             {{/if}}
 
             <!-- Editor -->
-            <div id="clueRichTextEditor{{ genericResource.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+            <div id="clueRichTextEditor1" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                 {{ encodeAsHtml genericResource.fromRoleText }}
             </div>
         </div>
@@ -206,7 +206,7 @@
             {{/if}}
 
             <!-- Editor -->
-            <div id="clueRichTextEditor{{ genericResource.id }}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+            <div id="clueRichTextEditor2" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                 {{ encodeAsHtml genericResource.toRoleText }}
             </div>
         </div>

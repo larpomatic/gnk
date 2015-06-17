@@ -98,7 +98,7 @@ class GenericResourceXMLWriterService {
 
         if (genericResource.toRoleText) {
             CDATASection toRoleData = doc.createCDATASection("TOROLE")
-            toRoleData.setData(genericResource.toRole)
+            toRoleData.setData(genericResource.toRoleText)
             toRoleElt.appendChild(toRoleData)
         }
 
@@ -120,7 +120,7 @@ class GenericResourceXMLWriterService {
 
         if (genericResource.fromRoleText) {
             CDATASection fromRoleData = doc.createCDATASection("FROMROLE")
-            fromRoleData.setData(genericResource.fromRole)
+            fromRoleData.setData(genericResource.fromRoleText)
             fromRoleElt.appendChild(fromRoleData)
         }
 
