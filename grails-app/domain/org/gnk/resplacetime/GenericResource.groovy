@@ -20,6 +20,8 @@ class GenericResource {
     // Ingame Clue :
     String title
     String description
+    String fromRoleText
+    String toRoleText
 
     static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role, objectType: ObjectType]
 
@@ -44,11 +46,17 @@ class GenericResource {
         fromRole (nullable: true)
         toRole (nullable: true)
         possessedByRole (nullable: true)
+        fromRoleText (nullable: true)
+        toRoleText (nullable: true)
     }
+
+
 
     static mapping = {
         comment type: 'text'
         description type: 'text'
+        fromRoleText: 'text'
+        toRoleText: 'text'
         id type:'integer'
         version type: 'integer'
         extTags cascade:'all-delete-orphan'

@@ -74,13 +74,20 @@ class GenericResourceController {
             jsonGenericResource.put("possessedByRoleId", genericResource.getPossessedByRole().id);
             jsonGenericResource.put("possessedByRoleName", genericResource.getPossessedByRole().code);
         }
+        //
+//        if (genericResource.fromRole) {
+//            jsonGenericResource.put("fromRoleId", genericResource.getFromRole().id);
+//            jsonGenericResource.put("fromRoleName", genericResource.getFromRole().code);
+//        }
+//        if (genericResource.toRole) {
+//            jsonGenericResource.put("toRoleId", genericResource.getToRole().id);
+//            jsonGenericResource.put("toRoleName", genericResource.getToRole().code);
+//        }
         if (genericResource.fromRole) {
-            jsonGenericResource.put("fromRoleId", genericResource.getFromRole().id);
-            jsonGenericResource.put("fromRoleName", genericResource.getFromRole().code);
+            jsonGenericResource.put("fromRoleText", genericResource.getFromRoleText());
         }
         if (genericResource.toRole) {
-            jsonGenericResource.put("toRoleId", genericResource.getToRole().id);
-            jsonGenericResource.put("toRoleName", genericResource.getToRole().code);
+            jsonGenericResource.put("toRoleText", genericResource.getToRoleText());
         }
         if (genericResource.description) {
             jsonGenericResource.put("description", genericResource.getDescription());
@@ -145,15 +152,26 @@ class GenericResourceController {
                 Role possessor = Role.get(possessorId);
                 newGenericResource.possessedByRole = possessor;
             }
+
+
+//            if (params.containsKey("resourceRoleFrom")) {
+//                Integer roleFromId = params.resourceRoleFrom as Integer;
+//                Role roleFrom = Role.get(roleFromId);
+//                newGenericResource.fromRole = roleFrom;
+//            }
+//            if (params.containsKey("resourceRoleTo")) {
+//                Integer roleToId = params.resourceRoleTo as Integer;
+//                Role roleTo = Role.get(roleToId);
+//                newGenericResource.toRole = roleTo;
+//            }
+
+            // from & to role text version
+
             if (params.containsKey("resourceRoleFrom")) {
-                Integer roleFromId = params.resourceRoleFrom as Integer;
-                Role roleFrom = Role.get(roleFromId);
-                newGenericResource.fromRole = roleFrom;
+                newGenericResource.fromRoleText = params.resourceRoleFrom;
             }
             if (params.containsKey("resourceRoleTo")) {
-                Integer roleToId = params.resourceRoleTo as Integer;
-                Role roleTo = Role.get(roleToId);
-                newGenericResource.toRole = roleTo;
+                newGenericResource.toRoleText = params.resourceRoleTo;
             }
             if (params.containsKey("resourceDescription")) {
                 newGenericResource.description = params.resourceDescription;

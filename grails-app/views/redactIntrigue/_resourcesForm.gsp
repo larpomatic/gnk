@@ -25,6 +25,8 @@
             <form name="newResourceForm" data-url="<g:createLink controller="GenericResource" action="Save"/>">
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <g:hiddenField name="resourceComment" class="commentContent" value=""/>
+                <g:hiddenField name="resourceRoleFrom" class="fromRoleTextContent" value=""/>
+                <g:hiddenField name="resourceRoleTo" class="toRoleTextContent" value=""/>
                 <g:hiddenField name="resourceDescription" class="descriptionContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
@@ -130,28 +132,58 @@
                                   optionKey="id" optionValue="code"/>
                     </div>
                 </div>
-                <div class="row formRow hidden clueRow">
-                    <div class="span1">
-                        <label for="resourceRoleFrom">
-                            <g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>
-                        </label>
-                    </div>
+                %{--<div class="row formRow hidden clueRow">--}%
+                    %{--<div class="span1">--}%
+                        %{--<label for="resourceRoleFrom">--}%
+                            %{--<g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
 
-                    <div class="span4">
-                        <g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"
-                                  optionKey="id" optionValue="code"/>
-                    </div>
-                    <div class="span1">
-                        <label for="resourceRoleTo">
-                            <g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>
-                        </label>
-                    </div>
+                    %{--<div class="span4">--}%
+                        %{--<g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"--}%
+                                  %{--optionKey="id" optionValue="code"/>--}%
+                    %{--</div>--}%
+                    %{--<div class="span1">--}%
+                        %{--<label for="resourceRoleTo">--}%
+                            %{--<g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>--}%
+                        %{--</label>--}%
+                    %{--</div>--}%
 
-                    <div class="span4">
-                        <g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"
-                                  optionKey="id" optionValue="code"/>
+                    %{--<div class="span4">--}%
+                        %{--<g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"--}%
+                                  %{--optionKey="id" optionValue="code"/>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
+
+%{--texte du role from--}%
+                <div class="row formRow text-center hidden clueRow">
+                    <label for="resourceRoleFrom">
+                        <g:message code="redactintrigue.resource.resourceRoleFrom" default="Role from"/>
+                    </label>
+                </div>
+                <div class="fullScreenEditable hidden clueRow">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="clueRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
                     </div>
                 </div>
+
+                %{--texte du role to--}%
+                <div class="row formRow text-center hidden clueRow">
+                    <label for="resourceRoleTo">
+                        <g:message code="redactintrigue.resource.resourceRoleTo" default="Role to"/>
+                    </label>
+                </div>
+                <div class="fullScreenEditable hidden clueRow">
+                    <g:render template="dropdownButtons" />
+
+                    <!-- Editor -->
+                    <div id="clueRichTextEditor" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                    </div>
+                </div>
+
+
                 <div class="row formRow text-center hidden clueRow">
                     <label for="resourceDescription">
                         <g:message code="redactintrigue.resource.resourceDescription" default="Description"/>
@@ -227,6 +259,8 @@
                 <form name="updateResource_${resource.id}" data-url="<g:createLink controller="GenericResource" action="Update" id="${resource.id}"/>">
                     <g:hiddenField name="id" value="${resource.id}"/>
                     <g:hiddenField name="resourceComment" class="commentContent" value=""/>
+                    <g:hiddenField name="resourceRoleFrom" class="fromRoleTextContent" value=""/>
+                    <g:hiddenField name="resourceRoleTo" class="toRoleTextContent" value=""/>
                     <g:hiddenField name="resourceDescription" class="descriptionContent" value=""/>
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow">
@@ -350,31 +384,79 @@
                             </div>
                         </div>
 
+                    %{--<g:if test="${resource.title != null}">--}%
+                        %{--<div class="row formRow clueRow">--}%
+                    %{--</g:if>--}%
+                    %{--<g:else>--}%
+                        %{--<div class="row formRow clueRow hidden">--}%
+                    %{--</g:else>--}%
+                            %{--<div class="span1">--}%
+                                %{--<label for="resourceRoleFrom">--}%
+                                    %{--<g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>--}%
+                                %{--</label>--}%
+                            %{--</div>--}%
+                            %{--<div class="span4">--}%
+                                %{--<g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"--}%
+                                          %{--optionKey="id" optionValue="code" value="${resource.fromRole?.id}"/>--}%
+                            %{--</div>--}%
+                            %{--<div class="span1">--}%
+                                %{--<label for="resourceRoleTo">--}%
+                                    %{--<g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>--}%
+                                %{--</label>--}%
+                            %{--</div>--}%
+                            %{--<div class="span4">--}%
+                                %{--<g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"--}%
+                                          %{--optionKey="id" optionValue="code" value="${resource.toRole?.id}"/>--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+
                     <g:if test="${resource.title != null}">
-                        <div class="row formRow clueRow">
+                        <div class="row formRow text-center clueRow">
                     </g:if>
                     <g:else>
-                        <div class="row formRow clueRow hidden">
+                        <div class="row formRow text-center clueRow hidden">
                     </g:else>
-                            <div class="span1">
-                                <label for="resourceRoleFrom">
-                                    <g:message code="redactintrigue.resource.resourceRoleFrom" default="From Role"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <g:select name="resourceRoleFrom" id="resourceRoleFrom" from="${plotInstance.roles}"
-                                          optionKey="id" optionValue="code" value="${resource.fromRole?.id}"/>
-                            </div>
-                            <div class="span1">
-                                <label for="resourceRoleTo">
-                                    <g:message code="redactintrigue.resource.resourceRoleTo" default="To Role"/>
-                                </label>
-                            </div>
-                            <div class="span4">
-                                <g:select name="resourceRoleTo" id="resourceRoleTo" from="${plotInstance.roles}"
-                                          optionKey="id" optionValue="code" value="${resource.toRole?.id}"/>
-                            </div>
-                        </div>
+                    <label for="resourceRoleFrom">
+                        <g:message code="redactintrigue.resource.resourceRoleFrom" default="Role from"/>
+                    </label>
+                </div>
+                    <g:if test="${resource.title != null}">
+                        <div class="fullScreenEditable clueRow">
+                    </g:if>
+                    <g:else>
+                        <div class="fullScreenEditable clueRow hidden">
+                    </g:else>
+                    <g:render template="dropdownButtons" />
+
+                <!-- Editor -->
+                    <div id="clueRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                        ${resource.fromRoleText?.encodeAsHTML()}
+                    </div>
+                </div>
+
+                    <g:if test="${resource.title != null}">
+                        <div class="row formRow text-center clueRow">
+                    </g:if>
+                    <g:else>
+                        <div class="row formRow text-center clueRow hidden">
+                    </g:else>
+                    <label for="resourceRoleTo">
+                        <g:message code="redactintrigue.resource.resourceRoleTo" default="Role to"/>
+                    </label>
+                </div>
+                    <g:if test="${resource.title != null}">
+                        <div class="fullScreenEditable clueRow">
+                    </g:if>
+                    <g:else>
+                        <div class="fullScreenEditable clueRow hidden">
+                    </g:else>
+                    <g:render template="dropdownButtons" />
+
+                <!-- Editor -->
+                    <div id="clueRichTextEditor${resource.id}" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                        ${resource.toRoleText?.encodeAsHTML()}
+                    </div>
+                </div>
 
                         <g:if test="${resource.title != null}">
                             <div class="row formRow text-center clueRow">
