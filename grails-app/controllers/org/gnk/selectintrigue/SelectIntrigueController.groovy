@@ -340,7 +340,7 @@ class SelectIntrigueController {
     }
 
     public isEvenementialIsCompatible(Plot plot, gn) {
-        int countWomen = 0;
+       /* int countWomen = 0;
         int countMen = 0;
         int countOthers = 0;
         for (Role role in plot.roles) {
@@ -368,7 +368,55 @@ class SelectIntrigueController {
                 countOthers++;
             }
         }
-        return (countMen + countWomen + countOthers < gn.getNbPlayers());
+        return (countMen + countWomen + countOthers < gn.getNbPlayers());*/
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
+        if (currentUser == null) {
+            return false;
+        }
+        if (!plot.getIsPublic() && !(currentUser.getPlots().contains(plot))) {
+            return false;
+        }
+        int nbTPS_PIP = 0;
+        if (plot.getIsDraft())
+            return false;
+
+        final Set<Role> roleList = new HashSet<Role>();
+
+        Set<Role> roleSet = plot.getterRoles();
+        assert (roleSet != null);
+        if (roleSet == null)
+            return false;
+        for (Role role : roleSet) {
+            if (role.isPJ() || role.isPJG())
+                roleList.add(role);
+            if (role.isTPJ())
+                nbTPS_PIP = role.getPipi() + role.getPipr();
+        }
+        if (roleList.size() > gn.getNbPlayers())
+            return false;
+
+        //Resolving PNJsable
+        for (Role role : roleSet)
+        {
+            if (role.isPJB())
+            {
+                if (roleList.size() < gn.getNbPlayers()) {
+            //        role.setType("PJ")
+                    roleList.add(role)
+                }
+             //   else
+              //      role.setType("PNJ")
+            }
+        }
+
+        for (Role role : roleList) {
+            if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > gn.getPipMax()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 	def private insertNewStatValue (String name, String objective, String result, List<List<String>> statisticResultList) {
