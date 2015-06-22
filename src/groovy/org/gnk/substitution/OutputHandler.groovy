@@ -387,7 +387,7 @@ class OutputHandler {
                 }
                 for(GenericPlace genericPlace in plot.genericPlaces) {
                     if (genericPlace != null && genericPlace.DTDId == genericPlaceGnId) {
-                        return genericPlace;
+                        return genericPlace
                     }
                 }
             }
