@@ -47,6 +47,30 @@ public class RoleToPersoProcessing {
 
     private void process() {
         LOG.info("\t<Algo>");
+
+        final Set<Role> roleList = new HashSet<Role>();
+        final Set<Role> rolePJB = new HashSet<Role>();
+        for (Plot plot : gn.getSelectedPlotSet()){
+            for (Role role : plot.getterRoles())
+            {
+                if (role.isPJ() || role.isPJG())
+                    roleList.add(role);
+            }
+            for (Role role : plot.getterRoles())
+            {
+                if (role.isPJB())
+                {
+                    if (roleList.size() < gn.getNbPlayers()) {
+                        role.setType("PJ")
+                        roleList.add(role)
+                    }
+                    else
+                        role.setType("PNJ")
+                    rolePJB.add(role)
+                }
+            }
+            roleList.clear()
+        }
         initRoles();
         initCharacters();
         // add rôle TOUS
@@ -59,7 +83,10 @@ public class RoleToPersoProcessing {
         // Harmonize Sex -- Warning to relation type
         reHarmonizeRole();
         //LOG.info("\t</Algo>");
-
+        for (Role role : rolePJB){
+            role.setType("PJB")
+        }
+        rolePJB.clear()
     }
 
     private void createSTFCharacter()

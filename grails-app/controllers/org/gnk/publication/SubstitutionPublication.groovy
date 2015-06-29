@@ -98,6 +98,14 @@ class SubstitutionPublication {
         //if (gender.isEmpty())
         //return replacement
 
+        if (syntax.contains("M#") && syntax.contains("F#")) {
+            String[] switchGender = syntax.split(";")
+            if (gender.equals("M"))
+                return switchGender[0].substring(2).toLowerCase()
+            else //gender = F
+                return switchGender[1].substring(2).toLowerCase()
+        }
+
         boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
 
         switch (syntax) {
@@ -191,6 +199,14 @@ class SubstitutionPublication {
 
         //if (gender.isEmpty())
         //return replacement
+
+        if (syntax.contains("M#") && syntax.contains("F#")) {
+            String[] switchGender = syntax.split(";")
+            if (gender.equals("M"))
+                return switchGender[0].substring(2).toLowerCase()
+            else //gender = F
+                return switchGender[1].substring(2).toLowerCase()
+        }
 
         boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
 
