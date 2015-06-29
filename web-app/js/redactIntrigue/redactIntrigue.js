@@ -389,6 +389,7 @@ function convertDescription(description) {
     description = description.replace(/&lt;o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;o:Cont:/g, '<span class="label label-important" data-tag="Cont" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:M#/g, '<span class="label label-success" data-tag="M#');
     description = description.replace(/&lt;i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -448,6 +449,7 @@ function initializePopover() {
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="Cont">Contenu</button></div>';
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
         placement: 'bottom',
@@ -636,6 +638,7 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/<o:Nom:/g, '<span class="label label-important" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:Par:/g, '<span class="label label-important" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:Pos:/g, '<span class="label label-important" data-tag="Pos" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<o:Cont:/g, '<span class="label label-important" data-tag="Cont" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:none:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:Pre:/g, '<span class="label label-success" data-tag="Pre" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:inif:/g, '<span class="label label-success" data-tag="inif" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
