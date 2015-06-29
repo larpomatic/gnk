@@ -3,6 +3,8 @@ package org.gnk.publication
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.convert.out.pdf.PdfConversion
+import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -199,9 +201,22 @@ class PublicationController {
         wordWriter.wordMLPackage = createPublication(jsoncharlist, fileName)
         wordWriter.wordMLPackage.save(output)
 
-        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-        response.outputStream << output.newInputStream()
+        if (params.get("export_pdf").equals("true")){
+            PdfConversion c = new Conversion(wordWriter.wordMLPackage)
+            c.setSaveFO(output)
+            c.output(response.outputStream, new PdfSettings())
+            response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.pdf")
+            response.outputStream << output.newInputStream()
+        }
+        else{
+            response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
+            response.outputStream << output.newInputStream()
+        }
+
+
+
     }
 
     // Méthode principale de la génération des documents

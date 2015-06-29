@@ -26,6 +26,7 @@ public class RoleToPersoProcessing {
     public Set<Role> gnTPJRoleSet;
     public Set<Role> gnPJGRoleSet;
     public Set<Role> gnSTFRoleSet;
+    public Set<Role> gnPJBRoleSet;
     private Map<Role, String> unAttribuedRoleWithSettedSex;
 
 
@@ -47,46 +48,33 @@ public class RoleToPersoProcessing {
 
     private void process() {
         LOG.info("\t<Algo>");
-
-        final Set<Role> roleList = new HashSet<Role>();
+/*
         final Set<Role> rolePJB = new HashSet<Role>();
         for (Plot plot : gn.getSelectedPlotSet()){
-            for (Role role : plot.getterRoles())
-            {
-                if (role.isPJ() || role.isPJG())
-                    roleList.add(role);
-            }
-            for (Role role : plot.getterRoles())
-            {
-                if (role.isPJB())
-                {
-                    if (roleList.size() < gn.getNbPlayers()) {
-                        role.setType("PJ")
-                        roleList.add(role)
-                    }
-                    else
-                        role.setType("PNJ")
+            for (Role role : plot.getterRoles()) {
+                if (role.isPJB()) {
                     rolePJB.add(role)
                 }
             }
-            roleList.clear()
-        }
+        }*/
         initRoles();
         initCharacters();
         // add rôle TOUS
         addTPJ();
         associateRolesToCharacters();
         // add rôle OTHER
+        addPJB();
+        // determine pnjsable
         addPJG();
         // Create & add STF Role
         createSTFCharacter();
         // Harmonize Sex -- Warning to relation type
         reHarmonizeRole();
         //LOG.info("\t</Algo>");
-        for (Role role : rolePJB){
+  /*      for (Role role : rolePJB){
             role.setType("PJB")
         }
-        rolePJB.clear()
+        rolePJB.clear()*/
     }
 
     private void createSTFCharacter()
@@ -580,6 +568,7 @@ public class RoleToPersoProcessing {
         gnTPJRoleSet = new HashSet<Role>();
         gnPJGRoleSet = new HashSet<Role>();
         gnSTFRoleSet = new HashSet<Role>();
+        gnPJBRoleSet = new HashSet<Role>()
 
         assert (gn != null);
         if (gn == null) {
@@ -610,6 +599,9 @@ public class RoleToPersoProcessing {
                 } else if (role.isPJ()) {
                     roles.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is PJ and added to role set to process");
+                } else if (role.isPJB()){
+                    gnPJBRoleSet.add(role);
+                    LOG.trace("\t\t\trole : " + role.getterCode() + " is PJB and not added to role set to process");
                 } else if (role.isSTF()) {
                     gnSTFRoleSet.add(role);
                     LOG.trace("\t\t\trole : " + role.getterCode() + " is STF and not added to role set to process");
@@ -714,6 +706,58 @@ public class RoleToPersoProcessing {
         }
     }
 
+    private void addPJB() {// not properly working 
+   /*     if (!gnPJBRoleSet.empty) {
+            boolean empty = true
+            for (Plot plot : gn.selectedPlotSet) {
+                int nb_pjg = 0
+                Set<Character> no_role = new HashSet<Character>()
+                for (Role role : plot.getterRoles()) {
+                    if (role.isPJG())
+                        nb_pjg++
+                }
+                for (Character character : gn.getterCharacterSet()) {
+                    empty = true
+                    for (Role role : character.getSelectedRoles()) {
+                        if (role.getterPlot().id == plot.id) {
+                            empty = false;
+                        }
+                    }
+                    if (empty == true)
+                        no_role.add(character)
+                }
+                //On vérifie qu'il y a de la place pour au moins un PJG (à améliorer)
+                if (no_role.size() > nb_pjg) {
+                    Iterator<Character> iterator_char = no_role.iterator()
+                    while (iterator_char.hasNext())
+                    {
+                        Character character1 = iterator_char.next()
+                        Iterator<Role> iterator_role = gnPJBRoleSet.iterator()
+                        while (iterator_role.hasNext())
+                        {
+                            Role role = iterator_role.next()
+                            if (role.getterPlot().getterId() == plot.getterId())
+                            {// TODO : check tag compatibility
+                                if (character1.getNbPIP() + role.getPIPTotal() <= gn.pipMax && no_role.contains(character1))
+                                {
+                                    character1.addRole(role)
+                                    iterator_char.remove()
+                                    iterator_role.remove()
+                                }
+                            }
+                        }
+                    }
+                }
+                no_role.clear()
+            }
+            int incr = 1;
+            for (Role NPCRole : gnPJBRoleSet) {
+                final Character c = new Character(incr + gn.getNbPlayers() + 1, "N", NPCRole);
+                gn.getterNonPlayerCharSet().add(c);
+                incr++;
+            }
+        }*/
+    }
     /*
         Function to add all roles PJG to all characters of the plot
      */
