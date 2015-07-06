@@ -2,6 +2,7 @@ package org.gnk.publication
 
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
+import org.docx4j.convert.out.pdf.PdfConversion
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -947,6 +948,15 @@ class PublicationController {
         createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
+    private boolean  isClueVisibleForEveryone(GenericResource clue){
+        if (clue.isIngameClue() && clue.getPossessedByRole() != null){
+            return (clue.getPossessedByRole().getType().equals("TPJ")
+                    || clue.getPossessedByRole().getType().equals("PJG"));
+        } else {
+            return false;
+        }
+    }
+
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
     private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
         for (Character c : listCharacters) {
@@ -1116,7 +1126,7 @@ class PublicationController {
                 }
 
             }
-
+            
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
