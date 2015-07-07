@@ -14,9 +14,11 @@ class GenericEvent {
 
 
     static constraints = {
+        title{nullable:false}
         description(nullable:false)
     }
     static mapping = {
+        title type:'text'
         description type:'text'
     }
     static hasMany = [ genericEventHasTag : GenericEventHasTag ]
