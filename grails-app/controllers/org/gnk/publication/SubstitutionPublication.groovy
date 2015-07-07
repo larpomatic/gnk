@@ -82,11 +82,16 @@ class SubstitutionPublication {
     String replaceResource(String syntax, String code) {
         String replacement = "[Ressource générique]"
         String gender = ""
+        String content = "[Contenu indice]";
+
         for (GenericResource genericResource : genericResourceList)
         {
             if (genericResource.code.toUpperCase().equals(code)) {
                 replacement = genericResource.selectedResource.name
                 gender = genericResource.selectedResource.gender
+
+                if (genericResource.isIngameClue())
+                    content = genericResource.description;
             }
         }
 
@@ -140,6 +145,9 @@ class SubstitutionPublication {
                     case "MP" : return "des " + replacement
                     case "FP" : return "des " + replacement
                 }
+                break
+            case "CONT" :
+                return content;
                 break
         }
 

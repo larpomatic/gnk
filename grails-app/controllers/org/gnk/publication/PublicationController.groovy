@@ -948,6 +948,15 @@ class PublicationController {
         createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
+    private boolean  isClueVisibleForEveryone(GenericResource clue){
+        if (clue.isIngameClue() && clue.getPossessedByRole() != null){
+            return (clue.getPossessedByRole().getType().equals("TPJ")
+                    || clue.getPossessedByRole().getType().equals("PJG"));
+        } else {
+            return false;
+        }
+    }
+
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
     private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
         for (Character c : listCharacters) {
@@ -1117,7 +1126,7 @@ class PublicationController {
                 }
 
             }
-
+            
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
