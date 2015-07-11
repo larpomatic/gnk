@@ -448,37 +448,22 @@ function updateAllDescription(formlist) {
 }
 
 function initializePopover() {
-    /*var spanPopover = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Art">Article</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Nom">Nominatif</button></div>' +
-        '<div class="specialTag"><button class="btn btn-small dropdown-toggle none" data-toggle="dropdown" data-tag="Pos">Possessif<span class="caret"></span></button>' +
-        '<ul class="dropdown-menu">' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosM">1ere singulier</button></li>' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosT">2eme singulier</button></li>' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosS">3eme singulier</button></li>' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosN">1ere pluriel</button></li>' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosV">2eme pluriel</button></li>' +
-        '<li><button class="btn btn-small btn-primary" data-tag="PosL">3eme pluriel</button></li></ul></div>' +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Par">Particule</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="Cont">Contenu</button></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';*/
     var spanPopover = '<div class="specialTag"><select name="tags">' +
         '<div class="specialTag"><option value="none" data-tag="none">Aucun</option></div>' +
         '<div class="specialTag"><option value="Art" data-tag="Art">Le/La/Les</option></div>' +
         '<div class="specialTag"><option value="Nom" data-tag="Nom">Un/Une/Des</option></div>' +
         '<div class="specialTag"><option value="Par" data-tag="Par">De/De la/Du</option></div>' +
-        //'<div class="specialTag"><option value="Cont" data-tag="Cont">Contenu</option></div>' +
+        '<div class="specialTag"><option value="Cont" data-tag="Cont">Contenu</option></div>' +
         '<div class="specialTag"><option value="PosM" data-tag="PosM">Mon/Ma/Mes</option></div>' +
         '<div class="specialTag"><option value="PosT" data-tag="PosT">Ton/Ta/Tes</option></div>' +
         '<div class="specialTag"><option value="PosS" data-tag="PosS">Son/Sa/Ses</option></div>' +
         '<div class="specialTag"><option value="PosN" data-tag="PosN">Nos</option></div>' +
         '<div class="specialTag"><option value="PosV" data-tag="PosV">Vos</option></div>' +
         '<div class="specialTag"><option value="PosL" data-tag="PosL">Leurs</option></div>' +
+        '<div class="specialTag"><option value="Cont" data-tag="Cont">Contenu</option></div>' +
         '<div class="specialTag"><option value="Per" data-tag="Per">Perso</option></div>' +
         '</select></div>' +
         '<div class="span" id="persoMF"><div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div></div>';
-
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
         placement: 'bottom',
@@ -486,13 +471,16 @@ function initializePopover() {
         container: "body",
         delay: { "show": 0, "hide": 0 }
     });
-    var spanPopoverRole = '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Pre">Prénom</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Pat">Patronyme</button></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="inif">Initiale prénom</button></div>'   +
-        '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Age">Âge</button>' +
-        '<button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
-        '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+
+    var spanPopoverRole = '<div class="specialTag"><select name="tags">' +
+        '<div class="specialTag"><option value="none" data-tag="none">Aucun</option></div>' +
+        '<div class="specialTag"><option value="Pre" data-tag="Pre">Prénom</option></div>' +
+        '<div class="specialTag"><option value="Pat" data-tag="Pat">Patronyme</option></div>' +
+        '<div class="specialTag"><option value="inif" data-tag="inif">Initiale prénom</option></div>' +
+        '<div class="specialTag"><option value="Age" data-tag="Age">Âge</option></div>' +
+        '<div class="specialTag"><option value="Per" data-tag="Per">Perso</option></div>' +
+        '</select></div>' +
+        '<div class="span" id="persoMF"><div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div></div>';
     $('.richTextEditor .label[contenteditable="false"].label-success').popover({
         html: 'true',
         placement: 'bottom',
@@ -500,8 +488,6 @@ function initializePopover() {
         container: "body",
         delay: { "show": 0, "hide": 0 }
     });
-
-
 
     $('.richTextEditor .label[contenteditable="false"]').on("shown.bs.popover", function () {
         if ($('.popover').size() > 1) {
@@ -512,7 +498,6 @@ function initializePopover() {
             $('#persoMF').hide();
             $('.popover select').removeClass("btn-success").addClass("btn-primary");
             $('.popover select').val($(element).attr("data-tag"));
-            //TODO pb with $(element) when tag = "Per"
             $('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
             //$('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
             if ($('.popover option.btn-success').size() == 0) {
