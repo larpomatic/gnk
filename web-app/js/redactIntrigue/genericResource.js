@@ -13,9 +13,17 @@ $(function(){
         var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
+        fromRoleText = transformDescription(fromRoleText);
+        $('.fromRoleTextContent', form).val(fromRoleText);
+        var toRoleText = $('#clueRichTextEditor2', form).html();
+        toRoleText = transformDescription(toRoleText);
+        $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -70,6 +78,7 @@ $(function(){
         });
 });
 
+
 // modifie une ressource dans la base
 function updateResource() {
     $('.updateResource').click(function() {
@@ -78,9 +87,16 @@ function updateResource() {
         var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
+        fromRoleText = transformDescription(fromRoleText);
+        $('.fromRoleTextContent', form).val(fromRoleText);
+        var toRoleText = $('#clueRichTextEditor2', form).html();
+        toRoleText = transformDescription(toRoleText);
+        $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor' + genericResourceId, form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
