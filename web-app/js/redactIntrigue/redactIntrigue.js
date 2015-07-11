@@ -463,12 +463,21 @@ function initializePopover() {
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="Cont">Contenu</button></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';*/
-    var spanPopover = '<div class="specialTag">' +
-        '<select name="tags" title="Aucun tag sélectionné">' +
+    var spanPopover = '<div class="specialTag"><select name="tags">' +
         '<div class="specialTag"><option value="none" data-tag="none">Aucun</option></div>' +
-        '<div class="specialTag"><option value="Nom" data-tag="Nom">Nominatif</option></div>' +
-        '<div class="specialTag"><option value="Par" data-tag="Par">Particule</option></div>' +
-        '</select></div>';
+        '<div class="specialTag"><option value="Art" data-tag="Art">Le/La/Les</option></div>' +
+        '<div class="specialTag"><option value="Nom" data-tag="Nom">Un/Une/Des</option></div>' +
+        '<div class="specialTag"><option value="Par" data-tag="Par">De/De la/Du</option></div>' +
+        //'<div class="specialTag"><option value="Cont" data-tag="Cont">Contenu</option></div>' +
+        '<div class="specialTag"><option value="PosM" data-tag="PosM">Mon/Ma/Mes</option></div>' +
+        '<div class="specialTag"><option value="PosT" data-tag="PosT">Ton/Ta/Tes</option></div>' +
+        '<div class="specialTag"><option value="PosS" data-tag="PosS">Son/Sa/Ses</option></div>' +
+        '<div class="specialTag"><option value="PosN" data-tag="PosN">Nos</option></div>' +
+        '<div class="specialTag"><option value="PosV" data-tag="PosV">Vos</option></div>' +
+        '<div class="specialTag"><option value="PosL" data-tag="PosL">Leurs</option></div>' +
+        '<div class="specialTag"><option value="Per" data-tag="Per">Perso</option></div>' +
+        '</select></div>' +
+        '<div class="span" id="persoMF"><div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div></div>';
 
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
@@ -500,12 +509,15 @@ function initializePopover() {
         }
         else {
             element = $(this);
+            $('#persoMF').hide();
             $('.popover select').removeClass("btn-success").addClass("btn-primary");
-            //$('.popover select[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
             $('.popover select').val($(element).attr("data-tag"));
-            //$('.popover select').change();
+            //TODO pb with $(element) when tag = "Per"
             $('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
+            //$('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
             if ($('.popover option.btn-success').size() == 0) {
+                $('.popover select').val('Per');
+                $('#persoMF').show();
                 $('.popover option[data-tag="Per"]').addClass('btn-success').removeClass("btn-primary");
                 var tag = $(element).attr("data-tag");
                 var maleName = tag.match("M#(.*);F#");
@@ -514,7 +526,10 @@ function initializePopover() {
                 $('.popover input[placeholder="Féminin"]').val(femaleName[1]);
             }
             $('.popover select').change(function() {
-                $(this).removeClass("btn-primary").addClass("btn-success");
+                if ($('.popover option[data-tag="Per"]:checked').val() == "Per")
+                    $('#persoMF').show();
+                else
+                    $('#persoMF').hide();
                 $(element).attr("data-tag", $(this).attr("data-tag"));
             })
             $('.popover option').click(function() {
