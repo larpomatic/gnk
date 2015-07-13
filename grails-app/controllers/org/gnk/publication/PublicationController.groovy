@@ -205,8 +205,13 @@ class PublicationController {
             PdfConversion c = new Conversion(wordWriter.wordMLPackage)
             c.setSaveFO(output)
             c.output(response.outputStream, new PdfSettings())
-            response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.pdf")
+//            response.setContentType("application/pdf")
+//            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.pdf")
+            response.setHeader("Pragma", "no-cache")
+            response.setHeader("Cache-control", "private")
+            response.setDateHeader("Expires", 0)
+            response.setContentType("application/pdf")
+            response.setHeader("Content-Disposition", "filename=\"test.pdf\"")
             response.outputStream << output.newInputStream()
         }
         else{

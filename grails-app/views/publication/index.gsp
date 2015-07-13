@@ -7,7 +7,7 @@
     <title><g:message code="navbar.publication" /></title>
 </head>
 <body>
-
+<g:javascript src="publication/PDFCreation.js"/>
 <br><br>
 <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
 <div class="row-fluid" id="hidTest">
@@ -16,7 +16,7 @@
             <input type="hidden" value="${gnId}" name="gnId"/>
             <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
             <input id="imgsrc" type="hidden" value="" name="imgsrc"/>
-            <input id="pdfbuttonword" type="hidden" value="true" name="export_pdf"/>
+            <input id="pdfbuttonword" type="hidden" value="false" name="export_pdf"/>
             <input id="jsoncharlist" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
             <button id="WordButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
             <INPUT type="checkbox" id="IncludeInterpretationAdvice" name="IncludeInterpretationAdvice" value="false"/> Inclure les conseils d'interprétation
@@ -43,7 +43,7 @@
     </g:each>
 <br><br>
         <FORM>
-            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez...
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="false"> Inclure les graphes relationnels "Vous connaissez...
         </FORM>
     <div class="row-fluid" id="hidTest">
         <div class="span4">
@@ -53,13 +53,14 @@
                 <input id="imgsrcpdf" type="hidden" value="" name="imgsrc"/>
                 <input id="pdfbuttonpdf" type="hidden" value="true" name="export_pdf"/>
                 <input id="jsoncharlistpdf" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
+                <input id="IncludeInterpretationAdvice_pdf" type="hidden" value="" name="IncludeInterpretationAdvice"/>
                 <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en PDF</button>
             </form>
         </div>
     <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div><div id="pubAlertContainer">
 </div>
-<div class="row-fluid" id="RelationGraphContainer" style="none">
+<div class="row-fluid" id="RelationGraphContainer" style="display: none">
     <div class="span12" id="Relations">
         <div class="panel panel-default">
             <div style="overflow: auto; height:500px" id="container">
@@ -149,6 +150,8 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('relationGraphLoader').style.display = "";
             document.getElementById("WordButtonPublication").disabled = true;
             document.getElementById("IncludeGraphRelation").disabled = true;
+            document.getElementById("PDFButtonPublication").disabled = true;
+
             initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
             document.getElementById("imgsrc").value = null;
@@ -156,6 +159,7 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('relationGraphLoader').style.display ="none";
             document.getElementById("WordButtonPublication").disabled = false;
             document.getElementById("IncludeGraphRelation").disabled = false;
+            document.getElementById("PDFButtonPublication").disabled = false;
         }
     });
 </script>
