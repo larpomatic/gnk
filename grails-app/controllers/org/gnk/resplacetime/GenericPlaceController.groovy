@@ -44,12 +44,12 @@ class GenericPlaceController {
 
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+        System.out.println("toto");
 
-        String univer_name = params.get("univerTag");
+        /*String univer_name = params.get("univerTag");
 
         if (univer_name == null || univer_name == "")
-            return;
-
+            return;*/
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
             if (it.key.startsWith("placeTags_")) {
@@ -64,9 +64,16 @@ class GenericPlaceController {
             }
         }
         genericplace.setTagList(tags);
-        genericplace = placeService.findReferentialPlace(genericplace, univer_name);
-        genericplace.resultList;
-        String result = "";
+
+        def univers = Univers.list();
+        System.out.println(univers.size);
+        //for (int i = 0; i < univers.size() ; i++) {
+
+
+            genericplace = placeService.findReferentialPlace(genericplace, univer_name);
+            genericplace.resultList;
+            String result = "";
+       // }
         int i = 0;
 
         JSONObject object = new JSONObject();

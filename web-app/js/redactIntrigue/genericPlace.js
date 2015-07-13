@@ -225,28 +225,28 @@ function createNewGenericPlacePanel(data) {
 // function to get 10 best places depending of tags
 function getBestPlace()
 {
-
        // $('#selectUnivers').data('status', 'create');
         //$('.bestRow').remove();
         //$('.myselect').remove();
         //$('#selectUnivers').prop('selectedIndex',0);
         //$('#selectUnivers').data('form', 'newPlaceForm');
+
     $('#newbestPlace').click(function() {
         var status = $(this).data('status');
-        var url = $(this).data('url');
-        var form_name = $(this).data('form');
+        var url = '@Url.Action("GenericPlaceController", "getBestPlaces")' ;//$(this).data('url');
+        /*var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
         var input = $("<input>")
             .attr("type", "hidden")
             .attr("name", "univerTag").val($(this).val());
-        form.append(input);
+        form.append(input);*/
 
         $('.placeLoader').css('display', '');
 
         $.ajax({
             type: "POST",
             url: url,
-            data: form.serialize(),
+            data: "",
             dataType: "json",
             success: function(data) {
                 var array = data.value.split('#');
@@ -274,7 +274,7 @@ function getBestPlace()
             },
             error: function() {
                 $('.placeLoader').css('display', 'none');
-                createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
+                createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })
     });
