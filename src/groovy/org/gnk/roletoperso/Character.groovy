@@ -331,6 +331,23 @@ class Character {
         return result;
     }
 
+
+    public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelationsExceptBij(Gn gnInstance) {
+        final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
+        final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();
+
+        for (Character character : relations.keySet()) {
+            List<RoleHasRelationWithRole> list = new ArrayList<RoleHasRelationWithRole>();
+            for (RoleHasRelationWithRole roleHasRelationWithRole : relations.get(character)) {
+                list.add(roleHasRelationWithRole);
+            }
+            if (list.size() > 0)
+                result.put(character, list);
+        }
+
+        return result;
+    }
+
     public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelations(Gn gnInstance) {
         final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
         final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();

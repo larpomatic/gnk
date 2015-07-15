@@ -79,8 +79,8 @@ class GenericResourceXMLReaderService {
 
     private void ReadToRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
         assert (RESOURCE.TOROLE.size() <= 1)
-        if (RESOURCE.TOROLE.size() > 0 && RESOURCE.TOROLE[0].text() !="") {
-            resourceRes.toRole=  Role.findById(RESOURCE.TOROLE[0].text() as Integer)
+        if (RESOURCE.TOROLE.size() > 0) {
+            resourceRes.toRole=  RESOURCE.TOROLE[0].text()
         }
     }
 
