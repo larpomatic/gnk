@@ -1138,7 +1138,7 @@ class PublicationController {
 
 
 
-                Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getRelatedCharactersExceptBijectives(gn);
+                Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelationsExceptBij(gn);
                 for (Character char2 : map_relation.keySet()) {
                     String charName2 = char2.getFirstname() + " " + char2.getLastname().toUpperCase()
 

@@ -333,6 +333,8 @@ class Character {
 
 
     public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelationsExceptBij(Gn gnInstance) {
+
+
         final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
         final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();
 
@@ -345,8 +347,59 @@ class Character {
                 result.put(character, list);
         }
 
+        return result
+    }
+
+        /*
+    for (Character c : gnInstance.getterCharacterSet())
+    {
+        if (c != this)
+        {
+            Map<Character, Set<RoleHasRelationWithRole>> bijrela = c.getRelatedCharactersExceptBijectives(gnInstance);
+            Set<RoleHasRelationWithRole> bijective = bijrela.get(this);
+            if (bijective.size() > 0)
+            {
+                for (RoleHasRelationWithRole bij : bijective)
+                {
+                    if (bij.isBijective == true)
+                    {
+                        List<RoleHasRelationWithRole> listbij = result.get(c);
+                        if (listbij == null)
+                            listbij = new ArrayList<RoleHasRelationWithRole>();
+                        listbij.add(bij);
+                        result.remove(c);
+                        result.put(c, listbij);
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+
+
+        final Map<RoleHasRelationWithRole, Integer> relations = getRelationsExceptBijectives();
+        final Map<Character, List<RoleHasRelationWithRole>> result = new HashMap<Character, List<RoleHasRelationWithRole>>();
+        for (Character character : gnInstance.getterCharacterSet()) {
+            final List<RoleHasRelationWithRole> relationsForThisChar = new HashSet<RoleHasRelationWithRole>();
+            result.put(character, relationsForThisChar);
+        }
+        for (RoleHasRelationWithRole relationWithRole : relations.keySet()) {
+            final Role otherRole = relationWithRole.getterRole2();
+            if (otherRole.isPJ()) {
+                Character other = gnInstance.getCharacterContainingRole(otherRole);
+                if (other != null) {
+                    result.get(other).add(relationWithRole);
+                }
+            }
+        }
         return result;
     }
+
+
+ */
 
     public Map<Character, List<RoleHasRelationWithRole>> getCharacterRelations(Gn gnInstance) {
         final Map<Character, Set<RoleHasRelationWithRole>> relations = getRelatedCharactersExceptBijectives(gnInstance);
