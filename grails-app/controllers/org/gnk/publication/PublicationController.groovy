@@ -1155,8 +1155,6 @@ class PublicationController {
 
                                 String resRoles = "Aucun Rôle"
 
-                                print("test");
-
                                 substituteRolesAndPlotDescription(role1.getterPlot())
                                 if (resRoles == "Aucun Rôle")
                                     resRoles = "- " + role1.code + " : " + role1.description
@@ -1531,13 +1529,15 @@ class PublicationController {
                 substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                 // Fin construction du substitutionPublication
 
+                genericResource.fromRoleText = substitutionPublication.replaceAll(genericResource.fromRoleText)
+                genericResource.toRoleText = substitutionPublication.replaceAll(genericResource.toRoleText)
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
                 wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
-                if (genericResource.fromRole)
-                    wordWriter.addStyledParagraphOfText("clueFrom", "De " + genericResource.fromRole.code)
-                if (genericResource.toRole)
-                    wordWriter.addStyledParagraphOfText("clueTo", "Pour " + genericResource.toRole.code)
+                if (genericResource.fromRoleText)
+                    wordWriter.addStyledParagraphOfText("clueFrom", genericResource.fromRoleText)
+                if (genericResource.toRoleText)
+                    wordWriter.addStyledParagraphOfText("clueTo", genericResource.toRoleText)
                 wordWriter.addStyledParagraphOfText("clueTitle", genericResource.title)
                 wordWriter.addStyledParagraphOfText("clueDescription", genericResource.description)
             }

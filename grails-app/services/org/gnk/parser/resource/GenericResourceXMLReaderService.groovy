@@ -80,15 +80,15 @@ class GenericResourceXMLReaderService {
     private void ReadToRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
         assert (RESOURCE.TOROLE.size() <= 1)
         if (RESOURCE.TOROLE.size() > 0) {
-            resourceRes.toRole=  RESOURCE.TOROLE[0].text()
+            resourceRes.toRoleText=  RESOURCE.TOROLE[0].text()
         }
     }
 
 
     private void ReadFromRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
         assert (RESOURCE.FROMROLE.size() <= 1)
-        if (RESOURCE.FROMROLE.size() > 0  && RESOURCE.FROMROLE[0].text() !="") {
-            resourceRes.fromRole=  Role.findById(RESOURCE.FROMROLE[0].text() as Integer)
+        if (RESOURCE.FROMROLE.size() > 0) {
+            resourceRes.fromRoleText=  RESOURCE.FROMROLE[0].text()
         }
     }
     private void ReadPossessedByRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
