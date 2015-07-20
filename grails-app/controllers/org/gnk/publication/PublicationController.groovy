@@ -744,8 +744,8 @@ class PublicationController {
             if (genericResource.getPossessedByRole() != null) {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r : c.selectedRoles) {
-                        if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()) {
-                            possessedByCharacters = (possessedByCharacters.isEmpty() ? "" : ", ") c.firstname + " " + c.lastname.toUpperCase()
+                        if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
+                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
                         }
                     }
                 }
@@ -982,6 +982,20 @@ class PublicationController {
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
+
+            wordWriter.addParagraphOfText("Mes objets : ")
+            boolean hasRessource = false
+            for (Role r : c.selectedRoles) {
+                for (GenericResource gr : gnk.genericResourceMap.values())
+                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                        hasRessource = true
+                        String pubResource = (gr.code ? gr.code + " - " : "")
+                        pubResource += (gr.comment ? gr.comment : "")
+                        wordWriter.addParagraphOfText(pubResource)
+                    }
+                (hasRessource ?: wordWriter.addParagraphOfText("Je ne possède aucun objet."))
+            }
+
 
             //Todo: Ajouter les relations entre les personnages
 
@@ -1314,10 +1328,10 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T2", "Staff #" + i.toString())
             wordWriter.addParagraphOfText("Type : " + c.type)
 
-            // L'événnementiel du staff
+            // L'événementiel du staff
             wordWriter.addStyledParagraphOfText("T3", "Evénementiel")
             Map<Integer, Event> events = new TreeMap<Integer, Event>();
-            // Substitution pour l'evennementiel du staff
+            // Substitution pour l'événementiel du staff
             for (Plot p : gn.selectedPlotSet)
                 for (Event e : p.events) {
                     HashMap<String, Role> rolesNames = new HashMap<>()
@@ -1330,7 +1344,7 @@ class PublicationController {
                     events.put(e.timing, e)
                 }
 
-            // Publication de l'evennementiel du staff
+            // Publication de l'événementiel du staff
             for (Plot p : gn.selectedPlotSet)
                 for (Event e : p.events)
                     for (Role r : c.selectedRoles)
@@ -1358,7 +1372,7 @@ class PublicationController {
         }
     }
 
-    //Créatiion du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
+    //Création du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
     def createPitchTablePerso(String typePerso) {
         if (typePerso == "PJ") {
             for (Plot p : gn.selectedPlotSet) {
@@ -1497,8 +1511,8 @@ class PublicationController {
                     String possessedByCharacters = ""
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                         for (Role r : c.selectedRoles) {
-                            if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()) {
-                                possessedByCharacters += (possessedByCharacters.isEmpty() ? genericResource.getPossessedByRole().code + " : " : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
+                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
                             }
                         }
                     }
