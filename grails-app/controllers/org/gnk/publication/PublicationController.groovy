@@ -1126,14 +1126,101 @@ class PublicationController {
                 }
 
             }
-            
+
             // Ajout du Graphe relationnel du personnage
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
                 String charName = c.firstname + " " + c.lastname.toUpperCase()
+
                 wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
-                Graph charGraph = new Graph(gn, false)
+                Graph charGraph = new Graph(gn, false, 1)
                 wordWriter.addParagraphOfText(charGraph.getRelation(charName))
+
+
+
+                Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelationsExceptBij(gn);
+                for (Character char2 : map_relation.keySet()) {
+                    String charName2 = char2.getFirstname() + " " + char2.getLastname().toUpperCase()
+
+                    print(charName + " == "+ charName2)
+
+                    if (charName == charName2) {
+
+                        for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                            // Test on same character
+
+                            for (RoleHasRelationWithRole r1 : relation_list) {
+                                Role role1 = r1.getterRole1()
+                                Role role2 = r1.getterRole2()
+
+                                String resRoles = "Aucun Rôle"
+
+                                substituteRolesAndPlotDescription(role1.getterPlot())
+                                if (resRoles == "Aucun Rôle")
+                                    resRoles = "- " + role1.code + " : " + role1.description
+                                else
+                                    resRoles += "\n- " + role1.code + " : " + role1.description
+
+
+                                Plot p = role1.getterPlot()
+
+                                substituteRolesAndPlotDescription(p)
+
+                                String type = r1.getRoleRelationType().getName()
+                                String link = r1.getDescription()
+                                wordWriter.addParagraphOfText(charName + " (" + role1.code + ")")
+                                wordWriter.addParagraphOfText(charName2 + " (" + role2.code + ")")
+                                wordWriter.addParagraphOfText(type)
+                                wordWriter.addParagraphOfText(resRoles)
+                            }
+                        }
+                    }
+                }
+
+
+                /*
+
+                for (Character c2 : gn.characterSet) {
+                    String charName3 = c2.firstname + " " + c2.lastname.toUpperCase()
+
+                    print(charName + " == " + charName3)
+
+                    if (charName == charName3) {
+
+
+                        Map<Character, List<RoleHasRelationWithRole>> map_relation = c2.getCharacterRelations(gn);
+                        for (Character char2 : map_relation.keySet()) {
+                            String charName2 = char2.getFirstname() + " " + char2.getLastname().toUpperCase()
+
+
+
+                            for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                                // Test on same character
+
+                                for (RoleHasRelationWithRole r1 : relation_list) {
+                                    Role role1 = r1.getterOtherRole()
+
+
+                                    String resRoles = "Aucun Rôle"
+                                    String type = r1.getRoleRelationType().getName()
+
+                                    substituteRolesAndPlotDescription(role1.getterPlot())
+                                    if (resRoles == "Aucun Rôle")
+                                        resRoles = "- " + type + " : " + role1.description
+                                    else
+                                        resRoles += "\n- " + type + " : " + role1.description
+
+                                    wordWriter.addParagraphOfText(charName2 + " => " + resRoles)
+                                }
+                            }
+                        }
+                    }
+                }
+
+*/
+
+
+
                 wordWriter.addStyledParagraphOfText("T4", "Synthèses des personnages connus")
 
                 Tbl table = wordWriter.factory.createTbl()
@@ -1442,13 +1529,15 @@ class PublicationController {
                 substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
                 // Fin construction du substitutionPublication
 
+                genericResource.fromRoleText = substitutionPublication.replaceAll(genericResource.fromRoleText)
+                genericResource.toRoleText = substitutionPublication.replaceAll(genericResource.toRoleText)
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
                 wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
-                if (genericResource.fromRole)
-                    wordWriter.addStyledParagraphOfText("clueFrom", "De " + genericResource.fromRole.code)
-                if (genericResource.toRole)
-                    wordWriter.addStyledParagraphOfText("clueTo", "Pour " + genericResource.toRole.code)
+                if (genericResource.fromRoleText)
+                    wordWriter.addStyledParagraphOfText("clueFrom", genericResource.fromRoleText)
+                if (genericResource.toRoleText)
+                    wordWriter.addStyledParagraphOfText("clueTo", genericResource.toRoleText)
                 wordWriter.addStyledParagraphOfText("clueTitle", genericResource.title)
                 wordWriter.addStyledParagraphOfText("clueDescription", genericResource.description)
             }
