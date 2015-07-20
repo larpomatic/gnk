@@ -22,11 +22,20 @@
 <g:javascript src="redactIntrigue/genericPlace.js"/>
 <g:javascript src="redactIntrigue/genericResource.js"/>
 <g:javascript src="redactIntrigue/relation.js"/>
+<div class="row-fluid" id="hidTest">
+    <div class="span4">
+        <form id="exportPDFButton" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
+            <input type="hidden" id="plotid" name="plotid" value="${plotInstance.id}"/>
+            <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en PDF</button>
+        </form>
+    </div>
+</div>
 	<div id="edit-plot" class="content scaffold-list">
 		<h1>
 			<g:message code="default.edit.label" args="[entityName]" />
 		</h1>
         <g:render template="testMenuSlide" model="['right': right]" />
 	</div>
+
 </body>
 </html>

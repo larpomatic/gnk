@@ -1,6 +1,11 @@
 package org.gnk.gn.redactintrigue
 
 import org.apache.poi.hwpf.usermodel.DateAndTime
+import org.docx4j.convert.out.pdf.PdfConversion
+import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage
+import org.gnk.publication.WordWriter
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
@@ -219,4 +224,34 @@ class RedactIntrigueController {
             object(isdelete: true)
         }
 	}
+
+    def print(){
+        def plotInstance = Plot.get(params.plotid)
+        def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
+        def folder = new File(folderName)
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+
+        String fileName = folderName + "${plotInstance.getName().replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}"
+        File output = new File(fileName + ".pdf")
+        String publicationFolder = "${request.getSession().getServletContext().getRealPath("/")}publication/"
+        WordWriter wordWriter = new WordWriter("",publicationFolder)
+        wordWriter.wordMLPackage = createPrint(wordWriter, fileName)
+        wordWriter.wordMLPackage.save(output)
+        PdfConversion c = new Conversion(wordWriter.wordMLPackage)
+        c.setSaveFO(output)
+        c.output(response.outputStream, new PdfSettings())
+        response.setHeader("Pragma", "no-cache")
+        response.setHeader("Cache-control", "private")
+        response.setDateHeader("Expires", 0)
+        response.setContentType("application/pdf")
+        response.setHeader("Content-Disposition", "filename=\"test.pdf\"")
+        response.outputStream << output.newInputStream()
+    }
+
+    public WordprocessingMLPackage createPrint(WordWriter wordWriter, String fileName){
+
+        return wordWriter.wordMLPackage
+    }
 }
