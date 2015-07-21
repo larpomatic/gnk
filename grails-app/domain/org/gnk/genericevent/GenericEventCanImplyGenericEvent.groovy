@@ -8,5 +8,5 @@ class GenericEventCanImplyGenericEvent {
     Date dateCreated
     Integer value
 
-    static belongsTo = [genericEventFirst : GenericEvent, genericEventNext : GenericEvent]
+    static belongsTo = [genericEvent : GenericEvent, genericEventFirst : GenericEvent, genericEventNext : GenericEvent]
 }

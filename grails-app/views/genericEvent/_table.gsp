@@ -32,7 +32,7 @@
         <td>${fieldValue(bean: genericEventInstance, field: "ageMax")}</td>
 
             <td>
-            <g:form>
+            <g:form method="get">
                 <fieldset class="buttons">
                     <g:hiddenField name="id" value="${genericEventInstance?.id}"/>
                     <g:hasRights lvlright="${right.REFMODIFY.value()}">

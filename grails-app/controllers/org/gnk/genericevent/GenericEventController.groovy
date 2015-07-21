@@ -1,5 +1,5 @@
 package org.gnk.genericevent
-
+import org.gnk.tag.TagService
 import org.springframework.dao.DataIntegrityViolationException
 
 class GenericEventController {
@@ -7,7 +7,8 @@ class GenericEventController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+//        redirect(action: "list", params: params)
+        redirect(action: "list")
     }
 
     def list(Integer max) {
@@ -17,7 +18,10 @@ class GenericEventController {
     }
 
     def create() {
-        [genericEventInstance: new GenericEvent(params)]
+        def list = GenericEvent.list()
+        TagService tagService = new TagService();
+        def listTag = tagService.getPlotTagQuery()
+        [genericEventInstance: new GenericEvent(params), genericEventInstanceList: list, TagInstanceList : listTag]
     }
 
     def save() {
@@ -44,30 +48,38 @@ class GenericEventController {
         redirect(action: "list", params: params)
     }
 
-        def edit(Long id) {
+    def edit(Long id) {
         def genericEventInstance = GenericEvent.get(id)
         if (!genericEventInstance) {
+
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), id])
             redirect(action: "list")
             return
         }
+        def list = GenericEvent.list()
+        TagService tagService = new TagService();
+        def listTag = tagService.getPlotTagQuery()
 
-        [genericEventInstance: genericEventInstance]
+
+        [genericEventInstance: genericEventInstance, genericEventInstanceList: list, TagInstanceList : listTag]
     }
 
-    def update(Long id, Long version) {
-        def genericEventInstance = GenericEvent.get(id)
+    def update(Long genericEventId, Long genericEventVersion) {
+       def genericEventInstance = GenericEvent.get(genericEventId)
+
         if (!genericEventInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), id])
+            flash.message = message(code: 'default.not.found.message',
+                    args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventId])
             redirect(action: "list")
             return
         }
 
-        if (version != null) {
-            if (genericEventInstance.version > version) {
+        if (genericEventVersion != null) {
+            if (genericEventInstance.version > genericEventVersion) {
+
                 genericEventInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'genericEvent.label', default: 'GenericEvent')] as Object[],
-                          "Another user has updated this GenericEvent while you were editing")
+                        [message(code: 'genericEvent.label', default: 'GenericEvent')] as Object[],
+                        "Another user has updated this GenericEvent while you were editing")
                 render(view: "edit", model: [genericEventInstance: genericEventInstance])
                 return
             }
@@ -81,7 +93,8 @@ class GenericEventController {
         }
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.id])
-        redirect(action: "show", id: genericEventInstance.id)
+//        redirect(action: "show", id: genericEventInstance.id)
+        redirect(action: "list")
     }
 
     def delete(Long id) {
@@ -103,5 +116,26 @@ class GenericEventController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), title])
             redirect(action: "show", id: id)
         }
+    }
+
+    def deleteGenericEventHasTag(Long id) {
+        GenericEventHasTag eventHasTag = GenericEventHasTag.findById(id)
+        eventHasTag.delete()
+//        flash.messageInfo = message(code: 'adminRef.genericPlace.info.deleteTag', args: [placeHasTagInstance.place.name, placeHasTagInstance.tag.name])
+//        redirect(action: "list")
+    }
+
+    def deleteGenericEventImplyTag(Long id) {
+        GenericEventCanImplyTag canImplyGenericEvent = GenericEventCanImplyTag.findById(id)
+        canImplyGenericEvent.delete()
+//        flash.messageInfo = message(code: 'adminRef.genericPlace.info.deleteTag', args: [placeHasTagInstance.place.name, placeHasTagInstance.tag.name])
+//        redirect(action: "list")
+    }
+
+    def deleteGenericEventImplyGenericEvent(Long id) {
+        GenericEventCanImplyGenericEvent canImplyGenericEvent = GenericEventCanImplyGenericEvent.findById(id)
+        canImplyGenericEvent.delete()
+//        flash.messageInfo = message(code: 'adminRef.genericPlace.info.deleteTag', args: [placeHasTagInstance.place.name, placeHasTagInstance.tag.name])
+//        redirect(action: "list")
     }
 }

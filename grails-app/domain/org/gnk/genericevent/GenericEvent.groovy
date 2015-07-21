@@ -1,5 +1,7 @@
 package org.gnk.genericevent
 
+import org.gnk.tag.Tag
+
 
 class GenericEvent {
 
@@ -14,12 +16,41 @@ class GenericEvent {
 
 
     static constraints = {
-        title{nullable:false}
+//        title{nullable:false}
         description(nullable:false)
     }
     static mapping = {
-        title type:'text'
         description type:'text'
     }
-    static hasMany = [ genericEventHasTag : GenericEventHasTag ]
+    static hasMany = [ genericEventHasTag : GenericEventHasTag,
+                       genericEventCanImplyGenericEvent : GenericEventCanImplyGenericEvent,
+                       genericEventCanImplyTag : GenericEventCanImplyTag]
+
+
+    public boolean hasTag(Tag tag) {
+        def find = this.genericEventHasTag.find { it.tag.id == tag.id }
+
+        return (find != null)
+    }
+
+    public boolean implyTag(Tag tag) {
+        def find = this.genericEventCanImplyTag.find { it.tag.id == tag.id }
+        return (find != null)
+    }
+
+    public boolean implyGenericEvent(GenericEvent ge) {
+        def find = this.findById(ge.id)
+        return (find != null)
+    }
+
+    public GenericEventHasTag hasTagValue(Tag tag) {
+        def find = this.genericEventHasTag.find { it.tag.id == tag.id }
+
+        return find
+    }
+
+    public GenericEventCanImplyTag implyTagValue(Tag tag) {
+        def find = this.genericEventCanImplyTag.find { it.tag.id == tag.id }
+        return find
+    }
 }
