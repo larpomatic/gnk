@@ -7,7 +7,7 @@
     <thead>
     <tr>
         <th>#</th>
-        <th>description</th>
+        <th>title</th>
         <th>ageMin</th>
         <th>ageMax</th>
 
@@ -27,7 +27,7 @@
     <g:each in="${genericEventInstanceList}" status="i" var="genericEventInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
         <td>${i + 1}</td>
-        <td>${fieldValue(bean: genericEventInstance, field: "description")}</td>
+        <td>${fieldValue(bean: genericEventInstance, field: "title")}</td>
         <td>${fieldValue(bean: genericEventInstance, field: "ageMin")}</td>
         <td>${fieldValue(bean: genericEventInstance, field: "ageMax")}</td>
 

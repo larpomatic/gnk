@@ -88,6 +88,7 @@
                         <tbody>
                         <g:each in="${((Character) character).specificRoles}" var="role">
                             <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
+                                %{--<g:if test="${((Role) role)?.code == "Life" && roleHasPastscenes.title != null && roleHasPastscenes.title != ""}">--}%
                                 <g:if test="${((Role) role)?.code == "Life"}">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
                                         <td>
@@ -127,16 +128,16 @@
 
 </div>
 <div class="form-actions">
-            <div class="form-inline">
+    <div class="form-inline">
 
-<g:form>
-        <div class="span1">
-            <g:hiddenField name="gnId" class="selectedMainstream" value="${gnInstance.id}"/>
+        <g:form method="post" controller="life">
+            <div class="span1">
+                <g:hiddenField name="gnId" value="${gnInstance.id}"/>
 
-            <g:actionSubmit class="btn btn-primary" action="life" controller="life"
-                            value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
-        </div>
-    </g:form>
+                <g:actionSubmit class="btn btn-primary" action="life"
+                                value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+            </div>
+        </g:form>
     %{--<div class="span1">--}%
         <g:form method="post" controller="substitution">
             <g:each in="${characterList}" var="PHJ">

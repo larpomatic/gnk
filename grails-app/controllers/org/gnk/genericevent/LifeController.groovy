@@ -37,51 +37,43 @@ class LifeController {
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
 
+//        boolean activeLife = true;
+//        for (character in gn.characterSet){
+//            for (role in character.specificRoles){
+//                if (role.code == "Life"){
+//                    activeLife = false
+//                    break
+//                }
+//            }
+//            if (!activeLife){
+//                break
+//            }
+//        }
+
+//        if (activeLife)
+        removeLife(gn)
+        addLifeEvents(gn)
+
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "life"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save(flush: true)
-
-        boolean activeLife = true;
-        for (character in gn.characterSet){
-            for (role in character.specificRoles){
-                if (role.code == "Life"){
-                    activeLife = false
-                    break
-                }
-            }
-            if (!activeLife){
-                break
-            }
-        }
-
-//        if (activeLife)
-            addLifeEvents(gn)
 
         [gnInstance: gn,
          characterList: gn.characterSet.sort { it.getDTDId() },
          PHJList: gn.nonPlayerCharSet]
     }
 
-    public void addLifeEvents(Gn gn) {
+    private void addLifeEvents(Gn gn) {
         for (Character character : gn.getCharacterSet()) {
             addLifeEventToCharacter(character, gn)
         }
     }
 
     public void addLifeEventToCharacter(Character character, Gn gn) {
-// Créer un plot
-        /*
-        character.selectedRoles.each { role ->
-            System.out.println("ROLE ("+character.firstname+") : " + role.description);
-            role.roleHasPastscenes.each { ps ->
-                System.out.println("ps - ("+ps.pastscene.timingRelative +"("+ps.pastscene.unitTimingRelative+")"+") - " +ps.pastscene.description);
-            }
-        }
-        */
-        character.getTags().each { t ->
-            System.out.println("t(" + t.key.id + "):" + t.key + " " + t.value)
-        }
+//        character.getTags().each { t ->
+//            System.out.println("t(" + t.key.id + "):" + t.key + " " + t.value)
+//        }
         int dummyInt = 999897
         Plot p = new Plot()
         p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
@@ -109,22 +101,10 @@ class LifeController {
         roleForLife.setDTDId(dummyInt + character.getDTDId())
         roleForLife.roleHasPastscenes = new HashSet<>()
 
-        /*
-            Si c’est l’âge 0, on choisit un GE qui est proche de l’âge 0.
-                    Sinon {
-                        On regarde le GE de (âge - 1 itération) et on va regarder quels GE peuvent être engendré depuis ce GE
-                        Pour tous les GE qu’il est possible d’engendrer {
-                            On choisit le GE qu’on veut. (Voir Etape 2)
-                        }
-                        Si aucun GE ne peut être engendré alors on choisit le GE en fonction de l’Age
-                        (Etape 4.2)
-                    }
-        }*/
-
         int INTERVAL = 5
         int age = 1;
         GenericEvent lastGE = null
-        System.out.println("AGE : " + character.age)
+//        System.out.println("AGE : " + character.age)
         while (age < character.age) {
 
             /* STEP 1 on parcours les events qui existent */
@@ -230,11 +210,11 @@ class LifeController {
 
             age += INTERVAL + (((new Random()).nextInt() % 2))
         }
-        p.roles.each { ps ->
-            ps.roleHasPastscenes.each { rhpsfez ->
-                System.out.print(rhpsfez.pastscene.description + "-" + rhpsfez.description)
-            }
-        }
+//        p.roles.each { ps ->
+//            ps.roleHasPastscenes.each { rhpsfez ->
+//                System.out.print(rhpsfez.pastscene.description + "-" + rhpsfez.description)
+//            }
+//        }
         System.out.print("____")
         character.addRole(roleForLife)
         gn.addPlot(p)
@@ -251,14 +231,7 @@ class LifeController {
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
 
-        for (character in gn.characterSet) {
-            def role = character.specificRoles.iterator()
-            while (role.hasNext()) {
-                if (role.next().code == "Life") {
-                    role.remove()
-                }
-            }
-        }
+        removeLife(gn)
 
         for (Plot plot in gn.selectedPlotSet) {
             if (plot.isEvenemential) {
@@ -270,6 +243,51 @@ class LifeController {
         redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
                                                                             selectedMainstream: mainstreamId as String,
                                                                             selectedEvenemential: evenementialId as String]);
+    }
+
+    private void removeLife(Gn gn) {
+
+        def iterator = gn.selectedPlotSet.iterator()
+        while (iterator.hasNext()) {
+            def next = iterator.next()
+
+            if (next.name == "Life") {
+                iterator.remove()
+            }
+        }
+
+        for (character in gn.characterSet) {
+            def specificRoles = character.specificRoles.iterator()
+            while (specificRoles.hasNext()) {
+                def next = specificRoles.next()
+                if (next.code == "Life") {
+                    specificRoles.remove()
+                }
+            }
+            def bannedRoles = character.bannedRoles.iterator()
+            while (bannedRoles.hasNext()) {
+                def next = bannedRoles.next()
+                if (next.code == "Life") {
+                    bannedRoles.remove()
+                }
+            }
+
+            def selectedRoles = character.selectedRoles.iterator()
+            while (selectedRoles.hasNext()) {
+                def next = selectedRoles.next()
+                if (next.code == "Life") {
+                    selectedRoles.remove()
+                }
+            }
+
+            def lockedRoles = character.lockedRoles.iterator()
+            while (lockedRoles.hasNext()) {
+                def next = lockedRoles.next()
+                if (next.code == "Life") {
+                    lockedRoles.remove()
+                }
+            }
+        }
     }
 
 }
