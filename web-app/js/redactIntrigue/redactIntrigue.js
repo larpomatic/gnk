@@ -448,7 +448,7 @@ function initializePopover() {
         '<button class="btn btn-small btn-primary" data-tag="Pos">Possessif</button></div>' +
         '<div class="specialTag"><button class="btn btn-small btn-primary" data-tag="Per">Perso</button></div>' +
         '<div class="MFfields"><input type="text" placeholder="Masculin"/><input type="text" placeholder="Féminin"/></div>' +
-        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>';
+        '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="none">Aucune</button></div>' +
         '<div class="specialTag"><button class="btn btn-success btn-small none" data-tag="Cont">Contenu</button></div>';
     $('.richTextEditor .label[contenteditable="false"]:not(.label-success)').popover({
         html: 'true',
