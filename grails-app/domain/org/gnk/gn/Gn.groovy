@@ -59,11 +59,14 @@ class Gn {
             "characterSet",
             "nonPlayerCharSet",
             "firstnameSet",
-            "lastnameSet"
+            "lastnameSet",
+            "isSubDate"
     ]
 
     Date t0Date
     String step // selectIntrigue|role2perso|life|substitution|publication
+    Boolean isSubDate
+
     boolean isMainstream // Or parallelized
     int duration // En heure
     int pipMin

@@ -53,6 +53,11 @@ class GnXMLReaderService {
         Node STEPS = GN_INFORMATION.STEPS[0]
         gn.step = STEPS.attribute("last_step_id")
 
+        gn.isSubDate = true
+        String tmp = STEPS.attribute("subDates")
+        if (tmp?.toLowerCase() == "false")
+            gn.isSubDate = false
+
         assert (GN_INFORMATION.PLAYERS.size() == 1)
         Node PLAYERS = GN_INFORMATION.PLAYERS[0]
         if (PLAYERS.attribute("men") != "null")

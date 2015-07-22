@@ -97,7 +97,9 @@ class SelectIntrigueController {
 			gnInstance = Gn.get(id)
 			if ((params.screenStep as Integer) == 1) {
                 new GNKDataContainerService().ReadDTD(gnInstance)
-				HashSet<Plot> bannedPlot = new HashSet<Plot>();
+                gnInstance.isSubDate = false
+
+                HashSet<Plot> bannedPlot = new HashSet<Plot>();
 				HashSet<Plot> lockedPlot = new HashSet<Plot>();
 				params.each {
 					if (it.key.startsWith("plot_status_") && it.value != "3") {
@@ -138,9 +140,12 @@ class SelectIntrigueController {
 				gnInstance.selectedPlotSet = selectedPlotInstanceList;
 				gnInstance.bannedPlotSet = bannedPlot;
 				gnInstance.lockedPlotSet = lockedPlot;
-				gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+                gnInstance.isSubDate = false
+
+                gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
                 gnInstance.step = "selectIntrigue";
-				if (!gnInstance.save(flush: true)) {
+
+                if (!gnInstance.save(flush: true)) {
 					render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
 					return
 				}
@@ -194,6 +199,8 @@ class SelectIntrigueController {
                 String gnDTD = params.gnDTD
                 gnInstance.dtd = gnDTD
                 new GNKDataContainerService().ReadDTD(gnInstance)
+                gnInstance.isSubDate = false
+
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
                 params.each {
@@ -229,7 +236,10 @@ class SelectIntrigueController {
                 }
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
+                gnInstance.isSubDate = false
+
                 gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+
                 if (!gnInstance.save(flush: true)) {
                     render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
                     return
@@ -252,6 +262,7 @@ class SelectIntrigueController {
         gn.step = "selectIntrigue";
         gn.characterSet = null;
         gn.nonPlayerCharSet = null;
+        gn.isSubDate = false
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
         TagService tagService = new TagService();
@@ -448,7 +459,8 @@ class SelectIntrigueController {
 
 		formatParams(gnInstance)
         gnInstance.step = 'selectIntrigue';
-		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+        gnInstance.isSubDate = false
+        gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 		if (!gnInstance.save(flush: true)) {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])
 			return
@@ -514,7 +526,8 @@ class SelectIntrigueController {
         gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
 
         formatParams(gnInstance)
-		gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+        gnInstance.isSubDate = false
+        gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
 		if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
 			render(view: "selectIntrigue", model: [gnInstance: gnInstance])

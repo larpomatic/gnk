@@ -80,8 +80,17 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
+
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+
+        if (gn.isSubDate){
+            params.subDates = true
+        }
+
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "substitution";
+        gn.isSubDate = true
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save(flush: true);
         //RelationshipGraphService graphservice = new RelationshipGraphService();
@@ -173,7 +182,9 @@ class SubstitutionController {
         JSONObject dateJSONObject = request.JSON
 
         IntegrationHandler integrationHandler = new IntegrationHandler()
-        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject)
+        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject, params.subDates as boolean)
+
+        params.subDates = true
 
         render dateJSONObject
     }
