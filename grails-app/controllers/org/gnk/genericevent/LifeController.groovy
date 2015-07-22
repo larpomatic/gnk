@@ -37,20 +37,6 @@ class LifeController {
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
 
-//        boolean activeLife = true;
-//        for (character in gn.characterSet){
-//            for (role in character.specificRoles){
-//                if (role.code == "Life"){
-//                    activeLife = false
-//                    break
-//                }
-//            }
-//            if (!activeLife){
-//                break
-//            }
-//        }
-
-//        if (activeLife)
         removeLife(gn)
         addLifeEvents(gn)
 
