@@ -96,9 +96,9 @@ class GenericResourceXMLWriterService {
     private Element getGenericResourceToRoleElement(Document doc, GenericResource genericResource) {
         Element toRoleElt = doc.createElement("TOROLE")
 
-        if (genericResource.toRole) {
+        if (genericResource.toRoleText) {
             CDATASection toRoleData = doc.createCDATASection("TOROLE")
-            toRoleData.setData(genericResource.toRole.getId() as String)
+            toRoleData.setData(genericResource.toRoleText)
             toRoleElt.appendChild(toRoleData)
         }
 
@@ -118,9 +118,9 @@ class GenericResourceXMLWriterService {
     private Element getGenericResourceFromRoleElement(Document doc, GenericResource genericResource) {
         Element fromRoleElt = doc.createElement("FROMROLE")
 
-        if (genericResource.fromRole) {
+        if (genericResource.fromRoleText) {
             CDATASection fromRoleData = doc.createCDATASection("FROMROLE")
-            fromRoleData.setData(genericResource.fromRole.getId() as String)
+            fromRoleData.setData(genericResource.fromRoleText)
             fromRoleElt.appendChild(fromRoleData)
         }
 

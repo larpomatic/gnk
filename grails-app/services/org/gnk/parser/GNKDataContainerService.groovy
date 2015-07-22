@@ -232,6 +232,7 @@ class GNKDataContainerService {
     {
         Place placeCopy = new Place();
 
+        placeCopy.setId(placeToCopy.getId());
         placeCopy.setDescription(placeToCopy.getDescription());
         placeCopy.setGender(placeToCopy.getGender());
         placeCopy.setName(placeToCopy.getName());

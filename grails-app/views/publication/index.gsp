@@ -7,7 +7,6 @@
     <title><g:message code="navbar.publication" /></title>
 </head>
 <body>
-
 <br><br>
 <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
 <div class="row-fluid" id="hidTest">
@@ -42,12 +41,11 @@
     </g:each>
 <br><br>
         <FORM>
-            <INPUT type="checkbox" id="IncludeGraphRelation" value="true"> Inclure les graphes relationnels "Vous connaissez...
+            <INPUT type="checkbox" id="IncludeGraphRelation" value="false"> Inclure les graphes relationnels "Vous connaissez...
         </FORM>
-    <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div><div id="pubAlertContainer">
 </div>
-<div class="row-fluid" id="RelationGraphContainer" style="none">
+<div class="row-fluid" id="RelationGraphContainer" style="display: none">
     <div class="span12" id="Relations">
         <div class="panel panel-default">
             <div style="overflow: auto; height:500px" id="container">
@@ -137,6 +135,7 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('relationGraphLoader').style.display = "";
             document.getElementById("WordButtonPublication").disabled = true;
             document.getElementById("IncludeGraphRelation").disabled = true;
+
             initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
             document.getElementById("imgsrc").value = null;

@@ -37,6 +37,7 @@ class SubstitutionPlaceXMLReaderService {
                         if (place.genericPlace != null) {
                             //if we need to associate another genericPlace to a place that already has one, we create a copy of this place on work on it
                             place = dataContainer.copyAndAddPlaceToPlaceMap(place);
+                            place.genericPlace = genericPlace
                             genericPlace.selectedPlace = place
                         } else {
                             place.genericPlace = genericPlace
