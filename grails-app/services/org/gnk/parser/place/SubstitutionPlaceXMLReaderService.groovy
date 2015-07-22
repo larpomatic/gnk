@@ -13,6 +13,7 @@ class SubstitutionPlaceXMLReaderService {
 
         Place place;
         GenericPlace genericPlace;
+        ArrayList<GenericPlace> processedGenericPlaces = new ArrayList<GenericPlace>();
 
         PLACES.each { genericPlaceNode ->
             Integer genericPlaceId = genericPlaceNode.attribute("generic_place_id") as Integer
@@ -25,7 +26,8 @@ class SubstitutionPlaceXMLReaderService {
             if (genericPlace == null)
                 log.error("genericPlace is null (id : " + genericPlaceNode.attribute("generic_place_id") + ")")
             assert (genericPlace != null)
-            if (genericPlace != null)
+            //if genericPlace is not null and if this genericPlace has not been processed yet
+            if (genericPlace != null && !processedGenericPlaces.contains(genericPlace)) {
                 genericPlaceNode.each { placeNode ->
 
                     String placeStatus = placeNode.attribute("status") as String
@@ -54,6 +56,10 @@ class SubstitutionPlaceXMLReaderService {
                     }
 
                 }
+                //we processed the genericPlace so we add it to the list
+                processedGenericPlaces.add(genericPlace);
+
+            }
         }
     }
 }
