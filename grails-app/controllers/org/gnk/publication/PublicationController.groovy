@@ -3,6 +3,8 @@ package org.gnk.publication
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
 import org.docx4j.convert.out.pdf.PdfConversion
+import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -203,6 +205,10 @@ class PublicationController {
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
         response.outputStream << output.newInputStream()
+
+
+
+
     }
 
     // Méthode principale de la génération des documents

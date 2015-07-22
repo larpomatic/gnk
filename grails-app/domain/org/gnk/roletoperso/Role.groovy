@@ -216,4 +216,22 @@ class Role implements Comparable {
         }
         return roleHasPastscenes.first();
     }
+
+    public Map<Tag,Integer> getRoleTags(){
+        Map<Tag, Integer> tagMap = new HashMap<Tag, Integer>()
+        List<Tag> tag_101 = new ArrayList<Tag>()
+        List<Tag> tag_m101 = new ArrayList<>()
+        for (RoleHasTag roleHasTag : this.getRoleHasTags()) {
+            final Tag tag = roleHasTag.getTag()
+            Integer weight = roleHasTag.getWeight() * (isPJ() ? roleHasTag.getRole().getPIPTotal() : 99)
+            if (weight == TagService.LOCKED)
+                tag_101.add(tag)
+            if (weight == TagService.BANNED)
+                tag_m101.add(tag)
+            if (tagMap.containsKey(tag)) {
+                weight += tagMap.get(tag)
+            }
+            tagMap.put(tag, weight)
+        }
+    }
 }

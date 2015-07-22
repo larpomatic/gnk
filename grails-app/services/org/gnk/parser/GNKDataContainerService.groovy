@@ -227,6 +227,25 @@ class GNKDataContainerService {
         return null
     }
 
+    //copies a place, adds the copy to the placeMap and returns the copy
+    public Place copyAndAddPlaceToPlaceMap(Place placeToCopy)
+    {
+        Place placeCopy = new Place();
+
+        placeCopy.setId(placeToCopy.getId());
+        placeCopy.setDescription(placeToCopy.getDescription());
+        placeCopy.setGender(placeToCopy.getGender());
+        placeCopy.setName(placeToCopy.getName());
+        placeCopy.setDateCreated(placeToCopy.getDateCreated());
+        placeCopy.setDTDId(placeToCopy.getDTDId());
+
+        placeMap.put(placeMap.size(), placeCopy);
+
+        return placeCopy;
+
+    }
+
+
     /* Data preparation */
 
     private void readPlots(Node GN_DATA) {

@@ -34,8 +34,15 @@ class SubstitutionPlaceXMLReaderService {
                     assert (place != null)
 
                     if (placeStatus.equals(selectedStatus)) {
-                        place.genericPlace = genericPlace
-                        genericPlace.selectedPlace = place
+                        if (place.genericPlace != null) {
+                            //if we need to associate another genericPlace to a place that already has one, we create a copy of this place on work on it
+                            place = dataContainer.copyAndAddPlaceToPlaceMap(place);
+                            place.genericPlace = genericPlace
+                            genericPlace.selectedPlace = place
+                        } else {
+                            place.genericPlace = genericPlace
+                            genericPlace.selectedPlace = place
+                        }
                     } else if (placeStatus.equals("proposed")) {
                         if (genericPlace.proposedPlaces == null)
                             genericPlace.proposedPlaces = new ArrayList<Place>()
