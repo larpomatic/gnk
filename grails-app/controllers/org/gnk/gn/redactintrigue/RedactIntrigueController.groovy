@@ -268,7 +268,7 @@ class RedactIntrigueController {
         return wordWriter.wordMLPackage
     }
     def String createSubTile(Plot plot) {
-        String subtitle = "Version " + ((plot.version < 10) ? "0." + plot.version : plot.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + plot.version.toString().subSequence(plot.version.toString().size() - 1, plot.version.toString().size())) + " updatée le "
+        String subtitle = "Version " + ((plot.version < 10) ? "0." + plot.version : plot.version.toString().subSequence(0, gn.version.toString().size() - 1) + "." + plot.version.toString().subSequence(plot.version.toString().size() - 1, plot.version.toString().size())) + " update le "
         subtitle += plot.lastUpdated
         subtitle += " par : " + plot.getUser().lastname + " " + plot.getUser().firstname
         return subtitle
@@ -314,7 +314,7 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T3", "Pitch Joueur")
         wordWriter.addStyledParagraphOfText("Normal", plot.pitchPj)
 
-        wordWriter.addStyledParagraphOfText("T3", "Pitch personnahe non joueur")
+        wordWriter.addStyledParagraphOfText("T3", "Pitch Personnage non joueur")
         wordWriter.addStyledParagraphOfText("Normal", plot.pitchPnj)
     }
 

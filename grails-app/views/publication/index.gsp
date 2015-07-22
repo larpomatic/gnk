@@ -7,7 +7,6 @@
     <title><g:message code="navbar.publication" /></title>
 </head>
 <body>
-<g:javascript src="publication/PDFCreation.js"/>
 <br><br>
 <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
 <div class="row-fluid" id="hidTest">
@@ -136,7 +135,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('relationGraphLoader').style.display = "";
             document.getElementById("WordButtonPublication").disabled = true;
             document.getElementById("IncludeGraphRelation").disabled = true;
-            document.getElementById("PDFButtonPublication").disabled = true;
 
             initGraph("relationjson", "infovis", "0"); // TODO : virer le loader une fois finit
         } else {
@@ -145,7 +143,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             document.getElementById('relationGraphLoader').style.display ="none";
             document.getElementById("WordButtonPublication").disabled = false;
             document.getElementById("IncludeGraphRelation").disabled = false;
-            document.getElementById("PDFButtonPublication").disabled = false;
         }
     });
 </script>
