@@ -119,13 +119,58 @@ class SubstitutionPublication {
                     case "FP" : return "les " + replacement
                 }
                 break
-            case "POS" :
+            case "POSM" :
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
                     case "F" : return "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
+                }
+                break
+            case "POSS" :
+                switch (gender) {
+                    case "" : return "son " + replacement
+                    case "M" : return "son " + replacement
+                    case "F" : return "sa " + replacement
+                    case "MP" : return "ses " + replacement
+                    case "FP" : return "ses " + replacement
+                }
+                break
+            case "POSN" :
+                switch (gender) {
+                    case "" : return "notre " + replacement
+                    case "M" : return "notre " + replacement
+                    case "F" : return "notre " + replacement
+                    case "MP" : return "nos " + replacement
+                    case "FP" : return "nos " + replacement
+                }
+                break
+            case "POSV" :
+                switch (gender) {
+                    case "" : return "votre " + replacement
+                    case "M" : return "votre " + replacement
+                    case "F" : return "votre " + replacement
+                    case "MP" : return "vos " + replacement
+                    case "FP" : return "vos " + replacement
+                }
+                break
+            case "POSL" :
+                switch (gender) {
+                    case "" : return "leur " + replacement
+                    case "M" : return "leur " + replacement
+                    case "F" : return "leur " + replacement
+                    case "MP" : return "leurs " + replacement
+                    case "FP" : return "leurs " + replacement
                 }
                 break
             case "NOM" :
@@ -221,13 +266,58 @@ class SubstitutionPublication {
                     case "FP" : return "les " + replacement
                 }
                 break
-            case "POS" :
+            case "POSM" :
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
                     case "F" : return "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
+                }
+                break
+            case "POSS" :
+                switch (gender) {
+                    case "" : return "son " + replacement
+                    case "M" : return "son " + replacement
+                    case "F" : return "sa " + replacement
+                    case "MP" : return "ses " + replacement
+                    case "FP" : return "ses " + replacement
+                }
+                break
+            case "POSN" :
+                switch (gender) {
+                    case "" : return "notre " + replacement
+                    case "M" : return "notre " + replacement
+                    case "F" : return "notre " + replacement
+                    case "MP" : return "nos " + replacement
+                    case "FP" : return "nos " + replacement
+                }
+                break
+            case "POSV" :
+                switch (gender) {
+                    case "" : return "votre " + replacement
+                    case "M" : return "votre " + replacement
+                    case "F" : return "votre " + replacement
+                    case "MP" : return "vos " + replacement
+                    case "FP" : return "vos " + replacement
+                }
+                break
+            case "POSL" :
+                switch (gender) {
+                    case "" : return "leur " + replacement
+                    case "M" : return "leur " + replacement
+                    case "F" : return "leur " + replacement
+                    case "MP" : return "leurs " + replacement
+                    case "FP" : return "leurs " + replacement
                 }
                 break
             case "NOM" :

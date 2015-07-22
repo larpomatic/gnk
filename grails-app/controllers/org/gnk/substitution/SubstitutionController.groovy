@@ -30,7 +30,12 @@ class SubstitutionController {
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "role2perso";
+
+        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+            gn.step = "life";
+        else
+            gn.step = "role2perso";
+
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
         Integer evenementialId = 0;
@@ -42,9 +47,12 @@ class SubstitutionController {
                 mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
-                selectedMainstream: mainstreamId as String,
-                selectedEvenemential: evenementialId as String]);
+        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+            redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
+        else
+            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
+                                                                                selectedMainstream: mainstreamId as String,
+                                                                                selectedEvenemential: evenementialId as String]);
     }
 
     def index() {

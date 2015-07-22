@@ -63,7 +63,7 @@ class Gn {
     ]
 
     Date t0Date
-    String step // selectIntrigue|role2perso|substitution|publication
+    String step // selectIntrigue|role2perso|life|substitution|publication
     boolean isMainstream // Or parallelized
     int duration // En heure
     int pipMin

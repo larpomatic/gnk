@@ -61,6 +61,9 @@ class SelectIntrigueController {
                     selectedMainstream: mainstreamId as String,
                     selectedEvenemential: evenementialId as String]);
         }
+            else if (step == "life"){
+            redirect(controller: 'life', action:'life', params: [gnId: id as String]);
+        }
         else if (step == "substitution") {
             List<String> sexes = new ArrayList<>();
             for (org.gnk.roletoperso.Character character in gn.characterSet) {

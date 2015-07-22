@@ -3,6 +3,8 @@
         <input type="hidden" name="id" value="{{ genericResource.id }}"/>
         <input type="hidden" name="plotId" id="plotId" value="{{ genericResource.plotId }}"/>
         <input type="hidden" name="resourceComment" class="commentContent" value=""/>
+        <input type="hidden" name="resourceRoleFrom" class="fromRoleTextContent" value=""/>
+        <input type="hidden" name="resourceRoleTo" class="toRoleTextContent" value=""/>
         <input type="hidden" name="resourceDescription" class="descriptionContent" value=""/>
 
         <div style="margin:auto">
@@ -136,30 +138,79 @@
                     </div>
                 </div>
 
+            <!--{{#if genericResource.clue}}-->
+                <!--<div class="row formRow clueRow">-->
+            <!--{{else}}-->
+                <!--<div class="row formRow clueRow hidden">-->
+            <!--{{/if}}-->
+                    <!--<div class="span1">-->
+                        <!--<label for="resourceRoleFrom">-->
+                            <!--Du rôle-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="span4">-->
+                        <!--<select name="resourceRoleFrom" id="resourceRoleFrom">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <!--<div class="span1">-->
+                        <!--<label for="resourceRoleTo">-->
+                            <!--Pour le rôle-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="span4">-->
+                        <!--<select name="resourceRoleTo" id="resourceRoleTo">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            // resource clue from role
             {{#if genericResource.clue}}
-                <div class="row formRow clueRow">
+            <div class="row formRow text-center clueRow">
             {{else}}
-                <div class="row formRow clueRow hidden">
+            <div class="row formRow text-center clueRow hidden">
             {{/if}}
-                    <div class="span1">
-                        <label for="resourceRoleFrom">
-                            Du rôle
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <select name="resourceRoleFrom" id="resourceRoleFrom">
-                        </select>
-                    </div>
-                    <div class="span1">
-                        <label for="resourceRoleTo">
-                            Pour le rôle
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <select name="resourceRoleTo" id="resourceRoleTo">
-                        </select>
-                    </div>
-                </div>
+
+            <label for="resourceRoleFrom">
+                Role from
+            </label>
+        </div>
+
+            {{#if genericResource.clue}}
+            <div class="fullScreenEditable clueRow">
+            {{else}}
+            <div class="fullScreenEditable clueRow hidden">
+            {{/if}}
+
+            <!-- Editor -->
+            <div id="clueRichTextEditor1" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                {{ encodeAsHtml genericResource.fromRoleText }}
+            </div>
+        </div>
+
+            // resource clue to role
+            {{#if genericResource.clue}}
+            <div class="row formRow text-center clueRow">
+            {{else}}
+            <div class="row formRow text-center clueRow hidden">
+            {{/if}}
+
+            <label for="resourceRoleTo">
+                Role to
+            </label>
+        </div>
+
+            {{#if genericResource.clue}}
+            <div class="fullScreenEditable clueRow">
+            {{else}}
+            <div class="fullScreenEditable clueRow hidden">
+            {{/if}}
+
+            <!-- Editor -->
+            <div id="clueRichTextEditor2" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
+                {{ encodeAsHtml genericResource.toRoleText }}
+            </div>
+        </div>
+            //
 
             {{#if genericResource.clue}}
                 <div class="row formRow text-center clueRow">

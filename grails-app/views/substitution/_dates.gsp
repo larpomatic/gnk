@@ -46,7 +46,7 @@
             <!-- Type -->
             <th>Événement</th>
             <!-- Code - modal button -->
-            <td style="display: none"><a href="#modalEve${i + 1}" role="button" class="btn"  data-toggle="modal">EVE-${event.id.encodeAsHTML()}_${event.plotId.encodeAsHTML()}</a></td>
+            <td style="display: none"><a SDWhref="#modalEve${i + 1}" role="button" class="btn"  data-toggle="modal">EVE-${event.id.encodeAsHTML()}_${event.plotId.encodeAsHTML()}</a></td>
             <!-- Title -->
             <td>${event.title.encodeAsHTML()}</td>
             <!-- Plot -->
