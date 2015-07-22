@@ -201,24 +201,10 @@ class PublicationController {
         wordWriter.wordMLPackage = createPublication(jsoncharlist, fileName)
         wordWriter.wordMLPackage.save(output)
 
-        if (params.get("export_pdf").equals("true")){
-            PdfConversion c = new Conversion(wordWriter.wordMLPackage)
-            c.setSaveFO(output)
-            c.output(response.outputStream, new PdfSettings())
-//            response.setContentType("application/pdf")
-//            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.pdf")
-            response.setHeader("Pragma", "no-cache")
-            response.setHeader("Cache-control", "private")
-            response.setDateHeader("Expires", 0)
-            response.setContentType("application/pdf")
-            response.setHeader("Content-Disposition", "filename=\"test.pdf\"")
-            response.outputStream << output.newInputStream()
-        }
-        else{
-            response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
-            response.outputStream << output.newInputStream()
-        }
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
+        response.outputStream << output.newInputStream()
+
 
 
 

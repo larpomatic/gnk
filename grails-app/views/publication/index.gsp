@@ -16,7 +16,6 @@
             <input type="hidden" value="${gnId}" name="gnId"/>
             <input id="templateWordSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
             <input id="imgsrc" type="hidden" value="" name="imgsrc"/>
-            <input id="pdfbuttonword" type="hidden" value="false" name="export_pdf"/>
             <input id="jsoncharlist" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
             <button id="WordButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en fichier Word</button>
             <INPUT type="checkbox" id="IncludeInterpretationAdvice" name="IncludeInterpretationAdvice" value="false"/> Inclure les conseils d'interprétation
@@ -45,19 +44,6 @@
         <FORM>
             <INPUT type="checkbox" id="IncludeGraphRelation" value="false"> Inclure les graphes relationnels "Vous connaissez...
         </FORM>
-    <div class="row-fluid" id="hidTest">
-        <div class="span4">
-            <form id="exportPDFButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
-                <input type="hidden" value="${gnId}" name="gnId"/>
-                <input id="templatePDFSelect" type="hidden" value="${universName}" name="templateWordSelect"/>
-                <input id="imgsrcpdf" type="hidden" value="" name="imgsrc"/>
-                <input id="pdfbuttonpdf" type="hidden" value="true" name="export_pdf"/>
-                <input id="jsoncharlistpdf" type="hidden" value="${jsoncharlist}" name="jsoncharlist"/>
-                <input id="IncludeInterpretationAdvice_pdf" type="hidden" value="" name="IncludeInterpretationAdvice"/>
-                <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en PDF</button>
-            </form>
-        </div>
-    <div class="span1" id="relationGraphLoader" style="display: none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
 </div><div id="pubAlertContainer">
 </div>
 <div class="row-fluid" id="RelationGraphContainer" style="display: none">
