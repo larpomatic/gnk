@@ -501,14 +501,18 @@ function initializePopover() {
         else {
             element = $(this);
             $('#persoMF').hide();
-            $('.popover select').removeClass("btn-success").addClass("btn-primary");
-            $('.popover select').val($(element).attr("data-tag"));
-            $('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
+            if ($(element).attr("data-tag").match("M#(.*);F#(.*);")) {
+                $('.popover select').val("Per");
+            } else {
+                $('.popover select').val($(element).attr("data-tag"));
+            }
+            $('.popover option').removeClass("btn-info");
+            $('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-info");
             //$('.popover option[data-tag="' + $(element).attr("data-tag") + '"]').addClass("btn-success");
-            if ($('.popover option.btn-success').size() == 0) {
+            if ($('.popover option.btn-info').size() == 0) {
                 $('.popover select').val('Per');
                 $('#persoMF').show();
-                $('.popover option[data-tag="Per"]').addClass('btn-success').removeClass("btn-primary");
+                $('.popover option[data-tag="Per"]').addClass('btn-info');
                 var tag = $(element).attr("data-tag");
                 var maleName = tag.match("M#(.*);F#");
                 var femaleName = tag.match("F#(.*);");
@@ -523,8 +527,8 @@ function initializePopover() {
                 $(element).attr("data-tag", $(this).attr("data-tag"));
             })
             $('.popover option').click(function() {
-                $("option", $(this).closest(".popover-content")).removeClass("btn-success").addClass("btn-primary");
-                $(this).removeClass("btn-primary").addClass("btn-success");
+                $("option", $(this).closest(".popover-content")).removeClass("btn-info");
+                $(this).addClass("btn-info");
                 $(element).attr("data-tag", $(this).attr("data-tag"));
             });
         }
