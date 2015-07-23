@@ -13,7 +13,7 @@
 <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Life list</h2>
+        <h2>Life liste</h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />

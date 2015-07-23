@@ -5,7 +5,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: genericEventInstance, field: 'title', 'error')} required">
     <label for="title">
-        <g:message code="genericEvent.title.label" default="Title" />
+        <g:message code="genericEvent.title.label" default="Titre" />
         <span class="required-indicator">*</span>
     </label>
     <g:textField name="title" value="${genericEventInstance?.title}" required=""/>
@@ -21,7 +21,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: genericEventInstance, field: 'ageMin', 'error')} required">
     <label for="ageMin">
-        <g:message code="genericEvent.ageMin.label" default="Age Min" />
+        <g:message code="genericEvent.ageMin.label" default="Age mininimum" />
         <span class="required-indicator">*</span>
     </label>
     <g:field name="ageMin" type="number" value="${genericEventInstance.ageMin}" required=""/>
@@ -29,7 +29,7 @@
 
 <div class="fieldcontain ${hasErrors(bean: genericEventInstance, field: 'ageMax', 'error')} required">
     <label for="ageMax">
-        <g:message code="genericEvent.ageMax.label" default="Age Max" />
+        <g:message code="genericEvent.ageMax.label" default="Age maximum" />
         <span class="required-indicator">*</span>
     </label>
     <g:field name="ageMax" type="number" value="${genericEventInstance.ageMax}" required=""/>
@@ -39,9 +39,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Generic event has tag
+            Tag de l'intrigue
             <a href="#tagsModalHasTag" class="btn" data-toggle="modal">
-                Chooses tags
+                Choix des tags
             </a>
         </h3>
 
@@ -50,7 +50,7 @@
         <table id="listTableGenericEventHasTag" class="table table-bordered">
             <thead>
             <tr>
-                <th>Tag</th>
+                <th>Tags</th>
             </tr>
 
             </thead>
@@ -83,9 +83,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Generic event has tag
+            L'intrigue implique des tags
             <a href="#tagsModalImplyTag" class="btn" data-toggle="modal">
-                Chooses tags
+                Choix des tags
             </a>
         </h3>
 
@@ -94,7 +94,7 @@
         <table id="listTableGenericEventImplyTag" class="table table-bordered">
             <thead>
             <tr>
-                <th>Tag</th>
+                <th>Tags</th>
             </tr>
 
             </thead>
@@ -128,9 +128,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Generic event has tag
+            L'intrigue necessite d'autre intrigue
             <a href="#tagsModalImplyGenericEvent" class="btn" data-toggle="modal">
-                Chooses tags
+                Choix des tegs
             </a>
         </h3>
 
@@ -139,7 +139,7 @@
         <table id="listTableGenericEventImplyGenericEvent" class="table table-bordered">
             <thead>
             <tr>
-                <th>Tag</th>
+                <th>Tags</th>
             </tr>
 
             </thead>

@@ -1,22 +1,22 @@
 <%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des generics events existants</legend>
+<legend>Liste des intrigues génériques existantes</legend>
 
 <table id="listTable" class="table table-bordered">
     <thead>
     <tr>
         <th>#</th>
-        <th>title</th>
-        <th>ageMin</th>
-        <th>ageMax</th>
+        <th>Titre</th>
+        <th>Age minimum</th>
+        <th>Age maximum</th>
 
-        <g:hasRights lvlright="${right.REFMODIFY.value()}"><th>Edit</th></g:hasRights>
+        <g:hasRights lvlright="${right.REFMODIFY.value()}"><th>Edition</th></g:hasRights>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <g:hasRights lvlright="${right.REFDELETE.value()}">
                 <th>
                     %{--<g:message code="default.delete"/>--}%
-                    Delete
+                    Suprimmer
                 </th>
             </g:hasRights>
         </g:hasRights>
