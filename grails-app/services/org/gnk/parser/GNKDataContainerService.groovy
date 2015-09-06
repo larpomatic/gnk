@@ -239,7 +239,7 @@ class GNKDataContainerService {
         placeCopy.setDateCreated(placeToCopy.getDateCreated());
         placeCopy.setDTDId(placeToCopy.getDTDId());
 
-        placeMap.put(placeMap.size(), placeCopy);
+        placeMap.put(placeMap.size() + 1, placeCopy);
 
         return placeCopy;
 
