@@ -46,10 +46,12 @@ class GenericPlaceController {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
         System.out.println("toto");
 
-        /*String univer_name = params.get("univerTag");
+        //String univer_name = params.get("univerTag");
 
-        if (univer_name == null || univer_name == "")
-            return;*/
+        //if (univer_name == null || univer_name == "")
+            //return;
+
+
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
             if (it.key.startsWith("placeTags_")) {
@@ -65,15 +67,16 @@ class GenericPlaceController {
         }
         genericplace.setTagList(tags);
 
-        def univers = Univers.list();
-        System.out.println(univers.size);
-        //for (int i = 0; i < univers.size() ; i++) {
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        def universList = Tag.findAllByParent(tagUnivers);
+        System.out.println(universList);
 
-
-            genericplace = placeService.findReferentialPlace(genericplace, univer_name);
+        for (int i = 0; i < universList.size() ; i++) {
+            genericplace = placeService.findReferentialPlace(genericplace, universList[i] as String);
             genericplace.resultList;
             String result = "";
-       // }
+        }
         int i = 0;
 
         JSONObject object = new JSONObject();
@@ -85,11 +88,15 @@ class GenericPlaceController {
                 object.put("val", refe.name);
             }
         }
-        if (result != "")
-            result = result.substring(0, result.length() - 1);
-        object.put("value", result);
+        System.out.println("titi");
+        //if (result != "")
+        //    result = result.substring(0, result.length() - 1);
+        //object.put("value", result);
+
+        JSONObject object_empty = new JSONObject();
+        //remplir le JSON Object
         render(contentType: "application/json") {
-            object;
+            object_empty;
         }
     }
 

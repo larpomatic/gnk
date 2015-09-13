@@ -1,4 +1,6 @@
 <div class="tabbable tabs-left placeScreen">
+    <input class="hidden" id="urlBestPlace" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" value="">
+
 <ul class="nav nav-tabs leftUl">
     <li class="active leftMenuList">
         <a href="#newPlace" data-toggle="tab" class="addPlace">
@@ -48,7 +50,7 @@
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
                     <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                 </a>
-                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
+                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>"/><i class="btnBestPlace img-circle" ></i></button>
             </div>
         </div>
 

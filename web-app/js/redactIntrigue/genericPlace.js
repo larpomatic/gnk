@@ -192,6 +192,7 @@ function createNewGenericPlacePanel(data) {
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];
+    alert("coucou" + url);
     var context = {
         genericPlace: data.genericPlace,
         genericPlaceTagList: data.genericPlaceTagList
@@ -232,24 +233,34 @@ function getBestPlace()
         //$('#selectUnivers').data('form', 'newPlaceForm');
 
     $('#newbestPlace').click(function() {
-        var status = $(this).data('status');
-        var url = '@Url.Action("GenericPlaceController", "getBestPlaces")' ;//$(this).data('url');
-        /*var form_name = $(this).data('form');
+        var url = $(this).data('url');
+        var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
-        var input = $("<input>")
+        /*var input = $("<input>")
             .attr("type", "hidden")
             .attr("name", "univerTag").val($(this).val());
         form.append(input);*/
 
         $('.placeLoader').css('display', '');
 
+
+    });
+
+    $('.bestPlace').click(function() {
+
+        var url = $('#urlBestPlace').data('url');
+        var form_name = $(this).data('form');
+        alert("JS" + url + "**" + form_name);
+        var form = $('form[name=' + form_name + ']');
+
         $.ajax({
             type: "POST",
             url: url,
-            data: "",
+            data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                var array = data.value.split('#');
+                alert("good");
+               /* var array = data.value.split('#');
                 var cont = $('#listContainer');
                 $('.bestRow').remove();
                 $('.myselect').remove();
@@ -270,21 +281,12 @@ function getBestPlace()
                     var cont = $('#modalBestPlace');
                     cont.append(label);
                 }
-                $('.placeLoader').css('display', 'none');
+                $('.placeLoader').css('display', 'none');*/
             },
             error: function() {
                 $('.placeLoader').css('display', 'none');
                 createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })
-    });
-
-    $('.bestPlace').click(function() {
-        $('#selectUnivers').data('status', 'update');
-        $('.bestRow').remove();
-        $('.myselect').remove();
-        $('#selectUnivers').prop('selectedIndex',0);
-        var form_name = $(this).data('form');
-        $('#selectUnivers').data('form', form_name);
     });
 }
