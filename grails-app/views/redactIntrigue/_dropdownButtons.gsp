@@ -27,7 +27,6 @@
     <ul class="dropdown-menu placeSelector">
         <li data-id="0">
             <a class="buttonRichTextEditor btn-warning">
-                <!-- FIXME : FAIRE REFERENCE A UNE VARIABLE POUR LIEU GN (plutôt que code en dur)!-->
                 GN-Lieu
             </a>
         </li>
