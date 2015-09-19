@@ -114,7 +114,7 @@ function initSpanLabel(element) {
         $(this).html(description);
     });
 }
-
+//WATATA
 //insert html span into textEditors
 function initSpanCreation() {
     $(".buttonRichTextEditor").unbind('click');
@@ -128,6 +128,9 @@ function initSpanCreation() {
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
             pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("button").hasClass("dateGnButton")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         initializePopover();
         return false;
