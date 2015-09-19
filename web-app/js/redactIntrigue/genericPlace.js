@@ -7,6 +7,7 @@ $(function () {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -14,6 +15,17 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 if (data.iscreate) {
+                    var mandatoryTagFound = false;
+                    for (var key in data.genericPlace.tagList) {
+                        if ((data.genericPlace.tagList[key].id >= '501' && data.genericPlace.tagList[key].id <= '510')
+                            && (data.genericPlace.tagList[key].id != '505')) {
+                            mandatoryTagFound = true;
+                        }
+                    }
+                    if (false == mandatoryTagFound) {
+                        createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+                        return;
+                    }
                     createNotification("success", "Création réussie.", "Votre lieu a bien été ajouté.");
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericPlace'];
                     var context = {

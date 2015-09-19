@@ -31,6 +31,34 @@ $(function(){
             dataType: "json",
             success: function(data) {
                 if (data.iscreate) {
+
+                    var mandatoryTagFound = false;
+                    for (var key in data.genericResource.tagList) {
+                        for (var i in data.genericResourceTagList) {
+                            if (data.genericResourceTagList[i].id == '33104') {
+                                for (var j in data.genericResourceTagList[i].children) {
+                                    if (data.genericResourceTagList[i].children[j].id == '33096') {
+                                        for (var k in data.genericResourceTagList[i].children[j].children) {
+                                            if (data.genericResourceTagList[i].children[j].children[k].id == data.genericResource.tagList[key].id) {
+                                                mandatoryTagFound = true;
+                                            } else if (data.genericResourceTagList[i].children[j].children[k].children) {
+                                                for (var l in data.genericResourceTagList[i].children[j].children[k].children) {
+                                                    if (data.genericResourceTagList[i].children[j].children[k].children[l].id == data.genericResource.tagList[key].id) {
+                                                        mandatoryTagFound = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (false == mandatoryTagFound) {
+                        createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Type Ressource'");
+                        return;
+                    }
+
                     createNotification("success", "Création réussie.", "Votre ressource a bien été ajouté.");
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericResource'];
                     var context = {
