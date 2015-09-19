@@ -114,7 +114,7 @@ function initSpanLabel(element) {
         $(this).html(description);
     });
 }
-//WATATA
+
 //insert html span into textEditors
 function initSpanCreation() {
     $(".buttonRichTextEditor").unbind('click');
@@ -123,13 +123,16 @@ function initSpanCreation() {
         if ($(this).closest("ul").hasClass("roleSelector")) {
             pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
+        else if ($(this).closest("a").hasClass("gnPlaceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
             pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
             pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
-        else if ($(this).closest("button").hasClass("dateGnButton")) {
+        else if ($(this).closest("button").hasClass("gnDateButton")) {
             pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         initializePopover();

@@ -25,8 +25,8 @@
         Lieu <span class="caret"></span>
     </button>
     <ul class="dropdown-menu placeSelector">
-        <li data-id="0">
-            <a class="buttonRichTextEditor btn-warning">
+        <li data-id="0" class="gnPlaceSelector">
+            <a class="buttonRichTextEditor btn-info gnPlaceSelector">
                 GN-Lieu
             </a>
         </li>
