@@ -66,7 +66,7 @@
 </div>
 
 <div class="btn-group">
-    <button type="button" class="btn btn-info dateGnButton buttonRichTextEditor" >
+    <button type="button" class="btn btn-info gnDateButton buttonRichTextEditor" >
         GN-Date
     </button>
 

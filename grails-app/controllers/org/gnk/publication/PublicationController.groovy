@@ -785,8 +785,7 @@ class PublicationController {
                 }
             }
 
-            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
-
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
             re.comment = substitutionPublication.replaceAll(re.comment)
 
     }
@@ -870,7 +869,7 @@ class PublicationController {
             }
         }
 
-        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
         e.description = substitutionPublication.replaceAll(e.description)
         e.name = substitutionPublication.replaceAll(e.name)
@@ -1344,7 +1343,7 @@ class PublicationController {
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(e.plot.DTDId))
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                    substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
                     if (e.name)
                         e.name = substitutionPublication.replaceAll(e.name)
                     events.put(e.timing, e)
@@ -1546,7 +1545,7 @@ class PublicationController {
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(genericResource.plot.DTDId))
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
                 // Fin construction du substitutionPublication
 
                 genericResource.fromRoleText = substitutionPublication.replaceAll(genericResource.fromRoleText)
@@ -1681,7 +1680,7 @@ class PublicationController {
             }
         }
 
-        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
         for (Role r : p.roles) {
             r.description = substitutionPublication.replaceAll(r.description)
@@ -1807,7 +1806,7 @@ class PublicationController {
                     }
                 }
 
-                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
                 if (e.name)
                     e.name = substitutionPublication.replaceAll(e.name)
