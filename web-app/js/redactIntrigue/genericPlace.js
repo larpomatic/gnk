@@ -7,6 +7,21 @@ $(function () {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["501", "502", "503", "504", "506", "507", "508", "509", "510"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("placeTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -15,17 +30,6 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 if (data.iscreate) {
-                    var mandatoryTagFound = false;
-                    for (var key in data.genericPlace.tagList) {
-                        if ((data.genericPlace.tagList[key].id >= '501' && data.genericPlace.tagList[key].id <= '510')
-                            && (data.genericPlace.tagList[key].id != '505')) {
-                            mandatoryTagFound = true;
-                        }
-                    }
-                    if (false == mandatoryTagFound) {
-                        createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
-                        return;
-                    }
                     createNotification("success", "Création réussie.", "Votre lieu a bien été ajouté.");
                     var template = Handlebars.templates['templates/redactIntrigue/LeftMenuLiGenericPlace'];
                     var context = {
@@ -84,6 +88,22 @@ function updatePlace() {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["501", "502", "503", "504", "506", "507", "508", "509", "510"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("placeTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
