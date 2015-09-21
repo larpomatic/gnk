@@ -7,6 +7,22 @@ $(function () {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["501", "502", "503", "504", "506", "507", "508", "509", "510"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("placeTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -72,6 +88,22 @@ function updatePlace() {
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["501", "502", "503", "504", "506", "507", "508", "509", "510"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("placeTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
