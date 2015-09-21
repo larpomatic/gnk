@@ -123,11 +123,17 @@ function initSpanCreation() {
         if ($(this).closest("ul").hasClass("roleSelector")) {
             pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
+        else if ($(this).closest("a").hasClass("gnPlaceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
         else if ($(this).closest("ul").hasClass("placeSelector")) {
             pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
             pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("button").hasClass("gnDateButton")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         initializePopover();
         return false;
@@ -379,6 +385,7 @@ function convertDescription(description) {
     description = description.replace(/&lt;L:/g, '&lt;l:');
     description = description.replace(/&lt;I:/g, '&lt;i:');
     description = description.replace(/&lt;O:/g, '&lt;o:');
+    description = description.replace(/&lt;K:/g, '&lt;k:');
     description = description.replace(/&lt;l:Art:/g, '<span class="label label-warning" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -410,12 +417,16 @@ function convertDescription(description) {
     description = description.replace(/&lt;i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/&lt;k:none:/g, '<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;k:M#/g, '<span class="label label-info" data-tag="M#');
     description = description.replace(/&lt;l:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;o:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;i:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&lt;u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/&lt;k:/g, '<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/;:/g, ';" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/&gt;/g, '</span>');
+
 
     return description;
 }
@@ -434,6 +445,7 @@ function transformDescription(description) {
     description = description.replace(/<span class="label label-important" data-tag="/g, '<o:');
     description = description.replace(/<span class="label label-success" data-tag="/g, '<i:');
     description = description.replace(/<span class="label label-default" data-tag="/g, '<u:');
+    description = description.replace(/<span class="label label-info" data-tag="/g, '<k:');
     description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
     description = description.replace(/" data-toggle="popover" data-original-title="Choix balise" title="" contenteditable="false">/g, ':');
     description = description.replace(/<\/span>/g, '>');
@@ -442,6 +454,7 @@ function transformDescription(description) {
     description = description.replace(/&lt;o:/g, '<o:');
     description = description.replace(/&lt;i:/g, '<i:');
     description = description.replace(/&lt;u:/g, '<u:');
+    description = description.replace(/&lt;k:/g, '<k:');
     description = description.replace(/&gt;/g, '>');
     return description;
 }
@@ -666,6 +679,7 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/<L:/g, '<l:');
     description = description.replace(/<I:/g, '<i:');
     description = description.replace(/<O:/g, '<o:');
+    description = description.replace(/<K:/g, '<k:');
     description = description.replace(/<l:Art:/g, '<span class="label label-warning" data-tag="Art" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<l:Nom:/g, '<span class="label label-warning" data-tag="Nom" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<l:Par:/g, '<span class="label label-warning" data-tag="Par" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
@@ -685,11 +699,16 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/<i:Age:/g, '<span class="label label-success" data-tag="Age" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:none:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:M#/g, '<span class="label label-success" data-tag="M#');
+    description = description.replace(/<k:none:/g, '<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<k:M#/g, '<span class="label label-info" data-tag="M#');
     description = description.replace(/<l:/g, '<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<o:/g, '<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<i:/g, '<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/<u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<u:/g, '<span class="label label-default" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
+    description = description.replace(/<k:/g, '<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/:/g, '" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">');
     description = description.replace(/>/g, '</span>');
+
     return description;
 }

@@ -80,7 +80,7 @@
 
         // Run dates substitution
         //runDatesSubstitution("${g.createLink(controller:'substitution', action:'getSubDates')}");
-        initDateList("${g.createLink(controller:'substitution', action:'getSubDates')}");
+        initDateList("${g.createLink(controller:'substitution', action:'getSubDates', params: [subDates : params.subDates] )}");
     });
 
     function initDatesJSON() {

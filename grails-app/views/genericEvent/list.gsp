@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>admin LIFE</title>
+    <title>Administration Life</title>
 </head>
 	<body>
 
@@ -13,7 +13,7 @@
 <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Life liste</h2>
+        <h2>List des évenement générique</h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />

@@ -1,4 +1,6 @@
 package org.gnk.genericevent
+
+import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -21,7 +23,7 @@ class GenericEventController {
         def list = GenericEvent.list()
         TagService tagService = new TagService();
         def listTag = tagService.getPlotTagQuery()
-        [genericEventInstance: new GenericEvent(params), genericEventInstanceList: list, TagInstanceList : listTag]
+        [genericEventInstance: new GenericEvent(params), genericEventInstanceList: list, TagInstanceList: listTag]
     }
 
     def save() {
@@ -49,23 +51,29 @@ class GenericEventController {
     }
 
     def edit(Long id) {
-        def genericEventInstance = GenericEvent.get(id)
-        if (!genericEventInstance) {
+        GenericEvent genericEventInstance;
+        if (params.genericEventHasTagAdd == "true") {
+            genericEventInstance = addGenericEventHasTag()
+        } else {
+            genericEventInstance = GenericEvent.get(id)
 
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), id])
-            redirect(action: "list")
-            return
+            if (!genericEventInstance) {
+
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), id])
+                redirect(action: "list")
+                return
+            }
         }
         def list = GenericEvent.list()
         TagService tagService = new TagService();
         def listTag = tagService.getPlotTagQuery()
 
 
-        [genericEventInstance: genericEventInstance, genericEventInstanceList: list, TagInstanceList : listTag]
+        [genericEventInstance: genericEventInstance, genericEventInstanceList: list, TagInstanceList: listTag]
     }
 
     def update(Long genericEventId, Long genericEventVersion) {
-       def genericEventInstance = GenericEvent.get(genericEventId)
+        def genericEventInstance = GenericEvent.get(genericEventId)
 
         if (!genericEventInstance) {
             flash.message = message(code: 'default.not.found.message',
@@ -97,7 +105,26 @@ class GenericEventController {
         redirect(action: "list")
     }
 
+    GenericEvent addGenericEventHasTag() {
+        GenericEvent genericEventInstance = new GenericEvent(params)
+
+        params.each {
+            if (it.key.toString().contains("eventGenericTagsWeight")) {
+                GenericEventHasTag genericEventHasTag = new GenericEventHasTag();
+                genericEventHasTag.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
+                genericEventHasTag.value = it.value.toString().toInteger();
+
+                if (genericEventInstance.genericEventHasTag == null)
+                    genericEventInstance.genericEventHasTag = new HashSet<>()
+
+                genericEventInstance.genericEventHasTag.add(genericEventHasTag);
+            }
+        };
+        return genericEventInstance
+    }
+
     def delete(Long id) {
+        //TODO faire une liste local et supprimer dans la liste local, renvoyer la liste pour refaire le tableau
         def genericEventInstance = GenericEvent.get(id)
         String title = genericEventInstance.title
 
@@ -138,4 +165,5 @@ class GenericEventController {
 //        flash.messageInfo = message(code: 'adminRef.genericPlace.info.deleteTag', args: [placeHasTagInstance.place.name, placeHasTagInstance.tag.name])
 //        redirect(action: "list")
     }
+
 }
