@@ -31,6 +31,7 @@ class SubstitutionController {
         gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 
+        /*TODO ajouter marqueur dans life si on est passé*/
         if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
             gn.step = "life";
         else
@@ -84,13 +85,8 @@ class SubstitutionController {
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
 
-        if (gn.isSubDate){
-            params.subDates = true
-        }
-
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "substitution";
-        gn.isSubDate = true
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
         gn.save(flush: true);
         //RelationshipGraphService graphservice = new RelationshipGraphService();
@@ -220,7 +216,16 @@ class SubstitutionController {
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
-        String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
+        gnkDataContainerService.gn.selectedPlotSet.each {
+            it.pastescenes.each {
+                it.isAbsoluteHour = true
+                it.isAbsoluteMinute = true
+                it.isAbsoluteDay = true
+                it.isAbsoluteMonth = true
+                it.isAbsoluteYear = true
+            }
+        }
+                String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
 
         if (gnDbId == -1) {
             render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")
