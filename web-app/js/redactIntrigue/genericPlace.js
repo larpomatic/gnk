@@ -233,6 +233,7 @@ function getBestPlace()
         //$('#selectUnivers').data('form', 'newPlaceForm');
 
     $('#newbestPlace').click(function() {
+        alert("newBestPlace");
         var url = $(this).data('url');
         var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
@@ -242,12 +243,9 @@ function getBestPlace()
         form.append(input);*/
 
         $('.placeLoader').css('display', '');
-
-
     });
 
     $('.bestPlace').click(function() {
-
         var url = $('#urlBestPlace').data('url');
         var form_name = $(this).data('form');
         alert("JS" + url + "**" + form_name);
@@ -260,10 +258,14 @@ function getBestPlace()
             dataType: "json",
             success: function(data) {
                 alert("good");
-               /* var array = data.value.split('#');
+                //JSON.parse(data);
+                //var array = data.value.split('#');
                 var cont = $('#listContainer');
-                $('.bestRow').remove();
-                $('.myselect').remove();
+                $.each(data.object.json,function(i,v){
+                    console.log(v[0]);
+                });
+               // $('.bestRow').remove();
+                /*$('.myselect').remove();
                 var add = 0;
                 $.each(array, function(i, v) {
                     add = add + 1;
@@ -272,16 +274,16 @@ function getBestPlace()
                         row.attr('id', 'row-' + i);
                         row.removeClass('hidden');
                         row.addClass("bestRow");
-                        row.html(v);
-                        cont.append(row);
-                    }
+                        row.html(v);*/
+                //cont.append();
+                  /*  }
                 });
                 if (add <= 1) {
                     var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
                     var cont = $('#modalBestPlace');
                     cont.append(label);
-                }
-                $('.placeLoader').css('display', 'none');*/
+                }*/
+                $('.placeLoader').css('display', 'none');
             },
             error: function() {
                 $('.placeLoader').css('display', 'none');

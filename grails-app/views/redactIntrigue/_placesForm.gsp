@@ -50,7 +50,7 @@
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
                     <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                 </a>
-                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>"/><i class="btnBestPlace img-circle" ></i></button>
+                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlace"/>"/><i class="btnBestPlace img-circle" ></i></button>
             </div>
         </div>
 
@@ -159,9 +159,9 @@
         <!--<select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
             <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>-->
           <table class="display">
-             <th>Univers</th>
-             <th>Valeurs</th>
-            <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
+             <!-- <th>Univers</th>
+             <th>Valeurs</th>-->
+            <g:each in="${plotInstance}" status="i" var="plotUniversInstance">
                <tr>
                    <td>${plotUniversInstance.name}</td>
                    <td></td>

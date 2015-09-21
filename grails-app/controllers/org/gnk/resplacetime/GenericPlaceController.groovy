@@ -10,6 +10,7 @@ import org.gnk.tag.Tag
 class GenericPlaceController {
 
     PlaceService placeService;
+    JSONObject json;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -37,6 +38,7 @@ class GenericPlaceController {
         object.put("iscreate", res);
         object.put("genericPlace", jsonGenericPlace);
         object.put("genericPlaceTagList", jsonTagList);
+        object.put("jsonBestPlaces", json)
         render(contentType: "application/json") {
             object
         }
@@ -44,13 +46,10 @@ class GenericPlaceController {
 
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
-        System.out.println("toto");
 
         //String univer_name = params.get("univerTag");
-
         //if (univer_name == null || univer_name == "")
             //return;
-
 
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
@@ -69,17 +68,41 @@ class GenericPlaceController {
 
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
-        def universList = Tag.findAllByParent(tagUnivers);
-        System.out.println(universList);
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+        int index1 = 0;
+      /*  for (def tag1 in universList) {
+            print (index1 + "           " + tag1.name);
+            index1++;
+        }*/
+        print (universList[2])
+
+
+
+        json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < universList.size() ; i++) {
-            genericplace = placeService.findReferentialPlace(genericplace, universList[i] as String);
-            genericplace.resultList;
-            String result = "";
-        }
-        int i = 0;
+            genericplace = placeService.findReferentialPlace(genericplace, universList[i].name);
+            for(ReferentialPlace ref in genericplace.resultList) {
+                jsonArray.add(universList[i].name);
+                jsonArray.add(ref.name);
+            }
+            json.put(universList[i].name,jsonArray);
+            jsonArray = [];
 
-        JSONObject object = new JSONObject();
+            //genericplace.resultList;
+            //for (ReferentialPlace ref in genericplace.resultList) {
+              //  json.put("result", ref);
+            //}
+            //System.out.println(universList[i] as String);
+            //System.out.println(genericplace.resultList);
+
+            //String result = "";
+        }
+
+        //int i = 0;
+        System.out.println(json);
+        /*JSONObject object = new JSONObject();
         for (ReferentialPlace refe in genericplace.resultList)
         {
             i++;
@@ -87,16 +110,17 @@ class GenericPlaceController {
                 result += refe.name + "#";
                 object.put("val", refe.name);
             }
-        }
-        System.out.println("titi");
+        }*/
         //if (result != "")
         //    result = result.substring(0, result.length() - 1);
         //object.put("value", result);
 
-        JSONObject object_empty = new JSONObject();
         //remplir le JSON Object
+        //object_empty = buildJson(genericplace);
         render(contentType: "application/json") {
-            object_empty;
+            object(json: json)
+
+            return json.toString();
         }
     }
 
