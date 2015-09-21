@@ -25,6 +25,11 @@
         Lieu <span class="caret"></span>
     </button>
     <ul class="dropdown-menu placeSelector">
+        <li data-id="0" class="gnPlaceSelector">
+            <a class="buttonRichTextEditor btn-info gnPlaceSelector">
+                GN-Lieu
+            </a>
+        </li>
         <g:each in="${plotInstance.genericPlaces}" status="i5" var="genericPlace">
             <li data-id="${genericPlace.id}">
                 <a class="buttonRichTextEditor">
@@ -38,6 +43,8 @@
         </li>
     </ul>
 </div>
+
+
 
 <div class="btn-group">
     <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
@@ -56,6 +63,13 @@
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
+</div>
+
+<div class="btn-group">
+    <button type="button" class="btn btn-info gnDateButton buttonRichTextEditor" >
+        GN-Date
+    </button>
+
 </div>
 
 <div class="btn-group">
