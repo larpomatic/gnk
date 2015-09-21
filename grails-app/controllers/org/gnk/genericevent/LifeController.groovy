@@ -340,7 +340,7 @@ class LifeController {
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
 
-        removeLife(gn)
+//        removeLife(gn)
 
         for (Plot plot in gn.selectedPlotSet) {
             if (plot.isEvenemential) {
