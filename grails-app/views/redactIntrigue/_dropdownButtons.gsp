@@ -25,7 +25,7 @@
         Lieu <span class="caret"></span>
     </button>
     <ul class="dropdown-menu placeSelector">
-        <li data-id="0" class="gnPlaceSelector">
+        <li data-id="0">
             <a class="buttonRichTextEditor btn-info gnPlaceSelector">
                 GN-Lieu
             </a>
@@ -66,11 +66,24 @@
 </div>
 
 <div class="btn-group">
-    <button type="button" class="btn btn-info gnDateButton buttonRichTextEditor" >
-        GN-Date
+    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+        Date et heure <span class="caret"></span>
     </button>
+    <ul class="dropdown-menu buttonRichTextEditor">
+        <li data-id="0">
+            <a class="buttonRichTextEditor gnDateButton">
+                GN-Date
+            </a>
+        </li>
+        <li data-id="1">
+            <a class="buttonRichTextEditor gnDateButton">
+                GN-Heure
+            </a>
+        </li>
 
+    </ul>
 </div>
+
 
 <div class="btn-group">
     <div class="btnFullScreen"></div>
