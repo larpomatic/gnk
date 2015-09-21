@@ -17,7 +17,9 @@ class GenericEvent {
 
     static constraints = {
 //        title{nullable:false}
-        description(nullable:false)
+        description(nullable:false);
+        ageMin min: 0, validator: {age -> age < ageMax}
+        ageMax min: 0, validator: {age -> age > ageMin}
     }
     static mapping = {
         description type:'text'

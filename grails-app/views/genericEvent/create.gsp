@@ -4,7 +4,8 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'genericEvent.label', default: 'GenericEvent')}" />
-		<title><g:message code="default.create.label" args="[entityName]" /></title>
+		%{--<title><g:message code="default.create.label" args="[entityName]" /></title>--}%
+		<title>Creer Evenement Générique</title>
 	</head>
 	<body>
 		<a href="#create-genericEvent" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -27,7 +28,7 @@
 			</ul>
 			</g:hasErrors>
 			<g:form action="save" method="POST">
-				<fieldset class="form">
+				<fieldset class="form-horizontal">
                     <g:render template="form" model="[genericEventInstance : genericEventInstance, genericEventInstanceList : genericEventInstanceList, TagInstanceList : TagInstanceList]"/>
 				</fieldset>
 				<fieldset class="buttons">

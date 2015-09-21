@@ -4,7 +4,8 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'genericEvent.label', default: 'GenericEvent')}" />
-    <title><g:message code="default.edit.label" args="[entityName]" /></title>
+    %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
+    <title>Editer Evenement Générique</title>
 </head>
 <body>
 <div id="edit-genericEvent" class="content scaffold-edit" role="main">
@@ -21,11 +22,11 @@
     </g:hasErrors>
     %{--<g:form action="edit">--}%
     <g:form>
-        <form class="form-horizontal">
+        <form>
 
             <g:hiddenField name="genericEventId" value="${genericEventInstance.id}" />
             <g:hiddenField name="genericEventVersion" value="${genericEventInstance.version}" />
-            <fieldset class="form">
+            <fieldset class="form-inline">
                 <g:render template="form" model="[genericEventInstance : genericEventInstance,
                                                   genericEventInstanceList : genericEventInstanceList,
                                                   TagInstanceList : TagInstanceList]"/>

@@ -60,12 +60,12 @@ class Gn {
             "nonPlayerCharSet",
             "firstnameSet",
             "lastnameSet",
-            "isSubDate"
+            "isLife"
     ]
 
     Date t0Date
     String step // selectIntrigue|role2perso|life|substitution|publication
-    Boolean isSubDate
+    boolean isLife
 
     boolean isMainstream // Or parallelized
     int duration // En heure

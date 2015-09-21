@@ -186,6 +186,8 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
+
+
                 <div id="universModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
