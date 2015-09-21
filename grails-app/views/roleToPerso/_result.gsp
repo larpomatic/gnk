@@ -178,7 +178,7 @@
                             </thead>
                             <tbody>
                             <g:each in="${((Character) character).specificRoles}" status="roleIter" var="role">
-                                <g:if test="${((Role) role).description} != Life">
+                                <g:if test="${((Role) role).code} != Life">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
 
                                         <td>

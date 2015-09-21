@@ -61,6 +61,8 @@ class RoleToPersoController {
 
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
+        gn.isLife = false
+
         for (Character character1 : gn.getterCharacterSet()) {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()

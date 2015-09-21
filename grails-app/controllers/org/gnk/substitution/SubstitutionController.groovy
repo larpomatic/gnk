@@ -31,8 +31,7 @@ class SubstitutionController {
         gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 
-        /*TODO ajouter marqueur dans life si on est passé*/
-        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+        if (gn.isLife)
             gn.step = "life";
         else
             gn.step = "role2perso";
@@ -48,7 +47,7 @@ class SubstitutionController {
                 mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+        if (gn.isLife)
             redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
         else
             redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
