@@ -95,6 +95,11 @@ class SubstitutionPublication {
         String gender = ""
         if (code.equals("GN-LIEU")) {
             replacement = "[GN-Lieu]"
+            for (Place place : placeList) {
+                replacement = place.name;
+                gender = place.gender;
+                break;
+            }
         } else if (code.equals("GN-DATE")) {
             replacement = simpleGnDate.format(gnDate);
         }
