@@ -716,7 +716,7 @@ public class RoleToPersoProcessing {
                         no_role.add(character)
                 }
                 //On vérifie qu'il y a de la place pour au moins un PJG
-                if (no_role.size() > nb_pjg) {
+                if (no_role.size() >=nb_pjg) {
 
                     Iterator<Role> iterator_role = gnPJBRoleSet.iterator()
                     while (iterator_role.hasNext())
