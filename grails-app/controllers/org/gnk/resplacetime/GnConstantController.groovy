@@ -13,7 +13,9 @@ class GnConstantController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        [gnConstantInstanceList: GnConstant.list(params), gnConstantInstanceTotal: GnConstant.count()]
+        [gnConstantInstanceList: GnConstant.list(params), gnConstantInstanceTotal: GnConstant.count(),
+         gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
+         gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
     }
 
     def create() {
@@ -93,5 +95,9 @@ class GnConstantController {
         render(contentType: "application/json") {
             object(isdelete: isDelete)
         }
+    }
+
+    static def getGnConstantListFromType(String type){
+        return GnConstant.findAllByConstantType(type);
     }
 }

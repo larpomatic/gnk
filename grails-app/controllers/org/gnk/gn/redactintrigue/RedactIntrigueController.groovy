@@ -12,6 +12,8 @@ import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.GnConstant
+import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
@@ -39,7 +41,9 @@ class RedactIntrigueController {
 	}
 
 	def list(Integer max) {
-		[plotInstanceList: Plot.list(), plotInstanceTotal: Plot.count()]
+		[plotInstanceList: Plot.list(), plotInstanceTotal: Plot.count(),
+         gnConstantPlaceList: GnConstant.findAllByConstantType(GnConstant.constantTypes.PLACE),
+         gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
 	}
 
 	def create() {

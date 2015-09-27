@@ -106,8 +106,8 @@
                 </label>
             </div>
             <div class="span4">
-                <g:select name="placeConstantForm" id="placeConstantForm" from="${plotInstance.roles}"
-                          optionKey="id" required="" optionValue="code" noSelection="${['null':'']}"/>
+                <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
+                          optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
             </div>
         </div>
         <div class="row formRow text-center">
@@ -273,8 +273,8 @@
                     </label>
                 </div>
                 <div class="span4">
-                    <g:select name="placeConstantForm" id="placeConstantForm" from="${plotInstance.roles}"
-                              optionKey="id" required="" optionValue="code" noSelection="${['null':'']}"/>
+                    <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
+                              optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
                 </div>
             </div>
             <div class="row formRow text-center">
