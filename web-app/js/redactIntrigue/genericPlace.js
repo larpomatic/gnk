@@ -192,7 +192,6 @@ function createNewGenericPlacePanel(data) {
         return new Handlebars.SafeString(value);
     });
     var template = Handlebars.templates['templates/redactIntrigue/genericPlacePanel'];
-    alert("coucou" + url);
     var context = {
         genericPlace: data.genericPlace,
         genericPlaceTagList: data.genericPlaceTagList
@@ -226,14 +225,7 @@ function createNewGenericPlacePanel(data) {
 // function to get 10 best places depending of tags
 function getBestPlace()
 {
-       // $('#selectUnivers').data('status', 'create');
-        //$('.bestRow').remove();
-        //$('.myselect').remove();
-        //$('#selectUnivers').prop('selectedIndex',0);
-        //$('#selectUnivers').data('form', 'newPlaceForm');
-
     $('#newbestPlace').click(function() {
-        alert("newBestPlace");
         var url = $(this).data('url');
         var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
@@ -248,7 +240,6 @@ function getBestPlace()
     $('.bestPlace').click(function() {
         var url = $('#urlBestPlace').data('url');
         var form_name = $(this).data('form');
-        alert("JS" + url + "**" + form_name);
         var form = $('form[name=' + form_name + ']');
 
         $.ajax({
@@ -257,32 +248,25 @@ function getBestPlace()
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                alert("good");
-                //JSON.parse(data);
-                //var array = data.value.split('#');
                 var cont = $('#listContainer');
                 $.each(data.object.json,function(i,v){
-                    console.log(v[0]);
+                    var h5 = document.createElement("H4");
+                    var node = document.createTextNode(v[0]);
+                    h5.appendChild(node);
+                    cont.append(h5);
+                    var ul = document.createElement("ul");
+                    if (v.length == 1)
+                    {
+                        cont.append("Pas de meilleure place !");
+                    }
+                    for(j = 1; j < v.length; j++)
+                    {
+                        var li = document.createElement("li");
+                        li.innerHTML = v[j];
+                        ul.appendChild(li);
+                    }
+                    cont.append(ul);
                 });
-               // $('.bestRow').remove();
-                /*$('.myselect').remove();
-                var add = 0;
-                $.each(array, function(i, v) {
-                    add = add + 1;
-                    if (v != null && v != "") {
-                        var row = $('#templateBest').clone();
-                        row.attr('id', 'row-' + i);
-                        row.removeClass('hidden');
-                        row.addClass("bestRow");
-                        row.html(v);*/
-                //cont.append();
-                  /*  }
-                });
-                if (add <= 1) {
-                    var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
-                    var cont = $('#modalBestPlace');
-                    cont.append(label);
-                }*/
                 $('.placeLoader').css('display', 'none');
             },
             error: function() {
