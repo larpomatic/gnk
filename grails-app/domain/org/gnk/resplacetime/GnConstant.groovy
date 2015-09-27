@@ -20,8 +20,6 @@ class GnConstant {
     }
 
     static mapping = {
-        name type: 'text'
         id type:'integer'
-        constantType type: 'text'
     }
 }
