@@ -156,7 +156,7 @@
             <h3 class="panel-title">
                 Cet Ev. Gen. (dé)favorise les Ev. Gen.
                 <a href="#tagsModalImplyGenericEvent" class="btn" data-toggle="modal">
-                    Choix des tegs
+                    Choix des tags
                 </a>
             </h3>
 
