@@ -320,6 +320,9 @@ class OutputHandler {
                 placeDB.DTDId = el.value.DTDId
                 placeSet.add(placeDB)
             }
+            else if (placeDB == null){
+                placeSet.add(el.value)
+            }
             else {
                 el.value.gender = placeDB.gender
                 el.value.name = placeDB.name
