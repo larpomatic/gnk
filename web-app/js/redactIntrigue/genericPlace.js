@@ -221,26 +221,25 @@ function createNewGenericPlacePanel(data) {
     initializePopover();
 }
 
-
 // function to get 10 best places depending of tags
 function getBestPlace()
 {
-    $('#newbestPlace').click(function() {
-        var url = $(this).data('url');
-        var form_name = $(this).data('form');
-        var form = $('form[name=' + form_name + ']');
-        /*var input = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "univerTag").val($(this).val());
-        form.append(input);*/
+    var cont = $('#listContainer');
 
-        $('.placeLoader').css('display', '');
+    $('#newbestPlace').click(function() {
+        var br = document.createElement("br");
+        cont.empty();
+        cont.append("Les meilleures places sont les lieux qui correspondent le mieux aux caractéristiques de votre univers.\n");
+        cont.append(br);
+        cont.append("Ces caractéristiques sont choisies à l'aide de tags.");
+        cont.append("Pour choisir les tags, cliquez sur le bouton \"Choisir tags\".");
     });
 
     $('.bestPlace').click(function() {
         var url = $('#urlBestPlace').data('url');
         var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
+        cont.empty();
 
         $.ajax({
             type: "POST",
@@ -248,7 +247,6 @@ function getBestPlace()
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                var cont = $('#listContainer');
                 $.each(data.object.json,function(i,v){
                     var h5 = document.createElement("H4");
                     var node = document.createTextNode(v[0]);

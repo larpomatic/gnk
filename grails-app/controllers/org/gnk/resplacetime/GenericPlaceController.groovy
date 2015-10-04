@@ -47,10 +47,6 @@ class GenericPlaceController {
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
 
-        //String univer_name = params.get("univerTag");
-        //if (univer_name == null || univer_name == "")
-            //return;
-
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
             if (it.key.startsWith("placeTags_")) {
@@ -69,11 +65,6 @@ class GenericPlaceController {
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
-        int index1 = 0;
-      /*  for (def tag1 in universList) {
-            print (index1 + "           " + tag1.name);
-            index1++;
-        }*/
 
         json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -87,7 +78,7 @@ class GenericPlaceController {
             json.put(universList[i].name,jsonArray);
             jsonArray = [];
         }
-        
+
         render(contentType: "application/json") {
             object(json: json)
 

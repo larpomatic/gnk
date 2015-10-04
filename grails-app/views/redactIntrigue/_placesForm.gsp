@@ -50,7 +50,7 @@
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
                     <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                 </a>
-                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlace"/>"/><i class="btnBestPlace img-circle" ></i></button>
+                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>"><i class="btnBestPlace img-circle" ></i></button>
             </div>
         </div>
 
@@ -211,7 +211,7 @@
                     <a href="#placeTagsModal_${place.id}" class="btn" data-toggle="modal">
                         <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                     </a>
-                    <button data-target="#bestPlaceModal" type="button" data-form="updatePlace_${place.id}" class="btnBestPlace bestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
+                    <button data-target="#bestPlaceModal" type="button" data-form="updatePlace_${place.id}" class="btnBestPlace bestPlace" data-toggle="modal" ><i class="btnBestPlace img-circle" ></i></button>
                 </div>
             </div>
 
