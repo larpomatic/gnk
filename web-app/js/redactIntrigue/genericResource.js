@@ -13,9 +13,33 @@ $(function(){
         var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
+        fromRoleText = transformDescription(fromRoleText);
+        $('.fromRoleTextContent', form).val(fromRoleText);
+        var toRoleText = $('#clueRichTextEditor2', form).html();
+        toRoleText = transformDescription(toRoleText);
+        $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["4100", "4101", "4103", "4104", "4106", "4107", "4108", "4109", "6054", "6055", "6056", "33097"
+            , "33100", "33101", "1123", "1124", "3701", "3702", "3703", "3704", "6053", "4037", "4105", "33011", "3602"
+            , "4102", "3606", "3605", "3604", "3603"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("resourceTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Type Ressource'");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -70,6 +94,7 @@ $(function(){
         });
 });
 
+
 // modifie une ressource dans la base
 function updateResource() {
     $('.updateResource').click(function() {
@@ -78,9 +103,33 @@ function updateResource() {
         var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
         comment = transformDescription(comment);
         $('.commentContent', form).val(comment);
+        var fromRoleText = $('#clueRichTextEditor1', form).html();
+        fromRoleText = transformDescription(fromRoleText);
+        $('.fromRoleTextContent', form).val(fromRoleText);
+        var toRoleText = $('#clueRichTextEditor2', form).html();
+        toRoleText = transformDescription(toRoleText);
+        $('.toRoleTextContent', form).val(toRoleText);
         var description = $('#clueRichTextEditor' + genericResourceId, form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
+        var mandatoryTagFound = false;
+        var data = form.serialize();
+        var data_tbl = data.split("&");
+        var tags = ["4100", "4101", "4103", "4104", "4106", "4107", "4108", "4109", "6054", "6055", "6056", "33097"
+            , "33100", "33101", "1123", "1124", "3701", "3702", "3703", "3704", "6053", "4037", "4105", "33011", "3602"
+            , "4102", "3606", "3605", "3604", "3603"]
+        for (var key in data_tbl) {
+            for (var tag in tags) {
+                if (data_tbl[key].indexOf("resourceTagsWeight_" + tags[tag]) != -1) {
+                    mandatoryTagFound = true;
+                }
+            }
+        }
+        if (false == mandatoryTagFound) {
+            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Type Ressource'");
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),

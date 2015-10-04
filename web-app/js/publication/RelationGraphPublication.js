@@ -47,6 +47,7 @@ function initGraph(relationjson, idInfovis, index){
         document.getElementById("WordButtonPublication").disabled = false;
         document.getElementById('RelationGraphContainer').style.display ="none";
         document.getElementById("IncludeGraphRelation").disabled = false;
+        document.getElementById("PDFButtonPublication").disabled = false;
         return;
     }
     // init data

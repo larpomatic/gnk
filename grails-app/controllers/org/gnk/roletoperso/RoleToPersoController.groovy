@@ -61,6 +61,8 @@ class RoleToPersoController {
 
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
+        gn.isLife = false
+
         for (Character character1 : gn.getterCharacterSet()) {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()
@@ -261,7 +263,7 @@ class RoleToPersoController {
         /***********/
 
         // Life desactivated until it works
-        addLifeEvents(gn)
+//        addLifeEvents(gn)
 
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
@@ -389,176 +391,6 @@ class RoleToPersoController {
          tagcompatibility: values,
          tagrelationcompatibility: values_relation,
          mainstreamId: mainstreamId]
-    }
-
-    public void addLifeEvents(Gn gn) {
-        for (Character character : gn.getCharacterSet()) {
-            // Créer un plot
-            /*
-            character.selectedRoles.each { role ->
-                System.out.println("ROLE ("+character.firstname+") : " + role.description);
-                role.roleHasPastscenes.each { ps ->
-                    System.out.println("ps - ("+ps.pastscene.timingRelative +"("+ps.pastscene.unitTimingRelative+")"+") - " +ps.pastscene.description);
-                }
-            }
-            */
-            character.getTags().each {t->
-                System.out.println("t("+t.key.id+"):"+t.key+" "+t.value)
-            }
-            int dummyInt = 999897
-            Plot p = new Plot()
-            p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
-            p.lastUpdated = gn.getSelectedPlotSet().first().lastUpdated
-            p.user = gn.getSelectedPlotSet().first().user
-
-            p.isDraft = true
-            p.isEvenemential = false
-            p.isMainstream = false
-            p.isPublic = false
-            p.description = "Life"
-            p.name = p.description
-            p.setDTDId(dummyInt + character.getDTDId())
-            p.roles = new HashSet<>()
-            p.pastescenes = new HashSet<>()
-
-            // Créer un role
-            Role roleForLife = new Role()
-            roleForLife.type = "PJ"
-            roleForLife.pipi = 0
-            roleForLife.pipr = 0
-            roleForLife.code = "Life"
-            roleForLife.description = "Vie du personnage"
-            roleForLife.plot = p
-            roleForLife.setDTDId(dummyInt + character.getDTDId())
-            roleForLife.roleHasPastscenes = new HashSet<>()
-
-
-            /*
-                Si c’est l’âge 0, on choisit un GE qui est proche de l’âge 0.
-                        Sinon {
-                            On regarde le GE de (âge - 1 itération) et on va regarder quels GE peuvent être engendré depuis ce GE
-                            Pour tous les GE qu’il est possible d’engendrer {
-                                On choisit le GE qu’on veut. (Voir Etape 2)
-                            }
-                            Si aucun GE ne peut être engendré alors on choisit le GE en fonction de l’Age
-                            (Etape 4.2)
-                        }
-            }*/
-
-            int INTERVAL = 5
-            int age = 1;
-            GenericEvent lastGE = null
-            System.out.println("AGE : " + character.age)
-            while (age < character.age) {
-
-                /* STEP 1 on parcours les events qui existent */
-                def query = GenericEvent.where {
-                    ageMin <= age && ageMax >= age
-                }
-
-                ArrayList<GenericEvent> listEvent = query.findAll()
-                Collections.shuffle(listEvent)
-                ArrayList<GenericEvent> listEventCopy = new ArrayList<GenericEvent>(listEvent);
-
-                // On enlève tous les events déjà utilisé
-                for (GenericEvent ge : listEventCopy) {
-                    if (p.roles.size() > 0) {
-                        for (RoleHasPastscene selectedPastScene : p.roles.first().roleHasPastscenes) {
-                            if (selectedPastScene.description == ge.description) {
-                                listEvent.remove(ge)
-                            }
-                        }
-                    }
-                }
-
-                if (listEvent.size() == 0) {
-                    // La c'est le cas ou on a eu pu trouver aucun event qui n'ai pas déjà été selectionné,
-                    // du coup on en prend un qu'on a déjà par defaut
-                    lastGE = listEventCopy.first();
-                } else {
-                    // On choisi parmi les ceux qui n'ont pas été choisi
-                    GenericEvent bestGE = null;
-                    ArrayList<Integer> listDesIdDeGEDispo = new ArrayList<Integer>();
-                    int diffValueBetweenGEandTAG = 300;
-                    for (GenericEvent ge : listEvent)
-                        listDesIdDeGEDispo.add(ge.id)
-
-                    for (GenericEvent ge : listEvent) {
-                        character.getTags().each { charTag ->
-                            def queryTag = GenericEventCanImplyTag.where {
-                                tag.id == charTag.key.id
-                            }
-                            ArrayList<GenericEventCanImplyTag> genericImplyTags = queryTag.findAll()
-
-                            for (GenericEventCanImplyTag gecit : genericImplyTags) {
-                                boolean isdispo = false;
-                                // Est ce que il est disponible dans la liste
-                                for (GenericEvent e : listEvent) {
-                                    if (e.description == gecit.genericEvent.description) {
-                                        isdispo = true
-                                        break;
-                                    }
-                                }
-                                if (!isdispo) {
-                                    //System.out.println("OUI CA CONTIENT DEJA")
-                                } else {
-                                    int diff = Math.abs((charTag.value + 100) - (gecit.value + 100));
-                                    //System.out.println("diff:" + diff + "/" + diffValueBetweenGEandTAG)
-                                    if (diffValueBetweenGEandTAG > diff) {
-                                        // On est sur un GE qui est plus apte que les autres.
-                                        System.out.println("L'event (" + gecit.genericEvent.description + ") match")
-                                        diffValueBetweenGEandTAG = diff;
-                                        bestGE = gecit.genericEvent;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (bestGE != null) {
-                        lastGE = bestGE
-                    } else {
-                        lastGE = listEvent.first();
-                    }
-                }
-
-                if (lastGE != null) { // On ajoute l'event
-                    Pastscene pastSceneLife = new Pastscene()
-                    pastSceneLife.plot = p
-                    pastSceneLife.title = "Evénement passé à l'age de " + age + " ans"
-                    pastSceneLife.description = "Past Scene de " + age
-                    pastSceneLife.isPublic = true
-                    pastSceneLife.setDTDId((dummyInt +character.getDTDId() * 100)+ age)
-                    // Ca il faut changer
-                    pastSceneLife.dateYear = character.age - age
-                    pastSceneLife.isAbsoluteYear = false
-                    /*
-                    pastSceneLife.unitTimingRelative = "Y"
-                    pastSceneLife.timingRelative = character.age - age
-                    */
-
-                    // Associer past Scene au rôle, Role Has Past Scene
-                    RoleHasPastscene rhpsLife = new RoleHasPastscene()
-                    rhpsLife.description = lastGE.description//listEvent.first().description
-                    rhpsLife.role = roleForLife
-                    rhpsLife.pastscene = pastSceneLife
-                    rhpsLife.title = "Evénement passé"
-
-                    roleForLife.roleHasPastscenes.add(rhpsLife)
-                    p.roles.add(roleForLife)
-                    p.pastescenes.add(pastSceneLife)
-                }
-
-                age += INTERVAL + (((new Random()).nextInt() % 2))
-            }
-            p.roles.each { ps ->
-                ps.roleHasPastscenes.each { rhpsfez ->
-                    System.out.print(rhpsfez.pastscene.description+"-"+rhpsfez.description)
-                }
-            }
-            System.out.print("____")
-            character.addRole(roleForLife)
-            gn.addPlot(p)
-        }
     }
 
     def save() {

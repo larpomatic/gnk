@@ -8,6 +8,7 @@ class GenericEventHasTag {
     Integer version
     Date lastUpdated
     Date dateCreated
+    Integer value
 
     static belongsTo = [tag : Tag, genericEvent : GenericEvent]
 }

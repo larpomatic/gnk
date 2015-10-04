@@ -125,10 +125,8 @@
                                 <g:render template="dropdownButtons" />
 
                                 <!-- Editor -->
-                                <div id="plotRichTextEditor" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                <div id="editable" contentEditable="true">
+                                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
                                         ${plotInstance.description?.encodeAsHTML()}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -137,10 +135,8 @@
                                 <g:render template="dropdownButtons" />
 
                                 <!-- Editor -->
-                                <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                <div id="editable2" contentEditable="true">
+                                <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
                                     ${plotInstance.pitchOrga?.encodeAsHTML()}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -149,10 +145,8 @@
                                 <g:render template="dropdownButtons" />
 
                                 <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                <div id="editable3" contentEditable="true">
+                                <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
                                     ${plotInstance.pitchPj?.encodeAsHTML()}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,10 +155,8 @@
                                 <g:render template="dropdownButtons" />
 
                                 <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor" onblur="saveCarretPos($(this).attr('id'))">
-                                <div id="editable4" contentEditable="true">
+                                <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
                                     ${plotInstance.pitchPnj?.encodeAsHTML()}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,6 +186,8 @@
                         <button class="btn" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
+
+
                 <div id="universModal" class="modal hide fade tags-modal" tabindex="-1">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>

@@ -22,8 +22,26 @@ class Graph {
             this.generateEdge(n1, getHiddenRelation)
     }
 
+    Graph(Gn gn, boolean getHiddenRelation = true, int b) {
+        if (b == 1) {
+            this.edgeList = new ArrayList<Edge>()
+            this.nodeList = new ArrayList<Node>()
+            this.gn = gn
+            Set<Character> characters = gn.characterSet.clone();
+            characters.addAll(gn.nonPlayerCharSet);
+            for (Character c : characters)
+                this.addNodeNeutre(c)
+            for (Node n1 : this.nodeList)
+                this.generateEdge(n1, getHiddenRelation)
+        }
+    }
+
     private void addNode(Character c) {
         this.nodeList.add(new Node(c))
+    }
+
+    private void addNodeNeutre(Character c) {
+        this.nodeList.add(new Node(c, false))
     }
 
     private void addEdge(Node n1, Node n2, String lien) {

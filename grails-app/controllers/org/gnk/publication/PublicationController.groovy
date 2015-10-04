@@ -2,6 +2,9 @@ package org.gnk.publication
 
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.tuple.MutablePair
+import org.docx4j.convert.out.pdf.PdfConversion
+import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
@@ -201,6 +204,10 @@ class PublicationController {
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
         response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
         response.outputStream << output.newInputStream()
+
+
+
+
     }
 
     // Méthode principale de la génération des documents
@@ -743,8 +750,8 @@ class PublicationController {
             if (genericResource.getPossessedByRole() != null) {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r : c.selectedRoles) {
-                        if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()) {
-                            possessedByCharacters = (possessedByCharacters.isEmpty() ? "" : ", ") c.firstname + " " + c.lastname.toUpperCase()
+                        if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
+                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
                         }
                     }
                 }
@@ -778,8 +785,7 @@ class PublicationController {
                 }
             }
 
-            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
-
+            substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
             re.comment = substitutionPublication.replaceAll(re.comment)
 
     }
@@ -863,7 +869,7 @@ class PublicationController {
             }
         }
 
-        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
         e.description = substitutionPublication.replaceAll(e.description)
         e.name = substitutionPublication.replaceAll(e.name)
@@ -947,6 +953,15 @@ class PublicationController {
         createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
+    private boolean  isClueVisibleForEveryone(GenericResource clue){
+        if (clue.isIngameClue() && clue.getPossessedByRole() != null){
+            return (clue.getPossessedByRole().getType().equals("TPJ")
+                    || clue.getPossessedByRole().getType().equals("PJG"));
+        } else {
+            return false;
+        }
+    }
+
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
     private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
         for (Character c : listCharacters) {
@@ -972,6 +987,20 @@ class PublicationController {
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
+
+            wordWriter.addParagraphOfText("Mes objets : ")
+            boolean hasRessource = false
+            for (Role r : c.selectedRoles) {
+                for (GenericResource gr : gnk.genericResourceMap.values())
+                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                        hasRessource = true
+                        String pubResource = (gr.code ? gr.code + " - " : "")
+                        pubResource += (gr.comment ? gr.comment : "")
+                        wordWriter.addParagraphOfText(pubResource)
+                    }
+                (hasRessource ?: wordWriter.addParagraphOfText("Je ne possède aucun objet."))
+            }
+
 
             //Todo: Ajouter les relations entre les personnages
 
@@ -1121,9 +1150,96 @@ class PublicationController {
             if (!jsoncharlist.isEmpty()) {
                 wordWriter.addStyledParagraphOfText("T3", "Vous connaissez...")
                 String charName = c.firstname + " " + c.lastname.toUpperCase()
+
                 wordWriter.addRelationGraph(jsoncharlist, fileName, charName)
-                Graph charGraph = new Graph(gn, false)
+                Graph charGraph = new Graph(gn, false, 1)
                 wordWriter.addParagraphOfText(charGraph.getRelation(charName))
+
+
+
+                Map<Character, List<RoleHasRelationWithRole>> map_relation = c.getCharacterRelationsExceptBij(gn);
+                for (Character char2 : map_relation.keySet()) {
+                    String charName2 = char2.getFirstname() + " " + char2.getLastname().toUpperCase()
+
+                    print(charName + " == "+ charName2)
+
+                    if (charName == charName2) {
+
+                        for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                            // Test on same character
+
+                            for (RoleHasRelationWithRole r1 : relation_list) {
+                                Role role1 = r1.getterRole1()
+                                Role role2 = r1.getterRole2()
+
+                                String resRoles = "Aucun Rôle"
+
+                                substituteRolesAndPlotDescription(role1.getterPlot())
+                                if (resRoles == "Aucun Rôle")
+                                    resRoles = "- " + role1.code + " : " + role1.description
+                                else
+                                    resRoles += "\n- " + role1.code + " : " + role1.description
+
+
+                                Plot p = role1.getterPlot()
+
+                                substituteRolesAndPlotDescription(p)
+
+                                String type = r1.getRoleRelationType().getName()
+                                String link = r1.getDescription()
+                                wordWriter.addParagraphOfText(charName + " (" + role1.code + ")")
+                                wordWriter.addParagraphOfText(charName2 + " (" + role2.code + ")")
+                                wordWriter.addParagraphOfText(type)
+                                wordWriter.addParagraphOfText(resRoles)
+                            }
+                        }
+                    }
+                }
+
+
+                /*
+
+                for (Character c2 : gn.characterSet) {
+                    String charName3 = c2.firstname + " " + c2.lastname.toUpperCase()
+
+                    print(charName + " == " + charName3)
+
+                    if (charName == charName3) {
+
+
+                        Map<Character, List<RoleHasRelationWithRole>> map_relation = c2.getCharacterRelations(gn);
+                        for (Character char2 : map_relation.keySet()) {
+                            String charName2 = char2.getFirstname() + " " + char2.getLastname().toUpperCase()
+
+
+
+                            for (List<RoleHasRelationWithRole> relation_list : map_relation.values()) {
+                                // Test on same character
+
+                                for (RoleHasRelationWithRole r1 : relation_list) {
+                                    Role role1 = r1.getterOtherRole()
+
+
+                                    String resRoles = "Aucun Rôle"
+                                    String type = r1.getRoleRelationType().getName()
+
+                                    substituteRolesAndPlotDescription(role1.getterPlot())
+                                    if (resRoles == "Aucun Rôle")
+                                        resRoles = "- " + type + " : " + role1.description
+                                    else
+                                        resRoles += "\n- " + type + " : " + role1.description
+
+                                    wordWriter.addParagraphOfText(charName2 + " => " + resRoles)
+                                }
+                            }
+                        }
+                    }
+                }
+
+*/
+
+
+
                 wordWriter.addStyledParagraphOfText("T4", "Synthèses des personnages connus")
 
                 Tbl table = wordWriter.factory.createTbl()
@@ -1217,23 +1333,23 @@ class PublicationController {
             wordWriter.addStyledParagraphOfText("T2", "Staff #" + i.toString())
             wordWriter.addParagraphOfText("Type : " + c.type)
 
-            // L'événnementiel du staff
+            // L'événementiel du staff
             wordWriter.addStyledParagraphOfText("T3", "Evénementiel")
             Map<Integer, Event> events = new TreeMap<Integer, Event>();
-            // Substitution pour l'evennementiel du staff
+            // Substitution pour l'événementiel du staff
             for (Plot p : gn.selectedPlotSet)
                 for (Event e : p.events) {
                     HashMap<String, Role> rolesNames = new HashMap<>()
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(e.plot.DTDId))
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                    substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
                     if (e.name)
                         e.name = substitutionPublication.replaceAll(e.name)
                     events.put(e.timing, e)
                 }
 
-            // Publication de l'evennementiel du staff
+            // Publication de l'événementiel du staff
             for (Plot p : gn.selectedPlotSet)
                 for (Event e : p.events)
                     for (Role r : c.selectedRoles)
@@ -1261,7 +1377,7 @@ class PublicationController {
         }
     }
 
-    //Créatiion du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
+    //Création du tableau de synthèse des pitchs des intrigue pour les PJ, PNJ et PHJ
     def createPitchTablePerso(String typePerso) {
         if (typePerso == "PJ") {
             for (Plot p : gn.selectedPlotSet) {
@@ -1400,8 +1516,8 @@ class PublicationController {
                     String possessedByCharacters = ""
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                         for (Role r : c.selectedRoles) {
-                            if (r.getDTDId() == genericResource.getPossessedByRole().getDTDId()) {
-                                possessedByCharacters += (possessedByCharacters.isEmpty() ? genericResource.getPossessedByRole().code + " : " : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
+                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
                             }
                         }
                     }
@@ -1429,16 +1545,18 @@ class PublicationController {
                     for (Role r : c.selectedRoles)
                         if (r.plot.DTDId.equals(genericResource.plot.DTDId))
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
                 // Fin construction du substitutionPublication
 
+                genericResource.fromRoleText = substitutionPublication.replaceAll(genericResource.fromRoleText)
+                genericResource.toRoleText = substitutionPublication.replaceAll(genericResource.toRoleText)
                 genericResource.title = substitutionPublication.replaceAll(genericResource.title)
                 genericResource.description = substitutionPublication.replaceAll(genericResource.description)
                 wordWriter.addStyledParagraphOfText("T5", genericResource.code + " - " + genericResource.comment)
-                if (genericResource.fromRole)
-                    wordWriter.addStyledParagraphOfText("clueFrom", "De " + genericResource.fromRole.code)
-                if (genericResource.toRole)
-                    wordWriter.addStyledParagraphOfText("clueTo", "Pour " + genericResource.toRole.code)
+                if (genericResource.fromRoleText)
+                    wordWriter.addStyledParagraphOfText("clueFrom", genericResource.fromRoleText)
+                if (genericResource.toRoleText)
+                    wordWriter.addStyledParagraphOfText("clueTo", genericResource.toRoleText)
                 wordWriter.addStyledParagraphOfText("clueTitle", genericResource.title)
                 wordWriter.addStyledParagraphOfText("clueDescription", genericResource.description)
             }
@@ -1562,7 +1680,7 @@ class PublicationController {
             }
         }
 
-        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+        substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
         for (Role r : p.roles) {
             r.description = substitutionPublication.replaceAll(r.description)
@@ -1688,7 +1806,7 @@ class PublicationController {
                     }
                 }
 
-                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList())
+                substitutionPublication = new SubstitutionPublication(rolesNames, gnk.placeMap.values().toList(), gnk.genericResourceMap.values().toList(), gnk.gn.date)
 
                 if (e.name)
                     e.name = substitutionPublication.replaceAll(e.name)

@@ -402,7 +402,7 @@ class IntegrationHandler {
         return placeJsonObject
     }
 
-    public JSONObject dateIntegration(JSONObject dateJsonObject) {
+    public JSONObject dateIntegration(JSONObject dateJsonObject, boolean subDates) {
         // Date format
         // TODO VINCENT : ADAPATER avec le nouveau format
         String dateFormat = "yyyy.MM.dd HH:mm"
@@ -414,6 +414,15 @@ class IntegrationHandler {
         TimeService timeService = new TimeService()
         // Pastscene
         for (pastsceneJson in dateJsonObject.pastscenes) {
+
+            if (subDates){
+                pastsceneJson.isYearAbsolute = "true"
+                pastsceneJson.isMonthAbsolute = "true"
+                pastsceneJson.isDayAbsolute = "true"
+                pastsceneJson.isHourAbsolute = "true"
+                pastsceneJson.isMinuteAbsolute = "true"
+            }
+
             // Create pastceneTime
             Calendar calPastScene = gnBeginDate.toCalendar()
             // TODO il faut mettre dans le PastsceneTime créé tout en absolute en fonction du pastscene reçu.

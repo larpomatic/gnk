@@ -225,6 +225,10 @@ class GnXMLWriterService {
     private Element getStepsElement(Document doc, Gn gn) {
         Element steps = doc.createElement("STEPS");
         steps.setAttribute("last_step_id", gn.step);
+//        if (gn.isLife)
+//            steps.setAttribute("isLife", "true")
+//        else
+//            steps.setAttribute("isLife", "false")
 
         Element stepElement = doc.createElement("STEP");
         stepElement.setAttribute("id", "0");

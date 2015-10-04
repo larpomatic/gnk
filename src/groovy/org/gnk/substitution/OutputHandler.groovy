@@ -320,6 +320,9 @@ class OutputHandler {
                 placeDB.DTDId = el.value.DTDId
                 placeSet.add(placeDB)
             }
+            else if (placeDB == null){
+                placeSet.add(el.value)
+            }
             else {
                 el.value.gender = placeDB.gender
                 el.value.name = placeDB.name
@@ -383,6 +386,11 @@ class OutputHandler {
                 for(event in plot.events) {
                     if (event.genericPlace != null && event.genericPlace.DTDId == genericPlaceGnId) {
                         return event.genericPlace
+                    }
+                }
+                for(GenericPlace genericPlace in plot.genericPlaces) {
+                    if (genericPlace != null && genericPlace.DTDId == genericPlaceGnId) {
+                        return genericPlace
                     }
                 }
             }

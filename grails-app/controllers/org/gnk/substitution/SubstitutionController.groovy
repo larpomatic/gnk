@@ -30,7 +30,12 @@ class SubstitutionController {
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "role2perso";
+
+        if (gn.isLife)
+            gn.step = "life";
+        else
+            gn.step = "role2perso";
+
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
         Integer evenementialId = 0;
@@ -42,9 +47,12 @@ class SubstitutionController {
                 mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
-                selectedMainstream: mainstreamId as String,
-                selectedEvenemential: evenementialId as String]);
+        if (gn.isLife)
+            redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
+        else
+            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
+                                                                                selectedMainstream: mainstreamId as String,
+                                                                                selectedEvenemential: evenementialId as String]);
     }
 
     def index() {
@@ -72,6 +80,10 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
+
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "substitution";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
@@ -165,7 +177,9 @@ class SubstitutionController {
         JSONObject dateJSONObject = request.JSON
 
         IntegrationHandler integrationHandler = new IntegrationHandler()
-        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject)
+        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject, params.subDates as boolean)
+
+        params.subDates = true
 
         render dateJSONObject
     }
@@ -201,7 +215,16 @@ class SubstitutionController {
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
-        String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
+        gnkDataContainerService.gn.selectedPlotSet.each {
+            it.pastescenes.each {
+                it.isAbsoluteHour = true
+                it.isAbsoluteMinute = true
+                it.isAbsoluteDay = true
+                it.isAbsoluteMonth = true
+                it.isAbsoluteYear = true
+            }
+        }
+                String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
 
         if (gnDbId == -1) {
             render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")

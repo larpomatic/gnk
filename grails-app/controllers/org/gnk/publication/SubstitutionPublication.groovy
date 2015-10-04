@@ -2,6 +2,9 @@ package org.gnk.publication
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
+
+import java.text.SimpleDateFormat
+
 /**
  * Created with IntelliJ IDEA.
  * User: aurel_000
@@ -16,12 +19,17 @@ class SubstitutionPublication {
     private HashMap<String, Role> rolesNames
     private placeList
     private List<GenericResource> genericResourceList
+    private Date gnDate
+    private SimpleDateFormat simpleGnDate;
 
-    def SubstitutionPublication(HashMap<String, Role> rolesNames, List<Place> placeList, List<GenericResource> genericResourceList)
+    def SubstitutionPublication(HashMap<String, Role> rolesNames, List<Place> placeList, List<GenericResource> genericResourceList, Date gnDate)
     {
         this.rolesNames = rolesNames
         this.placeList = placeList
         this.genericResourceList = genericResourceList
+        this.gnDate = gnDate;
+        simpleGnDate = new SimpleDateFormat("dd/MM/yyyy");
+
         println("===================== Place ======================")
         for (Place place : placeList)
         {
@@ -71,6 +79,9 @@ class SubstitutionPublication {
                     replacement = oldReplaceResource(split[1])
                 else //enhanced syntax
                     replacement = replaceResource(split[1], split[2])
+            } else if (split[0].equals("K")) {
+                //GN constants were implemented after enhanced syntax, so we only require one function
+                replacement = replaceGnConstant(split[1], split[2])
             }
 
             input = input.replace(tag, replacement);
@@ -79,14 +90,132 @@ class SubstitutionPublication {
         return input
     }
 
+    String replaceGnConstant(String syntax, String code) {
+        String replacement = "[Constante du GN]"
+        String gender = ""
+        if (code.equals("GN-LIEU")) {
+            replacement = "[GN-Lieu]"
+            for (Place place : placeList) {
+                replacement = place.name;
+                gender = place.gender;
+                break;
+            }
+        } else if (code.equals("GN-DATE")) {
+            replacement = simpleGnDate.format(gnDate);
+        }
+
+
+        if (syntax.contains("M#") && syntax.contains("F#")) {
+            String[] switchGender = syntax.split(";")
+            if (gender.equals("M"))
+                return switchGender[0].substring(2).toLowerCase()
+            else //gender = F
+                return switchGender[1].substring(2).toLowerCase()
+        }
+
+        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+
+        switch (syntax) {
+            case "NONE" : return replacement
+            case "ART" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "M" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
+                    case "F" : return (startsWithVowel) ? "l'" + replacement : "la " + replacement
+                    case "MP" : return "les " + replacement
+                    case "FP" : return "les " + replacement
+                }
+                break
+            case "POSM" :
+                switch (gender) {
+                    case "" : return "mon " + replacement
+                    case "M" : return "mon " + replacement
+                    case "F" : return "ma " + replacement
+                    case "MP" : return "mes " + replacement
+                    case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
+                }
+                break
+            case "POSS" :
+                switch (gender) {
+                    case "" : return "son " + replacement
+                    case "M" : return "son " + replacement
+                    case "F" : return "sa " + replacement
+                    case "MP" : return "ses " + replacement
+                    case "FP" : return "ses " + replacement
+                }
+                break
+            case "POSN" :
+                switch (gender) {
+                    case "" : return "notre " + replacement
+                    case "M" : return "notre " + replacement
+                    case "F" : return "notre " + replacement
+                    case "MP" : return "nos " + replacement
+                    case "FP" : return "nos " + replacement
+                }
+                break
+            case "POSV" :
+                switch (gender) {
+                    case "" : return "votre " + replacement
+                    case "M" : return "votre " + replacement
+                    case "F" : return "votre " + replacement
+                    case "MP" : return "vos " + replacement
+                    case "FP" : return "vos " + replacement
+                }
+                break
+            case "POSL" :
+                switch (gender) {
+                    case "" : return "leur " + replacement
+                    case "M" : return "leur " + replacement
+                    case "F" : return "leur " + replacement
+                    case "MP" : return "leurs " + replacement
+                    case "FP" : return "leurs " + replacement
+                }
+                break
+            case "NOM" :
+                switch (gender) {
+                    case "" : return "un " + replacement
+                    case "M" : return "un " + replacement
+                    case "F" : return "une " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+            case "PAR" :
+                switch (gender) {
+                    case "" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "M" : return (startsWithVowel) ? "d'" + replacement : "du " + replacement
+                    case "F" : return (startsWithVowel) ? "d'" + replacement : "de la " + replacement
+                    case "MP" : return "des " + replacement
+                    case "FP" : return "des " + replacement
+                }
+                break
+        }
+
+        return replacement
+    }
+
     String replaceResource(String syntax, String code) {
         String replacement = "[Ressource générique]"
         String gender = ""
+        String content = "[Contenu indice]";
+
         for (GenericResource genericResource : genericResourceList)
         {
             if (genericResource.code.toUpperCase().equals(code)) {
                 replacement = genericResource.selectedResource.name
                 gender = genericResource.selectedResource.gender
+
+                if (genericResource.isIngameClue())
+                    content = genericResource.description;
             }
         }
 
@@ -114,13 +243,58 @@ class SubstitutionPublication {
                     case "FP" : return "les " + replacement
                 }
                 break
-            case "POS" :
+            case "POSM" :
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
                     case "F" : return "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
+                }
+                break
+            case "POSS" :
+                switch (gender) {
+                    case "" : return "son " + replacement
+                    case "M" : return "son " + replacement
+                    case "F" : return "sa " + replacement
+                    case "MP" : return "ses " + replacement
+                    case "FP" : return "ses " + replacement
+                }
+                break
+            case "POSN" :
+                switch (gender) {
+                    case "" : return "notre " + replacement
+                    case "M" : return "notre " + replacement
+                    case "F" : return "notre " + replacement
+                    case "MP" : return "nos " + replacement
+                    case "FP" : return "nos " + replacement
+                }
+                break
+            case "POSV" :
+                switch (gender) {
+                    case "" : return "votre " + replacement
+                    case "M" : return "votre " + replacement
+                    case "F" : return "votre " + replacement
+                    case "MP" : return "vos " + replacement
+                    case "FP" : return "vos " + replacement
+                }
+                break
+            case "POSL" :
+                switch (gender) {
+                    case "" : return "leur " + replacement
+                    case "M" : return "leur " + replacement
+                    case "F" : return "leur " + replacement
+                    case "MP" : return "leurs " + replacement
+                    case "FP" : return "leurs " + replacement
                 }
                 break
             case "NOM" :
@@ -140,6 +314,9 @@ class SubstitutionPublication {
                     case "MP" : return "des " + replacement
                     case "FP" : return "des " + replacement
                 }
+                break
+            case "CONT" :
+                return content;
                 break
         }
 
@@ -213,13 +390,58 @@ class SubstitutionPublication {
                     case "FP" : return "les " + replacement
                 }
                 break
-            case "POS" :
+            case "POSM" :
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
                     case "F" : return "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
+                }
+                break
+            case "POST" :
+                switch (gender) {
+                    case "" : return "ton " + replacement
+                    case "M" : return "ton " + replacement
+                    case "F" : return "ta " + replacement
+                    case "MP" : return "tes " + replacement
+                    case "FP" : return "tes " + replacement
+                }
+                break
+            case "POSS" :
+                switch (gender) {
+                    case "" : return "son " + replacement
+                    case "M" : return "son " + replacement
+                    case "F" : return "sa " + replacement
+                    case "MP" : return "ses " + replacement
+                    case "FP" : return "ses " + replacement
+                }
+                break
+            case "POSN" :
+                switch (gender) {
+                    case "" : return "notre " + replacement
+                    case "M" : return "notre " + replacement
+                    case "F" : return "notre " + replacement
+                    case "MP" : return "nos " + replacement
+                    case "FP" : return "nos " + replacement
+                }
+                break
+            case "POSV" :
+                switch (gender) {
+                    case "" : return "votre " + replacement
+                    case "M" : return "votre " + replacement
+                    case "F" : return "votre " + replacement
+                    case "MP" : return "vos " + replacement
+                    case "FP" : return "vos " + replacement
+                }
+                break
+            case "POSL" :
+                switch (gender) {
+                    case "" : return "leur " + replacement
+                    case "M" : return "leur " + replacement
+                    case "F" : return "leur " + replacement
+                    case "MP" : return "leurs " + replacement
+                    case "FP" : return "leurs " + replacement
                 }
                 break
             case "NOM" :

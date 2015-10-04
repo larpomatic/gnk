@@ -289,13 +289,11 @@ public class SelectIntrigueProcessing {
             if (role.isPJB())
             {
                 if (roleList.size() < _gn.getNbPlayers()) {
-                    role.setType("PJ")
                     roleList.add(role)
                 }
-                else
-                    role.setType("PNJ")
             }
         }
+
         for (Role role : roleList) {
             if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
                 return false;
