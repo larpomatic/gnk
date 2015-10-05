@@ -47,75 +47,69 @@ class LifeController {
             character1.getplotid_role().clear();
         }
 
-        //TODO
-        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "life"
-        gn.isLife = true
-        gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
-        gn.save(flush: true)
 
-        params.each {
-            final String key = it.key as String
-            if (key.startsWith("Life_") && it.value != "3") {
-                // Locked = 1, Banned= 2, Selected = 3
-                String[] str = key.split("_")
-                assert (str.length > 5)
-                    Integer characterId = str[1] as Integer
-                    String geTitle = str[4]
-                    String geAge = str[5]
-                for (Character character : gn.getCharacterSet()) {
-                    if (character.DTDId == characterId) {
-                        GenericEvent ge = GenericEvent.findByTitle(geTitle)
-                        if (ge != null) {
-                            int dummyInt = 999897
-                            Plot p = new Plot()
-                            p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
-                            p.lastUpdated = gn.getSelectedPlotSet().first().lastUpdated
-                            p.user = gn.getSelectedPlotSet().first().user
 
-                            p.isDraft = true
-                            p.isEvenemential = false
-                            p.isMainstream = false
-                            p.isPublic = false
-                            p.description = "Life"
-                            p.name = p.description
-                            p.setDTDId(dummyInt + character.getDTDId())
-                            p.roles = new HashSet<>()
-                            p.pastescenes = new HashSet<>()
-
-                            Role role = new Role()
-                            role.roleHasPastscenes = new HashSet<>()
-                            RoleHasPastscene rhp = new RoleHasPastscene()
-                            rhp.title = ge.title
-                            rhp.description = geAge
-                            role.roleHasPastscenes.add(rhp)
-                            role.code = geTitle
-                            role.description = geAge
-                            role.type = "PJ"
-                            role.pipi = 0
-                            role.pipr = 0
-                            role.code = "Life"
-
-                            p.roles.add(rhp)
-                            p.pastescenes.add(rhp)
-
-                            if (it.value == "1") {
-                                character.lockRole(role)
-                            } else if (it.value == "2") {
-                                character.banRole(role)
-                            }
-                            gn.addPlot(p)
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-//        removeLife(gn)
+//        params.each {
+//            final String key = it.key as String
+//            if (key.startsWith("Life_") && it.value != "3") {
+//                // Locked = 1, Banned= 2, Selected = 3
+//                String[] str = key.split("_")
+//                assert (str.length > 5)
+//                    Integer characterId = str[1] as Integer
+//                    String geTitle = str[4]
+//                    String geAge = str[5]
+//                for (Character character : gn.getCharacterSet()) {
+//                    if (character.DTDId == characterId) {
+//                        GenericEvent ge = GenericEvent.findByTitle(geTitle)
+//                        if (ge != null) {
+//                            int dummyInt = 999897
+//                            Plot p = new Plot()
+//                            p.dateCreated = gn.getSelectedPlotSet().first().dateCreated
+//                            p.lastUpdated = gn.getSelectedPlotSet().first().lastUpdated
+//                            p.user = gn.getSelectedPlotSet().first().user
+//
+//                            p.isDraft = true
+//                            p.isEvenemential = false
+//                            p.isMainstream = false
+//                            p.isPublic = false
+//                            p.description = "Life"
+//                            p.name = p.description
+//                            p.setDTDId(dummyInt + character.getDTDId())
+//                            p.roles = new HashSet<>()
+//                            p.pastescenes = new HashSet<>()
+//
+//                            Role role = new Role()
+//                            role.roleHasPastscenes = new HashSet<>()
+//                            RoleHasPastscene rhp = new RoleHasPastscene()
+//                            rhp.title = ge.title
+//                            rhp.description = geAge
+//                            role.roleHasPastscenes.add(rhp)
+//                            role.code = geTitle
+//                            role.description = geAge
+//                            role.type = "PJ"
+//                            role.pipi = 0
+//                            role.pipr = 0
+//                            role.code = "Life"
+//
+//                            p.roles.add(rhp)
+//                            p.pastescenes.add(rhp)
+//
+//                            if (it.value == "1") {
+//                                character.lockRole(role)
+//                            } else if (it.value == "2") {
+//                                character.banRole(role)
+//                            }
+//                            gn.addPlot(p)
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         addLifeEvents(gn)
 
-        //TODO
+//TODO
 //        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 //        gn.step = "life"
 //        gn.isLife = true
