@@ -107,7 +107,7 @@
             </div>
             <div class="span4">
                 <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
-                          optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
+                          optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${place?.gnConstant?.id}"/>
             </div>
         </div>
         <div class="row formRow text-center">
@@ -274,7 +274,7 @@
                 </div>
                 <div class="span4">
                     <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
-                              optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
+                              optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${place?.gnConstant?.id}"/>
                 </div>
             </div>
             <div class="row formRow text-center">

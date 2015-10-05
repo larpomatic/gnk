@@ -108,6 +108,7 @@ class GenericPlaceController {
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
         jsonGenericPlace.put("placeObject", genericPlace.getObjectType().getId());
+        jsonGenericPlace.put("gnConstant", genericPlace.getGnConstant().getId());
 
         JSONArray jsonTagList = new JSONArray();
         for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {
@@ -145,6 +146,12 @@ class GenericPlaceController {
         } else {
             return false
         }
+        if (params.containsKey("placeConstantForm")){
+            newGenericPlace.gnConstant = GnConstant.get(params.placeConstantForm as Integer);
+        } else {
+            return false
+        }
+
         if (newGenericPlace.extTags != null) {
             HashSet<GenericPlaceHasTag> genericPlaceHasTag = newGenericPlace.extTags;
             newGenericPlace.extTags.clear();

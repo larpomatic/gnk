@@ -41,9 +41,7 @@ class RedactIntrigueController {
 	}
 
 	def list(Integer max) {
-		[plotInstanceList: Plot.list(), plotInstanceTotal: Plot.count(),
-         gnConstantPlaceList: GnConstant.findAllByConstantType(GnConstant.constantTypes.PLACE),
-         gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
+		[plotInstanceList: Plot.list(), plotInstanceTotal: Plot.count()]
 	}
 
 	def create() {
@@ -102,7 +100,9 @@ class RedactIntrigueController {
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
-                screenStep: screen]
+                screenStep: screen,
+                gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
+                gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
