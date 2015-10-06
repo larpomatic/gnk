@@ -349,7 +349,7 @@
                         </div>
                         <div class="span4">
                             <g:select name="resourceConstantForm" id="resourceConstantForm" from="${gnConstantResourceList}"
-                                      optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
+                                      optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${resource?.gnConstant?.id}"/>
                         </div>
                     </div>
                     <div class="row formRow text-center">
