@@ -98,6 +98,7 @@ class SubstitutionController {
         List<Place> placeList = inputHandler.placeList
         List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
+        Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
 
         [gnInfo: gnInfo,
                 characterList: characterList,

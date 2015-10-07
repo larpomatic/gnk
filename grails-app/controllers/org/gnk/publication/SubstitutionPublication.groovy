@@ -106,6 +106,8 @@ class SubstitutionPublication {
             replacement = simpleGnDate.format(gnDate);
         } else if (code.equals("GN-HEURE")) {
             replacement = simpleGnHour.format(gnDate);
+        } else {
+
         }
 
 
