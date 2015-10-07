@@ -259,12 +259,6 @@ class GenericResourceController {
 
     def getBestResources() {
         org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
-
-        String univer_name = params.get("univerTag");
-
-        if (univer_name == null || univer_name == "")
-            return;
-
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
             if (it.key.startsWith("resourceTags_")) {
@@ -284,27 +278,30 @@ class GenericResourceController {
                 }
             }
         }
-        genericressource.setTagList(tags);
         ResourceService resourceService = new ResourceService();
-        genericressource = resourceService.findReferentialResource(genericressource, univer_name);
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+        genericressource.setTagList(tags);
 
-        String result = "";
-        int i = 0;
 
-        JSONObject object = new JSONObject();
-        for (ReferentialResource refe in genericressource.resultList)
-        {
-            i++;
-            if (i <= 5) {
-                result += refe.name + "#";
-                object.put("val", refe.name);
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < universList.size() ; i++) {
+            genericressource = resourceService.findReferentialResource(genericressource, universList[i].name);
+            jsonArray.add(universList[i].name);
+            for(ReferentialResource ref in genericressource.resultList) {
+                jsonArray.add(ref.name);
             }
+            json.put(universList[i].name,jsonArray);
+            jsonArray = [];
         }
-        if (result != "")
-            result = result.substring(0, result.length() - 1);
-        object.put("value", result);
+
         render(contentType: "application/json") {
-            object;
+            object(json: json)
+
+            return json.toString();
         }
     }
 }

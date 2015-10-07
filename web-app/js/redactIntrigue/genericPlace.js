@@ -253,29 +253,25 @@ function createNewGenericPlacePanel(data) {
     initializePopover();
 }
 
-
 // function to get 10 best places depending of tags
 function getBestPlace()
 {
+    var cont = $('#listContainer');
+
     $('#newbestPlace').click(function() {
-        $('#selectUnivers').data('status', 'create');
-        $('.bestRow').remove();
-        $('.myselect').remove();
-        $('#selectUnivers').prop('selectedIndex',0);
-        $('#selectUnivers').data('form', 'newPlaceForm');
+        var br = document.createElement("br");
+        cont.empty();
+        cont.append("Les meilleures places sont les lieux qui correspondent le mieux aux caractéristiques de votre univers.\n");
+        cont.append(br);
+        cont.append("Ces caractéristiques sont choisies à l'aide de tags.");
+        cont.append("Pour choisir les tags, cliquez sur le bouton \"Choisir tags\".");
     });
 
-    $('#selectUnivers').change(function() {
-        var status = $(this).data('status');
-        var url = $(this).data('url');
+    $('.bestPlace').click(function() {
+        var url = $('#urlBestPlace').data('url');
         var form_name = $(this).data('form');
         var form = $('form[name=' + form_name + ']');
-        var input = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "univerTag").val($(this).val());
-        form.append(input);
-
-        $('.placeLoader').css('display', '');
+        cont.empty();
 
         $.ajax({
             type: "POST",
@@ -283,42 +279,30 @@ function getBestPlace()
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                var array = data.value.split('#');
-                var cont = $('#listContainer');
-                $('.bestRow').remove();
-                $('.myselect').remove();
-                var add = 0;
-                $.each(array, function(i, v) {
-                    add = add + 1;
-                    if (v != null && v != "") {
-                        var row = $('#templateBest').clone();
-                        row.attr('id', 'row-' + i);
-                        row.removeClass('hidden');
-                        row.addClass("bestRow");
-                        row.html(v);
-                        cont.append(row);
+                $.each(data.object.json,function(i,v){
+                    var h5 = document.createElement("H4");
+                    var node = document.createTextNode(v[0]);
+                    h5.appendChild(node);
+                    cont.append(h5);
+                    var ul = document.createElement("ul");
+                    if (v.length == 1)
+                    {
+                        cont.append("Pas de meilleure place !");
                     }
+                    for(j = 1; j < v.length; j++)
+                    {
+                        var li = document.createElement("li");
+                        li.innerHTML = v[j];
+                        ul.appendChild(li);
+                    }
+                    cont.append(ul);
                 });
-                if (add <= 1) {
-                    var label = $("<label>").addClass('myselect').html("Aucun résultat correspondant à la recherche.");
-                    var cont = $('#modalBestPlace');
-                    cont.append(label);
-                }
                 $('.placeLoader').css('display', 'none');
             },
             error: function() {
                 $('.placeLoader').css('display', 'none');
-                createNotification("danger", "recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
+                createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs places correspondant à vos critères.");
             }
         })
-    });
-
-    $('.bestPlace').click(function() {
-        $('#selectUnivers').data('status', 'update');
-        $('.bestRow').remove();
-        $('.myselect').remove();
-        $('#selectUnivers').prop('selectedIndex',0);
-        var form_name = $(this).data('form');
-        $('#selectUnivers').data('form', form_name);
     });
 }

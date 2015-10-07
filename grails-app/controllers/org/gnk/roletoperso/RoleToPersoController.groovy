@@ -262,10 +262,6 @@ class RoleToPersoController {
         /**FIN AGE**/
         /***********/
 
-        // Life desactivated until it works
-//        addLifeEvents(gn)
-
-
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "role2perso"
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
