@@ -84,7 +84,7 @@ class InputHandler {
 
         // PlaceList construction
         createPlaceList(gnInst)
-
+        createConstantPlaceMap(gnInst);
         // PastsceneList construction
         createPastsceneList(gnInst)
 
@@ -272,20 +272,20 @@ class InputHandler {
             for (pastScene in plot.pastescenes) {
                 GenericPlace genericPlace = pastScene.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
-                    placeList.add(createPlace(genericPlace, plotId, gnInst))
+                    placeList.add(createPlace(genericPlace, plotId))
                 }
             }
 
             for (genericPlace in plot.genericPlaces) {
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
-                    placeList.add(createPlace(genericPlace, plotId, gnInst))
+                    placeList.add(createPlace(genericPlace, plotId))
                 }
             }
 
             for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
-                    placeList.add(createPlace(genericPlace, plotId, gnInst))
+                    placeList.add(createPlace(genericPlace, plotId))
                 }
             }
         }
@@ -375,11 +375,6 @@ class InputHandler {
             }
         }
 
-        gnPlaceConstantMap.each { Place place ->
-
-        }
-
-        return gnPlaceConstantMap;
     }
 
     public Place createConstantPlace(GenericPlace genericPlace) {
