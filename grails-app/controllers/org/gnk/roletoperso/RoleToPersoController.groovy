@@ -61,6 +61,8 @@ class RoleToPersoController {
 
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
+        gn.isLife = false
+
         for (Character character1 : gn.getterCharacterSet()) {
             character1.getSelectedRoles().clear()
             character1.getLockedRoles().clear()
@@ -259,10 +261,6 @@ class RoleToPersoController {
         /***********/
         /**FIN AGE**/
         /***********/
-
-        // Life desactivated until it works
-//        addLifeEvents(gn)
-
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "role2perso"

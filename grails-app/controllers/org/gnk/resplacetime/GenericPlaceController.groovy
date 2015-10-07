@@ -10,6 +10,7 @@ import org.gnk.tag.Tag
 class GenericPlaceController {
 
     PlaceService placeService;
+    JSONObject json;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -37,6 +38,7 @@ class GenericPlaceController {
         object.put("iscreate", res);
         object.put("genericPlace", jsonGenericPlace);
         object.put("genericPlaceTagList", jsonTagList);
+        object.put("jsonBestPlaces", json)
         render(contentType: "application/json") {
             object
         }
@@ -44,11 +46,6 @@ class GenericPlaceController {
 
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
-
-        String univer_name = params.get("univerTag");
-
-        if (univer_name == null || univer_name == "")
-            return;
 
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
@@ -64,25 +61,28 @@ class GenericPlaceController {
             }
         }
         genericplace.setTagList(tags);
-        genericplace = placeService.findReferentialPlace(genericplace, univer_name);
-        genericplace.resultList;
-        String result = "";
-        int i = 0;
 
-        JSONObject object = new JSONObject();
-        for (ReferentialPlace refe in genericplace.resultList)
-        {
-            i++;
-            if (i <= 5) {
-                result += refe.name + "#";
-                object.put("val", refe.name);
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+
+        json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < universList.size() ; i++) {
+            genericplace = placeService.findReferentialPlace(genericplace, universList[i].name);
+            jsonArray.add(universList[i].name);
+            for(ReferentialPlace ref in genericplace.resultList) {
+                jsonArray.add(ref.name);
             }
+            json.put(universList[i].name,jsonArray);
+            jsonArray = [];
         }
-        if (result != "")
-            result = result.substring(0, result.length() - 1);
-        object.put("value", result);
+
         render(contentType: "application/json") {
-            object;
+            object(json: json)
+
+            return json.toString();
         }
     }
 

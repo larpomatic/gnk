@@ -26,7 +26,7 @@
     %{--<legend><g:message code="roletoperso.roletopersoModule" default="RoleToPerso Module"/></legend>--}%
     <legend>Module Life</legend>
     <g:link action="getBack" controller="life" id="${gnInstance.id}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
-    <g:render template="result" model="[gnInstance : gnInstance, characterList : characterList, PHJList : PHJList]"/>
+    <g:render template="result" model="[gnInstance : gnInstance, characterListLife : characterListLife, PHJList : PHJList]"/>
 </div>
 </body>
 </html>

@@ -16,10 +16,11 @@ class GenericResourceXMLWriterService {
 
         genericResourceElt.appendChild(getGenericResourceTagsElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourceCommentElement(doc, genericResource));
+        genericResourceElt.appendChild(getGenericResourcePossessedByRoleElement(doc,genericResource))
         if (genericResource.isIngameClue()) {
             genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
             genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
-            genericResourceElt.appendChild(getGenericResourcePossessedByRoleElement(doc,genericResource))
+            //genericResourceElt.appendChild(getGenericResourcePossessedByRoleElement(doc,genericResource))
             genericResourceElt.appendChild(getGenericResourceFromRoleElement(doc,genericResource))
             genericResourceElt.appendChild(getGenericResourceToRoleElement(doc,genericResource))
 

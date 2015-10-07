@@ -92,10 +92,13 @@ class GenericResourceXMLReaderService {
         }
     }
     private void ReadPossessedByRoleNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {
-        assert (RESOURCE.POSSESSEDBYROLE.size() <= 1)
-        if (RESOURCE.POSSESSEDBYROLE.size() > 0 && RESOURCE.POSSESSEDBYROLE[0].text() !="") {
+       // assert (RESOURCE.POSSESSEDBYROLE.size() <= 1)
+        //if (RESOURCE.POSSESSEDBYROLE.size() > 0 && RESOURCE.POSSESSEDBYROLE[0].text() !="") {
+        if (RESOURCE.POSSESSEDBYROLE.size() == 0 || RESOURCE.POSSESSEDBYROLE[0].text() == "")
+            resourceRes.possessedByRole=  null;
+        else
             resourceRes.possessedByRole=  Role.findById(RESOURCE.POSSESSEDBYROLE[0].text() as Integer)
-        }
+        //}
     }
 
     private void ReadDescriptionNode (Node RESOURCE, GenericResource resourceRes, GNKDataContainerService dataContainer) {

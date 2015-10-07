@@ -1,4 +1,6 @@
 <div class="tabbable tabs-left placeScreen">
+    <input class="hidden" id="urlBestPlace" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" value="">
+
 <ul class="nav nav-tabs leftUl">
     <li class="active leftMenuList">
         <a href="#newPlace" data-toggle="tab" class="addPlace">
@@ -48,7 +50,7 @@
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
                     <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                 </a>
-                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
+                <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>"><i class="btnBestPlace img-circle" ></i></button>
             </div>
         </div>
 
@@ -163,13 +165,21 @@
     </div>
 
     <div id="modalBestPlace" class="modal-body">
-        <div class="span1 placeLoader" style="display:none;"></div>
-        <select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
-            <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>
-            <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
-                <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
+        <!--<div class="span1 placeLoader" style="display:none;"></div>>
+        <!--<select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>" name="univerTag">
+            <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>-->
+          <table class="display">
+             <!-- <th>Univers</th>
+             <th>Valeurs</th>-->
+            <g:each in="${plotInstance}" status="i" var="plotUniversInstance">
+               <tr>
+                   <td>${plotUniversInstance.name}</td>
+                   <td></td>
+               </tr>
             </g:each>
-        </select>
+          </table>
+
+        <!--</select>-->
         <div class="span1 placeLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
         <br>
         <ul id="listContainer" class="unstyled">
@@ -211,7 +221,7 @@
                     <a href="#placeTagsModal_${place.id}" class="btn" data-toggle="modal">
                         <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
                     </a>
-                    <button data-target="#bestPlaceModal" type="button" data-form="updatePlace_${place.id}" class="btnBestPlace bestPlace" data-toggle="modal"><i class="btnBestPlace img-circle" ></i></button>
+                    <button data-target="#bestPlaceModal" type="button" data-form="updatePlace_${place.id}" class="btnBestPlace bestPlace" data-toggle="modal" ><i class="btnBestPlace img-circle" ></i></button>
                 </div>
             </div>
 

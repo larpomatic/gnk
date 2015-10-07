@@ -31,7 +31,7 @@ class SubstitutionController {
         gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 
-        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+        if (gn.isLife)
             gn.step = "life";
         else
             gn.step = "role2perso";
@@ -47,7 +47,7 @@ class SubstitutionController {
                 mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        if (gn.selectedPlotSet?.iterator().next()?.pastescenes?.size() > 0)
+        if (gn.isLife)
             redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
         else
             redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
@@ -80,6 +80,10 @@ class SubstitutionController {
         }
 
         Gn gn = Gn.get(gnIdStr as Integer)
+
+        final gnData = new GNKDataContainerService()
+        gnData.ReadDTD(gn)
+
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "substitution";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
@@ -174,7 +178,9 @@ class SubstitutionController {
         JSONObject dateJSONObject = request.JSON
 
         IntegrationHandler integrationHandler = new IntegrationHandler()
-        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject)
+        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject, params.subDates as boolean)
+
+        params.subDates = true
 
         render dateJSONObject
     }
@@ -210,7 +216,16 @@ class SubstitutionController {
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
-        String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
+        gnkDataContainerService.gn.selectedPlotSet.each {
+            it.pastescenes.each {
+                it.isAbsoluteHour = true
+                it.isAbsoluteMinute = true
+                it.isAbsoluteDay = true
+                it.isAbsoluteMonth = true
+                it.isAbsoluteYear = true
+            }
+        }
+                String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
 
         if (gnDbId == -1) {
             render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")

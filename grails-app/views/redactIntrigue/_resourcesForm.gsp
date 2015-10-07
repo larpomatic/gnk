@@ -1,4 +1,5 @@
 <div class="tabbable tabs-left resourceScreen">
+    <input class="hidden" id="urlBestResource" data-url="<g:createLink controller="GenericResource" action="getBestResources"/>" value="">
     <ul class="nav nav-tabs leftUl">
         <li class="active leftMenuList">
             <a href="#newResource" data-toggle="tab" class="addResource">
@@ -49,8 +50,21 @@
                         <a href="#resourceTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                         </a>
-                        <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal"><i class="btnBestResource img-circle" ></i></button>
+                        <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>"> <i class="btnBestResource img-circle" ></i></button>
                     </div>
+
+                    <!-- Test for generic ressource possessor -->
+                    <div class="span1">
+                        <label for="resourceRolePossessor">
+                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
+                                  optionKey="id" optionValue="code" noSelection="${['':'Orga']}"/>
+                    </div>
+                    <!-- End test -->
+
                 </div>
                 <div class="row formRow">
                     <div class="span3">
@@ -134,6 +148,8 @@
                     <div class="span4">
                         <g:textField name="resourceTitle" id="resourceTitle" value=""/>
                     </div>
+
+                    <!-- To delete ressource possessor
                     <div class="span1">
                         <label for="resourceRolePossessor">
                             <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
@@ -143,6 +159,8 @@
                         <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
                                   optionKey="id" optionValue="code"/>
                     </div>
+                     End test -->
+
                 </div>
                 %{--<div class="row formRow hidden clueRow">--}%
                     %{--<div class="span1">--}%
@@ -247,17 +265,22 @@
         </div>
 
         <div id="modalBestResource" class="modal-body">
-            <div class="span1 ressLoader" style="display:none;"></div>
-            <select class="form-control" id="selectUniversResource" data-url="<g:createLink controller="GenericResource" action="getBestResources"/>" name="univerTag">
-                <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>
-                <g:each in="${plotUniversList}" status="i" var="plotUniversInstance">
-                    <option value="${plotUniversInstance.name}">${plotUniversInstance.name}</option>
+           <table class="display">
+            <!-- <th>Univers</th>
+             <th>Valeurs</th>-->
+                <g:each in="${plotInstance}" status="i" var="plotUniversInstance">
+                    <tr>
+                        <td>${plotUniversInstance.name}</td>
+                        <td></td>
+                    </tr>
                 </g:each>
-            </select>
-            <div class="span1 ressLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+            </table>
+
+            <!--</select>-->
+            <div class="span1 resourceLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
             <br>
             <ul id="listContainerResource" class="unstyled">
-                <li id="templateBestResource" class="hidden">TEMPLATE</li>
+                <li id="templateBest" class="hidden">TEMPLATE</li>
             </ul>
         </div>
 
@@ -298,9 +321,24 @@
                             <a href="#resourceTagsModal_${resource.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                             </a>
-                            <button data-target="#bestResourceModal" type="button" data-form="updateResource_${resource.id}" class="btnBestResource bestResource" data-toggle="modal"><i class="btnBestResource img-circle" ></i></button>
+                            <button data-target="#bestResourceModal" type="button" data-form="updateResource_${resource.id}" class="btnBestResource bestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>" ><i class="btnBestResource img-circle" ></i></button>
                         </div>
+
+                        <!-- Test for generic ressource possessor -->
+                        <div class="span1">
+                            <label for="resourceRolePossessor">
+                                <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
+                                      optionKey="id" optionValue="code" noSelection="${['':'Orga']}"
+                                      value="${resource.possessedByRole?.id}"/>
+                        </div>
+                        <!-- End test -->
+
                     </div>
+
 
                     <div class="row formRow">
                         <div class="span3">
@@ -395,6 +433,8 @@
                             <div class="span4">
                                 <g:textField name="resourceTitle" id="resourceTitle" value="${resource.title}"/>
                             </div>
+
+                    <!-- To delete resource possessor
                             <div class="span1">
                                 <label for="resourceRolePossessor">
                                     <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
@@ -404,6 +444,7 @@
                                 <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
                                           optionKey="id" optionValue="code" value="${resource.possessedByRole?.id}"/>
                             </div>
+                     End test -->
                         </div>
 
                     %{--<g:if test="${resource.title != null}">--}%

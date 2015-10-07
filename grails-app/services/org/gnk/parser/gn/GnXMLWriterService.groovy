@@ -224,6 +224,8 @@ class GnXMLWriterService {
 
     private Element getStepsElement(Document doc, Gn gn) {
         Element steps = doc.createElement("STEPS");
+
+
         steps.setAttribute("last_step_id", gn.step);
 
         Element stepElement = doc.createElement("STEP");
@@ -233,6 +235,11 @@ class GnXMLWriterService {
         stepElement.setAttribute("version", "0.1");
         stepElement.setAttribute("date", (new Date()).time.toString());
         stepElement.setAttribute("is_active", "true");
+        if (gn.isLife) {
+            stepElement.setAttribute("isLife", "true")
+        } else {
+            stepElement.setAttribute("isLife", "false")
+        }
         steps.appendChild(stepElement);
 
         return steps;

@@ -26,7 +26,7 @@
     <div class="span4">
         <form id="exportPDFButton" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
             <input type="hidden" id="plotid" name="plotid" value="${plotInstance.id}"/>
-            <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Exporter en PDF</button>
+            <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Prévisualisation</button>
         </form>
     </div>
 </div>

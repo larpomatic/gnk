@@ -53,6 +53,13 @@ class GnXMLReaderService {
         Node STEPS = GN_INFORMATION.STEPS[0]
         gn.step = STEPS.attribute("last_step_id")
 
+        if (STEPS.STEP[0].attribute("isLife") != null && STEPS.STEP[0].attribute("isLife") == "true"){
+            gn.isLife = true
+        }
+        else{
+            gn.isLife = false
+        }
+
         assert (GN_INFORMATION.PLAYERS.size() == 1)
         Node PLAYERS = GN_INFORMATION.PLAYERS[0]
         if (PLAYERS.attribute("men") != "null")
