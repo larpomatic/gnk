@@ -1,7 +1,7 @@
 <li class="modalLi row" data-name="${tagInstance.name.toLowerCase()}">
     <label class="pull-left">
         <g:checkBox name="eventGenericImplyTags_${tagInstance.id}" id="eventGenericImplyTags${genericEventInstance.id}_${tagInstance.id}"
-                checked="${genericEventInstance.hasTag(tagInstance)}"
+                checked="${genericEventInstance.implyTag(tagInstance)}"
                 onClick="hideTags('eventGenericImplyTags${genericEventInstance.id}_${tagInstance.id}', 'eventGenericImplyTagsWeight${genericEventInstance.id}_${tagInstance.id}')"/>
         ${tagInstance.name}
     </label>
@@ -9,8 +9,8 @@
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>
     </div>
     <div class="pull-right tagWeight">
-        <g:if test="${genericEventInstance.hasTag(tagInstance)}">
-            <input name="eventGenericImplyTagsWeight_${tagInstance.id}" value="${genericEventInstance.hasTagValue(tagInstance).value}" class="tagWeightInput"
+        <g:if test="${genericEventInstance.implyTag(tagInstance)}">
+            <input name="eventGenericImplyTagsWeight_${tagInstance.id}" value="${genericEventInstance.implyTagValue(tagInstance)}.value" class="tagWeightInput"
                type="number" max="101" min="-101" style="width:45px;" id="eventGenericImplyTagsWeight${genericEventInstance.id}_${tagInstance.id}">
         </g:if>
         <g:else>
