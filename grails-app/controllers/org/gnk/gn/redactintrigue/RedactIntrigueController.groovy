@@ -316,9 +316,9 @@ class RedactIntrigueController {
         tag = "L'intrigue est : "
         def non_tag = "L'intrigue n'est pas :"
         if (plot.isEvenemential)
-            tag += "Evenemential, "
+            tag += "Evénementielle, "
         else
-            non_tag += "Evénemential"
+            non_tag += "Evénementielle"
         if (plot.isMainstream)
             tag += "Mainstream, "
         else
@@ -326,7 +326,7 @@ class RedactIntrigueController {
         if (plot.isDraft)
             tag += "Draft, "
         else
-            non_tag += "Draft, "
+            non_tag += "Brouillon, "
         if (plot.isPublic)
             tag +="Publique."
         else
