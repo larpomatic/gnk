@@ -30,8 +30,7 @@ class GenericEventController {
         def genericEventInstance = new GenericEvent(params)
         genericEventInstance.genericEventHasTag.first().tag.name
         if (!genericEventInstance.save(flush: true)) {
-            render(view: "create", model: [genericEventInstance: genericEventInstance])
-            return
+            return render(view: "create", model: [genericEventInstance: genericEventInstance])
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.id])
@@ -73,9 +72,10 @@ class GenericEventController {
     }
 
     def update(Long genericEventId, Long genericEventVersion) {
-        def genericEventInstance = GenericEvent.get(genericEventId)
+//        def genericEventInstance = GenericEvent.get(genericEventId)
+        def genericEventInstance = addGenericEventHasTag()
 
-        if (!genericEventInstance) {
+        if (genericEventInstance == null) {
             flash.message = message(code: 'default.not.found.message',
                     args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventId])
             redirect(action: "list")
@@ -93,31 +93,80 @@ class GenericEventController {
             }
         }
 
-        genericEventInstance.properties = params
-
-        if (!genericEventInstance.save(flush: true)) {
-            render(view: "edit", model: [genericEventInstance: genericEventInstance])
-            return
+        if (genericEventInstance.ageMax < genericEventInstance.ageMin){
+            flash.message = "Age mininimum < Age maximum";
+            return render(view: "edit", model: [genericEventInstance: genericEventInstance])
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.id])
+//        def tempHasTag = new HashSet<>(genericEventInstance.genericEventHasTag)
+//        def tempImplyTag = new HashSet<>(genericEventInstance.genericEventCanImplyTag)
+
+//        genericEventInstance.genericEventHasTag.clear()
+//        genericEventInstance.genericEventCanImplyTag.clear()
+
+        if (!genericEventInstance.save(flush: true, failOnError: true)) {
+            return render(view: "edit", model: [genericEventInstance: genericEventInstance])
+        }
+//        else
+//        {
+//            tempHasTag.each { genericEventInstance.addToGenericEventHasTag(it)}
+//            tempImplyTag.each { genericEventInstance.addToGenericEventCanImplyTag(it)}
+//            genericEventInstance.save(flush: true, failOnError: true)
+//        }
+
+        flash.messageInfo = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.id])
 //        redirect(action: "show", id: genericEventInstance.id)
         redirect(action: "list")
     }
 
     GenericEvent addGenericEventHasTag() {
-        GenericEvent genericEventInstance = new GenericEvent(params)
+
+
+        GenericEvent genericEventInstance
+
+        genericEventInstance = GenericEvent.findById(params.genericEventId)
+        if (genericEventInstance == null) {
+            genericEventInstance = new GenericEvent(params)
+            genericEventInstance.id = ((String)params.genericEventId)?.toInteger();
+            genericEventInstance.version = 1//((String)params.genericEventVersion).toInteger();
+            genericEventInstance.lastUpdated = new Date();
+            genericEventInstance.dateCreated = new Date();
+
+            genericEventInstance.genericEventHasTag = new HashSet<>()
+            genericEventInstance.genericEventCanImplyTag = new HashSet<>()
+            genericEventInstance.genericEventCanImplyGenericEvent = new HashSet<>()
+
+        }
+
+        genericEventInstance.genericEventHasTag.clear()
+        genericEventInstance.genericEventCanImplyTag.clear()
+        genericEventInstance.genericEventCanImplyGenericEvent.clear()
 
         params.each {
-            if (it.key.toString().contains("eventGenericTagsWeight")) {
+            if (it.key.toString().contains("eventGenericTagsWeight") && it.value != null && it.value != "") {
                 GenericEventHasTag genericEventHasTag = new GenericEventHasTag();
+                genericEventHasTag.id = 0
                 genericEventHasTag.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
                 genericEventHasTag.value = it.value.toString().toInteger();
+                genericEventHasTag.dateCreated = new Date();
+                genericEventHasTag.lastUpdated = new Date();
+                genericEventHasTag.version = 1
 
-                if (genericEventInstance.genericEventHasTag == null)
-                    genericEventInstance.genericEventHasTag = new HashSet<>()
+                genericEventInstance.addToGenericEventHasTag(genericEventHasTag);
+                genericEventInstance.genericEventHasTag.add(genericEventHasTag)
+            }
 
-                genericEventInstance.genericEventHasTag.add(genericEventHasTag);
+            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
+                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
+                temp.id = 0
+                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
+                temp.value = it.value.toString().toInteger();
+                temp.dateCreated = new Date();
+                temp.lastUpdated = new Date();
+                temp.version = 1
+
+                genericEventInstance.addToGenericEventCanImplyTag(temp);
+                genericEventInstance.genericEventCanImplyTag(temp);
             }
         };
         return genericEventInstance
