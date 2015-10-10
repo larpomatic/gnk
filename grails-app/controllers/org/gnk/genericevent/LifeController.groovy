@@ -29,7 +29,7 @@ class LifeController {
         Integer gnId = gnIdStr as Integer;
 
         Gn gn = Gn.get(gnId)
-        assert (gn != null)
+       assert (gn != null)
         if (gn == null) {
             redirect(action: "list", params: params)
         }

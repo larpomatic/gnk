@@ -88,7 +88,7 @@ class GNKDataContainerService {
         readPlots(GN_DATA)
 
         // GN_INFORMATION reader
-        new GnXMLReaderService().ReadGnDTD(GNK, gn, this)
+       new GnXMLReaderService().ReadGnDTD(GNK, gn, this)
 
         // GN_DEFINITION
         //can be commented if gn.step no longer take the "publication" value
