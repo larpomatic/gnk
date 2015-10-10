@@ -92,12 +92,71 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <g:each in="${((Character) character).bannedRoles}" var="role">
+                            <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
+                                <g:if test="${((Role) role)?.code == "Life"}">
+                                    <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
+                                        <td>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                               title="${roleHasPastscenes.pastscene.description}!">${roleHasPastscenes.title}</a>
+                                        </td>
+                                        <td>
+                                            ${roleHasPastscenes.description}
+                                        </td>
+                                        <g:if test="${((Character) character).roleIsLocked(((Role) role))}">
+                                            <g:set var="selectedRadioButtonLock" value="${1}"/>
+                                        </g:if>
+                                        <g:else>
+                                            <g:set var="selectedRadioButtonLock" value="${3}"/>
+                                        </g:else>
+                                        <g:radioGroup
+                                                name="Life_${character.DTDId}_${roleHasPastscenes.roleId}_${roleIter}_${roleHasPastscenes.title}_${roleHasPastscenes.description}"
+                                                values="[1, 2, 3]"
+                                                value="2">
+                                            <td align="center">
+                                                ${it.radio}
+                                            </td>
+                                        </g:radioGroup>
+                                    </tr>
+                                </g:if>
+                            </g:each>
+                        </g:each>
+                        <g:each in="${((Character) character).lockedRoles}" var="role">
+                            <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
+                                <g:if test="${((Role) role)?.code == "Life"}">
+                                    <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
+                                        <td>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                               title="${roleHasPastscenes.pastscene.description}!">${roleHasPastscenes.title}</a>
+                                        </td>
+                                        <td>
+                                            ${roleHasPastscenes.description}
+                                        </td>
+                                        <g:if test="${((Character) character).roleIsLocked(((Role) role))}">
+                                            <g:set var="selectedRadioButtonLock" value="${1}"/>
+                                        </g:if>
+                                        <g:else>
+                                            <g:set var="selectedRadioButtonLock" value="${3}"/>
+                                        </g:else>
+                                        <g:radioGroup
+                                                name="Life_${character.DTDId}_${roleHasPastscenes.roleId}_${roleIter}_${roleHasPastscenes.title}_${roleHasPastscenes.description}"
+                                                values="[1, 2, 3]"
+                                                value="1">
+                                            <td align="center">
+                                                ${it.radio}
+                                            </td>
+                                        </g:radioGroup>
+                                    </tr>
+                                </g:if>
+                            </g:each>
+                        </g:each>
                         <g:each in="${((Character) character).specificRoles}" var="role">
                             <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
                                 <g:if test="${((Role) role)?.code == "Life"}">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
                                         <td>
-                                            <a href="#" data-toggle="tooltip" data-placement="top" title="${roleHasPastscenes.pastscene.description}!">${roleHasPastscenes.title}</a>
+                                            <a href="#" data-toggle="tooltip" data-placement="top"
+                                               title="${roleHasPastscenes.pastscene.description}!">${roleHasPastscenes.title}</a>
                                         </td>
                                         <td>
                                             ${roleHasPastscenes.description}
@@ -134,133 +193,137 @@
     </div>
     <div class="form-inline">
 %{--<g:form method="post" controller="life">--}%
+    <div class="form-actions">
 
     <div class="span1">
-        %{--<g:hiddenField name="gnId" value="${gnInstance.id}"/>--}%
+%{--<g:hiddenField name="gnId" value="${gnInstance.id}"/>--}%
 
-        <g:actionSubmit class="btn btn-primary" action="life"
-                        value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+    <g:actionSubmit class="btn btn-primary" action="life"
+                    value="${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
+</g:form>
+
+</div>
+%{----}%
+%{--<div class="form-actions">--}%
+%{--<div class="span1">--}%
+<g:form method="post" controller="substitution">
+    <g:each in="${characterListLife}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
+    <g:each in="${PHJList}" var="PHJ">
+        <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
+    </g:each>
+    <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
+    <div class="span1">
+        <g:actionSubmit class="btn btn-primary" action="index"
+                        value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
     </div>
 </g:form>
 </div>
-<div class="form-actions">
-%{--<div class="span1">--}%
-    <g:form method="post" controller="substitution">
-        <g:each in="${characterListLife}" var="PHJ">
-            <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
-        </g:each>
-        <g:each in="${PHJList}" var="PHJ">
-            <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
-        </g:each>
-        <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-        <div class="span1">
-            <g:actionSubmit class="btn btn-primary" action="index"
-                            value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
-        </div>
-    </g:form>
 </div>
+
 %{--</div>--}%
 
 %{--<script>--}%
-            %{--function sortData(){--}%
-        %{--// Read table body node.--}%
-        %{--var tableData = document.getElementById('data_table').getElementsByTagName('tbody').item(0);--}%
+%{--function sortData(){--}%
+%{--// Read table body node.--}%
+%{--var tableData = document.getElementById('data_table').getElementsByTagName('tbody').item(0);--}%
 
-        %{--// Read table row nodes.--}%
-        %{--var rowData = tableData.getElementsByTagName('tr');--}%
+%{--// Read table row nodes.--}%
+%{--var rowData = tableData.getElementsByTagName('tr');--}%
 
-        %{--for(var i = 0; i < rowData.length - 1; i++){--}%
-            %{--for(var j = 0; j < rowData.length - (i + 1); j++{--}%
+%{--for(var i = 0; i < rowData.length - 1; i++){--}%
+%{--for(var j = 0; j < rowData.length - (i + 1); j++{--}%
 
-                %{--//Swap row nodes if short condition matches--}%
-                %{--if(parseInt(rowData.item(j).getElementsByTagName('td').item(0).innerHTML) > parseInt(rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML)){--}%
-                    %{--tableData.insertBefore(rowData.item(j+1),rowData.item(j));--}%
-                %{--}--}%
-            %{--}--}%
-        %{--}--}%
-    %{--}--}%
-    %{--// Table data sorting ends....--}%
+%{--//Swap row nodes if short condition matches--}%
+%{--if(parseInt(rowData.item(j).getElementsByTagName('td').item(0).innerHTML) > parseInt(rowData.item(j+1).getElementsByTagName('td').item(0).innerHTML)){--}%
+%{--tableData.insertBefore(rowData.item(j+1),rowData.item(j));--}%
+%{--}--}%
+%{--}--}%
+%{--}--}%
+%{--}--}%
+%{--// Table data sorting ends....--}%
 %{--</script>--}%
 
 <script type="application/javascript">
-    $(function(){
-        $("#listTable1").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable2").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable3").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable4").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable5").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable6").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable7").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable8").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable9").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
-    $(function(){
-        $("#listTable10").DataTable( {
-            "order": [[ 1, "asc" ]],
-            "info":     false,
-            "paging" : false,
-            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
-        } );
-    });
+    //    $(function(){
+    //        $("#listTable1").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable2").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable3").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable4").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable5").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable6").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable7").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable8").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable9").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
+    //    $(function(){
+    //        $("#listTable10").DataTable( {
+    //            "order": [[ 1, "asc" ]],
+    //            "info":     false,
+    //            "paging" : false,
+    //            "sDom": '<"top"i>rt<"bottom"flp><"clear">'
+    //        } );
+    //    });
 </script>
