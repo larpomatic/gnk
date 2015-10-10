@@ -146,7 +146,7 @@ class GnXMLReaderService {
     private void readRoleToPersoNode(Node CHARACTERS, GNKDataContainerService dataContainer) {
         final NodeList CHARACTERLIST = CHARACTERS.CHARACTER
         CharacterXMLReaderService characterReader = new CharacterXMLReaderService()
-        //FIXME I AM FAMOUS empty lists if != null
+
         Set<Character> characterSet = dataContainer.gn.getCharacterSet()
         Set<Character> nonPlayerCharSet = dataContainer.gn.getterNonPlayerCharSet();
         Set<Character> stafCharSet = dataContainer.gn.getStaffCharSet();
