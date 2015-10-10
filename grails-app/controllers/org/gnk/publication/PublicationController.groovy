@@ -988,7 +988,7 @@ class PublicationController {
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
 
-            wordWriter.addParagraphOfText("Mes objets : ")
+            wordWriter.addStyledParagraphOfText("T3", "Mes objets : ")
             boolean hasRessource = false
             for (Role r : c.selectedRoles) {
                 for (GenericResource gr : gnk.genericResourceMap.values())
