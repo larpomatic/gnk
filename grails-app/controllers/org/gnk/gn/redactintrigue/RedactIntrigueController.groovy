@@ -473,7 +473,6 @@ class RedactIntrigueController {
             for (GenericPlaceHasTag genericPlaceHasTag : place.extTags)
             {
                 list.add(genericPlaceHasTag)
-                txt += genericPlaceHasTag.tag.name + " (" + genericPlaceHasTag.weight + "%) \n"
             }
             list.sort{ -it.weight}
             list.each { placeHasTag ->
@@ -496,13 +495,13 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("Normal", getNameObjectId(resource.objectTypeId))
             String tag = "La liste des Tags associés à la ressource sont : \n"
             for (GenericResourceHasTag resourceHasTagHasTag : resource.extTags) {
-                    tag += resourceHasTagHasTag.weight + "% - " + resourceHasTagHasTag.tag.name + " ("  + resourceHasTagHasTag.tag.parent.name + ") " + "\n"
+                    tag += resourceHasTagHasTag.weight + "% - " + resourceHasTagHasTag.tag.name + "\n"
             }
             wordWriter.addStyledParagraphOfText("T3", "Tags choisis")
             wordWriter.addStyledParagraphOfText("Normal", tag)
             wordWriter.addStyledParagraphOfText("T3", "Description")
             wordWriter.addStyledParagraphOfText("Normal", resource.comment)
-            wordWriter.addStyledParagraphOfText("T5", "La ressource est possédée par : " + resource?.possessedByRole?.code)
+            wordWriter.addStyledParagraphOfText("T5", "La ressource est détenue par : " + resource?.possessedByRole?.code)
             if (resource.isIngameClue())
             {
                 wordWriter.addStyledParagraphOfText("T3", "La ressource est présente en jeu")
@@ -524,9 +523,9 @@ class RedactIntrigueController {
                 def isbijective = ""
                 def exclusive = ""
                 def hidden = ""
-                def txt = " <> "
+                def txt = " <-> "
                 if (role1.isExclusive)
-                    txt = " > "
+                    txt = " -> "
                 wordWriter.addStyledParagraphOfText("T3",role1.weight +" (Poids) "+ role1.roleRelationType.name + txt + role1.getterOtherRole(role).code)
                 if (role1.isBijective)
                     isbijective = "bijective "
@@ -542,9 +541,9 @@ class RedactIntrigueController {
                 def isbijective = ""
                 def exclusive = ""
                 def hidden = ""
-                def txt = " <> "
+                def txt = " <-> "
                 if (role2.isExclusive)
-                    txt = " < "
+                    txt = " <- "
                 wordWriter.addStyledParagraphOfText("T3",role2.weight +" (Poids) "+ role2.roleRelationType.name + txt + role2.getterOtherRole(role).code)
                 if (role2.isBijective)
                     isbijective = "bijective "
@@ -556,6 +555,8 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("T4", "Description : ")
                 wordWriter.addStyledParagraphOfText("Normal", role2.description)
             }
+            if (role.roleHasRelationWithRolesForRole1Id.isEmpty() && role.roleHasRelationWithRolesForRole2Id.isEmpty())
+                wordWriter.addStyledParagraphOfText("Normal", "Ce rôle n'a pas de relation avec d'autres rôles")
         }
     }
 
@@ -578,7 +579,7 @@ class RedactIntrigueController {
             def numberdate = ""
             (date , numberdate) = createDate(pastscene)
             wordWriter.addStyledParagraphOfText("T3", "La scène a eu lieu il y  a : " + numberdate + " " + date)
-            wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.plot.name)
+            wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.genericPlace?.code)
             wordWriter.addStyledParagraphOfText("T3", "Rôles choisis :")
             for (RoleHasPastscene role : pastscene.roleHasPastscenes){
                 wordWriter.addStyledParagraphOfText("T4", "Rôle : " + role.role.code)
@@ -592,8 +593,13 @@ class RedactIntrigueController {
     }
 
     def createEvent(WordWriter wordWriter, Plot plot){
-        for (Event event : plot.events)
-        {
+        def eventlist = []
+        for (Event event : plot.events) {
+            eventlist.add(event)
+        }
+
+        eventlist.sort{it.timing}
+        for (Event event : eventlist){
             wordWriter.addStyledParagraphOfText("T2", event.name)
             if (event.isPublic)
                 wordWriter.addStyledParagraphOfText("T4", "L'événement est public")
