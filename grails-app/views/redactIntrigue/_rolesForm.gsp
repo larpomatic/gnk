@@ -1,5 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <g:hiddenField name="screenStep" value="1"/>
+<g:hiddenField name="plotInstance" id="plotInstanceId" value="${plotInstance.roles}"></g:hiddenField>
 
 <div class="tabbable tabs-left roleScreen">
 

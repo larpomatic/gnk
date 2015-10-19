@@ -93,6 +93,10 @@ $(function(){
     initSpanCreation();
 
     initSpanLabel('.spanLabel');
+
+    $('#GeneralSave').click(function(){
+        $('.updateRole, .updateEvent, .updatePastScene, .updatePlace, .updatePlot, .updateRelation, .updateResource').trigger("click");
+    });
 });
 
 //add span on labels like "<i:role>"
