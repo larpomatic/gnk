@@ -500,7 +500,10 @@ class IntegrationHandler {
             }
 
             pastsceneTime.absoluteYear = calPastScene.getAt(Calendar.YEAR)
-            pastsceneTime.absoluteMonth = calPastScene.getAt(Calendar.MONTH)
+            // I "know" there are 12 months
+            //String[] monthNames = new String[12]; // and populate...
+            //String name = monthNames[calendar.get(Calendar.MONTH)];
+            pastsceneTime.absoluteMonth = calPastScene.getAt(Calendar.MONTH) + 1
             pastsceneTime.absoluteDay = calPastScene.getAt(Calendar.DAY_OF_MONTH)
             pastsceneTime.absoluteHour = calPastScene.getAt(Calendar.HOUR_OF_DAY)
             pastsceneTime.absoluteMinute = calPastScene.getAt(Calendar.MINUTE)

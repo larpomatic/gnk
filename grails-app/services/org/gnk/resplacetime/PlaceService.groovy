@@ -13,37 +13,26 @@ class PlaceService {
 
     def GenericPlace findReferentialPlace (GenericPlace genericPlace, String universe) {
         LinkedList<Tag> tagsList
-        Tag areaTag = null
-        Integer maximumRate = 0
-        LinkedList<ReferentialPlace> referentialPlacesList
+        LinkedList<ReferentialPlace> referentialPlacesList = new LinkedList<>()
 
-        // Get the Area Tag
         tagsList = genericPlace.getTagList()
-        if (tagsList) {
-            for (Tag tag : tagsList) {
-                maximumRate += tag.weight
-                areaTag = tag
-            }
-        }
-
-        if (areaTag) {
-            referentialPlacesList = getReferentialPlacesOfArea(areaTag.value)
+        for (Tag tag : tagsList) {
+            referentialPlacesList.addAll(getReferentialPlacesOfArea(tag.value))
             referentialPlacesList = removeAllBannedReferentialItems(referentialPlacesList, genericPlace)
             referentialPlacesList = computeTagMatchingRate(referentialPlacesList, tagsList, universe)
-
-            // Sort the referentialResourcesList by matchingRate
-            referentialPlacesList.sort(new Comparator<ReferentialPlace>() {
-                @Override
-                int compare(ReferentialPlace o1, ReferentialPlace o2) {
-                    return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
-                }
-            })
-
-            if (referentialPlacesList.size() > hintNumber)
-                genericPlace.resultList = referentialPlacesList.subList(0, hintNumber)
-            else
-                genericPlace.resultList = referentialPlacesList
         }
+
+        referentialPlacesList.sort(new Comparator<ReferentialPlace>() {
+            @Override
+            int compare(ReferentialPlace o1, ReferentialPlace o2) {
+                return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
+            }
+        })
+
+        if (referentialPlacesList.size() > hintNumber)
+            genericPlace.resultList = referentialPlacesList.subList(0, hintNumber)
+        else
+            genericPlace.resultList = referentialPlacesList
 
         return genericPlace
     }

@@ -18,11 +18,15 @@ class GenericEvent {
     static constraints = {
 //        title{nullable:false}
         description(nullable:false);
-        ageMin min: 0, validator: {age -> age < ageMax}
-        ageMax min: 0, validator: {age -> age > ageMin}
+        ageMin min: 0; //validator: {age -> age < ageMax}
+        ageMax min: 0; //validator: {age -> age > ageMin}
+        genericEventHasTag cascade: 'all-delete-orphan'
+        genericEventCanImplyGenericEvent cascade: 'all-delete-orphan'
+        genericEventCanImplyTag cascade: 'all-delete-orphan'
     }
     static mapping = {
         description type:'text'
+//        genericEventHasTag cascade: "all-delete-orphan"
     }
     static hasMany = [ genericEventHasTag : GenericEventHasTag,
                        genericEventCanImplyGenericEvent : GenericEventCanImplyGenericEvent,

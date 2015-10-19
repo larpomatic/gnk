@@ -16,37 +16,27 @@ class ResourceService {
 
     GenericResource findReferentialResource (GenericResource genericResource, String univers) {
         LinkedList<Tag> tagsList
-        Tag typeTag = null
-        Integer maximumRate = 0
-        LinkedList<ReferentialResource> referentialResourcesList
+        LinkedList<ReferentialResource> referentialResourcesList = new LinkedList<>()
 
-        // Get the Type Tag
         tagsList = genericResource.getTagList()
-        if (tagsList) {
-            for (Tag tag : tagsList) {
-                maximumRate += tag.weight
-                typeTag = tag
-            }
-        }
-
-        if (typeTag) {
-            referentialResourcesList = getReferentialResourcesOfType(typeTag.value)
+        for (Tag tag : tagsList) {
+            referentialResourcesList.addAll(getReferentialResourcesOfType(tag.value))
             referentialResourcesList = removeAllBannedReferentialItems(referentialResourcesList, genericResource)
             referentialResourcesList = computeTagMatchingRate(referentialResourcesList, tagsList, univers)
-
-            // Sort the referentialResourcesList by matchingRate
-            referentialResourcesList.sort(new Comparator<ReferentialResource>() {
-                @Override
-                int compare(ReferentialResource o1, ReferentialResource o2) {
-                    return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
-                }
-            })
-
-            if (referentialResourcesList.size() > hintNumber)
-                genericResource.resultList = referentialResourcesList.subList(0, hintNumber)
-            else
-                genericResource.resultList = referentialResourcesList
         }
+
+        // Sort the referentialResourcesList by matchingRate
+        referentialResourcesList.sort(new Comparator<ReferentialResource>() {
+            @Override
+            int compare(ReferentialResource o1, ReferentialResource o2) {
+                return (o1.matchingRate > o2.matchingRate ? -1 : o1.matchingRate < o2.matchingRate ? 1 : 0)
+            }
+        })
+
+        if (referentialResourcesList.size() > hintNumber)
+            genericResource.resultList = referentialResourcesList.subList(0, hintNumber)
+        else
+            genericResource.resultList = referentialResourcesList
 
         return genericResource
     }

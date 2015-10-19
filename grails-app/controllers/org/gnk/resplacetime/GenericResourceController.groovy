@@ -120,6 +120,13 @@ class GenericResourceController {
         } else {
             return false
         }
+        if (params.containsKey("resourceRolePossessor")) {
+            if (params.resourceRolePossessor != "") {
+                Integer possessorId = params.resourceRolePossessor as Integer;
+                Role possessor = Role.get(possessorId);
+                newGenericResource.possessedByRole = possessor;
+            }
+        }
         if (params.containsKey("resourceObject")) {
             ObjectType objectType = ObjectType.findById(params.resourceObject as Integer);
             newGenericResource.objectType = objectType;

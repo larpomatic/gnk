@@ -146,23 +146,28 @@ class GnXMLReaderService {
     private void readRoleToPersoNode(Node CHARACTERS, GNKDataContainerService dataContainer) {
         final NodeList CHARACTERLIST = CHARACTERS.CHARACTER
         CharacterXMLReaderService characterReader = new CharacterXMLReaderService()
+
+        Set<Character> characterSet = dataContainer.gn.getCharacterSet()
+        Set<Character> nonPlayerCharSet = dataContainer.gn.getterNonPlayerCharSet();
+        Set<Character> stafCharSet = dataContainer.gn.getStaffCharSet();
+        if (characterSet == null) {
+            characterSet = new HashSet<Character>()
+            dataContainer.gn.setCharacterSet(characterSet)
+        } else {
+            characterSet.clear()
+        }
+        if (stafCharSet == null) {
+            stafCharSet = new HashSet<Character>();
+            dataContainer.gn.setStaffCharSet(stafCharSet)
+        } else {
+            stafCharSet.clear()
+        }
+        nonPlayerCharSet.clear()
         for (int i = 0; i < CHARACTERLIST.size(); i++) {
             Node CHARACTER = CHARACTERLIST.get(i)
             Character character = characterReader.getCharacterFromNode(CHARACTER, dataContainer)
 
             assert (character != null)
-
-            Set<Character> characterSet = dataContainer.gn.getCharacterSet()
-            Set<Character> nonPlayerCharSet = dataContainer.gn.getterNonPlayerCharSet();
-            Set<Character> stafCharSet = dataContainer.gn.getStaffCharSet();
-            if (characterSet == null) {
-                characterSet = new HashSet<Character>()
-                dataContainer.gn.setCharacterSet(characterSet)
-            }
-            if (stafCharSet == null) {
-                stafCharSet = new HashSet<Character>();
-                dataContainer.gn.setStaffCharSet(stafCharSet)
-            }
             if (character.isPJ())
                 characterSet.add(character)
             else if (character.isSTF())

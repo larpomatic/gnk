@@ -11,4 +11,8 @@ class GenericEventHasTag {
     Integer value
 
     static belongsTo = [tag : Tag, genericEvent : GenericEvent]
+
+    static constraints = {
+
+    }
 }

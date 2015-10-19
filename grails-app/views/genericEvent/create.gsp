@@ -9,16 +9,10 @@
 	</head>
 	<body>
 		<a href="#create-genericEvent" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
 		<div id="create-genericEvent" class="content scaffold-create" role="main">
 			<h1><g:message code="default.create.label" args="[entityName]" /></h1>
 			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>
 			<g:hasErrors bean="${genericEventInstance}">
 			<ul class="errors" role="alert">
@@ -32,7 +26,9 @@
                     <g:render template="form" model="[genericEventInstance : genericEventInstance, genericEventInstanceList : genericEventInstanceList, TagInstanceList : TagInstanceList]"/>
 				</fieldset>
 				<fieldset class="buttons">
-					<g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+					<g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+									formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 				</fieldset>
 			</g:form>
 		</div>
