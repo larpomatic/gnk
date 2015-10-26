@@ -822,7 +822,7 @@ public class RoleToPersoProcessing {
                                 }
                                 pjg = true;
                                 for (Role role_pers : character.getSelectedRoles())
-                                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG") || role_pers.type.equals("PJB")))
                                         pjg = false
 
                                 if (pjg == true) {
@@ -846,7 +846,7 @@ public class RoleToPersoProcessing {
                     }
                     pjg = true;
                     for (Role role_pers : character.getSelectedRoles())
-                        if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                        if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG") || role_pers.type.equals("PJB")))
                             pjg = false
 
 
