@@ -163,6 +163,10 @@ class GnXMLReaderService {
             } else {
                 stafCharSet.clear()
             }
+            if (nonPlayerCharSet == null){
+                nonPlayerCharSet = new HashSet<Character>()
+                dataContainer.gn.setNonPlayerCharSet(nonPlayerCharSet)
+            }
             nonPlayerCharSet.clear()
 
 
