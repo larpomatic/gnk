@@ -98,24 +98,11 @@ class GenericEventController {
             return render(view: "edit", model: [genericEventInstance: genericEventInstance])
         }
 
-//        def tempHasTag = new HashSet<>(genericEventInstance.genericEventHasTag)
-//        def tempImplyTag = new HashSet<>(genericEventInstance.genericEventCanImplyTag)
-
-//        genericEventInstance.genericEventHasTag.clear()
-//        genericEventInstance.genericEventCanImplyTag.clear()
-
-        if (!genericEventInstance.save(flush: true, failOnError: true)) {
+        if (!genericEventInstance.save(flush: true)) {
             return render(view: "edit", model: [genericEventInstance: genericEventInstance])
         }
-//        else
-//        {
-//            tempHasTag.each { genericEventInstance.addToGenericEventHasTag(it)}
-//            tempImplyTag.each { genericEventInstance.addToGenericEventCanImplyTag(it)}
-//            genericEventInstance.save(flush: true, failOnError: true)
-//        }
 
-        flash.messageInfo = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.id])
-//        redirect(action: "show", id: genericEventInstance.id)
+        flash.messageInfo = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.title])
         redirect(action: "list")
     }
 
@@ -124,7 +111,8 @@ class GenericEventController {
 
         GenericEvent genericEventInstance
 
-        genericEventInstance = GenericEvent.findById(params.genericEventId)
+        genericEventInstance = GenericEvent.findById(params.genericEventId as Integer)
+
         if (genericEventInstance == null) {
             genericEventInstance = new GenericEvent(params)
             genericEventInstance.id = ((String)params.genericEventId)?.toInteger();
@@ -135,7 +123,10 @@ class GenericEventController {
             genericEventInstance.genericEventHasTag = new HashSet<>()
             genericEventInstance.genericEventCanImplyTag = new HashSet<>()
             genericEventInstance.genericEventCanImplyGenericEvent = new HashSet<>()
-
+        }
+        else
+        {
+            genericEventInstance.properties = params
         }
 
         genericEventInstance.genericEventHasTag.clear()
@@ -152,7 +143,7 @@ class GenericEventController {
                 genericEventHasTag.lastUpdated = new Date();
                 genericEventHasTag.version = 1
 
-                genericEventInstance.addToGenericEventHasTag(genericEventHasTag);
+//                genericEventInstance.addToGenericEventHasTag(genericEventHasTag);
                 genericEventInstance.genericEventHasTag.add(genericEventHasTag)
             }
 
@@ -165,8 +156,8 @@ class GenericEventController {
                 temp.lastUpdated = new Date();
                 temp.version = 1
 
-                genericEventInstance.addToGenericEventCanImplyTag(temp);
-                genericEventInstance.genericEventCanImplyTag(temp);
+//                genericEventInstance.addToGenericEventCanImplyTag(temp);
+                genericEventInstance.genericEventCanImplyTag.add(temp);
             }
         };
         return genericEventInstance

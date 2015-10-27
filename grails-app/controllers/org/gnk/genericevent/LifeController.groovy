@@ -123,7 +123,6 @@ class LifeController {
 
         addLifeEvents(gn)
 
-//TODO
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "life"
         gn.isLife = true

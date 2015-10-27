@@ -4,6 +4,7 @@ package org.gnk.naming
 import com.gnk.substitution.Tag
 import org.gnk.tag.TagService
 import org.hibernate.FetchMode
+import org.javatuples.Pair
 import org.springframework.util.StopWatch;
 
 class NamingService
@@ -14,6 +15,10 @@ class NamingService
     LinkedList<String> usedFirstName = new LinkedList<String>()
     // Pour �viter de renvoyer toujours le meme nom en choix 1
     LinkedList<String> usedName = new LinkedList<String>()
+
+
+    //Pair<tagPerso, TagFirstName>
+    public static HashMap<Pair<Tag, Tag>, Integer> dictionnaryTagFirstnameName = new HashMap<Pair<Tag, Tag>, Integer>()
 
     /* Methode principale naming */
     LinkedList<PersoForNaming> namingMethod(LinkedList<PersoForNaming> persoList, Integer gn_id)
@@ -64,6 +69,7 @@ class NamingService
                     }
                 }
 
+                //tous les tags du perso
                 Map<org.gnk.tag.Tag, Integer> tagMap = new HashMap<org.gnk.tag.Tag, Integer>()
                 for (Tag t : tmp.getTag()) {
                     tagMap.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight)
@@ -71,6 +77,8 @@ class NamingService
 
                 for (Firstname fn : fnlist){
                     Set<FirstnameHasTag> fnHasTags = fn.getExtTags();
+
+                    //Tous les tags du nom
                     Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
                     if (fnHasTags != null) {
                         for (FirstnameHasTag fnHasTag : fnHasTags) {
