@@ -719,7 +719,7 @@ public class RoleToPersoProcessing {
                 if (no_role.size() > nb_pjg) {
 
                     Iterator<Role> iterator_role = gnPJBRoleSet.iterator()
-                    while (iterator_role.hasNext())
+                    while (iterator_role.hasNext() && no_role.size() > nb_pjg)
                     {
                         Role role = iterator_role.next()
                         if (role.getterPlot().getName().equals(plot.getName())) {
@@ -769,11 +769,31 @@ public class RoleToPersoProcessing {
                 }
                 no_role.clear()
             }
+            int incr = 1
+
+            // Remove the NPC created based on PNJsable
+            def list = []
+            for (Character car : gn.getterNonPlayerCharSet()){
+                Role role = Role.findById(car.selectedRoles[0].getDTDId())
+                if (role.type == "PJB")
+                    list.add(car)
+            }
+            for (Character car : list)
+                gn.getterNonPlayerCharSet().remove(car)
 
             for (Role NPCRole : gnPJBRoleSet) {
                 NPCRole.setType("PNJ")
-                final Character c = new Character(gn.getNbPlayers() +  gn.getterNonPlayerCharSet().size() + 2, "N", NPCRole);
-                gn.getterNonPlayerCharSet().add(c);
+                final Character c = new Character(gn.getNbPlayers() +  gn.getterNonPlayerCharSet().size() + 1 + incr, "N", NPCRole);
+                boolean add = true
+                for (Character car : gn.getterNonPlayerCharSet() + gn.getterCharacterSet())
+                {
+                    if (car.selectedRoles[0].getDTDId() == NPCRole.id)
+                        add = false;
+                }
+                if (add) {
+                    gn.getterNonPlayerCharSet().add(c);
+                    incr++
+                }
                 NPCRole.setType("PJB")
             }
         }
@@ -822,7 +842,7 @@ public class RoleToPersoProcessing {
                                 }
                                 pjg = true;
                                 for (Role role_pers : character.getSelectedRoles())
-                                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                                    if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG") || role_pers.type.equals("PJB")))
                                         pjg = false
 
                                 if (pjg == true) {
@@ -846,7 +866,7 @@ public class RoleToPersoProcessing {
                     }
                     pjg = true;
                     for (Role role_pers : character.getSelectedRoles())
-                        if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG")))
+                        if (role_pers.getPlot().getName().equals(plot.getName()) && (role_pers.type.equals("PJ") || role_pers.type.equals("PJG") || role_pers.type.equals("PJB")))
                             pjg = false
 
 

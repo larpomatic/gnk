@@ -256,9 +256,11 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T", plot.getName())
         wordWriter.addStyledParagraphOfText("ST", createSubTile(plot))
 
-        wordWriter.addStyledParagraphOfText("T1", "Description Intrigue")
+        wordWriter.addStyledParagraphOfText("T1", "Description de l'intrigue")
         createDescription(wordWriter, plot)
 
+        wordWriter.addStyledParagraphOfText("T1", "Résumé de l'intrigue")
+        createSummary(wordWriter, plot)
         wordWriter.addStyledParagraphOfText("T1", "Rôles")
         createRoles(wordWriter, plot)
 
@@ -316,9 +318,9 @@ class RedactIntrigueController {
         tag = "L'intrigue est : "
         def non_tag = "L'intrigue n'est pas :"
         if (plot.isEvenemential)
-            tag += "Evenemential, "
+            tag += "Evénementielle, "
         else
-            non_tag += "Evénemential"
+            non_tag += "Evénementielle"
         if (plot.isMainstream)
             tag += "Mainstream, "
         else
@@ -326,7 +328,7 @@ class RedactIntrigueController {
         if (plot.isDraft)
             tag += "Draft, "
         else
-            non_tag += "Draft, "
+            non_tag += "Brouillon, "
         if (plot.isPublic)
             tag +="Publique."
         else
@@ -350,39 +352,47 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("Normal", plot.pitchPnj)
     }
 
+    def createSummary(WordWriter wordWriter, Plot plot){
+        wordWriter.addStyledParagraphOfText("T2", "Liste des rôles présents")
+        for (Role role : plot.roles)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", role.code + " - " + getRoleType(role))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des places présentes")
+        for (GenericPlace genericPlace : plot.genericPlaces)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", genericPlace.code + " - " + getNameObjectId(genericPlace.objectTypeId))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des ressources utilisées")
+        for (GenericResource genericResource : plot.genericResources)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", genericResource.code + " - " + getNameObjectId(genericResource.objectTypeId))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des scènes passés passés")
+        for (Pastscene pastscene : plot.pastescenes)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", pastscene.title)
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des événements présents")
+        for (Event event : plot.events)
+        {
+            String type = ""
+            if (event.isPublic)
+                type = "Public"
+            else
+                type = "Privé"
+            wordWriter.addStyledParagraphOfText("Normal", event.name + " - " + type)
+        }
+
+    }
+
     def createRoles(WordWriter wordWriter, Plot plot){
         for(Role role : plot.roles)
         {
 
             wordWriter.addStyledParagraphOfText("T2", role.getCode())
-            String type = ""
-            switch (role.type){
-                case "PNJ" :
-                    type = "Personnage non joueur"
-                    break
-                case "PJ" :
-                    type = "Personnage joueur"
-                    break
-                case "TPJ" :
-                    type = "Tout personnage joueur"
-                    break
-                case "PHJ" :
-                    type = "Personnage non joueur (hors jeu)"
-                    break
-                case "PJG" :
-                    type = "Personnage joueur générique"
-                    break
-                case "PJB" :
-                    type = "Personnage PNJsable"
-                    break
-                case "STF" :
-                    type = "Organisateur"
-                    break
-                default:
-                    type = "There should be something there"
-                    break
-            }
-            String txt = "Le rôle est : "  + type
+
+            String txt = "Le rôle est : "  + getRoleType(role)
             if (role.type.equals("PJG"))
                 txt += " (" + role.pjgp + "%)"
             wordWriter.addStyledParagraphOfText("Normal", txt)
@@ -473,7 +483,6 @@ class RedactIntrigueController {
             for (GenericPlaceHasTag genericPlaceHasTag : place.extTags)
             {
                 list.add(genericPlaceHasTag)
-                txt += genericPlaceHasTag.tag.name + " (" + genericPlaceHasTag.weight + "%) \n"
             }
             list.sort{ -it.weight}
             list.each { placeHasTag ->
@@ -496,13 +505,13 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("Normal", getNameObjectId(resource.objectTypeId))
             String tag = "La liste des Tags associés à la ressource sont : \n"
             for (GenericResourceHasTag resourceHasTagHasTag : resource.extTags) {
-                    tag += resourceHasTagHasTag.weight + "% - " + resourceHasTagHasTag.tag.name + " ("  + resourceHasTagHasTag.tag.parent.name + ") " + "\n"
+                    tag += resourceHasTagHasTag.weight + "% - " + resourceHasTagHasTag.tag.name + "\n"
             }
             wordWriter.addStyledParagraphOfText("T3", "Tags choisis")
             wordWriter.addStyledParagraphOfText("Normal", tag)
             wordWriter.addStyledParagraphOfText("T3", "Description")
             wordWriter.addStyledParagraphOfText("Normal", resource.comment)
-            wordWriter.addStyledParagraphOfText("T5", "La ressource est possédée par : " + resource?.possessedByRole?.code)
+            wordWriter.addStyledParagraphOfText("T5", "La ressource est détenue par : " + resource?.possessedByRole?.code)
             if (resource.isIngameClue())
             {
                 wordWriter.addStyledParagraphOfText("T3", "La ressource est présente en jeu")
@@ -524,9 +533,9 @@ class RedactIntrigueController {
                 def isbijective = ""
                 def exclusive = ""
                 def hidden = ""
-                def txt = " <> "
+                def txt = " <-> "
                 if (role1.isExclusive)
-                    txt = " > "
+                    txt = " -> "
                 wordWriter.addStyledParagraphOfText("T3",role1.weight +" (Poids) "+ role1.roleRelationType.name + txt + role1.getterOtherRole(role).code)
                 if (role1.isBijective)
                     isbijective = "bijective "
@@ -542,9 +551,9 @@ class RedactIntrigueController {
                 def isbijective = ""
                 def exclusive = ""
                 def hidden = ""
-                def txt = " <> "
+                def txt = " <-> "
                 if (role2.isExclusive)
-                    txt = " < "
+                    txt = " <- "
                 wordWriter.addStyledParagraphOfText("T3",role2.weight +" (Poids) "+ role2.roleRelationType.name + txt + role2.getterOtherRole(role).code)
                 if (role2.isBijective)
                     isbijective = "bijective "
@@ -556,6 +565,8 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("T4", "Description : ")
                 wordWriter.addStyledParagraphOfText("Normal", role2.description)
             }
+            if (role.roleHasRelationWithRolesForRole1Id.isEmpty() && role.roleHasRelationWithRolesForRole2Id.isEmpty())
+                wordWriter.addStyledParagraphOfText("Normal", "Ce rôle n'a pas de relation avec d'autres rôles")
         }
     }
 
@@ -578,7 +589,7 @@ class RedactIntrigueController {
             def numberdate = ""
             (date , numberdate) = createDate(pastscene)
             wordWriter.addStyledParagraphOfText("T3", "La scène a eu lieu il y  a : " + numberdate + " " + date)
-            wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.plot.name)
+            //wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.genericPlace?.code)
             wordWriter.addStyledParagraphOfText("T3", "Rôles choisis :")
             for (RoleHasPastscene role : pastscene.roleHasPastscenes){
                 wordWriter.addStyledParagraphOfText("T4", "Rôle : " + role.role.code)
@@ -592,8 +603,13 @@ class RedactIntrigueController {
     }
 
     def createEvent(WordWriter wordWriter, Plot plot){
-        for (Event event : plot.events)
-        {
+        def eventlist = []
+        for (Event event : plot.events) {
+            eventlist.add(event)
+        }
+
+        eventlist.sort{it.timing}
+        for (Event event : eventlist){
             wordWriter.addStyledParagraphOfText("T2", event.name)
             if (event.isPublic)
                 wordWriter.addStyledParagraphOfText("T4", "L'événement est public")
@@ -627,10 +643,16 @@ class RedactIntrigueController {
                 }
                 wordWriter.addStyledParagraphOfText("T5", "Description de l'événement : ")
                 wordWriter.addStyledParagraphOfText("Normal", role.evenementialDescription)
-                wordWriter.addStyledParagraphOfText("T4", "Le personnage possède les ressources suivantes :")
-                for (RoleHasEventHasGenericResource genericResource : role.roleHasEventHasGenericResources)
+                if (role.roleHasEventHasGenericResources.isEmpty())
                 {
-                    wordWriter.addStyledParagraphOfText("Normal", genericResource.genericResource.code + " Quantité : " + genericResource.quantity)
+                    wordWriter.addStyledParagraphOfText("T4","Le personnage ne possède aucune ressource")
+                }
+                else{
+                    wordWriter.addStyledParagraphOfText("T4", "Le personnage possède les ressources suivantes :")
+                    for (RoleHasEventHasGenericResource genericResource : role.roleHasEventHasGenericResources)
+                    {
+                        wordWriter.addStyledParagraphOfText("Normal", genericResource.genericResource.code + " Quantité : " + genericResource.quantity)
+                    }
                 }
             }
         }
@@ -697,5 +719,36 @@ class RedactIntrigueController {
                 break
             return txt
         }
+    }
+
+    def getRoleType(Role role){
+        String type = ""
+        switch (role.type){
+            case "PNJ" :
+                type = "Personnage non joueur"
+                break
+            case "PJ" :
+                type = "Personnage joueur"
+                break
+            case "TPJ" :
+                type = "Tout personnage joueur"
+                break
+            case "PHJ" :
+                type = "Personnage non joueur (hors jeu)"
+                break
+            case "PJG" :
+                type = "Personnage joueur générique"
+                break
+            case "PJB" :
+                type = "Personnage PNJsable"
+                break
+            case "STF" :
+                type = "Organisateur"
+                break
+            default:
+                type = "There should be something there"
+                break
+        }
+        return type
     }
 }

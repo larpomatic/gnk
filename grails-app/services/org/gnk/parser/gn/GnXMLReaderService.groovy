@@ -146,29 +146,43 @@ class GnXMLReaderService {
     private void readRoleToPersoNode(Node CHARACTERS, GNKDataContainerService dataContainer) {
         final NodeList CHARACTERLIST = CHARACTERS.CHARACTER
         CharacterXMLReaderService characterReader = new CharacterXMLReaderService()
-        for (int i = 0; i < CHARACTERLIST.size(); i++) {
-            Node CHARACTER = CHARACTERLIST.get(i)
-            Character character = characterReader.getCharacterFromNode(CHARACTER, dataContainer)
 
-            assert (character != null)
-
+        if (CHARACTERLIST.size() != 0) {
             Set<Character> characterSet = dataContainer.gn.getCharacterSet()
             Set<Character> nonPlayerCharSet = dataContainer.gn.getterNonPlayerCharSet();
             Set<Character> stafCharSet = dataContainer.gn.getStaffCharSet();
             if (characterSet == null) {
                 characterSet = new HashSet<Character>()
                 dataContainer.gn.setCharacterSet(characterSet)
+            } else {
+                characterSet.clear()
             }
             if (stafCharSet == null) {
                 stafCharSet = new HashSet<Character>();
                 dataContainer.gn.setStaffCharSet(stafCharSet)
+            } else {
+                stafCharSet.clear()
             }
-            if (character.isPJ())
-                characterSet.add(character)
-            else if (character.isSTF())
-                stafCharSet.add(character)
-            else
-                nonPlayerCharSet.add(character)
+            if (nonPlayerCharSet == null){
+                nonPlayerCharSet = new HashSet<Character>()
+                dataContainer.gn.setNonPlayerCharSet(nonPlayerCharSet)
+            }
+            nonPlayerCharSet.clear()
+
+
+            for (int i = 0; i < CHARACTERLIST.size(); i++) {
+                Node CHARACTER = CHARACTERLIST.get(i)
+                Character character = characterReader.getCharacterFromNode(CHARACTER, dataContainer)
+
+                assert (character != null)
+
+                if (character.isPJ())
+                    characterSet.add(character)
+                else if (character.isSTF())
+                    stafCharSet.add(character)
+                else
+                    nonPlayerCharSet.add(character)
+            }
         }
     }
 
