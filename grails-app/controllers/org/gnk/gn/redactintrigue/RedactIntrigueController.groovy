@@ -256,9 +256,11 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T", plot.getName())
         wordWriter.addStyledParagraphOfText("ST", createSubTile(plot))
 
-        wordWriter.addStyledParagraphOfText("T1", "Description Intrigue")
+        wordWriter.addStyledParagraphOfText("T1", "Description de l'intrigue")
         createDescription(wordWriter, plot)
 
+        wordWriter.addStyledParagraphOfText("T1", "Résumé de l'intrigue")
+        createSummary(wordWriter, plot)
         wordWriter.addStyledParagraphOfText("T1", "Rôles")
         createRoles(wordWriter, plot)
 
@@ -350,39 +352,47 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("Normal", plot.pitchPnj)
     }
 
+    def createSummary(WordWriter wordWriter, Plot plot){
+        wordWriter.addStyledParagraphOfText("T2", "Liste des rôles présents")
+        for (Role role : plot.roles)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", role.code + " - " + getRoleType(role))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des places présentes")
+        for (GenericPlace genericPlace : plot.genericPlaces)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", genericPlace.code + " - " + getNameObjectId(genericPlace.objectTypeId))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des ressources utilisées")
+        for (GenericResource genericResource : plot.genericResources)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", genericResource.code + " - " + getNameObjectId(genericResource.objectTypeId))
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des scènes passés passés")
+        for (Pastscene pastscene : plot.pastescenes)
+        {
+            wordWriter.addStyledParagraphOfText("Normal", pastscene.title)
+        }
+        wordWriter.addStyledParagraphOfText("T2", "Liste des événements présents")
+        for (Event event : plot.events)
+        {
+            String type = ""
+            if (event.isPublic)
+                type = "Public"
+            else
+                type = "Privé"
+            wordWriter.addStyledParagraphOfText("Normal", event.name + " - " + type)
+        }
+
+    }
+
     def createRoles(WordWriter wordWriter, Plot plot){
         for(Role role : plot.roles)
         {
 
             wordWriter.addStyledParagraphOfText("T2", role.getCode())
-            String type = ""
-            switch (role.type){
-                case "PNJ" :
-                    type = "Personnage non joueur"
-                    break
-                case "PJ" :
-                    type = "Personnage joueur"
-                    break
-                case "TPJ" :
-                    type = "Tout personnage joueur"
-                    break
-                case "PHJ" :
-                    type = "Personnage non joueur (hors jeu)"
-                    break
-                case "PJG" :
-                    type = "Personnage joueur générique"
-                    break
-                case "PJB" :
-                    type = "Personnage PNJsable"
-                    break
-                case "STF" :
-                    type = "Organisateur"
-                    break
-                default:
-                    type = "There should be something there"
-                    break
-            }
-            String txt = "Le rôle est : "  + type
+
+            String txt = "Le rôle est : "  + getRoleType(role)
             if (role.type.equals("PJG"))
                 txt += " (" + role.pjgp + "%)"
             wordWriter.addStyledParagraphOfText("Normal", txt)
@@ -579,7 +589,7 @@ class RedactIntrigueController {
             def numberdate = ""
             (date , numberdate) = createDate(pastscene)
             wordWriter.addStyledParagraphOfText("T3", "La scène a eu lieu il y  a : " + numberdate + " " + date)
-            wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.genericPlace?.code)
+            //wordWriter.addStyledParagraphOfText("T3", "La scène se déroule dans le lieu : " + pastscene?.genericPlace?.code)
             wordWriter.addStyledParagraphOfText("T3", "Rôles choisis :")
             for (RoleHasPastscene role : pastscene.roleHasPastscenes){
                 wordWriter.addStyledParagraphOfText("T4", "Rôle : " + role.role.code)
@@ -633,10 +643,16 @@ class RedactIntrigueController {
                 }
                 wordWriter.addStyledParagraphOfText("T5", "Description de l'événement : ")
                 wordWriter.addStyledParagraphOfText("Normal", role.evenementialDescription)
-                wordWriter.addStyledParagraphOfText("T4", "Le personnage possède les ressources suivantes :")
-                for (RoleHasEventHasGenericResource genericResource : role.roleHasEventHasGenericResources)
+                if (role.roleHasEventHasGenericResources.isEmpty())
                 {
-                    wordWriter.addStyledParagraphOfText("Normal", genericResource.genericResource.code + " Quantité : " + genericResource.quantity)
+                    wordWriter.addStyledParagraphOfText("T4","Le personnage ne possède aucune ressource")
+                }
+                else{
+                    wordWriter.addStyledParagraphOfText("T4", "Le personnage possède les ressources suivantes :")
+                    for (RoleHasEventHasGenericResource genericResource : role.roleHasEventHasGenericResources)
+                    {
+                        wordWriter.addStyledParagraphOfText("Normal", genericResource.genericResource.code + " Quantité : " + genericResource.quantity)
+                    }
                 }
             }
         }
@@ -703,5 +719,36 @@ class RedactIntrigueController {
                 break
             return txt
         }
+    }
+
+    def getRoleType(Role role){
+        String type = ""
+        switch (role.type){
+            case "PNJ" :
+                type = "Personnage non joueur"
+                break
+            case "PJ" :
+                type = "Personnage joueur"
+                break
+            case "TPJ" :
+                type = "Tout personnage joueur"
+                break
+            case "PHJ" :
+                type = "Personnage non joueur (hors jeu)"
+                break
+            case "PJG" :
+                type = "Personnage joueur générique"
+                break
+            case "PJB" :
+                type = "Personnage PNJsable"
+                break
+            case "STF" :
+                type = "Organisateur"
+                break
+            default:
+                type = "There should be something there"
+                break
+        }
+        return type
     }
 }
