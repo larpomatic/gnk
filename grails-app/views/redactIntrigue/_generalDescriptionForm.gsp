@@ -21,7 +21,46 @@
                     <div class="span10">
                         <g:textField name="name" value="${plotInstance?.name}" required="" class="inputLargeWidth"/>
                     </div>
+
                 </div>
+
+                <div class="row formRow">
+                    <div class="span1"></div>
+                    <div class="span2">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                Variantes <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu variantSelector">
+                                <g:each in="${Plot.list()}" status="i5" var="plot">
+                                    <g:if test="${plot.variant == null}">
+                                        <li data-id="${plot.id}">
+                                            <a class="buttonRichTextEditor">
+                                                ${plot.name}
+                                            </a>
+                                        </li>
+                                    </g:if>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="span9">
+                        <table style="width:100%">
+                            <tr>
+                                Variantes de cette intrigue :
+                            </tr>
+                            <g:each in="${Plot.list()}" status="i5" var="plot">
+                                <g:if test="${(plot.variant == plotInstance.variant || plot.id == plotInstance.variant) && plot.id != plotInstance.id}">
+                                    <tr>
+                                        ${plot.name}
+                                    </tr>
+                                </g:if>
+                            </g:each>
+                        </table>
+                    </div>
+                </div>
+
 
                 <div class="row formRow">
                     <div class="span1"></div>
@@ -126,7 +165,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                        ${plotInstance.description?.encodeAsHTML()}
+                                    ${plotInstance.description?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>
