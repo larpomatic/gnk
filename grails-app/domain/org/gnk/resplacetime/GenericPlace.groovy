@@ -20,8 +20,9 @@ class GenericPlace {
     List<Place> proposedPlaces
     List<Place> bannedPlaces
     Place selectedPlace
+    GnConstant gnConstant
 
-    static belongsTo = [plot: Plot, objectType: ObjectType, gnConstant: GnConstant]
+    static belongsTo = [plot: Plot, objectType: ObjectType]
 
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,

@@ -123,7 +123,10 @@ class GenericResourceController {
             return false
         }
         if (params.containsKey("resourceConstantForm")){
-            newGenericResource.gnConstant = GnConstant.get(params.resourceConstantForm as Integer);
+            if (params.resourceConstantForm != "null")
+                newGenericResource.gnConstant = GnConstant.get(params.resourceConstantForm as Integer);
+            else
+                newGenericResource.gnConstant = null;
         } else {
             return false
         }

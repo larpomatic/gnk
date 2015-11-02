@@ -147,7 +147,10 @@ class GenericPlaceController {
             return false
         }
         if (params.containsKey("placeConstantForm")){
-            newGenericPlace.gnConstant = GnConstant.get(params.placeConstantForm as Integer);
+            if (params.placeConstantForm != "null")
+                newGenericPlace.gnConstant = GnConstant.get(params.placeConstantForm as Integer);
+            else
+                newGenericPlace.gnConstant = null;
         } else {
             return false
         }
