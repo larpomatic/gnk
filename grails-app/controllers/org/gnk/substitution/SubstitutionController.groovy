@@ -87,6 +87,7 @@ class SubstitutionController {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "substitution";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
+
         gn.save(flush: true);
         //RelationshipGraphService graphservice = new RelationshipGraphService();
         //String json = graphservice.create_graph(gn);
@@ -216,16 +217,16 @@ class SubstitutionController {
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
-        gnkDataContainerService.gn.selectedPlotSet.each {
-            it.pastescenes.each {
-                it.isAbsoluteHour = true
-                it.isAbsoluteMinute = true
-                it.isAbsoluteDay = true
-                it.isAbsoluteMonth = true
-                it.isAbsoluteYear = true
-            }
-        }
-                String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
+//        gnkDataContainerService.gn.selectedPlotSet.each {
+//            it.pastescenes.each {
+//                it.isAbsoluteHour = true
+//                it.isAbsoluteMinute = true
+//                it.isAbsoluteDay = true
+//                it.isAbsoluteMonth = true
+//                it.isAbsoluteYear = true
+//            }
+//        }
+        String xmlGN = gnXMLWriter.getGNKDTDString(gnkDataContainerService.gn)
 
         if (gnDbId == -1) {
             render(text: xmlGN, contentType: "text/xml", encoding: "UTF-8")

@@ -47,9 +47,11 @@ if (typeof jQuery !== 'undefined') {
         };
         var html = template(context);
         $(html).appendTo("body");
-        setTimeout(function() {
-            $('.notificationBox').remove();
-        }, 4000);
+        if (classe != "error") {
+            setTimeout(function () {
+                $('.notificationBox').remove();
+            }, 4000);
+        }
     }
 
     function hideTags(checkboxID, toggleID) {

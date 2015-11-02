@@ -179,9 +179,7 @@ function updateRole() {
                         }
                     },
                     error: function () {
-                        setTimeout(function(){
                             createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-                        },2000);
                     }
                 })
             }
