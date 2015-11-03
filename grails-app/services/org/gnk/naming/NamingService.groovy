@@ -18,11 +18,13 @@ class NamingService
 
 
     //Pair<tagPerso, TagFirstName>
-    public static HashMap<Pair<Tag, Tag>, Integer> dictionnaryTagFirstnameName = new HashMap<Pair<Tag, Tag>, Integer>()
+    public static HashMap<Pair<Tag, Tag>, Integer> dictionnaryTagFirstnameName;
 
     /* Methode principale naming */
     LinkedList<PersoForNaming> namingMethod(LinkedList<PersoForNaming> persoList, Integer gn_id)
     {
+        dictionnaryTagFirstnameName = new HashMap<Pair<Tag, Tag>, Integer>();
+
         LinkedList<PersoForNaming> doneperso = new LinkedList<PersoForNaming>()
         // pour les tests de naming
         usedFirstName = new LinkedList<String>()
