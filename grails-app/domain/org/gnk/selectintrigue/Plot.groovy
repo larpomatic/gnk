@@ -57,6 +57,7 @@ class Plot {
         pitchOrga (nullable: true)
         pitchPj (nullable: true)
         pitchPnj (nullable: true)
+        variant (nullable: true)
     }
 
     static mapping = {

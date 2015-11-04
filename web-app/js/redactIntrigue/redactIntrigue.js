@@ -59,6 +59,9 @@ $(function(){
         var pitchPnj = $('#plotRichTextEditorPitchPnj', form).html();
         pitchPnj = transformDescription(pitchPnj);
         $('.pitchPnjContent', form).val(pitchPnj);
+        var variant = $('#plotVariant', form).html();
+        $('.variantContent', form).val(variant);
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -68,7 +71,6 @@ $(function(){
                 if (data.object.isupdate) {
                     initializeTextEditor();
                     createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
-
                 }
                 else {
                     createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");

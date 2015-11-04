@@ -53,7 +53,7 @@
                         <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>"> <i class="btnBestResource img-circle" ></i></button>
                     </div>
 
-                    <!-- Test for generic ressource possessor -->
+                    <!-- generic ressource possessor -->
                     <div class="span1">
                         <label for="resourceRolePossessor">
                             <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
@@ -63,7 +63,7 @@
                         <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
                                   optionKey="id" optionValue="code" noSelection="${['':'Orga']}"/>
                     </div>
-                    <!-- End test -->
+                    <!-- End -->
 
                 </div>
                 <div class="row formRow">
@@ -136,19 +136,6 @@
                     <div class="span4">
                         <g:textField name="resourceTitle" id="resourceTitle" value=""/>
                     </div>
-
-                    <!-- To delete ressource possessor
-                    <div class="span1">
-                        <label for="resourceRolePossessor">
-                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
-                                  optionKey="id" optionValue="code"/>
-                    </div>
-                     End test -->
-
                 </div>
                 %{--<div class="row formRow hidden clueRow">--}%
                     %{--<div class="span1">--}%

@@ -10,6 +10,7 @@
                 <g:hiddenField name="plotPitchOrga" class="pitchOrgaContent" value=""/>
                 <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
                 <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
+                <g:hiddenField name="plotVariantField" class="variantContent" value=""/>
                 <div class="row formRow">
                     <div class="span1"></div>
                     <div class="span1">
@@ -25,27 +26,18 @@
                 </div>
 
                 <div class="row formRow">
-                    <div class="span1"></div>
                     <div class="span2">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                Variantes <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu variantSelector">
-                                <g:each in="${Plot.list()}" status="i5" var="plot">
-                                    <g:if test="${plot.variant == null}">
-                                        <li data-id="${plot.id}">
-                                            <a class="buttonRichTextEditor">
-                                                ${plot.name}
-                                            </a>
-                                        </li>
-                                    </g:if>
-                                </g:each>
-                            </ul>
-                        </div>
+                        <label for="plotVariant">
+                            <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>
+                        </label>
+                    </div>
+                    <div class="span2">
+                        <g:select name="plotVariant" id="plotVariant" from="${Plot.findAllByVariantIsNull()}"
+                                  optionKey="id" optionValue="name" noSelection="${['':'Intrigue originale']}"/>
                     </div>
 
-                    <div class="span9">
+                    <div class="span8">
+                        <g:if test="${plotInstance.variant != null}">
                         <table style="width:100%">
                             <tr>
                                 Variantes de cette intrigue :
@@ -58,6 +50,7 @@
                                 </g:if>
                             </g:each>
                         </table>
+                        </g:if>
                     </div>
                 </div>
 
