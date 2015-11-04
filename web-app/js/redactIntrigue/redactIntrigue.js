@@ -574,6 +574,9 @@ function initializePopover() {
                 $("option", $(this).closest(".popover-content")).removeClass("btn-info");
                 $(this).addClass("btn-info");
                 $(element).attr("data-tag", $(this).attr("data-tag"));
+            })
+            $(".popover select").change(function(){
+                $(element).attr("data-tag", $(this).children(":selected").attr("data-tag"));
             });
         }
     });
