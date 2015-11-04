@@ -12,6 +12,8 @@ import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.GnConstant
+import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
@@ -98,7 +100,9 @@ class RedactIntrigueController {
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
-                screenStep: screen]
+                screenStep: screen,
+                gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
+                gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {

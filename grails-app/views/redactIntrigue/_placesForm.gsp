@@ -101,7 +101,17 @@
                 <g:radio name="placeObject" id="placeObjectOffGame" value="3"/>
             </div>
         </div>
-
+        <div class="row formRow">
+            <div class="span1">
+                <label for="placeConstantForm">
+                    <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                </label>
+            </div>
+            <div class="span4">
+                <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
+                          optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${place?.gnConstant?.id}"/>
+            </div>
+        </div>
         <div class="row formRow text-center">
             <label for="placeDescription">
                 <g:message code="redactintrigue.place.placeDescription" default="Description"/>
@@ -260,13 +270,23 @@
                         <g:message code="redactintrigue.objecttype.offgame" default="Off game"/>
                     </label>
                 </div>
-
                 <div class="span1">
+
                     <g:radio name="placeObject" id="placeObjectOffGame" value="3"
                              checked="${place?.objectType?.id == 3}"/>
                 </div>
             </div>
-
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="placeConstantForm">
+                        <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                    </label>
+                </div>
+                <div class="span4">
+                    <g:select name="placeConstantForm" id="placeConstantForm" from="${gnConstantPlaceList}"
+                              optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${place?.gnConstant?.id}"/>
+                </div>
+            </div>
             <div class="row formRow text-center">
                 <label for="placeDescription">
                     <g:message code="redactintrigue.place.placeDescription" default="Description"/>

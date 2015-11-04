@@ -4,6 +4,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.ObjectType
 import org.gnk.roletoperso.Role
 
@@ -39,6 +40,8 @@ class GenericResourceXMLReaderService {
 
         // DESCRIPTION (INGAME_CLUE) reader
         ReadDescriptionNode(GENERIC_RESOURCE, genericResourceRes, dataContainer)
+
+        ReadGnConstantNode(GENERIC_RESOURCE, genericResourceRes)
 
         return genericResourceRes
     }
@@ -124,6 +127,18 @@ class GenericResourceXMLReaderService {
         assert (RESOURCE.COMMENT.size() <= 1)
         if (RESOURCE.COMMENT.size() > 0) {
             resourceRes.comment=  RESOURCE.COMMENT[0].text()
+        }
+    }
+
+    private void ReadGnConstantNode(Node RESOURCE, GenericResource genericResourceRes) {
+        assert (RESOURCE.GNCONSTANT.size() <= 1)
+        if (RESOURCE.GNCONSTANT.size() <= 0) {
+            return
+        } else {
+
+            if (RESOURCE.GNCONSTANT[0].attribute("id") != null) {
+                genericResourceRes.gnConstant = GnConstant.findById(RESOURCE.GNCONSTANT[0].attribute("id"))
+            }
         }
     }
     /* !Construction Methods */

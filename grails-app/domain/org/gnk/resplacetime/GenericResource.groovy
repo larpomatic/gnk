@@ -23,6 +23,8 @@ class GenericResource {
     String fromRoleText
     String toRoleText
 
+    GnConstant gnConstant
+
     static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role, objectType: ObjectType]
 
     // Id referenced into DTD

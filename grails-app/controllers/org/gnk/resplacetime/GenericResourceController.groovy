@@ -66,6 +66,8 @@ class GenericResourceController {
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
         jsonGenericResource.put("resourceObject", genericResource.getObjectType().getId());
+        jsonGenericResource.put("gnConstant", genericResource.getGnConstant().getId());
+
         if (genericResource.title) {
             jsonGenericResource.put("clue", true);
             jsonGenericResource.put("title", genericResource.getTitle());
@@ -117,6 +119,14 @@ class GenericResourceController {
         }
         if (params.containsKey("resourceComment")) {
             newGenericResource.comment = params.resourceComment
+        } else {
+            return false
+        }
+        if (params.containsKey("resourceConstantForm")){
+            if (params.resourceConstantForm != "null")
+                newGenericResource.gnConstant = GnConstant.get(params.resourceConstantForm as Integer);
+            else
+                newGenericResource.gnConstant = null;
         } else {
             return false
         }
