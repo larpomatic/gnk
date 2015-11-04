@@ -95,6 +95,31 @@ $(function(){
     initSpanLabel('.spanLabel');
 
     $('#GeneralSave').click(function(){
+        if ($('form[name="newRoleForm"] input[name="roleCode"]').val()){
+            $('.insertRole').trigger("click");
+        }
+        if ($('form[name="newPlaceForm"] input[name="placeCode"]').val()){
+            $('.insertPlace').trigger("click");
+        }
+        if ($('form[name="newResourceForm"] input[name="resourceCode"]').val()){
+            $('.insertResource').trigger("click");
+        }
+        var form = $('form[name="newRelationForm"]');
+        var description = $('#relationRichTextEditor', form).html();
+        if (description){
+            $('.insertRelation').trigger("click");
+        }
+        form = $('form[name="newPastSceneForm"]');
+        var title = $('#pastSceneTitleRichTextEditor', form).html();
+        if (title){
+            $('.insertPastScene').trigger("click");
+        }
+        form = $('form[name="newEventForm"]');
+        title = $('#eventTitleRichTextEditor', form).html();
+        if (title){
+            $('.insertEvent').trigger("click");
+        }
+
         $('.updateRole, .updateEvent, .updatePastScene, .updatePlace, .updatePlot, .updateRelation, .updateResource').trigger("click");
     });
 });

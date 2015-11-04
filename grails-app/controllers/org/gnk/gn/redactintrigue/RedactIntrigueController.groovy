@@ -316,7 +316,7 @@ class RedactIntrigueController {
 
         wordWriter.addStyledParagraphOfText("T2", "Propriétés de l'intrigue")
         tag = "L'intrigue est : "
-        def non_tag = "L'intrigue n'est pas :"
+        def non_tag = "L'intrigue n'est pas : "
         if (plot.isEvenemential)
             tag += "Evénementielle, "
         else
