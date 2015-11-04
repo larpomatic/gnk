@@ -105,6 +105,18 @@
                         <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"/>
                     </div>
                 </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="resourceConstantForm">
+                            <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:select name="resourceConstantForm" id="resourceConstantForm" from="${gnConstantResourceList}"
+                                  optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
+                    </div>
+                </div>
+
                 <div class="row formRow text-center">
                     <label for="resourceComment">
                         <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
@@ -354,7 +366,17 @@
                             <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"  checked="${resource?.objectType?.id == 3}"/>
                         </div>
                     </div>
-
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label for="resourceConstantForm">
+                                <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:select name="resourceConstantForm" id="resourceConstantForm" from="${gnConstantResourceList}"
+                                      optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${resource?.gnConstant?.id}"/>
+                        </div>
+                    </div>
                     <div class="row formRow text-center">
                         <label for="resourceComment">
                             <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>

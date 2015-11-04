@@ -17,6 +17,7 @@ class GenericResourceXMLWriterService {
         genericResourceElt.appendChild(getGenericResourceTagsElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourceCommentElement(doc, genericResource));
         genericResourceElt.appendChild(getGenericResourcePossessedByRoleElement(doc,genericResource))
+        genericResourceElt.appendChild(getGenericResourceGnConstantElement(doc,genericResource))
         if (genericResource.isIngameClue()) {
             genericResourceElt.appendChild(getGenericResourceTitleElement(doc, genericResource));
             genericResourceElt.appendChild(getGenericResourceDescriptionElement(doc, genericResource));
@@ -138,5 +139,16 @@ class GenericResourceXMLWriterService {
         }
 
         return descriptionElt
+    }
+
+    private Element getGenericResourceGnConstantElement(Document doc, GenericResource genericResource) {
+        Element gnConstantElement = doc.createElement("GNCONSTANT")
+
+        if (genericResource.gnConstant) {
+            gnConstantElement.setAttribute("id", genericResource.gnConstant.id.toString())
+            gnConstantElement.setAttribute("name", genericResource.gnConstant.name)
+        }
+
+        return gnConstantElement
     }
 }

@@ -14,6 +14,7 @@ class GenericPlaceXMLWriterService {
 
         genericPlaceElt.appendChild(getGenericPlaceTagsElement(doc, genericPlace));
         genericPlaceElt.appendChild(getGenericPlaceCommentElement(doc, genericPlace));
+        genericPlaceElt.appendChild(getGenericPlaceGnConstantElement(doc, genericPlace));
 
         return genericPlaceElt;
     }
@@ -62,5 +63,16 @@ class GenericPlaceXMLWriterService {
         }
 
         return commentElt
+    }
+
+    private Element getGenericPlaceGnConstantElement(Document doc, GenericPlace genericPlace) {
+        Element gnConstantElement = doc.createElement("GNCONSTANT")
+
+        if (genericPlace.gnConstant) {
+            gnConstantElement.setAttribute("id", genericPlace.gnConstant.id.toString())
+            gnConstantElement.setAttribute("name", genericPlace.gnConstant.name)
+        }
+
+        return gnConstantElement
     }
 }
