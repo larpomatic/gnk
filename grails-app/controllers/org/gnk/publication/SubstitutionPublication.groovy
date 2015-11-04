@@ -21,6 +21,7 @@ class SubstitutionPublication {
     private List<GenericResource> genericResourceList
     private Date gnDate
     private SimpleDateFormat simpleGnDate;
+    private SimpleDateFormat simpleGnHour;
 
     def SubstitutionPublication(HashMap<String, Role> rolesNames, List<Place> placeList, List<GenericResource> genericResourceList, Date gnDate)
     {
@@ -29,6 +30,7 @@ class SubstitutionPublication {
         this.genericResourceList = genericResourceList
         this.gnDate = gnDate;
         simpleGnDate = new SimpleDateFormat("dd/MM/yyyy");
+        simpleGnHour = new SimpleDateFormat("HH:mm");
 
         println("===================== Place ======================")
         for (Place place : placeList)
@@ -102,6 +104,10 @@ class SubstitutionPublication {
             }
         } else if (code.equals("GN-DATE")) {
             replacement = simpleGnDate.format(gnDate);
+        } else if (code.equals("GN-HEURE")) {
+            replacement = simpleGnHour.format(gnDate);
+        } else {
+
         }
 
 

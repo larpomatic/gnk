@@ -59,6 +59,9 @@ $(function(){
         var pitchPnj = $('#plotRichTextEditorPitchPnj', form).html();
         pitchPnj = transformDescription(pitchPnj);
         $('.pitchPnjContent', form).val(pitchPnj);
+        var variant = $('#plotVariant', form).html();
+        $('.variantContent', form).val(variant);
+
         $.ajax({
             type: "POST",
             url: form.attr("data-url"),
@@ -68,7 +71,6 @@ $(function(){
                 if (data.object.isupdate) {
                     initializeTextEditor();
                     createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
-
                 }
                 else {
                     createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
@@ -95,6 +97,31 @@ $(function(){
     initSpanLabel('.spanLabel');
 
     $('#GeneralSave').click(function(){
+        if ($('form[name="newRoleForm"] input[name="roleCode"]').val()){
+            $('.insertRole').trigger("click");
+        }
+        if ($('form[name="newPlaceForm"] input[name="placeCode"]').val()){
+            $('.insertPlace').trigger("click");
+        }
+        if ($('form[name="newResourceForm"] input[name="resourceCode"]').val()){
+            $('.insertResource').trigger("click");
+        }
+        var form = $('form[name="newRelationForm"]');
+        var description = $('#relationRichTextEditor', form).html();
+        if (description){
+            $('.insertRelation').trigger("click");
+        }
+        form = $('form[name="newPastSceneForm"]');
+        var title = $('#pastSceneTitleRichTextEditor', form).html();
+        if (title){
+            $('.insertPastScene').trigger("click");
+        }
+        form = $('form[name="newEventForm"]');
+        title = $('#eventTitleRichTextEditor', form).html();
+        if (title){
+            $('.insertEvent').trigger("click");
+        }
+
         $('.updateRole, .updateEvent, .updatePastScene, .updatePlace, .updatePlot, .updateRelation, .updateResource').trigger("click");
     });
 });
@@ -136,7 +163,7 @@ function initSpanCreation() {
         else if ($(this).closest("ul").hasClass("resourceSelector")) {
             pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
-        else if ($(this).closest("button").hasClass("gnDateButton")) {
+        else if ($(this).closest("a").hasClass("gnDateButton")) {
             pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
         }
         initializePopover();

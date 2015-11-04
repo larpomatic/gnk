@@ -17,13 +17,13 @@ $(function(){
         });
         if ($('form[name="newRoleForm"] input[name="rolePJGP"]').val() < 0 || parseInt(pjg_tot) > 100)
         {
-            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, le total des PJG est de "+pjg_tot+" et doit être strictement positif, compris entre 0 et 100%.");
+            createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, le total des PJG est de "+pjg_tot+" et doit être strictement positif, compris entre 0 et 100%.");
         }
 
         else {
             if (parseInt(pjg_tot)<100)
             {
-                createNotification("warning", "Attention", "Le total de PJG ( "+pjg_tot +") est inférieur à 100");
+                createNotification("info", "Attention", "Le total de PJG ( "+pjg_tot +") est inférieur à 100");
             }
             $.ajax({
                 type: "POST",
@@ -75,15 +75,11 @@ $(function(){
                         updateAllDescription($.unique(spanList.closest("form")));
                     }
                     else {
-                        setTimeout(function(){
-                            createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
-                        },2000);
+                            createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
                     }
                 },
                 error: function () {
-                    setTimeout(function(){
-                        createNotification("danger", "création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
-                    },2000);
+                        createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
                 }
             })
         }
@@ -100,10 +96,10 @@ function updateRole() {
             $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val("Staff");
         }
         if (($('.richTextEditor span.label-success:contains("' + roleName + '")').size() > 0) && (roleType == "STF")) {
-            createNotification("danger", "création échouée.", "Ce rôle ne peut pas être staff car il est présent dans des descriptions.");
+            createNotification("danger", "Création échouée.", "Ce rôle ne peut pas être staff car il est présent dans des descriptions.");
         }
         else if (($('.relationScreen .accordion-heading span[data-roleid="'+roleId+'"]').size() > 0) && (roleType == "STF")) {
-            createNotification("danger", "création échouée.", "Ce rôle ne peut pas être staff car il possède des relations.");
+            createNotification("danger", "Création échouée.", "Ce rôle ne peut pas être staff car il possède des relations.");
         }
         else {
             if (roleType == "STF") {
@@ -136,7 +132,7 @@ function updateRole() {
             else {
                 if (parseInt(pjgp_tot)<100)
                 {
-                    createNotification("warning", "Attention", "Le total de PJG ( "+pjgp_tot +") est inférieur à 100");
+                    createNotification("info", "Attention", "Le total de PJG ( "+pjgp_tot +") est inférieur à 100");
                 }
                 $.ajax({
                     type: "POST",
@@ -173,13 +169,11 @@ function updateRole() {
                             });
                         }
                         else {
-                            setTimeout(function(){
-                                createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
-                            },2000);
+                                createNotification("danger", "Modifications échouées.", "Votre rôle : "+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"  n'a pas pu être modifié, une erreur s'est produite.");
                         }
                     },
                     error: function () {
-                            createNotification("danger", "Modifications échouées.", "Votre rôle n'a pas pu être modifié, une erreur s'est produite.");
+                            createNotification("danger", "Modifications échouées.", "Votre rôle : "+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"  n'a pas pu être modifié, une erreur s'est produite.");
                     }
                 })
             }
@@ -198,7 +192,7 @@ function removeRole(object) {
         }
     });
     if (isRolePresentInDescriptions) {
-        createNotification("danger", "suppression impossible.", "Votre rôle est utilisé dans certaines descriptions."
+        createNotification("danger", "Suppression impossible.", "Votre rôle est utilisé dans certaines descriptions."
             + " Veuillez supprimer l'utilisation de ce rôle dans les descriptions avant de supprimer l'entité rôle.");
     }
     else {
@@ -235,11 +229,11 @@ function removeRole(object) {
                     createNotification("success", "Supression réussie.", "Votre rôle a bien été supprimé.");
                 }
                 else {
-                    createNotification("danger", "suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
+                    createNotification("danger", "Suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
+                createNotification("danger", "Suppression échouée.", "Votre rôle n'a pas pu être supprimé, une erreur s'est produite.");
             }
         });
     }

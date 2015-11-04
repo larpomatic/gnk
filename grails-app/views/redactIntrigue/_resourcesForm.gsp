@@ -53,7 +53,7 @@
                         <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>"> <i class="btnBestResource img-circle" ></i></button>
                     </div>
 
-                    <!-- Test for generic ressource possessor -->
+                    <!-- generic ressource possessor -->
                     <div class="span1">
                         <label for="resourceRolePossessor">
                             <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
@@ -63,7 +63,7 @@
                         <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
                                   optionKey="id" optionValue="code" noSelection="${['':'Orga']}"/>
                     </div>
-                    <!-- End test -->
+                    <!-- End -->
 
                 </div>
                 <div class="row formRow">
@@ -105,6 +105,18 @@
                         <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"/>
                     </div>
                 </div>
+                <div class="row formRow">
+                    <div class="span1">
+                        <label for="resourceConstantForm">
+                            <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                        </label>
+                    </div>
+                    <div class="span4">
+                        <g:select name="resourceConstantForm" id="resourceConstantForm" from="${gnConstantResourceList}"
+                                  optionKey="id" required="" optionValue="name" noSelection="${['null':'']}"/>
+                    </div>
+                </div>
+
                 <div class="row formRow text-center">
                     <label for="resourceComment">
                         <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
@@ -136,19 +148,6 @@
                     <div class="span4">
                         <g:textField name="resourceTitle" id="resourceTitle" value=""/>
                     </div>
-
-                    <!-- To delete ressource possessor
-                    <div class="span1">
-                        <label for="resourceRolePossessor">
-                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <g:select name="resourceRolePossessor" id="resourceRolePossessor" from="${plotInstance.roles}"
-                                  optionKey="id" optionValue="code"/>
-                    </div>
-                     End test -->
-
                 </div>
                 %{--<div class="row formRow hidden clueRow">--}%
                     %{--<div class="span1">--}%
@@ -367,7 +366,17 @@
                             <g:radio name="resourceObject" id="resourceObjectOffGame" value="3"  checked="${resource?.objectType?.id == 3}"/>
                         </div>
                     </div>
-
+                    <div class="row formRow">
+                        <div class="span1">
+                            <label for="resourceConstantForm">
+                                <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                            </label>
+                        </div>
+                        <div class="span4">
+                            <g:select name="resourceConstantForm" id="resourceConstantForm" from="${gnConstantResourceList}"
+                                      optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="${resource?.gnConstant?.id}"/>
+                        </div>
+                    </div>
                     <div class="row formRow text-center">
                         <label for="resourceComment">
                             <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>

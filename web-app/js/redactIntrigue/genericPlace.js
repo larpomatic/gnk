@@ -100,7 +100,7 @@ function updatePlace() {
             }
         }
         if (false == mandatoryTagFound) {
-            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie' pour le lieu "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" ");
             return;
         }
 
@@ -111,7 +111,7 @@ function updatePlace() {
             dataType: "json",
             success: function (data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre lieu a bien été modifié.");
+                    createNotification("success", "Modifications réussies.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" a bien été modifié.");
                     $('.placeScreen .leftMenuList a[href="#place_' + data.object.id + '"]').html(data.object.name);
                     $('.placeSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
@@ -124,11 +124,11 @@ function updatePlace() {
                     });
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être modifié, une erreur s'est produite.");
                 }
             },
             error: function () {
-                createNotification("danger", "Modifications échouées.", "Votre lieu n'a pas pu être modifié, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être modifié, une erreur s'est produite.");
             }
         })
     });
@@ -145,7 +145,7 @@ function removePlace(object) {
         }
     });
     if (isPlacePresentInDescriptions) {
-        createNotification("danger", "suppression impossible.", "Votre lieu est utilisé dans certaines descriptions."
+        createNotification("danger", "suppression impossible.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" est utilisé dans certaines descriptions."
             + " Veuillez supprimer l'utilisation de ce lieu dans les descriptions avant de supprimer l'entité lieu.");
     }
     else {
@@ -167,14 +167,14 @@ function removePlace(object) {
                             $(this).remove();
                         }
                     });
-                    createNotification("success", "Supression réussie.", "Votre lieu a bien été supprimé.");
+                    createNotification("success", "Supression réussie.", "Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" a bien été supprimé.");
                 }
                 else {
-                    createNotification("danger", "suppression échouée.", "Votre lieu n'a pas pu être supprimé, une erreur s'est produite.");
+                    createNotification("danger", "Suppression échouée.", "Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être supprimé, une erreur s'est produite.");
                 }
             },
             error: function () {
-                createNotification("danger", "suppression échouée.", "Votre lieu n'a pas pu être supprimé, une erreur s'est produite.");
+                createNotification("danger", "Suppression échouée.", "Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être supprimé, une erreur s'est produite.");
             }
         });
     }

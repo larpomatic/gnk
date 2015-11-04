@@ -4,6 +4,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.tag.TagXMLReaderService
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.ObjectType
 import org.gnk.selectintrigue.Plot
 
@@ -23,6 +24,8 @@ class GenericPlaceXMLReaderService {
 
         // TAGS reader
         ReadTagsNode(GENERICPLACE, genericPlaceRes, dataContainer)
+
+        ReadGnConstantNode(GENERICPLACE, genericPlaceRes)
 
         return genericPlaceRes
     }
@@ -73,6 +76,18 @@ class GenericPlaceXMLReaderService {
         assert (GENERICPLACE.COMMENT.size() <= 1)
         if (GENERICPLACE.COMMENT.size() > 0) {
             genericPlaceRes.comment =  GENERICPLACE.COMMENT[0].text()
+        }
+    }
+
+    private void ReadGnConstantNode(Node GENERICPLACE, GenericPlace genericPlaceRes) {
+        assert (GENERICPLACE.GNCONSTANT.size() <= 1)
+        if (GENERICPLACE.GNCONSTANT.size() <= 0) {
+            return
+        } else {
+
+            if (GENERICPLACE.GNCONSTANT[0].attribute("id") != null) {
+                genericPlaceRes.gnConstant = GnConstant.findById(GENERICPLACE.GNCONSTANT[0].attribute("id"))
+            }
         }
     }
     /* !Construction Methods */

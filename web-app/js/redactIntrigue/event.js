@@ -99,7 +99,7 @@ function updateEvent() {
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre évènement a bien été modifié.");
+                    createNotification("success", "Modifications réussies.", "Votre évènement : "+ title +" a bien été modifié.");
                     $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + convertHTMLRegisterHelper(data.object.name));
                     $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('.roleScreen a[data-eventId="' + data.object.id + '"]').html(data.object.timing + "% - " + convertHTMLRegisterHelper(data.object.name));
@@ -132,11 +132,11 @@ function updateEvent() {
                     initializeTextEditor();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre évènement : " + title + " n'a pas pu être modifié, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre évènement n'a pas pu être modifié, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre évènement : " + title +" n'a pas pu être modifié, une erreur s'est produite.");
             }
         })
     });

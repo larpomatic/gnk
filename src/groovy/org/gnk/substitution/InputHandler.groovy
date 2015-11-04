@@ -17,6 +17,7 @@ class InputHandler {
     List<Pastscene> pastsceneList
     List<Event> eventList
     org.gnk.ressplacetime.GenericResource genericResource
+    Map<String, Place> gnPlaceConstantMap
 
     public void parseGN(String gnString) {
         // Reader
@@ -83,7 +84,7 @@ class InputHandler {
 
         // PlaceList construction
         createPlaceList(gnInst)
-
+        createConstantPlaceMap(gnInst);
         // PastsceneList construction
         createPastsceneList(gnInst)
 
@@ -311,6 +312,7 @@ class InputHandler {
         place.comment = genericPlace.comment
         // ObjectType
         place.objectType = genericPlace.objectType.type
+
 //        // In Gane
 //        place.isInGame = genericPlace.
 
@@ -331,6 +333,88 @@ class InputHandler {
         def plot = org.gnk.selectintrigue.Plot.get(plotId)
         // Plot name
         place.plotName = plot.name
+
+        return place
+    }
+
+    private Map<String, Place> createConstantPlaceMap (Gn gnInst){
+
+        gnPlaceConstantMap = new HashMap<String, Place>();
+
+        //For each genericPlace in the gn, we check if it is associated to a constant
+        //If it is, we add its tags to a new place associated with the constant
+        for (plot in gnInst.selectedPlotSet) {
+            String plotId = plot.DTDId as String
+            for (pastScene in plot.pastescenes) {
+                GenericPlace genericPlace = pastScene.genericPlace
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                }
+            }
+
+            for (genericPlace in plot.genericPlaces) {
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                }
+            }
+
+            for (event in plot.events) {
+                GenericPlace genericPlace = event.genericPlace
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                }
+            }
+        }
+
+    }
+
+    public Place createConstantPlace(GenericPlace genericPlace) {
+        Place place = new Place();
+        place.objectType = genericPlace.objectType.type
+
+        // TagList
+        place.tagList = []
+        if (genericPlace.extTags) {
+            for (GenericPlaceHasTag genericPlaceHasTag : genericPlace.extTags) {
+                Tag tagData = new Tag()
+                tagData.value = genericPlaceHasTag.tag.name
+                tagData.family = genericPlaceHasTag.tag.parent.name
+                tagData.weight = genericPlaceHasTag.weight as Integer
+
+                place.tagList.add(tagData)
+            }
+        }
+
+        return place
+    }
+
+    public Place addTagsToConstantPlace(GenericPlace genericPlace, Place place) {
+
+        // TagList
+        if (genericPlace.extTags) {
+            for (GenericPlaceHasTag genericPlaceHasTag : genericPlace.extTags) {
+                Tag tagData = new Tag()
+                tagData.value = genericPlaceHasTag.tag.name
+                tagData.family = genericPlaceHasTag.tag.parent.name
+                tagData.weight = genericPlaceHasTag.weight as Integer
+
+                place.tagList.add(tagData)
+            }
+        }
+
+        // Plot
+        //def plot = org.gnk.selectintrigue.Plot.get(plotId)
+        // Plot name
+        //place.plotName = plot.name
 
         return place
     }

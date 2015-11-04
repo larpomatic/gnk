@@ -10,6 +10,7 @@
                 <g:hiddenField name="plotPitchOrga" class="pitchOrgaContent" value=""/>
                 <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
                 <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
+                <g:hiddenField name="plotVariantField" class="variantContent" value=""/>
                 <div class="row formRow">
                     <div class="span1"></div>
                     <div class="span1">
@@ -21,7 +22,38 @@
                     <div class="span10">
                         <g:textField name="name" value="${plotInstance?.name}" required="" class="inputLargeWidth"/>
                     </div>
+
                 </div>
+
+                <div class="row formRow">
+                    <div class="span2">
+                        <label for="plotVariant">
+                            <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>
+                        </label>
+                    </div>
+                    <div class="span2">
+                        <g:select name="plotVariant" id="plotVariant" from="${Plot.findAllByVariantIsNull()}"
+                                  optionKey="id" optionValue="name" noSelection="${['':'Intrigue originale']}"/>
+                    </div>
+
+                    <div class="span8">
+                        <g:if test="${plotInstance.variant != null}">
+                        <table style="width:100%">
+                            <tr>
+                                Variantes de cette intrigue :
+                            </tr>
+                            <g:each in="${Plot.list()}" status="i5" var="plot">
+                                <g:if test="${(plot.variant == plotInstance.variant || plot.id == plotInstance.variant) && plot.id != plotInstance.id}">
+                                    <tr>
+                                        ${plot.name}
+                                    </tr>
+                                </g:if>
+                            </g:each>
+                        </table>
+                        </g:if>
+                    </div>
+                </div>
+
 
                 <div class="row formRow">
                     <div class="span1"></div>
@@ -126,7 +158,7 @@
 
                                 <!-- Editor -->
                                 <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                        ${plotInstance.description?.encodeAsHTML()}
+                                    ${plotInstance.description?.encodeAsHTML()}
                                 </div>
                             </div>
                         </div>

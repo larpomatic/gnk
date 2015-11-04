@@ -12,6 +12,8 @@ import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
+import org.gnk.resplacetime.GnConstant
+import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
@@ -98,7 +100,9 @@ class RedactIntrigueController {
                 resourceTagList: tagService.getResourceTagQuery(),
                 placeTagList: tagService.getPlaceTagQuery(),
                 relationTypes: RoleRelationType.list(),
-                screenStep: screen]
+                screenStep: screen,
+                gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
+                gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
@@ -159,6 +163,7 @@ class RedactIntrigueController {
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
         plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;
+        plotInstance.variant = params.plotVariant == "" ? null : Integer.parseInt(params.plotVariant);
         if (plotInstance.extTags) {
             HashSet<PlotHasTag> plotHasTags = plotInstance.extTags;
             PlotHasTag.deleteAll(plotHasTags);
@@ -316,7 +321,7 @@ class RedactIntrigueController {
 
         wordWriter.addStyledParagraphOfText("T2", "Propriétés de l'intrigue")
         tag = "L'intrigue est : "
-        def non_tag = "L'intrigue n'est pas :"
+        def non_tag = "L'intrigue n'est pas : "
         if (plot.isEvenemential)
             tag += "Evénementielle, "
         else
