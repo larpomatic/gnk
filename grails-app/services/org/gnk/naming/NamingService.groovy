@@ -18,20 +18,19 @@ class NamingService
 
 
     //Pair<tagPerso, TagFirstName>
-    public static HashMap<Pair<Tag, Tag>, Integer> dictionnaryTagFirstnameName;
 
     /* Methode principale naming */
     LinkedList<PersoForNaming> namingMethod(LinkedList<PersoForNaming> persoList, Integer gn_id)
     {
-        dictionnaryTagFirstnameName = new HashMap<Pair<Tag, Tag>, Integer>();
+        HashMap<Pair<Tag, Tag>, Integer> dictionnaryTagFirstnameName = new HashMap<Pair<Tag, Tag>, Integer>();
 
         LinkedList<PersoForNaming> doneperso = new LinkedList<PersoForNaming>()
         // pour les tests de naming
         usedFirstName = new LinkedList<String>()
         usedName = new LinkedList<String>()
 
-        StopWatch total = new StopWatch()
-        total.start()
+//        StopWatch total = new StopWatch()
+//        total.start()
 
         // liste des prenoms possibles
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
@@ -88,7 +87,8 @@ class NamingService
                         }
 
                         //calcule la correspondance d'un prenom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(),
+                                                                        dictionnaryTagFirstnameName);
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
@@ -153,7 +153,8 @@ class NamingService
                         }
 
                         //calcule la correspondance d'un nom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap());
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(),
+                                                                    dictionnaryTagFirstnameName);
                         nweight.add(new NameAndWeight(n.name, rankTag))
                     }
                 }
@@ -194,8 +195,8 @@ class NamingService
             doneperso.add(tmp)
             print("Perso Done !")
         }
-        total.stop()
-        print("total = " + total.getTotalTimeSeconds())
+//        total.stop()
+//        print("total = " + total.getTotalTimeSeconds())
         return doneperso
     }
 
