@@ -82,7 +82,7 @@ function updatePastScene() {
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre scène passée a bien été modifiée.");
+                    createNotification("success", "Modifications réussies.", "Votre scène passée :  "+ title+" a bien été modifiée.");
                     $('.pastSceneScreen .leftMenuList a[href="#pastScene_' + data.object.id + '"]').html(convertHTMLRegisterHelper(data.object.name));
                     $('select[name="pastScenePredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     var resDate = "";
@@ -117,11 +117,11 @@ function updatePastScene() {
                     initializeTextEditor();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre scène passée : "+ title +"  n'a pas pu être modifiée, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre scène passée n'a pas pu être modifiée, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre scène passée : "+ title +" n'a pas pu être modifiée, une erreur s'est produite.");
             }
         })
     });
