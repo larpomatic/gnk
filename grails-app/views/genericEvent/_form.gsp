@@ -77,7 +77,8 @@
                 <tbody>
                 <tr>
                     <td>
-                        <g:each in="${genericEventInstance.genericEventHasTag}" status="i" var="genericEventHasTag">
+                        %{--<g:each in="${genericEventInstance.genericEventHasTag}" status="i" var="genericEventHasTag">--}%
+                        <g:each in="${eventHasTagList}" status="i" var="genericEventHasTag">
                             <ul class="inline">
                                 <g:if test="${!(Tag.findByName("Tag Univers").id == genericEventHasTag.tag.parent.id)}">
                                     <li class="badge badge-info">
@@ -125,7 +126,8 @@
                 <tr>
                     <td>
                         <ul class="inline">
-                            <g:each in="${genericEventInstance.genericEventCanImplyTag}" status="i"
+                            %{--<g:each in="${genericEventInstance.genericEventCanImplyTag}" status="i"--}%
+                            <g:each in="${canImplyTagList}" status="i"
                                     var="genericEventImplyTag">
                                 <g:if test="${!(Tag.findByName("Tag Univers").id == genericEventImplyTag.tag.parent.id)}">
                                     <li class="badge badge-info">

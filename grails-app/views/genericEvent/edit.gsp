@@ -29,7 +29,10 @@
             <fieldset class="form-inline">
                 <g:render template="form" model="[genericEventInstance : genericEventInstance,
                                                   genericEventInstanceList : genericEventInstanceList,
-                                                  TagInstanceList : TagInstanceList]"/>
+                                                  TagInstanceList : TagInstanceList,
+                                                  eventHasTagList : eventHasTagList,
+                                                  canImplyTagList : canImplyTagList,
+                                                  canImplyGenericEventList : canImplyGenericEventList]"/>
             </fieldset>
             <fieldset class="buttons">
                 <g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />

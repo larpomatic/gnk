@@ -24,6 +24,7 @@ import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.substitution.data.RelationCharacter
 
 class IntegrationHandler {
+
     Map<String, Integer> resultList = new HashMap<>()
 
     public JSONObject namingIntegration(JSONObject charJsonObject) {
@@ -32,6 +33,7 @@ class IntegrationHandler {
         LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList = []
         LinkedList<RelationCharacter> charsRelBijectives = new LinkedList<RelationCharacter>()
         LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>>()
+
 
         // CharForNamingList construction from json
         for (characterJson in charJsonObject.characters) {

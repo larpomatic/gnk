@@ -66,8 +66,16 @@ class GenericEventController {
         TagService tagService = new TagService();
         def listTag = tagService.getPlotTagQuery()
 
+        List<GenericEventHasTag> eventHasTagList = new ArrayList<>()
+        List<GenericEventCanImplyTag> canImplyTagList = new ArrayList<>()
+        List<GenericEventCanImplyGenericEvent> canImplyGenericEventList = new ArrayList<>()
 
-        [genericEventInstance: genericEventInstance, genericEventInstanceList: list, TagInstanceList: listTag]
+        [genericEventInstance: genericEventInstance,
+         genericEventInstanceList: list,
+         TagInstanceList: listTag,
+         eventHasTagList : eventHasTagList,
+         canImplyTagList : canImplyTagList,
+         canImplyGenericEventList : canImplyGenericEventList]
     }
 
     def update(Long genericEventId, Long genericEventVersion) {
@@ -78,116 +86,48 @@ class GenericEventController {
         List<GenericEventCanImplyTag> canImplyTagList = new ArrayList<>()
         List<GenericEventCanImplyGenericEvent> canImplyGenericEventeList = new ArrayList<>()
 
-        addGenericEventHasTag(eventHasTagList, canImplyTagList, canImplyGenericEventeList)
+        def genericEventInstance = addGenericEventHasTag(eventHasTagList, canImplyTagList,
+                canImplyGenericEventeList)
 
-//        if (genericEventInstance == null) {
-//            flash.message = message(code: 'default.not.found.message',
-//                    args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventId])
-//            redirect(action: "list")
-//            return
-//        }
-//
-//        if (genericEventVersion != null) {
-//            if (genericEventInstance.version > genericEventVersion) {
-//
-//                genericEventInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-//                        [message(code: 'genericEvent.label', default: 'GenericEvent')] as Object[],
-//                        "Another user has updated this GenericEvent while you were editing")
-//                render(view: "edit", model: [genericEventInstance: genericEventInstance])
-//                return
-//            }
-//        }
-//
-//        if (genericEventInstance.ageMax < genericEventInstance.ageMin){
-//            flash.message = "Age mininimum < Age maximum";
-//            return render(view: "edit", model: [genericEventInstance: genericEventInstance])
-//        }
+//        eventHasTagList.each {genericEventInstance.addToGenericEventHasTag(it)}
 
-//        GenericEvent ge = GenericEvent.findById(genericEventInstance.id)
-//
-//        if (ge == null) {
-//            ge = getGenericEvent()
-//        }
-//
-//        ge.ageMax = genericEventInstance.ageMax
-//        ge.ageMin = genericEventInstance.ageMin
-//        ge.description = genericEventInstance.description
-//        ge.title = genericEventInstance.title
-//
-//        //genericEventHasTag
-//        if (ge != null){
-//            for(def tmp : ge.genericEventHasTag) {
-//                if (ge != null && genericEventInstance.genericEventHasTag.find {it.id == tmp.id} == null) {
-//                    ge.removeFromGenericEventHasTag(tmp)
-//                }
-//            }
-//        }
-//
-//        for(def tmp :genericEventInstance.genericEventHasTag) {
-//            if (ge != null && !ge.genericEventHasTag.contains(tmp)) {
-//                ge.addToGenericEventHasTag(tmp)
-//            }
-//            else {
-////                if (ge == null){
-//                    ge.addToGenericEventHasTag(tmp)
-////                }
-//            }
-//        }
-//
-//        //genericEventCanImplyTag
-//        if (ge != null){
-//            for(def tmp : ge.genericEventCanImplyTag) {
-//                if (ge != null && !genericEventInstance.genericEventCanImplyTag.find {it.id == tmp.id} == null) {
-//                    ge.removeFromGenericEventCanImplyGenericEvent(tmp)
-//                }
-//            }
-//        }
-//        for(def tmp :genericEventInstance.genericEventCanImplyTag) {
-//            if (ge != null && !ge.genericEventCanImplyTag.contains(tmp)) {
-//                ge.addToGenericEventCanImplyTag(tmp)
-//            }
-//            else {
-//                if (ge == null){
-//                    ge.addToGenericEventCanImplyTag(tmp)
-//                }
-//            }
-//        }
-//
-//        //genericEventCanImplyGenericEvent
-//        if (ge != null){
-//            for(def tmp : ge.genericEventCanImplyGenericEvent) {
-//                if (ge != null && !genericEventInstance.genericEventCanImplyGenericEvent.find {it.id == tmp.id} == null) {
-//                    ge.removeFromGenericEventCanImplyGenericEvent(tmp)
-//                }
-//            }
-//        }
-//        for(def tmp : genericEventInstance.genericEventCanImplyGenericEvent) {
-//            if (ge != null && !ge.genericEventCanImplyGenericEvent.contains(tmp)) {
-//                ge.addToGenericEventCanImplyGenericEvent(tmp)
-//            }
-//            else {
-//                if (ge == null){
-//                    ge.addToGenericEventCanImplyGenericEvent(tmp)
-//                }
-//            }
-//        }
+        //genericEventHasTag
+        for(GenericEventHasTag prev : genericEventInstance.genericEventHasTag){
+            if (eventHasTagList.find {it.tag.id == prev.tag.id && it.value == prev.value} == null){
+                genericEventInstance.removeFromGenericEventHasTag(prev)
+            }
+        }
 
-        GenericEvent ge = getGenericEvent()
-        ge.genericEventHasTag.each {ge.removeFromGenericEventHasTag(it)}
+        for (GenericEventHasTag future : eventHasTagList){
+            if (genericEventInstance.genericEventHasTag.find {it.tag.id == future.tag.id && it.value == future.value} == null){
+                genericEventInstance.addToGenericEventHasTag(future)
+            }
+        }
 
+        //genericEventCanImplyTag
+        for(GenericEventCanImplyTag prev : genericEventInstance.genericEventCanImplyTag){
+            if (canImplyTagList.find {it.tag.id == prev.tag.id && it.value == prev.value} == null){
+                genericEventInstance.removeFromGenericEventCanImplyTag(prev)
+            }
+        }
 
-        eventHasTagList.each {ge.addToGenericEventHasTag(it)}
+        for (GenericEventHasTag future : eventHasTagList){
+            if (genericEventInstance.genericEventCanImplyTag.find {it.tag.id == future.tag.id && it.value == future.value} == null){
+                genericEventInstance.addToGenericEventCanImplyGenericEvent(future)
+            }
+        }
 
-
-        if (!ge.save(flush: true)) {
-            return render(view: "edit", model: [genericEventInstance: ge])
+        if (!genericEventInstance.save(flush: true)) {
+            return render(view: "edit", model: [genericEventInstance: genericEventInstance])
         }
 
         flash.messageInfo = message(code: 'default.updated.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), genericEventInstance.title])
         redirect(action: "list")
     }
 
-    GenericEvent addGenericEventHasTag() {
+    GenericEvent addGenericEventHasTag(List<GenericEventHasTag> eventHasTagList,
+                                       List<GenericEventCanImplyTag> canImplyTagList,
+                                       List<GenericEventCanImplyGenericEvent> canImplyGenericEventeList) {
 
         GenericEvent genericEventInstance
 
@@ -208,21 +148,23 @@ class GenericEventController {
                 genericEventHasTag.version = 1
 
 //                genericEventInstance.addToGenericEventHasTag(genericEventHasTag);
-                genericEventInstance.genericEventHasTag.add(genericEventHasTag)
+//                genericEventInstance.genericEventHasTag.add(genericEventHasTag)
+                eventHasTagList.add(genericEventHasTag)
             }
 
-//            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
-//                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
+            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
+                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
 //                temp.id = 0
-//                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
-//                temp.value = it.value.toString().toInteger();
-//                temp.dateCreated = new Date();
-//                temp.lastUpdated = new Date();
-//                temp.version = 1
-//
+                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
+                temp.value = it.value.toString().toInteger();
+                temp.dateCreated = new Date();
+                temp.lastUpdated = new Date();
+                temp.version = 1
+
 //                genericEventInstance.addToGenericEventCanImplyTag(temp);
-////                genericEventInstance.genericEventCanImplyTag.add(temp);
-//            }
+//                genericEventInstance.genericEventCanImplyTag.add(temp);
+                canImplyTagList.add(temp)
+            }
         };
         return genericEventInstance
     }
