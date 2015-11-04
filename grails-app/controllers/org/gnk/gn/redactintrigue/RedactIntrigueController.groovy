@@ -163,6 +163,7 @@ class RedactIntrigueController {
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
         plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;
+        plotInstance.variant = params.plotVariant == "" ? null : Integer.parseInt(params.plotVariant);
         if (plotInstance.extTags) {
             HashSet<PlotHasTag> plotHasTags = plotInstance.extTags;
             PlotHasTag.deleteAll(plotHasTags);

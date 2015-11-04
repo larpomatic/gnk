@@ -36,6 +36,7 @@ class Plot {
 //	Date updatedDate
 	String description
 	User user
+    Integer variant
 
     static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId"]
 
@@ -43,11 +44,11 @@ class Plot {
     Integer DTDId;
 
     static hasMany = [ events: Event,
-            extTags: PlotHasTag,
-            roles: Role,
-            pastescenes: Pastscene,
-            genericResources: GenericResource,
-            genericPlaces: GenericPlace]
+                       extTags: PlotHasTag,
+                       roles: Role,
+                       pastescenes: Pastscene,
+                       genericResources: GenericResource,
+                       genericPlaces: GenericPlace]
 
     static belongsTo = User
 
@@ -56,6 +57,7 @@ class Plot {
         pitchOrga (nullable: true)
         pitchPj (nullable: true)
         pitchPnj (nullable: true)
+        variant (nullable: true)
     }
 
     static mapping = {
