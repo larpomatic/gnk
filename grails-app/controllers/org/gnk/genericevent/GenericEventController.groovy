@@ -51,16 +51,7 @@ class GenericEventController {
     def edit(Long id) {
         GenericEvent genericEventInstance;
         if (params.genericEventHasTagAdd == "true") {
-
-            genericEventInstance = getGenericEvent()
-
-            List<GenericEventHasTag> eventHasTagList = new ArrayList<>()
-            List<GenericEventCanImplyTag> canImplyTagList = new ArrayList<>()
-            List<GenericEventCanImplyGenericEvent> canImplyGenericEventeList = new ArrayList<>()
-            //genericEventInstance = addGenericEventHasTag()
-            addGenericEventHasTag(eventHasTagList, canImplyTagList, canImplyGenericEventeList)
-
-            //genericEventInstance = getGenericEvent()
+            genericEventInstance = addGenericEventHasTag()
         } else {
             genericEventInstance = GenericEvent.get(id)
 
@@ -196,21 +187,20 @@ class GenericEventController {
         redirect(action: "list")
     }
 
-    void addGenericEventHasTag(List<GenericEventHasTag> eventHasTagList,
-                                       List<GenericEventCanImplyTag> canImplyTagList,
-                                       List<GenericEventCanImplyGenericEvent> canImplyGenericEventeList) {
+    GenericEvent addGenericEventHasTag() {
 
-//        GenericEvent genericEventInstance
+        GenericEvent genericEventInstance
 
-//        genericEventInstance = getGenericEvent()
+        genericEventInstance = getGenericEvent()
 
-//        genericEventInstance.genericEventHasTag.clear()
-//        genericEventInstance.genericEventCanImplyTag.clear()
-//        genericEventInstance.genericEventCanImplyGenericEvent.clear()
+        genericEventInstance.genericEventHasTag.clear()
+        genericEventInstance.genericEventCanImplyTag.clear()
+        genericEventInstance.genericEventCanImplyGenericEvent.clear()
 
         params.each {
             if (it.key.toString().contains("eventGenericTagsWeight") && it.value != null && it.value != "") {
                 GenericEventHasTag genericEventHasTag = new GenericEventHasTag();
+                genericEventHasTag.id = 0
                 genericEventHasTag.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
                 genericEventHasTag.value = it.value.toString().toInteger();
                 genericEventHasTag.dateCreated = new Date();
@@ -218,8 +208,7 @@ class GenericEventController {
                 genericEventHasTag.version = 1
 
 //                genericEventInstance.addToGenericEventHasTag(genericEventHasTag);
-//                genericEventInstance.genericEventHasTag.add(genericEventHasTag)
-                eventHasTagList.add(genericEventHasTag)
+                genericEventInstance.genericEventHasTag.add(genericEventHasTag)
             }
 
 //            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
@@ -235,7 +224,7 @@ class GenericEventController {
 ////                genericEventInstance.genericEventCanImplyTag.add(temp);
 //            }
         };
-//        return genericEventInstance
+        return genericEventInstance
     }
 
     private GenericEvent getGenericEvent() {

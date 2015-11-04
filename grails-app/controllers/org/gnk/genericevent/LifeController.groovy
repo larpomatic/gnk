@@ -19,8 +19,7 @@ class LifeController {
         redirect(action: "life", params: params)
     }
 
-
-    def life(Long id) {
+    def life(Long id, boolean back) {
         final gnIdStr = params.gnId
         assert (gnIdStr != "null" && (gnIdStr as String).isInteger())
         if (!(gnIdStr != "null" && (gnIdStr as String).isInteger())) {
@@ -37,15 +36,42 @@ class LifeController {
         final gnData = new GNKDataContainerService()
         gnData.ReadDTD(gn)
 
-        //
-//    /*Lock manager*/
-        for (Character character1 : gn.getterCharacterSet()) {
-            character1.getSelectedRoles().clear()
-            character1.getLockedRoles().clear()
-            character1.getBannedRoles().clear()
-            character1.getSpecificRoles().clear()
-            character1.getplotid_role().clear();
-        }
+
+        /*Lock manager*/
+            for (Character character1 : gn.getterCharacterSet()) {
+                character1.getSelectedRoles().clear()
+
+                if (params.tagFirst != "true") {
+                    int pos = 1;
+                    for (def lock: character1.getLockedRoles()){
+                        if (lock.code.startsWith("Life_")) {
+                            String[] str = lock.code.split("_")
+
+                            String key = "Life_" + character1.DTDId + "_null_" + pos++ + "_" +
+                                    str[1] + "_" + lock.description
+                            String value = "2";
+                            params.put(key, value)
+                        }
+                    }
+
+                    for (def ban: character1.getBannedRoles()){
+
+                        if (ban.code.startsWith("Life_")) {
+                            String[] str = ban.code.split("_")
+
+                            String key = "Life_" + character1.DTDId + "_null_" + pos++ + "_" +
+                                        str[1] + "_" + ban.description
+                            String value = "2";
+                            params.put(key, value)
+                        }
+                    }
+                }
+
+                character1.getLockedRoles().clear()
+                character1.getBannedRoles().clear()
+                character1.getSpecificRoles().clear()
+                character1.getplotid_role().clear();
+            }
 
         params.each {
             final String key = it.key as String
@@ -84,12 +110,11 @@ class LifeController {
                             rhp.title = ge.title
                             rhp.description = geAge
                             role.roleHasPastscenes.add(rhp)
-                            role.code = geTitle
                             role.description = geAge
                             role.type = "PJ"
                             role.pipi = 0
                             role.pipr = 0
-                            role.code = "Life"
+                            role.code = "Life_" + geTitle
                             role.plot = p
 
                             Pastscene pastSceneLife = new Pastscene()
@@ -140,16 +165,16 @@ class LifeController {
             addLifeEventToCharacter(character, gn)
 
 
-            character?.specificRoles = character?.specificRoles.sort{
-                a, b -> a?.roleHasPastscenes?.iterator()?.next().description <=> b?.roleHasPastscenes?.iterator()?.next()?.description
+            character?.specificRoles = character?.specificRoles?.sort{
+                a, b -> a?.roleHasPastscenes?.iterator()?.next()?.description <=> b?.roleHasPastscenes?.iterator()?.next()?.description
             };
 
-            character?.bannedRoles = character?.bannedRoles.sort{
-                a, b -> a?.roleHasPastscenes?.iterator()?.next().description <=> b?.roleHasPastscenes?.iterator()?.next()?.description
+            character?.bannedRoles = character?.bannedRoles?.sort{
+                a, b -> a?.roleHasPastscenes?.iterator()?.next()?.description <=> b?.roleHasPastscenes?.iterator()?.next()?.description
             };
 
-            character?.lockedRoles = character?.lockedRoles.sort{
-                a, b -> a.roleHasPastscenes.iterator().next().description <=> b.roleHasPastscenes.iterator().next().description
+            character?.lockedRoles = character?.lockedRoles?.sort{
+                a, b -> a.roleHasPastscenes.iterator().next()?.description <=> b.roleHasPastscenes.iterator().next()?.description
             };
 
 
@@ -188,39 +213,6 @@ class LifeController {
         int INTERVAL = 5
         int age = 1;
         GenericEvent lastGE = null
-
-        //TODO remove
-//        System.out.println("AGE : " + character.age)
-
-//        //ajouter ceux qui viennent du lock
-//        for (Role role : character.lockedRoles) {
-//            if (role.code.toLowerCase() == "life") {
-//                for (RoleHasPastscene selectedPastScene : role.roleHasPastscenes) {
-////                    GenericEvent ge = GenericEvent.findByDescription(selectedPastScene.description.tokenize("\n")[0])
-//                    GenericEvent ge = GenericEvent.findByTitle(selectedPastScene.title)
-//                    int ageTemp = role.description?.toInteger()
-//
-//                    //TODO age
-//                    p = addEvent(p, ge, ageTemp, dummyInt, character, roleForLife)
-////                private Plot addEvent(Plot p, GenericEvent lastGE, int age, int dummyInt, Character character, Role roleForLife) {
-//
-//                }
-//            }
-//        }
-//        //ajouter ceux qui viennent du banned
-//        for (Role role : character.bannedRoles) {
-//            if (role.code.toLowerCase() == "life") {
-//                for (RoleHasPastscene selectedPastScene : role.roleHasPastscenes) {
-////                    GenericEvent ge = GenericEvent.findByDescription(selectedPastScene.description.tokenize("\n")[0])
-//                    GenericEvent ge = GenericEvent.findByTitle(selectedPastScene.title)
-//                    int ageTemp = role.description?.toInteger()
-//                    //TODO age
-//                    p = addEvent(p, ge, ageTemp, dummyInt, character, roleForLife)
-////                private Plot addEvent(Plot p, GenericEvent lastGE, int age, int dummyInt, Character character, Role roleForLife) {
-//
-//                }
-//            }
-//        }
 
         while (age < character.age) {
 
