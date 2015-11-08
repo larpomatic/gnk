@@ -14,6 +14,7 @@ class InputHandler {
     List<Character> characterList
     List<Resource> resourceList
     List<Place> placeList
+    List<Place> placeListWithoutConstants;
     List<Pastscene> pastsceneList
     List<Event> eventList
     org.gnk.ressplacetime.GenericResource genericResource
@@ -84,7 +85,8 @@ class InputHandler {
 
         // PlaceList construction
         createPlaceList(gnInst)
-        createConstantPlaceMap(gnInst);
+
+        //NOT NEEDED createConstantPlaceMap(gnInst);
         // PastsceneList construction
         createPastsceneList(gnInst)
 
@@ -265,19 +267,43 @@ class InputHandler {
 
     // PlaceList
     private void createPlaceList(Gn gnInst) {
+        //List build containing places to are not linked to a constant + gn constants with linked places tags
         placeList = []
+        //List containing all the places
+        placeListWithoutConstants = []
+        //map used for building lists
+        gnPlaceConstantMap = new HashMap<String, Place>();
 
         for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
             for (pastScene in plot.pastescenes) {
                 GenericPlace genericPlace = pastScene.genericPlace
+                //We add the genericPlace to placeListWithoutConstant anyway
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
+                    placeListWithoutConstants.add(createPlace(genericPlace, plotId))
+                }
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                } else if (genericPlace != null) {
+                    //if it's not linked to a gn constant, we add it to the placeList
                     placeList.add(createPlace(genericPlace, plotId))
                 }
             }
 
             for (genericPlace in plot.genericPlaces) {
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
+                    placeListWithoutConstants.add(createPlace(genericPlace, plotId))
+                }
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                } else if (genericPlace != null) {
+                    //if it's not linked to a gn constant, we add it to the placeList
                     placeList.add(createPlace(genericPlace, plotId))
                 }
             }
@@ -285,9 +311,22 @@ class InputHandler {
             for (event in plot.events) {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && !isGenericPlaceInList(placeList, plotId, genericPlace.DTDId as String)) {
+                    placeListWithoutConstants.add(createPlace(genericPlace, plotId))
+                }
+                if (genericPlace != null && genericPlace.gnConstant != null) {
+                    if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                    else
+                        gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
+                } else if (genericPlace != null){
+                    //if it's not linked to a gn constant, we add it to the placeList
                     placeList.add(createPlace(genericPlace, plotId))
                 }
             }
+
+            //we add the constants to placeList
+            for (Map.Entry mapEntry in gnPlaceConstantMap)
+                placeList.add(mapEntry.getValue())
         }
     }
 
@@ -349,7 +388,7 @@ class InputHandler {
                 GenericPlace genericPlace = pastScene.genericPlace
                 if (genericPlace != null && genericPlace.gnConstant != null) {
                     if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
-                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
                     else
                         gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
                 }
@@ -358,7 +397,7 @@ class InputHandler {
             for (genericPlace in plot.genericPlaces) {
                 if (genericPlace != null && genericPlace.gnConstant != null) {
                     if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
-                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
                     else
                         gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
                 }
@@ -368,7 +407,7 @@ class InputHandler {
                 GenericPlace genericPlace = event.genericPlace
                 if (genericPlace != null && genericPlace.gnConstant != null) {
                     if (gnPlaceConstantMap.containsKey(genericPlace.gnConstant.name))
-                        addTagsToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
+                        addInfosToConstantPlace(genericPlace, gnPlaceConstantMap.get(genericPlace.gnConstant.name))
                     else
                         gnPlaceConstantMap.put(genericPlace.gnConstant.name, createConstantPlace(genericPlace))
                 }
@@ -380,6 +419,13 @@ class InputHandler {
     public Place createConstantPlace(GenericPlace genericPlace) {
         Place place = new Place();
         place.objectType = genericPlace.objectType.type
+
+        place.comment = genericPlace.getComment();
+        if (genericPlace.plot != null)
+            place.plotName = genericPlace.plot.getName();
+
+        if (genericPlace.gnConstant != null)
+            place.code = genericPlace.gnConstant.getName();
 
         // TagList
         place.tagList = []
@@ -397,24 +443,40 @@ class InputHandler {
         return place
     }
 
-    public Place addTagsToConstantPlace(GenericPlace genericPlace, Place place) {
+    public Place addInfosToConstantPlace(GenericPlace genericPlace, Place place) {
 
         // TagList
         if (genericPlace.extTags) {
             for (GenericPlaceHasTag genericPlaceHasTag : genericPlace.extTags) {
+                Boolean tagMerged = false;
+
                 Tag tagData = new Tag()
                 tagData.value = genericPlaceHasTag.tag.name
                 tagData.family = genericPlaceHasTag.tag.parent.name
                 tagData.weight = genericPlaceHasTag.weight as Integer
 
-                place.tagList.add(tagData)
+
+                for (Tag existingTag in place.tagList)
+                {
+                    //if there is already a similar tag, we average the tag weight
+                    if (tagData.value == existingTag.getValue()) {
+                        existingTag.setWeight(((tagData.getWeight() + existingTag.getWeight()) / 2).intValue())
+                        tagMerged = true;
+                        break;
+                    }
+                }
+                //if tag hasn't been merged to an existing tag, we add it
+                if (!tagMerged)
+                    place.tagList.add(tagData)
             }
         }
 
-        // Plot
-        //def plot = org.gnk.selectintrigue.Plot.get(plotId)
-        // Plot name
-        //place.plotName = plot.name
+        //check if the comment isn't already in there
+        if (!(place.comment.contains(genericPlace.getComment())))
+            place.comment = place.getComment() + "\n" + genericPlace.getComment();
+        if (genericPlace.plot != null)
+            place.plotName = place.getPlotName() + "\n" + genericPlace.plot.getName();
+
 
         return place
     }
