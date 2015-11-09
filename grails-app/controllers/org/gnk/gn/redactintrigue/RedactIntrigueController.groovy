@@ -103,6 +103,7 @@ class RedactIntrigueController {
                 screenStep: screen,
                 gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
                 gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
+        //Ajout map plot avec plot + liste des soeurs
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
@@ -321,7 +322,7 @@ class RedactIntrigueController {
 
         wordWriter.addStyledParagraphOfText("T2", "Propriétés de l'intrigue")
         tag = "L'intrigue est : "
-        def non_tag = "L'intrigue n'est pas :"
+        def non_tag = "L'intrigue n'est pas : "
         if (plot.isEvenemential)
             tag += "Evénementielle, "
         else

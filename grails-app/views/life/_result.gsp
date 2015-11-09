@@ -45,6 +45,7 @@
 <div class="container-fluid">
 <g:form method="post" controller="life">
 
+    <g:hiddenField name="tagFirst" value="true"/>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <g:hiddenField name="gnDTD" value="${gnInstance?.dtd}"/>
     <g:hiddenField name="version" value="${gnInstance?.version}"/>
@@ -94,7 +95,7 @@
                         <tbody>
                         <g:each in="${((Character) character).bannedRoles}" var="role">
                             <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
-                                <g:if test="${((Role) role)?.code == "Life"}">
+                                <g:if test="${((Role) role)?.code.startsWith("Life")}">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
                                         <td>
                                             <a href="#" data-toggle="tooltip" data-placement="top"
@@ -123,7 +124,7 @@
                         </g:each>
                         <g:each in="${((Character) character).lockedRoles}" var="role">
                             <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
-                                <g:if test="${((Role) role)?.code == "Life"}">
+                                <g:if test="${((Role) role)?.code.startsWith("Life")}">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
                                         <td>
                                             <a href="#" data-toggle="tooltip" data-placement="top"
@@ -152,7 +153,7 @@
                         </g:each>
                         <g:each in="${((Character) character).specificRoles}" var="role">
                             <g:each in="${((Role) role).roleHasPastscenes}" status="roleIter" var="roleHasPastscenes">
-                                <g:if test="${((Role) role)?.code == "Life"}">
+                                <g:if test="${((Role) role)?.code.startsWith("Life")}">
                                     <tr class="${(roleIter % 2) == 0 ? 'even' : 'odd'}">
                                         <td>
                                             <a href="#" data-toggle="tooltip" data-placement="top"

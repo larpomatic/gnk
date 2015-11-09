@@ -47,9 +47,9 @@ if (typeof jQuery !== 'undefined') {
         };
         var html = template(context);
         $(html).appendTo("body");
-        if (classe != "error") {
+        if (classe === "success") {
             setTimeout(function () {
-                $('.notificationBox').remove();
+                $('.alert-success, .alert-info').remove();
             }, 4000);
         }
     }
