@@ -39,6 +39,7 @@ function updateRelation() {
     $('.updateRelation').click(function() {
         var roleFromIdRelation = $(this).attr("data-roleFromId");
         var oldRoleToId = $(this).attr("data-oldRoleToId");
+        var oldRoleFromId = $(this).attr("data-oldRoleFromId");
         var wasBijective = $(this).attr("data-wasBijective");
         var form = $(this).parent();
         var description = $('.richTextEditor', form).html();
@@ -128,11 +129,11 @@ function updateRelation() {
                     createNotification("success", "Modifications réussies.", "Votre relation a bien été modifiée.");
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre relation n'a pas pu être modifiée, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre relation entre " + oldroleFromId + " et entre "+ oldRoleToId+" n'a pas pu être modifiée, une erreur s'est produite.");
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre relation n'a pas pu être modifiée, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre relation entre " + oldroleFromId + " et entre "+ oldRoleToId +" n'a pas pu être modifiée, une erreur s'est produite.");
             }
         })
     });

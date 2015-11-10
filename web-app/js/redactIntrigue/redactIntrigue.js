@@ -107,8 +107,8 @@ $(function(){
             $('.insertResource').trigger("click");
         }
         var form = $('form[name="newRelationForm"]');
-        var description = $('#relationRichTextEditor', form).html();
-        if (description){
+        var weight= $('#relationWeight', form).html();
+        if (weight){
             $('.insertRelation').trigger("click");
         }
         form = $('form[name="newPastSceneForm"]');
@@ -116,11 +116,16 @@ $(function(){
         if (title){
             $('.insertPastScene').trigger("click");
         }
+        title = transformDescription(title);
+        $('#pastSceneTitleRichTextEditor', form).val(title);
+
         form = $('form[name="newEventForm"]');
         title = $('#eventTitleRichTextEditor', form).html();
         if (title){
             $('.insertEvent').trigger("click");
         }
+        title = transformDescription(title);
+        $('#pastSceneTitleRichTextEditor', form).val(title);
 
         $('.updateRole, .updateEvent, .updatePastScene, .updatePlace, .updatePlot, .updateRelation, .updateResource').trigger("click");
     });
