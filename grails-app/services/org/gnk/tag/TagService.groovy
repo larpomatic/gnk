@@ -1,4 +1,6 @@
 package org.gnk.tag
+
+import org.gnk.naming.NamingService
 import org.javatuples.Pair
 
 class TagService {
@@ -120,11 +122,33 @@ class TagService {
                     if (refTag == challengerTag.getKey()) {
                         return (challengerTag.getValue() * refTagList.get(refTag)) * 100;
                     }
-					TagRelation tagRelation1 = null
-                    TagRelation tagRelation2 = null
+//                    TagRelation tagRelation1 = null
+//                    TagRelation tagRelation2 = null
 
-                    tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
-                    tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
+
+                    TagRelation tagRelation1 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(challengerTag.getKey(), refTag))
+                    TagRelation tagRelation2 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(refTag, challengerTag.getKey()))
+
+                    if (tagRelation1 == null) {
+                        tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
+
+                        if (tagRelation1 != null) {
+                            NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation1.weight)
+                        }
+                        else{
+                            //NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation1.weight)
+                        }
+                    }
+
+                    if (tagRelation2 == null) {
+                        tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
+                        if (tagRelation2 != null) {
+                            NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation2.weight)
+                        }
+                        else{
+                            //NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation2.weight)
+                        }
+                    }
 
                     int lockSignOfChallengerTag = tagIsLocked(challengerTag) ? 1 : tagIsBanned(challengerTag) ? -1 : 0;
                     Boolean refTagIsLockedOrBanned = refLockedBannedTags.get(refTag);

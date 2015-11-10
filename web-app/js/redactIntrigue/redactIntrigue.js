@@ -398,6 +398,12 @@ function setCarretPos() {
 // on remplace les balise de la description par des span html
 function initializeTextEditor() {
     $('.richTextEditor').each(function() {
+
+        $(this).bind({
+            paste : function(){
+                setTimeout(function() {initializePopover();}, 0);
+            }});
+
         var description = $(this).html();
         while (description.length != 0 && (description[0] == '\n' ||
             description[0] == ' ' || description[0] == '\r')) {
@@ -579,6 +585,9 @@ function initializePopover() {
                 $("option", $(this).closest(".popover-content")).removeClass("btn-info");
                 $(this).addClass("btn-info");
                 $(element).attr("data-tag", $(this).attr("data-tag"));
+            })
+            $(".popover select").change(function(){
+                $(element).attr("data-tag", $(this).children(":selected").attr("data-tag"));
             });
         }
     });
@@ -747,4 +756,12 @@ function convertHTMLRegisterHelper(description) {
     description = description.replace(/>/g, '</span>');
 
     return description;
+}
+
+function detectPaste() {
+    $('#richTextEditor').bind({
+        paste : function(){
+        initializeTextEditor();
+    }
+    });
 }
