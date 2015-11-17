@@ -3,6 +3,7 @@ $(function(){
 
     //ajoute un nouvel évènement dans la base
     $('.insertEvent').click(function() {
+        save++;
         var form = $('form[name="newEventForm"]');
         var description = $('#eventRichTextEditor', form).html();
         description = transformDescription(description);
@@ -57,13 +58,16 @@ $(function(){
                     $('.eventsLi .badge').html(nbEvents);
                     initQuickObjects();
                     updateEvent();
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "création échouée.", "Votre évènement n'a pas pu être ajouté, une erreur s'est produite.");
+                    createNotification("danger", "Création échouée.", "Votre évènement n'a pas pu être ajouté, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "création échouée.", "Votre évènement n'a pas pu être ajouté, une erreur s'est produite.");
+                createNotification("danger", "Création échouée.", "Votre évènement n'a pas pu être ajouté, une erreur s'est produite.");
+                updateSave();
             }
         })
     });
@@ -72,6 +76,7 @@ $(function(){
 function updateEvent() {
     // modifie un event dans la base
     $('.updateEvent').click(function() {
+        save++;
         var eventId = $(this).attr("data-id");
         var form = $('form[name="updateEvent_' + eventId + '"]');
         var description = $('#eventRichTextEditor' + eventId, form).html();
@@ -99,7 +104,7 @@ function updateEvent() {
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre évènement : "+ title +" a bien été modifié.");
+                    createNotification("success", "Modifications réussies.", "Votre évènement : *"+ title +"* a bien été modifié.");
                     $('.eventScreen .leftMenuList a[href="#event_' + data.object.id + '"]').html(data.object.timing + "% - " + convertHTMLRegisterHelper(data.object.name));
                     $('select[name="eventPredecessor"] option[value="' + data.object.id + '"]').html($('<div/>').text(data.object.name).html());
                     $('.roleScreen a[data-eventId="' + data.object.id + '"]').html(data.object.timing + "% - " + convertHTMLRegisterHelper(data.object.name));
@@ -130,13 +135,16 @@ function updateEvent() {
                         }
                     });
                     initializeTextEditor();
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre évènement : " + title + " n'a pas pu être modifié, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre évènement : *" + title + "* n'a pas pu être modifié, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre évènement : " + title +" n'a pas pu être modifié, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre évènement : *" + title +"* n'a pas pu être modifié, une erreur s'est produite.");
+                updateSave();
             }
         })
     });

@@ -3,6 +3,7 @@ $(function(){
 
     //ajoute une nouvelle scène passée dans la base
     $('.insertPastScene').click(function() {
+        save++;
         var form = $('form[name="newPastSceneForm"]');
         var description = $('#pastSceneRichTextEditor', form).html();
         description = transformDescription(description);
@@ -46,13 +47,16 @@ $(function(){
                     var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1;
                     $('.pastScenesLi .badge').html(nbPastScenes);
                     updatePastScene();
+                    updateSave();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre scène passée n'a pas pu être ajoutée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
                 createNotification("danger", "création échouée.", "Votre scène passée n'a pas pu être ajoutée, une erreur s'est produite.");
+                updateSave();
             }
         })
     });
@@ -61,6 +65,7 @@ $(function(){
 function updatePastScene() {
     // modifie une scène passée dans la base
     $('.updatePastScene').click(function() {
+        save++;
         var pastsceneId = $(this).attr("data-id");
         var form = $('form[name="updatePastScene_' + pastsceneId + '"]');
         var description = $('#pastSceneRichTextEditor' + pastsceneId, form).html();
@@ -115,13 +120,16 @@ function updatePastScene() {
                         }
                     });
                     initializeTextEditor();
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre scène passée : "+ title +"  n'a pas pu être modifiée, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre scène passée : *"+ title +"*  n'a pas pu être modifiée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre scène passée : "+ title +" n'a pas pu être modifiée, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre scène passée : *"+ title +"* n'a pas pu être modifiée, une erreur s'est produite.");
+                updateSave();
             }
         })
     });
