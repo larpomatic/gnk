@@ -23,7 +23,12 @@
 			</g:hasErrors>
 			<g:form action="save" method="POST">
 				<fieldset class="form-horizontal">
-                    <g:render template="form" model="[genericEventInstance : genericEventInstance, genericEventInstanceList : genericEventInstanceList, TagInstanceList : TagInstanceList]"/>
+                    <g:render template="form" model="[genericEventInstance : genericEventInstance,
+													  genericEventInstanceList : genericEventInstanceList,
+													  TagInstanceList : TagInstanceList,
+													  eventHasTagList : eventHasTagList,
+													  canImplyTagList : canImplyTagList,
+													  canImplyGenericEventList : canImplyGenericEventList]"/>
 				</fieldset>
 				<fieldset class="buttons">
 					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.create.label', default: 'Create')}" />
