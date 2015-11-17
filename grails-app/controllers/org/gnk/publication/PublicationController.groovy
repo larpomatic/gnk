@@ -245,10 +245,10 @@ class PublicationController {
 
 
 
-        wordWriter.addStyledParagraphOfText("T1", "Implications Personnages par intrigue")
+        wordWriter.addStyledParagraphOfText("T2", "Implications Personnages par intrigue")
         createCharactersPerPlotTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Évènementiel")
+        wordWriter.addStyledParagraphOfText("T2", "Chronologie avant et en jeu")
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des évènements publics")
         createEventsTable()
         wordWriter.addStyledParagraphOfText("T3", "Événementiel Détaillé")
@@ -894,10 +894,9 @@ class PublicationController {
         wordWriter.addParagraphOfText("Il y a " + listPJ.size() + " Personnages Joueurs(PJ) dans ce GN dont voici la liste : ")
         String resListPJ = ""
         for (Character c : listPJ)
-            resListPJ += c.lastname.toUpperCase() + " " + c.firstname + "\n"
+            resListPJ += "  - " + c.lastname.toUpperCase() + " " + c.firstname + "\n"
         wordWriter.addParagraphOfText(resListPJ)
-        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
-        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         createCharactersFile(listPJ, jsoncharlist, fileName)
     }
 
@@ -920,10 +919,9 @@ class PublicationController {
         wordWriter.addParagraphOfText("Il y a " + listPNJ.size() + " Personnages Non-Joueurs(PNJ) dans ce GN dont voici la liste : ")
         String resListPNJ = ""
         for (Character c : listPNJ)
-            resListPNJ += c.lastname.toUpperCase() + " " + c.firstname + "\n"
+            resListPNJ += "  - " + c.lastname.toUpperCase() + " " + c.firstname + "\n"
         wordWriter.addParagraphOfText(resListPNJ)
-        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages non-joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
-        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages non-joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         createCharactersFile(listPNJ, jsoncharlist, fileName)
     }
 
@@ -946,10 +944,9 @@ class PublicationController {
         wordWriter.addParagraphOfText("Il y a " + listPHJ.size() + " Personnages Hors-jeu(PHJ) dans ce GN dont voici la liste : ")
         String resListPHJ = ""
         for (Character c : listPHJ)
-            resListPHJ += c.lastname.toUpperCase() + " " + c.firstname + "\n"
+            resListPHJ += "  - " + c.lastname.toUpperCase() + " " + c.firstname + "\n"
         wordWriter.addParagraphOfText(resListPHJ)
-        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers Personnages Hors-jeu, triés par ordre Alphabétique")
-        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages Hors-jeu, triés par ordre Alphabétique")
         createCharactersFile(listPHJ, jsoncharlist, fileName)
     }
 
@@ -988,7 +985,7 @@ class PublicationController {
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
 
-            wordWriter.addStyledParagraphOfText("T3", "Mes objets : ")
+            wordWriter.addStyledParagraphOfText("T3", "Ce que je détiens : ")
             boolean hasRessource = false
             for (Role r : c.selectedRoles) {
                 for (GenericResource gr : gnk.genericResourceMap.values())
@@ -998,7 +995,7 @@ class PublicationController {
                         pubResource += (gr.comment ? gr.comment : "")
                         wordWriter.addParagraphOfText(pubResource)
                     }
-                (hasRessource ?: wordWriter.addParagraphOfText("Je ne possède aucun objet."))
+                (hasRessource ?: wordWriter.addParagraphOfText("-"))
             }
 
 
@@ -1319,8 +1316,7 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T1", "Dossier Staff")
         wordWriter.addParagraphOfText("Il y a " + gn.staffCharSet.size() + " personnes dans l'équipe Staff de ce GN")
         wordWriter.addParagraphOfText("\n\n")
-        wordWriter.addParagraphOfText("Vous trouverez ci-dessous les dossiers de cette équipe, à distribuer aux staff")
-        wordWriter.addParagraphOfText("------------------------------------------------------------------------------------------------")
+        wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers de cette équipe, à distribuer aux staff")
         createStaffFile(new ArrayList<Character>(gn.staffCharSet))
     }
 
@@ -1497,6 +1493,8 @@ class PublicationController {
         }
         msgCharacters += "Il mentionne " + NbPHJ + " Personnage" + ((NbPHJ > 1) ? "s" : "") + " Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
         msgCharacters += getPrintableDate(gn.t0Date)
+        msgCharacters += "Le scénario est construit autour des intrigues suivantes :" + "\n"
+
         return msgCharacters
     }
 

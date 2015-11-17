@@ -103,6 +103,7 @@ class RedactIntrigueController {
                 screenStep: screen,
                 gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
                 gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
+        //Ajout map plot avec plot + liste des soeurs
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
