@@ -32,22 +32,20 @@
                         </label>
                     </div>
                     <div class="span2">
-                        <g:select name="plotVariant" id="plotVariant" from="${Plot.findAllByVariantIsNull()}"
+                        <g:select name="plotVariant" id="plotVariant" from="${availableVariant}" value="${plotInstance.variant}"
                                   optionKey="id" optionValue="name" noSelection="${['':'Intrigue originale']}"/>
                     </div>
 
-                    <div class="span8">
+                    <div id="plotVariants" class="span8">
                         <g:if test="${plotInstance.variant != null}">
                         <table style="width:100%">
                             <tr>
                                 Variantes de cette intrigue :
                             </tr>
-                            <g:each in="${Plot.list()}" status="i5" var="plot">
-                                <g:if test="${(plot.variant == plotInstance.variant || plot.id == plotInstance.variant) && plot.id != plotInstance.id}">
-                                    <tr>
-                                        ${plot.name}
-                                    </tr>
-                                </g:if>
+                            <g:each in="${variantMap.get(plotInstance)}" status="i5" var="plot">
+                                <tr>
+                                    ${plot.name}
+                                </tr>
                             </g:each>
                         </table>
                         </g:if>

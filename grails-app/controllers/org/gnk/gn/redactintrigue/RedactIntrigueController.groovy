@@ -92,6 +92,18 @@ class RedactIntrigueController {
 		}
         TagService tagService = new TagService();
         List<Pastscene> pastscenes = new ArrayList<Pastscene>(orderPastscenes(plotInstance).values());
+
+        Map<Plot, List<Plot>> variantMap = new HashMap<>();
+        List<Plot> plotList = Plot.list();
+        for (Plot p : plotList) {
+            List<Plot> plotSisterList = new ArrayList<>();
+            for (Plot sister : plotList) {
+                if ((p.variant == sister.variant || p.variant == sister.id) && p.id != sister.id)
+                    plotSisterList.add(sister);
+            }
+            variantMap.put(p, plotSisterList);
+        }
+
 		[plotInstance: plotInstance,
                 pastscenes: pastscenes,
                 plotTagList: tagService.getPlotTagQuery(),
@@ -102,8 +114,10 @@ class RedactIntrigueController {
                 relationTypes: RoleRelationType.list(),
                 screenStep: screen,
                 gnConstantPlaceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.PLACE),
-                gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE)]
-        //Ajout map plot avec plot + liste des soeurs
+                gnConstantResourceList: GnConstantController.getGnConstantListFromType(GnConstant.constantTypes.RESOURCE),
+                variantMap: variantMap,
+                availableVariant: Plot.findAllByVariantIsNull()
+        ]
 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
