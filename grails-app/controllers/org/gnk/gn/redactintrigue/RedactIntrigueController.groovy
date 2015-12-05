@@ -118,7 +118,7 @@ class RedactIntrigueController {
                 variantMap: variantMap,
                 availableVariant: Plot.findAllByVariantIsNull()
         ]
-	}
+ 	}
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
         TreeMap<Long, Pastscene> pastscenes = new TreeMap<Long, Pastscene>();
@@ -770,5 +770,126 @@ class RedactIntrigueController {
                 break
         }
         return type
+    }
+
+    def duplicate(Long id) {
+        def plotInstance = Plot.get(id)
+        def duplicatedPlot = new Plot()
+
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String currentUsername = user.getUsername();
+        User currentUser = User.findByUsername(currentUsername);
+
+        duplicatedPlot.name = plotInstance.name + "[duplicate]"
+        duplicatedPlot.dateCreated = new Date();
+        duplicatedPlot.lastUpdated = new Date();
+        duplicatedPlot.user = currentUser;
+        duplicatedPlot.isEvenemential = false;
+        duplicatedPlot.isMainstream = false;
+        duplicatedPlot.isPublic = false;
+        duplicatedPlot.isDraft = true;
+        duplicatedPlot.description = plotInstance.description;
+        duplicatedPlot.pitchOrga = plotInstance.pitchOrga
+        duplicatedPlot.pitchPj = plotInstance.pitchPj
+        duplicatedPlot.pitchPnj = plotInstance.pitchPnj
+        duplicatedPlot.variant = (plotInstance.variant == null ? plotInstance.id : plotInstance.variant)
+
+        if (!duplicatedPlot.save(flush: true)) {
+            return
+        }
+
+        // Duplicate PlotHasTags
+        Set<PlotHasTag> toDuplicatePlotHasTags = plotInstance.getExtTags()
+        Set<PlotHasTag> duplicatedPlotHasTags = new HashSet<>();
+        for (PlotHasTag p : toDuplicatePlotHasTags) {
+            PlotHasTag newPlotHasTag = new PlotHasTag(duplicatedPlot, p.tag, p.weight)
+            if (newPlotHasTag.save())
+                duplicatedPlotHasTags.add(newPlotHasTag)
+        }
+        duplicatedPlot.extTags = duplicatedPlotHasTags
+        duplicatedPlot.save()
+
+        // Duplicate Roles
+        Set<Role> toDuplicateRoles = plotInstance.roles
+        Set<Role> duplicatedRoles = new HashSet<>();
+        Map<Integer, Role> roleToDuplicateMap = new HashMap<>() // Keep track of the duplicated roles in order to rebuild links
+        for (Role r : toDuplicateRoles) {
+            def newDuplicatedRole = new Role()
+            newDuplicatedRole.lastUpdated = new Date()
+            newDuplicatedRole.dateCreated = new Date()
+            newDuplicatedRole.code = r.code
+            newDuplicatedRole.pipr = r.pipr
+            newDuplicatedRole.pipi = r.pipi
+            newDuplicatedRole.pjgp = r.pjgp
+            newDuplicatedRole.plot = duplicatedPlot
+            newDuplicatedRole.description = r.description
+            newDuplicatedRole.type = r.type
+            newDuplicatedRole.save()
+
+            roleToDuplicateMap.put(r.id, newDuplicatedRole)
+            duplicatedRoles.add(newDuplicatedRole)
+        }
+
+        // RoleHasTags
+        for (Role r : toDuplicateRoles) {
+            Set<RoleHasTag> toDuplicateRoleHasTags = r.roleHasTags
+            Set<RoleHasTag> newRoleHasTags = new HashSet<>()
+            for (RoleHasTag roleHasTag : toDuplicateRoleHasTags) {
+                RoleHasTag newRoleHasTag = new RoleHasTag(roleToDuplicateMap.get(r.id), roleHasTag.tag, roleHasTag.weight)
+                if (newRoleHasTag.save())
+                    newRoleHasTags.add(newRoleHasTag)
+            }
+            roleToDuplicateMap.get(r.id).roleHasTags = newRoleHasTags
+            roleToDuplicateMap.get(r.id).save()
+        }
+
+        // RoleHasRelationWithRole
+        for (Role r : toDuplicateRoles) {
+            // roleHasRelationWithRolesForRole1Id
+            Set<RoleHasRelationWithRole> newRole1Set = new HashSet<>()
+            for (RoleHasRelationWithRole roleHasRelationWithRole : r.roleHasRelationWithRolesForRole1Id) {
+                RoleHasRelationWithRole newRoleHasRelationWithRole = new RoleHasRelationWithRole(
+                        roleToDuplicateMap.get(roleHasRelationWithRole.role1.id),
+                        roleToDuplicateMap.get(roleHasRelationWithRole.role2.id),
+                        roleHasRelationWithRole.weight,
+                        roleHasRelationWithRole.isBijective,
+                        roleHasRelationWithRole.roleRelationType,
+                        roleHasRelationWithRole.isExclusive,
+                        roleHasRelationWithRole.description)
+                newRoleHasRelationWithRole.isHidden = roleHasRelationWithRole.isHidden
+                if (newRoleHasRelationWithRole.save(flush: true))
+                    newRole1Set.add(newRoleHasRelationWithRole)
+            }
+            roleToDuplicateMap.get(r.id).setRoleHasRelationWithRolesForRole1Id(newRole1Set)
+            // roleHasRelationWithRolesForRole2Id
+            Set<RoleHasRelationWithRole> newRole2Set = new HashSet<>()
+            for (RoleHasRelationWithRole roleHasRelationWithRole : r.roleHasRelationWithRolesForRole2Id) {
+                RoleHasRelationWithRole newRoleHasRelationWithRole = new RoleHasRelationWithRole(
+                        roleToDuplicateMap.get(roleHasRelationWithRole.role1.id),
+                        roleToDuplicateMap.get(roleHasRelationWithRole.role2.id),
+                        roleHasRelationWithRole.weight,
+                        roleHasRelationWithRole.isBijective,
+                        roleHasRelationWithRole.roleRelationType,
+                        roleHasRelationWithRole.isExclusive,
+                        roleHasRelationWithRole.description)
+                if (newRoleHasRelationWithRole.save())
+                    newRole2Set.add(newRoleHasRelationWithRole)
+            }
+            roleToDuplicateMap.get(r.id).setRoleHasRelationWithRolesForRole2Id(newRole2Set)
+            roleToDuplicateMap.get(r.id).save()
+        }
+
+        duplicatedPlot.roles = duplicatedRoles
+        duplicatedPlot.save()
+
+        // Duplicate Events
+
+        // Duplicate Resource
+
+        // Duplicate Place
+
+        // Duplicate PastScenes
+
+        redirect(action: "edit", id: duplicatedPlot.id)
     }
 }

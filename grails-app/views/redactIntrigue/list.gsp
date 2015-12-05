@@ -56,6 +56,9 @@
                         <th style="width: 3%">
                             <g:message code="plot.isDraft.label" default="Draft" />
                         </th>
+                        <th>
+                            <!-- Left blank for duplicate btn -->
+                        </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,6 +118,12 @@
                         <td align="center" style="vertical-align: middle"><div class="${plotInstance.isDraft} img-circle">
                             <div class="hidden">${plotInstance.isDraft}</div>
                         </div></td>
+
+                        <td>
+                            <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
+                                <g:link class="btn" action="duplicate" id="${plotInstance?.id}">Dupliquer</g:link>
+                            </g:hasRights>
+                        </td>
                     </tr>
 				</g:each>
 				</tbody>
