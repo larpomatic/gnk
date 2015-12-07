@@ -24,8 +24,8 @@
     <g:form>
         <form>
 
-            <g:hiddenField name="genericEventId" value="${genericEventInstance.id}" />
-            <g:hiddenField name="genericEventVersion" value="${genericEventInstance.version}" />
+            <g:hiddenField name="genericEventId" value="${genericEventInstance?.id}" />
+            <g:hiddenField name="genericEventVersion" value="${genericEventInstance?.version}" />
             <fieldset class="form-inline">
                 <g:render template="form" model="[genericEventInstance : genericEventInstance,
                                                   genericEventInstanceList : genericEventInstanceList,

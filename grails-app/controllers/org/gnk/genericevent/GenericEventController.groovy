@@ -28,6 +28,7 @@ class GenericEventController {
         def listTag = tagService.getPlotTagQuery()
 
         GenericEvent genericEventInstance = new GenericEvent()
+        genericEventInstance.id = -1
         genericEventInstance.version = 1
 
         [genericEventInstance: genericEventInstance,
@@ -70,6 +71,8 @@ class GenericEventController {
         addGenericEventChoice(eventHasTagList, canImplyTagList,
                 canImplyGenericEventList)
 
+        addGenericEventSelected(eventHasTagList, canImplyTagList, canImplyGenericEventList)
+
         long idGenericEvent = id ?:
                 params.genericEventId == null || params.genericEventId == "" ? -1 : params.genericEventId as long;
         GenericEvent genericEventInstance = getGenericEvent(idGenericEvent)
@@ -80,6 +83,7 @@ class GenericEventController {
 
         if (params.first == null){
             eventHasTagList.addAll(genericEventInstance.genericEventHasTag)
+            canImplyTagList.addAll(genericEventInstance.genericEventCanImplyTag)
         }
 
         [genericEventInstance: genericEventInstance,
@@ -101,33 +105,41 @@ class GenericEventController {
 
         def var = params.genericEventId ?: "-1"
         GenericEvent ge = getGenericEvent(var as long)
-        //genericEventHasTag
+
+        //============ genericEventHasTag ==================
+        ArrayList<GenericEventHasTag> temp = new ArrayList<>()
         for(GenericEventHasTag prev : ge.genericEventHasTag){
             if (eventHasTagList.find {it.tag.id == prev.tag.id && it.value == prev.value} == null){
-//                ge.removeFromGenericEventHasTag(prev)
-                prev.delete()
+                temp.add(prev)
             }
         }
 
-//        ge.genericEventHasTag.removeAll { a -> eventHasTagList.find {it.tag.id == a.tag.id && it.value == a.value} == null}
+        for(GenericEventHasTag prev : temp){
+            ge.removeFromGenericEventHasTag(prev)
+        }
 
         for (GenericEventHasTag future : eventHasTagList){
-            future.value = 100
+//            future.value = 100
             ge.addToGenericEventHasTag(future)
-            //}
         }
 
-        //genericEventCanImplyTag
-//        for(GenericEventCanImplyTag prev : ge.genericEventCanImplyTag){
-//            if (canImplyTagList.find {it.tag.id == prev.tag.id && it.value == prev.value} == null){
-//                ge.removeFromGenericEventCanImplyTag(prev)
-//            }
-//        }
+        //============ genericEventCanImplyTag ==================
 
-        for (GenericEventHasTag future : canImplyTagList){
-            if (ge.genericEventCanImplyTag.find {it.tag.id == future.tag.id && it.value == future.value} == null){
-                ge.addToGenericEventCanImplyGenericEvent(future)
+        ArrayList<GenericEventCanImplyTag> temp2 = new ArrayList<>()
+        for(GenericEventCanImplyTag prev : ge.genericEventCanImplyTag){
+            if (canImplyTagList.find {it.tag.id == prev.tag.id && it.value == prev.value} == null){
+                temp2.add(prev)
+
             }
+        }
+
+        for(GenericEventCanImplyTag prev : temp2){
+            ge.removeFromGenericEventCanImplyTag(prev)
+        }
+
+        for (GenericEventCanImplyTag future : canImplyTagList){
+//            future.value = 100
+            ge.addToGenericEventCanImplyTag(future)
         }
 
         if (!ge.save(flush: true)) {
@@ -159,18 +171,17 @@ class GenericEventController {
                 eventHasTagList.add(genericEventHasTag)
             }
 
-//            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
-//                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
-//                temp.id = 0
-//                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
-//                temp.value = it.value.toString().toInteger();
-//                temp.dateCreated = new Date();
-//                temp.lastUpdated = new Date();
-//                temp.version = 1
-//
-//                genericEventInstance.addToGenericEventCanImplyTag(temp);
-////                genericEventInstance.genericEventCanImplyTag.add(temp);
-//            }
+            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
+                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
+                temp.id = 0
+                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
+                temp.value = it.value.toString().toInteger();
+                temp.dateCreated = new Date();
+                temp.lastUpdated = new Date();
+                temp.version = 1
+
+                canImplyTagList.add(temp)
+            }
         };
     }
 
@@ -182,11 +193,9 @@ class GenericEventController {
             if (it.key.toString().contains("tableTag_") && it.value != null && it.value != "") {
                 GenericEventHasTag genericEventHasTag = new GenericEventHasTag();
 //                genericEventHasTag.id = 0
-//                genericEventHasTag.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
-//                genericEventHasTag.value = it.value.toString().toInteger();
                 def tokenize = it.value.toString().tokenize("_")
                 genericEventHasTag.tag = Tag.findById(tokenize[0].toInteger());
-                genericEventHasTag.value = Tag.findById(tokenize[1].toInteger());
+                genericEventHasTag.value = tokenize[1].toInteger();
                 genericEventHasTag.dateCreated = new Date();
                 genericEventHasTag.lastUpdated = new Date();
                 genericEventHasTag.version = 1
@@ -194,18 +203,19 @@ class GenericEventController {
                 eventHasTagList.add(genericEventHasTag)
             }
 
-//            if (it.key.toString().contains("eventGenericImplyTagsWeight") && it.value != null && it.value != "") {
-//                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
+            if (it.key.toString().contains("tableImplyTag_") && it.value != null && it.value != "") {
+                GenericEventCanImplyTag temp = new GenericEventCanImplyTag();
 //                temp.id = 0
-//                temp.tag = Tag.findById(it.key.toString().tokenize("_")[1].toInteger());
-//                temp.value = it.value.toString().toInteger();
-//                temp.dateCreated = new Date();
-//                temp.lastUpdated = new Date();
-//                temp.version = 1
-//
-//                genericEventInstance.addToGenericEventCanImplyTag(temp);
-////                genericEventInstance.genericEventCanImplyTag.add(temp);
-//            }
+                def tokenize = it.value.toString().tokenize("_")
+                temp.tag = Tag.findById(tokenize[0].toInteger());
+                temp.value = tokenize[1].toInteger();
+
+                temp.dateCreated = new Date();
+                temp.lastUpdated = new Date();
+                temp.version = 1
+
+                canImplyTagList.add(temp)
+            }
         };
 
     }
@@ -235,6 +245,9 @@ class GenericEventController {
             if (params.genericEventId != null && params.genericEventId != ""){
                 genericEventInstance.id = ((String) params.genericEventId)?.toInteger();
             }
+//            else {
+//                genericEventInstance.id = -1
+//            }
             genericEventInstance.version = 1//((String)params.genericEventVersion).toInteger();
             genericEventInstance.lastUpdated = new Date();
             genericEventInstance.dateCreated = new Date();
@@ -247,4 +260,25 @@ class GenericEventController {
         }
         return genericEventInstance
     }
+
+       def delete(Long id) {
+            def genericEventInstance = GenericEvent.get(id)
+            String title = genericEventInstance.title
+
+            if (!genericEventInstance) {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), title])
+                redirect(action: "list")
+                return
+            }
+
+//            try {
+                genericEventInstance.delete(flush: true)
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), title])
+                redirect(action: "list")
+//            }
+//            catch (DataIntegrityViolationException e) {
+//                flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'genericEvent.label', default: 'GenericEvent'), title])
+//                redirect(action: "show", id: id)
+//            }
+        }
 }
