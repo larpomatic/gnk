@@ -4,6 +4,7 @@ $(function(){
 
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
+        save++;
         if ($('form[name="newRoleForm"] select[name="roleType"]').val() == "STF") {
             $('form[name="newRoleForm"] input[name="roleCode"]').val("Staff");
         }
@@ -18,10 +19,11 @@ $(function(){
         if ($('form[name="newRoleForm"] input[name="rolePJGP"]').val() < 0 || parseInt(pjg_tot) > 100)
         {
             createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, le total des PJG est de "+pjg_tot+" et doit être strictement positif, compris entre 0 et 100%.");
+            updateSave();
         }
 
         else {
-            if (parseInt(pjg_tot)<100)
+            if (parseInt(pjg_tot)<100 && parseInt(pjg_tot) > 0)
             {
                 createNotification("info", "Attention", "Le total de PJG ( "+pjg_tot +") est inférieur à 100");
             }
@@ -73,13 +75,16 @@ $(function(){
                             }
                         });
                         updateAllDescription($.unique(spanList.closest("form")));
+                        updateSave();
                     }
                     else {
                             createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                        updateSave();
                     }
                 },
                 error: function () {
                         createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+                    updateSave();
                 }
             })
         }
@@ -89,6 +94,7 @@ $(function(){
 function updateRole() {
     // modifie un role dans la base
     $('.updateRole').click(function() {
+        save++;
         var roleId = $(this).attr("data-id");
         var roleName = $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val();
         var roleType = $('form[name="updateRole_' + roleId + '"] select[name="roleType"]').val();
@@ -97,9 +103,11 @@ function updateRole() {
         }
         if (($('.richTextEditor span.label-success:contains("' + roleName + '")').size() > 0) && (roleType == "STF")) {
             createNotification("danger", "Création échouée.", "Ce rôle ne peut pas être staff car il est présent dans des descriptions.");
+            updateSave();
         }
         else if (($('.relationScreen .accordion-heading span[data-roleid="'+roleId+'"]').size() > 0) && (roleType == "STF")) {
             createNotification("danger", "Création échouée.", "Ce rôle ne peut pas être staff car il possède des relations.");
+            updateSave();
         }
         else {
             if (roleType == "STF") {
@@ -128,9 +136,10 @@ function updateRole() {
             if (parseInt($('form[name="updateRole_' + roleId + '"] input[name="rolePJGP"]').val()) < 0 || parseInt(pjgp_tot) > 100)
             {
                 createNotification("danger", "Modifications échouées.", "le total des PJG est de "+pjgp_tot+" et doit être strictement positif, compris entre 0 et 100%");
+                updateSave();
             }
             else {
-                if (parseInt(pjgp_tot)<100)
+                if (parseInt(pjgp_tot)<100 && parseInt(pjgp_tot) != 0)
                 {
                     createNotification("info", "Attention", "Le total de PJG ( "+pjgp_tot +") est inférieur à 100");
                 }
@@ -167,13 +176,15 @@ function updateRole() {
                                     $(this).html(data.object.name);
                                 }
                             });
+                            updateSave();
                         }
                         else {
-                                createNotification("danger", "Modifications échouées.", "Votre rôle : "+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"  n'a pas pu être modifié, une erreur s'est produite.");
-                        }
+                                createNotification("danger", "Modifications échouées.", "Votre rôle : *"+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"*  n'a pas pu être modifié, une erreur s'est produite.");
+                                updateSave();}
                     },
                     error: function () {
-                            createNotification("danger", "Modifications échouées.", "Votre rôle : "+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"  n'a pas pu être modifié, une erreur s'est produite.");
+                            createNotification("danger", "Modifications échouées.", "Votre rôle : *"+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"*  n'a pas pu être modifié, une erreur s'est produite.");
+                            updateSave();
                     }
                 })
             }

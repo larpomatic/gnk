@@ -9,6 +9,7 @@ $(function(){
 
     //ajoute une nouvelle ressource dans la base
     $('.insertResource').click(function() {
+        save++;
         var form = $('form[name="newResourceForm"]');
         var comment = $('#resourceRichTextEditor', form).html();
         comment = transformDescription(comment);
@@ -37,6 +38,7 @@ $(function(){
         }
         if (false == mandatoryTagFound) {
             createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Type Ressource'");
+            updateSave();
             return;
         }
 
@@ -82,13 +84,16 @@ $(function(){
                         }
                     });
                     updateAllDescription($.unique(spanList.closest("form")));
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+                    createNotification("danger", "Création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+                createNotification("danger", "Création échouée.", "Votre ressource n'a pas pu être ajoutée, une erreur s'est produite.");
+                updateSave();
             }
         })
         });
@@ -98,6 +103,7 @@ $(function(){
 // modifie une ressource dans la base
 function updateResource() {
     $('.updateResource').click(function() {
+        save++;
         var genericResourceId = $(this).attr("data-id");
         var form = $('form[name="updateResource_' + genericResourceId + '"]');
         var comment = $('#resourceRichTextEditor' + genericResourceId, form).html();
@@ -127,6 +133,7 @@ function updateResource() {
         }
         if (false == mandatoryTagFound) {
             createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Type Ressource' pour la resource : "+$('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val());
+            updateSave();
             return;
         }
 
@@ -137,7 +144,7 @@ function updateResource() {
             dataType: "json",
             success: function(data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre ressource :  "+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+" a bien été modifiée.");
+                    createNotification("success", "Modifications réussies.", "Votre ressource :  *"+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+"* a bien été modifiée.");
                     $('.resourceScreen .leftMenuList a[href="#resource_' + data.object.id + '"]').html(data.object.name);
                     $('.resourceSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('.eventScreen tbody td[data-id="' + data.object.id + '"]').html(data.object.name);
@@ -152,13 +159,16 @@ function updateResource() {
                             $(this).html(data.object.name);
                         }
                     });
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre ressource : "+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+" n'a pas pu être modifiée, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre ressource : *"+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+"* n'a pas pu être modifiée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre ressource :  "+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+"n'a pas pu être modifiée, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre ressource :  *"+ $('form[name="updateResource_' + genericResourceId + '"] input[name="resourceCode"]').val()+"* n'a pas pu être modifiée, une erreur s'est produite.");
+                updateSave();
             }
         })
     });
