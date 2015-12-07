@@ -68,8 +68,7 @@ class GenericEventController {
         List<GenericEventCanImplyTag> canImplyTagList = new ArrayList<>()
         List<GenericEventCanImplyGenericEvent> canImplyGenericEventList = new ArrayList<>()
 
-        addGenericEventChoice(eventHasTagList, canImplyTagList,
-                canImplyGenericEventList)
+        addGenericEventChoice(eventHasTagList, canImplyTagList, canImplyGenericEventList)
 
         addGenericEventSelected(eventHasTagList, canImplyTagList, canImplyGenericEventList)
 
@@ -182,6 +181,7 @@ class GenericEventController {
 
                 canImplyTagList.add(temp)
             }
+
         };
     }
 
@@ -200,7 +200,9 @@ class GenericEventController {
                 genericEventHasTag.lastUpdated = new Date();
                 genericEventHasTag.version = 1
 
-                eventHasTagList.add(genericEventHasTag)
+                if (!eventHasTagList.find {it.tag.id == genericEventHasTag.tag.id}){
+                    eventHasTagList.add(genericEventHasTag)
+                }
             }
 
             if (it.key.toString().contains("tableImplyTag_") && it.value != null && it.value != "") {
@@ -217,7 +219,6 @@ class GenericEventController {
                 canImplyTagList.add(temp)
             }
         };
-
     }
     private GenericEvent getGenericEvent(long id) {
 
