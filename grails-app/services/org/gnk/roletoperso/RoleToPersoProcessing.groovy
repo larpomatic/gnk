@@ -397,7 +397,8 @@ public class RoleToPersoProcessing {
         HashMap<Pair<com.gnk.substitution.Tag, com.gnk.substitution.Tag>, Integer> dictionnaryTagFirstnameName =
                 new HashMap<Pair<com.gnk.substitution.Tag, com.gnk.substitution.Tag>, Integer>();
 
-        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList,
+                characterLockedBannedTags, dictionnaryTagFirstnameName);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {

@@ -127,8 +127,8 @@ class TagService {
 //                    TagRelation tagRelation2 = null
 
 
-                    TagRelation tagRelation1 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(challengerTag.getKey(), refTag))
-                    TagRelation tagRelation2 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(refTag, challengerTag.getKey()))
+                    TagRelation tagRelation1 = dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(challengerTag.getKey(), refTag))
+                    TagRelation tagRelation2 = dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(refTag, challengerTag.getKey()))
 
                     if (tagRelation1 == null) {
                         tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
