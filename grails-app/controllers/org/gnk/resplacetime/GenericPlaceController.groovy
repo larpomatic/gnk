@@ -108,7 +108,8 @@ class GenericPlaceController {
         jsonGenericPlace.put("plotId", genericPlace.getPlot().getId());
         jsonGenericPlace.put("comment", genericPlace.getComment());
         jsonGenericPlace.put("placeObject", genericPlace.getObjectType().getId());
-        jsonGenericPlace.put("gnConstant", genericPlace.getGnConstant().getId());
+        if (genericPlace.gnConstant != null)
+            jsonGenericPlace.put("gnConstant", genericPlace.getGnConstant().getId());re
 
         JSONArray jsonTagList = new JSONArray();
         for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {

@@ -66,7 +66,8 @@ class GenericResourceController {
         jsonGenericResource.put("plotId", genericResource.getPlot().getId());
         jsonGenericResource.put("comment", genericResource.getComment());
         jsonGenericResource.put("resourceObject", genericResource.getObjectType().getId());
-        jsonGenericResource.put("gnConstant", genericResource.getGnConstant().getId());
+        if (genericResource.gnConstant != null)
+            jsonGenericResource.put("gnConstant", genericResource.getGnConstant().getId());
 
         if (genericResource.title) {
             jsonGenericResource.put("clue", true);
