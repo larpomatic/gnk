@@ -131,6 +131,7 @@ class PublicationController {
                 pitchOrgaList: pitchOrgaList,
                 charactersList: createPlayersList(),
                 gnId: id,
+                gnInstance : gn,
                 universName: uniName,
                 templateWordList: templateWordList,
                 globalrelationjson: globalGraph.buildGlobalGraphJSON(),

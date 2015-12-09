@@ -1,3 +1,8 @@
+<%@ page import="groovy.json.JsonBuilder; org.codehaus.groovy.grails.web.json.JSONObject; org.gnk.roletoperso.RoleHasRelationWithRole; org.gnk.roletoperso.Role" %>
+<%@ page import="org.gnk.roletoperso.Role"%>
+<%@ page import="org.gnk.roletoperso.Character"%>
+<%@ page import="org.gnk.selectintrigue.Plot"%>
+<%@ page import="org.gnk.gn.Gn"%>
 
 <!DOCTYPE html>
 <html>
@@ -105,8 +110,6 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
 
 <h3>Synthèse des personnages du GN</h3>
 
-
-
 <TABLE BORDER="1" CELLPADDING="10">
     <TR>
         <TH> NOM - Prenom </TH>
@@ -114,6 +117,7 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         <TH> Type </TH>
         <TH> Sexe </TH>
         <TH> Age </TH>
+        <TH> Relations </TH>
     </TR>
     <g:each in="${charactersList}" var="c">
         <TR>
@@ -122,6 +126,28 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
             <TD> ${c.type} </TD>
             <TD> ${c.gender} </TD>
             <TD> ${c.getAge()} </TD>
+            <TD>
+
+        <g:each in="${c.getRelations(true)?.keySet()}" var="rela">
+
+                    <g:set var="characterRel"
+                           value="${gnInstance?.getCharacterContainingRole(rela.getterRole1())?.lastname?.encodeAsHTML()}
+                           ${gnInstance?.getCharacterContainingRole(rela.getterRole1())?.firstname?.encodeAsHTML()}"/>
+
+                    ${((RoleHasRelationWithRole) rela).getterRole1().code?.encodeAsHTML()} : ${characterRel}
+            <br>
+
+                    <g:set var="characterRel"
+                           value="${gnInstance?.getCharacterContainingRole(rela.getterRole2())?.lastname}
+                           ${gnInstance?.getCharacterContainingRole(rela.getterRole2())?.firstname}"/>
+                    ${((RoleHasRelationWithRole) rela).getterRole2().code?.encodeAsHTML()} : ${characterRel}
+            <br>
+                    ${((RoleHasRelationWithRole) rela).description?.encodeAsHTML()}
+            <br>
+                    (${((RoleHasRelationWithRole) rela).getterRoleRelationType().name})
+            <br><br>
+        </g:each>
+            </TD>
         </TR>
     </g:each>
 </TABLE>
