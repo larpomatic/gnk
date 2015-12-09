@@ -773,8 +773,8 @@ class RedactIntrigueController {
     }
 
     def duplicate(Long id) {
-        def plotInstance = Plot.get(id)
-        def duplicatedPlot = new Plot()
+        Plot plotInstance = Plot.get(id)
+        Plot duplicatedPlot = new Plot()
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
@@ -814,7 +814,7 @@ class RedactIntrigueController {
         Set<Role> duplicatedRoles = new HashSet<>();
         Map<Integer, Role> roleToDuplicateMap = new HashMap<>() // Keep track of the duplicated roles in order to rebuild links
         for (Role r : toDuplicateRoles) {
-            def newDuplicatedRole = new Role()
+            Role newDuplicatedRole = new Role()
             newDuplicatedRole.lastUpdated = new Date()
             newDuplicatedRole.dateCreated = new Date()
             newDuplicatedRole.code = r.code
@@ -883,6 +883,62 @@ class RedactIntrigueController {
         duplicatedPlot.save()
 
         // Duplicate Events
+        Set<Event> toDuplicateEvents = plotInstance.events
+        Set<Role> duplicatedEvents = new HashSet<>();
+        Map<Integer, Event> eventToDuplicateMap = new HashMap<>() // Keep track of the duplicated events in order to rebuild links
+        for (Event e : toDuplicateEvents) {
+            Event newDuplicatedEvent = new Event()
+            newDuplicatedEvent.lastUpdated = new Date()
+            newDuplicatedEvent.dateCreated = new Date()
+            newDuplicatedEvent.name = e.name
+            newDuplicatedEvent.timing = e.timing
+            newDuplicatedEvent.duration = e.duration
+            newDuplicatedEvent.isPublic = e.isPublic
+            newDuplicatedEvent.isPlanned = e.isPlanned
+            newDuplicatedEvent.description = e.description
+            newDuplicatedEvent.plot = duplicatedPlot
+            // Missing predecessor + genericPlace
+
+            if (newDuplicatedEvent.save()) {
+                eventToDuplicateMap.put(e.id, newDuplicatedEvent)
+                duplicatedEvents.add(newDuplicatedEvent)
+            }
+        }
+
+        // Duplicate RoleHasEvent
+        for (Event e : toDuplicateEvents) {
+            Set<RoleHasEvent> newRoleHasEventSet = new HashSet<>()
+            for (RoleHasEvent roleHasEvent : e.roleHasEvents) {
+                RoleHasEvent newRoleHasEvent = new RoleHasEvent()
+                newRoleHasEvent.lastUpdated = new Date()
+                newRoleHasEvent.dateCreated = new Date()
+                newRoleHasEvent.title = roleHasEvent.title
+                newRoleHasEvent.isAnnounced = roleHasEvent.isAnnounced
+                newRoleHasEvent.description = roleHasEvent.description
+                newRoleHasEvent.comment = roleHasEvent.comment
+                newRoleHasEvent.evenementialDescription = roleHasEvent.evenementialDescription
+
+                newRoleHasEvent.event = eventToDuplicateMap.get(roleHasEvent.event.id)
+                Role currentRole = roleToDuplicateMap.get(roleHasEvent.role.id)
+                newRoleHasEvent.role = currentRole
+
+                if (newRoleHasEvent.save()) {
+                    newRoleHasEventSet.add(newRoleHasEvent)
+                    if (null == currentRole.roleHasEvents)
+                        currentRole.roleHasEvents = newRoleHasEventSet
+                    else
+                        currentRole.roleHasEvents.addAll(newRoleHasEventSet)
+                    currentRole.save()
+                }
+                // Missing RoleHasEventHasGenericResources
+            }
+            Event currentEvent = eventToDuplicateMap.get(e.id)
+            if (null == currentEvent.roleHasEvents)
+                currentEvent.roleHasEvents = newRoleHasEventSet
+            else
+                currentEvent.roleHasEvents.addAll(newRoleHasEventSet)
+            currentEvent.save()
+        }
 
         // Duplicate Resource
 
