@@ -50,6 +50,7 @@ class GenericResource {
         possessedByRole (nullable: true)
         fromRoleText (nullable: true)
         toRoleText (nullable: true)
+        gnConstant (nullable: true)
     }
 
 
