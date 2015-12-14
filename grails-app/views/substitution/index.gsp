@@ -7,6 +7,24 @@
 
 </head>
 <body>
+
+<!-- Hidden fields to store informations for GN-Constantes !-->
+<!-- <input type="hidden" id="placeListWithoutConstantsId" name="placeListWithoutConstants" value="${placeListWithoutConstants}"> !-->
+<div hidden id="placeListWithoutConstantsId" name="placeListWithoutConstants">
+    <g:each id="loopPlaceWithoutConstantsList" status="i" in="${placeListWithoutConstants}" var="place"  >
+        <div id="${place.id}"></div>
+    </g:each>
+</div>
+<div hidden id="usedGnConstantsId" name="usedGnConstants">
+    <g:each id="loopUsedConstantsList" status="i" in="${usedGnConstants}" var="gnConstant"  >
+        <div id="${gnConstant}"></div>
+    </g:each>
+</div>
+<!-- <input type="hidden" id="usedGnConstantsId" name="usedGnConstants" value="${usedGnConstants}"> !-->
+
+
+
+
 <h1>Substitution</h1>
 
 
@@ -53,6 +71,9 @@
 <g:javascript src="substitution/sub.js" />
 
 <script type="text/javascript">
+
+
+
     function publicationAccess()
     {
             var isCharsReady = prepareCharsJSONForValidation(charsJSON);
@@ -67,6 +88,27 @@
             subJSON.subResource = resourcesJSON.resources;
             subJSON.subPlace = placesJSON.places;
             subJSON.subDate = datesJSON;
+
+            var placeListWithoutConstantsVar = document.getElementById('placeListWithoutConstantsId');
+            var placeLWC_Elems = placeListWithoutConstantsVar.childNodes;
+            var placeLWC_Array = new Array();
+            for (var i=0; i < placeLWC_Elems.length; i++) {
+                if (placeLWC_Elems[i].nodeName && placeLWC_Elems[i].nodeName.toLowerCase() === 'div' ) {
+                    placeLWC_Array.push(placeLWC_Elems[i].id);
+                }
+            }
+
+            var placeUsedGnConstantsVar = document.getElementById('usedGnConstantsId');
+            var placeUGC_Elems = placeUsedGnConstantsVar.childNodes;
+            var placeUGC_Array = new Array();
+            for (var i=0; i < placeUGC_Elems.length; i++) {
+                if (placeUGC_Elems[i].nodeName && placeUGC_Elems[i].nodeName.toLowerCase() === 'div' ) {
+                    placeUGC_Array.push(placeUGC_Elems[i].id);
+                }
+            }
+
+            subJSON.placeListWithoutConstants = placeLWC_Array;
+            subJSON.usedGnConstants = placeUGC_Array;
 
             // Form creation and submit
             var form = $("<form>");

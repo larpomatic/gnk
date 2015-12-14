@@ -30,12 +30,12 @@
             <div class="row formRow">
                 <div class="span3">
                     <label>
-                        Type de ressource :
+                        Type de lieu :
                     </label>
                 </div>
                 <div class="span1">
                     <label for="resourceObjectToDefine">
-                        A définir
+                        A d&eacutefinir
                     </label>
                 </div>
                 <div class="span1">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="span1">
                     <label for="resourceObjectSimulated">
-                        Simulé
+                        Simul&eacute
                     </label>
                 </div>
                 <div class="span1">
@@ -80,6 +80,18 @@
                     {{else}}
                         <input type="radio" name="resourceObject" value="3" id="resourceObjectOffGame">
                     {{/ifCond}}
+                </div>
+            </div>
+
+            <div class="row formRow">
+                <div class="span1">
+                    <label for="placeConstantForm">
+                        Constante associ&eacutee
+                    </label>
+                </div>
+                <div class="span4">
+                    <select name="placeConstantForm" id="placeConstantForm" from="{{gnConstantPlaceList}}"
+                              optionKey="id" required="" optionValue="name" noSelection="${['null':'']}" value="{{genericPlace.gnConstant?.id}}"/>
                 </div>
             </div>
 

@@ -15,6 +15,7 @@ class InputHandler {
     List<Resource> resourceList
     List<Place> placeList
     List<Place> placeListWithoutConstants;
+    List<String> usedGnConstants;
     List<Pastscene> pastsceneList
     List<Event> eventList
     org.gnk.ressplacetime.GenericResource genericResource
@@ -328,6 +329,25 @@ class InputHandler {
             for (Map.Entry mapEntry in gnPlaceConstantMap)
                 placeList.add(mapEntry.getValue())
         }
+
+
+        usedGnConstants = gnPlaceConstantMap.keySet().toList();
+        //removes doubled values
+        int i = 0;
+        while (i < placeList.size()) {
+            int j = i + 1
+            while (j < placeList.size()) {
+
+                //doublon
+                if (placeList.get(i).code == placeList.get(j).code)
+                    placeList.remove(j)
+                else
+                    j++
+            }
+            i++
+        }
+
+
     }
 
     private Boolean isGenericPlaceInList(List<Place> placeList, String plotId, String genericPlaceId) {

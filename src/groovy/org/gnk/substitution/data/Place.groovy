@@ -1,6 +1,6 @@
 package org.gnk.substitution.data
 
-class Place {
+class  Place {
 	String id
     String plotId
 	String code

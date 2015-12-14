@@ -266,7 +266,7 @@ class OutputHandler {
         return null
     }
 
-    public updateGnWithPlaces(GNKDataContainerService gnkDataContainerService, JSONArray placesJSONArray) {
+    public updateGnWithPlaces(GNKDataContainerService gnkDataContainerService, JSONArray placesJSONArray, JSONArray placeListWithoutConstantsArray, JSONArray usedGnConstants) {
         Gn gnInst = gnkDataContainerService.gn
 
         Map<String, Place> placeMap = new HashMap<String, Place>()
@@ -308,6 +308,8 @@ class OutputHandler {
             }
         }
 
+
+
         // PlaceMap to placeSet
         Set<Place> placeSet = new HashSet<Place>()
         for (el in placeMap) {
@@ -332,7 +334,91 @@ class OutputHandler {
         }
         gnInst.placeSet = placeSet
 
-        // Add places to each generic place
+
+
+        // Add places to each generic place AND MERGE LIST WITH CONSTANT AND LIST WITHOUT CONSTANTS
+        for(genericPlaceJSON in placesJSONArray) {
+            // Get generic place in gn instance
+            //if generic place is in usedGnConstant lists, on parcours toutes les genericPlace pour les traiter
+            if (usedGnConstants.contains(genericPlaceJSON.code)) {
+                for (org.gnk.substitution.data.Place genPlace in placeListWithoutConstants) {
+                    Integer genericPlaceGnPlotId = genPlace.plotId as Integer
+                    Integer genericPlaceGnId = genericPlaceJSON.id as Integer
+                    GenericPlace genericPlace = findGenericPlaceInGN(gnInst, genericPlaceGnPlotId, genericPlaceGnId)
+                    if (genericPlace != null && genericPlace.gnConstant != null && genericPlace.gnConstant.name == genericPlace.code) {
+                        // Place lists creation
+                        Place selectedPlace
+                        List<Place> proposedPlaces = []
+                        List<Place> bannedPlaces = []
+                        selectedPlace = placeMap.get(genericPlaceJSON.selectedName)
+                        for (nameJSON in genericPlaceJSON.proposedNames) {
+                            proposedPlaces.add(placeMap.get(nameJSON))
+                        }
+                        for (nameJSON in genericPlaceJSON.bannedNames) {
+                            bannedPlaces.add(placeMap.get(nameJSON))
+                        }
+                        // Gn update
+                        genericPlace.selectedPlace = selectedPlace
+                        int lastIndexOf = selectedPlace.name.lastIndexOf(" -")
+                        if (lastIndexOf != -1)
+                            selectedPlace.name = selectedPlace.name.substring(0, lastIndexOf)
+                        genericPlace.proposedPlaces = proposedPlaces
+                        for (Place p in proposedPlaces) {
+                            lastIndexOf = p.name.lastIndexOf(" -")
+                            if (lastIndexOf != -1)
+                                p.name = p.name.substring(0, lastIndexOf)
+                        }
+                        genericPlace.bannedPlaces = bannedPlaces
+                        for (Place p in bannedPlaces) {
+                            lastIndexOf = p.name.lastIndexOf(" -")
+                            if (lastIndexOf != -1)
+                                p.name = p.name.substring(0, lastIndexOf)
+                        }
+                    }
+                }
+
+            }
+            else {
+                Integer genericPlaceGnPlotId = genericPlaceJSON.gnPlotId as Integer
+                Integer genericPlaceGnId = genericPlaceJSON.gnId as Integer
+                GenericPlace genericPlace = findGenericPlaceInGN(gnInst, genericPlaceGnPlotId, genericPlaceGnId)
+
+                // Gn update
+                if (genericPlace != null) {
+                    // Place lists creation
+                    Place selectedPlace
+                    List<Place> proposedPlaces = []
+                    List<Place> bannedPlaces = []
+                    selectedPlace = placeMap.get(genericPlaceJSON.selectedName)
+                    for (nameJSON in genericPlaceJSON.proposedNames) {
+                        proposedPlaces.add(placeMap.get(nameJSON))
+                    }
+                    for (nameJSON in genericPlaceJSON.bannedNames) {
+                        bannedPlaces.add(placeMap.get(nameJSON))
+                    }
+                    // Gn update
+                    genericPlace.selectedPlace = selectedPlace
+                    int lastIndexOf = selectedPlace.name.lastIndexOf(" -")
+                    if (lastIndexOf != -1)
+                        selectedPlace.name = selectedPlace.name.substring(0, lastIndexOf)
+                    genericPlace.proposedPlaces = proposedPlaces
+                    for (Place p in proposedPlaces) {
+                        lastIndexOf = p.name.lastIndexOf(" -")
+                        if (lastIndexOf != -1)
+                            p.name = p.name.substring(0, lastIndexOf)
+                    }
+                    genericPlace.bannedPlaces = bannedPlaces
+                    for (Place p in bannedPlaces) {
+                        lastIndexOf = p.name.lastIndexOf(" -")
+                        if (lastIndexOf != -1)
+                            p.name = p.name.substring(0, lastIndexOf)
+                    }
+                }
+            }
+        }
+
+        // Add places to each generic place BACK UP
+        /*
         for(genericPlaceJSON in placesJSONArray) {
             // Get generic place in gn instance
             Integer genericPlaceGnPlotId = genericPlaceJSON.gnPlotId as Integer
@@ -372,7 +458,8 @@ class OutputHandler {
                         p.name = p.name.substring(0, lastIndexOf)
                 }
             }
-        }
+
+        }*/
     }
 
     private GenericPlace findGenericPlaceInGN(Gn gnInst, Integer genericPlaceGnPlotId, Integer genericPlaceGnId) {

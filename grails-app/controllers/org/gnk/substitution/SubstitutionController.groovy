@@ -25,6 +25,7 @@ class SubstitutionController {
 
     String xmlGnTestPath = "DTD_V3.xml"
 
+
     def getBack(Long id) {
         Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
@@ -101,6 +102,9 @@ class SubstitutionController {
         List<Character> characterList = inputHandler.characterList
         List<Resource> resourceList = inputHandler.resourceList
         List<Place> placeList = inputHandler.placeList
+        List<Place> placeListWithoutConstants = inputHandler.placeListWithoutConstants
+        List<String> usedGnConstants = inputHandler.usedGnConstants;
+        session.setAttribute("placeListWithoutConstants", inputHandler.placeListWithoutConstants)
         List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
@@ -113,7 +117,9 @@ class SubstitutionController {
                 eventList: eventList,
                 relationjson: json,
                 gnId: gnIdStr,
-                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
+                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
+                placeListWithoutConstants: placeListWithoutConstants,
+                usedGnConstants: usedGnConstants]
     }
     /*private void changeCharSex(Gn gn, List<String> sexes)
     {
@@ -210,7 +216,9 @@ class SubstitutionController {
         outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
         // Places
         JSONArray placesJSONArray = subJSON.subPlace
-        outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
+        JSONArray placeListWithoutConstantsIdJSONArray = subJSON.placeListWithoutConstants
+        JSONArray usedGnConstantsArray = subJSON.usedGNConstants
+        outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray, placeListWithoutConstantsIdJSONArray, usedGnConstantsArray)
         // Dates
         JSONObject datesJSON = subJSON.subDate
         outputHandler.updateGnWithDates(gnkDataContainerService, datesJSON)
