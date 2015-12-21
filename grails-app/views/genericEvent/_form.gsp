@@ -9,6 +9,8 @@
 
 %{--<div class="form-inline">--}%
 <div>
+    <g:hiddenField name="first" value="true"/>
+
     <div class="form-group">
         <div class="row">
             <div class="span4">
@@ -77,22 +79,16 @@
                 <tbody>
                 <tr>
                     <td>
-                        <g:each in="${genericEventInstance.genericEventHasTag}" status="i" var="genericEventHasTag">
-                            <ul class="inline">
-                                <g:if test="${!(Tag.findByName("Tag Univers").id == genericEventHasTag.tag.parent.id)}">
-                                    <li class="badge badge-info">
-                                        %{--<g:form class="form-small">--}%
-                                            <g:hiddenField name="tableTag_${genericEventHasTag.id}" value="${genericEventHasTag.id}_${genericEventHasTag.value}"/>
-                                            <span style="color:black">${genericEventHasTag.tag.name} ${genericEventHasTag.value}%</span>
-                                        %{--<g:hasRights lvlright="${right.REFDELETE.value()}">--}%
-                                            %{--<g:actionSubmit class="icon-remove remove-action" controller="genericEvent"--}%
-                                                            %{--action="deleteGenericEventHasTag" value=" "--}%
-                                                            %{--onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');"/>--}%
-                                        %{--</g:hasRights>--}%
-                                        %{--</g:form>--}%
-                                    </li>
-                                </g:if>
-                            </ul>
+                        %{--<g:each in="${genericEventInstance.genericEventHasTag}" status="i" var="genericEventHasTag">--}%
+                        <g:each in="${eventHasTagList}" status="i" var="genericEventHasTag">
+                        <ul class="inline">
+                            %{--<g:if test="${!(Tag.findByName("Tag Univers").id == genericEventHasTag.tag.parent.id)}">--}%
+                            <li class="badge badge-info">
+                                <g:hiddenField name="tableTag_${genericEventHasTag.id}_${i}" value="${genericEventHasTag.tag.id}_${genericEventHasTag.value}"/>
+                                <span style="color:black">${genericEventHasTag.tag.name} ${genericEventHasTag.value}%</span>
+                            </li>
+                            %{--</g:if>--}%
+                        </ul>
                         </g:each>
                     </td>
                 </tr>
@@ -125,21 +121,13 @@
                 <tr>
                     <td>
                         <ul class="inline">
-                            <g:each in="${genericEventInstance.genericEventCanImplyTag}" status="i"
-                                    var="genericEventImplyTag">
-                                <g:if test="${!(Tag.findByName("Tag Univers").id == genericEventImplyTag.tag.parent.id)}">
+                            <g:each in="${canImplyTagList}" status="i" var="genericEventImplyTag" >
+                                %{--<g:if test="${!(Tag.findByName("Tag Univers").id == genericEventImplyTag?.tag.parent.id)}">--}%
                                     <li class="badge badge-info">
-                                        %{--<g:form class="form-small">--}%
-                                            <g:hiddenField name="tableImplyTag_${genericEventImplyTag.id}" value="${genericEventImplyTag.value}"/>
-                                            <span style="color:black">${genericEventImplyTag.tag.name} ${genericEventImplyTag.value}%</span>
-                                        %{--<g:hasRights lvlright="${right.REFDELETE.value()}">--}%
-                                            %{--<g:actionSubmit class="icon-remove remove-action" controller="genericEvent"--}%
-                                                            %{--action="deleteGenericEventImplyTag" value=" "--}%
-                                                            %{--onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');"/>--}%
-                                        %{--</g:hasRights>--}%
-                                        %{--</g:form>--}%
+                                        <g:hiddenField name="tableImplyTag_${genericEventImplyTag?.id}_${i}" value="${genericEventImplyTag?.tag.id}_${genericEventImplyTag?.value}"/>
+                                        <span style="color:black">${genericEventImplyTag.tag.name} ${genericEventImplyTag.value}%</span>
                                     </li>
-                                </g:if>
+                                %{--</g:if>--}%
                             </g:each>
                         </ul>
 
@@ -178,12 +166,12 @@
                                     var="genericEventCanImplyGenericEvent">
                                 <li class="badge badge-info">
                                     %{--<g:form class="form-small">--}%
-                                        <g:hiddenField name="canTag_${genericEventCanImplyGenericEvent.id}" value="${genericEventCanImplyGenericEvent.value}"/>
-                                        <span style="color:black">${genericEventCanImplyGenericEvent.genericEvent.title} ${genericEventCanImplyGenericEvent.value}%</span>
+                                    <g:hiddenField name="canTag_${genericEventCanImplyGenericEvent?.id}" value="${genericEventCanImplyGenericEvent.value}"/>
+                                    <span style="color:black">${genericEventCanImplyGenericEvent.genericEvent.title} ${genericEventCanImplyGenericEvent.value}%</span>
                                     %{--<g:hasRights lvlright="${right.REFDELETE.value()}">--}%
-                                        <g:actionSubmit class="icon-remove remove-action" controller="genericEvent"
-                                                        action="deleteGenericEventImplyGenericEvent" value=" "
-                                                        onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');"/>
+                                    <g:actionSubmit class="icon-remove remove-action" controller="genericEvent"
+                                                    action="deleteGenericEventImplyGenericEvent" value=" "
+                                                    onclick="return confirm('${message(code: 'adminRef.place.deleteTag')}');"/>
                                     %{--</g:hasRights>--}%
                                     %{--</g:form>--}%
                                 </li>
@@ -211,22 +199,22 @@
         </div>
 
         %{--<form>--}%
-            %{--<g:hiddenField name="genericEventInstanceSave" value="${genericEventInstance}" />--}%
-            <g:hiddenField name="genericEventHasTagAdd" value="true"/>
-            <div class="modal-body">
-                <ul class="plotTags">
-                    <g:each in="${TagInstanceList}" status="i" var="tagInstance">
-                        <g:render template="genericEventTagTree"
-                                  model="[tagInstance : tagInstance, genericEventInstance: genericEventInstance,
-                                          referenceTag: genericEventInstance.genericEventHasTag]"/>
-                    </g:each>
-                </ul>
-            </div>
+        %{--<g:hiddenField name="genericEventInstanceSave" value="${genericEventInstance}" />--}%
+        <g:hiddenField name="genericEventHasTagAdd" value="true"/>
+        <div class="modal-body">
+            <ul class="plotTags">
+                <g:each in="${TagInstanceList}" status="i" var="tagInstance">
+                    <g:render template="genericEventTagTree"
+                              model="[tagInstance : tagInstance, genericEventInstance: genericEventInstance,
+                                      referenceTag: genericEventInstance.genericEventHasTag]"/>
+                </g:each>
+            </ul>
+        </div>
 
-            <div class="modal-footer">
-                %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
-                <g:actionSubmit class="save" action="edit" value="Ok"/>
-            </div>
+        <div class="modal-footer">
+            %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
+            <g:actionSubmit class="save" action="edit" value="Ok"/>
+        </div>
         %{--</form>--}%
     </div>
 

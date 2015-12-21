@@ -31,7 +31,9 @@ class GenericPlace {
 	static constraints = {
 		code (blank: false, maxSize: 45, unique: false)
 		comment (nullable: true)
-	}
+        gnConstant (nullable: true)
+
+    }
 
     static mapping = {
         comment type: 'text'

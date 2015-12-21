@@ -3,6 +3,7 @@ $(function () {
 
     //ajoute un nouveau lieu dans la base
     $('.insertPlace').click(function () {
+        save++;
         var form = $('form[name="newPlaceForm"]');
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
@@ -20,6 +21,7 @@ $(function () {
         }
         if (false == mandatoryTagFound) {
             createNotification("danger", "Création échouée.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie'");
+            updateSave();
             return;
         }
 
@@ -65,13 +67,16 @@ $(function () {
                         }
                     });
                     updateAllDescription($.unique(spanList.closest("form")));
+                    updateSave();
                 }
                 else {
                     createNotification("danger", "création échouée.", "Votre lieu n'a pas pu être ajouté, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function () {
                 createNotification("danger", "création échouée.", "Votre lieu n'a pas pu être ajouté, une erreur s'est produite.");
+                updateSave();
             }
         })
     });
@@ -83,6 +88,7 @@ $(function () {
 function updatePlace() {
     // modifie un lieu dans la base
     $('.updatePlace').click(function () {
+        save++;
         var genericPlaceId = $(this).attr("data-id");
         var form = $('form[name="updatePlace_' + genericPlaceId + '"]');
         var description = $('.richTextEditor', form).html();
@@ -100,7 +106,8 @@ function updatePlace() {
             }
         }
         if (false == mandatoryTagFound) {
-            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie' pour le lieu "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" ");
+            createNotification("danger", "Modifications échouées.", "Il est nécessaire de choisir au moins un tag de la famille de 'Lieu Superficie' pour le lieu *"+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+"* ");
+            updateSave();
             return;
         }
 
@@ -111,7 +118,7 @@ function updatePlace() {
             dataType: "json",
             success: function (data) {
                 if (data.object.isupdate) {
-                    createNotification("success", "Modifications réussies.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" a bien été modifié.");
+                    createNotification("success", "Modifications réussies.", "Votre lieu : *"+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+"* a bien été modifié.");
                     $('.placeScreen .leftMenuList a[href="#place_' + data.object.id + '"]').html(data.object.name);
                     $('.placeSelector li[data-id="' + data.object.id + '"] a').html(data.object.name);
                     $('select[name="eventPlace"] option[value="' + data.object.id + '"]').html(data.object.name);
@@ -122,13 +129,16 @@ function updatePlace() {
                             $(this).html(data.object.name);
                         }
                     });
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être modifié, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre lieu : *"+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+"* n'a pas pu être modifié, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function () {
-                createNotification("danger", "Modifications échouées.", "Votre lieu : "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être modifié, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre lieu : *"+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+"* n'a pas pu être modifié, une erreur s'est produite.");
+                updateSave();
             }
         })
     });

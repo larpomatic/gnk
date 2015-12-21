@@ -3,43 +3,58 @@ $(function(){
 
     //ajoute une nouvelle relation dans la base
     $('.insertRelation').click(function() {
+        save++;
         var form = $('form[name="newRelationForm"]');
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
         $('.descriptionContent', form).val(description);
-        $.ajax({
-            type: "POST",
-            url: form.attr("data-url"),
-            data: form.serialize(),
-            dataType: "json",
-            success: function(data) {
-                if (data.iscreate) {
-                    createNotification("success", "Création réussie.", "Votre relation a bien été ajoutée.");
-                    createNewRelationPanel(data);
-                    initConfirm();
-                    emptyRelationForm();
-                    stopClosingDropdown();
-                    $('.numberRelation').html($('.relationScreen .accordion-group').size());
-                    initQuickObjects();
-                    updateRelation();
+        var oldRoleToId = $('#relationTo').val();
+        var oldRoleFromId = $('#relationFrom').val();
+        if (oldRoleFromId != oldRoleToId) {
+            $.ajax({
+                type: "POST",
+                url: form.attr("data-url"),
+                data: form.serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.iscreate) {
+                        createNotification("success", "Création réussie.", "Votre relation a bien été ajoutée.");
+                        createNewRelationPanel(data);
+                        initConfirm();
+                        emptyRelationForm();
+                        stopClosingDropdown();
+                        $('.numberRelation').html($('.relationScreen .accordion-group').size());
+                        initQuickObjects();
+                        updateRelation();
+                        updateSave();
+                    }
+                    else {
+                        createNotification("danger", "Création échouée.", "Votre relation n'a pas pu être ajoutée, une erreur s'est produite.");
+                        updateSave();
+                    }
+                },
+                error: function () {
+                    createNotification("danger", "Création échouée.", "Votre relation n'a pas pu être ajoutée, une erreur s'est produite.");
+                    updateSave();
                 }
-                else {
-                    createNotification("danger", "création échouée.", "Votre relation n'a pas pu être ajoutée, une erreur s'est produite.");
-                }
-            },
-            error: function() {
-                createNotification("danger", "création échouée.", "Votre relation n'a pas pu être ajoutée, une erreur s'est produite.");
-            }
-        })
+            })
+        }
+        else{
+            createNotification("danger", "Création échouée.", "Votre relation n'a pas pu être ajoutée, une erreur s'est produite.");
+            updateSave();
+        }
     });
 });
 
 // modifie une relation dans la base
 function updateRelation() {
     $('.updateRelation').click(function() {
+        save++;
         var roleFromIdRelation = $(this).attr("data-roleFromId");
         var oldRoleToId = $(this).attr("data-oldRoleToId");
+        var oldRoleFromId = $(this).attr("data-oldRoleFromId");
         var wasBijective = $(this).attr("data-wasBijective");
+        var relationTo = $('#relationTo');
         var form = $(this).parent();
         var description = $('.richTextEditor', form).html();
         description = transformDescription(description);
@@ -126,13 +141,16 @@ function updateRelation() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
                     createNotification("success", "Modifications réussies.", "Votre relation a bien été modifiée.");
+                    updateSave();
                 }
                 else {
-                    createNotification("danger", "Modifications échouées.", "Votre relation n'a pas pu être modifiée, une erreur s'est produite.");
+                    createNotification("danger", "Modifications échouées.", "Votre relation entre *" + roleFromId + "* et entre *"+ roleToId + "* n'a pas pu être modifiée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
-                createNotification("danger", "Modifications échouées.", "Votre relation n'a pas pu être modifiée, une erreur s'est produite.");
+                createNotification("danger", "Modifications échouées.", "Votre relation entre *" + oldRoleFromId + "* et entre *"+ relationTo +"* n'a pas pu être modifiée, une erreur s'est produite.");
+                updateSave();
             }
         })
     });

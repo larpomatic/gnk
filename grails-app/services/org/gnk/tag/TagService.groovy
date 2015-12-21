@@ -108,7 +108,8 @@ class TagService {
 
     public int getTagsMatching(Map<Tag, Integer> refTagList,
                                Map<Tag,Integer> challengerTagList,
-                               Map<Tag, Boolean> refLockedBannedTags) {
+                               Map<Tag, Boolean> refLockedBannedTags,
+                               HashMap<Pair<com.gnk.substitution.Tag, com.gnk.substitution.Tag>, Integer> dictionnaryTagFirstnameName) {
         Integer rankTag = 0;
         if (challengerTagList != null) {
             for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {
@@ -126,14 +127,14 @@ class TagService {
 //                    TagRelation tagRelation2 = null
 
 
-                    TagRelation tagRelation1 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(challengerTag.getKey(), refTag))
-                    TagRelation tagRelation2 = NamingService.dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(refTag, challengerTag.getKey()))
+                    TagRelation tagRelation1 = dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(challengerTag.getKey(), refTag))
+                    TagRelation tagRelation2 = dictionnaryTagFirstnameName.get(new Pair<Tag, Tag>(refTag, challengerTag.getKey()))
 
                     if (tagRelation1 == null) {
                         tagRelation1 = TagRelation.myFindWhere(challengerTag.getKey(), refTag);
 
                         if (tagRelation1 != null) {
-                            NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation1.weight)
+                            dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation1.weight)
                         }
                         else{
                             //NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation1.weight)
@@ -143,7 +144,7 @@ class TagService {
                     if (tagRelation2 == null) {
                         tagRelation2 = TagRelation.myFindWhere(refTag, challengerTag.getKey());
                         if (tagRelation2 != null) {
-                            NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation2.weight)
+                            dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation2.weight)
                         }
                         else{
                             //NamingService.dictionnaryTagFirstnameName.put(new Pair<Tag, Tag>(refTag, challengerTag.getKey()), tagRelation2.weight)

@@ -7,6 +7,7 @@ import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag;
 import org.gnk.tag.TagRelation;
 import org.gnk.tag.TagService
+import org.javatuples.Pair
 import sun.nio.cs.StreamDecoder
 import sun.rmi.runtime.Log;
 
@@ -393,7 +394,11 @@ public class RoleToPersoProcessing {
                 challengerTagList.put(rolehasTag.getterTag(), rolehasTag.getterWeight());
             }
         }
-        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList, characterLockedBannedTags);
+        HashMap<Pair<com.gnk.substitution.Tag, com.gnk.substitution.Tag>, Integer> dictionnaryTagFirstnameName =
+                new HashMap<Pair<com.gnk.substitution.Tag, com.gnk.substitution.Tag>, Integer>();
+
+        rankTag = (new TagService()).getTagsMatching(character.getTags(), challengerTagList,
+                characterLockedBannedTags, dictionnaryTagFirstnameName);
         if (rankTag == Integer.MIN_VALUE)
             return Integer.MIN_VALUE;
         for (Map.Entry<Tag, Integer> challengerTag : challengerTagList.entrySet()) {

@@ -42,8 +42,10 @@ $(function(){
 
     // on ajoute la description d'un plot dans le champ hidden correspondant
     $('.updatePlot').click(function() {
+        save++;
         if (($('.richTextEditor span.label-default').size() > 0) && ($('#isDraft:checked').size() == 0)) {
             createNotification("danger", "Enregistrement échoué.", "Votre intrigue comporte des éléments non enregistrés en base de données, enregistrez les ou passer l'intrigue en mode brouillon pour pouvoir continuer.");
+            updateSave();
             return false;
         }
         var form = $('.savePlotForm');
@@ -71,13 +73,16 @@ $(function(){
                 if (data.object.isupdate) {
                     initializeTextEditor();
                     createNotification("success", "Modifications réussies.", "Votre intrigue a bien été modifiée.");
+                    updateSave();
                 }
                 else {
                     createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+                    updateSave();
                 }
             },
             error: function() {
                 createNotification("danger", "Modification échouée.", "Votre intrigue n'a pas pu être ajoutée, une erreur s'est produite.");
+                updateSave();
             }
         })
 
@@ -97,6 +102,8 @@ $(function(){
     initSpanLabel('.spanLabel');
 
     $('#GeneralSave').click(function(){
+        save = 0;
+        $('#GeneralSave').prop('disabled',true);
         if ($('form[name="newRoleForm"] input[name="roleCode"]').val()){
             $('.insertRole').trigger("click");
         }
@@ -106,9 +113,8 @@ $(function(){
         if ($('form[name="newResourceForm"] input[name="resourceCode"]').val()){
             $('.insertResource').trigger("click");
         }
-        var form = $('form[name="newRelationForm"]');
-        var description = $('#relationRichTextEditor', form).html();
-        if (description){
+
+        if ($('form[name="newRelationForm"] input[name="relationWeight"]').val()){
             $('.insertRelation').trigger("click");
         }
         form = $('form[name="newPastSceneForm"]');
@@ -116,15 +122,31 @@ $(function(){
         if (title){
             $('.insertPastScene').trigger("click");
         }
+        title = transformDescription(title);
+        $('#pastSceneTitleRichTextEditor', form).val(title);
+
         form = $('form[name="newEventForm"]');
         title = $('#eventTitleRichTextEditor', form).html();
         if (title){
             $('.insertEvent').trigger("click");
         }
+        title = transformDescription(title);
+        $('#pastSceneTitleRichTextEditor', form).val(title);
 
         $('.updateRole, .updateEvent, .updatePastScene, .updatePlace, .updatePlot, .updateRelation, .updateResource').trigger("click");
     });
 });
+
+//Used for the global save button
+var save = 0;
+
+function updateSave(){
+    save--;
+    if (save == 0){
+        $('#GeneralSave').prop('disabled',false);
+    }
+
+}
 
 //add span on labels like "<i:role>"
 function initSpanLabel(element) {
