@@ -772,7 +772,7 @@ class RedactIntrigueController {
         return type
     }
 
-    def duplicate(Long id) {
+    /*def duplicate(Long id) {
         Plot plotInstance = Plot.get(id)
         Plot duplicatedPlot = new Plot()
 
@@ -947,5 +947,5 @@ class RedactIntrigueController {
         // Duplicate PastScenes
 
         redirect(action: "edit", id: duplicatedPlot.id)
-    }
+    }*/
 }
