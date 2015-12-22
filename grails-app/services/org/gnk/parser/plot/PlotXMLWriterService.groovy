@@ -77,6 +77,7 @@ class PlotXMLWriterService {
         rootElement.setAttribute("author", plot.user?.getId().toString());
         rootElement.setAttribute("creation_date", plot.dateCreated?.time.toString());
         rootElement.setAttribute("last_update_date", plot.lastUpdated?.time.toString());
+        rootElement.setAttribute("variant", plot.variant.toString());
 
         return rootElement;
     }

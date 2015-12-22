@@ -99,6 +99,8 @@ class PlotXMLReaderService {
             plotRes.dateCreated = new Date(new Timestamp(PLOT.attribute("creation_date") as Long).getTime())
         if (PLOT.attribute("last_update_date") != "null")
             plotRes.lastUpdated = new Date(new Timestamp(PLOT.attribute("last_update_date") as Long).getTime())
+        if (PLOT.attribute("variant") != "null")
+            plotRes.variant = PLOT.attribute("variant") as Integer
 
         return plotRes
     }
