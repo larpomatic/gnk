@@ -303,8 +303,16 @@ public class RoleToPersoProcessing {
                 if ((character.isWomen() && roleGender.equals("M")) || (character.isMen() && roleGender.equals("F")))
                     return false;
             }
-
         }
+
+        // Variant processing, a character can't be a part of 2 variant plots
+        for (Role selectedRole : character.getSelectedRoles()) {
+            if (role.getPlot().getVariant() != null && selectedRole.getPlot().getId() == role.getPlot().getVariant()
+            || (selectedRole.getPlot().getVariant() != null && selectedRole.getPlot().getVariant() == role.getPlot().getVariant())
+            || (selectedRole.getPlot().getVariant() != null && selectedRole.getPlot().getVariant() == role.getPlot().getDTDId()))
+                return false;
+        }
+
         return !character.roleIsBanned(role) && !character.getPlotSet().contains(role.getterPlot());
     }
 

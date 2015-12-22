@@ -265,6 +265,18 @@ public class SelectIntrigueProcessing {
                     return false;
                 }
             }
+            for (Plot selectedPlot : _allPlotList) {
+                if (plot.getVariant() == selectedPlot.getId()
+                || ((plot.getVariant() != null) && (plot.getVariant() == selectedPlot.getVariant()))
+                || plot.getId() == selectedPlot.getVariant())
+                    return false;
+            }
+            for (Plot lockedPlot : _lockedPlotList) {
+                if (plot.getVariant() == lockedPlot.getId()
+                        || ((plot.getVariant() != null) && (plot.getVariant() == lockedPlot.getVariant()))
+                        || plot.getId() == lockedPlot.getVariant())
+                    return false;
+            }
         }
 
 
