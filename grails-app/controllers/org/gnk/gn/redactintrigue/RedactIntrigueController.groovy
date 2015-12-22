@@ -772,6 +772,7 @@ class RedactIntrigueController {
         return type
     }
 
+    // Unfinished work to duplicate plots
     /*def duplicate(Long id) {
         Plot plotInstance = Plot.get(id)
         Plot duplicatedPlot = new Plot()
