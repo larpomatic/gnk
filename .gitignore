@@ -52,3 +52,4 @@ application.properties
 web-app/word/
 
 *.xml
+.slcache/
