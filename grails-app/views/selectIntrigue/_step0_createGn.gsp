@@ -132,49 +132,18 @@ select {
                     </div>
                 </td>
                 <td colspan="2"></td>
-                <td><label for="t0DateHour"><g:message
-                        code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
-                <td>
-                    <div class="input-append">
-                        <input type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
-                               required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}"
-                               value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
-                        <g:if test="${formatDate(format: 'G', date: gnInstance?.t0Date) == 'BC'}">
-                            <input type="hidden" name="t0DateHourUnity" value="-"/>
-                            <span class="add-on btn">
-                                <i>- JC</i>
-                            </span>
-                        </g:if>
-                        <g:else>
-                            <input type="hidden" name="t0DateHourUnity" value="+"/>
-                            <span class="add-on btn">
-                                <i>+ JC</i>
-                            </span>
-                        </g:else>
-                    </div>
-                </td>
-
             </tr>
 
             <tr>
-                <td><label for="gnDuration"><g:message
-                        code="selectintrigue.step0.gnDuration" default="GN duration"/></label></td>
-                <td><div class="input-append">
-                    <input class="span2" name="gnDuration" id="gnDuration"
-                           type="number" value="${gnInstance?.duration}" required="required" pattern="\d*"
-                           style="margin-right: 0px;" min="1"/><span class="add-on">h</span>
-                </div></td>
-
                 <td colspan="2"></td>
-
                 <td><label for="gnConvention"><g:message
                         code="selectintrigue.step0.gnConvention" default="Convention"/>
                 </label></td>
                 <td><g:select name="convention" id="gnConvention"
                               from="${conventionList}" optionKey="id"/></td>
-
             </tr>
         </table>
+
         <g:render template="tagsPopup"
                   model="['idPopup': 'tagsModal', 'namePopup': 'Tags', 'myOwner': gnInstance, 'tagList': plotTagList, 'tagPrefix': 'tags_', 'weightTagPrefix': 'weight_tags_', 'tagListName': 'BaseTags']"/>
         <g:render template="tagsPopup"
