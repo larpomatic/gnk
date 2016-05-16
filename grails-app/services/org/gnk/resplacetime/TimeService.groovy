@@ -106,16 +106,46 @@ class TimeService {
 
     def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration) {
 
+
+        // ???
+        //int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
+
+        // Computes the date of the event beginning
+        //Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
+        //println("MIN " + Math.round(deltaTime))
+
+        //calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
+
+
+
+        /* Times new algorithm
+
+        Event.start = GN.start + Event.% * gnDuration
+
+                    //Gestion Prédécesseur
+                    //var PredecessorEnd = Event.Predecessor.Start + Event.Predecessor.Duration
+                    //if (PredecessorEnd < Event.Start)
+                    //    Event.Start = PredecessorEnd
+
+        Foreach (Period)
+        If (Event.start >= Période.start)
+            Event.start += Période.duration
+
+        Liste de période triée par % dans le GN  ?
+
+        Les tables GN est period doivent être liée avec une cardinalité one-to-many
+*/
+        //TODO Task : Modifiy event algo
         // Instantiates the calendar.
         Calendar calendar = Calendar.getInstance()
         calendar.setTime(gnBeginDate)
-        int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
+        //gnDuration is in hours and event.timing is the % of its apparition in the GN
+        float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        calendar.add(Calendar.MINUTE, ((gnDuration * event.timing / 100) * 60))
+        Date beginDate = calendar.getTime()
 
-        // Computes the date of the event beginning
-        Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
-        //println("MIN " + Math.round(deltaTime))
-		calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
-		Date beginDate = calendar.getTime()
+
+
 
         // The computed date is transformed in string format
         Date absoluteDate = calendar.getTime()

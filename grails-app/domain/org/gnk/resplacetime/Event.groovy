@@ -11,6 +11,9 @@ class Event {
 	Date lastUpdated
 	Date dateCreated
 	String name
+	/**
+	 * Position of the event during GN duration in %
+	 */
 	Integer timing
 	Integer duration
 	Boolean isPublic
