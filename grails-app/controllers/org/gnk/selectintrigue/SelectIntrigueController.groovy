@@ -28,9 +28,39 @@ class SelectIntrigueController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        final gnData = new GNKDataContainerService();
+        for (Gn gn in Gn.list(params))
+        {
+            if (gn != null)
+                gnData.ReadDTD(gn);
+        }
         [gnInstanceList: Gn.list(params), gnInstanceTotal: Gn.count()]
     }
 
+
+    def listStep(String step)
+    {
+        List<String> liststep;
+        int nbstep = convertStepToInt(step);
+        if (nbstep >= 1)
+            liststep.add("selectIntrigue")
+        if (nbstep >= 2)
+            liststep.add("substitution")
+        if (nbstep >= 3)
+            liststep.add("publication")
+        return liststep;
+    }
+
+    int convertStepToInt(String step)
+    {
+        if (step == "publication")
+            return 3;
+        if (step == "substitution")
+            return 2;
+        if (step == "selectIntrigue")
+            return 1;
+        return 0;
+    }
     def dispatchStep(Long id) {
         if (id == 0) {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
@@ -682,6 +712,8 @@ class SelectIntrigueController {
             return null;
         }
     }
+
+
 
     def displayDTD() {
         String gnDTD2Html = params.gnDTD

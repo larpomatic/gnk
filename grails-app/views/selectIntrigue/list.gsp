@@ -21,6 +21,7 @@
 				<thead>
 					<tr>
 						<g:sortableColumn property="name" title="${message(code: 'gn.name.label', default: 'Name')}" />
+						<g:sortableColumn property="step" title="${message(code: 'gn.step.label', default: 'Step')}" />
 						<g:sortableColumn property="date" title="${message(code: 'gn.date.label', default: 'Date')}" />
 					</tr>
 				</thead>
@@ -31,7 +32,23 @@
                             <g:hasRights lvlright="${right.MGNOPEN.value()}">
                                 <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
                             </g:hasRights>
-                            <g:hasNotRights lvlright="${right.MGNOPEN.value()}">
+							<g:if test="${gnInstance.step == 'publication'}">
+								<td><g:select name="step" value="${gnInstance.step}"
+											  from="${['publication', 'substitution', 'role2perso', 'selectIntrigue']}"/></td>
+							</g:if>
+							<g:if test="${gnInstance.step == 'substitution'}">
+								<td><g:select name="step" value="${gnInstance.step}"
+											  from="${['substitution', 'role2perso', 'selectIntrigue']}"/></td>
+							</g:if>
+							<g:if test="${gnInstance.step == 'role2perso'}">
+								<td><g:select name="step" value="${gnInstance.step}"
+											  from="${['role2perso', 'selectIntrigue']}"/></td>
+							</g:if>
+							<g:if test="${gnInstance.step == 'selectIntrigue'}">
+								<td><g:select name="step" value="${gnInstance.step}"
+											  from="${['selectIntrigue']}"/></td>
+							</g:if>
+							<g:hasNotRights lvlright="${right.MGNOPEN.value()}">
                                 ${fieldValue(bean: gnInstance, field: "name")}
                             </g:hasNotRights>
                         </td>
