@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.apache.xpath.operations.Bool
+import org.gnk.gn.Gn
 import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.PastsceneTime
 import java.text.SimpleDateFormat
@@ -104,7 +105,7 @@ class TimeService {
         }
     }
 
-    def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration) {
+    def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {
 
 
         // ???
@@ -141,8 +142,16 @@ class TimeService {
         calendar.setTime(gnBeginDate)
         //gnDuration is in hours and event.timing is the % of its apparition in the GN
         float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
-        calendar.add(Calendar.MINUTE, ((gnDuration * event.timing / 100) * 60))
+        //We add the event position in the gn duration to the timestamp of the beginning of the Gn
+        calendar.add(Calendar.MINUTE, minutesBeforeEvent)
         Date beginDate = calendar.getTime()
+        def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == gnId }
+        periods.each { Period period ->
+            if(beginDate >= period.beginning) {
+                calendar.add(Calendar.MINUTE, period.duration)
+                beginDate = calendar.getTime()
+            }
+        }
 
 
 
