@@ -29,28 +29,31 @@
 				<g:each in="${gnInstanceList}" status="i" var="gnInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						<td>
+                        <g:form controller="selectIntrigue" action="dispatchStep" params="[id : gnInstance.id]">
                             <g:hasRights lvlright="${right.MGNOPEN.value()}">
-                                <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
+                            <button type="submit" style="" style="border: none" class="btn-link">${fieldValue(bean: gnInstance, field: "name")}</button></td>
                             </g:hasRights>
+                            <!--<g:link action="dispatchStep" params="[id: gnInstance.id]">${fieldValue(bean: gnInstance, field: "name")}</g:link>-->
 							<g:if test="${gnInstance.step == 'publication'}">
-								<td><g:select name="step" value="${gnInstance.step}"
-											  from="${['publication', 'substitution', 'role2perso', 'selectIntrigue']}"/></td>
+								<td><g:select name='step-${gnInstance.id}'
+											  from="${['publication', 'substitution', 'role2perso', 'selectIntrigue']}"/>
 							</g:if>
 							<g:if test="${gnInstance.step == 'substitution'}">
-								<td><g:select name="step" value="${gnInstance.step}"
+								<td><g:select name="step-${gnInstance.id}"
 											  from="${['substitution', 'role2perso', 'selectIntrigue']}"/></td>
 							</g:if>
 							<g:if test="${gnInstance.step == 'role2perso'}">
-								<td><g:select name="step" value="${gnInstance.step}"
+								<td><g:select name="step-${gnInstance.id}"
 											  from="${['role2perso', 'selectIntrigue']}"/></td>
 							</g:if>
 							<g:if test="${gnInstance.step == 'selectIntrigue'}">
-								<td><g:select name="step" value="${gnInstance.step}"
+								<td><g:select name="step-${gnInstance.id}"
 											  from="${['selectIntrigue']}"/></td>
 							</g:if>
 							<g:hasNotRights lvlright="${right.MGNOPEN.value()}">
                                 ${fieldValue(bean: gnInstance, field: "name")}
                             </g:hasNotRights>
+                        </g:form>
                         </td>
 						<td><g:formatDate date="${gnInstance.date}" /></td>
                         <td>
