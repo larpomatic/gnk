@@ -147,7 +147,7 @@ class TimeService {
         Date beginDate = calendar.getTime()
         def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == gnId }
         periods.each { Period period ->
-            if(beginDate >= period.beginning) {
+            if(period.isBlocking && beginDate >= period.beginning) {
                 calendar.add(Calendar.MINUTE, period.duration)
                 beginDate = calendar.getTime()
             }

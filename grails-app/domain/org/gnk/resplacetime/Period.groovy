@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.apache.commons.lang3.time.DateUtils
 import org.gnk.gn.Gn
 
 /**
@@ -26,7 +27,7 @@ class Period {
     /**
      * The period will not allow other period or event to be planned within its duration in the Times Substitution algorithm
      */
-    Boolean isBlocking
+    private Boolean isBlocking
     /**
      * The duration of the period in minutes
      */
@@ -37,6 +38,9 @@ class Period {
     static belongsTo = [gn: Gn]
     /**
      * Currently unused
+     *
+     * Means no way to create a predecessor / no mean to verify whether a blocking period already exist within the Gn
+     * no verification that the successor begin after the predecessor started / finished
      */
     Period periodPredecessor
 
@@ -66,6 +70,43 @@ class Period {
      *
      * @return date
      */
+    Boolean getIsBlocking() {
+        return isBlocking
+    }
+
+    void setIsBlocking(Boolean isBlocking) {
+
+        if(isBlocking == false) {
+            this.isBlocking = false
+            return
+        }
+        if(this.beginning == null || this.duration == null || this.gn == null) {
+            this.isBlocking = false
+            return
+        }
+        Boolean allowed = true
+        //Integer GnId = this.gn.id
+        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list()
+                //.findAllByGnAndIsBlocking(this.gn, true)
+                //.where {Gn.id == n && isBlocking == true}.list()
+        blockingPeriods.each { Period p ->
+            if(p == null)
+                return
+            Console.println(p.name + " test")
+            Date end =  DateUtils.addMinutes(this.beginning, this.duration)
+            Date pEnd =  DateUtils.addMinutes(p.beginning, p.duration)
+            //If the beginning of a period is during
+            Boolean beginsDuringPeriod = (beginning.before(p.beginning) || beginning.equals(p.beginning)) &&
+                    (end.after(p.beginning) || end.equals(p.beginning))
+            Boolean endsDuringPeriod = (beginning.before(pEnd) || beginning.equals(pEnd)) &&
+                    (end.after(pEnd) || end.equals(pEnd))
+            Boolean periodInsideP = (p.beginning.before(beginning) || p.beginning.equals(beginning)) &&
+                    (pEnd.after(end) || pEnd.equals(end))
+            allowed = allowed && !beginsDuringPeriod && !endsDuringPeriod && !periodInsideP
+        }
+        this.isBlocking = allowed
+    }
+
     private void setBeginingFromXML() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(absoluteYear, absoluteMonth, absoluteDay, absoluteHour, absoluteMinute);

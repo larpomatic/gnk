@@ -564,8 +564,9 @@ class IntegrationHandler {
                 eventTime.absoluteMinute = eventJson.absoluteMinute as Integer
             }
 
+            Console.println(characterJson.gnId)
             // Call service
-            eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration)
+            eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration, characterJson.gnId)
             // Update json
             JSONObject date = new JSONObject();
             if (eventTime.absoluteYear != null) {
