@@ -75,14 +75,9 @@
                             </g:notPlotOwner>
                         </td>
 					
-						<td>
-                            ${plotInstance.dateCreated.format("dd/MM/yyyy")}
-                        </td>
-					
-						<td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>
-					
+						<td>${plotInstance.dateCreated.format("dd/MM/yyyy")}</td>
+					    <td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>
 						<td>${fieldValue(bean: plotInstance, field: "description")}</td>
-
                         <td>${plotInstance.user.firstname + " " + plotInstance.user.lastname}</td>
 
                         <td>

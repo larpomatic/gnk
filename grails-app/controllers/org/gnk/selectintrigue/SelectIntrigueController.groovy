@@ -7,9 +7,11 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasTag
+import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
+import sun.net.www.content.audio.x_aiff
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -26,8 +28,12 @@ class SelectIntrigueController {
         redirect(action: "list", params: params)
     }
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+    def list(Integer max, Gn gn) {
+        //params.max = Math.min(max ?: 10, 100)
+
+        //User user = User.findById(GnHasUser.findByGnAndIsCreator(gn.id , true).userId);
+        //List<GnHasUser> gnHasUser = GnHasUser.findAll()
+
         [gnInstanceList: Gn.list(params), gnInstanceTotal: Gn.count()]
     }
 
@@ -36,6 +42,7 @@ class SelectIntrigueController {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
         }
         Gn gn = Gn.get(id);
+
         assert (gn != null);
         if (gn == null) {
             redirect(controller: 'selectIntrigue', action: "list");
