@@ -57,6 +57,7 @@ class SelectIntrigueController {
             return 1;
         return 0;
     }
+
     def dispatchStep(Long id) {
         if (id == 0) {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
@@ -71,40 +72,38 @@ class SelectIntrigueController {
         final gnData = new GNKDataContainerService();
         if (step != gn.step)
             selectStepService.chooseStep(gn, step);
-        else {
-            gnData.ReadDTD(gn);
-            step = gn.step;
-            if (step == "selectIntrigue") {
-                redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"/*, gnDTD: dtd*/]);
-            } else if (step == "role2perso") {
-                Integer evenementialId = 0;
-                Integer mainstreamId = 0;
-                for (Plot plot in gn.selectedPlotSet) {
-                    if (plot.isEvenemential) {
-                        evenementialId = Plot.findByName(plot.name).id;
-                    } else if (plot.isMainstream && gn.isMainstream) {
-                        mainstreamId = Plot.findByName(plot.name).id; ;
-                    }
+        gnData.ReadDTD(gn);
+        step = gn.step;
+        if (step == "selectIntrigue") {
+            redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"/*, gnDTD: dtd*/]);
+        } else if (step == "role2perso") {
+            Integer evenementialId = 0;
+            Integer mainstreamId = 0;
+            for (Plot plot in gn.selectedPlotSet) {
+                if (plot.isEvenemential) {
+                    evenementialId = Plot.findByName(plot.name).id;
+                } else if (plot.isMainstream && gn.isMainstream) {
+                    mainstreamId = Plot.findByName(plot.name).id; ;
                 }
-                redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId                : id as String,
-                                                                                    selectedMainstream  : mainstreamId as String,
-                                                                                    selectedEvenemential: evenementialId as String]);
-            } else if (step == "life") {
-                redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
-            } else if (step == "substitution") {
-                List<String> sexes = new ArrayList<>();
-                for (org.gnk.roletoperso.Character character in gn.characterSet) {
-                    sexes.add("sexe_" + character.getDTDId() as String);
-                }
-                for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
-                    sexes.add("sexe_" + character.getDTDId() as String);
-                }
-                redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
-            } else if (step == "publication") {
-                redirect(controller: 'publication', action: 'index', params: [gnId: id as String]);
-            } else {
-                redirect(controller: 'selectIntrigue', action: 'selectIntrigue', id: 0);
             }
+            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId                : id as String,
+                                                                                selectedMainstream  : mainstreamId as String,
+                                                                                selectedEvenemential: evenementialId as String]);
+        } else if (step == "life") {
+            redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
+        } else if (step == "substitution") {
+            List<String> sexes = new ArrayList<>();
+            for (org.gnk.roletoperso.Character character in gn.characterSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
+        } else if (step == "publication") {
+            redirect(controller: 'publication', action: 'index', params: [gnId: id as String]);
+        } else {
+            redirect(controller: 'selectIntrigue', action: 'selectIntrigue', id: 0);
         }
     }
 
@@ -367,6 +366,8 @@ class SelectIntrigueController {
                  mainstreamId: mainstreamId,
                  conventionList: Convention.list()]);
     }
+
+
 
     public isEvenementialIsCompatible(Plot plot, gn) {
         /* int countWomen = 0;

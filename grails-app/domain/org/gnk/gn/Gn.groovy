@@ -39,7 +39,6 @@ class Gn {
 
     static transients = [
             "t0Date",
-            "step",
             "isMainstream",
             "duration",
             "pipMin",

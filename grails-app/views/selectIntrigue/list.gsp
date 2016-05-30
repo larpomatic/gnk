@@ -33,14 +33,21 @@
                             <g:hasRights lvlright="${right.MGNOPEN.value()}">
                             <button type="submit" style="" style="border: none" class="btn-link">${fieldValue(bean: gnInstance, field: "name")}</button></td>
                             </g:hasRights>
-                            <!--<g:link action="dispatchStep" params="[id: gnInstance.id]">${fieldValue(bean: gnInstance, field: "name")}</g:link>-->
+							<g:if test="${gnInstance.step == null}">
+								<td><g:select name='step-${gnInstance.id}'
+											  from="${[]}"/>
+							</g:if>
 							<g:if test="${gnInstance.step == 'publication'}">
 								<td><g:select name='step-${gnInstance.id}'
-											  from="${['publication', 'substitution', 'role2perso', 'selectIntrigue']}"/>
+											  from="${['publication', 'substitution', 'life', 'role2perso', 'selectIntrigue']}"/>
 							</g:if>
 							<g:if test="${gnInstance.step == 'substitution'}">
 								<td><g:select name="step-${gnInstance.id}"
-											  from="${['substitution', 'role2perso', 'selectIntrigue']}"/></td>
+											  from="${['substitution', 'life', 'role2perso', 'selectIntrigue']}"/></td>
+							</g:if>
+							<g:if test="${gnInstance.step == 'life'}">
+								<td><g:select name="step-${gnInstance.id}"
+											  from="${['life', 'role2perso', 'selectIntrigue']}"/></td>
 							</g:if>
 							<g:if test="${gnInstance.step == 'role2perso'}">
 								<td><g:select name="step-${gnInstance.id}"
