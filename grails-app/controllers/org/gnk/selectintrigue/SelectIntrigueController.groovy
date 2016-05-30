@@ -704,10 +704,10 @@ class SelectIntrigueController {
             redirect(action: "list")
             return
         }
+        gnInstance.delete(flush: true)
         for (GnHasUser gnHasUser : gnInstance.gnHasUsers) {
             GnHasUser.executeUpdate("delete GnHasUser g where g.gn = " + id);
         }
-        gnInstance.delete(flush: true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'gn.label', default: 'GN'), id])
         redirect(action: "list")
     }
