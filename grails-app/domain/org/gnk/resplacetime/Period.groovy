@@ -27,22 +27,24 @@ class Period {
     /**
      * The period will not allow other period or event to be planned within its duration in the Times Substitution algorithm
      */
-    private Boolean isBlocking
+    Boolean isBlocking
     /**
      * The duration of the period in minutes
      */
-    Integer duration
+    Boolean isGamePeriod
+
+    Long duration
     /**
      * mapping composition N-1 to Gn
      */
     static belongsTo = [gn: Gn]
-    /**
-     * Currently unused
-     *
-     * Means no way to create a predecessor / no mean to verify whether a blocking period already exist within the Gn
-     * no verification that the successor begin after the predecessor started / finished
-     */
+
     Period periodPredecessor
+
+    /**
+     * The interval in minutes between the predecessor and the period
+     */
+    Long predInterval
 
     static transients = ["absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
 
@@ -59,7 +61,7 @@ class Period {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
-//        periodPredecessor (nullable:true)
+//      periodPredecessor (nullable:true)
     }
 
     /**
@@ -68,8 +70,12 @@ class Period {
      * Those integer values are a legacy carried because of the XML dtd translation
      * This function won't work with null in absoluteX (Time) parameters but will handle negative values
      *
-     * @return date
-     */
+    private void setBeginingFromXML() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(absoluteYear, absoluteMonth, absoluteDay, absoluteHour, absoluteMinute);
+        Date beginning = calendar.getTime();
+    }
+
     Boolean getIsBlocking() {
         return isBlocking
     }
@@ -96,21 +102,23 @@ class Period {
             Date end =  DateUtils.addMinutes(this.beginning, this.duration)
             Date pEnd =  DateUtils.addMinutes(p.beginning, p.duration)
             //If the beginning of a period is during
-            Boolean beginsDuringPeriod = (beginning.before(p.beginning) || beginning.equals(p.beginning)) &&
-                    (end.after(p.beginning) || end.equals(p.beginning))
-            Boolean endsDuringPeriod = (beginning.before(pEnd) || beginning.equals(pEnd)) &&
-                    (end.after(pEnd) || end.equals(pEnd))
+            Boolean beginsDuringPeriod = (this.beginning.before(p.beginning) || beginning.equals(p.beginning)) &&
+                    end.after(p.beginning)
+            Boolean endsDuringPeriod = beginning.before(pEnd) && (end.after(pEnd) || end.equals(pEnd))
             Boolean periodInsideP = (p.beginning.before(beginning) || p.beginning.equals(beginning)) &&
                     (pEnd.after(end) || pEnd.equals(end))
-            allowed = allowed && !beginsDuringPeriod && !endsDuringPeriod && !periodInsideP
+            //TODO
+            //Boolean pInsidePeriod =
+
+            allowed = allowed && !beginsDuringPeriod && !endsDuringPeriod && !periodInsideP //!pInsidePeriod
         }
         this.isBlocking = allowed
     }
+    */
 
-    private void setBeginingFromXML() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(absoluteYear, absoluteMonth, absoluteDay, absoluteHour, absoluteMinute);
-        Date beginning = calendar.getTime();
-    }
-
+    //enrichir le contructeur pour les dates de début relatives
+    //toJSON
+    //fromJSON
+    //isDuring(Period period)
+    //isduring
 }

@@ -19,6 +19,7 @@ class Event {
 	Boolean isPublic
 	Boolean isPlanned
 	String description
+	Event eventPredecessor
 
     // Id referenced into DTD
     static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
@@ -32,13 +33,14 @@ class Event {
 
 	static hasMany = [ roleHasEvents: RoleHasEvent ]
 
-	static belongsTo = [ eventPredecessor: Event, genericPlace: GenericPlace, plot: Plot ]
+//BelongTo means cascading delete
+	static belongsTo = [ genericPlace: GenericPlace, plot: Plot ]
 
 	static constraints = {
 		name (blank: false, maxSize: 256)
         eventPredecessor (nullable: true)
         genericPlace (nullable: true)
-		timing ()
+		timing ()//min: 0, max: 100)
 		duration (min: 1)
 		isPublic ()
 		isPlanned ()
