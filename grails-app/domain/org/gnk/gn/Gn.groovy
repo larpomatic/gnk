@@ -2,6 +2,7 @@ package org.gnk.gn
 
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
+import org.gnk.resplacetime.Period
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.gnk.roletoperso.Role
@@ -39,7 +40,6 @@ class Gn {
 
     static transients = [
             "t0Date",
-            "step",
             "isMainstream",
             "duration",
             "pipMin",
@@ -93,7 +93,7 @@ class Gn {
     Set<Resource> resourceSet
     Set<Place> placeSet
 
-    static hasMany = [ gnHasUsers: GnHasUser ]
+    static hasMany = [ gnHasUsers: GnHasUser, periods: Period ]
 
     static hasOne = [ gnHasConvention : GnHasConvention ]
 
@@ -107,6 +107,7 @@ class Gn {
         dtd type: 'text'
         id type:'integer'
         version type: 'integer'
+        periods sort:'beginning'
     }
 
     public boolean addPlot(Plot plot) {

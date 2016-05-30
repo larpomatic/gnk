@@ -254,6 +254,7 @@ class PublicationController {
         createEventsTable()
         wordWriter.addStyledParagraphOfText("T3", "Événementiel Détaillé")
         createDetailedEventsTable()
+        //TODO: Add Period publication fonction here
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des Scènes passées")
         createPastSceneTable()
 
