@@ -23,41 +23,47 @@ class SelectStepService {
      * @param step : the step chosen by the user
      */
     def chooseStep(Gn gn, String step) {
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
         switch (gn.step)
         {
             case "publication" :
-                getBackPublication(gn.id)
+                getBackPublication(gn)
                 if (step == "life" || step == "selectIntrigue" || step == "role2perso")
-                    getBackSubstitution(gn.id)
+                    getBackSubstitution(gn)
                 if (step == "role2perso" || step == "selectIntrigue")
-                    getBackLife(gn.id)
+                    getBackLife(gn)
                 if (step == "selectIntrigue")
-                    getBackSelectIntrigue(gn.id)
+                    getBackSelectIntrigue(gn)
                 break;
             case "substitution" :
-                getBackSubstitution(gn.id)
+                getBackSubstitution(gn)
                 if (step == "selectIntrigue" || step == "role2perso")
-                    getBackLife(gn.id)
+                    getBackLife(gn)
                 if (step == "selectIntrigue")
-                    getBackSelectIntrigue(gn.id)
+                    getBackSelectIntrigue(gn)
                 break;
             case "life" :
-                getBackLife(gn.id)
+                getBackLife(gn)
                 if (step == "selectIntrigue")
-                    getBackSelectIntrigue(gn.id)
+                    getBackSelectIntrigue(gn)
                 break;
             case "role2perso" :
-                getBackSelectIntrigue(gn.id)
+                getBackSelectIntrigue(gn)
                 break;
             default:
                 break;
         }
     }
 
-    def getBackSelectIntrigue(Long id) {
-        Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);
+    /**
+     * delete role2perso step elements in the xml to allow user to return to SelectIntrigue step
+     * @param id : get the gn concerned
+     */
+    def getBackSelectIntrigue(Gn gn) {
+        //Gn gn = Gn.get(id);
+        //final gnData = new GNKDataContainerService();
+        //gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "selectIntrigue";
         gn.characterSet = null;
@@ -135,27 +141,16 @@ class SelectStepService {
             Plot plot = Plot.findByNameAndDateCreated(gnPlot.name, gnPlot.dateCreated);
             bannedPlotSet.add(plot);
         }
-        List<List<String>> statisticResultList = new ArrayList<List<String>>();
-        /*render(view: "/selectIntrigue/selectIntrigue", model:
-                [gnInstance                  : gn,
-                 screenStep                  : '1',
-                 plotTagList                 : tagService.getPlotTagQuery(),
-                 universList                 : tagService.getUniversTagQuery(),
-                 plotInstanceList            : selectedPlotInstanceList,
-                 evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
-                 mainstreamPlotInstanceList  : selectedMainstreamPlotInstanceList,
-                 bannedPlotInstanceList      : bannedPlotSet,
-                 nonTreatedPlots             : nonTreatedPlots,
-                 statisticResultList         : statisticResultList,
-                 evenementialId              : evenementialId,
-                 mainstreamId                : mainstreamId,
-                 conventionList              : Convention.list()]);*/
     }
 
-    def getBackLife(Long id) {
-        Gn gn = Gn.get(id);
+    /**
+     * delete Life step elements in the xml to allow user to return to SelectIntrigue step
+     * @param id : get the gn concerned
+     */
+    def getBackLife(Gn gn) {
+        /*Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);
+        gnData.ReadDTD(gn);*/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "role2perso";
         gn.isLife = false
@@ -164,8 +159,6 @@ class SelectStepService {
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
 
-//        removeLife(gn)
-
         for (Plot plot in gn.selectedPlotSet) {
             if (plot.isEvenemential) {
                 evenementialId = Plot.findByName(plot.name).id;
@@ -173,25 +166,17 @@ class SelectStepService {
                 mainstreamId = Plot.findByName(plot.name).id; ;
             }
         }
-        /*redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId                : id as String,
-                                                                            selectedMainstream  : mainstreamId as String,
-                                                                            selectedEvenemential: evenementialId as String]);*/
     }
 
-    def getBackPublication(Long id) {
-        Gn gn = Gn.get(id);
+    /**
+     * delete publication step elements in the xml to allow user to return to SelectIntrigue step
+     * @param id : get the gn concerned
+     */
+    def getBackPublication(Gn gn) {
+        /*Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);
-        //gn.step = "substitution";
+        gnData.ReadDTD(gn);*/
 
-        /* for (Plot p : gn.getSelectedPlotSet())
-         {
-             for (GenericPlace gnplace : p.getGenericPlaces())
-                 gnplace.setResultList(new ArrayList<ReferentialPlace>());
-         }
-         gn.setPlaceSet(new HashSet<Place>());*/
-
-        //gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
@@ -205,19 +190,18 @@ class SelectStepService {
         for (Character character in gn.nonPlayerCharSet) {
             sexes.add("sexe_" + character.getDTDId() as String);
         }
-        //redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
     }
 
-    def getBackSubstitution(Long id) {
-        Gn gn = Gn.get(id);
+    /**
+     * delete Substitution step elements in the xml to allow user to return to SelectIntrigue step
+     * @param id : get the gn concerned
+     */
+    def getBackSubstitution(Gn gn) {
+        /*Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);
+        gnData.ReadDTD(gn);*/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-
-        //if (gn.isLife)
-            gn.step = "life";
-        //else
-        //    gn.step = "role2perso";
+        gn.step = "life";
 
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
@@ -232,6 +216,12 @@ class SelectStepService {
         }
     }
 
+    /**
+     * Check if the gn and the plot are compatible and so the plot can be associated to the gn
+     * @param plot : the plot chosen for the test
+     * @param gn : the gn chosen for the test
+     * @return result of the test : true if it's compatible, if not false
+     */
     public isEvenementialIsCompatible(Plot plot, gn) {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
@@ -261,17 +251,13 @@ class SelectStepService {
         if (roleList.size() > gn.getNbPlayers())
             return false;
 
-        //Resolving PNJsable
         for (Role role : roleSet)
         {
             if (role.isPJB())
             {
                 if (roleList.size() < gn.getNbPlayers()) {
-                    //        role.setType("PJ")
                     roleList.add(role)
                 }
-                //   else
-                //      role.setType("PNJ")
             }
         }
 
