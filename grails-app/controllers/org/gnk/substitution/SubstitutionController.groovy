@@ -71,7 +71,7 @@ class SubstitutionController {
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
-            String fileContent = new File(xmlGnTestPath).text
+            String fileContent = new File(xmlGnTestPath).tJext
             inputHandler.parseGN(fileContent)
         } else {
             Integer gnDbId = gnIdStr as Integer;
@@ -119,7 +119,9 @@ class SubstitutionController {
                 eventList: eventList,
                 relationjson: json,
                 gnId: gnIdStr,
-                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
+                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
+                sexe: params.sexe
+        ]
     }
     /*private void changeCharSex(Gn gn, List<String> sexes)
     {
@@ -484,14 +486,16 @@ class SubstitutionController {
             //index()
             //redirect(action: "index", id: gnInstance.id, params: [gnInstanceId: gnInstance.id, gnDTD: gnInstance.dtd])
             //return
-        } else {
+        } /*else {
 
             flash.message = message(code: 'default.updated.message', args: [
                     message(code: 'gn.label', default: 'GN'),
                     gnInstance.id
             ])
-            index()
-            //redirect(action: "index", id: gnInstance.id, params: [gnInstanceId: gnInstance.id, gnDTD: gnInstance.dtd, screenStep: 1])
-        }
+            //index()
+            //redirect(action: "index", params: [gnId: gnInstance.id"])
+
+        } */
+        redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 }

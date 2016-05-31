@@ -10,6 +10,9 @@
 
 <g:form method="post" controller="substitution">
     <g:hiddenField name="gnId" value="${gnId}"/>
+    <g:each in="${sexe}" var="a">
+        <g:hiddenField id="a" name="sexe" value="NO"/>
+    </g:each>
     <td><label for="t0DateHour"><g:message
             code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
     <td>
