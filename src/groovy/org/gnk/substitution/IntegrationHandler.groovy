@@ -404,7 +404,7 @@ class IntegrationHandler {
         return placeJsonObject
     }
 
-    public JSONObject dateIntegration(JSONObject dateJsonObject, boolean subDates) {
+    public JSONObject dateIntegration(JSONObject dateJsonObject, Integer gnId, boolean subDates) {
         // Date format
         // TODO VINCENT : ADAPATER avec le nouveau format
         String dateFormat = "yyyy.MM.dd HH:mm"
@@ -563,9 +563,8 @@ class IntegrationHandler {
             if (eventJson.absoluteMinute != "") {
                 eventTime.absoluteMinute = eventJson.absoluteMinute as Integer
             }
-
             // Call service
-            eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration)
+            eventTime = timeService.eventRealDate(eventTime, gnBeginDate, gnDuration, gnId)
             // Update json
             JSONObject date = new JSONObject();
             if (eventTime.absoluteYear != null) {

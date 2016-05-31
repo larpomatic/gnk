@@ -200,9 +200,17 @@ class SubstitutionController {
 
     def getSubDates() {
         JSONObject dateJSONObject = request.JSON
+        String gnIdStr = params.gnId
+        Integer gnId = null
+        if (gnIdStr == null) {
+            gnIdStr = session.getAttribute("gnId")
+        }
+        if (!gnIdStr == null && !(gnIdStr as String).isInteger()) {
+            gnId = Integer.parseInt(gnIdStr)
+        }
 
         IntegrationHandler integrationHandler = new IntegrationHandler()
-        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject, params.subDates as boolean)
+        dateJSONObject = integrationHandler.dateIntegration(dateJSONObject, gnId, params.subDates as boolean)
 
         params.subDates = true
 

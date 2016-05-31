@@ -60,6 +60,7 @@ class RedactIntrigueController {
 		plotInstance.isPublic = false;
 		plotInstance.isDraft = true;
 		plotInstance.lastUpdated = new Date();
+        if (!plotInstance.user)
 		plotInstance.user = currentUser;
 		if (!plotInstance.save(flush: true)) {
 			render(view: "create", model: [plotInstance: plotInstance])

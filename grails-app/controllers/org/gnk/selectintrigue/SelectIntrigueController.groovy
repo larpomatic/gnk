@@ -7,10 +7,11 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasTag
-import org.gnk.step.SelectStepService
+import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
+import sun.net.www.content.audio.x_aiff
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -22,40 +23,18 @@ import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class SelectIntrigueController {
-    SelectStepService selectStepService;
 
     def index() {
         redirect(action: "list", params: params)
     }
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+    def list(Integer max, Gn gn) {
+        //params.max = Math.min(max ?: 10, 100)
+
+        //User user = User.findById(GnHasUser.findByGnAndIsCreator(gn.id , true).userId);
+        //List<GnHasUser> gnHasUser = GnHasUser.findAll()
+
         [gnInstanceList: Gn.list(params), gnInstanceTotal: Gn.count()]
-    }
-
-
-    def listStep(String step)
-    {
-        List<String> liststep;
-        int nbstep = convertStepToInt(step);
-        if (nbstep >= 1)
-            liststep.add("selectIntrigue")
-        if (nbstep >= 2)
-            liststep.add("substitution")
-        if (nbstep >= 3)
-            liststep.add("publication")
-        return liststep;
-    }
-
-    int convertStepToInt(String step)
-    {
-        if (step == "publication")
-            return 3;
-        if (step == "substitution")
-            return 2;
-        if (step == "selectIntrigue")
-            return 1;
-        return 0;
     }
 
     def dispatchStep(Long id) {
@@ -63,35 +42,36 @@ class SelectIntrigueController {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
         }
         Gn gn = Gn.get(id);
-        String stepID = "step-" +id
-        String step = params[stepID]
+
         assert (gn != null);
         if (gn == null) {
             redirect(controller: 'selectIntrigue', action: "list");
         }
         final gnData = new GNKDataContainerService();
-        if (step != gn.step)
-            selectStepService.chooseStep(gn, step);
         gnData.ReadDTD(gn);
-        step = gn.step;
+        String step = gn.step;
         if (step == "selectIntrigue") {
             redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"/*, gnDTD: dtd*/]);
-        } else if (step == "role2perso") {
+        }
+        else if (step == "role2perso") {
             Integer evenementialId = 0;
             Integer mainstreamId = 0;
             for (Plot plot in gn.selectedPlotSet) {
                 if (plot.isEvenemential) {
                     evenementialId = Plot.findByName(plot.name).id;
-                } else if (plot.isMainstream && gn.isMainstream) {
-                    mainstreamId = Plot.findByName(plot.name).id; ;
+                }
+                else if (plot.isMainstream && gn.isMainstream) {
+                    mainstreamId = Plot.findByName(plot.name).id;;
                 }
             }
-            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId                : id as String,
-                                                                                selectedMainstream  : mainstreamId as String,
-                                                                                selectedEvenemential: evenementialId as String]);
-        } else if (step == "life") {
-            redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
-        } else if (step == "substitution") {
+            redirect(controller: 'roleToPerso', action:'roleToPerso', params: [gnId: id as String,
+                                                                               selectedMainstream: mainstreamId as String,
+                                                                               selectedEvenemential: evenementialId as String]);
+        }
+        else if (step == "life"){
+            redirect(controller: 'life', action:'life', params: [gnId: id as String]);
+        }
+        else if (step == "substitution") {
             List<String> sexes = new ArrayList<>();
             for (org.gnk.roletoperso.Character character in gn.characterSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
@@ -99,11 +79,13 @@ class SelectIntrigueController {
             for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
             }
-            redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
-        } else if (step == "publication") {
-            redirect(controller: 'publication', action: 'index', params: [gnId: id as String]);
-        } else {
-            redirect(controller: 'selectIntrigue', action: 'selectIntrigue', id: 0);
+            redirect(controller: 'substitution', action:'index', params: [gnId: id as String, sexe: sexes]);
+        }
+        else if (step == "publication") {
+            redirect(controller: 'publication', action:'index', params: [gnId: id as String]);
+        }
+        else {
+            redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: 0);
         }
     }
 
@@ -366,8 +348,6 @@ class SelectIntrigueController {
                  mainstreamId: mainstreamId,
                  conventionList: Convention.list()]);
     }
-
-
 
     public isEvenementialIsCompatible(Plot plot, gn) {
         /* int countWomen = 0;
@@ -709,8 +689,6 @@ class SelectIntrigueController {
             return null;
         }
     }
-
-
 
     def displayDTD() {
         String gnDTD2Html = params.gnDTD

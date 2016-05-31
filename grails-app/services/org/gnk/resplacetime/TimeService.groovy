@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.apache.xpath.operations.Bool
+import org.gnk.gn.Gn
 import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.PastsceneTime
 import java.text.SimpleDateFormat
@@ -104,18 +105,46 @@ class TimeService {
         }
     }
 
-    def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration) {
+    def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {
 
         // Instantiates the calendar.
         Calendar calendar = Calendar.getInstance()
         calendar.setTime(gnBeginDate)
+
+
+        // ???
         int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
 
         // Computes the date of the event beginning
         Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
-        //println("MIN " + Math.round(deltaTime))
-		calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
-		Date beginDate = calendar.getTime()
+        println("MIN " + Math.round(deltaTime))
+
+        calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
+
+
+        //TODO Task : Modifiy event algo
+        //gnDuration is in hours and event.timing is the % of its apparition in the GN
+        //float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        //We add the event position in the gn duration to the timestamp of the beginning of the Gn
+        //calendar.add(Calendar.MINUTE, minutesBeforeEvent)
+
+        /*
+        // absoluteDate ?
+        Date beginDate = calendar.getTime()
+
+        //logic about blocking period impacts
+        def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == gnId }
+        periods.each { Period period ->
+            if(period.isBlocking && beginDate >= period.beginning) {
+                calendar.add(Calendar.MINUTE, period.duration)
+                beginDate = calendar.getTime()
+            }
+        }
+        */
+        // Cas d'arrêt
+
+
+
 
         // The computed date is transformed in string format
         Date absoluteDate = calendar.getTime()
