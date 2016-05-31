@@ -75,14 +75,9 @@
                             </g:notPlotOwner>
                         </td>
 					
-						<td>
-                            ${plotInstance.dateCreated.format("dd/MM/yyyy")}
-                        </td>
-					
-						<td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>
-					
+						<td>${plotInstance.dateCreated.format("dd/MM/yyyy")}</td>
+					    <td>${plotInstance.lastUpdated.format("dd/MM/yyyy")}</td>
 						<td>${fieldValue(bean: plotInstance, field: "description")}</td>
-
                         <td>${plotInstance.user.firstname + " " + plotInstance.user.lastname}</td>
 
                         <td>
@@ -130,13 +125,17 @@
 			</table>
 		</div>
 
+    <script type="text/javascript"String src="jquery.dataTables.js"String></script>
+    <script type="text/javascript"String src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"String></script>
     <script type="application/javascript">
         $(".mytool").tooltip({ html: true });
-        $("#listTable").DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
-            "order": [[ 2, "desc" ]]
+        $("#listTable").dataTable({
+
+            "order": [[ 1, "desc" ]],
+            "columnDefs": [
+                { "type": 'date-eu', "targets": 1 },
+                { "type": 'date-eu', "targets": 2 }
+            ]
         });
     </script>
 	</body>
