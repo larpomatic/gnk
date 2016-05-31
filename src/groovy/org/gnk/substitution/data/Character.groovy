@@ -6,6 +6,7 @@ class Character {
     String type
 	List<Tag> tagList
     // unused for now
-	List<RoleCharacter> roleList
+	//List<RoleCharacter> roleList
+	def roleList
 	List<RelationCharacter> relationList
 }
