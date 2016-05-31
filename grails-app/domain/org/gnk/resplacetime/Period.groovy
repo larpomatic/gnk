@@ -56,69 +56,101 @@ class Period {
 
 
     static constraints = {
+        duration(min: (long)1)
     }
     static mapping = {
         description type: 'text'
         id type:'integer'
         version type: 'integer'
+
 //      periodPredecessor (nullable:true)
     }
+
+    /**
+     * This method check if it is possible to set the attribute isBlocking to true without conflict with the other
+     * persisted period linked to the same GN
+     * @return
+     */
+    Boolean checkBlocking() {
+        if (this.gn == null || this.beginning == null || this.duration == null) {
+            return false
+        }
+
+        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: beginning)
+
+        Boolean allowed = true
+
+        blockingPeriods.each { Period testedPeriod ->
+            //Return is the closure equivalent for continue
+            if(testedPeriod == null) { return }
+            allowed = allowed && !this.isDuring(testedPeriod.getBeginning(), testedPeriod.getEnd())
+
+            //A closure ending with true is equivalent as break statement in a loop
+            this.getEnd().before(testedPeriod.getBeginning())
+        }
+        return allowed
+    }
+
+    /**
+     * Return the timestamp corresponding to the End of the period
+     * @return Date end
+     */
+    Date getEnd() {
+        if (this.beginning == null || this.duration == null) {
+            return null
+        }
+        return DateUtils.addMinutes(this.beginning, (Integer)this.duration)
+    }
+
+
+    /**
+     * This method test if an interval of time is intersect with the period
+     * @param testedBeginning
+     * @param testedDuration
+     * @return
+     */
+    Boolean isDuring(Date testedBeginning, Date testedEnd) {
+        if (this.beginning == null || this.duration == null) {
+            return false
+        }
+        if (testedBeginning == null || testedBeginning == null) {
+            return false
+        }
+
+        Date end = this.getEnd()
+
+        // tested interval : []
+        // this period interval : {}
+
+        // { [ }   ]
+        Boolean beginsDuringPeriod = ((this.beginning.before(testedBeginning) || beginning.equals(testedBeginning)) &&
+                end.after(testedBeginning))
+        // [   { ] }
+        Boolean endsDuringPeriod = (this.beginning.before(testedEnd) && (end.after(testedEnd) || end.equals(testedEnd)))
+        // [  { }  ]
+        Boolean periodInsideTested = ((testedBeginning.before(this.beginning) || testedBeginning.equals(this.beginning))
+                && (testedEnd.after(end) || testedEnd.equals(end)))
+        // {  [ ]  }
+        Boolean testedInsidePeriod = ((this.beginning.before(testedBeginning) || this.beginning.equals(testedBeginning))
+                && (end.after(testedEnd) || end.equals(testedEnd)))
+
+        return (beginsDuringPeriod && endsDuringPeriod && periodInsideTested && testedInsidePeriod)
+    }
+
 
     /**
      *
      * This function set the beginning of the period from the integers Absolute times attributes.
      * Those integer values are a legacy carried because of the XML dtd translation
      * This function won't work with null in absoluteX (Time) parameters but will handle negative values
-     *
+     */
     private void setBeginingFromXML() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(absoluteYear, absoluteMonth, absoluteDay, absoluteHour, absoluteMinute);
         Date beginning = calendar.getTime();
     }
 
-    Boolean getIsBlocking() {
-        return isBlocking
-    }
-
-    void setIsBlocking(Boolean isBlocking) {
-
-        if(isBlocking == false) {
-            this.isBlocking = false
-            return
-        }
-        if(this.beginning == null || this.duration == null || this.gn == null) {
-            this.isBlocking = false
-            return
-        }
-        Boolean allowed = true
-        //Integer GnId = this.gn.id
-        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list()
-                //.findAllByGnAndIsBlocking(this.gn, true)
-                //.where {Gn.id == n && isBlocking == true}.list()
-        blockingPeriods.each { Period p ->
-            if(p == null)
-                return
-            Console.println(p.name + " test")
-            Date end =  DateUtils.addMinutes(this.beginning, this.duration)
-            Date pEnd =  DateUtils.addMinutes(p.beginning, p.duration)
-            //If the beginning of a period is during
-            Boolean beginsDuringPeriod = (this.beginning.before(p.beginning) || beginning.equals(p.beginning)) &&
-                    end.after(p.beginning)
-            Boolean endsDuringPeriod = beginning.before(pEnd) && (end.after(pEnd) || end.equals(pEnd))
-            Boolean periodInsideP = (p.beginning.before(beginning) || p.beginning.equals(beginning)) &&
-                    (pEnd.after(end) || pEnd.equals(end))
-            //TODO
-            //Boolean pInsidePeriod =
-
-            allowed = allowed && !beginsDuringPeriod && !endsDuringPeriod && !periodInsideP //!pInsidePeriod
-        }
-        this.isBlocking = allowed
-    }
-    */
-
     //enrichir le contructeur pour les dates de début relatives
     //toJSON
     //fromJSON
-    //isDuring(Period period)
-    //isduring
 }
