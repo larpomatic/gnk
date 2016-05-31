@@ -7,6 +7,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasTag
+import org.gnk.step.SelectStepService
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
@@ -24,6 +25,7 @@ import org.gnk.tag.TagService
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class SelectIntrigueController {
 
+    SelectStepService selectStepService;
     def index() {
         redirect(action: "list", params: params)
     }
@@ -42,14 +44,17 @@ class SelectIntrigueController {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
         }
         Gn gn = Gn.get(id);
-
+        String stepID = "step-" +id
+        String step = params[stepID]
         assert (gn != null);
         if (gn == null) {
             redirect(controller: 'selectIntrigue', action: "list");
         }
         final gnData = new GNKDataContainerService();
+        if (step != gn.step)
+            selectStepService.chooseStep(gn, step);
         gnData.ReadDTD(gn);
-        String step = gn.step;
+        step = gn.step;
         if (step == "selectIntrigue") {
             redirect(action: "selectIntrigue", controller: "selectIntrigue", id: id, params: [screenStep: "1"/*, gnDTD: dtd*/]);
         }
