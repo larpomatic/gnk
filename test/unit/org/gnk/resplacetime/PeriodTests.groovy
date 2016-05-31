@@ -9,11 +9,24 @@ import org.junit.*
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
-@Mock([Gn])
+//@Mock([Gn])
 @TestFor(Period)
 class PeriodTests {
 
+    Period period = new Period(beginning: Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:00"), duration: 60)
 
+
+    // tested interval : []
+    // this period interval : {}
+
+    // { }   ]
+    // [ ]
+    void testPeriodIsDuringSameInterval() {
+        Date testedBeginning = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:00")
+        Date testedEnd = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 13:00")
+        assert period.isDuring(testedBeginning, testedEnd)
+    }
+/*
     void testSavePeriod() {
 
         Calendar calendar = new GregorianCalendar(2016, Calendar.MAY, 28)
@@ -39,7 +52,7 @@ class PeriodTests {
         p1.setGn(g1)
         Period p1 = createPeriod1()
         p1.save(failOnError: true)
-        */
+        * /
         mockDomain(Period)
         assertEquals Period.list().size(), 0
 
@@ -49,4 +62,5 @@ class PeriodTests {
         assert p1.name.equals("Test")
 
     }
+*/
 }
