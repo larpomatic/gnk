@@ -5,6 +5,7 @@ import org.gnk.gn.Gn
 import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.PastsceneTime
 import java.text.SimpleDateFormat
+import org.apache.commons.lang3.time.DateUtils
 
 class TimeService {
 
@@ -130,28 +131,34 @@ class TimeService {
         //We add the event position in the gn duration to the timestamp of the beginning of the Gn
         calendar.add(Calendar.MINUTE, (int)minutesBeforeEvent)
 
-        /*
-        // absoluteDate ?
-        Date beginDate = calendar.getTime()
+        //It is abnormal to need to use the Event Class when the function takes an EventTime as a parameter..
+        //But it is currently easier to get the attribute duration from the database than the Json..
+        if (event.getDuration() == null) {
+            //Get the event if it is persisted
+            Event e = Event.findById(event.getId())
+            event.setDuration(e.getDuration())
+        }
+        Date eventBeginning = calendar.getTime()
+        Date eventEnd = DateUtils.addMinutes(eventBeginning, event.duration)
+
+
+        Gn currentGn = Gn.findById(gnId)
 
         //logic about blocking period impacts
-        def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == gnId }
+        def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == currentGn }
         periods.each { Period period ->
-            if(period.isBlocking && beginDate >= period.beginning) {
+            if(period.getIsBlocking() && period.isDuring(eventBeginning, eventEnd)) {
                 calendar.add(Calendar.MINUTE, period.duration)
-                beginDate = calendar.getTime()
+                eventBeginning = calendar.getTime()
             }
+            //Cas d'arrêt : début de la période après la fin de l'évènement
+            period.getBeginning().before(eventEnd)
         }
-        */
-        // Cas d'arrêt
-
-
-
 
         // The computed date is transformed in string format
-        Date absoluteDate = calendar.getTime()
+        //Date absoluteDate = calendar.getTime()
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm")
-        String absoluteDateString = format.format(absoluteDate)
+        String absoluteDateString = format.format(eventBeginning)
         //println("date " + absoluteDateString)
         // Sets Event absolute date in Event object
         if (!event.absoluteYear)

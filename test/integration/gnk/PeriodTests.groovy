@@ -43,7 +43,7 @@ class PeriodTests {
     }
 
     @Test
-    void testSetBlocking() {
+    void testCheckBlocking() {
         given:
         Calendar cal = new GregorianCalendar(2016, Calendar.MAY, 28)
         cal.set(Calendar.HOUR_OF_DAY, 10)
@@ -52,18 +52,23 @@ class PeriodTests {
         Date date2 = Date.parse("yyyy-MM-dd-hh", "2016-05-28-10")
         assert date1.equals(date2)
         Period p1 = new Period(name: "IntegrationTestP1", description: "Testing period 1", location: "", gn: gn,
-                isPublic: true, beginning: cal.getTime(), duration: 60, isBlocking: false)
+                isPublic: true, beginning: cal.getTime(), duration: 60, isBlocking: false, isGamePeriod: false,
+                predInterval: 0)
         p1.save(failOnError: true)
 
-        Period p2 = new Period(gn: gn, beginning: cal.getTime(), duration: 20, isBlocking: false,
-                name: "IntegrationTestP2", isPublic: true, location: "", description: "")
+        Period p2 = new Period(gn: gn, beginning: cal.getTime(), duration: 20, isBlocking: false, isPublic: true,
+                name: "IntegrationTestP2", location: "", description: "", predInterval: 0, isGamePeriod: false)
         p2.save(failOnError: true)
 
         when:
         Console.println("Nb of Period : " + Period.list().size())
         Console.println(p2.name + " " + p2.beginning.toString())
-        //p1.setIsBlocking(true)
-        //p2.setIsBlocking(true)
+        if (p1.checkCanBeBlocking()) {
+            p1.setIsBlocking(true)
+        }
+        if (p2.checkCanBeBlocking()) {
+            p2.setIsBlocking(true)
+        }
 
         //then:
         //assert p1.getIsBlocking()

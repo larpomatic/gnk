@@ -71,12 +71,12 @@ class Period {
      * persisted period linked to the same GN
      * @return
      */
-    Boolean checkBlocking() {
+    Boolean checkCanBeBlocking() {
         if (this.gn == null || this.beginning == null || this.duration == null) {
             return false
         }
 
-        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: beginning)
+        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: "beginning")
 
         Boolean allowed = true
 

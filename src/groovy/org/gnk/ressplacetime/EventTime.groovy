@@ -9,7 +9,10 @@ package org.gnk.ressplacetime
  */
 class EventTime {
     String code
+    //The id of the entity
+    Integer id
     Integer timing
+    Integer duration
     Integer absoluteYear
     Integer absoluteMonth
     Integer absoluteDay
