@@ -116,17 +116,19 @@ class TimeService {
         int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
 
         // Computes the date of the event beginning
-        Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
-        println("MIN " + Math.round(deltaTime))
+        //Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
+        //println("MIN " + Math.round(deltaTime))
 
-        calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
+        //calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
 
 
-        //TODO Task : Modifiy event algo
         //gnDuration is in hours and event.timing is the % of its apparition in the GN
-        //float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        //TODO : A round would be better than truncate here
+        //we truncate the minutes for 5 by 5 increment (we suppose that the gnBeginDate.getMinutes() == 0)
+        minutesBeforeEvent -= (minutesBeforeEvent % 5)
         //We add the event position in the gn duration to the timestamp of the beginning of the Gn
-        //calendar.add(Calendar.MINUTE, minutesBeforeEvent)
+        calendar.add(Calendar.MINUTE, (int)minutesBeforeEvent)
 
         /*
         // absoluteDate ?
