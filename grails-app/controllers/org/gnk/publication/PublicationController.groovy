@@ -250,11 +250,14 @@ class PublicationController {
         createCharactersPerPlotTable()
 
         wordWriter.addStyledParagraphOfText("T2", "Chronologie avant et en jeu")
+        wordWriter.addStyledParagraphOfText("T3", "Périodes de jeu publiques")
+        createPublicPeriodTable()
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des évènements publics")
         createEventsTable()
         wordWriter.addStyledParagraphOfText("T3", "Événementiel Détaillé")
         createDetailedEventsTable()
-        //TODO: Add Period publication fonction here
+        wordWriter.addStyledParagraphOfText("T3", "Synthèse des période de jeu")
+        createPeriodTable()
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des Scènes passées")
         createPastSceneTable()
 
@@ -1773,6 +1776,52 @@ class PublicationController {
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
 
+    }
+
+    //Création du tableau des périodes publiques
+    def createPublicPeriodTable() {
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableStyledCell("Table1L", tableRow,"Nom")
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Lieu")
+
+        table.getContent().add(tableRow);
+        def periods = Period.findAll(sort:"beginning", order:"asc") { gn == gn }
+        periods.each { Period period ->
+            if (period.getIsPublic()) {
+                Tr tableRowEvent = wordWriter.factory.createTr()
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getName())
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getDescription())
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getLocation())
+                table.getContent().add(tableRowEvent);
+            }
+        }
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table)
+    }
+
+    //Création du tableau des périodes non-publiques
+    def createPeriodTable() {
+        Tbl table = wordWriter.factory.createTbl()
+        Tr tableRow = wordWriter.factory.createTr()
+        wordWriter.addTableStyledCell("Table1L", tableRow,"Nom")
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Lieu")
+
+        table.getContent().add(tableRow);
+        def periods = Period.findAll(sort:"beginning", order:"asc") { gn == gn }
+        periods.each { Period period ->
+            if (!period.getIsPublic()) {
+                Tr tableRowEvent = wordWriter.factory.createTr()
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getName())
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getDescription())
+                wordWriter.addTableStyledCell("small", tableRowEvent, period.getLocation())
+                table.getContent().add(tableRowEvent);
+            }
+        }
+        wordWriter.addBorders(table)
+        wordWriter.addObject(table)
     }
 
     // Création du tableau des évènements
