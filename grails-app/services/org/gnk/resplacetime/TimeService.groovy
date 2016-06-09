@@ -110,13 +110,10 @@ class TimeService {
         if(event == null) {
             throw new InvalidParameterException("Parameter Event must not be null")
         }
-        if (event.getDuration() == null) {
-            throw new InvalidParameterException("Parameter Event Duration must not be null")
-        }
+
         // Instantiates the calendar.
         Calendar cal = Calendar.getInstance()
         cal.setTime(gnBeginDate)
-
 
         //gnDuration is in hours and event.timing is the % of its apparition in the GN
         float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
