@@ -140,11 +140,9 @@ class TimeService {
         def periods = Period.findAll(sort:"beginning", order:"asc") { gn == currentGn }
         periods.each { Period period ->
             if(period.getIsBlocking() && period.isDuring(eventBeginning, eventEnd)) {
-                cal.setTime(eventBeginning)
-                cal.add(Calendar.MINUTE, (int)period.getDuration())
+                cal.setTime(period.getEnd())
                 eventBeginning = cal.getTime()
-                cal.setTime(eventEnd)
-                cal.add(Calendar.MINUTE, (int)period.getDuration())
+                cal.add(Calendar.MINUTE, event.getDuration())
                 eventEnd = cal.getTime()
             }
             //Cas d'arrêt : début de la période après la fin de l'évènement

@@ -82,7 +82,7 @@ class PeriodTests {
 
         //Using the gn from the setUp needed to test the blocking periods
         Gn gn = Gn.findById(gnId)
-
+        Calendar cal = Calendar.getInstance()
         // Event qui se passe à 20%
         EventTime event1 = new EventTime();
         event1.code = "EV1";
@@ -99,21 +99,38 @@ class PeriodTests {
         def result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
         Console.println(result2)
         assert result2.getAbsoluteHour() == (int)((float)(event2.getTiming() * gnDuration) / 100) + gnBeginning.getHours()
-        Date beginningP1 = DateUtils.addHours(gnBeginning, (int)gnDuration/2)
-        Period blockingPeriod2 = new Period(gn: gn, beginning: beginningP1, duration: 60, isBlocking: true, isPublic: true,
-                name: "Blocking Period 2", location: "", description: "", predInterval: 0, isGamePeriod: false)
-        blockingPeriod2.save(failOnError: true)
+        cal.setTime(gnBeginning)
+        cal.add(Calendar.HOUR_OF_DAY, gnDuration/2)
+        Date beginningP1 = cal.getTime()
+        Period blockingPeriod1 = new Period(gn: gn, beginning: beginningP1, duration: 60, isBlocking: true, isPublic: true,
+                name: "Blocking Period 1", location: "", description: "", predInterval: 0, isGamePeriod: false)
+        blockingPeriod1.save(failOnError: true)
         result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
-        assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
-                gnBeginning.getHours() + (blockingPeriod2.getDuration()/60);
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + (blockingPeriod1.getDuration()/60);
         Period nonBlocking = new Period(gn: gn, beginning: gnBeginning, duration: 10*60, isBlocking: false, isPublic: true,
                 name: "Non Blocking Period", location: "", description: "", predInterval: 0, isGamePeriod: true)
         nonBlocking.save(failOnError: true)
         result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
-        assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
-                gnBeginning.getHours() + (blockingPeriod2.getDuration()/60);
-
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + (blockingPeriod1.getDuration()/60);
+        Period blockingPeriod2 = new Period(gn: gn, beginning: beginningP1, duration: 60, isBlocking: true, isPublic: true,
+                name: "Blocking Period 2", location: "", description: "", predInterval: 0, isGamePeriod: false)
+        if (!blockingPeriod2.checkCanBeBlocking()) {
+            cal.setTime(beginningP1)
+            cal.add(Calendar.MINUTE, 60)
+            blockingPeriod2.setBeginning(cal.getTime())
+            if(!blockingPeriod2.checkCanBeBlocking()) {
+            blockingPeriod2.setIsBlocking(false)
+            }
+        }
+        blockingPeriod2.save(failOnError: true)
+        result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + ((blockingPeriod1.getDuration() + blockingPeriod2.getDuration())/60);
     }
+
+
 
     @Test
     void testNullParameters () {

@@ -35,24 +35,32 @@ class PeriodTests {
         assert period.isDuring(testedBeginning, testedEnd)
     }
 
+    //   []
+    //  {  }
     void testTestedInsidePeriod() {
         Date testedBeginning = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:20")
         Date testedEnd = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:40")
         assert period.isDuring(testedBeginning, testedEnd)
     }
 
+    // [ ]
+    //   { }
     void testAcceptedEqualPeriodEndTestedBeginning() {
         Date testedBeginning = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 13:00")
         Date testedEnd = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 14:00")
         assert !period.isDuring(testedBeginning, testedEnd)
     }
 
+    //     [ ]
+    // {   }
     void testAcceptedEqualPeriodBeginningTestedEnd() {
         Date testedBeginning = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 10:00")
         Date testedEnd = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:00")
         assert !period.isDuring(testedBeginning, testedEnd)
     }
 
+    // [   ]
+    //   {   }
     void testTestedEndInsidePeriod() {
         Date testedBeginning = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 11:00")
         Date testedEnd = Date.parse("yyyy/MM/dd HH:mm", "2016/05/31 12:30")
