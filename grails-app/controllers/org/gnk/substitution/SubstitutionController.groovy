@@ -71,7 +71,7 @@ class SubstitutionController {
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
-            String fileContent = new File(xmlGnTestPath).tJext
+            String fileContent = new File(xmlGnTestPath).text
             inputHandler.parseGN(fileContent)
         } else {
             Integer gnDbId = gnIdStr as Integer;
@@ -444,7 +444,6 @@ class SubstitutionController {
 
     def saveOrUpdateDates() {
 
-        System.out.println("WWWWXXXXWWWXXXWWW");
 
         def gnInstance = Gn.get(Long.valueOf(params.gnId).longValue())
         final gnData = new GNKDataContainerService();
@@ -482,20 +481,8 @@ class SubstitutionController {
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
         if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
-            //render(view: "index", model: [gnInfo: gnInstance])
-            //index()
-            //redirect(action: "index", id: gnInstance.id, params: [gnInstanceId: gnInstance.id, gnDTD: gnInstance.dtd])
-            //return
-        } /*else {
 
-            flash.message = message(code: 'default.updated.message', args: [
-                    message(code: 'gn.label', default: 'GN'),
-                    gnInstance.id
-            ])
-            //index()
-            //redirect(action: "index", params: [gnId: gnInstance.id"])
-
-        } */
+        }
         redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 }

@@ -90,7 +90,6 @@ class GnXMLWriterService {
 
         //UNIVERS elements
         Element universe = doc.createElement("UNIVERSE");
-        //System.out.println(gn.univers.id == null ? "aaaaaaaaaaa" : "bbbbbbbbbbbb");
         universe.setAttribute("id", gn.univers.id.toString());
         gnElement.appendChild(universe);
 

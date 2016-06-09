@@ -562,10 +562,8 @@ class SelectIntrigueController {
 //            gnInstance.date = cal.getTime();
 //        }
         if (params.univers) {
-            System.out.println("I am the universe");
             gnInstance.univers = Tag.get(params.univers as Integer)
         }
-        System.out.println("I am not the universe");
 
         if (params.gnStep) {
             gnInstance.step = params.gnStep
