@@ -1,9 +1,10 @@
 package org.gnk.resplacetime
 
-import org.apache.xpath.operations.Bool
 import org.gnk.gn.Gn
 import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.PastsceneTime
+
+import java.security.InvalidParameterException
 import java.text.SimpleDateFormat
 
 class TimeService {
@@ -106,64 +107,60 @@ class TimeService {
     }
 
     def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {
+        if(event == null) {
+            throw new InvalidParameterException("Parameter Event must not be null")
+        }
 
         // Instantiates the calendar.
-        Calendar calendar = Calendar.getInstance()
-        calendar.setTime(gnBeginDate)
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(gnBeginDate)
 
-
-        // ???
-        int correctifVal = 5 - (calendar.get(Calendar.MINUTE) % 5)
-
-        // Computes the date of the event beginning
-        Float deltaTime = ((gnDuration * event.timing / 100) * 60) - (((int)((gnDuration * event.timing / 100) * 60)) % 5)
-        println("MIN " + Math.round(deltaTime))
-
-        calendar.add(Calendar.MINUTE, Math.round(deltaTime) + correctifVal)
-
-
-        //TODO Task : Modifiy event algo
         //gnDuration is in hours and event.timing is the % of its apparition in the GN
-        //float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        float minutesBeforeEvent = ((float)gnDuration * 60) * ((float)event.timing / 100)
+        //TODO : A round would be better than truncate here
+        //we truncate the minutes for 5 by 5 increment (we suppose that the gnBeginDate.getMinutes() == 0)
+        minutesBeforeEvent -= (minutesBeforeEvent % 5)
         //We add the event position in the gn duration to the timestamp of the beginning of the Gn
-        //calendar.add(Calendar.MINUTE, minutesBeforeEvent)
+        cal.add(Calendar.MINUTE, (int)minutesBeforeEvent)
 
-        /*
-        // absoluteDate ?
-        Date beginDate = calendar.getTime()
+        //It is abnormal to need to use the Event Class when the function takes an EventTime as a parameter..
+        //But it is currently easier to get the attribute duration from the database than the Json..
+        if (event.getDuration() == null) {
+            //Get the event if it is persisted
+            Event e = Event.findById(event.getId())
+            event.setDuration(e.getDuration())
+        }
+        Date eventBeginning = cal.getTime()
+        cal.add(Calendar.MINUTE, event.getDuration())
+        Date eventEnd = cal.getTime()
+
+        Gn currentGn = Gn.findById(gnId)
 
         //logic about blocking period impacts
-        def periods = Periods.findAll(sort:"beginning", order:"asc") { gn == gnId }
+        def periods = Period.findAll(sort:"beginning", order:"asc") { gn == currentGn }
         periods.each { Period period ->
-            if(period.isBlocking && beginDate >= period.beginning) {
-                calendar.add(Calendar.MINUTE, period.duration)
-                beginDate = calendar.getTime()
+            if(period.getIsBlocking() && period.isDuring(eventBeginning, eventEnd)) {
+                cal.setTime(eventBeginning)
+                cal.add(Calendar.MINUTE, (int)period.getDuration())
+                eventBeginning = cal.getTime()
+                cal.setTime(eventEnd)
+                cal.add(Calendar.MINUTE, (int)period.getDuration())
+                eventEnd = cal.getTime()
             }
+            //Cas d'arrêt : début de la période après la fin de l'évènement
+            period.getBeginning().before(eventEnd)
         }
-        */
-        // Cas d'arrêt
 
-
-
-
-        // The computed date is transformed in string format
-        Date absoluteDate = calendar.getTime()
-        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm")
-        String absoluteDateString = format.format(absoluteDate)
-        //println("date " + absoluteDateString)
         // Sets Event absolute date in Event object
-        if (!event.absoluteYear)
-            event.absoluteYear = absoluteDateString.substring(0, 4).toInteger()
-        if (!event.absoluteMonth)
-            event.absoluteMonth = absoluteDateString.substring(5, 7).toInteger()
-        if (!event.absoluteDay)
-            event.absoluteDay = absoluteDateString.substring(8, 10).toInteger()
-        if (!event.absoluteHour)
-            event.absoluteHour = absoluteDateString.substring(11, 13).toInteger()
-        if (!event.absoluteMinute)
-            event.absoluteMinute = absoluteDateString.substring(14, 16).toInteger()
 
-		event
+        cal.setTime(eventBeginning)
+        event.absoluteYear = cal.get(Calendar.YEAR)
+        event.absoluteMonth = cal.get(Calendar.MONTH)
+        event.absoluteDay = cal.get(Calendar.DAY_OF_MONTH)
+        event.absoluteHour = cal.get(Calendar.HOUR_OF_DAY)
+        event.absoluteMinute = cal.get(Calendar.MINUTE)
+
+		return event
 	}
     /* !Exposed Methods */
 }

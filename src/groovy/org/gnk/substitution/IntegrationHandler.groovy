@@ -547,7 +547,11 @@ class IntegrationHandler {
         for (eventJson in dateJsonObject.events) {
             // Create eventTime
             EventTime eventTime = new EventTime()
-            eventTime.timing = eventJson.timing as Integer
+            //GnId in the JSON is the id of the domain class Event
+            eventTime.setId(eventJson.gnId as Integer)
+            eventTime.setTiming(eventJson.timing as Integer)
+            //duration is needed but not present in the JSON
+            //eventTime.duration = eventJson.duration as Integer
             if (eventJson.absoluteYear != "") {
                 eventTime.absoluteYear = eventJson.absoluteYear as Integer
             }

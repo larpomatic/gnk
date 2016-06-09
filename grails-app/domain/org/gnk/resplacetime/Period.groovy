@@ -1,6 +1,5 @@
 package org.gnk.resplacetime
 
-import org.apache.commons.lang3.time.DateUtils
 import org.gnk.gn.Gn
 
 /**
@@ -71,12 +70,12 @@ class Period {
      * persisted period linked to the same GN
      * @return
      */
-    Boolean checkBlocking() {
+    Boolean checkCanBeBlocking() {
         if (this.gn == null || this.beginning == null || this.duration == null) {
             return false
         }
 
-        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: beginning)
+        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: "beginning")
 
         Boolean allowed = true
 
@@ -99,7 +98,10 @@ class Period {
         if (this.beginning == null || this.duration == null) {
             return null
         }
-        return DateUtils.addMinutes(this.beginning, (Integer)this.duration)
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(this.beginning)
+        cal.add(Calendar.MINUTE, (int)this.duration)
+        return cal.getTime()
     }
 
 
@@ -134,7 +136,7 @@ class Period {
         Boolean testedInsidePeriod = ((this.beginning.before(testedBeginning) || this.beginning.equals(testedBeginning))
                 && (end.after(testedEnd) || end.equals(testedEnd)))
 
-        return (beginsDuringPeriod && endsDuringPeriod && periodInsideTested && testedInsidePeriod)
+        return (beginsDuringPeriod || endsDuringPeriod || periodInsideTested || testedInsidePeriod)
     }
 
 

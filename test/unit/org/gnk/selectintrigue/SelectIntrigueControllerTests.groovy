@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat
 
 /**
  * Created by pico on 15/04/2014.
- */
+ *
 @TestFor(SelectIntrigueController)
 @Mock([Tag, Plot, Gn, Univers, User, GenericPlaceHasTag, GenericPlace, Pastscene, GenericPlaceHasTag, GenericResourceHasTag, GenericResource, GenericPlace,
 Place, PlaceHasTag, Resource, ResourceHasTag, Firstname, FirstnameHasTag, Name, NameHasTag, PlotHasTag, Role, RoleHasTag, Event, RoleHasEvent,
@@ -181,3 +181,6 @@ class SelectIntrigueControllerTests {
 //
 //    }
 }
+
+
+ */
