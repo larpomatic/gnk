@@ -1,6 +1,5 @@
 package org.gnk.resplacetime
 
-import com.sun.istack.internal.NotNull
 import org.gnk.gn.Gn
 import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.PastsceneTime
@@ -107,10 +106,12 @@ class TimeService {
         }
     }
 
-    def	EventTime eventRealDate (@NotNull EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {
-
+    def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {
+        if(event == null) {
+            throw new InvalidParameterException("Parameter Event must not be null")
+        }
         if (event.getDuration() == null) {
-            throw new InvalidParameterException("Parameter EventTime Duration must not be null")
+            throw new InvalidParameterException("Parameter Event Duration must not be null")
         }
         // Instantiates the calendar.
         Calendar cal = Calendar.getInstance()

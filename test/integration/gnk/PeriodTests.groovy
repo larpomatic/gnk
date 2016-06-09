@@ -9,6 +9,8 @@ import org.gnk.resplacetime.TimeService
 import org.gnk.ressplacetime.EventTime
 import org.junit.*
 
+import java.security.InvalidParameterException
+
 class PeriodTests {
 
     Integer gnId = null;
@@ -111,6 +113,17 @@ class PeriodTests {
         assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
                 gnBeginning.getHours() + (blockingPeriod2.getDuration()/60);
 
+    }
+
+    @Test
+    void testNullParameters () {
+        final TimeService timeService = new TimeService()
+        try {
+            timeService.eventRealDate(null, null, null, null)
+        }
+        catch (InvalidParameterException e) {
+
+        }
     }
 }
 
