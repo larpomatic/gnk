@@ -23,6 +23,7 @@
 				<thead>
 					<tr>
                         <th><g:message code="gn.name.label" default="Name" /></th>
+                        <th><g:message code="gn.step.label" default="Step" /></th>
                         <th><g:message code="gn.date.label" default="Date" /></th>
                         <th><g:message code="gn.Creation.label" default="Author" /></th>
                         <th><g:message code="gn.lastUpdate.label" default="last update" /></th>
@@ -33,12 +34,38 @@
 				<g:each in="${gnInstanceList}" status="i" var="gnInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						<td>
-                            <g:hasRights lvlright="${right.MGNOPEN.value()}">
-                                <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
-                            </g:hasRights>
+                    <g:form controller="selectIntrigue" action="dispatchStep" params="[id : gnInstance.id]">
+                        <g:hasRights lvlright="${right.MGNOPEN.value()}">
+                            <button type="submit" style="" style="border: none" class="btn-link">${fieldValue(bean: gnInstance, field: "name")}</button></td>
+                        </g:hasRights>
+                        <g:if test="${gnInstance.step == null}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${[]}"/>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'publication'}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${['publication', 'substitution', 'life', 'role2perso', 'selectIntrigue']}"/>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'substitution'}">
+                            <td><g:select name="step-${gnInstance.id}"
+                                          from="${['substitution', 'life', 'role2perso', 'selectIntrigue']}"/></td>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'life'}">
+                            <td><g:select name="step-${gnInstance.id}"
+                                          from="${['life', 'role2perso', 'selectIntrigue']}"/></td>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'role2perso'}">
+                            <td><g:select name="step-${gnInstance.id}"
+                                          from="${['role2perso', 'selectIntrigue']}"/></td>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'selectIntrigue'}">
+                            <td><g:select name="step-${gnInstance.id}"
+                                          from="${['selectIntrigue']}"/></td>
+                        </g:if>
                             <g:hasNotRights lvlright="${right.MGNOPEN.value()}">
                                 ${fieldValue(bean: gnInstance, field: "name")}
                             </g:hasNotRights>
+                    </g:form>
                         </td>
                         <td>${gnInstance.dateCreated.format("dd/MM/yyyy")}</td>
                         <td>${gnInstance.gnHasUsers.find {x-> x.gn.id = gnInstance.id}.user.username}</td>
