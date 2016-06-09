@@ -1,10 +1,12 @@
 package org.gnk.substitution
 
 import grails.converters.JSON
+import org.gnk.gn.GnHasConvention
 import grails.gorm.PagedResultList
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.importation.GNKImportationService
+import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.gn.Gn
 import org.gnk.resplacetime.GenericPlace
@@ -21,9 +23,13 @@ import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
 import sun.launcher.resources.launcher_pt_BR
 
+import java.text.ParseException
+import java.text.SimpleDateFormat
+
 class SubstitutionController {
 
     String xmlGnTestPath = "DTD_V3.xml"
+    private org.gnk.naming.Convention convention
 
     def getBack(Long id) {
         Gn gn = Gn.get(id);
@@ -88,7 +94,7 @@ class SubstitutionController {
         if (gnIdStr == null || !(gnIdStr as String).isInteger()) {
             //redirect(action: "list", controller: "selectIntrigue", params: params)
             //return
-            String fileContent = new File(xmlGnTestPath).text
+            String fileContent = new File(xmlGnTestPath).tJext
             inputHandler.parseGN(fileContent)
         } else {
             Integer gnDbId = gnIdStr as Integer;
@@ -136,7 +142,9 @@ class SubstitutionController {
                 eventList: eventList,
                 relationjson: json,
                 gnId: gnIdStr,
-                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule]
+                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
+                sexe: params.sexe
+        ]
     }
     /*private void changeCharSex(Gn gn, List<String> sexes)
     {
@@ -443,5 +451,82 @@ class SubstitutionController {
         render(contentType: "application/json") {
             jsonsub
         }
+    }
+
+    public Calendar isValidDate(String dateToValidate, String dateFromat){
+        if(dateToValidate == null){
+            return null;
+        }
+        if (dateToValidate.indexOf(":") == -1) {
+            dateToValidate = dateToValidate + " 00:00";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
+        sdf.setLenient(false);
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.ERA, GregorianCalendar.BC);
+            Date date = sdf.parse(dateToValidate);
+            cal.setTime(date)
+            return cal;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    def saveOrUpdateDates() {
+
+        System.out.println("WWWWXXXXWWWXXXWWW");
+
+        def gnInstance = Gn.get(Long.valueOf(params.gnId).longValue())
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gnInstance);
+
+        if (!gnInstance) {
+
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'gn.label', default: 'GN'), params.gnId])
+            redirect(action: "index")
+            return
+        }
+
+        GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
+        gnHasConvention.version = gnHasConvention.version + 1
+        convention
+
+        if (params.t0DateHour) {
+            Calendar calendar = isValidDate(params.t0DateHour as String, "dd/MM/yyyy HH:mm");
+            if (params.t0DateHourUnity == "+") {
+                calendar.set(calendar.ERA, GregorianCalendar.AD)
+//                calendar.ERA = GregorianCalendar.AD;
+            } else {
+                calendar.set(calendar.ERA, GregorianCalendar.BC)
+//                calendar.ERA = GregorianCalendar.BC;
+            }
+            if (calendar) {
+                gnInstance.t0Date = calendar.getTime();
+            }
+        }
+
+        if (params.gnDuration) {
+            gnInstance.duration = params.gnDuration as Integer
+        }
+
+        gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
+
+        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
+            //render(view: "index", model: [gnInfo: gnInstance])
+            //index()
+            //redirect(action: "index", id: gnInstance.id, params: [gnInstanceId: gnInstance.id, gnDTD: gnInstance.dtd])
+            //return
+        } /*else {
+
+            flash.message = message(code: 'default.updated.message', args: [
+                    message(code: 'gn.label', default: 'GN'),
+                    gnInstance.id
+            ])
+            //index()
+            //redirect(action: "index", params: [gnId: gnInstance.id"])
+
+        } */
+        redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 }

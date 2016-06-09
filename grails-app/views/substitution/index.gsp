@@ -23,7 +23,6 @@
 <div class="row-fluid">
     <div class="span4"><h3 class="cap">Formulaire de Substitution</h3></div>
 </div>
-
 <div id="subAlertContainer">
 </div>
 
