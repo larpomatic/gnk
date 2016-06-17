@@ -5,7 +5,7 @@ import org.gnk.resplacetime.ResourceHasTag
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.selectintrigue.PlotHasTag
 
-class Tag {
+class Tag{
 
     Integer id
     Integer version
@@ -39,9 +39,6 @@ class Tag {
     }
 
 
-
-
-
     String getterName() {
         return name;
     }
@@ -49,4 +46,5 @@ class Tag {
     TagRelevant getTagRelevant(){
          return TagRelevant.findByTag(this)
     }
+
 }

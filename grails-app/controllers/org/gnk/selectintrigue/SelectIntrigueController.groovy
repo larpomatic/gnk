@@ -14,6 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import sun.net.www.content.audio.x_aiff
 
+import java.awt.List
+import java.util.Collections;
+import java.util.List;
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Map.Entry
@@ -180,10 +183,14 @@ class SelectIntrigueController {
         if (gnInstance && gnInstance.bannedPlotSet)
             nonTreatedPlots.removeAll(gnInstance.bannedPlotSet);
 
+
+        List universList = tagService.getUniversTagQuery();
+        //Collections.sort(universList)
+
         [gnInstance: gnInstance,
          screenStep: params?.screenStep,
          plotTagList: tagService.getPlotTagQuery(),
-         universList: tagService.getUniversTagQuery(),
+         universList: universList,
          plotInstanceList: selectedPlotInstanceList,
          evenementialPlotInstanceList: selectedEvenementialPlotInstanceList,
          mainstreamPlotInstanceList: selectedMainstreamPlotInstanceList,
