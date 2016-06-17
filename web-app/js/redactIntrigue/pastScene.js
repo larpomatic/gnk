@@ -44,7 +44,7 @@ $(function(){
                     $('form[name="updatePastScene_' + data.pastscene.id + '"] .btnFullScreen').click(function() {
                         $(this).parent().parent().toggleClass("fullScreenOpen");
                     });
-                    var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1;
+                    var nbPastScenes = parseInt($('.pastScenesLi .badge').html()) + 1 ;
                     $('.pastScenesLi .badge').html(nbPastScenes);
                     updatePastScene();
                     updateSave();
@@ -220,7 +220,7 @@ function createNewPastScenePanel(data) {
             res += ", ";
         }
         res = buildAbsoluteString(globalList, res, pastscene);
-        res += " - ";
+        res += " - " + "*-*";
         return res;
     });
     $.each(data.pastscene.roleList, function(i, item) {

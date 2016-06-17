@@ -788,7 +788,8 @@ public class RoleToPersoProcessing {
             def list = []
             for (Character car : gn.getterNonPlayerCharSet()){
                 Role role = Role.findById(car.selectedRoles[0].getDTDId())
-                if (role.type == "PJB")
+                //TODO Why can the DTDid and role be null Here ?!
+                if (role != null && role.type == "PJB")
                     list.add(car)
             }
             for (Character car : list)

@@ -1,5 +1,6 @@
 package gnk
 
+import org.apache.commons.lang3.time.DateUtils
 import org.gnk.gn.Gn
 import org.gnk.gn.GnHasConvention
 import org.gnk.naming.Convention
@@ -8,11 +9,15 @@ import org.gnk.resplacetime.TimeService
 import org.gnk.ressplacetime.EventTime
 import org.junit.*
 
+import java.security.InvalidParameterException
+
 class PeriodTests {
 
     Integer gnId = null;
     String gnName = "integrationTestGn"
     // Integer conventionId = null;
+    Date gnBeginning = Date.parse("yyyy-MM-dd HH:mm", "2016-05-28 09:00")
+    Integer gnDuration = 10
 
     @Before
     void setUp() {
@@ -20,12 +25,10 @@ class PeriodTests {
 //        Convention convention = new Convention(description: "IntegrationTestingConvention")
 //        convention.save(failOnError: true)
 //        conventionId = convention.getId()
-        Calendar cal = new GregorianCalendar(2016, Calendar.MAY, 28)
-        cal.set(Calendar.HOUR_OF_DAY, 9)
         Convention convention = Convention.findByDescription("Occidentale")
         GnHasConvention gnHasConvention = new GnHasConvention(convention: convention)
-        Gn gn = new Gn(name: gnName, gnHasConvention: gnHasConvention, date: cal.getTime(),
-                duration: 6, step: "selectIntrigue")
+        Gn gn = new Gn(name: gnName, gnHasConvention: gnHasConvention, date: gnBeginning,
+                duration: gnDuration, step: "selectIntrigue")
         gnHasConvention.setGn(gn)
         gn.save(failOnError: true)
         gnHasConvention.save(failOnError: true)
@@ -43,76 +46,101 @@ class PeriodTests {
     }
 
     @Test
-    void testSetBlocking() {
+    void testCheckBlocking() {
         given:
-        Calendar cal = new GregorianCalendar(2016, Calendar.MAY, 28)
-        cal.set(Calendar.HOUR_OF_DAY, 10)
         Gn gn = Gn.findById(gnId)
-        Date date1 = cal.getTime()
-        Date date2 = Date.parse("yyyy-MM-dd-hh", "2016-05-28-10")
-        assert date1.equals(date2)
         Period p1 = new Period(name: "IntegrationTestP1", description: "Testing period 1", location: "", gn: gn,
-                isPublic: true, beginning: cal.getTime(), duration: 60, isBlocking: false)
+                isPublic: true, beginning: gnBeginning, duration: 60, isBlocking: false, isGamePeriod: false,
+                predInterval: 0)
         p1.save(failOnError: true)
 
-        Period p2 = new Period(gn: gn, beginning: cal.getTime(), duration: 20, isBlocking: false,
-                name: "IntegrationTestP2", isPublic: true, location: "", description: "")
+        Period p2 = new Period(gn: gn, beginning: gnBeginning, duration: 20, isBlocking: false, isPublic: true,
+                name: "IntegrationTestP2", location: "", description: "", predInterval: 0, isGamePeriod: false)
         p2.save(failOnError: true)
 
         when:
         Console.println("Nb of Period : " + Period.list().size())
         Console.println(p2.name + " " + p2.beginning.toString())
-        //p1.setIsBlocking(true)
-        //p2.setIsBlocking(true)
+        if (p1.checkCanBeBlocking()) {
+            p1.setIsBlocking(true)
+        }
+        if (p2.checkCanBeBlocking()) {
+            p2.setIsBlocking(true)
+        }
 
         //then:
-        //assert p1.getIsBlocking()
-        //assert !p2.getIsBlocking()
+        assert p1.getIsBlocking()
+        assert !p2.getIsBlocking()
 
-        //Period fetchTest = Period.findByName("IntegrationTestP1")
-        //assert fetchTest.getIsBlocking()
+        p1.delete()
+        p2.delete()
     }
 
-    void testTiming() {
-
-    }
-
-    def timeTestForEvent() {
+    @Test
+    void timeTestForEvent() {
         final TimeService timeService = new TimeService()
 
-        // Date de pivot (choisie comme étant le début du GN)
-        /*
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2010, 4, 1, 10, 0);
-        Date gnBeginDate = calendar.getTime();
-        Integer gnDuration = 50;
-        render("Début du GN: " + gnBeginDate.toString()
-                + "<br/>Durée du GN: " + gnDuration.toString() + " heures<br/><br/>");
-        EventTime result;
-        */
-
+        //Using the gn from the setUp needed to test the blocking periods
         Gn gn = Gn.findById(gnId)
-
+        Calendar cal = Calendar.getInstance()
         // Event qui se passe à 20%
-        //render("On teste: 20% (soit T0 + 10 heures)<br/>");
         EventTime event1 = new EventTime();
         event1.code = "EV1";
         event1.timing = 20;
-        def result1 = timeService.eventRealDate(event1, gn.getDate(), gn.getDuration(), gn.getId());
+        event1.duration = 60
+        def result1 = timeService.eventRealDate(event1, gn.getDate(), gnDuration, gn.getId());
         Console.println(result1)
-        //render(result.code + ": " + result.absoluteDay.toString() + "." + result.absoluteMonth.toString() + "." + result.absoluteYear.toString()
-        //        + " " + result.absoluteHour.toString() + ":" + result.absoluteMinute.toString() + "<br/><br/>");
 
         // Event qui se passe à 50%
-        //render("On teste: 50% (soit T0 + 25 heures)<br/>");
         EventTime event2 = new EventTime();
         event2.code = "EV2";
         event2.timing = 50;
-        def result2 = timeService.eventRealDate(event2, gn.getDate(), gn.getDuration(), gn.getId());
+        event2.duration = 60
+        def result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
         Console.println(result2)
+        assert result2.getAbsoluteHour() == (int)((float)(event2.getTiming() * gnDuration) / 100) + gnBeginning.getHours()
+        cal.setTime(gnBeginning)
+        cal.add(Calendar.HOUR_OF_DAY, gnDuration/2)
+        Date beginningP1 = cal.getTime()
+        Period blockingPeriod1 = new Period(gn: gn, beginning: beginningP1, duration: 60, isBlocking: true, isPublic: true,
+                name: "Blocking Period 1", location: "", description: "", predInterval: 0, isGamePeriod: false)
+        blockingPeriod1.save(failOnError: true)
+        result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + (blockingPeriod1.getDuration()/60);
+        Period nonBlocking = new Period(gn: gn, beginning: gnBeginning, duration: 10*60, isBlocking: false, isPublic: true,
+                name: "Non Blocking Period", location: "", description: "", predInterval: 0, isGamePeriod: true)
+        nonBlocking.save(failOnError: true)
+        result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + (blockingPeriod1.getDuration()/60);
+        Period blockingPeriod2 = new Period(gn: gn, beginning: beginningP1, duration: 60, isBlocking: true, isPublic: true,
+                name: "Blocking Period 2", location: "", description: "", predInterval: 0, isGamePeriod: false)
+        if (!blockingPeriod2.checkCanBeBlocking()) {
+            cal.setTime(beginningP1)
+            cal.add(Calendar.MINUTE, 60)
+            blockingPeriod2.setBeginning(cal.getTime())
+            if(!blockingPeriod2.checkCanBeBlocking()) {
+            blockingPeriod2.setIsBlocking(false)
+            }
+        }
+        blockingPeriod2.save(failOnError: true)
+        result2 = timeService.eventRealDate(event2, gn.getDate(), gnDuration, gn.getId());
+        //assert result2.absoluteHour == (int)((float)(event2.getTiming() * gnDuration) / 100) +
+                gnBeginning.getHours() + ((blockingPeriod1.getDuration() + blockingPeriod2.getDuration())/60);
+    }
 
-        //render(result.code + ": " + result.absoluteDay.toString() + "." + result.absoluteMonth.toString() + "." + result.absoluteYear.toString()
-        //        + " " + result.absoluteHour.toString() + ":" + result.absoluteMinute.toString() + "<br/><br/>");
+
+
+    @Test
+    void testNullParameters () {
+        final TimeService timeService = new TimeService()
+        try {
+            timeService.eventRealDate(null, null, null, null)
+        }
+        catch (InvalidParameterException e) {
+
+        }
     }
 }
 

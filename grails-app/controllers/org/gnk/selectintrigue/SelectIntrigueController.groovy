@@ -542,20 +542,7 @@ class SelectIntrigueController {
 
     def formatParams (Gn gnInstance) {
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (params.t0DateHour) {
-            Calendar calendar = isValidDate(params.t0DateHour as String, "dd/MM/yyyy HH:mm");
-            if (params.t0DateHourUnity == "+") {
-                calendar.set(calendar.ERA, GregorianCalendar.AD)
-//                calendar.ERA = GregorianCalendar.AD;
-            }
-            else {
-                calendar.set(calendar.ERA, GregorianCalendar.BC)
-//                calendar.ERA = GregorianCalendar.BC;
-            }
-            if (calendar) {
-                gnInstance.t0Date = calendar.getTime();
-            }
-        }
+
         if (params.gnDateHour) {
             Calendar calendar = isValidDate(params.gnDateHour as String, "dd/MM/yyyy HH:mm");
             if (params.gnDateHourUnity == "+") {
@@ -568,6 +555,11 @@ class SelectIntrigueController {
                 gnInstance.date = calendar.getTime();
             }
         }
+
+        // We need a default date
+        Calendar calendarStartDate = isValidDate("10/10/2010 10:10", "dd/MM/yyyy HH:mm");
+        gnInstance.t0Date = calendarStartDate.getTime();
+
 //		if (params.gnDate) {
 //			gnInstance.date = sdf.parse(params.gnDate);
 //		}
@@ -584,6 +576,7 @@ class SelectIntrigueController {
         if (params.univers) {
             gnInstance.univers = Tag.get(params.univers as Integer)
         }
+
         if (params.gnStep) {
             gnInstance.step = params.gnStep
         }
@@ -603,9 +596,7 @@ class SelectIntrigueController {
 //            cal.set(Calendar.MINUTE, calHour.get(Calendar.MINUTE))
 //            gnInstance.t0Date = cal.getTime();
 //        }
-        if (params.gnDuration) {
-            gnInstance.duration = params.gnDuration as Integer
-        }
+
         if (params.gnPIPMin) {
             gnInstance.pipMin = params.gnPIPMin as Integer
         }
