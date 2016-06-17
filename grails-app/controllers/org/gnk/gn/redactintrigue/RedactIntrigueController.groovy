@@ -92,8 +92,7 @@ class RedactIntrigueController {
 			screen = (screen - 48)	 
 		}
         TagService tagService = new TagService();
-        TreeMap<Long, Pastscene> tmp = orderPastscenes(plotInstance);
-        List<Pastscene> pastscenes = new ArrayList<Pastscene>(tmp.values());
+        List<Pastscene> pastscenes = new ArrayList<Pastscene>(orderPastscenes(plotInstance).values());
 
         Map<Plot, List<Plot>> variantMap = new HashMap<>();
         List<Plot> plotList = Plot.list();
@@ -124,9 +123,8 @@ class RedactIntrigueController {
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
         TreeMap<Long, Pastscene> pastscenes = new TreeMap<Long, Pastscene>();
-        Calendar c = null;
         for (Pastscene pastscene : plot.pastescenes) {
-            c= Calendar.getInstance();
+            Calendar c = Calendar.getInstance();
             if (pastscene.dateYear && pastscene.isAbsoluteYear) {
                 c.set(Calendar.YEAR, pastscene.dateYear);
             }
@@ -157,16 +155,13 @@ class RedactIntrigueController {
             else if (pastscene.dateMinute && !pastscene.isAbsoluteMinute) {
                 c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
             }
-            Random random = new  Random();
-            Long millis = random.nextInt(1000000);
+            Long millis = c.getTimeInMillis();
             //If we have several scenes at the same time, they will no longer get replaced in the tree.
             // There is no need to make another loop if there is several scene with the same time since we are making
             // a depth first road.
-
-
-            while(pastscenes.containsKey(millis))
-            {
-                millis--;
+            pastscenes.each { scene ->
+                    if (scene.key == millis)
+                        millis--
             }
             pastscenes.put(millis, pastscene);
         }
