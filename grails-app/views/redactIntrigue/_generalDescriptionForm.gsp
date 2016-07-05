@@ -15,7 +15,7 @@
                     <div class="span1"></div>
                     <div class="span1">
                         <label for="name">
-                            <g:message code="redactintrigue.generalDescription.plotName" default="Name"/>
+                            <g:message code="redactintrigue.generalDescription.plotName" default="Name"/> *
                         </label>
                     </div>
 
@@ -28,7 +28,7 @@
                 <div class="row formRow">
                     <div class="span2">
                         <label for="plotVariant">
-                            <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>
+                            <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>*
                         </label>
                     </div>
                     <div class="span2">
@@ -58,7 +58,7 @@
 
                     <div class="span1">
                         <label>
-                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>*
                         </label>
                     </div>
 
@@ -70,7 +70,7 @@
 
                     <div class="span1">
                         <label>
-                            <g:message code="redactintrigue.generalDescription.plotUnivers" default="Univers"/>
+                            <g:message code="redactintrigue.generalDescription.plotUnivers" default="Univers"/>*
                         </label>
                     </div>
 
@@ -130,22 +130,22 @@
                     <ul class="nav nav-tabs">
                         <li class="active">
                             <a href="#descriptionTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.plotDescription" default="Description"/>
+                                <g:message code="redactintrigue.generalDescription.plotDescription" default="Description"/>*
                             </a>
                         </li>
                         <li>
                             <a href="#pitchOrgaTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchOrga" default="pitchOrga"/>
+                                <g:message code="redactintrigue.generalDescription.pitchOrga" default="pitchOrga"/>*
                             </a>
                         </li>
                         <li>
                             <a href="#pitchPjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPj" default="pitchPj"/>
+                                <g:message code="redactintrigue.generalDescription.pitchPj" default="pitchPj"/>*
                             </a>
                         </li>
                         <li>
                             <a href="#pitchPnjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPnj" default="pitchPnj"/>
+                                <g:message code="redactintrigue.generalDescription.pitchPnj" default="pitchPnj"/>*
                             </a>
                         </li>
                     </ul>

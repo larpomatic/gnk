@@ -32,7 +32,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceCode">
-                            <g:message code="redactintrigue.resource.resourceCode" default="Code"/>
+                            <g:message code="redactintrigue.resource.resourceCode" default="Code"/>*
                         </label>
                     </div>
                     <div class="span8">
@@ -43,7 +43,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label>
-                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>*
                         </label>
                     </div>
                     <div class="span4">
@@ -56,7 +56,7 @@
                     <!-- generic ressource possessor -->
                     <div class="span1">
                         <label for="resourceRolePossessor">
-                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>
+                            <g:message code="redactintrigue.resource.resourceRolePossessor" default="Possesser"/>*
                         </label>
                     </div>
                     <div class="span4">
@@ -69,12 +69,12 @@
                 <div class="row formRow">
                     <div class="span3">
                         <label>
-                            <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>
+                            <g:message code="redactintrigue.objecttype.resourcetype" default="Resource type : "/>*
                         </label>
                     </div>
                     <div class="span1">
                         <label for="resourceObjectToDefine">
-                            <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>
+                            <g:message code="redactintrigue.objecttype.toDefine" default="To define"/>*
                         </label>
                     </div>
                     <div class="span1">
@@ -108,7 +108,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="resourceConstantForm">
-                            <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                            <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>*
                         </label>
                     </div>
                     <div class="span4">
@@ -119,7 +119,7 @@
 
                 <div class="row formRow text-center">
                     <label for="resourceComment">
-                        <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>
+                        <g:message code="redactintrigue.resource.resourceComment" default="Comment"/>*
                     </label>
                 </div>
                 <div class="fullScreenEditable">

@@ -33,7 +33,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="roleCode">
-                            <g:message code="redactintrigue.role.roleCode" default="Name"/>
+                            <g:message code="redactintrigue.role.roleCode" default="Name"/>*
                         </label>
                     </div>
                     <div class="span8">
@@ -43,7 +43,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="rolePipi">
-                            <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
+                            <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>*
                         </label>
                     </div>
                     <div class="span4">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="span1">
                         <label for="rolePipr">
-                            <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
+                            <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>*
                         </label>
                     </div>
                     <div class="span4">
@@ -61,7 +61,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label>
-                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                            <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>*
                         </label>
                     </div>
                     <div class="span3">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="span1">
                         <label for="roleType">
-                            <g:message code="redactintrigue.role.roleType" default="Type"/>
+                            <g:message code="redactintrigue.role.roleType" default="Type"/>*
                         </label>
                     </div>
                     <div class="span5">
@@ -89,7 +89,7 @@
                 </div>
                 <div class="row formRow text-center">
                     <label for="roleDescription">
-                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>*
                     </label>
                 </div>
                 <div class="fullScreenEditable">

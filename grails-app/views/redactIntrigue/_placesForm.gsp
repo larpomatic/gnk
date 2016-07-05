@@ -32,7 +32,7 @@
         <div class="row formRow">
             <div class="span1">
                 <label for="placeCode">
-                    <g:message code="redactintrigue.place.placeCode" default="Name"/>
+                    <g:message code="redactintrigue.place.placeCode" default="Name"/>*
                 </label>
             </div>
 
@@ -42,13 +42,13 @@
 
             <div class="span1">
                 <label>
-                    <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
+                    <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>*
                 </label>
             </div>
 
             <div class="span4">
                 <a href="#placeTagsModal" class="btn" data-toggle="modal">
-                    <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>
+                    <g:message code="redactintrigue.place.chooseTags" default="Choose tags"/>*
                 </a>
                 <button data-target="#bestPlaceModal" id="newbestPlace" type="button" class="btnBestPlace" data-toggle="modal" data-url="<g:createLink controller="GenericPlace" action="getBestPlaces"/>"><i class="btnBestPlace img-circle" ></i></button>
             </div>
@@ -57,7 +57,7 @@
         <div class="row formRow">
             <div class="span3">
                 <label>
-                    <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>
+                    <g:message code="redactintrigue.objecttype.placetype" default="Place type : "/>*
                 </label>
             </div>
 
@@ -104,7 +104,7 @@
         <div class="row formRow">
             <div class="span1">
                 <label for="placeConstantForm">
-                    <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>
+                    <g:message code="redactintrigue.generalDescription.associatedConstant" default="Associated constant"/>*
                 </label>
             </div>
             <div class="span4">
@@ -114,7 +114,7 @@
         </div>
         <div class="row formRow text-center">
             <label for="placeDescription">
-                <g:message code="redactintrigue.place.placeDescription" default="Description"/>
+                <g:message code="redactintrigue.place.placeDescription" default="Description"/>*
             </label>
         </div>
 

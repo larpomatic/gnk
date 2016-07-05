@@ -43,6 +43,7 @@
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}"/>
             </g:hasRights>
-        </form>
+        </form>            </g:hasRights>
+
     </g:form>
 </div>

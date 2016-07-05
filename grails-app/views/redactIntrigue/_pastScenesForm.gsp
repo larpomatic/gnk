@@ -28,7 +28,7 @@
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow text-center">
                     <label for="pastSceneTitle">
-                        <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
+                        <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>*
                     </label>
                 </div>
 
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="span4">
-                        <g:checkBox name="pastScenePublic" id="pastScenePublic"/>
+                        <g:checkBox name="pastScenePublic" id="pastScenePublic"/>*
                     </div>
 
                     <div class="span2">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="row formRow">
                     <div class="span2">Année</div>
-                    <div class="span2">Mois</div>
+                    <div class="span2">Mois</div>*
                     <div class="span2">Jour</div>
                     <div class="span2">Heure</div>
                     <div class="span2">Minute</div>
@@ -97,7 +97,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="pastScenePlace">
-                            <g:message code="redactintrigue.pastScene.pastscenePlace" default="Place"/>
+                            <g:message code="redactintrigue.pastScene.pastscenePlace" default="Place"/>*
                         </label>
                     </div>
 
@@ -107,7 +107,7 @@
                     </div>
                     <div class="span1">
                         <label for="pastScenePredecessor">
-                            <g:message code="redactintrigue.pastScene.pastscenePredecessor" default="Predecessor"/>
+                            <g:message code="redactintrigue.pastScene.pastscenePredecessor" default="Predecessor"/>*
                         </label>
                     </div>
 
@@ -119,7 +119,7 @@
 
                 <div class="row formRow text-center">
                     <label for="pastSceneDescription">
-                        <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>
+                        <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>*
                     </label>
                 </div>
 
@@ -135,7 +135,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>
-                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>*
                         </h3>
                     </div>
 
@@ -157,7 +157,7 @@
                                     <g:hiddenField name="roleHasPastSceneTitle${role.id}" class="titleContent" value=""/>
                                     <div class="row formRow text-center">
                                         <label>
-                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                            <g:message code="redactintrigue.role.roleTitle" default="Title"/>*
                                         </label>
                                     </div>
                                     <div class="fullScreenEditable">
@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="row formRow text-center">
                                         <label>
-                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                            <g:message code="redactintrigue.role.roleDescription" default="Description"/>*
                                         </label>
                                     </div>
                                     <div class="fullScreenEditable">
@@ -202,7 +202,7 @@
                     <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                     <div class="row formRow text-center">
                         <label for="pastSceneTitle">
-                            <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>
+                            <g:message code="redactintrigue.pastScene.pastsceneTitle" default="Titre"/>*
                         </label>
                     </div>
 
@@ -218,7 +218,7 @@
                     <div class="row formRow">
                         <div class="span1">
                             <label for="pastScenePublic">
-                                <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>
+                                <g:message code="redactintrigue.pastScene.pastscenePublic" default="Public"/>*
                             </label>
                         </div>
                         <div class="span4">
@@ -226,13 +226,13 @@
                         </div>
                         <div class="span2">
                             <a href="#pastsceneRolesModal${pastScene.id}" class="btn" data-toggle="modal">
-                                <g:message code="redactintrigue.pastScene.chooseRoles" default="Choose roles"/>
+                                <g:message code="redactintrigue.pastScene.chooseRoles" default="Choose roles"/>*
                             </a>
                         </div>
                     </div>
 
                     <div class="row formRow">
-                        <div class="span2">Année</div>
+                        <div class="span2">Année</div>*
                         <div class="span2">Mois</div>
                         <div class="span2">Jour</div>
                         <div class="span2">Heure</div>
@@ -270,7 +270,7 @@
                     <div class="row formRow">
                         <div class="span1">
                             <label for="pastScenePlace">
-                                <g:message code="redactintrigue.pastScene.pastscenePlace" default="Place"/>
+                                <g:message code="redactintrigue.pastScene.pastscenePlace" default="Place"/>*
                             </label>
                         </div>
 
@@ -280,7 +280,7 @@
                         </div>
                         <div class="span1">
                             <label for="pastScenePredecessor">
-                                <g:message code="redactintrigue.pastScene.pastscenePredecessor" default="Predecessor"/>
+                                <g:message code="redactintrigue.pastScene.pastscenePredecessor" default="Predecessor"/>*
                             </label>
                         </div>
 
@@ -292,7 +292,7 @@
 
                     <div class="row formRow text-center">
                         <label for="pastSceneDescription">
-                            <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>
+                            <g:message code="redactintrigue.pastScene.pastsceneDescription" default="Description"/>*
                         </label>
                     </div>
 
@@ -308,7 +308,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">×</button>
                             <h3>
-                                <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                                <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>*
                             </h3>
                         </div>
 
@@ -339,7 +339,7 @@
                                             <g:hiddenField name="roleHasPastSceneTitle${role.id}" class="titleContent" value=""/>
                                             <div class="row formRow text-center">
                                                 <label>
-                                                    <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                    <g:message code="redactintrigue.role.roleTitle" default="Title"/>*
                                                 </label>
                                             </div>
                                             <div class="fullScreenEditable">
@@ -352,7 +352,7 @@
                                             </div>
                                             <div class="row formRow text-center">
                                                 <label>
-                                                    <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                    <g:message code="redactintrigue.role.roleDescription" default="Description"/>*
                                                 </label>
                                             </div>
                                             <div class="fullScreenEditable">

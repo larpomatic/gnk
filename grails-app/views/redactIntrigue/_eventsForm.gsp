@@ -28,7 +28,7 @@
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow text-center">
                     <label for="eventName">
-                        <g:message code="redactintrigue.event.eventName" default="Name"/>
+                        <g:message code="redactintrigue.event.eventName" default="Name"/>*
                     </label>
                 </div>
 
@@ -42,7 +42,7 @@
                 <div class="row formRow">
                     <div class="span2">
                         <label for="eventPublic">
-                            <g:message code="redactintrigue.event.eventPublic" default="Public"/>
+                            <g:message code="redactintrigue.event.eventPublic" default="Public"/>*
                         </label>
                     </div>
 
@@ -52,7 +52,7 @@
 
                     <div class="span2">
                         <label for="eventPlanned">
-                            <g:message code="redactintrigue.event.eventPlanned" default="Planned"/>
+                            <g:message code="redactintrigue.event.eventPlanned" default="Planned"/>*
                         </label>
                     </div>
 
@@ -68,7 +68,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="eventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>*
                         </label>
                     </div>
 
@@ -78,7 +78,7 @@
 
                     <div class="span1">
                         <label for="eventTiming">
-                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
+                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>*
                         </label>
                     </div>
 
@@ -89,7 +89,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="eventPlace">
-                            <g:message code="redactintrigue.event.eventPlace" default="Place"/>
+                            <g:message code="redactintrigue.event.eventPlace" default="Place"/>*
                         </label>
                     </div>
 
@@ -100,7 +100,7 @@
 
                     <div class="span1">
                         <label for="eventPredecessor">
-                            <g:message code="redactintrigue.event.eventPredecessor" default="Predecessor"/>
+                            <g:message code="redactintrigue.event.eventPredecessor" default="Predecessor"/>*
                         </label>
                     </div>
 
@@ -112,7 +112,7 @@
 
                 <div class="row formRow text-center">
                     <label for="eventDescription">
-                        <g:message code="redactintrigue.event.eventDescription" default="Description"/>
+                        <g:message code="redactintrigue.event.eventDescription" default="Description"/>*
                     </label>
                 </div>
 
@@ -127,7 +127,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>
-                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>*
                         </h3>
                     </div>
 
@@ -148,7 +148,7 @@
                                         <g:hiddenField name="roleHasEventTitle${role.id}" class="titleContent" value=""/>
                                         <div class="row formRow text-center">
                                             <label>
-                                                <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                <g:message code="redactintrigue.role.roleTitle" default="Title"/>*
                                             </label>
                                         </div>
                                         <div class="fullScreenEditable">
@@ -172,17 +172,17 @@
                                             <ul class="nav nav-tabs">
                                                 <li class="active">
                                                     <a href="#roleHasEventDescriptionTab${role.id}_" data-toggle="tab">
-                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>*
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="#roleHasEventCommentTab${role.id}_" data-toggle="tab">
-                                                        <g:message code="redactintrigue.event.comment" default="Comment"/>
+                                                        <g:message code="redactintrigue.event.comment" default="Comment"/>*
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="#roleHasEventEvenementialTab${role.id}_" data-toggle="tab">
-                                                        <g:message code="redactintrigue.event.eventEvenementialDescription" default="Evenemential description"/>
+                                                        <g:message code="redactintrigue.event.eventEvenementialDescription" default="Evenemential description"/>*
                                                     </a>
                                                 </li>
                                             </ul>
@@ -216,12 +216,12 @@
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th><g:message code="redactintrigue.tabs.objects" default="Resources"/></th>
-                                                <th><g:message code="redactintrigue.resource.quantity" default="Quantity"/></th>
+                                                <th><g:message code="redactintrigue.tabs.objects" default="Resources"/></th>*
+                                                <th><g:message code="redactintrigue.resource.quantity" default="Quantity"/></th>*
                                             </tr>
                                             </thead>
                                             <tbody data-role="${role.id}">
-                                            <g:each in="${plotInstance.genericResources}" var="resource">
+                                            <g:each in="${plotInstance.genericResources}" var="resource">*
                                             <tr>
                                                 <td data-id="${resource.id}">${resource.code}</td>
                                                 <td><g:field type="number" name="quantity${role.id}_${resource.id}" value=""/></td>
@@ -255,7 +255,7 @@
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
                 <div class="row formRow text-center">
                     <label for="eventName">
-                        <g:message code="redactintrigue.event.eventName" default="Name"/>
+                        <g:message code="redactintrigue.event.eventName" default="Name"/>*
                     </label>
                 </div>
 
@@ -270,7 +270,7 @@
                 <div class="row formRow">
                     <div class="span2">
                         <label for="eventPublic">
-                            <g:message code="redactintrigue.event.eventPublic" default="Public"/>
+                            <g:message code="redactintrigue.event.eventPublic" default="Public"/>*
                         </label>
                     </div>
 
@@ -280,7 +280,7 @@
 
                     <div class="span2">
                         <label for="eventPlanned">
-                            <g:message code="redactintrigue.event.eventPlanned" default="Planned"/>
+                            <g:message code="redactintrigue.event.eventPlanned" default="Planned"/>*
                         </label>
                     </div>
 
@@ -296,7 +296,7 @@
                 <div class="row formRow">
                     <div class="span1">
                         <label for="EventDuration">
-                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>
+                            <g:message code="redactintrigue.event.eventDuration" default="Duration (min)"/>*
                         </label>
                     </div>
 
@@ -306,7 +306,7 @@
 
                     <div class="span1">
                         <label for="EventTiming">
-                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>
+                            <g:message code="redactintrigue.event.eventTiming" default="Timing (%)"/>*
                         </label>
                     </div>
 
@@ -328,7 +328,7 @@
 
                     <div class="span1">
                         <label for="eventPredecessor">
-                            <g:message code="redactintrigue.event.eventPredecessor" default="Predecessor"/>
+                            <g:message code="redactintrigue.event.eventPredecessor" default="Predecessor"/>*
                         </label>
                     </div>
 
@@ -340,7 +340,7 @@
 
                 <div class="row formRow text-center">
                     <label for="eventDescription">
-                        <g:message code="redactintrigue.event.eventDescription" default="Description"/>
+                        <g:message code="redactintrigue.event.eventDescription" default="Description"/>*
                     </label>
                 </div>
 
@@ -357,7 +357,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
                         <h3>
-                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>
+                            <g:message code="redactintrigue.pastScene.pastsceneRoles" default="Roles"/>*
                         </h3>
                     </div>
 
@@ -387,7 +387,7 @@
                                         <g:hiddenField name="roleHasEventTitle${role.id}" class="titleContent" value=""/>
                                         <div class="row formRow text-center">
                                             <label>
-                                                <g:message code="redactintrigue.role.roleTitle" default="Title"/>
+                                                <g:message code="redactintrigue.role.roleTitle" default="Title"/>*
                                             </label>
                                         </div>
                                         <div class="fullScreenEditable">
@@ -412,12 +412,12 @@
                                             <ul class="nav nav-tabs">
                                                 <li class="active">
                                                     <a href="#roleHasEventDescriptionTab${role.id}_${event.id}" data-toggle="tab">
-                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>
+                                                        <g:message code="redactintrigue.role.roleDescription" default="Description"/>*
                                                     </a>
                                                 </li>
                                                 <li>
                                                     <a href="#roleHasEventCommentTab${role.id}_${event.id}" data-toggle="tab">
-                                                        <g:message code="redactintrigue.event.comment" default="Comment"/>
+                                                        <g:message code="redactintrigue.event.comment" default="Comment"/>*
                                                     </a>
                                                 </li>
                                                 <li>
