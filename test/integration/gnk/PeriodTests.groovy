@@ -2,7 +2,6 @@ package gnk
 
 import org.apache.commons.lang3.time.DateUtils
 import org.gnk.gn.Gn
-import org.gnk.gn.GnHasConvention
 import org.gnk.naming.Convention
 import org.gnk.resplacetime.Period
 import org.gnk.resplacetime.TimeService
@@ -25,9 +24,8 @@ class PeriodTests {
 //        Convention convention = new Convention(description: "IntegrationTestingConvention")
 //        convention.save(failOnError: true)
 //        conventionId = convention.getId()
-        Convention convention = Convention.findByDescription("Occidentale")
-        GnHasConvention gnHasConvention = new GnHasConvention(convention: convention)
-        Gn gn = new Gn(name: gnName, gnHasConvention: gnHasConvention, date: gnBeginning,
+        //Convention convention = Convention.findByDescription("Occidentale")
+        Gn gn = new Gn(name: gnName, convention_id: 1, date: gnBeginning,
                 duration: gnDuration, step: "selectIntrigue")
         gnHasConvention.setGn(gn)
         gn.save(failOnError: true)

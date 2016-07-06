@@ -92,10 +92,12 @@ class Gn {
 
     Set<Resource> resourceSet
     Set<Place> placeSet
+    Integer convention_id
+//    Convention convention
 
     static hasMany = [ gnHasUsers: GnHasUser, periods: Period ]
 
-    static hasOne = [ gnHasConvention : GnHasConvention ]
+//    static hasOne = [ convention : Convention ]
 
     static constraints = {
         name maxSize: 45
@@ -108,6 +110,7 @@ class Gn {
         id type:'integer'
         version type: 'integer'
         periods sort:'beginning'
+//        convention column: 'convention_id'
     }
 
     public boolean addPlot(Plot plot) {
