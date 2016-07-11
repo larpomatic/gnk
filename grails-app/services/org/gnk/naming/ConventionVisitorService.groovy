@@ -1,7 +1,6 @@
 package org.gnk.naming
 
 import org.gnk.gn.Gn
-import org.gnk.gn.GnHasConvention
 import org.gnk.substitution.data.RelationCharacter
 
 class ConventionVisitorService {
@@ -16,8 +15,7 @@ class ConventionVisitorService {
         res.add(doneperso)
         res.add(names)
         Gn gn = Gn.get(gnId)
-        GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gn)
-        Convention convention = Convention.get(gnHasConvention.convention.id)
+        Convention convention = Convention.findById(gn.convention_id)
 
         LinkedList<ConventionHasRule> convRules = ConventionHasRule.findAllWhere(convention: convention)
         List<Integer> rules = new ArrayList<Integer>()
