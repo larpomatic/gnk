@@ -21,15 +21,6 @@ import org.gnk.substitution.data.Tag
 
 class PlaceSubController {
 
-    def getSubResources() {
-        JSONObject resourceJSONObject = request.JSON
-
-        IntegrationHandler integrationHandler = new IntegrationHandler()
-        resourceJSONObject = integrationHandler.resourceIntegration(resourceJSONObject)
-
-        render resourceJSONObject
-    }
-
     def index() {
 
         InputHandler inputHandler = new InputHandler()
@@ -91,6 +82,36 @@ class PlaceSubController {
          ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
          sexe: params.sexe
         ]
+    }
+
+    def getSubPlaces() {
+        JSONObject placeJSONObject = request.JSON
+
+        IntegrationHandler integrationHandler = new IntegrationHandler()
+        placeJSONObject = integrationHandler.placeIntegration(placeJSONObject)
+
+        render placeJSONObject
+    }
+
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        /*Integer evenementialId = 0;
+        Integer mainstreamId = 0;
+        for (Plot plot in gn.selectedPlotSet) {
+            if (plot.isEvenemential) {
+                evenementialId = Plot.findByName(plot.name).id;
+            } else if (plot.isMainstream && gn.isMainstream) {
+                mainstreamId = Plot.findByName(plot.name).id; ;
+            }
+        }*/
+
+        redirect(controller: 'ressource', action: 'index', params: [gnId: id as String]);
     }
 
     def validatePlace() {

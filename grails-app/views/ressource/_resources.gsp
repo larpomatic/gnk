@@ -90,7 +90,7 @@
 
         isSubResourcesRunning = false;
 
-        initResourcesEvents("${g.createLink(controller:'substitution', action:'getSubResources')}")
+        initResourcesEvents("${g.createLink(controller:'ressource', action:'getSubResources')}")
 
         $('.viewDetails').click(function(){
             var input = $(this).prev();

@@ -9,6 +9,7 @@ import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
+import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
@@ -80,6 +81,27 @@ class RessourceController {
          ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
          sexe: params.sexe
         ]
+    }
+
+    def getBack(Long id) {
+        Gn gn = Gn.get(id);
+        final gnData = new GNKDataContainerService();
+        gnData.ReadDTD(gn);
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+
+
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
+        Integer evenementialId = 0;
+        Integer mainstreamId = 0;
+        for (Plot plot in gn.selectedPlotSet) {
+            if (plot.isEvenemential) {
+                evenementialId = Plot.findByName(plot.name).id;
+            } else if (plot.isMainstream && gn.isMainstream) {
+                mainstreamId = Plot.findByName(plot.name).id; ;
+            }
+        }
+        redirect(controller: 'naming', action: 'index', params: [gnId: id as String]);
     }
 
     def getSubResources() {

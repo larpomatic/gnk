@@ -91,9 +91,9 @@
                 <input type="hidden" id="gnId" value="${gnId}">
 
 
-                <div class="span3"  id="tagListurl" data-url="<g:createLink controller='substitution' action='tagList'/>">
+                <div class="span3"  id="tagListurl" data-url="<g:createLink controller='placeSub' action='tagList'/>">
                     <label><g:message code="redactintrigue.place.mergeablePlace1"/></label>
-                    <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="substitution" action="getMergeablePlaces"/>">
+                    <select name="placeMergeable1" class="placeMergeable" id="placeMergeable1" data-url="<g:createLink controller="placeSub" action="getMergeablePlaces"/>">
                         <option id="reset1" value="-1"></option>
                         <g:each in="${placeList}" var="p">
                             <option value="${p.code}">${p.code}</option>
@@ -134,7 +134,7 @@
 
         isSubPlacesRunning = false;
 
-        initPlacesEvents("${g.createLink(controller:'substitution', action:'getSubPlaces')}")
+        initPlacesEvents("${g.createLink(controller:'placeSub', action:'getSubPlaces')}")
 
         $('.viewPlaceDetails').click(function(){
             var input = $(this).prev();
