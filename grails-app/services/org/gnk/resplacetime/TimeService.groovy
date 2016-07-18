@@ -91,17 +91,17 @@ class TimeService {
         if (ps.absoluteYear != null) {
             if (ps.absoluteYear == beginGnRealTime.getAt(Calendar.YEAR)) {
                 if (ps.absoluteMonth == beginGnRealTime.getAt(Calendar.MONTH)) {
-                   ps.unitTimingRelative = "d";
-                   ps.timingRelative = beginGnRealTime.getAt(Calendar.DAY_OF_MONTH) - ps.absoluteDay;
+                   ps.relativeTimeUnit = "d";
+                   ps.relativeTime = beginGnRealTime.getAt(Calendar.DAY_OF_MONTH) - ps.absoluteDay;
                 } else {
                     // On affiche en mois
-                    ps.unitTimingRelative = "m";
-                    ps.timingRelative = beginGnRealTime.getAt(Calendar.MONTH) - ps.absoluteMonth;
+                    ps.relativeTimeUnit = "m";
+                    ps.relativeTime = beginGnRealTime.getAt(Calendar.MONTH) - ps.absoluteMonth;
                 }
             } else {
                 // ON AFFICHE EN YEAR
-                ps.unitTimingRelative = "y";
-                ps.timingRelative = beginGnRealTime.getAt(Calendar.YEAR) - ps.absoluteYear;
+                ps.relativeTimeUnit = "y";
+                ps.relativeTime = beginGnRealTime.getAt(Calendar.YEAR) - ps.absoluteYear;
             }
         }
     }

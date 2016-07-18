@@ -14,9 +14,9 @@ import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
-import org.gnk.substitution.data.Event
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.Pastscene
+import org.gnk.resplacetime.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
