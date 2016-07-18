@@ -26,31 +26,31 @@ class TimeUnitTagLib {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
         ArrayList<String> relativeList = new ArrayList<>();
         ArrayList<String> absoluteList = new ArrayList<>();
-        if (pastscene.isAbsoluteYear && pastscene.dateYear) {
+        if (pastscene.isYearAbsolute && pastscene.dateYear) {
             absoluteList.add("Year");
         }
         else if (pastscene.dateYear) {
             relativeList.add("Year");
         }
-        if (pastscene.isAbsoluteDay && pastscene.dateDay) {
+        if (pastscene.isDayAbsolute && pastscene.dateDay) {
             absoluteList.add("Day");
         }
         else if (pastscene.dateDay) {
             relativeList.add("Day");
         }
-        if (pastscene.isAbsoluteMonth && pastscene.dateMonth) {
+        if (pastscene.isMonthAbsolute && pastscene.dateMonth) {
             absoluteList.add("Month");
         }
         else if (pastscene.dateMonth) {
             relativeList.add("Month");
         }
-        if (pastscene.isAbsoluteHour && pastscene.dateHour) {
+        if (pastscene.isHourAbsolute && pastscene.dateHour) {
             absoluteList.add("Hour");
         }
         else if (pastscene.dateHour) {
             relativeList.add("Hour");
         }
-        if (pastscene.isAbsoluteMinute && pastscene.dateMinute) {
+        if (pastscene.isMinuteAbsolute && pastscene.dateMinute) {
             absoluteList.add("Minute");
         }
         else if (pastscene.dateMinute) {
