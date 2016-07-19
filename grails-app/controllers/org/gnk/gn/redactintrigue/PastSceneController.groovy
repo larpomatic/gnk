@@ -43,11 +43,11 @@ class PastSceneController {
         jsonPastScene.put("Day", pastscene.getDateDay());
         jsonPastScene.put("Hour", pastscene.getDateHour());
         jsonPastScene.put("Minute", pastscene.getDateMinute());
-        jsonPastScene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
-        jsonPastScene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
-        jsonPastScene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
-        jsonPastScene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
-        jsonPastScene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
+        jsonPastScene.put("isAbsoluteYear", pastscene.getIsYearAbsolute());
+        jsonPastScene.put("isAbsoluteMonth", pastscene.getIsMonthAbsolute());
+        jsonPastScene.put("isAbsoluteDay", pastscene.getIsDayAbsolute());
+        jsonPastScene.put("isAbsoluteHour", pastscene.getIsHourAbsolute());
+        jsonPastScene.put("isAbsoluteMinute", pastscene.getIsMinuteAbsolute());
         if (pastscene.getPastscenePredecessor()) {
             jsonPastScene.put("pastscenePredecessor", pastscene.getPastscenePredecessor().getTitle());
             jsonPastScene.put("pastscenePredecessorId", pastscene.getPastscenePredecessor().getId());
@@ -88,11 +88,11 @@ class PastSceneController {
                         Day: pastscene.dateDay,
                         Hour: pastscene.dateHour,
                         Minute: pastscene.dateMinute,
-                        isAbsoluteYear: pastscene.isAbsoluteYear,
-                        isAbsoluteMonth: pastscene.isAbsoluteMonth,
-                        isAbsoluteDay: pastscene.isAbsoluteDay,
-                        isAbsoluteHour: pastscene.isAbsoluteHour,
-                        isAbsoluteMinute: pastscene.isAbsoluteMinute
+                        isAbsoluteYear: pastscene.isYearAbsolute,
+                        isAbsoluteMonth: pastscene.isMonthAbsolute,
+                        isAbsoluteDay: pastscene.isDayAbsolute,
+                        isAbsoluteHour: pastscene.isHourAbsolute,
+                        isAbsoluteMinute: pastscene.isMinuteAbsolute
                         )
             }
         }
@@ -146,29 +146,29 @@ class PastSceneController {
             newPastscene.dateMinute = null;
         }
         if (params.containsKey("yearIsAbsolute")) {
-            newPastscene.isAbsoluteYear = true;
+            newPastscene.isYearAbsolute = true;
         } else {
-            newPastscene.isAbsoluteYear = false;
+            newPastscene.isYearAbsolute = false;
         }
         if (params.containsKey("monthIsAbsolute")) {
-            newPastscene.isAbsoluteMonth = true;
+            newPastscene.isMonthAbsolute = true;
         } else {
-            newPastscene.isAbsoluteMonth = false;
+            newPastscene.isMonthAbsolute = false;
         }
         if (params.containsKey("dayIsAbsolute")) {
-            newPastscene.isAbsoluteDay = true;
+            newPastscene.isDayAbsolute = true;
         } else {
-            newPastscene.isAbsoluteDay = false;
+            newPastscene.isDayAbsolute = false;
         }
         if (params.containsKey("hourIsAbsolute")) {
-            newPastscene.isAbsoluteHour = true;
+            newPastscene.isHourAbsolute = true;
         } else {
-            newPastscene.isAbsoluteHour = false;
+            newPastscene.isHourAbsolute = false;
         }
         if (params.containsKey("minuteIsAbsolute")) {
-            newPastscene.isAbsoluteMinute = true;
+            newPastscene.isMinuteAbsolute = true;
         } else {
-            newPastscene.isAbsoluteMinute = false;
+            newPastscene.isMinuteAbsolute = false;
         }
         if (params.containsKey("pastScenePlace") && params.pastScenePlace != null && params.pastScenePlace != "" && params.pastScenePlace != "null") {
             GenericPlace genericPlace = GenericPlace.findById(params.pastScenePlace as Integer);

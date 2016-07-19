@@ -20,9 +20,12 @@ class Event {
 	Boolean isPlanned
 	String description
 	Event eventPredecessor
+	String plotId
+	String plotName
 
     // Id referenced into DTD
-    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
+    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute", "plotId", "plotName"]
+
     Integer DTDId
 
     Integer absoluteYear
