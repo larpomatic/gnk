@@ -50,7 +50,7 @@ class RessourceController {
         gnData.ReadDTD(gn)
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "substitution";
+        gn.step = "ressource";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
 
         gn.save(flush: true);
@@ -78,7 +78,6 @@ class RessourceController {
          eventList: eventList,
          relationjson: json,
          gnId: gnIdStr,
-         ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
          sexe: params.sexe
         ]
     }
@@ -162,6 +161,7 @@ class RessourceController {
             //return
             // Save in DataBase
             gnkDataContainerService.gn.dtd = xmlGN;
+            gnkDataContainerService.SaveDTD(gnkDataContainerService.gn)
             //line below can be commented to go back to substitution step when leaving the GN creation during publication
             gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
