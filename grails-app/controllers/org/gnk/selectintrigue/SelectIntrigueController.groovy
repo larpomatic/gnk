@@ -114,7 +114,7 @@ class SelectIntrigueController {
                         lockedPlot.remove(plotToBan);
 
                     } else if (it.key.startsWith("toLock_")) {
-                        final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
+                      final Plot plotToLock = Plot.get((it.key - "toLock_") as Integer)
                         lockedPlot.add(plotToLock);
                         bannedPlot.remove(plotToLock);
                     }
@@ -274,6 +274,7 @@ class SelectIntrigueController {
             }
             if (plot.getIsDraft())
                 continue;
+            //!//
             if (plot.isEvenemential && isEvenementialIsCompatible(plot, gn)) {
                 selectedEvenementialPlotInstanceList.add(plot);
                 for (Plot gnPlot : gn.selectedPlotSet) {

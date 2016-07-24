@@ -38,7 +38,7 @@
                     <td>
                         <g:each in="${role.getterRoleHasTag()}" var="roleHasTag">
                             ${roleHasTag.tag.name} (${roleHasTag.weight})<br>
-                        </g:each>
+
                     </td>
                 </tr>
                 </tbody>

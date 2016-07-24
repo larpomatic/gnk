@@ -98,7 +98,30 @@ $(function(){
         })
         });
 });
+function getressource(data)
+{
+    var resssourceId = $(this).attr("data-id");
 
+    var form = $('form[name="newResourceForm"]');
+    var ressources = $('form[name="newResourceForm' + resssourceId + '"] input[name="resourceCode"]').val()
+    $.ajax({
+        type: "POST",
+        url: form.attr("data-url"),
+        data: form.serialize(),
+        dataType: "json",
+        success: function (data) {
+            if (data.object.ischecked) {
+                createNotification("success", "Création réussie", "l'objet existe bien, et il est bien appelé !")
+            }
+
+
+        },
+        error: function()
+        {
+            createNotification("danger", "votre objet n'est pas bien utilisé" , "veuillez vérifier les appels que vous avez effectué !")
+        }
+    })
+}
 
 // modifie une ressource dans la base
 function updateResource() {

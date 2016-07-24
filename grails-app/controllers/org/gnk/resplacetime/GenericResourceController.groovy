@@ -31,19 +31,25 @@ class GenericResourceController {
     def save() {
         GenericResource genericResource = new GenericResource(params)
         Boolean res = saveOrUpdate(genericResource);
+        Boolean res_ = checkresource(genericResource);
 //        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
         def jsonGenericResource = buildJson(genericResource);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
+        object.put("ischecked", res_);
         object.put("genericResource", jsonGenericResource);
         object.put("genericResourceTagList", jsonTagList);
         render(contentType: "application/json") {
             object
         }
     }
-
+def checkresource(GenericResource genre)
+{
+    if (genre)
+    {}
+}
     def buildTagList(def genericResourceTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (genericResourceTag in genericResourceTagList) {

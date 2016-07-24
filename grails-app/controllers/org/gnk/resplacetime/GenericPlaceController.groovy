@@ -30,12 +30,14 @@ class GenericPlaceController {
     def save() {
         GenericPlace genericPlace = new GenericPlace(params);
         Boolean res = saveOrUpdate(genericPlace);
+        Boolean res_ = checkplace(genericPlace);
 //        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": ).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
         def jsonGenericPlace = buildJson(genericPlace);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
+        object.put("ischecked", res_);
         object.put("genericPlace", jsonGenericPlace);
         object.put("genericPlaceTagList", jsonTagList);
         object.put("jsonBestPlaces", json)
@@ -44,6 +46,13 @@ class GenericPlaceController {
         }
     }
 
+    def checkplace(GenericPlace  gp)
+    {
+
+
+        if (gp)
+        {}
+    }
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
 

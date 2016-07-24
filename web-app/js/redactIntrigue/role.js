@@ -78,7 +78,9 @@ $(function(){
                         updateSave();
                     }
                     else {
-                            createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+
+                          createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
+
                         updateSave();
                     }
                 },
@@ -90,6 +92,34 @@ $(function(){
         }
     });
 });
+function getRole(data)
+{
+    var form = $('form[name="newRoleForm"]');
+    var role= document.getElementById(roleId).valueOf();
+    var roleId = $(this).attr("data-id");
+    var roles = $('form[name="newRoleForm' + roleId + '"] input[name="roleCode"]').val();
+    var context = {
+        roleId: String(data.role.id),
+        roleName: data.role.code
+    };
+    $.ajax({
+        type: "POST",
+        url: form.attr("data-url"),
+        data: form.serialize(),
+        dataType: "json",
+        success: function (data) {
+            if (data.object.ischecked) {
+                createNotification("success", "Création réussie", "l'objet existe bien, et il est bien appelé !")
+            }
+
+
+        },
+        error: function()
+        {
+            createNotification("danger", "votre objet n'est pas bien utilisé" , "veuillez vérifier les appels que vous avez effectué !")
+        }
+    })
+}
 
 function updateRole() {
     // modifie un role dans la base

@@ -231,6 +231,7 @@ class PastSceneController {
             cal.setTime(date)
             return cal;
         } catch (ParseException e) {
+          org.gnk.administration.ErrorHandlerController.ParseErrorHandler();
             return null;
         }
     }

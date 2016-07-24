@@ -18,6 +18,7 @@ function updatePlacesJSONUser(placesJSON) {
             else {
                 // Delete name selection
                 delete place.selectedName;
+
                 // Copy proposed names in banned names
                 if (typeof(place.bannedNames) == "undefined") {
                     place.bannedNames = new Array();

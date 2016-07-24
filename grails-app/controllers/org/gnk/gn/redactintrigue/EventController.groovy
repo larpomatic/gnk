@@ -8,7 +8,6 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
-import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.selectintrigue.Plot
 import org.springframework.security.access.annotation.Secured
 import java.text.ParseException
@@ -23,9 +22,11 @@ class EventController {
     def save () {
         Event event = new Event();
         Boolean res = saveOrUpdate(event);
+        Boolean res_ = checkevent(event);
         def jsonEvent = buildJson(event);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
+        object.put("ischecked", res_);
         object.put("event", jsonEvent);
         render(contentType: "application/json") {
             object
@@ -92,8 +93,14 @@ class EventController {
         jsonEvent.put("roleList", jsonRoleList);
         return jsonEvent;
     }
+    def checkevent(Event  ev)
+    {
 
-    def update(Long id) {
+
+        if (ev)
+        {}
+    }
+    def update (Long id) {
         Event event = Event.get(id)
         if (event) {
             render(contentType: "application/json") {
@@ -104,7 +111,6 @@ class EventController {
             }
         }
     }
-
     def saveOrUpdate(Event newEvent) {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
@@ -254,6 +260,7 @@ class EventController {
             cal.setTime(date)
             return cal;
         } catch (ParseException e) {
+            org.gnk.administration.ErrorHandlerController.ParseErrorHandler();
             return null;
         }
     }

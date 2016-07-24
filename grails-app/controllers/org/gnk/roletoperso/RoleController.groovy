@@ -18,18 +18,26 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role);
+        Boolean res_ = checkrole(role);
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
+        object.put("ischecked", res_);
         object.put("role", jsonRole);
         object.put("roleTagList", jsonTagList);
         render(contentType: "application/json") {
             object
         }
 	}
+    def checkrole(Role  rl)
+    {
 
+
+        if (rl)
+        {}
+    }
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (Tag roleTag in roleTagList) {

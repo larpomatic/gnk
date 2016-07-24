@@ -1,11 +1,9 @@
 package org.gnk.gn.redactintrigue
 
-import org.apache.poi.hwpf.usermodel.DateAndTime
 import org.docx4j.convert.out.pdf.PdfConversion
 import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
-import org.docx4j.wml.Tbl
 import org.gnk.publication.WordWriter
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
@@ -15,7 +13,6 @@ import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
-import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -26,8 +23,7 @@ import org.gnk.roletoperso.RoleRelationType
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-import org.gnk.tag.TagService;
-
+import org.gnk.tag.TagService
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
@@ -67,6 +63,14 @@ class RedactIntrigueController {
 		}
 		redirect(action: "edit", id: plotInstance.id)
 	}
+
+
+    def checkresource(Object obj)
+    {
+        ressources rls = ressources.get(obj)
+        if (obj)
+        {}
+    }
 
 	def save() {
 		Object obj = params
@@ -593,6 +597,11 @@ class RedactIntrigueController {
             if (role.roleHasRelationWithRolesForRole1Id.isEmpty() && role.roleHasRelationWithRolesForRole2Id.isEmpty())
                 wordWriter.addStyledParagraphOfText("Normal", "Ce rôle n'a pas de relation avec d'autres rôles")
         }
+    }
+
+    def CheckInfo()
+    {
+
     }
 
     def createPastScene(WordWriter wordWriter, Plot plot){

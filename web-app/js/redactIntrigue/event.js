@@ -149,8 +149,34 @@ function updateEvent() {
         })
     });
 }
+function getevent(data)
+{
+    var eventId = $(this).attr("data-id");
 
+    var form = $('form[name="newEventForm"]');
+    var events = $('form[name="newEventForm' + eventId + '"] input[name="eventCode"]').val()
+    //return events.toJson();
+    $.ajax({
+        type: "POST",
+        url: form.attr("data-url"),
+        data: form.serialize(),
+        dataType: "json",
+        success: function (data) {
+            if (data.object.ischecked) {
+                createNotification("success", "Création réussie", "l'objet existe bien, et il est bien appelé !")
+            }
+
+
+            },
+            error: function()
+            {
+                createNotification("danger", "votre objet n'est pas bien utilisé , veuillez vérifier les appels que vous avez effectué !")
+        }
+    })
+}
 // supprime un event dans la base
+
+
 function removeEvent(object) {
     var liObject = object.parent();
     $.ajax({

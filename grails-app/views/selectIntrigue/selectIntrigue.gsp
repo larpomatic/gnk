@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.selectintrigue.Plot"%>
+    <%@ page import="org.gnk.selectintrigue.Plot"%>
 <%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>

@@ -100,6 +100,10 @@ function updatePlace() {
         var tags = ["501", "502", "503", "504", "506", "507", "508", "509", "510"]
         for (var key in data_tbl) {
             for (var tag in tags) {
+                if (!genericPlaceId)
+                {
+                    alert('error! ');
+                }
                 if (data_tbl[key].indexOf("placeTagsWeight_" + tags[tag]) != -1) {
                     mandatoryTagFound = true;
                 }
@@ -143,7 +147,33 @@ function updatePlace() {
         })
     });
 }
+function getPlace(data)
+{
+    var form = $('form[name="newPlaceForm"]');
+        var placeId = $(this).attr("data-id");
+    var places = $('form[name="newPlaceForm' + placeId + '"] input[name="placeCode"]').val()
+    var context = {
+        placeId: String(data.genericPlace.id),
+        placeName: data.genericPlace.code
+    };
+    $.ajax({
+        type: "POST",
+        url: form.attr("data-url"),
+        data: form.serialize(),
+        dataType: "json",
+        success: function (data) {
+            if (data.object.ischecked) {
+                createNotification("success", "Création réussie", "l'objet existe bien, et il est bien appelé !")
+            }
 
+
+        },
+        error: function()
+        {
+            createNotification("danger", "votre objet n'est pas bien utilisé" , "veuillez vérifier les appels que vous avez effectué !")
+        }
+    })
+}
 // supprime un lieu dans la base
 function removePlace(object) {
     var liObject = object.parent();
@@ -179,7 +209,8 @@ function removePlace(object) {
                     });
                     createNotification("success", "Supression réussie.", "Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" a bien été supprimé.");
                 }
-                else {
+
+                    else {
                     createNotification("danger", "Suppression échouée.", "Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+" n'a pas pu être supprimé, une erreur s'est produite.");
                 }
             },
@@ -190,6 +221,24 @@ function removePlace(object) {
     }
 }
 
+function checkConditions(object)
+{
+    var liObject = object.parent();
+    var name = $.trim($("a", liObject).html());
+    var isPlacePresentInDescriptions = false;
+    var genericPlaceID = $(this).attr('data-id');
+    if ($(this).html == name)
+    {
+        isPlacePresentInDescriptions= true;
+    }
+    if (!isPlacePresentInDescriptions)
+    {
+        alert('error!');
+        createNotification("danger", "Utilisation impossible.","Votre lieu :  "+ $('form[name="updatePlace_' + genericPlaceId + '"] input[name="placeCode"]').val()+ "n'est pas réutilisé dans la description!");
+        liObject.remove();
+    }
+
+}
 //vide le formulaire d'ajout de lieu
 function emptyGenericPlaceForm() {
     $('form[name="newPlaceForm"] input[type="text"]').val("");
