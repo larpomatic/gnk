@@ -143,13 +143,14 @@ class RoleController {
 
 	def saveOrUpdate(Role newRole) {
 
+
         if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
 		} else {
 			return false
 		}
-		if (params.containsKey("roleCode")) {
+		if (params.containsKey("roleCode") && Role.findByPlotAndCode(newRole.plot, params.roleCode) == null) {
 			newRole.code = params.roleCode
 		} else {
 			return false
