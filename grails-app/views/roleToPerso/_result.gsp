@@ -703,7 +703,7 @@
     </div>
 </g:form>
 
-<g:form method="post" controller="substitution">
+<g:form method="post" controller="naming">
     <g:each in="${characterList}" var="PHJ">
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
@@ -714,7 +714,7 @@
 
     <div class="span1">
         <g:actionSubmit class="btn btn-primary" action="index"
-                        value="${message(code: 'navbar.substitution', default: 'Substitution')}"/>
+                        value="${message(code: 'navbar.naming', default: 'Naming')}"/>
     </div>
 </g:form>
 </div>

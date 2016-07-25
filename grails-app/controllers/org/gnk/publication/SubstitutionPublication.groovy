@@ -217,8 +217,10 @@ class SubstitutionPublication {
         for (GenericResource genericResource : genericResourceList)
         {
             if (genericResource.code.toUpperCase().equals(code)) {
-                replacement = genericResource.selectedResource.name
-                gender = genericResource.selectedResource.gender
+                if (genericResource.selectedResource != null) {
+                    replacement = genericResource.selectedResource.name
+                    gender = genericResource.selectedResource.gender
+                }
 
                 if (genericResource.isIngameClue())
                     content = genericResource.description;
@@ -507,7 +509,8 @@ class SubstitutionPublication {
         for (GenericResource genericResource : genericResourceList)
         {
             if (genericResource.code.toUpperCase().equals(code))
-                return genericResource.selectedResource.name
+                if (genericResource.selectedResource != null)
+                    return genericResource.selectedResource.name
         }
 
         return "[Ressource générique]"
