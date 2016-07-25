@@ -1,7 +1,6 @@
 package org.gnk.substitution
 
 import grails.converters.JSON
-import org.gnk.gn.GnHasConvention
 import grails.gorm.PagedResultList
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -15,9 +14,9 @@ import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
-import org.gnk.substitution.data.Event
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.Pastscene
+import org.gnk.resplacetime.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
@@ -142,7 +141,8 @@ class SubstitutionController {
                 eventList: eventList,
                 relationjson: json,
                 gnId: gnIdStr,
-                ruleList: gn.gnHasConvention.convention.conventionHasRules.rule,
+                ruleList: Convention.findById(gn.convention_id).conventionHasRules.rule,
+//                ruleList: gn.convention.conventionHasRules.rule,
                 sexe: params.sexe
         ]
     }
@@ -487,8 +487,7 @@ class SubstitutionController {
             return
         }
 
-        GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
-        gnHasConvention.version = gnHasConvention.version + 1
+        //GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
         convention
 
         if (params.t0DateHour) {
@@ -511,9 +510,7 @@ class SubstitutionController {
 
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
-        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
-
-        }
+        if (!gnInstance.save(flush: true)) {}
         redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 }

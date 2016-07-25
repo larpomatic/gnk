@@ -116,11 +116,11 @@ class RoleController {
             jsonPastscene.put("Day", pastscene.dateDay);
             jsonPastscene.put("Hour", pastscene.dateHour);
             jsonPastscene.put("Minute", pastscene.dateMinute);
-            jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
-            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
-            jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
-            jsonPastscene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
-            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
+            jsonPastscene.put("isAbsoluteYear", pastscene.getIsYearAbsolute());
+            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsMonthAbsolute());
+            jsonPastscene.put("isAbsoluteDay", pastscene.getIsDayAbsolute());
+            jsonPastscene.put("isAbsoluteHour", pastscene.getIsHourAbsolute());
+            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsMinuteAbsolute());
             jsonPastsceneList.add(jsonPastscene);
         }
         jsonRole.put("pastsceneList", jsonPastsceneList);
@@ -143,13 +143,14 @@ class RoleController {
 
 	def saveOrUpdate(Role newRole) {
 
+
         if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
 		} else {
 			return false
 		}
-		if (params.containsKey("roleCode")) {
+		if (params.containsKey("roleCode") && Role.findByPlotAndCode(newRole.plot, params.roleCode) == null) {
 			newRole.code = params.roleCode
 		} else {
 			return false

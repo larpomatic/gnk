@@ -1,6 +1,5 @@
 package org.gnk.naming
 
-import org.gnk.gn.GnHasConvention
 
 class Convention {
 
@@ -13,7 +12,7 @@ class Convention {
         description maxSize: 45
     }
 
-    static hasMany = [ gnHasConventions : GnHasConvention, conventionHasRules: ConventionHasRule ]
+    static hasMany = [conventionHasRules: ConventionHasRule]
 
     static mapping = {
         id type:'integer'

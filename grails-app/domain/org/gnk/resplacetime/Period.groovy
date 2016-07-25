@@ -32,7 +32,7 @@ class Period {
      */
     Boolean isGamePeriod
 
-    Long duration
+    Integer duration
     /**
      * mapping composition N-1 to Gn
      */
@@ -43,7 +43,7 @@ class Period {
     /**
      * The interval in minutes between the predecessor and the period
      */
-    Long predInterval
+    Integer predInterval
 
     static transients = ["absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
 
@@ -55,7 +55,7 @@ class Period {
 
 
     static constraints = {
-        duration(min: (long)1)
+        duration(min: 1)
     }
     static mapping = {
         description type: 'text'
@@ -100,7 +100,7 @@ class Period {
         }
         Calendar cal = Calendar.getInstance()
         cal.setTime(this.beginning)
-        cal.add(Calendar.MINUTE, (int)this.duration)
+        cal.add(Calendar.MINUTE, this.duration)
         return cal.getTime()
     }
 

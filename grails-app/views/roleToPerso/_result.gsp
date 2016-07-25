@@ -628,7 +628,7 @@
                                     <td>
                                         <a href="#roleModal-${((Character) STF).getSelectedRoles().first().getDTDId()}"  data-toggle="modal"
                                            title="${((Character) STF).getSelectedRoles().first().description}">${((Character) STF).getSelectedRoles().first().code}</a>
-                                        <g:render template="roleù" model="['role': ((Character) STF).getSelectedRoles().first()]" />
+                                        <g:render template="roleModal" model="['role': ((Character) STF).getSelectedRoles().first()]" />
                                     </td>
                                     <td>${((Character) STF).type}</td>
                                     <td>${((Character) STF).getSelectedRoles().first().description}</td>

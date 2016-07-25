@@ -1,6 +1,5 @@
 package org.gnk.selectintrigue
 
-import org.gnk.gn.GnHasConvention
 import org.gnk.gn.GnHasUser
 import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
@@ -456,14 +455,11 @@ class SelectIntrigueController {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
         gnHasUser.user = org.gnk.user.User.findByUsername(currentUsername);
-        GnHasConvention gnHasConvention = new GnHasConvention()
-        if (params.convention) {
-            gnHasConvention.version = 1
-            gnHasConvention.gn = gnInstance
-            gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
+        gnInstance.convention_id = params.convention as Integer
 
-            gnInstance.gnHasConvention = gnHasConvention
-        }
+//        if (params.convention) {
+//            gnInstance.convention = Convention.findById(params.convention as Integer)
+//        }
 
         formatParams(gnInstance)
         gnInstance.step = 'selectIntrigue';
@@ -528,14 +524,13 @@ class SelectIntrigueController {
         }
         gnInstance.properties = params
 
-        GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
-        gnHasConvention.version = gnHasConvention.version + 1
-        gnHasConvention.convention = Convention.findWhere(id: params.convention as Integer)
+        //gnInstance.convention = Convention.findById(params.convention as Integer)
+        gnInstance.convention_id = params.convention as Integer
 
         formatParams(gnInstance)
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
-        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
+        if (!gnInstance.save(flush: true)) {
             render(view: "selectIntrigue", model: [gnInstance: gnInstance])
             return
         }
