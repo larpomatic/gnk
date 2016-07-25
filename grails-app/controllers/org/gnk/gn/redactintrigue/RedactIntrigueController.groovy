@@ -92,7 +92,8 @@ class RedactIntrigueController {
 			screen = (screen - 48)	 
 		}
         TagService tagService = new TagService();
-        List<Pastscene> pastscenes = new ArrayList<Pastscene>(orderPastscenes(plotInstance).values());
+        TreeMap<Long, Pastscene> tmp = orderPastscenes(plotInstance);
+        List<Pastscene> pastscenes = new ArrayList<Pastscene>(tmp.values());
 
         Map<Plot, List<Plot>> variantMap = new HashMap<>();
         List<Plot> plotList = Plot.list();
@@ -123,45 +124,49 @@ class RedactIntrigueController {
 
     public TreeMap<Long, Pastscene> orderPastscenes(Plot plot) {
         TreeMap<Long, Pastscene> pastscenes = new TreeMap<Long, Pastscene>();
+        Calendar c = null;
         for (Pastscene pastscene : plot.pastescenes) {
-            Calendar c = Calendar.getInstance();
-            if (pastscene.dateYear && pastscene.isAbsoluteYear) {
+            c= Calendar.getInstance();
+            if (pastscene.dateYear && pastscene.isYearAbsolute) {
                 c.set(Calendar.YEAR, pastscene.dateYear);
             }
-            else if (pastscene.dateYear && !pastscene.isAbsoluteYear) {
+            else if (pastscene.dateYear && !pastscene.isYearAbsolute) {
                 c.add(Calendar.YEAR, pastscene.dateYear * -1)
             }
-            if (pastscene.dateMonth && pastscene.isAbsoluteMonth) {
+            if (pastscene.dateMonth && pastscene.isMonthAbsolute) {
                 c.set(Calendar.MONTH, pastscene.dateMonth);
             }
-            else if (pastscene.dateMonth && !pastscene.isAbsoluteMonth) {
+            else if (pastscene.dateMonth && !pastscene.isMonthAbsolute) {
                 c.add(Calendar.MONTH, pastscene.dateMonth * -1)
             }
-            if (pastscene.dateDay && pastscene.isAbsoluteDay) {
+            if (pastscene.dateDay && pastscene.isDayAbsolute) {
                 c.set(Calendar.DAY_OF_MONTH, pastscene.dateDay);
             }
-            else if (pastscene.dateDay && !pastscene.isAbsoluteDay) {
+            else if (pastscene.dateDay && !pastscene.isDayAbsolute) {
                 c.add(Calendar.DAY_OF_MONTH, pastscene.dateDay * -1)
             }
-            if (pastscene.dateHour && pastscene.isAbsoluteHour) {
+            if (pastscene.dateHour && pastscene.isHourAbsolute) {
                 c.set(Calendar.HOUR_OF_DAY, pastscene.dateHour);
             }
-            else if (pastscene.dateHour && !pastscene.isAbsoluteHour) {
+            else if (pastscene.dateHour && !pastscene.isHourAbsolute) {
                 c.add(Calendar.HOUR_OF_DAY, pastscene.dateHour * -1)
             }
-            if (pastscene.dateMinute && pastscene.isAbsoluteMinute) {
+            if (pastscene.dateMinute && pastscene.isMinuteAbsolute) {
                 c.set(Calendar.MINUTE, pastscene.dateMinute);
             }
-            else if (pastscene.dateMinute && !pastscene.isAbsoluteMinute) {
+            else if (pastscene.dateMinute && !pastscene.isMinuteAbsolute) {
                 c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
             }
-            Long millis = c.getTimeInMillis();
+            Random random = new  Random();
+            Long millis = random.nextInt(1000000);
             //If we have several scenes at the same time, they will no longer get replaced in the tree.
             // There is no need to make another loop if there is several scene with the same time since we are making
             // a depth first road.
-            pastscenes.each { scene ->
-                    if (scene.key == millis)
-                        millis--
+
+
+            while(pastscenes.containsKey(millis))
+            {
+                millis--;
             }
             pastscenes.put(millis, pastscene);
         }
@@ -681,7 +686,7 @@ class RedactIntrigueController {
     }
     def createDate(Pastscene pastscene){
         def date = ""
-        switch (pastscene.unitTimingRelative) {
+        switch (pastscene.relativeTimeUnit) {
             case "Y":
                 date = "an(s)"
                 break
