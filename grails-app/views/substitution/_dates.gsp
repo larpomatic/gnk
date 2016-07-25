@@ -9,6 +9,7 @@
 </div>
 
 <g:form method="post" controller="substitution">
+
     <g:hiddenField name="gnId" value="${gnId}"/>
     <g:each in="${sexe}" var="a">
         <g:hiddenField id="a" name="sexe" value="NO"/>
@@ -16,10 +17,19 @@
     <td><label for="t0DateHour"><g:message
             code="selectintrigue.step0.t0Date" default="Actual GN Date"/></label></td>
     <td>
+        <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
+        <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
         <div class="input-append">
-            <input type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
+            <input readonly type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
                    required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}"
                    value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
+            <script>
+
+                var myCalendar = new dhtmlXCalendarObject(["t0DateHour"]);
+                myCalendar.setDateFormat("%d/%m/%Y %H:%i");
+
+
+            </script>
             <g:if test="${formatDate(format: 'G', date: gnInstance?.t0Date) == 'BC'}">
                 <input type="hidden" name="t0DateHourUnity" value="-"/>
                 <span class="add-on btn">
@@ -46,6 +56,154 @@
     <g:actionSubmit class="btn btn-primary" action="saveOrUpdateDates"
                     value="${message(code: 'default.button.update.label', default: 'Update')}"/>
 </g:form>
+
+<g:if test="${gnInfo.duration > 0}">
+    <g:javascript src="substitution/dhtmlxgantt.js"></g:javascript>
+    <link href="${resource(dir: 'css', file: 'dhtmlxgantt.css')}" rel="stylesheet"/>
+    <div id="gantt_here" style='width:1100px; height:400px;'></div>
+    <script type="text/javascript">
+
+        gantt.config.start_date =  "${gnInfo.t0Date.format('yyyy.MM.dd HH:mm')}";
+
+        var dated = new Date("${gnInfo.t0Date.format('yyyy.MM.dd HH:mm')}");
+        dated.setTime(dated.getTime() + ${gnInfo.duration}*60*60*1000);
+
+
+        var tasks = {
+            data:[
+                {id:1, text:"GN",start_date:"${gnInfo.t0Date.format('dd.MM.YYYY HH:mm')}", duration:${gnInfo.duration},
+                    progress: 0.6, open: true},
+                /*{id:2, text:"Etape 1",   start_date:"10-10-2010 14:00", duration:2,
+                    progress: 1,   open: true, parent:1},
+                {id:3, text:"Etape 2",   start_date:"10-10-2010 15:00", duration:3,
+                    progress: 0.5, open: true, parent:1},
+                {id:4, text:"Etape 2.1", start_date:"10-10-2010 16:00", duration:4,
+                    progress: 1,   open: true, parent:3},
+                {id:5, text:"Etape 2.2", start_date:"10-10-2010 17:00", duration:5,
+                    progress: 0.8, open: true, parent:3},
+                {id:6, text:"Etape 2.3", start_date:"10-10-2010 18:00", duration:6,
+                    progress: 0.2, open: true, parent:3}*/
+            ],
+            links:[
+                {id:1, source:1, target:2, type:"1"},
+                {id:2, source:1, target:3, type:"1"},
+                {id:3, source:3, target:4, type:"1"},
+                {id:4, source:4, target:5, type:"0"},
+                {id:5, source:5, target:6, type:"0"}
+            ]
+        };
+
+        gantt.config.fit_tasks = true;
+        gantt.config.min_duration = 1000*60;
+        gantt.config.duration_unit = "hour";//an hour
+        gantt.config.duration_step = 1;
+        gantt.config.time_step = 1;
+        gantt.config.scale_height = 54;
+        gantt.config.scale_unit = "day";
+        gantt.config.date_scale = "%d-%m-%Y";
+        gantt.config.subscales = [
+            {unit:"hour", step:1, date:"%H:%i"},
+
+        ];
+
+        gantt.form_blocks["my_editor"] = {
+            render:function(sns) {
+                return "<div class='dhx_cal_ltext' style='height:60px;'>Nom&nbsp;"
+                        +"<input type='text'><br/>Nature&nbsp;<select><option value='red'>Bloquante</option><option value='blue'>Non bloquante</option></select>"
+                        + "<br/></div>";
+            },
+            set_value:function(node, value, task,section) {
+                node.childNodes[1].value = value || "";
+                node.childNodes[4].value = task.color || "";
+
+            },
+            get_value:function(node, task,section) {
+                task.color = node.childNodes[4].value;
+                return node.childNodes[1].value;
+            },
+            focus:function(node) {
+                var a = node.childNodes[1];
+                a.select();
+                a.focus();
+            }
+        };
+
+        gantt.config.lightbox.sections = [
+            {name:"wowowow", height:158 , map_to:"text", type:"my_editor",focus:true},
+            {name:"description", height:158 , map_to:"text", type:"textarea",focus:true},
+            {name:"time", height:72, type:"duration", map_to:"auto", time_format:["%d","%m", "%Y", "%H:%i"]}
+        ];
+
+        gantt.attachEvent("onTaskDrag", function(id, mode, task, original){
+            var modes = gantt.config.drag_mode;
+            if(mode == modes.move){
+                var diff = task.start_date - original.start_date;
+                gantt.eachTask(function(child){
+                    if ((new Date(+child.start_date + diff) >= task.start_date) || task.start_date == original.start_date){
+                        child.start_date = new Date(+child.start_date + diff);
+                        child.end_date = new Date(+child.end_date + diff);
+                        gantt.refreshTask(child.id, true);
+                    }
+
+                },id );
+            }
+            return true;
+        });
+
+        //rounds positions of the child items to scale
+        gantt.attachEvent("onAfterTaskDrag", function(id, mode, e){
+            var modes = gantt.config.drag_mode;
+            if(mode == modes.move ){
+                gantt.eachTask(function(child){
+                    gantt.roundTaskDates(child);
+                    gantt.refreshTask(child.id, true);
+                },id );
+            }
+        });
+
+
+        // prevent tasks to ha happen before their parent
+        gantt.attachEvent("onTaskDrag", function(id, mode, task, original){
+            var modes = gantt.config.drag_mode;
+            var taskObj = gantt.getTask(id);//-> {id:"t1", text:"Task #5", parent:"pr_2", ...}
+            if (taskObj.parent != null && taskObj.parent > 0) {
+                var taskParent = gantt.getTask(taskObj.parent);
+
+                if ((mode == modes.move || mode == modes.resize) && taskParent != null ) {
+
+                    var diff = original.duration * (1000 * 60 * 60);
+                    var aaa = taskParent.end_date;
+
+                    if (+task.start_date < +aaa) {
+                        task.start_date = new Date(aaa);
+                        if (mode == modes.move)
+                            task.end_date = new Date(+aaa.end_date + task.duration);
+                    }
+                }
+            }
+            return true;
+        });
+
+        //always puts a new task behind its mother
+        gantt.attachEvent("afterTaskCreated", function(task){
+
+            if (task.parent != null && task.parent > 0) {
+                var taskParent = gantt.getTask(task.parent);
+                if (task.start_date <= taskParent.end_date) {
+                    task.start_date = taskParent.end_date;
+                    task.end_date = taskParent.end_date + task.duration;
+                }
+            }
+            gantt.refreshTask(task.id, true);
+            return true;
+        });
+
+        gantt.init("gantt_here");
+        gantt.parse (tasks);
+
+    </script>
+</g:if>
+
 
 <table id="dateTable" class="table table-striped">
     <thead>

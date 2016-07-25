@@ -4,9 +4,11 @@
     <meta name="layout" content="main">
     <link href="${resource(dir: 'css', file: 'substitution.css')}" type="text/css" rel="stylesheet"/>
     <title><g:message code="substitution.title" /></title>
-
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
 </head>
 <body>
+
 <h1>Substitution</h1>
 
 
@@ -50,6 +52,7 @@
 </div>
 
 <g:javascript src="substitution/sub.js" />
+
 
 <script type="text/javascript">
     function publicationAccess()

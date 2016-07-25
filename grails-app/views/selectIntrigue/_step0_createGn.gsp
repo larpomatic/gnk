@@ -24,6 +24,7 @@ select {
 </g:if>
 
 <g:form method="post" class="gnSubmitForm">
+    <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
     <g:hiddenField name="version" value="${gnInstance?.version}"/>
     <fieldset class="form">
@@ -113,10 +114,18 @@ select {
                 <td><label for="gnDateHour"><g:message
                         code="selectintrigue.step0.gnDate" default="Virtual GN Date"/></label></td>
                 <td>
+
                     <div class="input-append">
-                        <input type="text" id="gnDateHour" name="gnDateHour" placeholder="jj/mm/aaaa hh:mm"
+                        <input readonly type="text" id="gnDateHour" name="gnDateHour" placeholder="jj/mm/aaaa hh:mm"
                                required="required" pattern="\d{1,2}/\d{1,2}/\d{4}( \d{2}:\d{2})?"
                                value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.date)}"/>
+                        <script>
+
+                            var myCalendar = new dhtmlXCalendarObject(["gnDateHour"]);
+                            myCalendar.setDateFormat("%d/%m/%Y %H:%i");
+
+
+                        </script>
                         <g:if test="${formatDate(format: 'G', date: gnInstance?.date) == 'BC'}">
                             <input type="hidden" name="gnDateHourUnity" value="-"/>
                             <span class="add-on btn">
