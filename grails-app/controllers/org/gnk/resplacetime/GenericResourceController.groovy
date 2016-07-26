@@ -47,8 +47,31 @@ class GenericResourceController {
     }
 def checkresource(GenericResource genre)
 {
-    if (genre)
-    {}
+    Pastscene ps = new Pastscene();
+    JSONObject jsonGenericResource = new JSONObject();
+    jsonGenericResource.put("code", genre.getCode());
+    jsonGenericResource.put("id", genre.getId());
+    jsonGenericResource.put("plotId", genre.getPlot().getId());
+    jsonGenericResource.put("comment", genre.getComment());
+    jsonGenericResource.put("resourceObject", genre.getObjectType().getId());
+
+    if (genre.getCode() != null) {
+        if (ps.getDescription().contains(genre.getCode()))
+        {
+            System.out.println("l'event a bien été utilisé")
+
+        }
+        else
+        {
+            System.out.print("Warnning!, l'event n'est pas présent dans la description")
+        }
+
+    }
+    else
+    {
+        System.out.print("There is no GenericPlace in your event !")
+        System.out.print("Veuillez saisir un event valide !")
+    }
 }
     def buildTagList(def genericResourceTagList) {
         JSONArray jsonTagList = new JSONArray();

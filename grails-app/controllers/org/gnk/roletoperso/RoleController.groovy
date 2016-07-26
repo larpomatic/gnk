@@ -33,10 +33,35 @@ class RoleController {
 	}
     def checkrole(Role  rl)
     {
+        Pastscene ps = new Pastscene();
+        JSONObject jsonRole = new JSONObject();
+        jsonRole.put("code", rl.getCode());
+        jsonRole.put("id", rl.getId());
+        jsonRole.put("plotId", rl.getPlot().getId());
+        jsonRole.put("pipi", rl.getPipi());
+        jsonRole.put("pipr", rl.getPipr());
+        jsonRole.put("type", rl.getType());
+        jsonRole.put("pjgp", rl.getPjgp());
+        jsonRole.put("description", rl.getDescription());
 
 
-        if (rl)
-        {}
+            if (rl.getDescription() != null) {
+
+                if (ps.getDescription().contains(rl.getDescription()))
+                {
+                    System.out.println("l'event a bien été utilisé")
+                }
+                else
+                {
+                    System.out.print("Warrning!, l'event n'est pas présent dans la description")
+                }
+            }
+            else
+            {
+                System.out.print("Veuillez saisir un event valide !")
+            }
+
+
     }
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();

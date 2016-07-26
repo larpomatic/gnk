@@ -46,13 +46,35 @@ class GenericPlaceController {
         }
     }
 
-    def checkplace(GenericPlace  gp)
-    {
+    def checkplace(GenericPlace gp) {
+        boolean verify_place = true;
+        Pastscene ps = new Pastscene();
+        JSONObject jsonGenericPlace = new JSONObject();
+        jsonGenericPlace.put("code", gp.getCode());
+        jsonGenericPlace.put("id", gp.getId());
+        jsonGenericPlace.put("plotId", gp.getPlot().getId());
+        jsonGenericPlace.put("comment", gp.getComment());
+        jsonGenericPlace.put("placeObject", gp.getObjectType().getId());
 
+        if (gp.getCode() != null) {
+        if (ps.getDescription().contains(gp.getCode()))
+        {
+            System.out.println("l'event a bien été utilisé")
+            return verify_place;
+        }
+        else
+        {
+            verify_place = false;
+            System.out.print("Warnning!, l'event n'est pas présent dans la description")
 
-        if (gp)
-        {}
+        }
+    } else {
+        System.out.print("There is no GenericPlace in your event !")
+        System.out.print("Veuillez saisir un event valide !")
     }
+    return verify_place;
+}
+
     def getBestPlaces() {
         org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
 

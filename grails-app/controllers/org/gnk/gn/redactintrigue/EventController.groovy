@@ -5,6 +5,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
+import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -95,10 +96,38 @@ class EventController {
     }
     def checkevent(Event  ev)
     {
+        Pastscene ps = new Pastscene();
+        JSONObject jsonEvent = new JSONObject();
+        jsonEvent.put("name", ev.getName());
+        jsonEvent.put("id", ev.getId());
+        jsonEvent.put("plotId", ev.getPlot().getId());
+        jsonEvent.put("timing", ev.getTiming());
+        jsonEvent.put("duration", ev.getDuration());
+        jsonEvent.put("isPublic", ev.getIsPublic());
+        jsonEvent.put("isPlanned", ev.getIsPlanned());
+        jsonEvent.put("description", ev.getDescription());
+        jsonEvent.put("absoluteYear", ev.getAbsoluteYear());
+        jsonEvent.put("absoluteMonth", ev.getAbsoluteMonth());
+        jsonEvent.put("absoluteDay", ev.getAbsoluteDay());
+        jsonEvent.put("absoluteHour", ev.getAbsoluteHour());
+        jsonEvent.put("absoluteMinute", ev.getAbsoluteMinute());
 
+        if (ev.getGenericPlace() != null) {
 
-        if (ev)
-        {}
+            if (ps.getDescription().contains(ev.getName()))
+            {
+                System.out.println("l'event a bien été utilisé")
+            }
+            else
+            {
+                System.out.print("Warrning!, l'event n'est pas présent dans la description")
+            }
+        }
+        else
+        {
+            System.out.print("Veuillez saisir un event valide !")
+        }
+
     }
     def update (Long id) {
         Event event = Event.get(id)

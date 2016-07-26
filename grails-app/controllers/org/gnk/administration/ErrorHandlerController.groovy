@@ -9,7 +9,7 @@ class ErrorHandlerController {
     }
     def IntrigueCaracteristics()
     {
-        String s = "Il se peut que le nombre de personnages soit inférieur au nombre de joueurs présents";
+        String s = "Il se peut que le nombre de personnages soit inférieur au nombre de joueurs présents !";
         return s;
     }
 

@@ -3,6 +3,7 @@ package org.gnk.resplacetime
 import org.gnk.tag.Tag
 import org.springframework.dao.DataIntegrityViolationException
 
+
 class PlaceController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]

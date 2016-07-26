@@ -275,7 +275,7 @@ class SelectIntrigueController {
             if (plot.getIsDraft())
                 continue;
             //!//
-            if (plot.isEvenemential && isEvenementialIsCompatible(plot, gn)) {
+            if (plot.isEvenemential || isEvenementialIsCompatible(plot, gn)) {
                 selectedEvenementialPlotInstanceList.add(plot);
                 for (Plot gnPlot : gn.selectedPlotSet) {
                     if (plot.name == gnPlot.name) {
