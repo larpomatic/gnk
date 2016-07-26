@@ -129,6 +129,7 @@ class InputHandler {
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
+        gnInfo.GanttData = "";
     }
 
     // CharacterList
