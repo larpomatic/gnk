@@ -16,6 +16,7 @@ import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -774,15 +775,15 @@ class RedactIntrigueController {
     }
 
     // Unfinished work to duplicate plots
-    /*def duplicate(Long id) {
+    def duplicate(Long id) {
         Plot plotInstance = Plot.get(id)
         Plot duplicatedPlot = new Plot()
 
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
         User currentUser = User.findByUsername(currentUsername);
 
-        duplicatedPlot.name = plotInstance.name + "[duplicate]"
+        duplicatedPlot.name = plotInstance.name + ' DUPLICATA';
         duplicatedPlot.dateCreated = new Date();
         duplicatedPlot.lastUpdated = new Date();
         duplicatedPlot.user = currentUser;
@@ -814,7 +815,8 @@ class RedactIntrigueController {
         // Duplicate Roles
         Set<Role> toDuplicateRoles = plotInstance.roles
         Set<Role> duplicatedRoles = new HashSet<>();
-        Map<Integer, Role> roleToDuplicateMap = new HashMap<>() // Keep track of the duplicated roles in order to rebuild links
+        Map<Integer, Role> roleToDuplicateMap = new HashMap<>()
+        // Keep track of the duplicated roles in order to rebuild links
         for (Role r : toDuplicateRoles) {
             Role newDuplicatedRole = new Role()
             newDuplicatedRole.lastUpdated = new Date()
@@ -887,7 +889,8 @@ class RedactIntrigueController {
         // Duplicate Events
         Set<Event> toDuplicateEvents = plotInstance.events
         Set<Role> duplicatedEvents = new HashSet<>();
-        Map<Integer, Event> eventToDuplicateMap = new HashMap<>() // Keep track of the duplicated events in order to rebuild links
+        Map<Integer, Event> eventToDuplicateMap = new HashMap<>()
+        // Keep track of the duplicated events in order to rebuild links
         for (Event e : toDuplicateEvents) {
             Event newDuplicatedEvent = new Event()
             newDuplicatedEvent.lastUpdated = new Date()
@@ -943,11 +946,66 @@ class RedactIntrigueController {
         }
 
         // Duplicate Resource
+        /* Set<GenericResource> toDuplicateGenericResource = plotInstance.genericResources;
+        Set<GenericResource> newduplicatedGenericResource = new HashSet<>();
+        Map<Integer, GenericResource> RessourceToDuplicateMap = new HashMap<>()
+        for (GenericResource p : toDuplicatePlaces) {
+            GenericResource newDuplicatedPlace = new GenericResource()
+            newDuplicatedGenericResource.lastUpdated = new Date()
+            newDuplicatedGenericResource.dateCreated = new Date()
+            newDuplicatedGenericResource.code = p.code
+            //newDuplicatedPlace.gender = p.gender
+            newDuplicatedGenericResource.plot = duplicatedPlot
+            newDuplicatedGenericResource.comment = p.comment
+            // newDuplicatedPlace.type = p.type
+            newDuplicatedGenericResource.save()
 
+            RessourceToDuplicateMap.put(p.id, newDuplicatedGenericResource)
+            newduplicatedPlaces.add(newDuplicatedPlace)
+            duplicatedPlot.GenericResource = newduplicatedGenericResource
+            duplicatedPlot.save()*/
+        //}
         // Duplicate Place
+        Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces;
+        Set<GenericPlace> newduplicatedPlaces = new HashSet<>();
+        Map<Integer, GenericPlace> PlaceToDuplicateMap = new HashMap<>()
+        for (GenericPlace p : toDuplicatePlaces) {
+            GenericPlace newDuplicatedPlace = new GenericPlace()
+            newDuplicatedPlace.lastUpdated = new Date()
+            newDuplicatedPlace.dateCreated = new Date()
+            newDuplicatedPlace.code = p.code
+            newDuplicatedPlace.id = p.id * 2
+            newDuplicatedPlace.version = p.version
+            //newDuplicatedPlace.gender = p.gender
+            newDuplicatedPlace.plot = duplicatedPlot
+            newDuplicatedPlace.comment = p.comment
+            // newDuplicatedPlace.type = p.type
+            newDuplicatedPlace.save()
 
+            PlaceToDuplicateMap.put(p.id, newDuplicatedPlace)
+            newduplicatedPlaces.add(newDuplicatedPlace)
+
+        }
+
+        // PlaceHasTag
+           /* for (GenericPlaceHasTag p : toDuplicatePlaces) {
+                Set<GenericPlaceHasTag> toDuplicatePlaceHasTags = p.GenericPlaceHasTag
+                Set<GenericPlaceHasTag> newPlaceHasTags = new HashSet<>()
+                for (GenericPlaceHasTag placeHasTag : toDuplicatePlaceHasTags) {
+                    GenericPlaceHasTag newPlaceHasTag = new GenericPlaceHasTag(placeToDuplicateMap.get(p.id), placeHasTag.weight, placeHasTag.tag)
+                    if (newPlaceHasTag.save())
+                        newPlaceHasTags.add(newPlaceHasTag)
+                }
+                PlaceToDuplicateMap.get(p.id).GenericPlaceHasTag = newPlaceHasTags
+                PlaceToDuplicateMap.get(p.id).save()
+
+            }*/
+
+
+           duplicatedPlot.genericPlaces = newduplicatedPlaces
+           duplicatedPlot.save()
         // Duplicate PastScenes
 
         redirect(action: "edit", id: duplicatedPlot.id)
-    }*/
+    }
 }

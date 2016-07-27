@@ -17,7 +17,15 @@ class PlaceHasTag {
     static constraints = {
 
     }
-
+    public PlaceHasTag(Place PlacePar, Tag tagPar, Integer weightPar) {
+        place = PlacePar
+        tag = tagPar
+        weight = weightPar
+        version = 1
+        Date now = new Date()
+        dateCreated = now
+        lastUpdated = now
+    }
     static mapping = {
         id type:'integer'
         version type: 'integer'

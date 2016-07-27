@@ -31,8 +31,9 @@
     </div>
     <div class="span4">
         <button id="GeneralSave" class="btn" style="visibility: visible; display: block; margin-bottom: 10px;">Sauvegarde complète</button>
-    </div>
 </div>
+</div>
+
 	<div id="edit-plot" class="content scaffold-list">
 		<h1>
 			<g:message code="default.edit.label" args="[entityName]" />

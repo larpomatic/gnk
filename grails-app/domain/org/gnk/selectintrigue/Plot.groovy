@@ -3,6 +3,7 @@ import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
+import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
 import org.gnk.tag.TagRelevant
@@ -16,6 +17,8 @@ class Plot {
     Date lastUpdated
     Date dateCreated
     private static List<Tag> tagList
+    Set<Place> place
+
     public static List getTagList() {
 
         return getPlotTagQuery()
