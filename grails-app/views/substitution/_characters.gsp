@@ -36,13 +36,13 @@
     </thead>
     <tbody>
     <g:each status="i" in="${characterList}" var="character">
-        <g:if test="${!(((org.gnk.substitution.data.Character) character).type == "STF")}">
-            <tr id="char${character.id}">
+        <g:if test="${!(((org.gnk.roletoperso.Character) character).type == "STF")}">
+            <tr id="char${character.DTDId}">
                 <!-- # -->
                 <td style="text-align: center;">${i + 1}</td>
                 <!-- Id - modal button -->
                 <td class="code"><a href="#modalChar${i + 1}" role="button" class="btn" data-toggle="modal"
-                                    disabled="true">CHAR-${character.id.encodeAsHTML()}</a></td>
+                                    disabled="true">CHAR-${character.DTDId.encodeAsHTML()}</a></td>
                 <!-- Type -->
                 <td class="upper" style="text-align: center;">${character.type.encodeAsHTML()}</td>
                 <!-- Gender -->
@@ -76,7 +76,7 @@
                            placeholder="Add a custom character">
                     %{--<a class="btn unban" title="Débannir" disabled="true"><i class="icon-arrow-left"></i></a>--}%
                     <button class="btn customCharacterButton" title="Create the custom character" type="button"
-                            data-character-id="${character.id}"><i class="icon-arrow-left"></i>
+                            data-character-id="${character.DTDId}"><i class="icon-arrow-left"></i>
                     </button>
                 </td>
                 <!-- Restart Lastname -->
@@ -211,9 +211,9 @@
         <g:each status="i" in="${characterList}" var="character">
         var character = new Object();
         // Gn Id
-        character.gnId = "${character.id}"
+        character.gnId = "${character.DTDId}"
         // HTML Id
-        character.htmlId = "char${character.id}"
+        character.htmlId = "char${character.DTDId}"
         // Gender
         character.gender = "${character.gender}"
         // BEGIN Tags LOOP

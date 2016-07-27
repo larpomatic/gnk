@@ -6,7 +6,17 @@ import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasRelationWithRole
-import org.gnk.substitution.data.*
+//import org.gnk.resplacetime.Event
+//import org.gnk.resplacetime.Pastscene
+
+import org.gnk.substitution.data.Event
+import org.gnk.substitution.data.Pastscene
+import org.gnk.substitution.data.Place
+import org.gnk.substitution.data.Resource
+import org.gnk.substitution.data.Tag
+import org.gnk.roletoperso.Character
+import org.gnk.substitution.data.GnInformation
+import org.gnk.substitution.data.RelationCharacter
 
 class InputHandler {
 
@@ -132,7 +142,7 @@ class InputHandler {
             Character characterData = new Character()
 
             // Id
-            characterData.id = character.DTDId
+            characterData.DTDId = character.DTDId
             // Gender
             characterData.gender = character.gender
             // Type
@@ -179,7 +189,7 @@ class InputHandler {
             Character characterData = new Character()
 
             // Id
-            characterData.id = character.DTDId
+            characterData.DTDId = character.DTDId
             // Gender
             characterData.gender = character.gender
             // Type
