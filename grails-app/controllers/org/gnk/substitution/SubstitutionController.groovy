@@ -487,7 +487,6 @@ class SubstitutionController {
             return
         }
 
-        //GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
         convention
 
         if (params.t0DateHour) {

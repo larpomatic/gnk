@@ -142,8 +142,6 @@ class TimeController {
             return
         }
 
-   //     GnHasConvention gnHasConvention = GnHasConvention.findWhere(gn: gnInstance)
-   //     gnHasConvention.version = gnHasConvention.version + 1
         convention
 
         if (params.t0DateHour) {

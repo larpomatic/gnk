@@ -162,7 +162,7 @@ class PlaceSubController {
             //return
             // Save in DataBase
             gnkDataContainerService.gn.dtd = xmlGN;
-            //gnkDataContainerService.SaveDTD(gnkDataContainerService.gn.dtd)
+            gnkDataContainerService.SaveDTD(gnkDataContainerService.gn.dtd)
             //line below can be commented to go back to substitution step when leaving the GN creation during publication
             gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
