@@ -1,9 +1,12 @@
 package org.gnk.social
 
+import org.gnk.administration.ErrorHandlerController
 import org.gnk.naming.Convention
 import org.gnk.naming.ConventionHasRule
 import org.gnk.naming.Rule
 import org.springframework.security.access.annotation.Secured
+
+import java.awt.Graphics
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class SocialController {
@@ -34,6 +37,7 @@ class SocialController {
                 }
             } else {
                 println("you DID NOT select: ${r.description}");
+                ErrorHandlerController.RuleraiseError();
                 if (convention.getConventionHasRules().rule.contains(r)) {
                     for (chr in ConventionHasRule.list()) {
                         if (chr.rule.equals(r)) {
