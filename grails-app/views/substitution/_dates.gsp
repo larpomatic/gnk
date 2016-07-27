@@ -394,7 +394,7 @@
             <!-- Code - modal button -->
             <td style="display: none"><a SDWhref="#modalEve${i + 1}" role="button" class="btn"  data-toggle="modal">EVE-${event.id.encodeAsHTML()}_${event.plotId.encodeAsHTML()}</a></td>
             <!-- Title -->
-            <td>${event.name.encodeAsHTML()}</td>
+            <td>${event.title.encodeAsHTML()}</td>
             <!-- Plot -->
             <td>${event.plotName.encodeAsHTML()}</td>
             <!-- Is planned -->
@@ -457,7 +457,7 @@
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
-            pastscene.absoluteMinute = "${pastscene.absoluteMinute}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
 
 
 

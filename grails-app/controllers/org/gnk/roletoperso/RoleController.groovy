@@ -116,11 +116,11 @@ class RoleController {
             jsonPastscene.put("Day", pastscene.dateDay);
             jsonPastscene.put("Hour", pastscene.dateHour);
             jsonPastscene.put("Minute", pastscene.dateMinute);
-            jsonPastscene.put("isAbsoluteYear", pastscene.getIsYearAbsolute());
-            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsMonthAbsolute());
-            jsonPastscene.put("isAbsoluteDay", pastscene.getIsDayAbsolute());
-            jsonPastscene.put("isAbsoluteHour", pastscene.getIsHourAbsolute());
-            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsMinuteAbsolute());
+            jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+            jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+            jsonPastscene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
             jsonPastsceneList.add(jsonPastscene);
         }
         jsonRole.put("pastsceneList", jsonPastsceneList);

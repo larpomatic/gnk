@@ -127,34 +127,34 @@ class RedactIntrigueController {
         Calendar c = null;
         for (Pastscene pastscene : plot.pastescenes) {
             c= Calendar.getInstance();
-            if (pastscene.dateYear && pastscene.isYearAbsolute) {
+            if (pastscene.dateYear && pastscene.isAbsoluteYear) {
                 c.set(Calendar.YEAR, pastscene.dateYear);
             }
-            else if (pastscene.dateYear && !pastscene.isYearAbsolute) {
+            else if (pastscene.dateYear && !pastscene.isAbsoluteYear) {
                 c.add(Calendar.YEAR, pastscene.dateYear * -1)
             }
-            if (pastscene.dateMonth && pastscene.isMonthAbsolute) {
+            if (pastscene.dateMonth && pastscene.isAbsoluteMonth) {
                 c.set(Calendar.MONTH, pastscene.dateMonth);
             }
-            else if (pastscene.dateMonth && !pastscene.isMonthAbsolute) {
+            else if (pastscene.dateMonth && !pastscene.isAbsoluteMonth) {
                 c.add(Calendar.MONTH, pastscene.dateMonth * -1)
             }
-            if (pastscene.dateDay && pastscene.isDayAbsolute) {
+            if (pastscene.dateDay && pastscene.isAbsoluteDay) {
                 c.set(Calendar.DAY_OF_MONTH, pastscene.dateDay);
             }
-            else if (pastscene.dateDay && !pastscene.isDayAbsolute) {
+            else if (pastscene.dateDay && !pastscene.isAbsoluteDay) {
                 c.add(Calendar.DAY_OF_MONTH, pastscene.dateDay * -1)
             }
-            if (pastscene.dateHour && pastscene.isHourAbsolute) {
+            if (pastscene.dateHour && pastscene.isAbsoluteHour) {
                 c.set(Calendar.HOUR_OF_DAY, pastscene.dateHour);
             }
-            else if (pastscene.dateHour && !pastscene.isHourAbsolute) {
+            else if (pastscene.dateHour && !pastscene.isAbsoluteHour) {
                 c.add(Calendar.HOUR_OF_DAY, pastscene.dateHour * -1)
             }
-            if (pastscene.dateMinute && pastscene.isMinuteAbsolute) {
+            if (pastscene.dateMinute && pastscene.isAbsoluteMinute) {
                 c.set(Calendar.MINUTE, pastscene.dateMinute);
             }
-            else if (pastscene.dateMinute && !pastscene.isMinuteAbsolute) {
+            else if (pastscene.dateMinute && !pastscene.isAbsoluteMinute) {
                 c.add(Calendar.MINUTE, pastscene.dateMinute * -1)
             }
             Random random = new  Random();
@@ -686,7 +686,7 @@ class RedactIntrigueController {
     }
     def createDate(Pastscene pastscene){
         def date = ""
-        switch (pastscene.relativeTimeUnit) {
+        switch (pastscene.unitTimingRelative) {
             case "Y":
                 date = "an(s)"
                 break

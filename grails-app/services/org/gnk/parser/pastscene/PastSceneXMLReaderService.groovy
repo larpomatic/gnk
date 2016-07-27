@@ -188,8 +188,8 @@ class PastSceneXMLReaderService {
             Node RELATIVE = TIME.RELATIVE[0]
             if (RELATIVE.attribute("time") != "null" && RELATIVE.attribute("time_unit") != "null") {
                 if ((RELATIVE.attribute("time") as String).isInteger())
-                    pastsceneRes.relativeTime = RELATIVE.attribute("time") as Integer
-                pastsceneRes.relativeTimeUnit = RELATIVE.attribute("time_unit") as String
+                    pastsceneRes.timingRelative = RELATIVE.attribute("time") as Integer
+                pastsceneRes.unitTimingRelative = RELATIVE.attribute("time_unit") as String
             }
         }
         if (TIME.ABSOLUTE.size() == 1) {
@@ -205,11 +205,11 @@ class PastSceneXMLReaderService {
             if (ABSOLUTE.attribute("minute") != "null" && (ABSOLUTE.attribute("minute") as String) != null && (ABSOLUTE.attribute("minute") as String).isInteger())
                 pastsceneRes.dateMinute = ABSOLUTE.attribute("minute") as Integer
 
-            pastsceneRes.isYearAbsolute = (ABSOLUTE.attribute("isAbsoluteYear") == "true")
-            pastsceneRes.isMonthAbsolute = (ABSOLUTE.attribute("isAbsoluteMonth") == "true")
-            pastsceneRes.isDayAbsolute = (ABSOLUTE.attribute("isAbsoluteDay") == "true")
-            pastsceneRes.isHourAbsolute = (ABSOLUTE.attribute("isAbsoluteHour") == "true")
-            pastsceneRes.isMinuteAbsolute = (ABSOLUTE.attribute("isAbsoluteMinute") == "true")
+            pastsceneRes.isAbsoluteYear = (ABSOLUTE.attribute("isAbsoluteYear") == "true")
+            pastsceneRes.isAbsoluteMonth = (ABSOLUTE.attribute("isAbsoluteMonth") == "true")
+            pastsceneRes.isAbsoluteDay = (ABSOLUTE.attribute("isAbsoluteDay") == "true")
+            pastsceneRes.isAbsoluteHour = (ABSOLUTE.attribute("isAbsoluteHour") == "true")
+            pastsceneRes.isAbsoluteMinute = (ABSOLUTE.attribute("isAbsoluteMinute") == "true")
         }
     }
     /* !Construction Methods */

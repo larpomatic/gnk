@@ -6,15 +6,7 @@ import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasRelationWithRole
-import org.gnk.resplacetime.Event
-import org.gnk.resplacetime.Pastscene
-
-import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
-import org.gnk.substitution.data.Tag
-import org.gnk.substitution.data.Character
-import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.RelationCharacter
+import org.gnk.substitution.data.*
 
 class InputHandler {
 
@@ -440,26 +432,26 @@ class InputHandler {
                 // Id
                 pastsceneData.id = pastscene.DTDId
                 // Plot id
-                pastsceneData.plotId = plotId as String
+                pastsceneData.plotId = plotId
                 //Plot name
                 pastsceneData.plotName = plot.name
                 // Title
                 pastsceneData.title = pastscene.title
                 // Relative time
-                pastsceneData.relativeTime = pastscene.relativeTime
-                pastsceneData.relativeTimeUnit = pastscene.relativeTimeUnit
+                pastsceneData.relativeTime = pastscene.timingRelative
+                pastsceneData.relativeTimeUnit = pastscene.unitTimingRelative
                 // Absolute time
                 pastsceneData.absoluteYear = pastscene.dateYear
                 pastsceneData.absoluteMonth = pastscene.dateMonth
                 pastsceneData.absoluteDay = pastscene.dateDay
                 pastsceneData.absoluteHour = pastscene.dateHour
-                pastsceneData.absoluteMinute = pastscene.dateMinute
+                pastsceneData.absoluteMin = pastscene.dateMinute
 
-                pastsceneData.isYearAbsolute = pastscene.isYearAbsolute
-                pastsceneData.isMonthAbsolute = pastscene.isMonthAbsolute
-                pastsceneData.isDayAbsolute = pastscene.isDayAbsolute
-                pastsceneData.isHourAbsolute = pastscene.isHourAbsolute
-                pastsceneData.isMinuteAbsolute = pastscene.isMinuteAbsolute
+                pastsceneData.isYearAbsolute = pastscene.isAbsoluteYear
+                pastsceneData.isMonthAbsolute = pastscene.isAbsoluteMonth
+                pastsceneData.isDayAbsolute = pastscene.isAbsoluteDay
+                pastsceneData.isHourAbsolute = pastscene.isAbsoluteHour
+                pastsceneData.isMinuteAbsolute = pastscene.isAbsoluteMinute
 
                 pastsceneList.add(pastsceneData)
             }
@@ -478,11 +470,11 @@ class InputHandler {
                 // Id
                 eventData.id = event.DTDId
                 // Plot id
-                eventData.plotId = plotId as String
+                eventData.plotId = plotId
                 //Plot name
                 eventData.plotName = plot.name
                 // Title
-                eventData.name = event.name
+                eventData.title = event.name
                 // Is planned
                 eventData.isPlanned = event.isPlanned
                 // Timing
