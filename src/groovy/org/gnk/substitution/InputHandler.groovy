@@ -6,10 +6,10 @@ import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasRelationWithRole
-//import org.gnk.resplacetime.Event
+import org.gnk.resplacetime.Event
 //import org.gnk.resplacetime.Pastscene
 
-import org.gnk.substitution.data.Event
+//import org.gnk.substitution.data.Event
 import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
@@ -484,7 +484,7 @@ class InputHandler {
                 //Plot name
                 eventData.plotName = plot.name
                 // Title
-                eventData.title = event.name
+                eventData.name = event.name
                 // Is planned
                 eventData.isPlanned = event.isPlanned
                 // Timing
