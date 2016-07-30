@@ -1,4 +1,4 @@
-package org.gnk.selenium
+package selenium
 
 //import com.sun.tools.doclets.internal.toolkit.resources.doclets
 import grails.test.mixin.TestFor

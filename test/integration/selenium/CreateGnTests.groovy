@@ -1,4 +1,4 @@
-package org.gnk.selenium
+package selenium
 
 import grails.test.mixin.TestFor
 import org.gnk.selectintrigue.SelectIntrigueController
