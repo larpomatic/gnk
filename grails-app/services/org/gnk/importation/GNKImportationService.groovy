@@ -384,8 +384,8 @@ class GNKImportationService {
             pastsceneBDD.dateMonth = pastscene.dateMonth
             pastsceneBDD.dateYear = pastscene.dateYear
             pastsceneBDD.isPublic = pastscene.isPublic
-            pastsceneBDD.relativeTime = pastscene.relativeTime
-            pastsceneBDD.relativeTimeUnit = pastscene.relativeTimeUnit
+            pastsceneBDD.timingRelative = pastscene.timingRelative
+            pastsceneBDD.unitTimingRelative = pastscene.unitTimingRelative
         }
         else
             pastsceneBDD = pastscene

@@ -14,13 +14,14 @@ import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Graph
 import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
-import org.gnk.resplacetime.Event
+import org.gnk.substitution.data.Event
 import org.gnk.substitution.data.GnInformation
-import org.gnk.resplacetime.Pastscene
+import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
 import sun.launcher.resources.launcher_pt_BR
+import org.gnk.substitution.GanttController
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -122,6 +123,7 @@ class SubstitutionController {
 
         Graph graph = new Graph(gn)
         String json = graph.buildGlobalGraphJSON();
+        GanttController ganttController = new GanttController();
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
@@ -132,6 +134,7 @@ class SubstitutionController {
         List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
+        JSONObject GanttData = ganttController.loadGanttData();
 
         [gnInfo: gnInfo,
                 characterList: characterList,
@@ -143,7 +146,8 @@ class SubstitutionController {
                 gnId: gnIdStr,
                 ruleList: Convention.findById(gn.convention_id).conventionHasRules.rule,
 //                ruleList: gn.convention.conventionHasRules.rule,
-                sexe: params.sexe
+                sexe: params.sexe,
+                GanttData : GanttData
         ]
     }
     /*private void changeCharSex(Gn gn, List<String> sexes)

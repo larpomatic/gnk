@@ -128,27 +128,27 @@ class PastSceneXMLWriterService {
             absoluteTimeElt.setAttribute("minute", pastscene.dateMinute.toString())
 
         // ABSOLUTE
-        if (pastscene.isYearAbsolute == null)
+        if (pastscene.isAbsoluteYear == null)
             absoluteTimeElt.setAttribute("isAbsoluteYear", "false")
         else
-            absoluteTimeElt.setAttribute("isAbsoluteYear", pastscene.isYearAbsolute.toString())
+            absoluteTimeElt.setAttribute("isAbsoluteYear", pastscene.isAbsoluteYear.toString())
 
-        if (pastscene.isMonthAbsolute == null)
+        if (pastscene.isAbsoluteMonth == null)
             absoluteTimeElt.setAttribute("isAbsoluteMonth", "false")
         else
-            absoluteTimeElt.setAttribute("isAbsoluteMonth", pastscene.isMonthAbsolute.toString())
-        if (pastscene.isDayAbsolute == null)
+            absoluteTimeElt.setAttribute("isAbsoluteMonth", pastscene.isAbsoluteMonth.toString())
+        if (pastscene.isAbsoluteDay == null)
             absoluteTimeElt.setAttribute("isAbsoluteDay", "false")
         else
-            absoluteTimeElt.setAttribute("isAbsoluteDay", pastscene.isDayAbsolute.toString())
-        if (pastscene.isHourAbsolute == null)
+            absoluteTimeElt.setAttribute("isAbsoluteDay", pastscene.isAbsoluteDay.toString())
+        if (pastscene.isAbsoluteHour == null)
             absoluteTimeElt.setAttribute("isAbsoluteHour", "false")
         else
-            absoluteTimeElt.setAttribute("isAbsoluteHour", pastscene.isHourAbsolute.toString())
-        if (pastscene.isMinuteAbsolute == null)
+            absoluteTimeElt.setAttribute("isAbsoluteHour", pastscene.isAbsoluteHour.toString())
+        if (pastscene.isAbsoluteMinute == null)
             absoluteTimeElt.setAttribute("isAbsoluteMinute", "false")
         else
-            absoluteTimeElt.setAttribute("isAbsoluteMinute", pastscene.isMinuteAbsolute.toString())
+            absoluteTimeElt.setAttribute("isAbsoluteMinute", pastscene.isAbsoluteMinute.toString())
 
         timeElt.appendChild(absoluteTimeElt)
 

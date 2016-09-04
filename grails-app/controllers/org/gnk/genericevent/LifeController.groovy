@@ -1,6 +1,7 @@
 package org.gnk.genericevent
 
 import org.gnk.gn.Gn
+import org.gnk.naming.Convention
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.Pastscene
@@ -124,7 +125,7 @@ class LifeController {
                             pastSceneLife.setDTDId(dummyInt + character.getDTDId())
                             //pastSceneLife.setDTDId((dummyInt + character.getDTDId() * 100) + age)
                             //pastSceneLife.dateYear = character.age - geAge
-                            pastSceneLife.isYearAbsolute = false
+                            pastSceneLife.isAbsoluteYear = false
 
                             rhp.pastscene = pastSceneLife
                             p.roles.add(role)
@@ -314,7 +315,7 @@ class LifeController {
                 pastSceneLife.isPublic = true
                 pastSceneLife.setDTDId((dummyInt + character.getDTDId() * 100) + age)
                 pastSceneLife.dateYear = character.age - age
-                pastSceneLife.isYearAbsolute = false
+                pastSceneLife.isAbsoluteYear = false
 
                 // Associer past Scene au rôle, Role Has Past Scene
                 RoleHasPastscene rhpsLife = new RoleHasPastscene()
@@ -353,7 +354,7 @@ class LifeController {
         pastSceneLife.isPublic = true
         pastSceneLife.setDTDId((dummyInt + character.getDTDId() * 100) + age)
         pastSceneLife.dateYear = character.age - age
-        pastSceneLife.isYearAbsolute = false
+        pastSceneLife.isAbsoluteYear = false
 
         // Associer past Scene au rôle, Role Has Past Scene
         RoleHasPastscene rhpsLife = new RoleHasPastscene()

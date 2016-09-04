@@ -22,21 +22,54 @@ class Pastscene {
     Integer dateDay
     Integer dateHour
     Integer dateMinute
-    Boolean isYearAbsolute
-    Boolean isMonthAbsolute
-    Boolean isDayAbsolute
-    Boolean isHourAbsolute
-    Boolean isMinuteAbsolute
+    Boolean isAbsoluteYear
+    Boolean isAbsoluteMonth
+    Boolean isAbsoluteDay
+    Boolean isAbsoluteHour
+    Boolean isAbsoluteMinute
 
-    String plotId
-    String plotName
+
+
+
+    //*************
+    // à virer ****
+    //*************
+    Integer timingRelative
+    String unitTimingRelative
+    /*
+    def correctTimingVariables()
+    {
+        if (dateYear == isAbsoluteYear && unitTimingRelative.toLowerCase().startsWith("y"))
+        {
+            dateYear = timingRelative
+            isAbsoluteYear = false
+        }
+        if (dateMonth == isAbsoluteMonth && unitTimingRelative.toLowerCase().startsWith("m"))
+        {
+            dateMonth = timingRelative
+            isAbsoluteMonth = false
+        }
+        if (dateDay == isAbsoluteDay && unitTimingRelative.toLowerCase().startsWith("d"))
+        {
+            dateDay = timingRelative
+            isAbsoluteDay = false
+        }
+    }
+    */
+    //*************
+    //*************
+    //*************
+
+
+
+
+
 
     Pastscene pastscenePredecessor
     GenericPlace genericPlace
 
     // Id referenced into DTD
-    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "relativeTime",
-                         "relativeTimeUnit", "absoluteHour", "absoluteMinute", "plotId", "plotName"]
+    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
     Integer DTDId
 
     Integer absoluteYear
@@ -45,8 +78,6 @@ class Pastscene {
     Integer absoluteHour
     Integer absoluteMinute
 
-    Integer relativeTime
-    String relativeTimeUnit
 
     static hasMany = [ roleHasPastscenes: RoleHasPastscene ]
 
@@ -61,8 +92,8 @@ class Pastscene {
         dateDay (min: 0, max: 31, nullable: true)
         dateHour (min: 0, max: 24, nullable: true)
         dateMinute (min: 0, max: 60, nullable: true)
-        relativeTime (nullable: true)
-        relativeTimeUnit (nullable: true)
+        timingRelative (nullable: true)
+        unitTimingRelative (nullable: true)
         genericPlace (nullable: true)
         pastscenePredecessor (nullable: true)
 
@@ -73,14 +104,6 @@ class Pastscene {
         id type:'integer'
         version type: 'integer'
         roleHasPastscenes cascade: 'all-delete-orphan'
-
-        isYearAbsolute column: 'is_absolute_year'
-        isMonthAbsolute column: 'is_absolute_month'
-        isDayAbsolute column: 'is_absolute_day'
-        isHourAbsolute column: 'is_absolute_hour'
-        isMinuteAbsolute column: 'is_absolute_minute'
-        relativeTime column: 'timing_relative'
-        relativeTimeUnit column: 'unit_timing_relative'
     }
 
     public RoleHasPastscene getRoleHasPastscene(Role role) {
@@ -99,35 +122,35 @@ class Pastscene {
         calendar.setTime(t0Date)
         if (dateYear != null)
         {
-            if(!isYearAbsolute)
+            if(!isAbsoluteYear)
                 calendar.add(Calendar.YEAR, -dateYear)
             else
                 calendar.set(Calendar.YEAR, dateYear)
         }
         if (dateMonth != null)
         {
-            if(!isMonthAbsolute)
+            if(!isAbsoluteMonth)
                 calendar.add(Calendar.MONTH, -dateMonth)
             else
                 calendar.set(Calendar.MONTH, dateMonth-1) // On fait -1 car "Janvier" est le mois numéro "0"; "février" est le "1" etc...
         }
         if (dateDay != null)
         {
-            if(!isDayAbsolute)
+            if(!isAbsoluteDay)
                 calendar.add(Calendar.DAY_OF_MONTH, -dateDay)
             else
                 calendar.set(Calendar.DAY_OF_MONTH, dateDay)
         }
         if (dateHour != null)
         {
-            if(!isHourAbsolute)
+            if(!isAbsoluteHour)
                 calendar.add(Calendar.HOUR_OF_DAY, -dateHour)
             else
                 calendar.set(Calendar.HOUR_OF_DAY, dateHour)
         }
         if (dateMinute != null)
         {
-            if(!isMinuteAbsolute)
+            if(!isAbsoluteMinute)
                 calendar.add(Calendar.MINUTE, -dateMinute)
             else
                 calendar.set(Calendar.MINUTE, dateMinute)
@@ -143,7 +166,7 @@ class Pastscene {
         return "Le "
         Date d = getAbsoluteDate(t0Date);
         SimpleDateFormat formater = null;
-        if (dateHour > 0 || dateMinute > 0 || isHourAbsolute || isMinuteAbsolute)
+        if (dateHour > 0 || dateMinute > 0 || isAbsoluteHour || isAbsoluteMinute)
             formater = new SimpleDateFormat("'Le' dd MMMM yyyy 'à' HH'h'mm");
         else
             formater = new SimpleDateFormat("'Le' dd MMMM yyyy");

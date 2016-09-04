@@ -1,5 +1,7 @@
 package org.gnk.substitution.data
 
+import org.codehaus.groovy.grails.web.json.JSONObject
+
 import java.util.List;
 
 class GnInformation {
@@ -12,4 +14,5 @@ class GnInformation {
     String universe
     Date t0Date
     Integer duration
+	String GanttData
 }
