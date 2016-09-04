@@ -26,14 +26,14 @@ class GnXMLWriterService {
 
     def String getGNKDTDString(Gn gn) {
         DOMSource domSource;
-        if (gn.step == "naming")
+        /*if (gn.step == "naming")
             domSource = new DOMSource(getNamingGNKDTDDocument(gn));
         else if (gn.step == "ressource")
             domSource = new DOMSource(getRessourceGNKDTDDocument(gn));
         else if (gn.step == "place")
             domSource = new DOMSource(getPlaceGNKDTDDocument(gn));
-        else
-            domSource = new DOMSource(getGNKDTDDocument(gn));
+        else*/
+        domSource = new DOMSource(getGNKDTDDocument(gn));
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
         TransformerFactory tf = TransformerFactory.newInstance();
@@ -54,22 +54,22 @@ class GnXMLWriterService {
         Element gnDefinition = doc.createElement("GN_DEFINITION");
         gnDefinition.appendChild(getSelectIntrigueElement(doc, gn))
         gnDefinition.appendChild(getRoleToPersoElement(doc, gn))
-        gnDefinition.appendChild(getTimeElement(doc, gn))
+        gnDefinition.appendChild(getSubstitutionElement(doc, gn))
         gnkElement.appendChild(gnDefinition);
 
         //GN_DATA elements
         Element gnData = doc.createElement("GN_DATA");
         gnData.appendChild(getPlotsElement(doc, gn))
         // Naming
-        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
-        //gnData.appendChild(namingXMLWriter.getFirstnamesDataElement(doc, gn.firstnameSet))
-        //gnData.appendChild(namingXMLWriter.getLastnamesDataElement(doc, gn.lastnameSet))
+        SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        gnData.appendChild(namingXMLWriter.getFirstnamesDataElement(doc, gn.firstnameSet))
+        gnData.appendChild(namingXMLWriter.getLastnamesDataElement(doc, gn.lastnameSet))
         // Resources
-        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
-        //gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
+        SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
         // Places
-        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
-        //gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
+        SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
 
         gnkElement.appendChild(gnData);
 

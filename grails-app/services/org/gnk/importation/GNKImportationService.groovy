@@ -56,9 +56,9 @@ class GNKImportationService {
         }
 
         // save PLOTS
-       /* dataContainer.plotMap.each {id, plot ->
+        dataContainer.plotMap.each {id, plot ->
             savePlot(plot)
-        }*/
+        }
     }
 
     /* Saving Methods */
