@@ -94,6 +94,7 @@ class TimeController {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
         gn.save(flush: true);
         /*Integer evenementialId = 0;
         Integer mainstreamId = 0;
@@ -203,17 +204,19 @@ class TimeController {
             gnkDataContainerService.ReadDTD(Gn.get(gnDbId))
         }
 
+        // Getback JSON files in database
+        String[] jsonFiles = Gn.get(gnDbId).charJSONArray.split("JSONArray");
         // Output Substitution
         OutputHandler outputHandler = NamingController.getOutputHandler()
         // Characters
-        //JSONArray charsJSONArray = subJSON.subCharacter
-        //outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
+        JSONArray charsJSONArray = new JSONArray(jsonFiles.getAt(0))
+        outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
         // Resources
-        //JSONArray resourcesJSONArray = subJSON.subResource
-        //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
+        JSONArray resourcesJSONArray = new JSONArray(jsonFiles.getAt(1))
+        outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
         // Places
-        //JSONArray placesJSONArray = subJSON.subPlace
-        //outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
+        JSONArray placesJSONArray = new JSONArray(jsonFiles.getAt(2))
+        outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
         //Dates
         JSONObject datesJSON = subJSON.subDate
         outputHandler.updateGnWithDates(gnkDataContainerService, datesJSON)

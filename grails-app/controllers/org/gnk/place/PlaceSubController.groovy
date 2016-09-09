@@ -99,6 +99,7 @@ class PlaceSubController {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
 
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
         gn.save(flush: true);
         /*Integer evenementialId = 0;
         Integer mainstreamId = 0;
@@ -137,7 +138,10 @@ class PlaceSubController {
         //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
         // Places
         JSONArray placesJSONArray = subJSON.subPlace
-        outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
+        Gn gn = Gn.get(gnDbId)
+        gn.setCharArray(placesJSONArray)
+        gn.save(flush: true, failOnError: true);
+        //outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
         // Dates
         //JSONObject datesJSON = subJSON.subDate
         //outputHandler.updateGnWithDates(gnkDataContainerService, datesJSON)

@@ -66,17 +66,17 @@ class NamingController {
         //test
         GnInformation gnInfo = inputHandler.gnInfo
         List<Character> characterList = inputHandler.characterList
-        //List<Resource> resourceList = inputHandler.resourceList
-        //List<Place> placeList = inputHandler.placeList
-        //List<Pastscene> pastsceneList = inputHandler.pastsceneList
+        List<Resource> resourceList = inputHandler.resourceList
+        List<Place> placeList = inputHandler.placeList
+        List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
 
         [gnInfo: gnInfo,
          characterList: characterList,
-         //resourceList: resourceList,
-         //placeList: placeList,
-         //pastsceneList: pastsceneList,
+         resourceList: resourceList,
+         placeList: placeList,
+         pastsceneList: pastsceneList,
          eventList: eventList,
          relationjson: json,
          gnId: gnIdStr,
@@ -141,7 +141,10 @@ class NamingController {
         outputHandler = new OutputHandler()
         // Characters
         JSONArray charsJSONArray = subJSON.subCharacter
-        outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
+        Gn gn = Gn.get(gnDbId)
+        gn.setCharArray(charsJSONArray)
+        gn.save(flush: true, failOnError: true);
+        //outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
         // Resources
         //JSONArray resourcesJSONArray = subJSON.subResource
         //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
@@ -181,6 +184,7 @@ class NamingController {
             }
             // Go to publication
             redirect(controller: "ressource", action: "index", params: [gnId: gnDbId])
+            //redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
     }

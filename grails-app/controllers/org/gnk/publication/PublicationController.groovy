@@ -50,6 +50,7 @@ class PublicationController {
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
+        gn.removeCharArray();
         gn.save(flush: true);
         List<String> sexes = new ArrayList<>();
         for (Character character in gn.characterSet) {
@@ -58,7 +59,7 @@ class PublicationController {
         for (Character character in gn.nonPlayerCharSet) {
             sexes.add("sexe_" + character.getDTDId() as String);
         }
-        redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
+        redirect(controller: 'time', action: 'index', params: [gnId: id as String, sexe: sexes]);
     }
 
     def index() {

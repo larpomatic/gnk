@@ -508,8 +508,7 @@ class SubstitutionPublication {
         for (GenericResource genericResource : genericResourceList)
         {
             if (genericResource.code.toUpperCase().equals(code))
-                if (genericResource.selectedResource != null)
-                    return genericResource.selectedResource.name
+                return genericResource.selectedResource.name
         }
 
         return "[Ressource générique]"

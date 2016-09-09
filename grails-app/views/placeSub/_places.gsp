@@ -34,6 +34,9 @@
     </tr>
     </thead>
     <tbody id="fusiontbodyplace" data-url="<g:createLink controller='substitution' action='merged'/>">
+    <g:each in="${characterList}" var="character">
+        <g:hiddenField name="id" value="${character.DTDId.encodeAsHTML()}" />
+    </g:each>
     <g:each id="loopPlaceList" status="i" in="${placeList}" var="place"  >
         <tr id="place${place.id}_plot${place.plotId}" class="placeUnity">
             <!-- # -->

@@ -1,5 +1,7 @@
 package org.gnk.gn
 
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.resplacetime.Period
@@ -38,6 +40,8 @@ class Gn {
     Date date
     String dtd
 
+    String charJSONArray
+
     static transients = [
             "t0Date",
             "isMainstream",
@@ -60,7 +64,7 @@ class Gn {
             "nonPlayerCharSet",
             "firstnameSet",
             "lastnameSet",
-            "isLife"
+            "isLife",
     ]
 
     Date t0Date
@@ -103,13 +107,15 @@ class Gn {
         name maxSize: 45
         date nullable: true
         dtd nullable: true
+        charJSONArray nullable: true
     }
 
     static mapping = {
         dtd type: 'text'
-        id type:'integer'
+        charJSONArray type: 'text'
+        id type: 'integer'
         version type: 'integer'
-        periods sort:'beginning'
+        periods sort: 'beginning'
 //        convention column: 'convention_id'
     }
 
@@ -256,5 +262,22 @@ class Gn {
 
     void setStaffCharSet(Set<Character> staffCharSet) {
         this.staffCharSet = staffCharSet
+    }
+
+    void setCharArray(JSONArray jsonArray)
+    {
+        if (this.charJSONArray == null)
+            this.charJSONArray = ""
+        this.charJSONArray = this.charJSONArray + jsonArray.toString() + "JSONArray";
+    }
+
+    void removeCharArray()
+    {
+        String[] jsonFiles = this.charJSONArray.split("JSONArray");
+        this.charJSONArray = ""
+        for (int i = 0; i < jsonFiles.length - 1; i++)
+        {
+            this.charJSONArray = this.charJSONArray + jsonFiles.getAt(i) + "JSONArray"
+        }
     }
 }

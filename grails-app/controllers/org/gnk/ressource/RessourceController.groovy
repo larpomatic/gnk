@@ -63,7 +63,7 @@ class RessourceController {
         session.setAttribute("placeList", inputHandler.placeList)
         //test
         GnInformation gnInfo = inputHandler.gnInfo
-        //List<Character> characterList = inputHandler.characterList
+        List<Character> characterList = inputHandler.characterList
         List<Resource> resourceList = inputHandler.resourceList
         //List<Place> placeList = inputHandler.placeList
         //List<Pastscene> pastsceneList = inputHandler.pastsceneList
@@ -71,7 +71,7 @@ class RessourceController {
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
 
         [gnInfo: gnInfo,
-         //characterList: characterList,
+         characterList: characterList,
          resourceList: resourceList,
          //placeList: placeList,
          //pastsceneList: pastsceneList,
@@ -90,6 +90,7 @@ class RessourceController {
 
 
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
         gn.save(flush: true);
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
@@ -130,10 +131,14 @@ class RessourceController {
         OutputHandler outputHandler = NamingController.getOutputHandler()
         // Characters
         //JSONArray charsJSONArray = subJSON.subCharacter
+        //JSONArray charsJSONArray = session.getAttribute("charsArray")
         //outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
         // Resources
         JSONArray resourcesJSONArray = subJSON.subResource
-        outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
+        Gn gn = Gn.get(gnDbId)
+        gn.setCharArray(resourcesJSONArray)
+        gn.save(flush: true, failOnError: true);
+        //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
         // Places
         //JSONArray placesJSONArray = subJSON.subPlace
         //outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
