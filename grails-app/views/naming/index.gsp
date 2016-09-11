@@ -15,6 +15,8 @@
 
 <body>
 <h1>Naming</h1>
+<div id="subAlertContainer">
+</div>
 
 <g:hiddenField name="gnId" value="${gnId}"/>
 <div class="form-actions">
@@ -58,7 +60,7 @@
         else
         {
             addAlert("subAlertContainer", "alert alert-error", "Erreur",
-                    "La substitution doit être complète pour être validée.")
+                    "La substitution des personnages doit être complète pour être validée.")
             return false
         }
     }

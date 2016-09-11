@@ -15,6 +15,8 @@
 
 <body>
 <h1>Ressource</h1>
+<div id="subAlertContainer">
+</div>
 
 <g:hiddenField name="gnId" value="${gnId}"/>
 <div class="form-actions">
@@ -57,7 +59,7 @@
         else
         {
             addAlert("subAlertContainer", "alert alert-error", "Erreur",
-                    "La substitution doit être complète pour être validée.")
+                    "La substitution des ressources doit être complète pour être validée.")
             return false
         }
     }
