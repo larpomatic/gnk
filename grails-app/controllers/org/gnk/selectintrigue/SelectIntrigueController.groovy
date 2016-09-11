@@ -78,7 +78,7 @@ class SelectIntrigueController {
         else if (step == "life"){
             redirect(controller: 'life', action:'life', params: [gnId: id as String]);
         }
-        else if (step == "substitution") {
+        else if (step == "naming") {
             List<String> sexes = new ArrayList<>();
             for (org.gnk.roletoperso.Character character in gn.characterSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
@@ -86,7 +86,37 @@ class SelectIntrigueController {
             for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
             }
-            redirect(controller: 'substitution', action:'index', params: [gnId: id as String, sexe: sexes]);
+            redirect(controller: 'naming', action:'index', params: [gnId: id as String, sexe: sexes]);
+        }
+        else if (step == "ressource") {
+            List<String> sexes = new ArrayList<>();
+            for (org.gnk.roletoperso.Character character in gn.characterSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            redirect(controller: 'ressource', action:'index', params: [gnId: id as String, sexe: sexes]);
+        }
+        else if (step == "place") {
+            List<String> sexes = new ArrayList<>();
+            for (org.gnk.roletoperso.Character character in gn.characterSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            redirect(controller: 'place', action:'index', params: [gnId: id as String, sexe: sexes]);
+        }
+        else if (step == "time") {
+            List<String> sexes = new ArrayList<>();
+            for (org.gnk.roletoperso.Character character in gn.characterSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
+                sexes.add("sexe_" + character.getDTDId() as String);
+            }
+            redirect(controller: 'time', action:'index', params: [gnId: id as String, sexe: sexes]);
         }
         else if (step == "publication") {
             redirect(controller: 'publication', action:'index', params: [gnId: id as String]);

@@ -280,4 +280,9 @@ class Gn {
             this.charJSONArray = this.charJSONArray + jsonFiles.getAt(i) + "JSONArray"
         }
     }
+
+    void removeAllCharArray()
+    {
+        this.charJSONArray = ""
+    }
 }
