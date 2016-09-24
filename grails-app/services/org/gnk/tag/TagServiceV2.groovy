@@ -90,4 +90,8 @@ class TagServiceV2 {
         return null;
         
     }
+
+    Integer computeFatherWeight (Integer sonWeight, Integer relationWeight) {
+
+    }
 }
