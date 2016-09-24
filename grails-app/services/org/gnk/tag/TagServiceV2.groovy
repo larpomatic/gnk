@@ -115,7 +115,6 @@ class TagServiceV2 {
         }
 
 
-
         for (Map.Entry<Tag, Integer> entry : map_tags.entrySet()) {
             map_tags.putAll(getRelevantTags(entry.getKey(), entry.getValue(), ))
         }
