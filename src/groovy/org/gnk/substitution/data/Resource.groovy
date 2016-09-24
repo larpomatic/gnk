@@ -1,5 +1,7 @@
 package org.gnk.substitution.data
 
+import org.gnk.roletoperso.Character;
+
 class Resource {
 	String id
     String plotId

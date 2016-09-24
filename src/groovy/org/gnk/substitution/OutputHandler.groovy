@@ -429,11 +429,11 @@ class OutputHandler {
                 pastscene.dateDay = pastscene.absoluteDay
                 pastscene.dateMinute = pastscene.absoluteMinute
 
-                pastscene.isHourAbsolute = true
-                pastscene.isMinuteAbsolute = true
-                pastscene.isDayAbsolute = true
-                pastscene.isMonthAbsolute = true
-                pastscene.isYearAbsolute = true
+                pastscene.isAbsoluteHour = true
+                pastscene.isAbsoluteMinute = true
+                pastscene.isAbsoluteDay = true
+                pastscene.isAbsoluteMonth = true
+                pastscene.isAbsoluteYear = true
             }
 
             // On doit mettre à jour le relative time avec l'absolute saisie

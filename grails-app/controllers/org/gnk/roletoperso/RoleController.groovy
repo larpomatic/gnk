@@ -17,7 +17,7 @@ class RoleController {
 	def save () {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
-        Boolean res = saveOrUpdate(role);
+        Integer res = saveOrUpdate(role);
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
@@ -116,11 +116,11 @@ class RoleController {
             jsonPastscene.put("Day", pastscene.dateDay);
             jsonPastscene.put("Hour", pastscene.dateHour);
             jsonPastscene.put("Minute", pastscene.dateMinute);
-            jsonPastscene.put("isAbsoluteYear", pastscene.getIsYearAbsolute());
-            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsMonthAbsolute());
-            jsonPastscene.put("isAbsoluteDay", pastscene.getIsDayAbsolute());
-            jsonPastscene.put("isAbsoluteHour", pastscene.getIsHourAbsolute());
-            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsMinuteAbsolute());
+            jsonPastscene.put("isAbsoluteYear", pastscene.getIsAbsoluteYear());
+            jsonPastscene.put("isAbsoluteMonth", pastscene.getIsAbsoluteMonth());
+            jsonPastscene.put("isAbsoluteDay", pastscene.getIsAbsoluteDay());
+            jsonPastscene.put("isAbsoluteHour", pastscene.getIsAbsoluteHour());
+            jsonPastscene.put("isAbsoluteMinute", pastscene.getIsAbsoluteMinute());
             jsonPastsceneList.add(jsonPastscene);
         }
         jsonRole.put("pastsceneList", jsonPastsceneList);
@@ -141,46 +141,51 @@ class RoleController {
 		}
 	}
 
+    //the integer returned is used for displaying the popups (success and error messages in role.js)
 	def saveOrUpdate(Role newRole) {
-
-
         if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
 		} else {
-			return false
+			return 1
 		}
-		if (params.containsKey("roleCode") && Role.findByPlotAndCode(newRole.plot, params.roleCode) == null) {
+        Role old = Role.findByPlotAndCode(newRole.plot, params.roleCode)
+		if (params.containsKey("roleCode") && (old == null || old.id == newRole.id)) {
 			newRole.code = params.roleCode
 		} else {
-			return false
+			return 2
 		}
-		if (params.containsKey("rolePipi")) {
-			newRole.pipi = params.rolePipi as Integer
-		} else {
-			return false
-		}
-		if (params.containsKey("rolePipr")) {
-			newRole.pipr = params.rolePipr as Integer
-		} else {
-			return false
-		}
+        try {
+            if (params.containsKey("rolePipi")) {
+                newRole.pipi = params.rolePipi as Integer
+            } else {
+                return 3
+            }
+            if (params.containsKey("rolePipr")) {
+                newRole.pipr = params.rolePipr as Integer
+            } else {
+                return 3
+            }
+        }
+        catch (NumberFormatException nfe) {
+            return 3
+        }
 		if (params.containsKey("roleDescription")) {
 			newRole.description = params.roleDescription
 		} else {
-			return false
+			return 1
 		}
 		if (params.containsKey("roleType") && (params.roleType == "PJ" || params.roleType == "PNJ" || params.roleType == "PHJ"
         || params.roleType == "PJG" || params.roleType == "TPJ" || params.roleType == "PJB" || params.roleType == "STF")) {
 			newRole.type = params.roleType
 		} else {
-			return false
+			return 1
 		}
         if (params.containsKey("rolePJGP")){
             newRole.pjgp = params.rolePJGP as Integer
         } else {
             if (params.roleType == "PJG")
-            return false
+            return 1
         }
 		if(newRole.roleHasTags != null) {
             HashSet<RoleHasTag> roleHasTags = newRole.roleHasTags;
@@ -212,7 +217,7 @@ class RoleController {
             }
         }
         newRole.save(flush: true);
-        return true;
+        return 0;
 	}
 
     def createRoleHasEvent(Role newRole, Event event) {

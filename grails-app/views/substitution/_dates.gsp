@@ -460,7 +460,7 @@
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
-            pastscene.absoluteMinute = "${pastscene.absoluteMinute}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
 
 
 
