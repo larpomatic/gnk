@@ -53,7 +53,7 @@ class TagServiceV2 {
             map_tags.put(gnevenementialTags_list.getKey(), new Integer((int)gnevenementialTags_list.getValue() * 0.6));
         }
 
-        // chaque poids d'un tag evenementiel du GN est pondéré à 40%
+        // chaque poids d'un tag mainstream du GN est pondéré à 40%
         for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
             map_tags.put(gnmainstreamTags_list.getKey(), new Integer((int)gnmainstreamTags_list.getValue() * 0.4));
         }
@@ -88,5 +88,6 @@ class TagServiceV2 {
 
     Long computeCumulativeScoreTags(Tag tag, Integer i , Integer ii) {
         return null;
+        
     }
 }
