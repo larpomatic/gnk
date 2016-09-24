@@ -13,6 +13,14 @@ class TagServiceV2 {
         return gn.getUnivers();
     }
 
+    ArrayList<Tag> getUnivers() {
+        ArrayList<Tag> tagUniversList = new ArrayList<Tag>();
+
+
+
+        return tagArrayList;
+    }
+
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
