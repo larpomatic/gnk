@@ -2,6 +2,9 @@ package org.gnk.tag
 
 import org.gnk.gn.Gn
 import org.gnk.resplacetime.GenericPlace
+import org.gnk.resplacetime.GenericResource
+import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.Resource
 import org.gnk.selectintrigue.Plot
 
 class TagServiceV2 {
@@ -58,8 +61,14 @@ class TagServiceV2 {
             map_tags.put(gnmainstreamTags_list.getKey(), new Integer((int)gnmainstreamTags_list.getValue() * 0.4));
         }
 
+        // chaque poids d'un tan normal du GN est pondéré à 40%
 
         // récupérer les tags de l'intrigue
+        Set<Plot> plotlist = gn.selectedPlotSet;
+        for (Plot p : plotlist) {
+           // for (Tag tp : p.getTag)
+
+        }
 
         return map_tags;
     }
@@ -73,9 +82,32 @@ class TagServiceV2 {
         return map_tags;
     }
 
-    Map<Tag, Integer> getRelevantTags(Object) {
+    Map<Tag, Integer> getRelevantTags(Object object) {
        //récupérer les tags de l'objet dans la base et les stocker dans une map
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
+
+        //si generic resource
+        if (object instanceof GenericResource) {
+            //your code
+        }
+
+        //si generic place
+        if (object instanceof GenericPlace) {
+            //your code
+        }
+
+        // si resource
+        if (object instanceof Resource) {
+            //your code
+        }
+
+        // si place
+        if (object instanceof Place) {
+            //your code
+        }
+
+
+
         for (Map.Entry<Tag, Integer> entry : map_tags.entrySet()) {
             map_tags.putAll(getRelevantTags(entry.getKey(), entry.getValue(), ))
         }
@@ -86,8 +118,12 @@ class TagServiceV2 {
         return null;
     }
 
+    Map<Tag, Integer> getParentTags(Object object) {
+        return null;
+    }
+
     Long computeCumulativeScoreTags(Tag tag, Integer i , Integer ii) {
         return null;
-        
+
     }
 }
