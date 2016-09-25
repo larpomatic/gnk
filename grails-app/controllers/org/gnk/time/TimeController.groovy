@@ -96,15 +96,6 @@ class TimeController {
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.removeCharArray();
         gn.save(flush: true);
-        /*Integer evenementialId = 0;
-        Integer mainstreamId = 0;
-        for (Plot plot in gn.selectedPlotSet) {
-            if (plot.isEvenemential) {
-                evenementialId = Plot.findByName(plot.name).id;
-            } else if (plot.isMainstream && gn.isMainstream) {
-                mainstreamId = Plot.findByName(plot.name).id; ;
-            }
-        }*/
 
         redirect(controller: 'placeSub', action: 'index', params: [gnId: id as String]);
     }

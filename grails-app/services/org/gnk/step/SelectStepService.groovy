@@ -96,9 +96,6 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackSelectIntrigue(Gn gn) {
-        //Gn gn = Gn.get(id);
-        //final gnData = new GNKDataContainerService();
-        //gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "selectIntrigue";
         gn.characterSet = null;
@@ -183,9 +180,6 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackLife(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "role2perso";
         gn.isLife = false
@@ -198,16 +192,12 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackPublication(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
-        gn.removeCharArray()
         gn.step = "time"
         gn.save(flush: true);
     }
@@ -258,9 +248,6 @@ class SelectStepService {
     }
 
     def getBackSubstitution(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "life"
         gn.removeAllCharArray()

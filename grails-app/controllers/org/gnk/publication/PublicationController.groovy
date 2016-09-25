@@ -35,7 +35,6 @@ class PublicationController {
         Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
-        //gn.step = "substitution";
 
         /* for (Plot p : gn.getSelectedPlotSet())
          {
@@ -50,7 +49,6 @@ class PublicationController {
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
-        gn.removeCharArray();
         gn.save(flush: true);
         List<String> sexes = new ArrayList<>();
         for (Character character in gn.characterSet) {

@@ -144,16 +144,6 @@ class NamingController {
         Gn gn = Gn.get(gnDbId)
         gn.setCharArray(charsJSONArray)
         gn.save(flush: true, failOnError: true);
-        //outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
-        // Resources
-        //JSONArray resourcesJSONArray = subJSON.subResource
-        //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
-        // Places
-        //JSONArray placesJSONArray = subJSON.subPlace
-        //outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
-        // Dates
-        //JSONObject datesJSON = subJSON.subDate
-        //outputHandler.updateGnWithDates(gnkDataContainerService, datesJSON)
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
@@ -182,9 +172,8 @@ class NamingController {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
             }
-            // Go to publication
+            // Go to Ressource
             redirect(controller: "ressource", action: "index", params: [gnId: gnDbId])
-            //redirect(controller: "publication", action: "index", params: [gnId: gnDbId])
 
         }
     }

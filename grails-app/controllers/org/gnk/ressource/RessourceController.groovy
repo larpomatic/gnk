@@ -65,16 +65,12 @@ class RessourceController {
         GnInformation gnInfo = inputHandler.gnInfo
         List<Character> characterList = inputHandler.characterList
         List<Resource> resourceList = inputHandler.resourceList
-        //List<Place> placeList = inputHandler.placeList
-        //List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
 
         [gnInfo: gnInfo,
          characterList: characterList,
          resourceList: resourceList,
-         //placeList: placeList,
-         //pastsceneList: pastsceneList,
          eventList: eventList,
          relationjson: json,
          gnId: gnIdStr,
@@ -92,15 +88,6 @@ class RessourceController {
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.removeCharArray();
         gn.save(flush: true);
-        Integer evenementialId = 0;
-        Integer mainstreamId = 0;
-        for (Plot plot in gn.selectedPlotSet) {
-            if (plot.isEvenemential) {
-                evenementialId = Plot.findByName(plot.name).id;
-            } else if (plot.isMainstream && gn.isMainstream) {
-                mainstreamId = Plot.findByName(plot.name).id; ;
-            }
-        }
         redirect(controller: 'naming', action: 'index', params: [gnId: id as String]);
     }
 
@@ -129,22 +116,11 @@ class RessourceController {
 
         // Output Substitution
         OutputHandler outputHandler = NamingController.getOutputHandler()
-        // Characters
-        //JSONArray charsJSONArray = subJSON.subCharacter
-        //JSONArray charsJSONArray = session.getAttribute("charsArray")
-        //outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
         // Resources
         JSONArray resourcesJSONArray = subJSON.subResource
         Gn gn = Gn.get(gnDbId)
         gn.setCharArray(resourcesJSONArray)
         gn.save(flush: true, failOnError: true);
-        //outputHandler.updateGnWithResources(gnkDataContainerService, resourcesJSONArray)
-        // Places
-        //JSONArray placesJSONArray = subJSON.subPlace
-        //outputHandler.updateGnWithPlaces(gnkDataContainerService, placesJSONArray)
-        // Dates
-        //JSONObject datesJSON = subJSON.subDate
-        //outputHandler.updateGnWithDates(gnkDataContainerService, datesJSON)
 
         // Writer
         GnXMLWriterService gnXMLWriter = new GnXMLWriterService()
@@ -173,7 +149,7 @@ class RessourceController {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
             }
-            // Go to publication
+            // Go to Place
             redirect(controller: "placeSub", action: "index", params: [gnId: gnDbId])
 
         }
