@@ -47,7 +47,7 @@ class TagServiceV2 {
             {
                 if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
-                    tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
+                    score = tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
                 }
             }
         }
@@ -104,36 +104,39 @@ class TagServiceV2 {
 
     // récupère les tags avec poids d'un objet place/resource, générique ou non
     Map<Tag, Integer> getRelevantTags(Object object) {
+
         //récupérer les tags de l'objet dans la base et les stocker dans une map
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
         //si generic resource
         if (object instanceof GenericResource) {
-            //your code
+
         }
 
         //si generic place
         if (object instanceof GenericPlace) {
-            //your code
+
         }
 
         // si resource
         if (object instanceof Resource) {
-            //your code
+
         }
 
         // si place
         if (object instanceof Place) {
-            //your code
+
         }
 
 
         return map_tags;
     }
 
+
     Map<Tag, Integer> getRelevantTags(Tag tag, Integer i, Integer it) {
         return null;
     }
+
 
     Map<Tag, Integer> getParentTags(Object object) {
         def tags = org.gnk.tag.Tag.findAllWhere(parent: object)
@@ -141,13 +144,13 @@ class TagServiceV2 {
     }
 
 
-/* fonction qui permet de regler le probleme d'acces a Generic_Place
-   pour le traitement de la ponderation cumulee du tag réalisé dans
-   computeCumulativeScoreTags dans laquelle on doit faire un traitement special si
-   le tag est un tag univers.
-*/
+    /** fonction qui permet de regler le probleme d'acces a Generic_Place
+      * pour le traitement de la ponderation cumulee du tag réalisé dans
+      * computeCumulativeScoreTags dans laquelle on doit faire un traitement special si
+      * le tag est un tag univers.
+      */
 
-    int tagUniversTreatment(Tag tag, Integer score, Map<Tag, Integer> map_genericObject){
+    int tagUniversTreatment(Tag tag, Long score, Map<Tag, Integer> map_genericObject){
         int dividingNumber = map_genericObject.size() / 3;
 
         if (tag.name.toLowerCase().contains("Univers".toLowerCase()))
