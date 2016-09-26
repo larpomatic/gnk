@@ -183,4 +183,17 @@ class TagServiceV2 {
 
         return result;
     }
+
+    private Map<Tag, Integer> addTag (Map<Tag, Integer> map, Tag tag, Integer integer) {
+        Integer testValue = map.get(tag);
+
+        if (testValue) {
+            if (Math.abs(testValue) < Math.abs(integer))
+                map.put(tag, integer);
+            else
+                return;
+        } else
+            map.put(tag, integer);
+    }
+
 }
