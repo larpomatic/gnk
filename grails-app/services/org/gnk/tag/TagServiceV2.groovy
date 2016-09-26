@@ -177,8 +177,14 @@ class TagServiceV2 {
     }
 
     Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
-        Integer 
+        Integer result = sonWeight * relationWeight / 100;
+
+        if (result < -100)
+            result = -100;
+
+        if (result > 100)
+            result = 100;
+
+        return result;
     }
-
-
 }
