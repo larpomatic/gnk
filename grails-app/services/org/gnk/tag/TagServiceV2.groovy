@@ -6,28 +6,33 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.gnk.selectintrigue.Plot
+import org.gnk.selectintrigue.PlotHasTag
 
 class TagServiceV2 {
 
+    // retourne le tag univers d'un GN
     Tag getUniver(Gn gn) {
         return gn.getUnivers();
     }
 
+    // calcule le score total de similarité entre un GenericObjet et un Objet
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
-        map_genericObject.putAll(getRelevantTags(GenericObject));
+        //map_genericObject.putAll(getRelevantTags(GenericObject));
 
         Map<Tag, Integer> map_Object = initObjectList(Object);
-        map_Object.putAll(getRelevantTags(Object));
+        //map_Object.putAll(getRelevantTags(Object));
 
+        map_genericObject.put()
 
         Long score = 0;
+
 
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
             for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet())
             {
-                if (entry_generic.getKey().getId().equals(entry_generic.getKey().getId())) {
+                if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
 
                 }
@@ -66,7 +71,9 @@ class TagServiceV2 {
         // récupérer les tags de l'intrigue
         Set<Plot> plotlist = gn.selectedPlotSet;
         for (Plot p : plotlist) {
-           // for (Tag tp : p.getTag)
+             for (PlotHasTag tp : p.plotHasTag) {
+                 map_tags.put(tp.tag, tp.weight);
+             }
 
         }
 
@@ -118,7 +125,8 @@ class TagServiceV2 {
     }
 
     Map<Tag, Integer> getParentTags(Object object) {
-        return null;
+        def tags = org.gnk.tag.Tag.findAllWhere(parent: object)
+        return tags;
     }
 
     Long computeCumulativeScoreTags(Tag tag, Integer i , Integer ii) {
