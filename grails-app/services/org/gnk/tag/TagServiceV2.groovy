@@ -16,6 +16,12 @@ class TagServiceV2 {
     }
 
     // calcule le score total de similarité entre un GenericObjet et un Objet
+    ArrayList<Tag> getUnivers() {
+        ArrayList<Tag> tagUniversList = new ArrayList<Tag>();
+
+        return tagArrayList;
+    }
+
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
@@ -24,10 +30,8 @@ class TagServiceV2 {
         Map<Tag, Integer> map_Object = initObjectList(Object);
         //map_Object.putAll(getRelevantTags(Object));
 
-        map_genericObject.put()
 
         Long score = 0;
-
 
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
             for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet())
