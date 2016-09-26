@@ -15,7 +15,7 @@ class TagServiceV2 {
         return gn.getUnivers();
     }
 
-    // calcule le score total de similarité entre un GenericObjet et un Objet
+
     ArrayList<Tag> getUnivers() {
         ArrayList<Tag> tagUniversList = new ArrayList<Tag>();
         Tag genericUnivers = Tag.findByName("Tag Univers");
@@ -23,11 +23,13 @@ class TagServiceV2 {
         for (Tag child in genericUnivers.children) {
             tagUniversList.add(child);
         }
-//        Collections.sort(tagUniversList, new ComparateurTag())
+       // Collections.sort(tagUniversList, new ComparateurTag())
 
         return tagUniversList;
     }
 
+
+    // calcule le score total de similarité entre un GenericObjet et un Objet
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
@@ -53,6 +55,7 @@ class TagServiceV2 {
         return score;
     }
 
+    //initialise la liste de tag avec poids d'un objet générique place/resource et du GN
     Map<Tag, Integer> initGenericObjectList(Object GenericObject, Gn gn) {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
@@ -89,6 +92,7 @@ class TagServiceV2 {
         return map_tags;
     }
 
+    // initialise la liste de tag d'un objet place/resource
     Map<Tag, Integer> initObjectList(Object object) {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
@@ -98,6 +102,7 @@ class TagServiceV2 {
         return map_tags;
     }
 
+    // récupère les tags avec poids d'un objet place/resource, générique ou non
     Map<Tag, Integer> getRelevantTags(Object object) {
         //récupérer les tags de l'objet dans la base et les stocker dans une map
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
@@ -123,9 +128,6 @@ class TagServiceV2 {
         }
 
 
-        for (Map.Entry<Tag, Integer> entry : map_tags.entrySet()) {
-            map_tags.putAll(getRelevantTags(entry.getKey(), entry.getValue(),))
-        }
         return map_tags;
     }
 
