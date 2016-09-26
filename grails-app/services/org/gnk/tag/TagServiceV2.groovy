@@ -39,15 +39,15 @@ class TagServiceV2 {
 
         Long score = 0;
 
+
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
             for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet())
             {
                 if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
-
+                    tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
                 }
             }
-
         }
 
         return score;
@@ -139,6 +139,21 @@ class TagServiceV2 {
     }
 
 
+/* fonction qui permet de regler le probleme d'acces a Generic_Place
+   pour le traitement de la ponderation cumulee du tag réalisé dans
+   computeCumulativeScoreTags dans laquelle on doit faire un traitement special si
+   le tag est un tag univers.
+*/
+
+    int tagUniversTreatment(Tag tag, Integer score, Map<Tag, Integer> map_genericObject){
+        int dividingNumber = map_genericObject.size() / 3;
+
+        if (tag.name.toLowerCase().contains("Univers".toLowerCase()))
+            if (dividingNumber > 1)
+                score *= dividingNumber;
+
+            return score;
+    }
 
     /**
      * Retourne le score de comparaison d’un tag existant dans les 2 listes
