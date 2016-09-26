@@ -6,6 +6,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.gnk.selectintrigue.Plot
+import org.gnk.utils.ComparateurTag
 
 class TagServiceV2 {
 
@@ -15,10 +16,14 @@ class TagServiceV2 {
 
     ArrayList<Tag> getUnivers() {
         ArrayList<Tag> tagUniversList = new ArrayList<Tag>();
+        Tag genericUnivers = Tag.findByName("Tag Univers");
 
+        for (Tag child in genericUnivers.children) {
+            tagUniversList.add(child);
+        }
+//        Collections.sort(tagUniversList, new ComparateurTag())
 
-
-        return tagArrayList;
+        return tagUniversList;
     }
 
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
@@ -33,8 +38,7 @@ class TagServiceV2 {
         Long score = 0;
 
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
-            for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet())
-            {
+            for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet()) {
                 if (entry_generic.getKey().getId().equals(entry_generic.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
 
@@ -56,17 +60,17 @@ class TagServiceV2 {
         //recupérer les tags du gn
         // chaque poids d'un tag du GN est pondéré à 90%
         for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
-            map_tags.put(gnTags_list.getKey(), new Integer((int)gnTags_list.getValue() * 0.9 ));
+            map_tags.put(gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * 0.9));
         }
 
         // chaque poids d'un tag evenementiel du GN est pondéré à 60%
         for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
-            map_tags.put(gnevenementialTags_list.getKey(), new Integer((int)gnevenementialTags_list.getValue() * 0.6));
+            map_tags.put(gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * 0.6));
         }
 
         // chaque poids d'un tag mainstream du GN est pondéré à 40%
         for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
-            map_tags.put(gnmainstreamTags_list.getKey(), new Integer((int)gnmainstreamTags_list.getValue() * 0.4));
+            map_tags.put(gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * 0.4));
         }
 
         // chaque poids d'un tan normal du GN est pondéré à 40%
@@ -74,7 +78,7 @@ class TagServiceV2 {
         // récupérer les tags de l'intrigue
         Set<Plot> plotlist = gn.selectedPlotSet;
         for (Plot p : plotlist) {
-           // for (Tag tp : p.getTag)
+            // for (Tag tp : p.getTag)
 
         }
 
@@ -91,7 +95,7 @@ class TagServiceV2 {
     }
 
     Map<Tag, Integer> getRelevantTags(Object object) {
-       //récupérer les tags de l'objet dans la base et les stocker dans une map
+        //récupérer les tags de l'objet dans la base et les stocker dans une map
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
         //si generic resource
@@ -116,12 +120,12 @@ class TagServiceV2 {
 
 
         for (Map.Entry<Tag, Integer> entry : map_tags.entrySet()) {
-            map_tags.putAll(getRelevantTags(entry.getKey(), entry.getValue(), ))
+            map_tags.putAll(getRelevantTags(entry.getKey(), entry.getValue(),))
         }
         return map_tags;
     }
 
-    Map<Tag, Integer> getRelevantTags(Tag tag, Integer i , Integer it) {
+    Map<Tag, Integer> getRelevantTags(Tag tag, Integer i, Integer it) {
         return null;
     }
 
@@ -129,12 +133,25 @@ class TagServiceV2 {
         return null;
     }
 
-    Long computeCumulativeScoreTags(Tag tag, Integer i , Integer ii) {
-        return null;
 
+
+    /**
+     * Retourne le score de comparaison d’un tag existant dans les 2 listes
+     * @param tag : le tag en question
+     * @param GPweight : le poids de la liste de Generic_Place
+     * @param Pweight : le poids de la liste de Place
+     */
+    Long computeCumulativeScoreTags(Tag tag, Integer GPweight, Integer Pweight)  {
+        long score = 0;
+
+        score = Math.abs(GPweight) + Math.abs(Pweight);
+        if (GPweight*Pweight == -1)
+            score *= -1;
+
+        return score;
     }
 
-    Integer computeFatherWeight (Integer sonWeight, Integer relationWeight) {
+    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
 
     }
 
