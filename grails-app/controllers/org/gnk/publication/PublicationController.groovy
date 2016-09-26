@@ -35,7 +35,6 @@ class PublicationController {
         Gn gn = Gn.get(id);
         final gnData = new GNKDataContainerService();
         gnData.ReadDTD(gn);
-        //gn.step = "substitution";
 
         /* for (Plot p : gn.getSelectedPlotSet())
          {
@@ -58,7 +57,7 @@ class PublicationController {
         for (Character character in gn.nonPlayerCharSet) {
             sexes.add("sexe_" + character.getDTDId() as String);
         }
-        redirect(controller: 'substitution', action: 'index', params: [gnId: id as String, sexe: sexes]);
+        redirect(controller: 'time', action: 'index', params: [gnId: id as String, sexe: sexes]);
     }
 
     def index() {
