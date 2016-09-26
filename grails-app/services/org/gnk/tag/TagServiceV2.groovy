@@ -33,17 +33,15 @@ class TagServiceV2 {
     Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
-        //map_genericObject.putAll(getRelevantTags(GenericObject));
 
         Map<Tag, Integer> map_Object = initObjectList(Object);
-        //map_Object.putAll(getRelevantTags(Object));
 
 
         Long score = 0;
 
 
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
-            for (Map.Entry<Tag, Integer> entry : map_genericObject.entrySet())
+            for (Map.Entry<Tag, Integer> entry : map_Object.entrySet())
             {
                 if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
@@ -79,13 +77,11 @@ class TagServiceV2 {
             map_tags.put(gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * 0.4));
         }
 
-        // chaque poids d'un tan normal du GN est pondéré à 40%
-
-        // récupérer les tags de l'intrigue
+        // chaque poids d'un tag normal d'une intrigue est pondéré à 20%
         Set<Plot> plotlist = gn.selectedPlotSet;
         for (Plot p : plotlist) {
              for (PlotHasTag tp : p.plotHasTag) {
-                 map_tags.put(tp.tag, tp.weight);
+                 map_tags.put(tp.tag, new Integer((int)tp.weight * 0.2));
              }
         }
 
