@@ -10,6 +10,8 @@ import org.gnk.selectintrigue.PlotHasTag
 
 class TagServiceV2 {
 
+    private static int IDgenericUniverTag = 33089;
+
 
     /**
      * get the universe from the gn
@@ -20,35 +22,49 @@ class TagServiceV2 {
         return gn.getUnivers();
     }
 
+    def findChildren(Tag t) {
+        def tags = Tag.findAllWhere(parent: t)
+        def tagsTmp = new ArrayList()
+        tagsTmp.addAll(tags)
+        if (tagsTmp == null)
+            return tags
+        for (Tag tag : tagsTmp) {
+            tags.addAll(findChildren(tag))
+        }
+        return tags
+    }
+
     /**
      * get all the univers
      * @return list of all the univers
      */
     ArrayList<Tag> getUnivers() {
-        ArrayList<Tag> tagUniversList = new ArrayList<Tag>();
-        Tag genericUnivers = Tag.findByName("Tag Univers");
+        ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
+        Tag genericUnivers = Tag.findById(IDgenericUniverTag);
 
-        for (Tag child in genericUnivers.children) {
-            tagUniversList.add(child);
-        }
+        UniverListTag = Tag.findAllByParent(parent: genericUnivers);
+        Collections.sort(UniverListTag);
+
+       //    for (Tag child in genericUnivers.children)
+       //       UniverListTag.add(child);
        // Collections.sort(tagUniversList, new ComparateurTag())
 
-        return tagUniversList;
+        return UniverListTag;
     }
 
 
     /**
      * Calculate the total score of similitude between a GenericObjet and an Objet
-     * @param GenericObject
+     * @param genericObject
      * @param Object
      * @param gn
      * @return the calculus in Long
      */
-    Long computeComparativeScoreObject(Object GenericObject, Object Object, Gn gn) {
+    Long computeComparativeScoreObject(Object genericObject, Object object, Gn gn) {
 
-        Map<Tag, Integer> map_genericObject = initGenericObjectList(GenericObject, gn);
+        Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
 
-        Map<Tag, Integer> map_Object = initObjectList(Object);
+        Map<Tag, Integer> map_Object = initObjectList(object);
 
 
         Long score = 0;
@@ -121,7 +137,6 @@ class TagServiceV2 {
         return map_tags;
     }
 
-    // récupère les tags avec poids d'un objet place/resource, générique ou non
     /**
      * get tags with weights from an object Place/Resource witch is generic or not
      * @param object
@@ -177,15 +192,8 @@ class TagServiceV2 {
         return tags;
     }
 
-
-    /** fonction qui permet de regler le probleme d'acces a Generic_Place
-      * pour le traitement de la ponderation cumulee du tag réalisé dans
-      * computeCumulativeScoreTags dans laquelle on doit faire un traitement special si
-      * le tag est un tag univers.
-      */
-
     /**
-     * Treatment that divide the cumulated weighting tag score when the tag is a universe tag
+     * Treatment that divide the cumulated weighting tag score when the tag is a universe tag.
      * @param tag
      * @param score
      * @param map_genericObject
@@ -200,13 +208,6 @@ class TagServiceV2 {
 
             return score;
     }
-
-    /**
-     * Retourne le score de comparaison d’un tag existant dans les 2 listes
-     * @param tag : le tag en question
-     * @param GPweight : le poids de la liste de Generic_Place
-     * @param Pweight : le poids de la liste de Place
-     */
 
     /**
      * Compute the cumulative score tag between 2 the Generic_Place list and Place list
@@ -245,7 +246,6 @@ class TagServiceV2 {
         return result;
     }
 
-    // Ajoute une paire Tag/Integer dans une map en gérant le cas où la map contient déjà cette paire (garder la plus grande valeur absolue).
     /**
      * Add a Tag/integer pair in a map with managing the case if the pair already exists (keep the bigger absolute value)
      * @param map
