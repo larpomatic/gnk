@@ -442,7 +442,7 @@
         <g:each status="i" in="${pastsceneList}" var="pastscene">
             var pastscene = new Object();
             // Gn id
-            pastscene.gnId = "${pastscene.id}";
+            pastscene.gnId = "${pastscene.gnId}";
             // Gn plot id
             pastscene.gnPlotId = "${pastscene.plotId}";
             // HTML id
@@ -450,14 +450,14 @@
             // Time
 
             // DOIT ËTRE SUPP
-            //pastscene.relativeTime = "${pastscene.relativeTime}";
-            //pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
+            //pastscene.timingRelative = "${pastscene.timingRelative}";
+            //pastscene.unitTimingRelative = "${pastscene.unitTimingRelative}";
             // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
-            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMinute}";
 
 
 
