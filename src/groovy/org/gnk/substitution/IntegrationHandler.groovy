@@ -133,8 +133,7 @@ class IntegrationHandler {
 
         // NAMING CALL
         NamingService namingService = new NamingService()
-        String s = charJsonObject.gnId
-        charForNamingList = namingService.namingMethod(charForNamingList, s.toInteger())
+        charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
         // END NAMING CALL
 
         // Update json
@@ -442,12 +441,12 @@ class IntegrationHandler {
             PastsceneTime pastsceneTime = new PastsceneTime()
             pastsceneTime.relativeDateValue = null
             pastsceneTime.relativeDateUnit = null
-            /*if (pastsceneJson.relativeTime != "") {
-                pastsceneTime.relativeDateValue = pastsceneJson.relativeTime as Integer
+            /*if (pastsceneJson.timingRelative != "") {
+                pastsceneTime.relativeDateValue = pastsceneJson.timingRelative as Integer
             }
 
             if (pastsceneJson.relativeDateUnit != "") {
-                pastsceneTime.relativeDateUnit = pastsceneJson.relativeTimeUnit
+                pastsceneTime.relativeDateUnit = pastsceneJson.unitTimingRelative
             }
             */
             pastsceneTime.absoluteYear = null

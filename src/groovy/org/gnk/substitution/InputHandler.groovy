@@ -7,10 +7,10 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.resplacetime.Event
-//import org.gnk.resplacetime.Pastscene
+import org.gnk.resplacetime.Pastscene
 
 //import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.Pastscene
+//import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
@@ -437,33 +437,21 @@ class InputHandler {
         for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
             for (pastscene in plot.pastescenes) {
-                Pastscene pastsceneData = new Pastscene()
 
-                // Id
-                pastsceneData.id = pastscene.DTDId
+                pastscene.gnId = pastscene.DTDId
                 // Plot id
-                pastsceneData.plotId = plotId
+                pastscene.plotId = plotId
                 //Plot name
-                pastsceneData.plotName = plot.name
-                // Title
-                pastsceneData.title = pastscene.title
-                // Relative time
-                pastsceneData.relativeTime = pastscene.timingRelative
-                pastsceneData.relativeTimeUnit = pastscene.unitTimingRelative
+                pastscene.plotName = plot.name
+
                 // Absolute time
-                pastsceneData.absoluteYear = pastscene.dateYear
-                pastsceneData.absoluteMonth = pastscene.dateMonth
-                pastsceneData.absoluteDay = pastscene.dateDay
-                pastsceneData.absoluteHour = pastscene.dateHour
-                pastsceneData.absoluteMin = pastscene.dateMinute
+                pastscene.absoluteYear = pastscene.dateYear
+                pastscene.absoluteMonth = pastscene.dateMonth
+                pastscene.absoluteDay = pastscene.dateDay
+                pastscene.absoluteHour = pastscene.dateHour
+                pastscene.absoluteMinute = pastscene.dateMinute
 
-                pastsceneData.isYearAbsolute = pastscene.isAbsoluteYear
-                pastsceneData.isMonthAbsolute = pastscene.isAbsoluteMonth
-                pastsceneData.isDayAbsolute = pastscene.isAbsoluteDay
-                pastsceneData.isHourAbsolute = pastscene.isAbsoluteHour
-                pastsceneData.isMinuteAbsolute = pastscene.isAbsoluteMinute
-
-                pastsceneList.add(pastsceneData)
+                pastsceneList.add(pastscene)
             }
         }
     }
