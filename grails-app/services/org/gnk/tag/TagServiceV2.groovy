@@ -248,15 +248,17 @@ class TagServiceV2 {
      * @return The map modified or not.
      */
     private Map<Tag, Integer> addTag(Map<Tag, Integer> map, Tag tag, Integer integer) {
+        Map<Tag, Integer> map_update = map;
         Integer testValue = map.get(tag);
 
-        if (testValue) {
+        if (testValue == null)
+            map_update.put(tag, integer);
+        else {
             if (Math.abs(testValue) < Math.abs(integer))
-                map.put(tag, integer);
-            else
-                return;
-        } else
-            map.put(tag, integer);
+                map_update.put(tag, integer);
+        }
+
+        return  map_update;
     }
 
 }
