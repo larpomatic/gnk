@@ -260,5 +260,4 @@ class TagServiceV2 {
 
         return  map_update;
     }
-
 }
