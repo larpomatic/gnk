@@ -14,13 +14,13 @@
 #edit-plot select:not(#selectUnivers):not(#selectUniversResource)
 {
     /*font-family: 'Shadows Into Light', cursive !important;*/
-    font-size: 24px !important;
+    font-size: 14px;
     font-family: 'Gudea', sans-serif !important;
 }
 
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
-#edit-plot select:not(#selectUnivers):not(#selectUniversResource) {
+#edit-plot select:not(#selectUnivers):not(#selectUniversResource):not(#type) {
     border: 0;
     outline: none;
     /*letter-spacing: 3px;*/
