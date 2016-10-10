@@ -12,7 +12,7 @@ import org.gnk.resplacetime.ReferentialObject
 
 class TagServiceV2 {
 
-    private static int IDgenericUniverTag = 33089;
+    private static long IDgenericUniverTag = 33089;
 
     /**
      * get the universe from the gn
