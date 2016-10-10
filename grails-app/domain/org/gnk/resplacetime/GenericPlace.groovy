@@ -47,7 +47,7 @@ class GenericPlace extends GenericObject{
      ArrayList<Tag> getTags() {
          return null;
      }
-     ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
+     Map<Tag, Integer> getTagsAndWeights() {
          return null;
      }
      ArrayList<ReferentialObject> getReferentialObject() {

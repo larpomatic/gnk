@@ -52,7 +52,17 @@ class TagServiceV2 {
     Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
+        //récupérer les tags du genericobjet
+        map_genericObject.putAll(getRelevantTags(genericObject));
+        //récupérer les tags parents
+        map_genericObject.putAll(getParentTags(genericObject));
+
+
         Map<Tag, Integer> map_Object = initObjectList(object);
+        //récupérer les tags du genericobjet
+        map_Object.putAll(getRelevantTags(object));
+        //récupérer les tags parents
+        map_Object.putAll(getParentTags(object));
 
         Long score = 0;
 
@@ -74,12 +84,11 @@ class TagServiceV2 {
      * @param gn
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> initGenericObjectList(GenericObject GenericObject, Gn gn) {
+    Map<Tag, Integer> initGenericObjectList(GenericObject genericObject, Gn gn) {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
-        //récupérer les tags du genericobjet
-        map_tags.putAll(getRelevantTags(GenericObject));
+        map_tags.putAll(genericObject.getTagsAndWeights())
 
         //recupérer les tags du gn
         // chaque poids d'un tag du GN est pondéré à 90%
@@ -118,7 +127,7 @@ class TagServiceV2 {
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
         // récupérer les tags de l'objet
-        map_tags.putAll(getRelevantTags(object));
+        map_tags.putAll(object.getTagsAndWeights());
         return map_tags;
     }
 
@@ -129,9 +138,11 @@ class TagServiceV2 {
      */
     Map<Tag, Integer> getRelevantTags(ReferentialObject object) {
 
-        //récupérer les tags de l'objet dans la base et les stocker dans une map
+        //récupérer les tags de l'objet et récupérer les tags intéressants qui leurs sont liés
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
+        ArrayList<Tag> object_tags = object.getTags();
 
+        return map_tags;
 
     }
 
@@ -140,10 +151,11 @@ class TagServiceV2 {
      * @param object
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> getRelevantTags(GenericObject object) {
+    Map<Tag, Integer> getRelevantTags(GenericObject genericobject) {
 
-        //récupérer les tags de l'objet dans la base et les stocker dans une map
+        //récupérer les tags du genericobjet et récupérer les tags intéressants qui leurs sont liés
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
+        ArrayList<Tag> genericobject_tags = genericobject.getTags();
 
 
         return map_tags;
@@ -166,6 +178,12 @@ class TagServiceV2 {
      * @return
      */
     Map<Tag, Integer> getParentTags(ReferentialObject object) {
+        Map<Tag, Integer> tags = Tag.findByParent(parent: object);
+
+        return tags;
+    }
+
+    Map<Tag, Integer> getParentTags(GenericObject object) {
         Map<Tag, Integer> tags = Tag.findByParent(parent: object);
 
         return tags;
@@ -194,11 +212,11 @@ class TagServiceV2 {
      * @param Pweight
      * @return the weight
      */
-    Long computeCumulativeScoreTags(Tag tag, Integer GPweight, Integer Pweight) {
+    Long computeCumulativeScoreTags(Tag tag, Integer gPweight, Integer pweight) {
         long score = 0;
 
-        score = Math.abs(GPweight) + Math.abs(Pweight);
-        if (GPweight * Pweight == -1)
+        score = Math.abs(gPweight) + Math.abs(pweight);
+        if (gPweight * pweight == -1)
             score *= -1;
 
         return score;

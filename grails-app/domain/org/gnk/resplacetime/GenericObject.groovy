@@ -21,6 +21,6 @@ abstract class GenericObject {
 
 
      abstract ArrayList<Tag> getTags()
-     abstract ArrayList<Pair<Tag, Integer>> getTagsAndWeights()
+     abstract Map<Tag, Integer> getTagsAndWeights()
      abstract ArrayList<ReferentialObject> getReferentialObject()
 }
