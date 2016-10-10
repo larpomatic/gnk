@@ -1,26 +1,20 @@
 package org.gnk.resplacetime
 
+import javafx.util.Pair
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 
-class GenericPlace {
+class GenericPlace extends GenericObject{
 
-    Integer id
-    Integer version
-
-	Date lastUpdated
-	Date dateCreated
-	String code
-	String comment
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace"]
-    Integer DTDId;
+
 
     List<Place> proposedPlaces
     List<Place> bannedPlaces
     Place selectedPlace
-    GnConstant gnConstant
+
 
     static belongsTo = [plot: Plot, objectType: ObjectType]
 
@@ -49,6 +43,16 @@ class GenericPlace {
     public getGenericPlaceHasTag(Tag tag) {
         return GenericPlaceHasTag.findByTagAndGenericPlace(tag, this);
     }
+
+     ArrayList<Tag> getTags() {
+         return null;
+     }
+     ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
+         return null;
+     }
+     ArrayList<ReferentialObject> getReferentialObject() {
+         return null;
+     }
 
 //    boolean isIngameClue()
 //    {

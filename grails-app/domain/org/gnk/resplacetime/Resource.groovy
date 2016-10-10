@@ -1,20 +1,11 @@
 package org.gnk.resplacetime
 
-class Resource {
+import javafx.util.Pair
+import org.gnk.tag.Tag
 
-    Integer id
-    Integer version
+class Resource extends ReferentialObject {
 
-    Date lastUpdated
-	Date dateCreated
-	String name
-	String description
-	String gender
-	static def genders = ["M", "F", "MP", "FP"]
 
-    // Id referenced into DTD
-    static transients = ["DTDId"]
-    Integer DTDId;
 
 //    static belongsTo = [ genericResource: GenericResource] // Dump20131114-version 2.1
 
@@ -31,4 +22,12 @@ class Resource {
         id type:'integer'
         version type: 'integer'
     }
+
+	ArrayList<Tag> getTags() {
+		return null;
+	}
+
+	ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
+		return null;
+	}
 }

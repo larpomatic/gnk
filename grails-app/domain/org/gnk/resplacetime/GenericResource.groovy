@@ -1,21 +1,14 @@
 package org.gnk.resplacetime
 
+import javafx.util.Pair
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 
-class GenericResource {
+class GenericResource extends GenericObject{
 
-    Integer id
-    Integer version
-
-    Date dateCreated
-    Date lastUpdated
-
-	String code
-	String comment
 
     // Ingame Clue :
     String title
@@ -23,14 +16,12 @@ class GenericResource {
     String fromRoleText
     String toRoleText
 
-    GnConstant gnConstant
 
     static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role, objectType: ObjectType]
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]
 
-    Integer DTDId
 
     List<Resource> proposedResources
     List<Resource> bannedResources
@@ -90,6 +81,16 @@ class GenericResource {
     boolean isIngameClue()
     {
         return ((this.title != null) && (!this.title.isEmpty()) && (this.description != null)) && (!this.description.isEmpty())
+    }
+
+    ArrayList<Tag> getTags() {
+        return null;
+    }
+    ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
+        return null;
+    }
+    ArrayList<ReferentialObject> getReferentialObject() {
+        return null;
     }
 }
 
