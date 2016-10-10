@@ -255,7 +255,7 @@ class TagServiceV2 {
             map_update.put(tag, integer);
         else {
             if (Math.abs(testValue) < Math.abs(integer))
-                map.put(tag, integer);
+                map_update.put(tag, integer);
         }
 
         return  map_update;
