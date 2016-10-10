@@ -7,6 +7,8 @@ import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
+import org.gnk.resplacetime.GenericObject
+import org.gnk.resplacetime.ReferentialObject
 
 class TagServiceV2 {
 
@@ -47,7 +49,7 @@ class TagServiceV2 {
      * @param gn
      * @return the calculus in Long
      */
-    Long computeComparativeScoreObject(Object genericObject, Object object, Gn gn) {
+    Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
         Map<Tag, Integer> map_Object = initObjectList(object);
@@ -72,7 +74,7 @@ class TagServiceV2 {
      * @param gn
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> initGenericObjectList(Object GenericObject, Gn gn) {
+    Map<Tag, Integer> initGenericObjectList(GenericObject GenericObject, Gn gn) {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
@@ -111,7 +113,7 @@ class TagServiceV2 {
      * @param object
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> initObjectList(Object object) {
+    Map<Tag, Integer> initObjectList(ReferentialObject object) {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
@@ -121,34 +123,27 @@ class TagServiceV2 {
     }
 
     /**
-     * get tags with weights from an object Place/Resource witch is generic or not
+     * get tags with weights from an object Place/Resource witch is not generic
      * @param object
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> getRelevantTags(Object object) {
+    Map<Tag, Integer> getRelevantTags(ReferentialObject object) {
 
         //récupérer les tags de l'objet dans la base et les stocker dans une map
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
-        //si generic resource
-        if (object instanceof GenericResource) {
 
-        }
+    }
 
-        //si generic place
-        if (object instanceof GenericPlace) {
+    /**
+     * get tags with weights from an object Place/Resource witch is generic
+     * @param object
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> getRelevantTags(GenericObject object) {
 
-        }
-
-        // si resource
-        if (object instanceof Resource) {
-
-        }
-
-        // si place
-        if (object instanceof Place) {
-
-        }
+        //récupérer les tags de l'objet dans la base et les stocker dans une map
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
 
         return map_tags;
@@ -170,7 +165,7 @@ class TagServiceV2 {
      * @param object
      * @return
      */
-    Map<Tag, Integer> getParentTags(Object object) {
+    Map<Tag, Integer> getParentTags(ReferentialObject object) {
         Map<Tag, Integer> tags = Tag.findByParent(parent: object);
 
         return tags;

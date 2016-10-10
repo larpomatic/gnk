@@ -24,4 +24,5 @@ abstract class ReferentialObject {
 
     abstract ArrayList<Tag> getTags();
     abstract ArrayList<Pair<Tag, Integer>> getTagsAndWeights();
+    abstract List<ReferentialObject> getAll();
 }

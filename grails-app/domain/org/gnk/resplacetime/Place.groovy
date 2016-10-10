@@ -30,4 +30,5 @@ class Place extends ReferentialObject{
     ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
         return null;
     }
+
 }
