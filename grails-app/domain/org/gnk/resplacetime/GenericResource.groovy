@@ -90,7 +90,7 @@ class GenericResource extends GenericObject{
         return null;
     }
     ArrayList<ReferentialObject> getReferentialObject() {
-        return null;
+        return Resource.all;
     }
 }
 
