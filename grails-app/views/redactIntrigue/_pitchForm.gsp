@@ -47,12 +47,13 @@ select {
     text-align: left;
     float: left;
     margin-right: 1000px;
+    white-space: nowrap;
 }
 </style>
 <div class="">
     <h3>Contexte</h3>
 </div>
-<div class="fullScreenEditable">
+<div class="fullScreenEditable" id="new_render">
     <div class="row formRow">
         <div class="span11">
             <label for="pitchOrga">
@@ -102,6 +103,6 @@ select {
 
 <script type="application/javascript">
     function deleteDescription(){
-        $('div').remove();
+        $('#new_render').remove();
     }
 </script>

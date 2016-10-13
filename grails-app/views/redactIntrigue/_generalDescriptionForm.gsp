@@ -135,7 +135,7 @@
                         <li class="list-group-item">Une description</li>
                     </div>
                 </div>
-                <div id="render">
+                <div id="new_render">
                     <g:render template="pitchForm"/>
                 </div>
 
