@@ -2,6 +2,7 @@ package org.gnk.tag
 
 import org.gnk.gn.Gn
 import org.gnk.resplacetime.GenericPlace
+import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
@@ -13,7 +14,8 @@ import org.gnk.resplacetime.ReferentialObject
 class TagServiceV2 {
 
     private static int  IDgenericUniverTag = 33089;
-    private static int NumberOfGenerations = 2;
+    private static int NumberOfGenerationsRelevant = 2;
+    private static int NumberofGenerationsParent = 2;
     private static int PonderationParent = 1;
 
     /**
@@ -57,14 +59,14 @@ class TagServiceV2 {
         //récupérer les tags du genericobjet
         map_genericObject.putAll(getRelevantTags(genericObject));
         //récupérer les tags parents
-        map_genericObject.putAll(getParentTags(genericObject));
+        map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights()));
 
 
         Map<Tag, Integer> map_Object = initObjectList(object);
         //récupérer les tags du genericobjet
         map_Object.putAll(getRelevantTags(object));
         //récupérer les tags parents
-        map_Object.putAll(getParentTags(object));
+        map_Object.putAll(getParentTags(object.getTagsAndWeights()));
 
         Long score = 0;
 
@@ -179,20 +181,32 @@ class TagServiceV2 {
      * @param object
      * @return
      */
-    Map<Tag, Integer> getParentTags(ReferentialObject object) {
-        ArrayList<Tag> object_tags = object.tags;
-        for (Tag t in object_tags) {
+    Map<Tag, Integer> getParentTags(Map<Tag, Integer> taglist) {
 
+        Map<Tag, Integer> parents_tags = new HashMap<>();
+
+        ArrayList<Tag> current_gen_parents = new ArrayList<>();
+        for (Tag t in taglist)
+            current_gen_parents.add(t);
+
+        ArrayList<Tag> next_gen_parents = new ArrayList<>();
+
+        //for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {}
+
+        for (int gen = NumberofGenerationsParent; gen--; gen >= 0) {
+            for (Tag t in current_gen_parents) {
+                Tag parent = t.getParent();
+                if (parent != null) {
+                    next_gen_parents.add(parent);
+                    Integer i = TagRelation.myFindWhere(t, parent).getterWeight() // force de la relation entre le père et le fils
+                    parents_tags.put(parent, computeFatherWeight(taglist.get(t), i));
+                }
+            }
+            current_gen_parents = next_gen_parents;
+            next_gen_parents.clear();
         }
 
-
-        return tags;
-    }
-
-    Map<Tag, Integer> getParentTags(GenericObject object) {
-        Map<Tag, Integer> tags = Tag.findByParent(object);
-
-        return tags;
+        return parents_tags;
     }
 
     /**
@@ -235,7 +249,7 @@ class TagServiceV2 {
      * @return The computed relationship score.
      */
     Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
-        Integer result = sonWeight * relationWeight / 100;
+        Integer result = sonWeight * relationWeight / 100 * PonderationParent;
 
         if (result < -100)
             result = -100;

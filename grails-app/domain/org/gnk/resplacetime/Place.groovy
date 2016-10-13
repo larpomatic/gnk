@@ -27,7 +27,7 @@ class Place extends ReferentialObject{
         return null;
     }
 
-    ArrayList<Pair<Tag, Integer>> getTagsAndWeights() {
+    Map<Tag, Integer> getTagsAndWeights() {
         return null;
     }
 
