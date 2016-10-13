@@ -136,11 +136,11 @@
                     </div>
                 </div>
                 <div id="render">
-                    <g:render template="pitchForm2"/>
+                    <g:render template="pitchForm"/>
                 </div>
 
                 <div class="buttonAdd">
-                    <div type="button" class="btn btn-success" onclick="return addField()" style="width: 150px">Ajouter une autre description</div>
+                    <div type="button" class="btn btn-success" onclick="return addDescription()" style="width: 150px">Ajouter une autre description</div>
                 </div>
 
                 <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
@@ -207,8 +207,9 @@
 </div>
 
 <script type="application/javascript">
-    function addField() {
-        var $clone = $('.render').clone();
-        $('.render').append($clone);
+    function addDescription() {
+        var $clone = $("#render").clone();
+        $('<div id="new_render"/>').appendTo($('.render'));
+        $('.new_render').append($clone);
     }
 </script>
