@@ -124,73 +124,23 @@
                     </div>
 
                 </div>
-
-                <div class="text-center plotTabs">
-                    <div class="span1"></div>
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#descriptionTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.plotDescription" default="Description"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchOrgaTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchOrga" default="pitchOrga"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchPjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPj" default="pitchPj"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchPnjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPnj" default="pitchPnj"/>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="descriptionTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.description?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchOrgaTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchOrga?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchPjTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPj?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchPnjTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPnj?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
+                <div class="span14">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Sommaire des descriptions</h3>
                     </div>
+                    <div class="list-group" id="divFields">
+                        <li class="list-group-item">Contexte</li>
+                        <li class="list-group-item">La vie du héros</li>
+                        <li class="list-group-item">Le secret</li>
+                        <li class="list-group-item">Une description</li>
+                    </div>
+                </div>
+                <div id="render">
+                    <g:render template="pitchForm2"/>
+                </div>
+
+                <div class="buttonAdd">
+                    <div type="button" class="btn btn-success" onclick="return addField()" style="width: 150px">Ajouter une autre description</div>
                 </div>
 
                 <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
@@ -255,3 +205,10 @@
         </div>
     </div>
 </div>
+
+<script type="application/javascript">
+    function addField() {
+        var $clone = $('.render').clone();
+        $('.render').append($clone);
+    }
+</script>

@@ -33,7 +33,10 @@ $(function(){
                 data: form.serialize(),
                 dataType: "json",
                 success: function (data) {
-                    if (data.iscreate) {
+                    // There are many possible errors for creation...
+                    // The success is on the value 0
+                    // The data is set from a save or update
+                    if (data.iscreate == 0) {
                         setTimeout(function(){
                             createNotification("success", "Création réussie.", "Votre rôle a bien été ajouté.");
                         },2000);
