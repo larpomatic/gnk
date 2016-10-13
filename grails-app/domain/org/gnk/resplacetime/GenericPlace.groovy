@@ -3,6 +3,7 @@ package org.gnk.resplacetime
 import javafx.util.Pair
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.resplacetime.GenericPlaceHasTag
 
 class GenericPlace extends GenericObject{
 
@@ -45,13 +46,14 @@ class GenericPlace extends GenericObject{
     }
 
      ArrayList<Tag> getTags() {
+         ArrayList<Tag> tags = GenericPlaceHasTag.
          return null;
      }
      Map<Tag, Integer> getTagsAndWeights() {
          return null;
      }
      ArrayList<ReferentialObject> getReferentialObject() {
-         return null;
+         return Place.all;
      }
 
 //    boolean isIngameClue()

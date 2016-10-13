@@ -180,6 +180,7 @@ class TagServiceV2 {
     Map<Tag, Integer> getParentTags(ReferentialObject object) {
         Map<Tag, Integer> tags = Tag.findByParent(parent: object);
 
+
         return tags;
     }
 

@@ -5,10 +5,12 @@ import org.gnk.gn.Gn
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagServiceV2
 import org.gnk.utils.Tag
+import org.gnk.tag.Tag
 
 class PlaceResourceService {
 
     TagServiceV2 tagservice;
+    private static int IDgenericUniverTag = 33089;
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
     ArrayList<Pair<Object, Integer>> findBestObjects (GenericObject GenericObject , Gn gn) {
@@ -18,8 +20,8 @@ class PlaceResourceService {
         ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
-        List<ReferentialObject> all_places = GenericObject instanceof GenericPlace ? Place.all : Resource.all;
-        for (ReferentialObject p : all_places) {
+        List<ReferentialObject> all_object = GenericObject.getReferentialObject();
+        for (ReferentialObject p : all_object) {
             sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int)tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
         }
 
@@ -38,7 +40,24 @@ class PlaceResourceService {
         return sorted_list;
     }
 
-    ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> findBestPlacesForAllUnivers (GenericObject GenericObject, Plot plot) {
-        return null;
+    ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> findBestObjectsForAllUnivers (GenericObject genericObject, Plot plot) {
+
+        // on réucpère l'ensemble des tagsunivers dans la liste UniverListTag
+        ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
+        Tag genericUnivers = Tag.findById(IDgenericUniverTag);
+        UniverListTag.addAll(Tag.findAllByParent(genericUnivers));
+
+        // liste qui contiendra l'ensemble des résultats cherchés
+        ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> all_objects = new ArrayList<>();
+
+        // On boucle sur les tags Univers en créant des GN avec le plot défini puis on appelle findBestObject, et on insère le résultat dans all_objects
+        for (Tag t in UniverListTag) {
+            Gn gn = new Gn();
+            gn.addPlot(plot);
+            gn.setUnivers(t);
+            all_objects.addAll(findBestObjects(genericObject, gn));
+        }
+
+        return all_objects;
     }
 }
