@@ -12,7 +12,9 @@ import org.gnk.resplacetime.ReferentialObject
 
 class TagServiceV2 {
 
-    private static long IDgenericUniverTag = 33089;
+    private static int  IDgenericUniverTag = 33089;
+    private static int NumberOfGenerations = 2;
+    private static int PonderationParent = 1;
 
     /**
      * get the universe from the gn
@@ -31,7 +33,7 @@ class TagServiceV2 {
         ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
         Tag genericUnivers = Tag.findById(IDgenericUniverTag);
 
-        def parentList = Tag.findAllByParent(parent: genericUnivers);
+        def parentList = Tag.findAllByParent(genericUnivers);
         UniverListTag.addAll(parentList);
         Collections.sort(UniverListTag);
 
@@ -178,14 +180,17 @@ class TagServiceV2 {
      * @return
      */
     Map<Tag, Integer> getParentTags(ReferentialObject object) {
-        Map<Tag, Integer> tags = Tag.findByParent(parent: object);
+        ArrayList<Tag> object_tags = object.tags;
+        for (Tag t in object_tags) {
+
+        }
 
 
         return tags;
     }
 
     Map<Tag, Integer> getParentTags(GenericObject object) {
-        Map<Tag, Integer> tags = Tag.findByParent(parent: object);
+        Map<Tag, Integer> tags = Tag.findByParent(object);
 
         return tags;
     }
@@ -200,7 +205,7 @@ class TagServiceV2 {
     Long tagUniversTreatment(Tag tag, Long score, Map<Tag, Integer> map_genericObject) {
         Long dividedNumber = map_genericObject.size() / 3;
 
-        if ((tag.parentId == IDgenericUniverTag) && (dividedNumber > 1))
+        if ((tag.parentId == (long) IDgenericUniverTag) && (dividedNumber > 1))
             score *= dividedNumber;
 
         return score;

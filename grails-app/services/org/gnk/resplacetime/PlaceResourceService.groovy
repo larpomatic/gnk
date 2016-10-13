@@ -13,16 +13,16 @@ class PlaceResourceService {
     private static int IDgenericUniverTag = 33089;
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
-    ArrayList<Pair<Object, Integer>> findBestObjects (GenericObject GenericObject , Gn gn) {
+    ArrayList<Pair<Object, Integer>> findBestObjects (GenericObject genericObject , Gn gn) {
 
 
         // liste contenant les objets et leurs scores par rapport au GenericObject
         ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
-        List<ReferentialObject> all_object = GenericObject.getReferentialObject();
+        List<ReferentialObject> all_object = genericObject.getReferentialObject();
         for (ReferentialObject p : all_object) {
-            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int)tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
+            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int)tagservice.computeComparativeScoreObject(genericObject, p, gn))))
         }
 
 
@@ -36,6 +36,9 @@ class PlaceResourceService {
                     return 0;
             }
         });
+
+        //removeSameObjects(sorted_list, genericObject,gn )
+        //raiseLockedObject(sorted_list, genericObject)
 
         return sorted_list;
     }
