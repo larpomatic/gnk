@@ -1,9 +1,10 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
+import org.gnk.utils.Pair
 import org.gnk.gn.Gn
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagServiceV2
+import org.gnk.user.User
 import org.gnk.utils.Tag
 import org.gnk.tag.Tag
 
@@ -12,9 +13,44 @@ class PlaceResourceService {
     TagServiceV2 tagservice;
     private static int IDgenericUniverTag = 33089;
 
-    // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
-    ArrayList<Pair<Object, Integer>> findBestObjects (GenericObject GenericObject , Gn gn) {
+    /**
+     *
+     * @param gn
+     */
+    Gn reset(Gn gn, GenericObject genericObject) {
+        Gn updatedGn = gn;
 
+
+        return updatedGn;
+    }
+
+    /**
+     *
+     * @param listObject
+     * @param genericObject
+     * @param gn
+     * @return
+     */
+    ArrayList<Object> removeSameObjects(ArrayList<Object> listObject, GenericObject genericObject, Gn gn) {
+
+        ArrayList<Object> lastExecList = new ArrayList<>();
+        return lastExecList;
+    }
+
+    /**
+     *
+     * @param listObject
+     * @param genericObject
+     * @return
+     */
+    ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
+        ArrayList<Object> newListObject = new ArrayList<>();
+
+        return newListObject;
+    }
+
+    // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
+    ArrayList<Pair<Object, Integer>> findBestObjects(GenericObject GenericObject, Gn gn) {
 
         // liste contenant les objets et leurs scores par rapport au GenericObject
         ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
@@ -22,12 +58,12 @@ class PlaceResourceService {
         // on récupère la liste des places/resources et leurs scores
         List<ReferentialObject> all_object = GenericObject.getReferentialObject();
         for (ReferentialObject p : all_object) {
-            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int)tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
+            //sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
+
         }
 
-
         // on trie la sorted_list en fonction du poids de l'object
-        Collections.sort(sorted_list , new Comparator<Pair<ReferentialObject, Integer>>() {
+        Collections.sort(sorted_list, new Comparator<Pair<ReferentialObject, Integer>>() {
             @Override
             public int compare(final Pair<ReferentialObject, Integer> o1, final Pair<ReferentialObject, Integer> o2) {
                 if (o1.value > o2.value)
@@ -40,7 +76,7 @@ class PlaceResourceService {
         return sorted_list;
     }
 
-    ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> findBestObjectsForAllUnivers (GenericObject genericObject, Plot plot) {
+    ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> findBestObjectsForAllUnivers(GenericObject genericObject, Plot plot) {
 
         // on réucpère l'ensemble des tagsunivers dans la liste UniverListTag
         ArrayList<Tag> UniverListTag = new ArrayList<Tag>();

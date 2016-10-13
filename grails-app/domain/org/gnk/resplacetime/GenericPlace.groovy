@@ -17,8 +17,6 @@ class GenericPlace extends GenericObject{
     Place selectedPlace
 
 
-    static belongsTo = [plot: Plot, objectType: ObjectType]
-
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,
 	                   pastscenes: Pastscene ]
