@@ -31,45 +31,10 @@ class Pastscene {
 
 
 
-    //*************
-    // à virer ****
-    //*************
-    Integer timingRelative
-    String unitTimingRelative
-    /*
-    def correctTimingVariables()
-    {
-        if (dateYear == isAbsoluteYear && unitTimingRelative.toLowerCase().startsWith("y"))
-        {
-            dateYear = timingRelative
-            isAbsoluteYear = false
-        }
-        if (dateMonth == isAbsoluteMonth && unitTimingRelative.toLowerCase().startsWith("m"))
-        {
-            dateMonth = timingRelative
-            isAbsoluteMonth = false
-        }
-        if (dateDay == isAbsoluteDay && unitTimingRelative.toLowerCase().startsWith("d"))
-        {
-            dateDay = timingRelative
-            isAbsoluteDay = false
-        }
-    }
-    */
-    //*************
-    //*************
-    //*************
-
-
-
-
-
-
     Pastscene pastscenePredecessor
     GenericPlace genericPlace
 
-    // Id referenced into DTD
-    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute"]
+
     Integer DTDId
 
     Integer absoluteYear
@@ -78,6 +43,22 @@ class Pastscene {
     Integer absoluteHour
     Integer absoluteMinute
 
+    //Transiant Parsing Substitution
+    String gnId
+    String plotId
+    String plotName
+    Boolean isYearAbsolute
+    Boolean isMonthAbsolute
+    Boolean isDayAbsolute
+    Boolean isHourAbsolute
+    Boolean isMinuteAbsolute
+    Integer timingRelative
+    String unitTimingRelative
+
+    // Id referenced into DTD
+    static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute",
+                         "isYearAbsolute","isMonthAbsolute", "isDayAbsolute", "isHourAbsolute", "isMinuteAbsolute",
+                         "plotId", "plotName", "gnId"]
 
     static hasMany = [ roleHasPastscenes: RoleHasPastscene ]
 

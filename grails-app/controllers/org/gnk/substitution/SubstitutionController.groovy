@@ -16,7 +16,7 @@ import org.gnk.roletoperso.RelationshipGraphService
 import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.data.Event
 import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.Pastscene
+import org.gnk.resplacetime.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag

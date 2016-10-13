@@ -64,8 +64,8 @@
     <g:each in="${sexe}" var="a">
         <g:hiddenField id="a" name="sexe" value="NO"/>
     </g:each>
+    <g:hiddenField id="XMLField" name="GanttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
     <g:if test="${gnInfo.duration > 0}">
-
     <g:javascript src="substitution/dhtmlxgantt.js"></g:javascript>
     <link href="${resource(dir: 'css', file: 'dhtmlxgantt.css')}" rel="stylesheet"/>
     <div id="gantt_here" name="gant_here" style='width:1100px; height:400px;'></div>
@@ -334,17 +334,20 @@
         });
 
 
-        var xml = "";
+        var json_data = "";
         gantt.attachEvent("onAfterTaskUpdate", function() {
-            xml = gantt.serialize("xml");
+            json_data = gantt.serialize();
             //window.alert(xml);
         });
 
         gantt.init("gantt_here");
         gantt.parse (tasks);
 
+        xml_data = gantt.serialize("xml");
+        document.getElementById(id="XMLField").value = json_data;
+
         </script>
-        <g:hiddenField name="GanttData" value=""/>
+
         <g:actionSubmit class="btn btn-primary" action="saveGanttData"
                         value="Sauvegarder le Gantt"/>
     </g:if>
@@ -442,7 +445,7 @@
         <g:each status="i" in="${pastsceneList}" var="pastscene">
             var pastscene = new Object();
             // Gn id
-            pastscene.gnId = "${pastscene.id}";
+            pastscene.gnId = "${pastscene.gnId}";
             // Gn plot id
             pastscene.gnPlotId = "${pastscene.plotId}";
             // HTML id
@@ -450,14 +453,14 @@
             // Time
 
             // DOIT ËTRE SUPP
-            //pastscene.relativeTime = "${pastscene.relativeTime}";
-            //pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
+            //pastscene.timingRelative = "${pastscene.timingRelative}";
+            //pastscene.unitTimingRelative = "${pastscene.unitTimingRelative}";
             // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
-            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMinute}";
 
 
 
