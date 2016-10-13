@@ -55,14 +55,25 @@ class GenericPlace extends GenericObject{
     }
 
      ArrayList<Tag> getTags() {
-         ArrayList<Tag> tags = GenericPlaceHasTag.
-         return null;
+         ArrayList<Tag> tagsList = new ArrayList<>();
+
+         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
+            tags.add(genericPlaceHasTag.tag)
+
+         return tagsList;
      }
-     Map<Tag, Integer> getTagsAndWeights() {
-         return null;
+
+    Map<Tag, Integer> getTagsAndWeights() {
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
+             mapTagInt.put(genericPlaceHasTag.tag, genericPlaceHasTag.weight)
+
+         return mapTagInt;
      }
+
      ArrayList<ReferentialObject> getReferentialObject() {
-         return Place.all;
+         return Place.findAll();
      }
 
     Plot getPlot() {

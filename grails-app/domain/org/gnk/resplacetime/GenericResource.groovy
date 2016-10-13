@@ -94,14 +94,27 @@ class GenericResource extends GenericObject{
         return ((this.title != null) && (!this.title.isEmpty()) && (this.description != null)) && (!this.description.isEmpty())
     }
 
-    ArrayList<Tag> getTags() {
-        return null;
-    }
-    Map<Tag, Integer> getTagsAndWeights() {
-        return null;
-    }
+
     ArrayList<ReferentialObject> getReferentialObject() {
-        return Resource.all;
+        return Resource.findAll();
+    }
+
+    ArrayList<Tag> getTags() {
+        ArrayList<Tag> tagsList = new ArrayList<>();
+
+        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
+            tags.add(genericResourceHasTag.tag)
+
+        return tagsList;
+    }
+
+    Map<Tag, Integer> getTagsAndWeights() {
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
+            mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight)
+
+        return mapTagInt;
     }
 
     Plot getPlot() {

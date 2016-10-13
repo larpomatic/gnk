@@ -38,11 +38,21 @@ class Resource extends ReferentialObject {
     }
 
 	ArrayList<Tag> getTags() {
-		return null;
+		ArrayList<Tag> tagsList = new ArrayList<>();
+
+		for (ResourceHasTag resourceHasTag in this.extTags)
+			tags.add(resourceHasTag.tag)
+
+		return tagsList;
 	}
 
 	Map<Tag, Integer> getTagsAndWeights() {
-		return null;
+		Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+		for (ResourceHasTag resourceHasTag in this.extTags)
+			mapTagInt.put(resourceHasTag.tag, resourceHasTag.weight)
+
+		return mapTagInt;
 	}
 
 }

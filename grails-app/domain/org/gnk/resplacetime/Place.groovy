@@ -36,11 +36,21 @@ class Place extends ReferentialObject{
     }
 
     ArrayList<Tag> getTags() {
-        return null;
+        ArrayList<Tag> tagsList = new ArrayList<>();
+
+        for (PlaceHasTag placeHasTag in this.extTags)
+            tags.add(placeHasTag.tag)
+
+        return tagsList;
     }
 
     Map<Tag, Integer> getTagsAndWeights() {
-        return null;
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+        for (PlaceHasTag placeHasTag in this.extTags)
+            mapTagInt.put(placeHasTag.tag, placeHasTag.weight)
+
+        return mapTagInt;
     }
 
 }
