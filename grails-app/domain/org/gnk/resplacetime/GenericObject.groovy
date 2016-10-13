@@ -1,6 +1,6 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
+import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 
 abstract class GenericObject {
@@ -18,7 +18,7 @@ abstract class GenericObject {
      GnConstant gnConstant
      Integer DTDId
 
-
+     static belongsTo = [plot: Plot, objectType: ObjectType]
 
      abstract ArrayList<Tag> getTags()
      abstract Map<Tag, Integer> getTagsAndWeights()

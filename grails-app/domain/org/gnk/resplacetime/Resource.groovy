@@ -1,6 +1,6 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
+import org.gnk.utils.Pair
 import org.gnk.tag.Tag
 
 class Resource extends ReferentialObject {
@@ -30,4 +30,5 @@ class Resource extends ReferentialObject {
 	Map<Tag, Integer> getTagsAndWeights() {
 		return null;
 	}
+
 }
