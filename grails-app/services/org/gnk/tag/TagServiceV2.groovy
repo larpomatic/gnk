@@ -177,7 +177,7 @@ class TagServiceV2 {
     }
 
     /**
-     *
+     * Doesn't include tags included in taglist
      * @param object
      * @return
      */
@@ -186,20 +186,17 @@ class TagServiceV2 {
         Map<Tag, Integer> parents_tags = new HashMap<>();
 
         ArrayList<Tag> current_gen_parents = new ArrayList<>();
-        for (Tag t in taglist)
-            current_gen_parents.add(t);
+        current_gen_parents.addAll(taglist.keySet());
 
         ArrayList<Tag> next_gen_parents = new ArrayList<>();
 
-        //for (GenericPlaceHasTag genericPlaceHasTag in genericPlace.extTags) {}
 
-        for (int gen = NumberofGenerationsParent; gen--; gen >= 0) {
+        for (int gen = NumberofGenerationsParent; gen--; gen > 0) {
             for (Tag t in current_gen_parents) {
                 Tag parent = t.getParent();
                 if (parent != null) {
                     next_gen_parents.add(parent);
-                    Integer i = TagRelation.myFindWhere(t, parent).getterWeight() // force de la relation entre le père et le fils
-                    parents_tags.put(parent, computeFatherWeight(taglist.get(t), i));
+                    parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t)));
                 }
             }
             current_gen_parents = next_gen_parents;
@@ -248,8 +245,8 @@ class TagServiceV2 {
      * @param relationWeight
      * @return The computed relationship score.
      */
-    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
-        Integer result = sonWeight * relationWeight / 100 * PonderationParent;
+    Integer computeFatherWeight(Integer sonWeight) {
+        Integer result = sonWeight * PonderationParent;
 
         if (result < -100)
             result = -100;
@@ -268,16 +265,15 @@ class TagServiceV2 {
      * @return The map modified or not.
      */
     private Map<Tag, Integer> addTag(Map<Tag, Integer> map, Tag tag, Integer integer) {
-        Map<Tag, Integer> map_update = map;
         Integer testValue = map.get(tag);
 
         if (testValue == null)
-            map_update.put(tag, integer);
+            map.put(tag, integer);
         else {
             if (Math.abs(testValue) < Math.abs(integer))
-                map_update.put(tag, integer);
+                map.put(tag, integer);
         }
 
-        return  map_update;
+        return  map;
     }
 }
