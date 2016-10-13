@@ -137,7 +137,7 @@ class TagServiceV2 {
      */
     Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
-       /* Map<Tag, Integer> parents_tags = new HashMap<>();
+        Map<Tag, Integer> parents_tags = new HashMap<>();
 
         ArrayList<Tag> current_gen_parents = new ArrayList<>();
         current_gen_parents.addAll(taglist.keySet());
@@ -150,15 +150,22 @@ class TagServiceV2 {
                 Tag parent = t.getParent();
                 if (parent != null) {
                     next_gen_parents.add(parent);
-                    Integer i =  TagRelation.myFindWhere(t, parent).getterWeight() // force de la relation entre le père et le fils
-                    parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t)));
+                    TagRelation tr =  TagRelation.myFindWhere(t, parent)
+                    if(tr != null) {
+                        parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                    }
+                    else {
+                        tr =  TagRelation.myFindWhere(parent, t)
+                        if (tr.isBijective)
+                            parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                    }
                 }
             }
             current_gen_parents = next_gen_parents;
             next_gen_parents.clear();
         }
 
-        return parents_tags;*/
+        return parents_tags;
 
     }
 
@@ -194,7 +201,7 @@ class TagServiceV2 {
                 Tag parent = t.getParent();
                 if (parent != null) {
                     next_gen_parents.add(parent);
-                    parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t)));
+                    parents_tags = addTag(parents_tags, parent, computeFatherWeightParent(taglist.get(t)));
                 }
             }
             current_gen_parents = next_gen_parents;
@@ -243,7 +250,20 @@ class TagServiceV2 {
      * @param relationWeight
      * @return The computed relationship score.
      */
-    Integer computeFatherWeight(Integer sonWeight) {
+    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight)  {
+        Integer result = sonWeight * relationWeight / 100;
+
+        if (result < -100)
+            result = -100;
+
+        if (result > 100)
+            result = 100;
+
+        return result;
+    }
+
+
+    Integer computeFatherWeightParent(Integer sonWeight) {
         Integer result = sonWeight * PonderationParent;
 
         if (result < -100)
