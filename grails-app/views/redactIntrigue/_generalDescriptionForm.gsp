@@ -1,4 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
+<link href="bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+<script src="bootstrap-editable/js/bootstrap-editable.js"></script>
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
