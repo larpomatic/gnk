@@ -1,10 +1,24 @@
 package org.gnk.resplacetime
 
-import org.gnk.utils.Pair
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.tag.Tag
 
 class Resource extends ReferentialObject {
 
+
+	Integer id
+	Integer version
+
+	Date lastUpdated
+	Date dateCreated
+	String name
+	String gender
+	String description
+	static def genders = ["M", "F", "MP", "FP"]
+
+	// Id referenced into DTD
+	static transients = ["DTDId"]
+	Integer DTDId;
 
 
 //    static belongsTo = [ genericResource: GenericResource] // Dump20131114-version 2.1

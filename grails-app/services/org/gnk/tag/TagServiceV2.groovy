@@ -1,15 +1,10 @@
 package org.gnk.tag
 
 import org.gnk.gn.Gn
-import org.gnk.resplacetime.GenericPlace
-import org.gnk.resplacetime.GenericPlaceHasTag
-import org.gnk.resplacetime.GenericResource
-import org.gnk.resplacetime.Place
-import org.gnk.resplacetime.Resource
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
-import org.gnk.resplacetime.GenericObject
-import org.gnk.resplacetime.ReferentialObject
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 
 class TagServiceV2 {
 

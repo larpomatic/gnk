@@ -1,5 +1,7 @@
 package org.gnk.resplacetime
 
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -7,6 +9,16 @@ import org.gnk.tag.Tag
 import org.gnk.selectintrigue.Plot
 
 class GenericResource extends GenericObject{
+
+    Integer id
+    Integer version
+
+    Date lastUpdated
+    Date dateCreated
+    String code
+    String comment
+    GnConstant gnConstant
+    Integer DTDId
 
 
     // Ingame Clue :
@@ -90,6 +102,10 @@ class GenericResource extends GenericObject{
     }
     ArrayList<ReferentialObject> getReferentialObject() {
         return Resource.all;
+    }
+
+    Plot getPlot() {
+        return this.plot;
     }
 }
 

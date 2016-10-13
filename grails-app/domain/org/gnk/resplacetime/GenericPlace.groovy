@@ -1,10 +1,22 @@
 package org.gnk.resplacetime
 
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.tag.Tag
 import org.gnk.selectintrigue.Plot
 
 class GenericPlace extends GenericObject{
 
+
+    Integer id
+    Integer version
+
+    Date lastUpdated
+    Date dateCreated
+    String code
+    String comment
+    GnConstant gnConstant
+    Integer DTDId
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace"]
@@ -52,6 +64,10 @@ class GenericPlace extends GenericObject{
      ArrayList<ReferentialObject> getReferentialObject() {
          return Place.all;
      }
+
+    Plot getPlot() {
+        return this.plot;
+    }
 
 //    boolean isIngameClue()
 //    {

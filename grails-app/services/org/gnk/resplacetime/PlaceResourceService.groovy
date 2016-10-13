@@ -1,5 +1,7 @@
 package org.gnk.resplacetime
 
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.utils.Pair
 import org.gnk.gn.Gn
 import org.gnk.selectintrigue.Plot

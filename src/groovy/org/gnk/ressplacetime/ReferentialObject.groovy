@@ -1,4 +1,4 @@
-package org.gnk.resplacetime
+package org.gnk.ressplacetime
 
 import org.gnk.tag.Tag
 
@@ -7,6 +7,7 @@ abstract class ReferentialObject {
     static constraints = {
     }
 
+    /*
     Integer id
     Integer version
 
@@ -20,6 +21,8 @@ abstract class ReferentialObject {
     // Id referenced into DTD
     static transients = ["DTDId"]
     Integer DTDId;
+
+    */
 
     abstract ArrayList<Tag> getTags();
     abstract Map<Tag, Integer> getTagsAndWeights();
