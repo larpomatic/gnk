@@ -1,9 +1,7 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
-import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
-import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.selectintrigue.Plot
 
 class GenericPlace extends GenericObject{
 
@@ -16,6 +14,7 @@ class GenericPlace extends GenericObject{
     List<Place> bannedPlaces
     Place selectedPlace
 
+    static belongsTo = [plot: Plot, objectType: ObjectType]
 
     static hasMany = [ events: Event,
 	                   extTags: GenericPlaceHasTag,

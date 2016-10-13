@@ -1,11 +1,10 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
-import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.selectintrigue.Plot
 
 class GenericResource extends GenericObject{
 
@@ -17,7 +16,7 @@ class GenericResource extends GenericObject{
     String toRoleText
 
 
-    static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role]
+    static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role, plot: Plot, objectType: ObjectType]
 
     // Id referenced into DTD
     static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]

@@ -1,6 +1,5 @@
 package org.gnk.resplacetime
 
-import javafx.util.Pair
 import org.gnk.tag.Tag
 
 class Place extends ReferentialObject{
