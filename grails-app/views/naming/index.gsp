@@ -29,7 +29,7 @@
 <g:render template="gnInformation" />
 <g:render template="characters" />
 
-<g:javascript src="naming/sub.js" />
+<g:javascript src="substitution/subName.js" />
 
 <script type="text/javascript">
     function publicationAccess()

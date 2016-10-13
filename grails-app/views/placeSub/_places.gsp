@@ -33,7 +33,7 @@
         </th>
     </tr>
     </thead>
-    <tbody id="fusiontbodyplace" data-url="<g:createLink controller='substitution' action='merged'/>">
+    <tbody id="fusiontbodyplace" data-url="<g:createLink controller='placeSub' action='merged'/>">
     <g:each in="${characterList}" var="character">
         <g:hiddenField name="id" value="${character.DTDId.encodeAsHTML()}" />
     </g:each>
