@@ -4,8 +4,6 @@ import org.gnk.utils.Pair
 import org.gnk.gn.Gn
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagServiceV2
-import org.gnk.user.User
-import org.gnk.utils.Tag
 import org.gnk.tag.Tag
 
 class PlaceResourceService {
@@ -56,10 +54,9 @@ class PlaceResourceService {
         ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
-        List<ReferentialObject> all_object = GenericObject.getReferentialObject();
+        List<ReferentialObject> all_object = genericObject.getReferentialObject();
         for (ReferentialObject p : all_object) {
-            //sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
-
+            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(genericObject, p, gn))))
         }
 
         // on trie la sorted_list en fonction du poids de l'object
@@ -72,6 +69,9 @@ class PlaceResourceService {
                     return 0;
             }
         });
+
+        //removeSameObjects(sorted_list, genericObject,gn )
+        //raiseLockedObject(sorted_list, genericObject)
 
         return sorted_list;
     }
@@ -96,4 +96,5 @@ class PlaceResourceService {
 
         return all_objects;
     }
+
 }
