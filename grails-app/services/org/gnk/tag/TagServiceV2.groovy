@@ -57,14 +57,14 @@ class TagServiceV2 {
 
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
         //récupérer les tags du genericobjet
-        map_genericObject.putAll(getRelevantTags(genericObject));
+        map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights()));
         //récupérer les tags parents
         map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights()));
 
 
         Map<Tag, Integer> map_Object = initObjectList(object);
         //récupérer les tags du genericobjet
-        map_Object.putAll(getRelevantTags(object));
+        map_Object.putAll(getRelevantTags(object.getTagsAndWeights()));
         //récupérer les tags parents
         map_Object.putAll(getParentTags(object.getTagsAndWeights()));
 
@@ -140,30 +140,33 @@ class TagServiceV2 {
      * @param object
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> getRelevantTags(ReferentialObject object) {
+    Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
-        //récupérer les tags de l'objet et récupérer les tags intéressants qui leurs sont liés
-        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
-        ArrayList<Tag> object_tags = object.getTags();
+       /* Map<Tag, Integer> parents_tags = new HashMap<>();
 
-        return map_tags;
+        ArrayList<Tag> current_gen_parents = new ArrayList<>();
+        current_gen_parents.addAll(taglist.keySet());
+
+        ArrayList<Tag> next_gen_parents = new ArrayList<>();
+
+
+        for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
+            for (Tag t in current_gen_parents) {
+                Tag parent = t.getParent();
+                if (parent != null) {
+                    next_gen_parents.add(parent);
+                    Integer i =  TagRelation.myFindWhere(t, parent).getterWeight() // force de la relation entre le père et le fils
+                    parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t)));
+                }
+            }
+            current_gen_parents = next_gen_parents;
+            next_gen_parents.clear();
+        }
+
+        return parents_tags;*/
 
     }
 
-    /**
-     * get tags with weights from an object Place/Resource witch is generic
-     * @param object
-     * @return Map < Tag , Integer >
-     */
-    Map<Tag, Integer> getRelevantTags(GenericObject genericobject) {
-
-        //récupérer les tags du genericobjet et récupérer les tags intéressants qui leurs sont liés
-        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
-        ArrayList<Tag> genericobject_tags = genericobject.getTags();
-
-
-        return map_tags;
-    }
 
     /**
      *
