@@ -36,19 +36,7 @@ select {
     padding-top:20px;
     padding-bottom: 60px;
 }
-.buttonAdd {
-    position: relative;
-    left: 500px;
-    width: 150px;
-    padding-top: 20px;
-    padding-bottom: 60px;
-}
-.span14{
-    text-align: left;
-    float: left;
-    margin-right: 1000px;
-    white-space: nowrap;
-}
+
 </style>
 <div class="">
     <h3>Contexte</h3>
@@ -101,8 +89,3 @@ select {
     </div>
 </div>
 
-<script type="application/javascript">
-    function deleteDescription(){
-        $('#new_render').remove();
-    }
-</script>

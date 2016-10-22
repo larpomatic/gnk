@@ -1,4 +1,19 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
+<style>
+.buttonAdd {
+    position: relative;
+    left: 500px;
+    width: 150px;
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+.span14{
+    text-align: left;
+    float: left;
+    margin-right: 1000px;
+    white-space: nowrap;
+}
+</style>
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
@@ -25,7 +40,7 @@
 
                 </div>
 
-                <div class="row formRow">
+                <div class="row formRow" id="pre_render">
                     <div class="span2">
                         <label for="plotVariant">
                             <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>
@@ -208,8 +223,11 @@
 
 <script type="application/javascript">
     function addDescription() {
-        var $clone = $("#render").clone();
-        $('<div id="new_render"/>').appendTo($('.render'));
-        $('.new_render').append($clone);
+        var $clone = $("#new_render").clone();
+        $('<div id="new_render2"/>').appendTo($('#new_render'));
+        $('#new_render2').append($clone);
+    }
+    function deleteDescription(){
+        $('#new_render2').remove();
     }
 </script>
