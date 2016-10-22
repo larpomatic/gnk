@@ -10,7 +10,6 @@ import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleToPersoController
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.SelectIntrigueController
-import org.gnk.substitution.SubstitutionController
 import org.gnk.tag.TagService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User

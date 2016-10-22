@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
 import org.gnk.selectintrigue.Plot
@@ -14,7 +15,6 @@ import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
 import org.gnk.substitution.data.Event
 import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 
