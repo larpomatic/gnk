@@ -135,39 +135,39 @@ class TagServiceV2 {
      * @param object
      * @return Map < Tag , Integer >
      */
-    Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
+        Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
-        Map<Tag, Integer> parents_tags = new HashMap<>();
+            Map<Tag, Integer> parents_tags = new HashMap<>();
 
-        ArrayList<Tag> current_gen_parents = new ArrayList<>();
-        current_gen_parents.addAll(taglist.keySet());
+            ArrayList<Tag> current_gen_parents = new ArrayList<>();
+            current_gen_parents.addAll(taglist.keySet());
 
-        ArrayList<Tag> next_gen_parents = new ArrayList<>();
+            ArrayList<Tag> next_gen_parents = new ArrayList<>();
 
 
-        for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
-            for (Tag t in current_gen_parents) {
-                Tag parent = t.getParent();
-                if (parent != null) {
-                    next_gen_parents.add(parent);
-                    TagRelation tr =  TagRelation.myFindWhere(t, parent)
-                    if(tr != null) {
-                        parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
+                    for (Tag t in current_gen_parents) {
+                        ArrayList<Tag> parent = TagRelation.findParents(t);
+                            for (Tag p in parent) {
+                                next_gen_parents.add(p);
+                                TagRelation tr = TagRelation.myFindWhere(t, p)
+                                if (tr != null) {
+                                    parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                                } else {
+                                    tr = TagRelation.myFindWhere(p, t)
+                                    if (tr.isBijective)
+                                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                                }
+                            }
+
+                        }
+                    current_gen_parents = next_gen_parents;
+                    next_gen_parents.clear();
                     }
-                    else {
-                        tr =  TagRelation.myFindWhere(parent, t)
-                        if (tr.isBijective)
-                            parents_tags = addTag(parents_tags, parent, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                    }
-                }
-            }
-            current_gen_parents = next_gen_parents;
-            next_gen_parents.clear();
+
+            return parents_tags;
+
         }
-
-        return parents_tags;
-
-    }
 
 
     /**
