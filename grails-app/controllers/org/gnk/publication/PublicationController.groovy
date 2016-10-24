@@ -613,6 +613,7 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom(s) de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom du lieu")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type du lieu")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
@@ -621,6 +622,11 @@ class PublicationController {
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr()
+            String listPlot = "";
+            for (Plot plot in gn.getSelectedPlotSet()) {
+                listPlot += plot.getName() + "; ";
+            }
+            wordWriter.addTableStyledCell("Table1C", tableRowPlace, listPlot);
             int lastIndexOf = p.name.lastIndexOf(" -")
             if (lastIndexOf != -1)
                 wordWriter.addTableStyledCell("Table1C", tableRowPlace, p.name.substring(0, lastIndexOf))
@@ -706,6 +712,7 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom(s) de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de la ressource")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Descriptions")
@@ -718,6 +725,11 @@ class PublicationController {
         for (GenericResource genericResource : GROTList + GRList) {
             Tr tableRowRes = wordWriter.factory.createTr()
 
+            String listPlot = "";
+            for (Plot plot in gn.getSelectedPlotSet()) {
+                listPlot += plot.getName() + "; ";
+            }
+            wordWriter.addTableStyledCell("Table1C", tableRowRes, listPlot)
             if (genericResource.selectedResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, genericResource.selectedResource.name)
             else
