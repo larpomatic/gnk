@@ -16,10 +16,13 @@ class PlaceResourceService {
     /**
      *
      * @param gn
+     * @param genericObject
+     * @return
      */
     Gn reset(Gn gn, GenericObject genericObject) {
-        Gn updatedGn = gn;
+//        Gn updatedGn = gn;
 
+//        updatedGn.get
 
         return updatedGn;
     }
@@ -46,7 +49,12 @@ class PlaceResourceService {
     ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
         ArrayList<Object> newListObject = new ArrayList<>();
 
-        return newListObject;
+ /*       for (Object object in listObject) {
+            if (object.
+        }
+*/
+
+            return newListObject;
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
