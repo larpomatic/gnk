@@ -20,9 +20,9 @@ class PlaceResourceService {
      * @return
      */
     Gn reset(Gn gn, GenericObject genericObject) {
-//        Gn updatedGn = gn;
+        Gn updatedGn = gn;
 
-//        updatedGn.get
+        updatedGn.get
 
         return updatedGn;
     }
