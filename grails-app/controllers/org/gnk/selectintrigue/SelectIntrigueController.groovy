@@ -178,7 +178,9 @@ class SelectIntrigueController {
                     render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
                     return
                 }
-                selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
+
+                if (gnInstance.isMainstream)
+                    selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
                 gnInstance.selectedPlotSet = selectedPlotInstanceList;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
