@@ -117,9 +117,9 @@ class GenericResource extends GenericObject{
         return mapTagInt;
     }
 
-    Plot getPlot() {
+    /*Plot getPlot() {
         return this.plot;
-    }
+    }*/
 }
 
 

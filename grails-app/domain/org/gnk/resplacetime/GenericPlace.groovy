@@ -76,9 +76,9 @@ class GenericPlace extends GenericObject{
          return Place.findAll();
      }
 
-    Plot getPlot() {
+    /*Plot getPlot() {
         return this.plot;
-    }
+    }*/
 
 //    boolean isIngameClue()
 //    {
