@@ -27,7 +27,6 @@
                 <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
                 <g:hiddenField name="plotVariantField" class="variantContent" value=""/>
                 <div class="row formRow">
-                    <div class="span1"></div>
                     <div class="span1">
                         <label for="name">
                             <g:message code="redactintrigue.generalDescription.plotName" default="Name"/>
@@ -69,8 +68,6 @@
 
 
                 <div class="row formRow">
-                    <div class="span1"></div>
-
                     <div class="span1">
                         <label>
                             <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
@@ -107,7 +104,6 @@
                 </div>
 
                 <div class="row formRow">
-                    <div class="span1"></div>
                     <div class="span1">
                         <label for="isMainstream">
                             <g:message code="redactintrigue.generalDescription.isMainstream" default="Mainstream"/>
@@ -143,19 +139,18 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Sommaire des descriptions</h3>
                     </div>
-                    <div class="list-group" id="divFields">
-                        <li class="list-group-item">Contexte</li>
-                        <li class="list-group-item">La vie du héros</li>
-                        <li class="list-group-item">Le secret</li>
-                        <li class="list-group-item">Une description</li>
+                    <div class="list-group" id="overview">
+                        <li class="list-group-item" id="titleRender_0">Description</li>
                     </div>
                 </div>
-                <div id="new_render">
-                    <g:render template="pitchForm"/>
+                <div id="desc_wrapper">
+                    <div class="render" id="render_0">
+                        <g:render template="pitchForm"/>
+                    </div>
                 </div>
 
                 <div class="buttonAdd">
-                    <div type="button" class="btn btn-success" onclick="return addDescription()" style="width: 150px">Ajouter une autre description</div>
+                    <div type="button" class="btn btn-success" onclick="addDescription()" style="width: 150px">Ajouter une autre description</div>
                 </div>
 
                 <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
@@ -221,13 +216,4 @@
     </div>
 </div>
 
-<script type="application/javascript">
-    function addDescription() {
-        var $clone = $("#new_render").clone();
-        $('<div id="new_render2"/>').appendTo($('#new_render'));
-        $('#new_render2').append($clone);
-    }
-    function deleteDescription(){
-        $('#new_render2').remove();
-    }
-</script>
+

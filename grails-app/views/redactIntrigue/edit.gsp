@@ -10,6 +10,7 @@
 <title><g:message code="default.edit.label" args="[entityName]" /></title>
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-editable.css')}" type="text/css">
 </head>
 <body>
 <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
@@ -22,6 +23,10 @@
 <g:javascript src="redactIntrigue/genericPlace.js"/>
 <g:javascript src="redactIntrigue/genericResource.js"/>
 <g:javascript src="redactIntrigue/relation.js"/>
+<g:javascript src="redactIntrigue/generalDescription.js"/>
+<g:javascript src="selectIntrigue/bootstrap-editable.js"/>
+<g:javascript src="selectIntrigue/bootstrap.min.js"/>
+<g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
 <div class="row-fluid" id="hidTest">
     <div class="span4">
         <form id="exportPDFButton" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
