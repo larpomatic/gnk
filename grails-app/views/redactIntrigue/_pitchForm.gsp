@@ -82,9 +82,9 @@ select {
         <g:render template="dropdownButtons" />
     </div>
     <!-- Editor -->
-    <div name="plotRichTextEditor" id="idPlotRichTextEditor_0" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-        ${plotInstance.description?.encodeAsHTML()}
-    </div>
+   <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_0" contenteditable="true" onblur="saveCarretPos($(this).attr('id'))">-->
+        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" value="Insérer votre description"/>
+    <!--</div>-->
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

@@ -28,7 +28,7 @@ function update_id() {
     document.getElementById('render_' + render).getElementsByClassName('pitchOrga')[0].id = "idPitchOrga_" + desc_number;
     document.getElementById('render_' + render).getElementsByClassName('pitchPj')[0].id = "idPitchPj_" + desc_number;
     document.getElementById('render_' + render).getElementsByClassName('pitchPnj')[0].id = "idPitchPnj_" + desc_number;
-    document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].id = "idPlotRichTextEditor_" + desc_number;
+    document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].id = "idDescriptionText_" + desc_number;
     document.getElementById('render_' + render).getElementsByClassName('type')[0].id = "idType_" + desc_number;
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].id = "idDescription_" + desc_number;
     //console.log(document.getElementById('render_3').getElementsByClassName('pitchOrga')[0].id );
