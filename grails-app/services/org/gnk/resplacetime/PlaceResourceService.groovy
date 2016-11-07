@@ -22,7 +22,7 @@ class PlaceResourceService {
     Gn reset(Gn gn, GenericObject genericObject) {
         Gn updatedGn = gn;
 
-        updatedGn.get
+        //updatedGn.get
 
         return updatedGn;
     }
@@ -64,24 +64,24 @@ class PlaceResourceService {
         ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
-        List<ReferentialObject> all_object = genericObject.getReferentialObject();
+        List<ReferentialObject> all_object = GenericObject.getReferentialObject();
         for (ReferentialObject p : all_object) {
-            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(genericObject, p, gn))))
+            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
         }
 
         // on trie la sorted_list en fonction du poids de l'object
         Collections.sort(sorted_list, new Comparator<Pair<ReferentialObject, Integer>>() {
             @Override
             public int compare(final Pair<ReferentialObject, Integer> o1, final Pair<ReferentialObject, Integer> o2) {
-                if (o1.value > o2.value)
+                if (o1.right.intValue() > o2.right.intValue())
                     return 1;
                 else
                     return 0;
             }
         });
 
-        //removeSameObjects(sorted_list, genericObject,gn )
-        //raiseLockedObject(sorted_list, genericObject)
+        removeSameObjects(sorted_list, GenericObject,gn )
+        raiseLockedObject(sorted_list, GenericObject)
 
         return sorted_list;
     }
