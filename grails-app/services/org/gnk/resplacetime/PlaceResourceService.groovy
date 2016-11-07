@@ -19,10 +19,19 @@ class PlaceResourceService {
      * @param genericObject
      * @return
      */
+
+    // Il faut trouver le GenericObject dans le GN en passant par la plot.
+    // Puis vider les résultats d’une précédent exécution du Service.
+    // On verra en fonction du besoin, il sera peut-être nécessaire d’ajouter une fonction resetAll(Gn)
+
     Gn reset(Gn gn, GenericObject genericObject) {
         Gn updatedGn = gn;
+//        Plot plotFromGenObj = genericObject.getPlot();
 
-        updatedGn.get
+        updatedGn.selectedPlotSet.clear();
+        updatedGn.characterSet.clear();
+        updatedGn.nonPlayerCharSet.clear();
+        updatedGn.characterSet.clear();
 
         return updatedGn;
     }
@@ -37,6 +46,10 @@ class PlaceResourceService {
     ArrayList<Object> removeSameObjects(ArrayList<Object> listObject, GenericObject genericObject, Gn gn) {
 
         ArrayList<Object> lastExecList = new ArrayList<>();
+
+
+
+
         return lastExecList;
     }
 
@@ -49,12 +62,10 @@ class PlaceResourceService {
     ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
         ArrayList<Object> newListObject = new ArrayList<>();
 
- /*       for (Object object in listObject) {
-            if (object.
-        }
-*/
+//               for ( in listObject) {
+//        if (object.     //}
 
-            return newListObject;
+        return newListObject;
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
