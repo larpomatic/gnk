@@ -64,11 +64,11 @@ class GenericPlace extends GenericObject{
          return tagsList;
      }
 
-    Map<Tag, Integer> getTagsAndWeights() {
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
          for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
-             mapTagInt.put(genericPlaceHasTag.tag, genericPlaceHasTag.weight)
+             mapTagInt.put(genericPlaceHasTag.tag, genericPlaceHasTag.weight * ponderation)
 
          return mapTagInt;
      }

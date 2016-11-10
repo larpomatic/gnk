@@ -54,12 +54,13 @@ public class TagServiceV2 {
 
         // initialisation des tags du generic object
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
+        //récupérer les tags relevants du genericobjet
+        map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights()));
 
         //initialisation des tags de l'object
         Map<Tag, Integer> map_Object = initObjectList(object);
 
-        //récupérer les tags du genericobjet
-        map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights()));
+
         //récupérer les tags parents
         map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights()));
 
