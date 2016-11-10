@@ -27,4 +27,5 @@ abstract class GenericObject {
      abstract ArrayList<ReferentialObject> getReferentialObject()
      abstract ReferentialObject getLockedObject();
      abstract Plot getPlotFromGenericObject()
+
 }
