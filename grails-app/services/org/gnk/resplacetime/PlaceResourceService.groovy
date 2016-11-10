@@ -62,12 +62,12 @@ class PlaceResourceService {
      */
     ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
 
-        if (listObject.contains(genericObject.getLockedObject())) {
+        /*if (listObject.contains(genericObject.getLockedObject())) {
             listObject.remove(genericObject.getLockedObject());
         }
         listObject.add(0, genericObject.getLockedObject());
 
-        return listObject;
+        return listObject;*/
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object

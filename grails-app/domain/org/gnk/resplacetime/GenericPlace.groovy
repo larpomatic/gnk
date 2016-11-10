@@ -19,7 +19,7 @@ class GenericPlace extends GenericObject{
     Integer DTDId
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace"]
+    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace"]
 
 
     List<Place> proposedPlaces
@@ -81,8 +81,8 @@ class GenericPlace extends GenericObject{
         return this.lockedPlace;
     }
 
-    Plot getPlot() {
-        return this.plot;
+    Plot getPlotFromGenericObject () {
+        return getPlot();
     }
 
 //    boolean isIngameClue()
