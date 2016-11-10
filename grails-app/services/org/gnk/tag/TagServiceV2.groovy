@@ -16,14 +16,6 @@ public class TagServiceV2 {
     TagServiceV2() {
     }
 
-    /**
-     * get the universe from the gn
-     * @param gn
-     * @return tag of the universe
-     */
-    Tag getUniver(Gn gn) {
-        return gn.getUnivers();
-    }
 
     /**
      * get all the univers
@@ -53,7 +45,9 @@ public class TagServiceV2 {
      */
     Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
 
+        // initialisation des tags du generic object
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
+
         //récupérer les tags du genericobjet
         map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights()));
         //récupérer les tags parents

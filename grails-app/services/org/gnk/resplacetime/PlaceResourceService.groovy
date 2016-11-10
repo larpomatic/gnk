@@ -86,13 +86,19 @@ public class PlaceResourceService {
      * @param genericObject
      * @return
      */
-    ArrayList<ReferentialObject> raiseLockedObject(ArrayList<ReferentialObject> listObject, GenericObject genericObject) {
+    ArrayList<Pair<ReferentialObject, Integer>> raiseLockedObject(ArrayList<Pair<ReferentialObject, Integer>> listObject, GenericObject genericObject) {
 
-        if (listObject.contains(genericObject.getLockedObject())) {
-            listObject.remove(genericObject.getLockedObject());
+        if (genericObject.getLockedObject() != null) {
+            Integer i = new Integer(9999);
+            for (Pair<ReferentialObject, Integer> pa in listObject) {
+                if (pa.left.equals(genericObject.getLockedObject())) {
+                    listObject.remove(pa);
+                    i = pa.right;
+                    break;
+                }
+            }
+            listObject.add(0, new Pair<ReferentialObject, Integer>(genericObject.getLockedObject(), i))
         }
-        listObject.add(0, genericObject.getLockedObject());
-
         return listObject;
     }
 
