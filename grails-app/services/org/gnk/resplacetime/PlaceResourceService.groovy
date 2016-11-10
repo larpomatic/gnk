@@ -118,5 +118,4 @@ class PlaceResourceService {
 
         return all_objects;
     }
-
 }
