@@ -44,14 +44,22 @@ class PlaceResourceService {
      * @param gn
      * @return
      */
-    ArrayList<Object> removeSameObjects(ArrayList<Object> listObject, GenericObject genericObject, Gn gn) {
+    ArrayList<Object> removeSameObjects(ArrayList<GenericObject> listObject, Plot plot) {
 
-        ArrayList<Object> lastExecList = new ArrayList<>();
+        ArrayList<GenericObject> plLis = new ArrayList();
+        if (listObject[0].getSubType().equals("genericRessource"))
+            plLis = plot.getGenericResources()
+        else
+            plLis = plot.getGenericPlaces()
 
 
-
-
-        return lastExecList;
+        for (GenericObject go in plLis) {
+            if (listObject.contains(go)) {
+                listObject.remove(go);
+                listObject.add(listObject.size() - 1, go);
+            }
+        }
+        return listObject;
     }
 
     /**
