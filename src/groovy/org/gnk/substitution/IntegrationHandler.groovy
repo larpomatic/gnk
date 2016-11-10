@@ -27,6 +27,15 @@ class IntegrationHandler {
 
     Map<String, Integer> resultList = new HashMap<>()
 
+    /**
+     * Make the naming substitution happen
+     * Give a name to the characters of the GN
+     *
+     * @param charJsonObject the JSON from the NamingController getSubCharacters() request
+     *      contain the data from substitution naming _character.gsp table : gnId, Universe and characters
+     * @return
+
+     */
     public JSONObject namingIntegration(JSONObject charJsonObject) {
         String universe = charJsonObject.get("universe")
         LinkedList<PersoForNaming> charForNamingList = []
@@ -41,15 +50,17 @@ class IntegrationHandler {
 
             charForNaming.universe = universe
 
-            charForNaming.code = characterJson.gnId
-            //print ("characterJson.gnId : " + characterJson.gnId)
+            charForNaming.code = characterJson.code
+            //print ("characterJson.code : " + characterJson.code)
             charForNaming.gender = characterJson.gender
 
             // Tags
             List<Tag> tagList = []
             Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
             for (tagJson in characterJson.tags) {
+                //Tag used in calculation
                 Tag tag = new Tag()
+                //Persisted tag from the db, can't contain weight
                 org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
                 tag.value = tagJson.value
@@ -138,11 +149,11 @@ class IntegrationHandler {
 
         // Update json
         for (characterJson in charJsonObject.characters) {
-            String gn_Id = characterJson.gnId
+            String code = characterJson.code
             PersoForNaming charForNaming = null
 
             for (charForNamingIt in charForNamingList) {
-                if (charForNamingIt.code == gn_Id) {
+                if (charForNamingIt.code == code) {
                     charForNaming = charForNamingIt
                     break
                 }

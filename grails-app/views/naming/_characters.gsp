@@ -166,7 +166,7 @@
             if (content != "") {
                 var character = new Object();
                 // Gn id
-                character.gnId = ${gnInfo.dbId}
+                character.code = ${gnInfo.dbId}
                 // HTML id
                 character.htmlId = "char"+ characterId;
                 // Gender
@@ -211,7 +211,7 @@
         <g:each status="i" in="${characterList}" var="character">
         var character = new Object();
         // Gn Id
-        character.gnId = "${character.DTDId}"
+        character.code = "${character.DTDId}"
         // HTML Id
         character.htmlId = "char${character.DTDId}"
         // Gender
