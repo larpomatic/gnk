@@ -31,7 +31,7 @@ class GenericResource extends GenericObject{
     static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role, plot: Plot, objectType: ObjectType]
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]
+    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource"]
 
 
     List<Resource> proposedResources
@@ -123,8 +123,8 @@ class GenericResource extends GenericObject{
         return this.lockedResource;
     }
 
-    Plot getPlot() {
-        return this.plot;
+    Plot getPlotFromGenericObject() {
+        return getPlot();
     }
 }
 
