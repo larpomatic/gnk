@@ -8,11 +8,13 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagServiceV2
 import org.gnk.tag.Tag
 
-class PlaceResourceService {
+public class PlaceResourceService {
 
-    TagServiceV2 tagservice;
+    TagServiceV2 tagServiceV2;
     private static int IDgenericUniverTag = 33089;
 
+    PlaceResourceService() {
+    }
     /**
      *
      * @param gn
@@ -25,16 +27,21 @@ class PlaceResourceService {
     // On verra en fonction du besoin, il sera peut-être nécessaire d’ajouter une fonction resetAll(Gn)
 
     Gn reset(Gn gn, GenericObject genericObject) {
-        Gn updatedGn = gn;
 //        Plot plotFromGenObj = genericObject.getPlot();
 
-        updatedGn.selectedPlotSet.clear();
-        updatedGn.characterSet.clear();
-        updatedGn.nonPlayerCharSet.clear();
-        updatedGn.characterSet.clear();
+        for (Plot p in gn.getSelectedPlotSet()) {
+            for (GenericPlace gp in p.getGenericPlaces()) {
+                gp.setSelectedPlace(null)
+                gp.setProposedPlaces(new ArrayList<Place>())
+            }
 
+            for (GenericResource gr in p.getGenericResources()) {
+                gr.setSelectedResource(null);
+                gr.setProposedResources(new ArrayList<Resource>())
+            }
+        }
 
-        return updatedGn;
+        return gn;
     }
 
     /**
@@ -44,18 +51,30 @@ class PlaceResourceService {
      * @param gn
      * @return
      */
-    ArrayList<Object> removeSameObjects(ArrayList<GenericObject> listObject, Plot plot) {
+    ArrayList<Pair<ReferentialObject, Integer>> removeSameObjects(ArrayList<Pair<ReferentialObject, Integer>> listObject, Plot plot) {
 
-        ArrayList<GenericObject> plLis = new ArrayList();
-        if (listObject[0].getSubType().equals("genericRessource"))
-            plLis = plot.getGenericResources()
-        else
-            plLis = plot.getGenericPlaces()
+        ArrayList<ReferentialObject> plLis = new ArrayList();
+        if (listObject[0].left.getSubType().equals("Ressource")) {
+            for (GenericResource gr in plot.getGenericResources()) {
+                if (gr.selectedResource != null) {
+                    plLis.add(gr.selectedResource)
+                }
+            }
+        }
+        else {
+            for (GenericPlace gp in plot.getGenericPlaces()) {
+                if (gp.selectedPlace != null) {
+                    plLis.add(gp.selectedPlace)
+                }
+            }
+        }
 
-        for (GenericObject go in plLis) {
-            if (listObject.contains(go)) {
-                listObject.remove(go);
-                listObject.add(listObject.size() - 1, go);
+        ArrayList<Pair<ReferentialObject, Integer>> tmp = listObject.clone()
+
+        for (Pair<ReferentialObject, Integer> pa in tmp) {
+            if (plLis.contains(pa.left)) {
+                listObject.remove(pa);
+                listObject.add(listObject.size() - 1, pa);
             }
         }
         return listObject;
@@ -67,7 +86,7 @@ class PlaceResourceService {
      * @param genericObject
      * @return
      */
-    ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
+    ArrayList<ReferentialObject> raiseLockedObject(ArrayList<ReferentialObject> listObject, GenericObject genericObject) {
 
         if (listObject.contains(genericObject.getLockedObject())) {
             listObject.remove(genericObject.getLockedObject());
@@ -78,15 +97,15 @@ class PlaceResourceService {
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
-    ArrayList<Pair<Object, Integer>> findBestObjects(GenericObject GenericObject, Gn gn) {
+    ArrayList<Pair<ReferentialObject, Integer>> findBestObjects(GenericObject GenericObject, Gn gn) {
 
         // liste contenant les objets et leurs scores par rapport au GenericObject
-        ArrayList<Pair<Object, Integer>> sorted_list = new ArrayList<>();
+        ArrayList<Pair<ReferentialObject, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
         List<ReferentialObject> all_object = GenericObject.getReferentialObject();
         for (ReferentialObject p : all_object) {
-            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagservice.computeComparativeScoreObject(GenericObject, p, gn))))
+            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagServiceV2.computeComparativeScoreObject(GenericObject, p, gn))))
         }
 
         // on trie la sorted_list en fonction du poids de l'object
@@ -100,28 +119,28 @@ class PlaceResourceService {
             }
         });
 
-        removeSameObjects(sorted_list, GenericObject, gn)
-        raiseLockedObject(sorted_list, GenericObject)
+        sorted_list = removeSameObjects(sorted_list, GenericObject, gn)
+        sorted_list = raiseLockedObject(sorted_list, GenericObject)
 
         return sorted_list;
     }
 
-    ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> findBestObjectsForAllUnivers(GenericObject genericObject, Plot plot) {
+    ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> findBestObjectsForAllUnivers(GenericObject genericObject, Plot plot) {
 
         // on réucpère l'ensemble des tagsunivers dans la liste UniverListTag
-        ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
+        ArrayList<Tag> univerListTag = new ArrayList<Tag>();
         Tag genericUnivers = Tag.findById(IDgenericUniverTag);
-        UniverListTag.addAll(Tag.findAllByParent(genericUnivers));
+        univerListTag.addAll(Tag.findAllByParent(genericUnivers));
 
         // liste qui contiendra l'ensemble des résultats cherchés
-        ArrayList<Pair<Tag, ArrayList<Pair<Object, Integer>>>> all_objects = new ArrayList<>();
+        ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> all_objects = new ArrayList<>();
 
         // On boucle sur les tags Univers en créant des GN avec le plot défini puis on appelle findBestObject, et on insère le résultat dans all_objects
-        for (Tag t in UniverListTag) {
+        for (Tag t in univerListTag) {
             Gn gn = new Gn();
             gn.addPlot(plot);
             gn.setUnivers(t);
-            all_objects.addAll(findBestObjects(genericObject, gn));
+            all_objects.addAll(new Pair(t, findBestObjects(genericObject, gn)>));
         }
 
         return all_objects;

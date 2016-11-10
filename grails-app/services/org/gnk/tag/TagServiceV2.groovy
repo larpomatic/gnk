@@ -6,12 +6,15 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
 
-class TagServiceV2 {
+public class TagServiceV2 {
 
     private static int  IDgenericUniverTag = 33089;
     private static int NumberOfGenerationsRelevant = 2;
     private static int NumberofGenerationsParent = 2;
     private static int PonderationParent = 1;
+
+    TagServiceV2() {
+    }
 
     /**
      * get the universe from the gn

@@ -27,4 +27,5 @@ abstract class ReferentialObject {
     abstract ArrayList<Tag> getTags();
     abstract Map<Tag, Integer> getTagsAndWeights();
     abstract List<ReferentialObject> getAll();
+    abstract String getSubType();
 }

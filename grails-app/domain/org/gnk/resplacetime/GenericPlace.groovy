@@ -84,6 +84,9 @@ class GenericPlace extends GenericObject{
     Plot getPlotFromGenericObject () {
         return getPlot();
     }
+    String getSubType() {
+        return "genericPlace";
+    }
 
 //    boolean isIngameClue()
 //    {

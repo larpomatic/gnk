@@ -126,6 +126,10 @@ class GenericResource extends GenericObject{
     Plot getPlotFromGenericObject() {
         return getPlot();
     }
+
+    String getSubType() {
+        return "genericRessource";
+    }
 }
 
 

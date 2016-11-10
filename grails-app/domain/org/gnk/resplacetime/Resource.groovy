@@ -55,4 +55,8 @@ class Resource extends ReferentialObject {
 		return mapTagInt;
 	}
 
+	String getSubType() {
+		return "Ressource";
+	}
+
 }

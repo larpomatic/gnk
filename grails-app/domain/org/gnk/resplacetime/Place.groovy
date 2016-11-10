@@ -53,4 +53,8 @@ class Place extends ReferentialObject{
         return mapTagInt;
     }
 
+    String getSubType() {
+        return "Place";
+    }
+
 }
