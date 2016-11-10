@@ -44,11 +44,11 @@ class Place extends ReferentialObject{
         return tagsList;
     }
 
-    Map<Tag, Integer> getTagsAndWeights() {
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
         for (PlaceHasTag placeHasTag in this.extTags)
-            mapTagInt.put(placeHasTag.tag, placeHasTag.weight)
+            mapTagInt.put(placeHasTag.tag, placeHasTag.weight * ponderation)
 
         return mapTagInt;
     }

@@ -125,7 +125,7 @@ public class PlaceResourceService {
             }
         });
 
-        sorted_list = removeSameObjects(sorted_list, GenericObject, gn)
+        sorted_list = removeSameObjects(sorted_list, GenericObject.getPlotFromGenericObject());
         sorted_list = raiseLockedObject(sorted_list, GenericObject)
 
         return sorted_list;
@@ -146,7 +146,7 @@ public class PlaceResourceService {
             Gn gn = new Gn();
             gn.addPlot(plot);
             gn.setUnivers(t);
-            all_objects.addAll(new Pair(t, findBestObjects(genericObject, gn)>));
+            all_objects.addAll(new Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>(t, findBestObjects(genericObject, gn)));
         }
 
         return all_objects;

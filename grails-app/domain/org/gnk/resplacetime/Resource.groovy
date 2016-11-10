@@ -46,11 +46,11 @@ class Resource extends ReferentialObject {
 		return tagsList;
 	}
 
-	Map<Tag, Integer> getTagsAndWeights() {
+	Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
 		Map<Tag, Integer> mapTagInt = new HashMap<>();
 
 		for (ResourceHasTag resourceHasTag in this.extTags)
-			mapTagInt.put(resourceHasTag.tag, resourceHasTag.weight)
+			mapTagInt.put(resourceHasTag.tag, resourceHasTag.weight * ponderation)
 
 		return mapTagInt;
 	}

@@ -109,11 +109,11 @@ class GenericResource extends GenericObject{
         return tagsList;
     }
 
-    Map<Tag, Integer> getTagsAndWeights() {
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
         for (GenericResourceHasTag genericResourceHasTag in this.extTags)
-            mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight)
+            mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight * ponderation)
 
         return mapTagInt;
     }

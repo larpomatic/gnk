@@ -23,7 +23,7 @@ abstract class GenericObject {
 //     static belongsTo = [plot: Plot, objectType: ObjectType]
 
      abstract ArrayList<Tag> getTags()
-     abstract Map<Tag, Integer> getTagsAndWeights()
+     abstract Map<Tag, Integer> getTagsAndWeights(Float ponderation)
      abstract ArrayList<ReferentialObject> getReferentialObject()
      abstract ReferentialObject getLockedObject();
      abstract Plot getPlotFromGenericObject()
