@@ -62,12 +62,13 @@ class PlaceResourceService {
      * @return
      */
     ArrayList<Object> raiseLockedObject(ArrayList<Object> listObject, GenericObject genericObject) {
-        ArrayList<Object> newListObject = new ArrayList<>();
 
-//               for ( in listObject) {
-//        if (object.     //}
+        if (listObject.contains(genericObject.getLockedObject())) {
+            listObject.remove(genericObject.getLockedObject());
+        }
+        listObject.add(0, genericObject.getLockedObject());
 
-        return newListObject;
+        return listObject;
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
@@ -93,7 +94,7 @@ class PlaceResourceService {
             }
         });
 
-        removeSameObjects(sorted_list, GenericObject,gn )
+        removeSameObjects(sorted_list, GenericObject, gn)
         raiseLockedObject(sorted_list, GenericObject)
 
         return sorted_list;

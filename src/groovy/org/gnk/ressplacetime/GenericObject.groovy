@@ -25,5 +25,6 @@ abstract class GenericObject {
      abstract ArrayList<Tag> getTags()
      abstract Map<Tag, Integer> getTagsAndWeights()
      abstract ArrayList<ReferentialObject> getReferentialObject()
+     abstract ReferentialObject getLockedObject();
      //abstract Plot getPlot()
 }
