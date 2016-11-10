@@ -33,7 +33,6 @@ class PlaceResourceService {
         updatedGn.nonPlayerCharSet.clear();
         updatedGn.characterSet.clear();
 
-        //updatedGn.get
 
         return updatedGn;
     }
@@ -120,5 +119,4 @@ class PlaceResourceService {
 
         return all_objects;
     }
-
 }
