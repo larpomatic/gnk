@@ -621,12 +621,26 @@ class PublicationController {
 
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
-            Tr tableRowPlace = wordWriter.factory.createTr()
+            Tr tableRowPlace = wordWriter.factory.createTr();
             String listPlot = "";
-            for (Plot plot in gn.getSelectedPlotSet()) {
-                listPlot += plot.getName() + "; ";
-            }
-            wordWriter.addTableStyledCell("Table1C", tableRowPlace, listPlot);
+           // try {
+                 //listPlot = p.getGenericPlace().getPlot().getName();
+                for (Plot plot in gn.getSelectedPlotSet()) {
+                    def gernericList = plot.getGenericPlaces();
+                    for (GenericPlace currentGenericPlace in gernericList) {
+                        if (currentGenericPlace.selectedPlace.id.intValue() == p.id.intValue()) {
+                            listPlot += plot.getName() + "; ";
+                            break;
+                        }
+                    }
+                }
+            /*} catch (Exception E) {
+                System.out.println(E.message + "kfd,gkf,gldfk,gdflk,gldfg");
+            }*/
+
+
+            if (listPlot != null)
+                wordWriter.addTableStyledCell("Table1C", tableRowPlace, listPlot);
             int lastIndexOf = p.name.lastIndexOf(" -")
             if (lastIndexOf != -1)
                 wordWriter.addTableStyledCell("Table1C", tableRowPlace, p.name.substring(0, lastIndexOf))

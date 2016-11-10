@@ -140,7 +140,7 @@ class SelectIntrigueController {
         if (id >= 0) {
             gnInstance = Gn.get(id)
             if ((params.screenStep as Integer) == 1) {
-                final gnData = new GNKDataContainerService().ReadDTD(gnInstance)
+                final gnData = new GNKDataContainerService().ReadDTD(gnInstance);
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
                 params.each {
