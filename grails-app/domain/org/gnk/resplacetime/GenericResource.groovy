@@ -37,6 +37,7 @@ class GenericResource extends GenericObject{
     List<Resource> proposedResources
     List<Resource> bannedResources
     Resource selectedResource
+    Resource lockedResource
 
 	static hasMany = [ extTags: GenericResourceHasTag,
 	                   roleHasEventHasRessources: RoleHasEventHasGenericResource]
@@ -115,6 +116,11 @@ class GenericResource extends GenericObject{
             mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight)
 
         return mapTagInt;
+    }
+
+
+    ReferentialObject getLockedObject() {
+        return this.lockedResource;
     }
 
     Plot getPlot() {

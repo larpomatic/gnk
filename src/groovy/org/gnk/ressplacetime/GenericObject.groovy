@@ -22,11 +22,9 @@ abstract class GenericObject {
 */
 //     static belongsTo = [plot: Plot, objectType: ObjectType]
 
-
      abstract ArrayList<Tag> getTags()
      abstract Map<Tag, Integer> getTagsAndWeights()
      abstract ArrayList<ReferentialObject> getReferentialObject()
-
-     abstract Plot getPlot()
-
+     abstract ReferentialObject getLockedObject();
+     //abstract Plot getPlot()
 }

@@ -25,6 +25,7 @@ class GenericPlace extends GenericObject{
     List<Place> proposedPlaces
     List<Place> bannedPlaces
     Place selectedPlace
+    Place lockedPlace
 
     static belongsTo = [plot: Plot, objectType: ObjectType]
 
@@ -75,6 +76,10 @@ class GenericPlace extends GenericObject{
      ArrayList<ReferentialObject> getReferentialObject() {
          return Place.findAll();
      }
+
+    ReferentialObject getLockedObject() {
+        return this.lockedPlace;
+    }
 
     Plot getPlot() {
         return this.plot;
