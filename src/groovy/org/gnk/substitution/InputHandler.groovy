@@ -174,7 +174,7 @@ class InputHandler {
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
+                        relationChar.r1 = r1
                         relationChar.role2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
@@ -221,7 +221,7 @@ class InputHandler {
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
+                        relationChar.r1 = r1
                         relationChar.role2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective

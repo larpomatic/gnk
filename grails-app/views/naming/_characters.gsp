@@ -228,7 +228,7 @@
         </g:each>
         <g:each status="j" in="${character.relationList}" var="rel">
         var relationChar = new Object();
-        relationChar.role1 = "${rel.role1}";
+        relationChar.role1 = "${rel.r1}";
         relationChar.role2 = "${rel.role2}";
         relationChar.type = "${rel.type}";
         relationArray.push(relationChar);
