@@ -23,6 +23,7 @@ import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.roletoperso.RoleRelationType
+import org.gnk.selectintrigue.Description
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
@@ -179,7 +180,32 @@ class RedactIntrigueController {
 		if (!plotInstance) {
             isupdate = false;
 		}
+        List<String> pitchOrga = new ArrayList<String>();
+        List<String> pitchPj = new ArrayList<String>();;
+        List<String> pitchPnj = new ArrayList<String>();;
+        List<Integer> descriptionId = new ArrayList<Integer>()
 		plotInstance.properties = params
+
+        for (int i = 0; i < params.type.length; i++)
+        {
+            pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
+            pitchPj.add(params.get("pitchPj_" + i.toString()).toString());
+            pitchPnj.add(params.get("pitchPnj_" + i.toString()).toString());
+            descriptionId.add(params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger());
+            System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
+        }
+
+        for (int i = 0; i < params.type.length; i++)
+        {
+            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), params.type[i].toString(), params.description_text[i].toString(), pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i));
+            plotInstance.add_Description(new_description);
+            if (Description.findByIdDescriptionAndPlotId(descriptionId.get(i), plotInstance.id.toInteger()) != null)
+                //Description.executeUpdate("update Description d set d.is_pnj = " + new_description.isPnj + ", d.is_pj=" + new_description.isPj + ", d.is_orga=" + new_description.isOrga + ", d.type=" + new_description.type + ", d.pitch=" + new_description.pitch + "where d.plot_id=" + plotInstance.id.toInteger() + "and d.id_description=" + descriptionId.get(i))
+                Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + descriptionId.get(i))
+            new_description.save(flush: true)
+
+
+        }
 		plotInstance.description = params.plotDescription == "" ? null : params.plotDescription;
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;

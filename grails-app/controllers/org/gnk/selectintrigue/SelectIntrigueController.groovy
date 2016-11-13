@@ -175,7 +175,7 @@ class SelectIntrigueController {
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
                 if (selectedEvenementialPlotInstanceList.size() == 0) {
                     flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
-                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery(), conventionList: Convention.list()])
                     return
                 }
                 selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
@@ -557,11 +557,12 @@ class SelectIntrigueController {
         //gnInstance.convention = Convention.findById(params.convention as Integer)
         gnInstance.convention_id = params.convention as Integer
 
+        TagService tagService = new TagService();
         formatParams(gnInstance)
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
         if (!gnInstance.save(flush: true)) {
-            render(view: "selectIntrigue", model: [gnInstance: gnInstance])
+            render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
             return
         }
 
