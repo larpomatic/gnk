@@ -9,7 +9,6 @@ class SubstitutionPlaceXMLReaderService {
     /* Exposed Methods */
 
     def static getSubstitutedPlaceFromNode(Node PLACES, GNKDataContainerService dataContainer) {
-        String selectedStatus = "selected"
 
         Place place;
         GenericPlace genericPlace;
@@ -35,7 +34,7 @@ class SubstitutionPlaceXMLReaderService {
                     place = dataContainer.placeMap.get(placeId)
                     assert (place != null)
 
-                    if (placeStatus.equals(selectedStatus)) {
+                    if (placeStatus.equals("selected")) {
                         if (place.genericPlace != null) {
                             //if we need to associate another genericPlace to a place that already has one, we create a copy of this place on work on it
                             place = dataContainer.copyAndAddPlaceToPlaceMap(place);
@@ -45,6 +44,8 @@ class SubstitutionPlaceXMLReaderService {
                             place.genericPlace = genericPlace
                             genericPlace.selectedPlace = place
                         }
+                    } else if (placeStatus.equals("locked")) {
+                        genericPlace.lockedPlace = place
                     } else if (placeStatus.equals("proposed")) {
                         if (genericPlace.proposedPlaces == null)
                             genericPlace.proposedPlaces = new ArrayList<Place>()
