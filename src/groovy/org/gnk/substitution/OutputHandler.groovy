@@ -245,6 +245,7 @@ class OutputHandler {
                 }
                 // Gn update
                 genericResource.selectedResource = selectedResource
+                genericResource.lockedResource = selectedResource
                 genericResource.proposedResources = proposedResources
                 genericResource.bannedResources = bannedResources
             }
@@ -354,6 +355,7 @@ class OutputHandler {
                 }
                 // Gn update
                 genericPlace.selectedPlace = selectedPlace
+                genericPlace.lockedPlace = selectedPlace
                 int lastIndexOf = selectedPlace.name.lastIndexOf(" -")
                 if (lastIndexOf != -1)
                     selectedPlace.name = selectedPlace.name.substring(0, lastIndexOf)
