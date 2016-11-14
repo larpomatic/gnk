@@ -21,10 +21,6 @@
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
-                <g:hiddenField name="plotDescription" class="descriptionContent" value=""/>
-                <g:hiddenField name="plotPitchOrga" class="pitchOrgaContent" value=""/>
-                <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
-                <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
                 <g:hiddenField name="plotVariantField" class="variantContent" value=""/>
                 <div class="row formRow">
                     <div class="span1">
@@ -144,9 +140,18 @@
                     </div>
                 </div>
                 <div id="desc_wrapper">
-                    <div class="render" id="render_0">
-                        <g:render template="pitchForm"/>
-                    </div>
+                    <g:if test="${descriptionList.size() == 0}">
+                        <div class="render" id="render_0">
+                            <g:render template="pitchForm"/>
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <g:each in="${descriptionList}" status="i" var="description">
+                            <div class="render" id="render_${description.idDescription}">
+                                <g:render template="pitchFormExisting" model="[description : description]"/>
+                            </div>
+                        </g:each>
+                    </g:else>
                 </div>
 
                 <div class="buttonAdd">

@@ -109,6 +109,7 @@ class RedactIntrigueController {
 
 		[plotInstance: plotInstance,
                 pastscenes: pastscenes,
+                descriptionList : Description.findAllByPlotId(plotInstance.id),
                 plotTagList: tagService.getPlotTagQuery(),
                 plotUniversList: tagService.getUniversTagQuery(),
                 roleTagList: tagService.getRoleTagQuery(),
@@ -186,7 +187,9 @@ class RedactIntrigueController {
         List<Integer> descriptionId = new ArrayList<Integer>()
 		plotInstance.properties = params
 
-        for (int i = 0; i < params.type.length; i++)
+        int nb_desc = (params.type instanceof String[]) ? params.type.length : 1
+
+        for (int i = 0; i < nb_desc; i++)
         {
             pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
             pitchPj.add(params.get("pitchPj_" + i.toString()).toString());
@@ -195,18 +198,21 @@ class RedactIntrigueController {
             System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
         }
 
-        for (int i = 0; i < params.type.length; i++)
+        for (int i = 0; i < nb_desc; i++)
         {
-            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), params.type[i].toString(), params.description_text[i].toString(), pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i));
+            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), (params.type instanceof String[]) ? params.type[i].toString() : params.type.toString(), (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text, pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i));
             plotInstance.add_Description(new_description);
             if (Description.findByIdDescriptionAndPlotId(descriptionId.get(i), plotInstance.id.toInteger()) != null)
                 //Description.executeUpdate("update Description d set d.is_pnj = " + new_description.isPnj + ", d.is_pj=" + new_description.isPj + ", d.is_orga=" + new_description.isOrga + ", d.type=" + new_description.type + ", d.pitch=" + new_description.pitch + "where d.plot_id=" + plotInstance.id.toInteger() + "and d.id_description=" + descriptionId.get(i))
                 Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + descriptionId.get(i))
             new_description.save(flush: true)
-
-
         }
-		plotInstance.description = params.plotDescription == "" ? null : params.plotDescription;
+
+        for (int j = Description.findAllByPlotId(plotInstance.id.toInteger()).size() - 1; j >= descriptionId.size(); j--)
+        {
+            Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + j)
+        }
+		plotInstance.description = (params.type instanceof String[]) ? params.type[0].toString() : params.type.toString()
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
         plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;

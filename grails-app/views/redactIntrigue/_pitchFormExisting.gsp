@@ -39,9 +39,9 @@ select {
 
 </style>
 <div class="fullScreenEditable" id="new_render">
-    <g:hiddenField name="pitchDescription_0" class="pitchDescription" value="idDescription_0"/>
+    <g:hiddenField name="pitchDescription_${description.idDescription}" class="pitchDescription" value="idDescription_${description.idDescription}"/>
     <div class="test">
-        <a href="#" id="idDescription_0" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click">Description</a>
+        <a href="#" id="idDescription_${description.idDescription}" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click">Description</a>
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
     </div>
     <div class="row formRow">
@@ -52,7 +52,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchOrga" name="pitchOrga_0" id="idPitchOrga_0" value="${true}"/>
+            <g:checkBox class="pitchOrga" name="pitchOrga_${description.idDescription}" id="idPitchOrga_${description.idDescription}" value="${description.isOrga}"/>
         </div>
 
         <div class="span11">
@@ -62,7 +62,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPj" id="idPitchPj_0" name="pitchPj_0" checked="${plotInstance.isEvenemential}"/>
+            <g:checkBox class="pitchPj" id="idPitchPj_${description.idDescription}" name="pitchPj_${description.idDescription}" checked="${description.isPj}"/>
         </div>
 
         <div class="span11">
@@ -72,17 +72,20 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPnj" id="idPitchPnj_0" name="pitchPnj_0" checked="${plotInstance.isDraft}"/>
+            <g:checkBox class="pitchPnj" id="idPitchPnj_${description.idDescription}" name="pitchPnj_${description.idDescription}" checked="${description.isPnj}"/>
         </div>
         <div class="span6" id="type">
-            <g:select class="type" name='type' id="idType_0" noSelection="['':'-Choose a type-']"
+            <g:select class="type" name='type' id="idType_${description.idDescription}" value="${description.type}"
                       from="${['contexte du GN', 'univers du GN', 'informations lues dans la presse récemment', 'points de règles', 'personnalités connues', 'divers']}"/>
         </div>
     </div>
     <div class="button_template">
         <g:render template="dropdownButtons" />
     </div>
-        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" value="Insérer votre description"/>
+    <!-- Editor -->
+   <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_0" contenteditable="true" onblur="saveCarretPos($(this).attr('id'))">-->
+        <g:textArea name="description_text" id="idDescriptionText_${description.idDescription}" class="text-left richTextEditor editable" value="${description.pitch}"/>
+    <!--</div>-->
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

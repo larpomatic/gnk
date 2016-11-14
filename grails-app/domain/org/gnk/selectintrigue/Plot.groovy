@@ -28,6 +28,8 @@ class Plot {
     String pitchPj
     String pitchPnj
 
+    List<Description> list_Description
+
 	Boolean isEvenemential
     Boolean isMainstream
     Boolean isPublic
@@ -38,7 +40,7 @@ class Plot {
 	User user
     Integer variant
 
-    static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId"]
+    static transients = ["roleListBuffer", "sumPipRolesBuffer", "plotHasPlotTagListBuffer", "DTDId", "List<Description> list_Description"]
 
     Integer sumPipRolesBuffer;
     Integer DTDId;
@@ -202,5 +204,12 @@ class Plot {
         String place = "Nb Lieux : " + this.genericPlaces.size();
         String evt = "Nb Evénements : " + this.events.size();
         return "<b>" + this.name + "</b>" + newLigne + role + newLigne + res + newLigne + place + newLigne +evt;
+    }
+
+    public void add_Description(Description description)
+    {
+        if (list_Description == null)
+            list_Description = new ArrayList<Description>()
+        list_Description.add(description)
     }
 }
