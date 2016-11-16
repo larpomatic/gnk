@@ -3,28 +3,44 @@
 <head>
     <meta name="layout" content="main">
     <link href="${resource(dir: 'css', file: 'substitution.css')}" type="text/css" rel="stylesheet"/>
-    <title><g:message code="substitution.title" /></title>
+    <title><g:message code="substitution.title"/></title>
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'stepProgressBar.css')}" type="text/css">
+
+
+
+    <link rel="alternate" type="application/rss+xml" title="Latest snippets from Bootsnipp.com" href="http://bootsnipp.com/feed.rss">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://bootsnipp.com/dist/bootsnipp.min.css?ver=7d23ff901039aef6293954d33d23c066">
 </head>
+
 <body>
 
 <h1>Substitution</h1>
 
+<g:render template="../stepProgressBar"/>
 
-    <g:hiddenField name="gnId" value="${gnId}"/>
-    <div class="form-actions">
-    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
+<g:hiddenField name="gnId" value="${gnId}"/>
+<div class="form-actions">
+    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
+        <g:message code="default.back.label" default="Back"/>
+    </g:link>
     <button id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index">
-    ${message(code: 'navbar. publication', default: 'Publication')}</button>
-    </div>
+        ${message(code: 'navbar. publication', default: 'Publication')}</button>
+</div>
 
 
-<g:render template="gnInformation" />
+<g:render template="gnInformation"/>
 
 <div class="row-fluid">
     <div class="span4"><h3 class="cap">Formulaire de Substitution</h3></div>
 </div>
+
 <div id="subAlertContainer">
 </div>
 
@@ -35,32 +51,38 @@
         <li><a href="#tab3" data-toggle="tab">Lieux</a></li>
         <li><a href="#tab4" data-toggle="tab">Dates</a></li>
     </ul>
+
     <div class="tab-content">
         <div class="tab-pane active" id="tab1">
-            <g:render template="characters" />
+            <g:render template="characters"/>
         </div>
+
         <div class="tab-pane" id="tab2">
             <g:render template="resources"/>
         </div>
+
         <div class="tab-pane" id="tab3">
-            <g:render template="places" model="[placeList:placeList, gnId : gnId]"/>
+            <g:render template="places" model="[placeList: placeList, gnId: gnId]"/>
         </div>
+
         <div class="tab-pane" id="tab4">
-            <g:render template="dates" />
+            <g:render template="dates"/>
         </div>
     </div>
 </div>
 
-<g:javascript src="substitution/sub.js" />
+<g:javascript src="substitution/sub.js"/>
+<g:javascript src="stepProgressBar/stepProgressBar.js"/>
+<g:javascript src="stepProgressBar/jquery-3.1.1.min.js"/>
+<g:javascript src="stepProgressBar/bootstrap.min.js" />
 
 
 <script type="text/javascript">
-    function publicationAccess()
-    {
-            var isCharsReady = prepareCharsJSONForValidation(charsJSON);
-            var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
-            var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
-            var isDatesReady = prepareDatesJSONForValidation(datesJSON);
+    function publicationAccess() {
+        var isCharsReady = prepareCharsJSONForValidation(charsJSON);
+        var isResourcesReady = prepareResourcesJSONForValidation(resourcesJSON);
+        var isPlacesReady = preparePlacesJSONForValidation(placesJSON);
+        var isDatesReady = prepareDatesJSONForValidation(datesJSON);
         if (isCharsReady && isResourcesReady && isPlacesReady && isDatesReady) {
             // SubJSON construction
             var subJSON = new Object();
@@ -72,7 +94,10 @@
 
             // Form creation and submit
             var form = $("<form>");
-            form.attr({method: "POST", action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"});
+            form.attr({
+                method: "POST",
+                action: "${g.createLink(controller:'substitution', action:'validateSubstitution')}"
+            });
             var inputJSON = $("<input>");
             inputJSON.attr({type: "hidden", name: "subJSON", value: JSON.stringify(subJSON)});
             form.append(inputJSON);
@@ -80,8 +105,7 @@
             form.submit();
             return true
         }
-        else
-        {
+        else {
             addAlert("subAlertContainer", "alert alert-error", "Erreur",
                     "La substitution doit être complète pour être validée.")
             return false
