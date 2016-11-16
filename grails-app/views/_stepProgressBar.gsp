@@ -5,9 +5,12 @@
     <title>Form wizard (using tabs) - Bootsnipp.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="../">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'stepProgressBar.css')}" type="text/css">
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <g:javascript src="stepProgressBar/stepProgressBar.js"/>
+
     <script type="text/javascript">
         window.alert = function(){};
         var defaultCSS = document.getElementById('bootstrap-css');
@@ -25,7 +28,7 @@
 
 
 
-<div class="container">
+<div class="container auto-width">
     <div class="row">
         <section>
             <div class="wizard">
@@ -36,8 +39,7 @@
                         <li role="presentation" class="active">
                             <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
                                 <span class="round-tab">
-                                    <i class="glyphico
-                                    n glyphicon-folder-open"></i>
+                                    <i class="glyphicon glyphicon-pencil"></i>
                                 </span>
                             </a>
                         </li>
@@ -45,14 +47,14 @@
                         <li role="presentation" class="disabled">
                             <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
                                 <span class="round-tab">
-                                    <i class="glyphicon glyphicon-pencil"></i>
+                                    <i class="glyphicon glyphicon-knight"></i>
                                 </span>
                             </a>
                         </li>
                         <li role="presentation" class="disabled">
                             <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
                                 <span class="round-tab">
-                                    <i class="glyphicon glyphicon-picture"></i>
+                                    <i class="glyphicon glyphicon-sunglasses"></i>
                                 </span>
                             </a>
                         </li>
@@ -60,7 +62,7 @@
                         <li role="presentation" class="disabled">
                             <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                                 <span class="round-tab">
-                                    <i class="glyphicon glyphicon-ok"></i>
+                                    <i class="glyphicon glyphicon-film"></i>
                                 </span>
                             </a>
                         </li>
@@ -68,9 +70,9 @@
                 </div>
 
                 <form role="form">
-                    <div class="tab-content">
-                        <div class="tab-pane active center" role="tabpanel" id="step1">
-                            <h3>Substitution</h3>
+                    <div class="tab-content text-center">
+                        <div class="tab-pane active center margin-top20 no-padding" role="tabpanel" id="step1">
+                            <h4>Substitution</h4>
 
                             <p>Dans cette partie, creez ou editez vos GN.</p>
                             <ul class="list-inline pull-right">
@@ -80,7 +82,7 @@
                         </div>
 
                         <div class="tab-pane center" role="tabpanel" id="step2">
-                                <h3>Step 2</h3>
+                                <h4>Assignez des rôles à vos personnages</h4>
 
                             <p>This is step 2</p>
                             <div class="form-actions">
@@ -93,7 +95,7 @@
                         </div>
 
                         <div class="tab-pane center" role="tabpanel" id="step3">
-                            <h3>Step 3</h3>
+                            <h4>Step 3</h4>
 
                             <p>This is step 3</p>
                             <ul class="list-inline pull-right">
@@ -106,7 +108,7 @@
                         </div>
 
                         <div class="tab-pane center" role="tabpanel" id="complete">
-                            <h3>Complete</h3>
+                            <h4>Complete</h4>
 
                             <p>You have successfully completed all steps.</p>
                         </div>

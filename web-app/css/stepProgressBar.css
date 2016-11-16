@@ -138,3 +138,15 @@ span.round-tab:hover {
         left: 35%;
     }
 }
+
+.auto-width {
+    width: 100%;
+}
+
+.margin-top20 {
+    margin-top: 20px;
+}
+
+.no-padding {
+    padding: 0 !important;
+}

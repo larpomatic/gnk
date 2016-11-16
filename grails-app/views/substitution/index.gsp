@@ -2,15 +2,10 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <link href="${resource(dir: 'css', file: 'substitution.css')}" type="text/css" rel="stylesheet"/>
     <title><g:message code="substitution.title"/></title>
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'stepProgressBar.css')}" type="text/css">
-
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    
+    <link type="text/css" rel="stylesheet" href="${resource(dir: 'css', file: 'substitution.css')}"/>
+    <link type="text/css" rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}"/>
+    <link type="text/css" rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}"/>
 </head>
 
 <body>
@@ -66,9 +61,6 @@
 </div>
 
 <g:javascript src="substitution/sub.js"/>
-<g:javascript src="stepProgressBar/stepProgressBar.js"/>
-<g:javascript src="stepProgressBar/jquery-3.1.1.min.js"/>
-<g:javascript src="stepProgressBar/bootstrap.min.js" />
 
 
 <script type="text/javascript">
