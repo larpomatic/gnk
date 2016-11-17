@@ -10,9 +10,8 @@
 
 <body>
 
-<h1>Substitution</h1>
-
 <g:render template="../stepProgressBar"/>
+
 
 <g:hiddenField name="gnId" value="${gnId}"/>
 <div class="form-actions">
@@ -23,6 +22,7 @@
         ${message(code: 'navbar. publication', default: 'Publication')}</button>
 </div>
 
+<h1>Substitution</h1>
 
 <g:render template="gnInformation"/>
 

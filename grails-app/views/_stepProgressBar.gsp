@@ -47,14 +47,14 @@
                         <li role="presentation" class="disabled">
                             <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
                                 <span class="round-tab">
-                                    <i class="glyphicon glyphicon-knight"></i>
+                                    <i class="glyphicon glyphicon-user"></i>
                                 </span>
                             </a>
                         </li>
                         <li role="presentation" class="disabled">
                             <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
                                 <span class="round-tab">
-                                    <i class="glyphicon glyphicon-sunglasses"></i>
+                                    <i class="glyphicon glyphicon-tower"></i>
                                 </span>
                             </a>
                         </li>

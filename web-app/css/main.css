@@ -15,6 +15,15 @@ body {
     background-color: #FFF;
 }
 
+h1 {
+    color: #767e85 !important;
+    font-family: 'Droid serif', serif !important;
+    font-size: 36px !important;
+    font-weight: 400 !important;
+    line-height: 44px !important;
+    margin: 0 0 12px !important;
+}
+
 h3 {
     border-bottom: 1px solid Darkgoldenrod;
 }
@@ -52,17 +61,17 @@ p:first-letter {
 }
 
 .remove-action {
-	margin: 0;
-	background-color: inherit;
-	border: 0;
+    margin: 0;
+    background-color: inherit;
+    border: 0;
 }
 
 .form-small {
-	height: 1px;
+    height: 1px;
 }
 
 .input-small {
-	width: 10px;
+    width: 10px;
 }
 
 /* SUBNAV */
@@ -74,29 +83,34 @@ p:first-letter {
 .footer {
     background-color: #2C2C2C;
 }
+
 .footer a {
     color: #999;
 }
+
 .footer ul {
     list-style: none;
     margin: 0;
 }
+
 .footer li {
     float: left;
     height: 20px;
     margin: 10px;
 }
+
 .how-to {
     margin-top: 50px;
     margin-bottom: 50px;
 }
+
 .splash {
     background-image: url('../images/weloveroleplay.jpg');
     width: 600px;
     height: 300px;
     margin: 0 auto 0 auto;
     border: solid 5px #FFFFFF;
-    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     border-radius: 2px;
 }
 
@@ -106,7 +120,7 @@ p:first-letter {
     height: 77px;
     margin: 0 auto 0 auto;
     border: solid 5px #FFFFFF;
-    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     border-radius: 2px;
 }
 
@@ -115,7 +129,7 @@ p:first-letter {
     top: 0;
     z-index: 9999;
     border: solid;
-    margin-right:-250px;
+    margin-right: -250px;
     width: 500px;
     right: 50%;
     margin-top: 15px;
