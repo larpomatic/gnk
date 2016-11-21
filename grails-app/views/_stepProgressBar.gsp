@@ -12,20 +12,19 @@
     <g:javascript src="stepProgressBar/stepProgressBar.js"/>
 
     <script type="text/javascript">
-        window.alert = function(){};
+        window.alert = function () {
+        };
         var defaultCSS = document.getElementById('bootstrap-css');
-        function changeCSS(css){
-            if(css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="'+ css +'" type="text/css" />');
+        function changeCSS(css) {
+            if (css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
             else $('head > link').filter(':first').replaceWith(defaultCSS);
         }
-        $( document ).ready(function() {
+        $(document).ready(function () {
             var iframe_height = parseInt($('html').height());
-            window.parent.postMessage( iframe_height, 'http://bootsnipp.com');
+            window.parent.postMessage(iframe_height, 'http://bootsnipp.com');
         });
     </script>
 </head>
-
-
 
 
 <div class="container auto-width">
@@ -70,26 +69,43 @@
                 </div>
 
                 <form role="form">
-                    <div class="tab-content text-center">
-                        <div class="tab-pane active center margin-top20 no-padding" role="tabpanel" id="step1">
-                            <h4>Substitution</h4>
+                    <div class="tab-content">
+                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="step1">
+                            <div class="span4 no-margin float-left">
+                                <div class="center-button">
+                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
+                                        <g:message code="default.back.label" default="Back"/>
+                                    </g:link>
+                                </div>
+                            </div>
 
-                            <p>Dans cette partie, creez ou editez vos GN.</p>
-                            <ul class="list-inline pull-right">
-                                <li><button type="button" class="btn btn-primary next-step">Save and continue</button>
-                                </li>
-                            </ul>
+                            <div class="span4 text-center no-margin cadre">
+                                <h4>Substitution</h4>
+
+                                <p>Dans cette partie, creez ou editez vos GN.</p>
+                            </div>
+
+                            <div class="span4">
+                                <div class="center-button">
+                                    <button id="publication" onclick="return publicationAccess()"
+                                            class="btn btn-primary"
+                                            action="index">
+                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="tab-pane center" role="tabpanel" id="step2">
-                                <h4>Assignez des rôles à vos personnages</h4>
+                            <h4>Assignez des rôles à vos personnages</h4>
 
                             <p>This is step 2</p>
+
                             <div class="form-actions">
                                 <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
                                     <g:message code="default.back.label" default="Back"/>
                                 </g:link>
-                                <button id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index">
+                                <button id="publication" onclick="return publicationAccess()" class="btn btn-primary"
+                                        action="index">
                                     ${message(code: 'navbar. publication', default: 'Publication')}</button>
                             </div>
                         </div>

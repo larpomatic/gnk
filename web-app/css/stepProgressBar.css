@@ -150,3 +150,27 @@ span.round-tab:hover {
 .no-padding {
     padding: 0 !important;
 }
+
+.no-margin {
+    margin: 0;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.cadre {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+}
+
+.center-button {
+    display: block;
+    float: left;
+    margin: 20px 130px;
+}

@@ -14,6 +14,8 @@
 
 
 <g:hiddenField name="gnId" value="${gnId}"/>
+
+<!--
 <div class="form-actions">
     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
         <g:message code="default.back.label" default="Back"/>
@@ -22,6 +24,7 @@
         ${message(code: 'navbar. publication', default: 'Publication')}</button>
 </div>
 
+-->
 <h1>Substitution</h1>
 
 <g:render template="gnInformation"/>
