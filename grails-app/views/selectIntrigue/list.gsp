@@ -46,11 +46,27 @@
                         </g:if>
                         <g:if test="${gnInstance.step == 'publication'}">
                             <td><g:select name='step-${gnInstance.id}'
-                                          from="${['publication', 'substitution', 'life', 'role2perso', 'selectIntrigue']}"/>
+                                          from="${['publication', 'time', 'place', 'ressource', 'naming', 'life', 'role2perso', 'selectIntrigue']}"/>
                         </g:if>
                         <g:if test="${gnInstance.step == 'substitution'}">
                             <td><g:select name="step-${gnInstance.id}"
-                                          from="${['substitution', 'life', 'role2perso', 'selectIntrigue']}"/></td>
+                                          from="${['naming', 'life', 'role2perso', 'selectIntrigue']}"/></td>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'time'}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${['time', 'place', 'ressource', 'naming', 'life', 'role2perso', 'selectIntrigue']}"/>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'place'}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${['place', 'ressource', 'naming', 'life', 'role2perso', 'selectIntrigue']}"/>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'ressource'}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${['ressource', 'naming', 'life', 'role2perso', 'selectIntrigue']}"/>
+                        </g:if>
+                        <g:if test="${gnInstance.step == 'naming'}">
+                            <td><g:select name='step-${gnInstance.id}'
+                                          from="${['naming', 'life', 'role2perso', 'selectIntrigue']}"/>
                         </g:if>
                         <g:if test="${gnInstance.step == 'life'}">
                             <td><g:select name="step-${gnInstance.id}"

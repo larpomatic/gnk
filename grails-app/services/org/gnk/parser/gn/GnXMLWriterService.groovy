@@ -25,7 +25,15 @@ class GnXMLWriterService {
     /* Exposed Methods */
 
     def String getGNKDTDString(Gn gn) {
-        DOMSource domSource = new DOMSource(getGNKDTDDocument(gn));
+        DOMSource domSource;
+        /*if (gn.step == "naming")
+            domSource = new DOMSource(getNamingGNKDTDDocument(gn));
+        else if (gn.step == "ressource")
+            domSource = new DOMSource(getRessourceGNKDTDDocument(gn));
+        else if (gn.step == "place")
+            domSource = new DOMSource(getPlaceGNKDTDDocument(gn));
+        else*/
+        domSource = new DOMSource(getGNKDTDDocument(gn));
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
         TransformerFactory tf = TransformerFactory.newInstance();
@@ -59,6 +67,117 @@ class GnXMLWriterService {
         // Resources
         SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
         gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
+        // Places
+        SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
+
+        gnkElement.appendChild(gnData);
+
+        doc.appendChild(gnkElement);
+
+        return doc;
+    }
+
+    def Document getNamingGNKDTDDocument(Gn gn) {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        Element gnkElement = doc.createElement("GNK");
+        gnkElement.setAttribute("dtd_version", "1.7");
+        gnkElement.appendChild(getGnInformationElement(doc, gn));
+
+        //GN_DEFINITION elements
+        Element gnDefinition = doc.createElement("GN_DEFINITION");
+        gnDefinition.appendChild(getSelectIntrigueElement(doc, gn))
+        gnDefinition.appendChild(getRoleToPersoElement(doc, gn))
+        gnDefinition.appendChild(getNamingElement(doc, gn))
+        gnkElement.appendChild(gnDefinition);
+
+        //GN_DATA elements
+        Element gnData = doc.createElement("GN_DATA");
+        gnData.appendChild(getPlotsElement(doc, gn))
+        // Naming
+        SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        gnData.appendChild(namingXMLWriter.getFirstnamesDataElement(doc, gn.firstnameSet))
+        gnData.appendChild(namingXMLWriter.getLastnamesDataElement(doc, gn.lastnameSet))
+        // Resources
+        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        //gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
+        // Places
+        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        //gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
+
+        gnkElement.appendChild(gnData);
+
+        doc.appendChild(gnkElement);
+
+        return doc;
+    }
+
+    def Document getRessourceGNKDTDDocument(Gn gn) {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        Element gnkElement = doc.createElement("GNK");
+        gnkElement.setAttribute("dtd_version", "1.7");
+        gnkElement.appendChild(getGnInformationElement(doc, gn));
+
+        //GN_DEFINITION elements
+        Element gnDefinition = doc.createElement("GN_DEFINITION");
+        gnDefinition.appendChild(getSelectIntrigueElement(doc, gn))
+        gnDefinition.appendChild(getRoleToPersoElement(doc, gn))
+        gnDefinition.appendChild(getRessourceElement(doc, gn))
+        gnkElement.appendChild(gnDefinition);
+
+        //GN_DATA elements
+        Element gnData = doc.createElement("GN_DATA");
+        gnData.appendChild(getPlotsElement(doc, gn))
+        // Naming
+        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        //gnData.appendChild(namingXMLWriter.getFirstnamesDataElement(doc, gn.firstnameSet))
+        //gnData.appendChild(namingXMLWriter.getLastnamesDataElement(doc, gn.lastnameSet))
+        // Resources
+        SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
+        // Places
+        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        //gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
+
+        gnkElement.appendChild(gnData);
+
+        doc.appendChild(gnkElement);
+
+        return doc;
+    }
+
+    def Document getPlaceGNKDTDDocument(Gn gn) {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        Element gnkElement = doc.createElement("GNK");
+        gnkElement.setAttribute("dtd_version", "1.7");
+        gnkElement.appendChild(getGnInformationElement(doc, gn));
+
+        //GN_DEFINITION elements
+        Element gnDefinition = doc.createElement("GN_DEFINITION");
+        gnDefinition.appendChild(getSelectIntrigueElement(doc, gn))
+        gnDefinition.appendChild(getRoleToPersoElement(doc, gn))
+        gnDefinition.appendChild(getPlaceElement(doc, gn))
+        gnkElement.appendChild(gnDefinition);
+
+        //GN_DATA elements
+        Element gnData = doc.createElement("GN_DATA");
+        gnData.appendChild(getPlotsElement(doc, gn))
+        // Naming
+        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        //gnData.appendChild(namingXMLWriter.getFirstnamesDataElement(doc, gn.firstnameSet))
+        //gnData.appendChild(namingXMLWriter.getLastnamesDataElement(doc, gn.lastnameSet))
+        // Resources
+        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        //gnData.appendChild(substitutionResourceXMLWriterService.getResourcesDataElement(doc, gn.resourceSet))
         // Places
         SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
         gnData.appendChild(substitutionPlaceXMLWriterService.getPlacesDataElement(doc, gn.placeSet))
@@ -325,4 +444,96 @@ class GnXMLWriterService {
         return substitutionE
     }
     /* Construction Methods */
+
+    private Element getNamingElement(Document doc, Gn gn) {
+        Element substitutionE = doc.createElement("SUBSTITUTION")
+
+        // Naming
+        substitutionE.setAttribute("step_id", "3")
+        SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        substitutionE.appendChild(namingXMLWriter.getNamingElement(doc, gn.characterSet, gn.nonPlayerCharSet))
+
+        // Resources
+        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        //substitutionE.appendChild(substitutionResourceXMLWriterService.getResourcesElement(doc, gn.selectedPlotSet))
+
+        // Places
+        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        //substitutionE.appendChild(substitutionPlaceXMLWriterService.getPlacesElement(doc, gn.selectedPlotSet))
+
+        // Time
+        //SubstitutionTimeXMLWriterService substitutionTimeXMLWriterService = new SubstitutionTimeXMLWriterService()
+        //substitutionE.appendChild(substitutionTimeXMLWriterService.getTimeElement(doc, gn.selectedPlotSet))
+
+        return substitutionE
+    }
+
+    private Element getRessourceElement(Document doc, Gn gn) {
+        Element substitutionE = doc.createElement("SUBSTITUTION")
+
+        // Naming
+        //substitutionE.setAttribute("step_id", "3")
+        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        //substitutionE.appendChild(namingXMLWriter.getNamingElement(doc, gn.characterSet, gn.nonPlayerCharSet))
+
+        // Resources
+        SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        substitutionE.appendChild(substitutionResourceXMLWriterService.getResourcesElement(doc, gn.selectedPlotSet))
+
+        // Places
+        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        //substitutionE.appendChild(substitutionPlaceXMLWriterService.getPlacesElement(doc, gn.selectedPlotSet))
+
+        // Time
+        //SubstitutionTimeXMLWriterService substitutionTimeXMLWriterService = new SubstitutionTimeXMLWriterService()
+        //substitutionE.appendChild(substitutionTimeXMLWriterService.getTimeElement(doc, gn.selectedPlotSet))
+
+        return substitutionE
+    }
+
+    private Element getPlaceElement(Document doc, Gn gn) {
+        Element substitutionE = doc.createElement("SUBSTITUTION")
+
+        // Naming
+        //substitutionE.setAttribute("step_id", "3")
+        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        //substitutionE.appendChild(namingXMLWriter.getNamingElement(doc, gn.characterSet, gn.nonPlayerCharSet))
+
+        // Resources
+        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        //substitutionE.appendChild(substitutionResourceXMLWriterService.getResourcesElement(doc, gn.selectedPlotSet))
+
+        // Places
+        SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        substitutionE.appendChild(substitutionPlaceXMLWriterService.getPlacesElement(doc, gn.selectedPlotSet))
+
+        // Time
+        //SubstitutionTimeXMLWriterService substitutionTimeXMLWriterService = new SubstitutionTimeXMLWriterService()
+        //substitutionE.appendChild(substitutionTimeXMLWriterService.getTimeElement(doc, gn.selectedPlotSet))
+
+        return substitutionE
+    }
+
+    private Element getTimeElement(Document doc, Gn gn) {
+        Element substitutionE = doc.createElement("SUBSTITUTION")
+
+        // Naming
+        //substitutionE.setAttribute("step_id", "3")
+        //SubstitutionNamingXMLWriterService namingXMLWriter = new SubstitutionNamingXMLWriterService()
+        //substitutionE.appendChild(namingXMLWriter.getNamingElement(doc, gn.characterSet, gn.nonPlayerCharSet))
+
+        // Resources
+        //SubstitutionResourceXMLWriterService substitutionResourceXMLWriterService = new SubstitutionResourceXMLWriterService()
+        //substitutionE.appendChild(substitutionResourceXMLWriterService.getResourcesElement(doc, gn.selectedPlotSet))
+
+        // Places
+        //SubstitutionPlaceXMLWriterService substitutionPlaceXMLWriterService = new SubstitutionPlaceXMLWriterService()
+        //substitutionE.appendChild(substitutionPlaceXMLWriterService.getPlacesElement(doc, gn.selectedPlotSet))
+
+        // Time
+        SubstitutionTimeXMLWriterService substitutionTimeXMLWriterService = new SubstitutionTimeXMLWriterService()
+        substitutionE.appendChild(substitutionTimeXMLWriterService.getTimeElement(doc, gn.selectedPlotSet))
+
+        return substitutionE
+    }
 }

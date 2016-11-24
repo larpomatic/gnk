@@ -42,7 +42,7 @@ select {
                         code="selectintrigue.step0.gnArchitecture" default="Architecture"/>
                 </label></td>
                 <td><g:select name="gnArchitechture" id="gnArchitechture"
-                              from="${['Parallelisé', 'Mainstream']}" keys="${[true, false]}"
+                              from="${['Parallelisé', 'Mainstream']}" keys="${[false, true]}"
                               value="${!gnInstance?.isMainstream}" required=""/></td>
 
 
