@@ -104,20 +104,14 @@
                 <form role="form">
                     <div class="tab-content">
                         <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="selecintrigue">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
+                            <div class="span4 no-margin float-left"></div>
                             <div class="span4 text-center no-margin cadre">
                                 <h4>Selectionnez vôtre intrigue</h4>
                                 <p>Dans cette partie, creez ou editez vos GN.</p>
                             </div>
                             <div class="span4">
                                 <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
+                                    <button id="role2perso-button" onclick="return publicationAccess()"
                                             class="btn btn-primary"
                                             action="index">
                                         ${message(code: 'navbar.publication', default: 'Publication')}</button>
