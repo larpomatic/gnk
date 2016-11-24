@@ -18,7 +18,7 @@
     height: 2px;
     background: #e0e0e0;
     position: absolute;
-    width: 80%;
+    width: 82%;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -65,7 +65,7 @@ span.round-tab:hover {
 }
 
 .wizard .nav-tabs > li {
-    width: 25%;
+    width: 12%;
 }
 
 .wizard li:after {
@@ -173,4 +173,8 @@ span.round-tab:hover {
     display: block;
     float: left;
     margin: 20px 130px;
+}
+
+.first-icon {
+    margin-left: 37px !important;
 }
