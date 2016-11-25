@@ -14,6 +14,7 @@
     white-space: nowrap;
 }
 </style>
+<g:javascript src="redactIntrigue/pitchForm.js"/>
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
@@ -208,7 +209,7 @@
                 </div>
                 <fieldset class="buttons text-center">
                     <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
-                        <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
+                        <input type="button" name="Update" id="update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
                     </g:plotOwner>
                     <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEDELETE.value()}" lvlrightAdmin="${right.INTRIGUEDELETE.value()}">
                         <input type="button" name="Delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" data-redirect="<g:createLink controller="RedactIntrigue" action="list"/>"

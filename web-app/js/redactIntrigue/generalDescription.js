@@ -1,15 +1,24 @@
 var nb_render = 1;
 var clone;
 var desc_number = 0;
+var introduction = {
+   bool: false,
+   desc_id : -1
+};
 
 //add a new description
 $(document).ready(function() {
-    var j = document.getElementById('render_' + nb_render);
+    var j = document.getElementById('render_' + desc_number);
     while (j != null) {
         console.log(j);
+        if (j.getElementsByClassName('desc_type')[0].value == "Introduction")
+        {
+            introduction.bool = true;
+            introduction.desc_id = desc_number;
+        }
         desc_number++;
         nb_render++;
-        j = document.getElementById('render_' + nb_render);
+        j = document.getElementById('render_' + desc_number);
     }
 });
 
@@ -25,24 +34,27 @@ function addDescription() {
     ++nb_render;
     console.log("template value 2 : " + template);
 }
+
 function deleteDescription(elt){
     console.log("id du parent : " + elt.parentElement.parentElement.parentElement.id);
     if (nb_render > 1) {
-        var new_desc = desc_number;
+        var new_desc = desc_number - 1;
+        console.log("new_desc : " + new_desc);
         var pred_desc;
         var id_parent = elt.parentElement.parentElement.parentElement.id.split('_');
-        console.log("Id : " + id_parent[1]);
         elt.parentElement.parentElement.parentElement.remove();
         while (new_desc > id_parent[1])
         {
             pred_desc = new_desc - 1;
             update_id(new_desc, pred_desc);
+            update_introduction(new_desc, id_parent[1]);
             document.getElementById('render_' + new_desc).id = "render_" + pred_desc;
             new_desc--;
         }
         --nb_render;
         --desc_number;
     }
+
 }
 
 function update_id(render, description) {
@@ -55,8 +67,19 @@ function update_id(render, description) {
     document.getElementById('render_' + render).getElementsByClassName('pitchDescription')[0].setAttribute('value', "idDescription_" + description);
     document.getElementById('render_' + render).getElementsByClassName('pitchDescription')[0].setAttribute('name', "pitchDescription_" + description);
     document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].id = "idDescriptionText_" + description;
-    document.getElementById('render_' + render).getElementsByClassName('type')[0].id = "idType_" + description;
+    document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].id = "idType_" + description;
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].id = "idDescription_" + description;
     console.log("pitch Description : " + document.getElementById('render_' + render).getElementsByClassName('pitchDescription')[0].name);
+}
+
+function update_introduction(render, desc_remove){
+    id_introduction = document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].id;
+    if (id_introduction > introduction.desc_id)
+        introduction.desc_id--;
+    if (desc_remove == introduction.desc_id)
+    {
+        introduction.desc_id = -1;
+        introduction.bool = false;
+    }
 }
 

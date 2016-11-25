@@ -181,38 +181,9 @@ class RedactIntrigueController {
 		if (!plotInstance) {
             isupdate = false;
 		}
-        List<String> pitchOrga = new ArrayList<String>();
-        List<String> pitchPj = new ArrayList<String>();;
-        List<String> pitchPnj = new ArrayList<String>();;
-        List<Integer> descriptionId = new ArrayList<Integer>()
-		plotInstance.properties = params
+        plotInstance.properties = params
 
-        int nb_desc = (params.type instanceof String[]) ? params.type.length : 1
-
-        for (int i = 0; i < nb_desc; i++)
-        {
-            pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
-            pitchPj.add(params.get("pitchPj_" + i.toString()).toString());
-            pitchPnj.add(params.get("pitchPnj_" + i.toString()).toString());
-            descriptionId.add(params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger());
-            System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
-        }
-
-        for (int i = 0; i < nb_desc; i++)
-        {
-            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), (params.type instanceof String[]) ? params.type[i].toString() : params.type.toString(), (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text, pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i));
-            plotInstance.add_Description(new_description);
-            if (Description.findByIdDescriptionAndPlotId(descriptionId.get(i), plotInstance.id.toInteger()) != null)
-                //Description.executeUpdate("update Description d set d.is_pnj = " + new_description.isPnj + ", d.is_pj=" + new_description.isPj + ", d.is_orga=" + new_description.isOrga + ", d.type=" + new_description.type + ", d.pitch=" + new_description.pitch + "where d.plot_id=" + plotInstance.id.toInteger() + "and d.id_description=" + descriptionId.get(i))
-                Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + descriptionId.get(i))
-            new_description.save(flush: true)
-        }
-
-        for (int j = Description.findAllByPlotId(plotInstance.id.toInteger()).size() - 1; j >= descriptionId.size(); j--)
-        {
-            Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + j)
-        }
-		plotInstance.description = (params.type instanceof String[]) ? params.type[0].toString() : params.type.toString()
+        isupdate = updateDescription(plotInstance, isupdate)
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
         plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;
@@ -284,6 +255,48 @@ class RedactIntrigueController {
             object(isdelete: true)
         }
 	}
+
+    def updateDescription(Plot plotInstance, Boolean isupdate){
+        List<String> pitchOrga = new ArrayList<String>()
+        List<String> pitchPj = new ArrayList<String>()
+        List<String> pitchPnj = new ArrayList<String>()
+        List<Integer> descriptionId = new ArrayList<Integer>()
+
+        int nb_desc = (params.desc_type instanceof String[]) ? params.desc_type.length : 1
+
+        for (int i = 0; i < nb_desc; i++)
+        {
+            pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
+            pitchPj.add(params.get("pitchPj_" + i.toString()).toString());
+            pitchPnj.add(params.get("pitchPnj_" + i.toString()).toString());
+            String test_description = (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text
+            if (pitchOrga.get(i) == "null" && pitchPj.get(i) == "null" && pitchPnj.get(i) == "null" || test_description == "") {
+                isupdate = false
+                return isupdate
+            }
+            descriptionId.add(params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger());
+            System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
+        }
+
+        for (int i = 0; i < nb_desc; i++)
+        {
+            def type_description = (params.desc_type instanceof String[]) ? params.desc_type[i].toString() : params.desc_type.toString();
+            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), type_description, (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text, pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i));
+            if (type_description == "Introduction")
+               plotInstance.description = (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text
+            plotInstance.add_Description(new_description);
+            if (Description.findByIdDescriptionAndPlotId(descriptionId.get(i), plotInstance.id.toInteger()) != null)
+            //Description.executeUpdate("update Description d set d.is_pnj = " + new_description.isPnj + ", d.is_pj=" + new_description.isPj + ", d.is_orga=" + new_description.isOrga + ", d.type=" + new_description.type + ", d.pitch=" + new_description.pitch + "where d.plot_id=" + plotInstance.id.toInteger() + "and d.id_description=" + descriptionId.get(i))
+                Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + descriptionId.get(i))
+            new_description.save(flush: true)
+        }
+
+        for (int j = Description.findAllByPlotId(plotInstance.id.toInteger()).size() - 1; j >= descriptionId.size(); j--)
+        {
+            Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + j)
+        }
+        return isupdate
+    }
 
     def print(){
         def plotInstance = Plot.get(params.plotid)

@@ -2,7 +2,7 @@
 .span6 {
     position: relative;
     bottom: 30px;
-    right: 100px;
+    right: 150px;
 }
 .span11
 {
@@ -19,7 +19,7 @@
 }
 select {
     font-size: 16px !important;
-    width: 100px;
+    width: 200px;
     outline: none;
 }
 
@@ -75,8 +75,8 @@ select {
             <g:checkBox class="pitchPnj" id="idPitchPnj_${description.idDescription}" name="pitchPnj_${description.idDescription}" checked="${description.isPnj}"/>
         </div>
         <div class="span6" id="type">
-            <g:select class="type" name='type' id="idType_${description.idDescription}" value="${description.type}"
-                      from="${['contexte du GN', 'univers du GN', 'informations lues dans la presse récemment', 'points de règles', 'personnalités connues', 'divers']}"/>
+            <g:select class="desc_type" name='desc_type' id="idType_${description.idDescription}" value="${description.type}" onchange="verifyType(this)"
+                      from="${['Introduction', 'Contexte du GN', 'Univers du GN', 'Informations lues dans la presse récemment', 'Points de règles', 'Personnalités connues', 'Divers']}"/>
         </div>
     </div>
     <div class="button_template">
@@ -90,29 +90,3 @@ select {
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>
 </div>
-
-<script type="application/javascript">
-    var template = desc_number - 1;
-    $(document).ready(function() {
-        console.log("template value : idDescription_" + template);
-        $('#idDescription_' + template).editable({
-            success: function(response, newValue) {
-                updateName(newValue);
-            }
-        });
-    });
-
-    function updateName(elt){
-        console.log("template value : " + template);
-        $("#titleRender_" + template).remove();
-        var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
-        //$("#titleRender_").id = "titleRender" + template;
-        $('#overview').append(new_elt);
-        //console.log($('#description_0').editable('getValue', true));
-    }
-
-    function updatePlotPitchOrga(elt)
-    {
-        console.log("test");
-    }
-</script>

@@ -20,7 +20,7 @@
 
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
-#edit-plot select:not(#selectUnivers):not(#selectUniversResource):not(#type) {
+#edit-plot select:not(#selectUnivers):not(#selectUniversResource):not(.desc_type) {
     border: 0;
     outline: none;
     /*letter-spacing: 3px;*/
