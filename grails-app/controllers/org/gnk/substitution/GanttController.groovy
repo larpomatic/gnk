@@ -12,6 +12,7 @@ import org.gnk.roletoperso.Graph
 import org.gnk.substitution.data.GnInformation
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
+import org.json.*;
 
 class GanttController {
 
@@ -83,17 +84,26 @@ class GanttController {
 
 
     def saveGanttData() {
+
+        //les données duGantt se trouve dans params.GanttData
         String GanttData = params.GanttData;
+
         //def gnInstance = Gn.get(Long.valueOf(params.gnId).longValue())
 
-        System.out.println("azertyuiopmlkjhhgn " + params.GanttData);
+        System.out.println("azertyuiopmlkjhhgn "+  GanttData.toString());
         redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, GanttData: params.GanttData /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 
     def loadGanttData() {
-        // on récupère les périodes sous forme de liste de liste
-        return null
+
+        // ce JSONObject est renvoyé à la page subtitution du gnk et doit contenir les données du gantt (périodes) récupérées en base
+        JSONObject obj = new JSONObject();
+
+        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, GanttData: obj /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+
     }
+
+
 }
 
 

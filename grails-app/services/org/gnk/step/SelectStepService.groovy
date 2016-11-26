@@ -10,7 +10,6 @@ import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleToPersoController
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.SelectIntrigueController
-import org.gnk.substitution.SubstitutionController
 import org.gnk.tag.TagService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -29,6 +28,12 @@ class SelectStepService {
         {
             case "publication" :
                 getBackPublication(gn)
+                if (step == "ressource" || step == "place" || step == "naming")
+                    getBackTime(gn)
+                if (step == "ressource" || step == "naming")
+                    getBackPlace(gn)
+                if (step == "naming")
+                    getBackRessource(gn)
                 if (step == "life" || step == "selectIntrigue" || step == "role2perso")
                     getBackSubstitution(gn)
                 if (step == "role2perso" || step == "selectIntrigue")
@@ -36,10 +41,39 @@ class SelectStepService {
                 if (step == "selectIntrigue")
                     getBackSelectIntrigue(gn)
                 break;
-            case "substitution" :
-                getBackSubstitution(gn)
+            case "time" :
+                getBackTime(gn)
+                if (step == "ressource" || step == "naming")
+                    getBackPlace(gn)
+                if (step == "naming")
+                    getBackRessource(gn)
+                if (step == "life" || step == "selectIntrigue" || step == "role2perso")
+                    getBackSubstitution(gn)
                 if (step == "selectIntrigue" || step == "role2perso")
                     getBackLife(gn)
+                if (step == "selectIntrigue")
+                    getBackSelectIntrigue(gn)
+                break;
+            case "place" :
+                getBackPlace(gn)
+                if (step == "naming")
+                    getBackRessource(gn)
+                if (step == "life" || step == "selectIntrigue" || step == "role2perso")
+                    getBackSubstitution(gn)
+                if (step == "selectIntrigue" || step == "role2perso")
+                    getBackLife(gn)
+                if (step == "selectIntrigue")
+                    getBackSelectIntrigue(gn)
+                break;
+            case "ressource" :
+                getBackRessource(gn)
+                if (step == "selectIntrigue" || step == "role2perso" || step == "life")
+                    getBackSubstitution(gn)
+                if (step == "selectIntrigue")
+                    getBackSelectIntrigue(gn)
+                break;
+            case "naming" :
+                getBackNaming(gn)
                 if (step == "selectIntrigue")
                     getBackSelectIntrigue(gn)
                 break;
@@ -61,9 +95,6 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackSelectIntrigue(Gn gn) {
-        //Gn gn = Gn.get(id);
-        //final gnData = new GNKDataContainerService();
-        //gnData.ReadDTD(gn);
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "selectIntrigue";
         gn.characterSet = null;
@@ -148,24 +179,11 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackLife(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.step = "role2perso";
         gn.isLife = false
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
-        Integer evenementialId = 0;
-        Integer mainstreamId = 0;
-
-        for (Plot plot in gn.selectedPlotSet) {
-            if (plot.isEvenemential) {
-                evenementialId = Plot.findByName(plot.name).id;
-            } else if (plot.isMainstream && gn.isMainstream) {
-                mainstreamId = Plot.findByName(plot.name).id; ;
-            }
-        }
     }
 
     /**
@@ -173,47 +191,68 @@ class SelectStepService {
      * @param id : get the gn concerned
      */
     def getBackPublication(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
 
         // trouver un moyen de supprimer les places, les ressources et les names
         gn.dtd = gn.dtd.replace("<STEPS last_step_id=\"publication\">", "<STEPS last_step_id=\"substitution\">");
+        gn.step = "time"
         gn.save(flush: true);
-        List<String> sexes = new ArrayList<>();
-        for (Character character in gn.characterSet) {
-            sexes.add("sexe_" + character.getDTDId() as String);
-        }
-        for (Character character in gn.nonPlayerCharSet) {
-            sexes.add("sexe_" + character.getDTDId() as String);
-        }
     }
 
     /**
      * delete Substitution step elements in the xml to allow user to return to SelectIntrigue step
      * @param id : get the gn concerned
      */
-    def getBackSubstitution(Gn gn) {
-        /*Gn gn = Gn.get(id);
-        final gnData = new GNKDataContainerService();
-        gnData.ReadDTD(gn);*/
+
+    def getBackNaming(Gn gn) {
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "life";
+
+        if (gn.isLife)
+            gn.step = "life";
+        else
+            gn.step = "role2perso";
 
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
         gn.save(flush: true);
-        Integer evenementialId = 0;
-        Integer mainstreamId = 0;
-        for (Plot plot in gn.selectedPlotSet) {
-            if (plot.isEvenemential) {
-                evenementialId = Plot.findByName(plot.name).id;
-            } else if (plot.isMainstream && gn.isMainstream) {
-                mainstreamId = Plot.findByName(plot.name).id; ;
-            }
-        }
+    }
+
+    def getBackRessource(Gn gn) {
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+
+        gn.step = "naming"
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
+        gn.save(flush: true);
+    }
+
+
+    def getBackPlace(Gn gn) {
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+
+        gn.step = "ressource"
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
+        gn.save(flush: true);
+    }
+
+    def getBackTime(Gn gn) {
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+
+        gn.step = "place"
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.removeCharArray();
+        gn.save(flush: true);
+    }
+
+    def getBackSubstitution(Gn gn) {
+        GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
+        gn.step = "life"
+        gn.removeAllCharArray()
+
+        gn.dtd = gnXMLWriterService.getGNKDTDString(gn);
+        gn.save(flush: true);
     }
 
     /**

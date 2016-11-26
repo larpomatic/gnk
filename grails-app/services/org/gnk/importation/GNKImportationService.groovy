@@ -134,7 +134,7 @@ class GNKImportationService {
     }
 
     private void saveName(Name name) {
-        Name nameBDD = name.findByName(name.name);
+        Name nameBDD = Name.findByName(name.name);
         if (nameBDD){
             // Update fields
             nameBDD.DTDId = name.DTDId
@@ -195,9 +195,15 @@ class GNKImportationService {
 
         // Update Events
         List<Event> events = []
-        plot.events.each {event ->
-            events.add(getEvent(event))
+
+        for (Event event : plot.events)
+        {
+            if (event)
+                events.add(getEvent(event))
         }
+        /*plot.events.each {event ->
+            events.add(getEvent(event))
+        }*/
         plotBDD.events = []
         events.each {event ->
             plotBDD.addToEvents(event)
