@@ -28,12 +28,12 @@
 <g:javascript src="selectIntrigue/bootstrap.min.js"/>
 <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
 <div class="row-fluid" id="hidTest">
-    <div class="span4">
-        <form id="exportPDFButton" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
+    <form id="exportPDFButton" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
+        <div class="span4">
             <input type="hidden" id="plotid" name="plotid" value="${plotInstance.id}"/>
-            <button id="PDFButtonPublication" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Prévisualisation</button>
-        </form>
-    </div>
+            <button id="print" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Prévisualisation</button>
+        </div>
+    </form>
     <div class="span4">
         <button id="GeneralSave" class="btn" style="visibility: visible; display: block; margin-bottom: 10px;">Sauvegarde complète</button>
     </div>

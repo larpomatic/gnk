@@ -19,18 +19,19 @@ $(document).ready(function() {
         desc_number++;
         nb_render++;
         j = document.getElementById('render_' + desc_number);
+        console.log(desc_number);
     }
 });
 
 
 function addDescription() {
     clone = $("#render_0").clone();
-    desc_number = desc_number + 1;
     clone.attr('id', "render_"+ desc_number);
 //        $('<div id="new_render2"/>').appendTo($('#new_render'));
     $('#desc_wrapper').append(clone);
     update_id(desc_number, desc_number);
     $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '">Description</li>');
+    desc_number = desc_number + 1;
     ++nb_render;
     console.log("template value 2 : " + template);
 }

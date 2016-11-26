@@ -75,7 +75,7 @@ select {
             <g:checkBox class="pitchPnj" id="idPitchPnj_0" name="pitchPnj_0" checked="${plotInstance.isDraft}"/>
         </div>
         <div class="span6" id="type">
-            <g:select class="type" name='desc_type' id="idType_0" noSelection="['':'-Choose a type-']" onchange="verifyType(this)"
+            <g:select class="desc_type" name='desc_type' id="idType_0" noSelection="['':'-Choose a type-']" onchange="verifyType(this)"
                       from="${['Introduction', 'Contexte du GN', 'Univers du GN', 'Informations lues dans la presse récemment', 'Points de règles', 'Personnalités connues', 'Divers']}"/>
         </div>
     </div>

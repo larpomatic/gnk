@@ -6,6 +6,7 @@ import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Tbl
+import org.gnk.description.PrintDescriptionService
 import org.gnk.publication.WordWriter
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
@@ -89,8 +90,8 @@ class RedactIntrigueController {
 		int screen = 0
 		if (params.screenStep)
 		{
-			screen = params.screenStep 
-			screen = (screen - 48)	 
+			screen = params.screenStep
+			screen = (screen - 48)
 		}
         TagService tagService = new TagService();
         TreeMap<Long, Pastscene> tmp = orderPastscenes(plotInstance);
@@ -358,6 +359,7 @@ class RedactIntrigueController {
         return subtitle
     }
     def  createDescription(WordWriter wordWriter,Plot plot) {
+        PrintDescriptionService printDescriptionService = new PrintDescriptionService();
         String tag = ""
         def list = []
         wordWriter.addStyledParagraphOfText("T2", "Tags choisis")
@@ -410,17 +412,10 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T3", "Intrigue")
         wordWriter.addStyledParagraphOfText("Normal", plot.description)
 
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Organisateur")
-        if (plot.pitchOrga)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchOrga)
+        if (plot.list_Description == null)
+            plot.list_Description = Description.findAllByPlotId(plot.id)
 
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Joueur")
-        if (plot.pitchPj)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchPj)
-
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Personnage non joueur")
-        if (plot.pitchPnj)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchPnj)
+        printDescriptionService.printDescription(wordWriter, plot.list_Description)
     }
 
     def createSummary(WordWriter wordWriter, Plot plot){
