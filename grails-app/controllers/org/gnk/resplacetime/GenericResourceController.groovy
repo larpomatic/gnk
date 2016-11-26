@@ -268,6 +268,11 @@ class GenericResourceController {
         }
     }
 
+
+    def getBestResourcesV2() {
+        GenericResource genericresource = new GenericResource()
+    }
+
     def getBestResources() {
         org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
         List<com.gnk.substitution.Tag> tags = new ArrayList<>();
@@ -289,7 +294,8 @@ class GenericResourceController {
                 }
             }
         }
-        ResourceService resourceService = new ResourceService();
+        //ResourceService resourceService = new ResourceService();
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
@@ -300,7 +306,8 @@ class GenericResourceController {
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < universList.size() ; i++) {
-            genericressource = resourceService.findReferentialResource(genericressource, universList[i].name);
+            //genericressource = resourceService.findReferentialResource(genericressource, universList[i].name);
+            genericressource.resultList = placeresourceservice.findBestObjects()
             jsonArray.add(universList[i].name);
             for(ReferentialResource ref in genericressource.resultList) {
                 jsonArray.add(ref.name);
