@@ -15,6 +15,9 @@
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
     <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
+
+    <g:render template="../stepProgressBar"/>
+
     <g:render template="subNav" model="['right': right]"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
 		<legend><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></legend>
