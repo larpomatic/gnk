@@ -24,6 +24,7 @@ h4 {
     font-weight: normal !important;
 }
 
+/*
 p:first-letter {
     font-family: Vladimir Script;
     font-size: 500%;
@@ -33,6 +34,8 @@ p:first-letter {
     padding-right: 1px;
     font-weight: 500;
 }
+
+*/
 
 .gnk .brand {
     line-height: 40px;
