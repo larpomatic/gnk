@@ -50,6 +50,7 @@ function verifyType(elt)
     }
     console.log("VerifyType : " + introduction.bool);
     //activate_update();
+    update_modified();
 }
 
 function activate_update()
@@ -58,4 +59,9 @@ function activate_update()
         document.getElementById('update').isDisabled = false;
     else
         document.getElementById('update').isDisabled = true;
+}
+
+function update_modified()
+{
+    is_modified = true;
 }

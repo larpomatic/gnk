@@ -29,6 +29,7 @@ function addDescription() {
     clone.attr('id', "render_"+ desc_number);
 //        $('<div id="new_render2"/>').appendTo($('#new_render'));
     $('#desc_wrapper').append(clone);
+    initialise_description(desc_number);
     update_id(desc_number, desc_number);
     $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '">Description</li>');
     desc_number = desc_number + 1;
@@ -55,7 +56,7 @@ function deleteDescription(elt){
         --nb_render;
         --desc_number;
     }
-
+    update_modified();
 }
 
 function update_id(render, description) {
@@ -73,6 +74,16 @@ function update_id(render, description) {
     console.log("pitch Description : " + document.getElementById('render_' + render).getElementsByClassName('pitchDescription')[0].name);
 }
 
+function initialise_description(render)
+{
+    document.getElementById('render_' + render).getElementsByClassName('pitchOrga')[0].setAttribute('value', "false");
+    document.getElementById('render_' + render).getElementsByClassName('pitchPj')[0].setAttribute('value', "false");
+    document.getElementById('render_' + render).getElementsByClassName('pitchPnj')[0].bool = false;
+    document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].setAttribute('value', "Entrez votre description ici");
+    document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].setAttribute('value', "contexte du GN");
+
+}
+
 function update_introduction(render, desc_remove){
     id_introduction = document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].id;
     if (id_introduction > introduction.desc_id)
@@ -82,5 +93,10 @@ function update_introduction(render, desc_remove){
         introduction.desc_id = -1;
         introduction.bool = false;
     }
+}
+
+function reset_ismodified()
+{
+    is_modified = false;
 }
 

@@ -52,7 +52,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchOrga" name="pitchOrga_${description.idDescription}" id="idPitchOrga_${description.idDescription}" value="${description.isOrga}"/>
+            <g:checkBox class="pitchOrga" name="pitchOrga_${description.idDescription}" id="idPitchOrga_${description.idDescription}" checked="${description.isOrga}" onchange="update_modified()"/>
         </div>
 
         <div class="span11">
@@ -62,7 +62,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPj" id="idPitchPj_${description.idDescription}" name="pitchPj_${description.idDescription}" checked="${description.isPj}"/>
+            <g:checkBox class="pitchPj" id="idPitchPj_${description.idDescription}" name="pitchPj_${description.idDescription}" checked="${description.isPj}" onchange="update_modified()"/>
         </div>
 
         <div class="span11">
@@ -72,7 +72,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPnj" id="idPitchPnj_${description.idDescription}" name="pitchPnj_${description.idDescription}" checked="${description.isPnj}"/>
+            <g:checkBox class="pitchPnj" id="idPitchPnj_${description.idDescription}" name="pitchPnj_${description.idDescription}" checked="${description.isPnj}" onchange="update_modified()"/>
         </div>
         <div class="span6" id="type">
             <g:select class="desc_type" name='desc_type' id="idType_${description.idDescription}" value="${description.type}" onchange="verifyType(this)"
@@ -83,9 +83,10 @@ select {
         <g:render template="dropdownButtons" />
     </div>
     <!-- Editor -->
-   <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_0" contenteditable="true" onblur="saveCarretPos($(this).attr('id'))">-->
-        <g:textArea name="description_text" id="idDescriptionText_${description.idDescription}" class="text-left richTextEditor editable" value="${description.pitch}"/>
-    <!--</div>-->
+   <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
+        ${description.pitch}
+    </div>-->
+    <g:textArea name="description_text" id="idDescriptionText_${description.idDescription}" class="text-left richTextEditor editable" value="${description.pitch}" onchange="update_modified()"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

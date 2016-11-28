@@ -775,6 +775,24 @@ function convertHTMLRegisterHelper(description) {
     return description;
 }
 
+//Detecter si l'intrigue a besoin d'être sauvegarder avant la prévisualisation
+var is_modified = false;
+function verify_descriptionUpdate()
+{
+    console.log("Ceci est un test");
+    if (is_modified)
+    {
+        createNotification("danger", "Attention", "Si vous prévisualisez votre intrigue sans sauvegarder vos modifications, celles-ci seront perdues")
+        /*if (confirm("Attention, si vous ne sauvegardez pas avant de visualiser votre intrigue, les éléments modifiés seront perdus. \n Voulez vous continuer ?"))
+            return true;
+        else
+            return false;*/
+        return false;
+    }
+    //return !is_modified;
+    return true;
+}
+
 function detectPaste() {
     $('#richTextEditor').bind({
         paste : function(){

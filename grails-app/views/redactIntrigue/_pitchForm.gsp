@@ -2,7 +2,7 @@
 .span6 {
     position: relative;
     bottom: 30px;
-    right: 100px;
+    right: 150px;
 }
 .span11
 {
@@ -52,7 +52,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchOrga" name="pitchOrga_0" id="idPitchOrga_0" value="${true}"/>
+            <g:checkBox class="pitchOrga" name="pitchOrga_0" id="idPitchOrga_0" onchange="update_modified()"/>
         </div>
 
         <div class="span11">
@@ -62,7 +62,7 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPj" id="idPitchPj_0" name="pitchPj_0" checked="${plotInstance.isEvenemential}"/>
+            <g:checkBox class="pitchPj" id="idPitchPj_0" name="pitchPj_0" onchange="update_modified()"/>
         </div>
 
         <div class="span11">
@@ -72,17 +72,17 @@ select {
         </div>
 
         <div class="span13">
-            <g:checkBox class="pitchPnj" id="idPitchPnj_0" name="pitchPnj_0" checked="${plotInstance.isDraft}"/>
+            <g:checkBox class="pitchPnj" id="idPitchPnj_0" name="pitchPnj_0" onchange="update_modified()"/>
         </div>
         <div class="span6" id="type">
-            <g:select class="desc_type" name='desc_type' id="idType_0" noSelection="['':'-Choose a type-']" onchange="verifyType(this)"
+            <g:select class="desc_type" name='desc_type' id="idType_0" value="Contexte du GN" onchange="verifyType(this)"
                       from="${['Introduction', 'Contexte du GN', 'Univers du GN', 'Informations lues dans la presse récemment', 'Points de règles', 'Personnalités connues', 'Divers']}"/>
         </div>
     </div>
     <div class="button_template">
         <g:render template="dropdownButtons" />
     </div>
-        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" value="Insérer votre description"/>
+        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" value="Insérer votre description" onchange="update_modified()"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>
