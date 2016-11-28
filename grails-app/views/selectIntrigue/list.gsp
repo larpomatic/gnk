@@ -4,8 +4,6 @@
 <html>
 	<head>
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'selectIntrigue.css')}" type="text/css">
-        <style type="text/css">
-        </style>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}" />
 		<title><g:message code="navbar.selectintrigue" /></title>
