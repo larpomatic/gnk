@@ -1,17 +1,18 @@
 package org.gnk.resplacetime
 
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.tag.Tag
 
-class Place {
+class Place extends ReferentialObject{
 
     Integer id
     Integer version
 
     Date lastUpdated
-	Date dateCreated
-	String name
-	String gender
-	String description
+    Date dateCreated
+    String name
+    String gender
+    String description
     static def genders = ["M", "F", "MP", "FP"]
 
     // Id referenced into DTD
@@ -33,4 +34,27 @@ class Place {
         id type:'integer'
         version type: 'integer'
     }
+
+    ArrayList<Tag> getTags() {
+        ArrayList<Tag> tagsList = new ArrayList<>();
+
+        for (PlaceHasTag placeHasTag in this.extTags)
+            tags.add(placeHasTag.tag)
+
+        return tagsList;
+    }
+
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+        for (PlaceHasTag placeHasTag in this.extTags)
+            mapTagInt.put(placeHasTag.tag, placeHasTag.weight * ponderation)
+
+        return mapTagInt;
+    }
+
+    String getSubType() {
+        return "Place";
+    }
+
 }

@@ -1,20 +1,25 @@
 package org.gnk.resplacetime
 
-class Resource {
+import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.tag.Tag
 
-    Integer id
-    Integer version
+class Resource extends ReferentialObject {
 
-    Date lastUpdated
+
+	Integer id
+	Integer version
+
+	Date lastUpdated
 	Date dateCreated
 	String name
-	String description
 	String gender
+	String description
 	static def genders = ["M", "F", "MP", "FP"]
 
-    // Id referenced into DTD
-    static transients = ["DTDId"]
-    Integer DTDId;
+	// Id referenced into DTD
+	static transients = ["DTDId"]
+	Integer DTDId;
+
 
 //    static belongsTo = [ genericResource: GenericResource] // Dump20131114-version 2.1
 
@@ -31,4 +36,27 @@ class Resource {
         id type:'integer'
         version type: 'integer'
     }
+
+	ArrayList<Tag> getTags() {
+		ArrayList<Tag> tagsList = new ArrayList<>();
+
+		for (ResourceHasTag resourceHasTag in this.extTags)
+			tags.add(resourceHasTag.tag)
+
+		return tagsList;
+	}
+
+	Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
+		Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+		for (ResourceHasTag resourceHasTag in this.extTags)
+			mapTagInt.put(resourceHasTag.tag, resourceHasTag.weight * ponderation)
+
+		return mapTagInt;
+	}
+
+	String getSubType() {
+		return "Ressource";
+	}
+
 }

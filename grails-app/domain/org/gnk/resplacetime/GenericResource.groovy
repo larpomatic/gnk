@@ -1,21 +1,25 @@
 package org.gnk.resplacetime
 
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
-import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
+import org.gnk.selectintrigue.Plot
 
-class GenericResource {
+class GenericResource extends GenericObject{
 
     Integer id
     Integer version
 
-    Date dateCreated
     Date lastUpdated
+    Date dateCreated
+    String code
+    String comment
+    GnConstant gnConstant
+    Integer DTDId
 
-	String code
-	String comment
 
     // Ingame Clue :
     String title
@@ -23,18 +27,17 @@ class GenericResource {
     String fromRoleText
     String toRoleText
 
-    GnConstant gnConstant
 
-    static belongsTo = [plot: Plot, fromRole: Role, toRole: Role, possessedByRole: Role, objectType: ObjectType]
+    static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role, plot: Plot, objectType: ObjectType]
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource"]
+    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource"]
 
-    Integer DTDId
 
     List<Resource> proposedResources
     List<Resource> bannedResources
     Resource selectedResource
+    Resource lockedResource
 
 	static hasMany = [ extTags: GenericResourceHasTag,
 	                   roleHasEventHasRessources: RoleHasEventHasGenericResource]
@@ -90,6 +93,42 @@ class GenericResource {
     boolean isIngameClue()
     {
         return ((this.title != null) && (!this.title.isEmpty()) && (this.description != null)) && (!this.description.isEmpty())
+    }
+
+
+    ArrayList<ReferentialObject> getReferentialObject() {
+        return Resource.findAll();
+    }
+
+    ArrayList<Tag> getTags() {
+        ArrayList<Tag> tagsList = new ArrayList<>();
+
+        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
+            tags.add(genericResourceHasTag.tag)
+
+        return tagsList;
+    }
+
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
+            mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight * ponderation)
+
+        return mapTagInt;
+    }
+
+
+    ReferentialObject getLockedObject() {
+        return this.lockedResource;
+    }
+
+    Plot getPlotFromGenericObject() {
+        return getPlot();
+    }
+
+    String getSubType() {
+        return "genericRessource";
     }
 }
 

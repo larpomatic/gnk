@@ -12,6 +12,8 @@
         <g:render template="subNav" model="['right': right]"/>
 		<div id="list-gn" class="content scaffold-list" role="main">
         <h1><g:message code="navbar.selectintrigue" default="Plot List" /></h1>
+
+
         <g:if test="${flash.message}">
             <div class="message" role="status">${flash.message}</div>
         </g:if>
