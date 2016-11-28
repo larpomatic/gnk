@@ -52,8 +52,6 @@ class Pastscene {
     Boolean isDayAbsolute
     Boolean isHourAbsolute
     Boolean isMinuteAbsolute
-    Integer timingRelative
-    String unitTimingRelative
 
     // Id referenced into DTD
     static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay", "absoluteHour", "absoluteMinute",
@@ -73,8 +71,6 @@ class Pastscene {
         dateDay (min: 0, max: 31, nullable: true)
         dateHour (min: 0, max: 24, nullable: true)
         dateMinute (min: 0, max: 60, nullable: true)
-        timingRelative (nullable: true)
-        unitTimingRelative (nullable: true)
         genericPlace (nullable: true)
         pastscenePredecessor (nullable: true)
 
