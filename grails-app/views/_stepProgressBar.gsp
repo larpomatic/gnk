@@ -42,7 +42,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#role2perso" data-toggle="tab" aria-controls="step2" role="tab" title="Give a role to your character">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-user"></i>
@@ -50,7 +50,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#life" data-toggle="tab" aria-controls="step3" role="tab" title="Life">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-tower"></i>
@@ -58,7 +58,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#naming" data-toggle="tab" aria-controls="step4" role="tab" title="Naming">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>
@@ -66,7 +66,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#ressource" data-toggle="tab" aria-controls="step5" role="tab" title="Ressource">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>
@@ -74,7 +74,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#place" data-toggle="tab" aria-controls="step6" role="tab" title="Place">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>
@@ -82,7 +82,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#time" data-toggle="tab" aria-controls="step7" role="tab" title="Time">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>
@@ -90,7 +90,7 @@
                             </a>
                         </li>
 
-                        <li role="presentation" class="disabled">
+                        <li role="presentation">
                             <a href="#publication" data-toggle="tab" aria-controls="step8" role="tab" title="Publication">
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>
@@ -119,7 +119,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="role2perso">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="role2perso">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -142,7 +142,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="life">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="life">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -167,7 +167,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="naming">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="naming">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -192,7 +192,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="ressource">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="ressource">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -217,7 +217,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="place">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="place">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -242,7 +242,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="time">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="time">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
@@ -267,7 +267,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="publication">
+                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="publication">
                             <div class="span4 no-margin float-left">
                                 <div class="center-button">
                                     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">

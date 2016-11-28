@@ -1027,9 +1027,6 @@ class PublicationController {
 
                 for (Role r : roles) {
                     for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
-
-                        Integer time = roleHasPastscene.pastscene.timingRelative
-                        String unit = roleHasPastscene.pastscene.unitTimingRelative
                         tmp.add(roleHasPastscene);
                     }
                 }
@@ -1097,8 +1094,7 @@ class PublicationController {
 
             for (Integer i = roleHasPastsceneList.values().size() - 1; i > 0; i--) {
                 RoleHasPastscene roleHasPastscene = roleHasPastsceneList.values().toArray()[i]
-                String unit = roleHasPastscene.pastscene.unitTimingRelative
-/*
+                /*
                 if (unit.toLowerCase().startsWith("y") && roleHasPastscene.pastscene.timingRelative <= 1)
                 {
                     unit = "an"

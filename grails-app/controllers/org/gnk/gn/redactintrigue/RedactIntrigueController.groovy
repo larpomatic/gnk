@@ -687,7 +687,7 @@ class RedactIntrigueController {
     }
     def createDate(Pastscene pastscene){
         def date = ""
-        switch (pastscene.unitTimingRelative) {
+        /*switch (pastscene.unitTimingRelative) {
             case "Y":
                 date = "an(s)"
                 break
@@ -705,7 +705,7 @@ class RedactIntrigueController {
             default:
                 date = "something went terribly wrong"
                 break
-        }
+        }*/
         def numberdate = ""
         if (pastscene.dateYear)
             numberdate = pastscene.dateYear
