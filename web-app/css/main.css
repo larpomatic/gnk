@@ -24,6 +24,13 @@ h1 {
     margin: 0 0 12px !important;
 }
 
+h1 {
+    background-size: 38px 38px;
+    background: url(../images/logo-gnk.png) no-repeat left top;
+    padding-left: 40px;
+}
+
+
 h3 {
     border-bottom: 1px solid Darkgoldenrod;
 }
@@ -156,3 +163,21 @@ p:first-letter {
 .tagRefLink a {
     cursor: pointer !important;
 }
+
+h1::before {
+    content: url("../images/logo-gnk.png");
+    width: 40px;
+    height: 40px;
+}
+
+
+/*
+.gnk-logo-h1 {
+    float: left;
+    background-image: url(../images/logo-gnk.png);
+    height: 40px;
+    width: 40px;
+    margin: 3px 0 0 0px;
+}
+
+*/
