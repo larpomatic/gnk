@@ -22,11 +22,14 @@ h1 {
     font-weight: 400 !important;
     line-height: 44px !important;
     margin: 0 0 12px !important;
+    margin-bottom: 50px !important;
+    border-bottom: 1px solid Darkgoldenrod;
 }
 
 h1 {
+    background-repeat: no-repeat;
     background-size: 38px 38px;
-    background: url(../images/logo-gnk.png) no-repeat left top;
+    background-image: url(../images/logo-gnk.png);
     padding-left: 40px;
 }
 
@@ -109,12 +112,13 @@ p:first-letter {
 .how-to {
     margin-top: 50px;
     margin-bottom: 50px;
+    text-align: center;
 }
 
 .splash {
-    background-image: url('../images/weloveroleplay.jpg');
-    width: 600px;
-    height: 300px;
+    background-image: url('../images/role-play-jacky.jpg');
+    width: 800px;
+    height: 343px;
     margin: 0 auto 0 auto;
     border: solid 5px #FFFFFF;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
@@ -163,21 +167,3 @@ p:first-letter {
 .tagRefLink a {
     cursor: pointer !important;
 }
-
-h1::before {
-    content: url("../images/logo-gnk.png");
-    width: 40px;
-    height: 40px;
-}
-
-
-/*
-.gnk-logo-h1 {
-    float: left;
-    background-image: url(../images/logo-gnk.png);
-    height: 40px;
-    width: 40px;
-    margin: 3px 0 0 0px;
-}
-
-*/
