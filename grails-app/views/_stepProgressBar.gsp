@@ -35,7 +35,8 @@
                     <div class="connecting-line"></div>
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a class="first-icon" href="#selecintrigue" data-toggle="tab" aria-controls="step1" role="tab" title="Select your plot">
+                            <a class="first-icon" href="#selecintrigue" data-toggle="tab" aria-controls="step1" role="tab">
+                                <span class="label-tab">Select your plot</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </span>

@@ -33,6 +33,16 @@
     border-bottom-color: transparent;
 }
 
+span.label-tab {
+    position: absolute;
+    z-index: 10;
+    display: block;
+    width: 132px;
+    top: -26px;
+    left: -18px;
+    font-weight: bold;
+}
+
 span.round-tab {
     width: 70px;
     height: 70px;
