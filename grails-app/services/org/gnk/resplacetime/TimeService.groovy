@@ -88,22 +88,6 @@ class TimeService {
         calendar.setTime(beginGnRealTime);
         System.out.println("yearGN : " + beginGnRealTime);
         System.out.println("abs year : " + ps.absoluteYear);
-        if (ps.absoluteYear != null) {
-            if (ps.absoluteYear == beginGnRealTime.getAt(Calendar.YEAR)) {
-                if (ps.absoluteMonth == beginGnRealTime.getAt(Calendar.MONTH)) {
-                   ps.unitTimingRelative = "d";
-                   ps.timingRelative = beginGnRealTime.getAt(Calendar.DAY_OF_MONTH) - ps.absoluteDay;
-                } else {
-                    // On affiche en mois
-                    ps.unitTimingRelative = "m";
-                    ps.timingRelative = beginGnRealTime.getAt(Calendar.MONTH) - ps.absoluteMonth;
-                }
-            } else {
-                // ON AFFICHE EN YEAR
-                ps.unitTimingRelative = "y";
-                ps.timingRelative = beginGnRealTime.getAt(Calendar.YEAR) - ps.absoluteYear;
-            }
-        }
     }
 
     def	EventTime eventRealDate (EventTime event, Date gnBeginDate, Integer gnDuration, Integer gnId) {

@@ -1,26 +1,31 @@
 package org.gnk.resplacetime
 
-import org.gnk.selectintrigue.Plot
+import org.gnk.ressplacetime.GenericObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.tag.Tag
+import org.gnk.selectintrigue.Plot
 
-class GenericPlace {
+class GenericPlace extends GenericObject{
+
 
     Integer id
     Integer version
 
-	Date lastUpdated
-	Date dateCreated
-	String code
-	String comment
+    Date lastUpdated
+    Date dateCreated
+    String code
+    String comment
+    GnConstant gnConstant
+    Integer DTDId
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace"]
-    Integer DTDId;
+    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace"]
+
 
     List<Place> proposedPlaces
     List<Place> bannedPlaces
     Place selectedPlace
-    GnConstant gnConstant
+    Place lockedPlace
 
     static belongsTo = [plot: Plot, objectType: ObjectType]
 
@@ -48,6 +53,39 @@ class GenericPlace {
 
     public getGenericPlaceHasTag(Tag tag) {
         return GenericPlaceHasTag.findByTagAndGenericPlace(tag, this);
+    }
+
+     ArrayList<Tag> getTags() {
+         ArrayList<Tag> tagsList = new ArrayList<>();
+
+         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
+            tags.add(genericPlaceHasTag.tag)
+
+         return tagsList;
+     }
+
+    Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
+        Map<Tag, Integer> mapTagInt = new HashMap<>();
+
+         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
+             mapTagInt.put(genericPlaceHasTag.tag, genericPlaceHasTag.weight * ponderation)
+
+         return mapTagInt;
+     }
+
+     ArrayList<ReferentialObject> getReferentialObject() {
+         return Place.findAll();
+     }
+
+    ReferentialObject getLockedObject() {
+        return this.lockedPlace;
+    }
+
+    Plot getPlotFromGenericObject () {
+        return getPlot();
+    }
+    String getSubType() {
+        return "genericPlace";
     }
 
 //    boolean isIngameClue()
