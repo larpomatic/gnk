@@ -623,20 +623,21 @@ class PublicationController {
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr();
             String listPlot = "";
-           // try {
+            try {
                  //listPlot = p.getGenericPlace().getPlot().getName();
-                for (Plot plot in gn.getSelectedPlotSet()) {
-                    def gernericList = plot.getGenericPlaces();
-                    for (GenericPlace currentGenericPlace in gernericList) {
-                        if (currentGenericPlace.selectedPlace.id.intValue() == p.id.intValue()) {
+                for (Plot plot in gn.selectedPlotSet) {
+                    def genericList = plot.getGenericPlaces();
+                    for (GenericPlace currentGenericPlace in genericList) {
+                        //if (currentGenericPlace.selectedPlace.id.intValue() == p.id.intValue()) {
+                        if (currentGenericPlace.code.equals(p.genericPlace.code)) {
                             listPlot += plot.getName() + "; ";
                             break;
                         }
                     }
                 }
-            /*} catch (Exception E) {
+            } catch (Exception E) {
                 System.out.println(E.message + "kfd,gkf,gldfk,gdflk,gldfg");
-            }*/
+            }
 
 
             if (listPlot != null)
@@ -738,12 +739,25 @@ class PublicationController {
 
         for (GenericResource genericResource : GROTList + GRList) {
             Tr tableRowRes = wordWriter.factory.createTr()
-
             String listPlot = "";
-            for (Plot plot in gn.getSelectedPlotSet()) {
-                listPlot += plot.getName() + "; ";
+            try {
+                //listPlot = p.getGenericPlace().getPlot().getName();
+                for (Plot plot in gn.selectedPlotSet) {
+                    def genericList = plot.getGenericResources();
+                    for (GenericResource currentGenericResource in genericList) {
+                        //if (currentGenericPlace.selectedPlace.id.intValue() == p.id.intValue()) {
+                        if (currentGenericResource.code.equals(genericResource.code)) {
+                            listPlot += plot.getName() + "; ";
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception E) {
+                System.out.println(E.message + "kfd,gkf,gldfk,gdflk,gldfg");
             }
-            wordWriter.addTableStyledCell("Table1C", tableRowRes, listPlot)
+            if (listPlot != null)
+                wordWriter.addTableStyledCell("Table1C", tableRowRes, listPlot);
+
             if (genericResource.selectedResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, genericResource.selectedResource.name)
             else
