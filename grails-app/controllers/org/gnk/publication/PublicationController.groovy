@@ -916,7 +916,7 @@ class PublicationController {
         createCharactersFile(listPJ, jsoncharlist, fileName)
 
         //Liste des annexes des PJ
-        wordWriter.addStyledParagraphOfText("T2", "Annexes")
+        wordWriter.addStyledParagraphOfText("T2", "Dossier général pour les participants")
         wordWriter.addParagraphOfText("Voici la liste des descriptions de chaque intrigue classé en fonction du type de description : ")
         printDescriptionService.printDescription(wordWriter, descriptionArrayListPJ)
     }
@@ -946,7 +946,7 @@ class PublicationController {
         createCharactersFile(listPNJ, jsoncharlist, fileName)
 
         //Liste des annexes des PNJ
-        wordWriter.addStyledParagraphOfText("T2", "Annexes")
+        wordWriter.addStyledParagraphOfText("T2", "Dossier général pour les participants")
         wordWriter.addParagraphOfText("Voici la liste des descriptions de chaque intrigue classé en fonction du type de description : ")
         printDescriptionService.printDescription(wordWriter, descriptionArrayListPNJ)
     }
