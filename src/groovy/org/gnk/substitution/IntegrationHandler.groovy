@@ -85,17 +85,17 @@ class IntegrationHandler {
             for (rel in characterJson.relationList) {
                 RelationCharacter relationChar = new RelationCharacter()
                 relationChar.r1 = rel.r1
-                relationChar.role2 = rel.role2
+                relationChar.r2 = rel.r2
                 relationChar.type = rel.type
                 relationChar.isHidden = rel.isHidden
                 relationChar.isBijective = rel.isBijective
 
                 if (rel.isBijective) {
                     org.apache.commons.lang3.tuple.Pair<String, RelationCharacter> tuple
-                    tuple.key = rel.role2
+                    tuple.key = rel.r2
                     tuple.value = relationChar
-                    tuple.value.r1 = rel.role2
-                    tuple.value.role2 = rel.r1
+                    tuple.value.r1 = rel.r2
+                    tuple.value.r2 = rel.r1
                 }
 
                 //print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")

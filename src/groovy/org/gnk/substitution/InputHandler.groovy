@@ -175,7 +175,7 @@ class InputHandler {
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
                         relationChar.r1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
@@ -222,7 +222,7 @@ class InputHandler {
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
                         relationChar.r1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)

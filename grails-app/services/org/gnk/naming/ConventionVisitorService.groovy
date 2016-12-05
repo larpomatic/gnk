@@ -42,12 +42,12 @@ class ConventionVisitorService {
                     || relation.type.equals("Parent (direct)")){
                 for(PersoForNaming p : doneperso){
                     if (hidden){
-                        if(p.code.equals(relation.role2.toString())){
+                        if(p.code.equals(relation.r2.toString())){
                             return p.selectedNames
                         }
                     }
                     else{
-                        if(p.code.equals(relation.role2.toString()) && (perso.getgender()).equals("M")){
+                        if(p.code.equals(relation.r2.toString()) && (perso.getgender()).equals("M")){
                             return p.selectedNames
                         }
                     }
@@ -56,12 +56,12 @@ class ConventionVisitorService {
             else if (relation.type.equals("Mariage")){
                 for(PersoForNaming p : doneperso){
                     if (hidden){
-                        if(p.code.equals(relation.role2.toString())){
+                        if(p.code.equals(relation.r2.toString())){
                             return p.selectedNames
                         }
                     }
                     else{
-                        if(p.code.equals(relation.role2.toString()) && (perso.getgender()).equals("M")){
+                        if(p.code.equals(relation.r2.toString()) && (perso.getgender()).equals("M")){
                             return p.selectedNames
                         }
                     }
@@ -80,7 +80,7 @@ class ConventionVisitorService {
         for (RelationCharacter relation : perso.relationList){
             if (relation.type.equals("Filiation")){
                 for(PersoForNaming p : doneperso){
-                    if(p.code.equals(relation.role2.toString()) && (perso.getgender()).equals(parent)){
+                    if(p.code.equals(relation.r2.toString()) && (perso.getgender()).equals(parent)){
                         for(String s : p.selectedFirstnames){
                             if((perso.getgender()).equals("F")){
                                 names.add(s + "sdottir")

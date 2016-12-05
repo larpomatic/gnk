@@ -6,7 +6,7 @@ class RelationCharacter {
 	String charId
 	Character character
     String r1
-    String role2
+    String r2
 	String type
 	Boolean isBijective
     Boolean isHidden
