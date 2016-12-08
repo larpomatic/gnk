@@ -14,6 +14,11 @@ class GenericResourceHasTag {
 
     static belongsTo = [ tag: Tag, genericResource: GenericResource ]
 
+    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace", "value", "family"]
+
+    String value
+    String family
+
     static constraints = {
     }
 

@@ -2,6 +2,7 @@ package org.gnk.resplacetime
 
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.tag.Tag
 import org.gnk.selectintrigue.Plot
 
@@ -22,8 +23,8 @@ class GenericPlace extends GenericObject{
     static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace"]
 
 
-    List<Place> proposedPlaces
-    List<Place> bannedPlaces
+    List<ReferentialPlace> proposedPlaces
+    List<ReferentialPlace> bannedPlaces
     Place selectedPlace
     Place lockedPlace
 
@@ -68,13 +69,13 @@ class GenericPlace extends GenericObject{
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
          for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
-             mapTagInt.put(genericPlaceHasTag.tag, genericPlaceHasTag.weight * ponderation)
+             mapTagInt.put(genericPlaceHasTag.tag, new Integer((int)(genericPlaceHasTag.weight * ponderation)))
 
          return mapTagInt;
      }
 
      ArrayList<ReferentialObject> getReferentialObject() {
-         return Place.findAll();
+         return this.proposedPlaces;
      }
 
     ReferentialObject getLockedObject() {

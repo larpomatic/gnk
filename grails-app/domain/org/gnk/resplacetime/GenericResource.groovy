@@ -2,6 +2,7 @@ package org.gnk.resplacetime
 
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -32,13 +33,14 @@ class GenericResource extends GenericObject{
     static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role, plot: Plot, objectType: ObjectType]
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource"]
+    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource", "resultsAllUniverses"]
 
 
-    List<Resource> proposedResources
-    List<Resource> bannedResources
+    List<ReferentialResource> proposedResources
+    List<ReferentialResource> bannedResources
     Resource selectedResource
     Resource lockedResource
+    List<Tag> taglist
     ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultsAllUniverses
 
 	static hasMany = [ extTags: GenericResourceHasTag,
@@ -99,7 +101,7 @@ class GenericResource extends GenericObject{
 
 
     ArrayList<ReferentialObject> getReferentialObject() {
-        return Resource.findAll();
+        return this.proposedResources();
     }
 
     ArrayList<Tag> getTags() {

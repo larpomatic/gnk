@@ -8,8 +8,11 @@ import org.gnk.gn.Gn
 import org.gnk.naming.NamingService
 import org.gnk.naming.PersoForNaming
 import org.gnk.resplacetime.GenericPlaceHasTag
+import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.PlaceResourceService
+import org.gnk.resplacetime.Resource
 import org.gnk.resplacetime.ResourceService
 import org.gnk.resplacetime.PlaceService
 import org.gnk.resplacetime.TimeService
@@ -17,11 +20,14 @@ import org.gnk.ressplacetime.EventTime
 import org.gnk.ressplacetime.GenericPlace
 import org.gnk.ressplacetime.GenericResource
 import org.gnk.ressplacetime.PastsceneTime
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.substitution.data.RelationCharacter
+import org.gnk.resplacetime.GenericResource
+import org.gnk.utils.Pair
 
 class IntegrationHandler {
 
@@ -191,21 +197,25 @@ class IntegrationHandler {
         // GenericResourceList construction from json
         for (resourceJson in resourceJsonObject.resources) {
 
-            GenericResource genericResource = new GenericResource()
+            //GenericResource genericResource = new GenericResource()
+            GenericResource gr = new GenericResource()
 
-            genericResource.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
+            gr.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
 
             List<Tag> tagList = []
+            List<Tag> tags = new ArrayList<>();
             for (tagJson in resourceJson.tags) {
+                /*GenericResourceHasTag tag = new GenericResourceHasTag()
+                tag.tag = new Tag()
+                tag.tag = tagJson
+                tag.weight = tagJson.weight as Integer*/
                 Tag tag = new Tag()
-
                 tag.value = tagJson.value
                 tag.type = tagJson.family
                 tag.weight = tagJson.weight as Integer
-
-                tagList.add(tag)
+                tags.add(tag)
             }
-            genericResource.tagList = tagList
+            gr.taglist = tags
 
             // Name
             List<ReferentialResource> proposedNameList = []
@@ -214,7 +224,7 @@ class IntegrationHandler {
                 referentialResource.name = nameJson
                 proposedNameList.add(referentialResource)
             }
-            genericResource.resultList = proposedNameList
+            gr.proposedResources = proposedNameList
 
             List<ReferentialResource> bannedNameList = []
             for (nameJson in resourceJson.bannedNames) {
@@ -222,18 +232,19 @@ class IntegrationHandler {
                 referentialResource.name = nameJson
                 bannedNameList.add(referentialResource)
             }
-            genericResource.bannedItemsList = bannedNameList
+            gr.bannedResources = bannedNameList
 
-            genericResourceList.add(genericResource)
+            genericResourceList.add(gr)
         }
 
         // RESOURCE SERVICE CALL
         ResourceService resourceService = new ResourceService()
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
         //print "Universe : " + universe
         for (genericResource in genericResourceList) {
-            if (genericResource.resultList.isEmpty()) {
+            if (genericResource.proposedResources.isEmpty()) {
                 //print "GenericResource IN : " + genericResource
-                genericResource = resourceService.findReferentialResource(genericResource, universe)
+                genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource, null)
                 //print "GenericResource OUT : " + genericResource
             }
         }
@@ -253,10 +264,11 @@ class IntegrationHandler {
 
             // Name
             resourceJson.remove("proposedNames")
-            if (genericResource.resultList != null && !genericResource.resultList.isEmpty()) {
+            if (genericResource.resultsAllUniverses != null && !genericResource.resultsAllUniverses.isEmpty()) {
                 JSONArray proposedNames = new JSONArray()
-                for (referentialResource in genericResource.resultList) {
-                    proposedNames.put(referentialResource.name)
+                for (Pair<org.gnk.tag.Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in genericResource.resultsAllUniverses) {
+                    for (Pair<ReferentialObject, Integer> ref2 in ref.right)
+                        proposedNames.put(ref2.left.name)
                 }
                 resourceJson.put("proposedNames", proposedNames)
             }

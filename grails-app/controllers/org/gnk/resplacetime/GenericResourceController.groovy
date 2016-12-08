@@ -2,12 +2,14 @@ package org.gnk.resplacetime
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
+import org.gnk.utils.Pair
 
 class GenericResourceController {
 
@@ -123,7 +125,7 @@ class GenericResourceController {
         } else {
             return false
         }
-        if (params.containsKey("resourceConstantForm")){
+        if (params.containsKey("resourceConstantForm")) {
             if (params.resourceConstantForm != "null")
                 newGenericResource.gnConstant = GnConstant.get(params.resourceConstantForm as Integer);
             else
@@ -141,19 +143,18 @@ class GenericResourceController {
         if (params.containsKey("resourceObject")) {
             ObjectType objectType = ObjectType.findById(params.resourceObject as Integer);
             newGenericResource.objectType = objectType;
-        }
-        else {
+        } else {
             ObjectType objectType = ObjectType.findById(1);
             newGenericResource.objectType = objectType;
         }
-        if(newGenericResource.extTags != null) {
+        if (newGenericResource.extTags != null) {
             HashSet<GenericResourceHasTag> genericResourceHasTags = newGenericResource.extTags;
             newGenericResource.extTags.clear();
             GenericResourceHasTag.deleteAll(genericResourceHasTags);
         } else {
             newGenericResource.extTags = new HashSet<GenericResourceHasTag>();
         }
-        if(newGenericResource.roleHasEventHasRessources != null) {
+        if (newGenericResource.roleHasEventHasRessources != null) {
             HashSet<RoleHasEventHasGenericResource> genericResourceHasRoleHasEvents = newGenericResource.roleHasEventHasRessources;
             newGenericResource.roleHasEventHasRessources.clear();
             RoleHasEventHasGenericResource.deleteAll(genericResourceHasRoleHasEvents);
@@ -170,7 +171,6 @@ class GenericResourceController {
                 Role possessor = Role.get(possessorId);
                 newGenericResource.possessedByRole = possessor;
             }
-
 
 //            if (params.containsKey("resourceRoleFrom")) {
 //                Integer roleFromId = params.resourceRoleFrom as Integer;
@@ -197,8 +197,7 @@ class GenericResourceController {
                 newGenericResource.description = params.resourceDescription;
                 print(params.resourceDescription);
             }
-        }
-        else if (newGenericResource.title != null) {
+        } else if (newGenericResource.title != null) {
             newGenericResource.title = null;
             newGenericResource.possessedByRole = null;
             newGenericResource.fromRoleText = null;
@@ -249,9 +248,9 @@ class GenericResourceController {
         if (genericResource) {
             render(contentType: "application/json") {
                 object(isupdate: saveOrUpdate(genericResource),
-                       id: genericResource.id,
-                       name: genericResource.code,
-                       oldname: oldname)
+                        id: genericResource.id,
+                        name: genericResource.code,
+                        oldname: oldname)
             }
         }
     }
@@ -269,14 +268,12 @@ class GenericResourceController {
     }
 
 
-    def getBestResourcesV2() {
-        GenericResource genericresource = new GenericResource()
-    }
 
     def getBestResources() {
-        org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
-        List<com.gnk.substitution.Tag> tags = new ArrayList<>();
-        params.each {
+        //org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
+        GenericResource gr = new GenericResource()
+        Set<GenericResourceHasTag> tags = new ArrayList<>();
+        /*params.each {
             if (it.key.startsWith("resourceTags_")) {
                 com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
                 Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
@@ -293,26 +290,39 @@ class GenericResourceController {
                     }
                 }
             }
+        }*/
+
+        params.each {
+            if (it.key.startsWith("resourceTags_")) {
+                GenericResourceHasTag subtag = new GenericResourceHasTag();
+                Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
         }
+
         //ResourceService resourceService = new ResourceService();
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
-        genericressource.setTagList(tags);
+        //genericressource.setTagList(tags);
+        gr.setExtTags(tags);
 
 
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        for (int i = 0; i < universList.size() ; i++) {
-            //genericressource = resourceService.findReferentialResource(genericressource, universList[i].name);
-            genericressource.resultList = placeresourceservice.findBestObjects()
-            jsonArray.add(universList[i].name);
-            for(ReferentialResource ref in genericressource.resultList) {
-                jsonArray.add(ref.name);
+        gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, null)
+        for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
+            for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
+                jsonArray.add(ref2.left.getName());
             }
-            json.put(universList[i].name,jsonArray);
+            json.put(ref.left.name, jsonArray)
             jsonArray = [];
         }
 
