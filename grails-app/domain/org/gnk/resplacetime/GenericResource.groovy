@@ -7,6 +7,7 @@ import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
 import org.gnk.tag.Tag
 import org.gnk.selectintrigue.Plot
+import org.gnk.utils.Pair
 
 class GenericResource extends GenericObject{
 
@@ -38,6 +39,7 @@ class GenericResource extends GenericObject{
     List<Resource> bannedResources
     Resource selectedResource
     Resource lockedResource
+    ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultsAllUniverses
 
 	static hasMany = [ extTags: GenericResourceHasTag,
 	                   roleHasEventHasRessources: RoleHasEventHasGenericResource]
@@ -113,7 +115,7 @@ class GenericResource extends GenericObject{
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
         for (GenericResourceHasTag genericResourceHasTag in this.extTags)
-            mapTagInt.put(genericResourceHasTag.tag, genericResourceHasTag.weight * ponderation)
+            mapTagInt.put(genericResourceHasTag.tag, new Integer((int)(genericResourceHasTag.weight * ponderation)))
 
         return mapTagInt;
     }
@@ -129,6 +131,10 @@ class GenericResource extends GenericObject{
 
     String getSubType() {
         return "genericRessource";
+    }
+
+    String getName() {
+        return this.name;
     }
 }
 

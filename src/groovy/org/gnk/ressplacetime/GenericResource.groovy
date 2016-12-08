@@ -1,9 +1,11 @@
 package org.gnk.ressplacetime
 
 import com.gnk.substitution.Tag
+import org.gnk.utils.Pair
 
 /**
  * Created with IntelliJ IDEA.
+ *
  * User: Mnesyah
  * Date: 10/10/13
  * Time: 22:41
@@ -14,6 +16,7 @@ class GenericResource {
     List<Tag> tagList
     List<ReferentialResource> bannedItemsList
     List<ReferentialResource> resultList
+    ArrayList<Pair<org.gnk.tag.Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultListForAllUniverses
 
     @Override
     public java.lang.String toString() {
