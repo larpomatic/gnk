@@ -452,10 +452,6 @@
             pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
             // Time
 
-            // DOIT ËTRE SUPP
-            //pastscene.timingRelative = "${pastscene.timingRelative}";
-            //pastscene.unitTimingRelative = "${pastscene.unitTimingRelative}";
-            // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
