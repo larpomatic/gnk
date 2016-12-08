@@ -166,7 +166,7 @@
             if (content != "") {
                 var character = new Object();
                 // Gn id
-                character.gnId = ${gnInfo.dbId}
+                character.code = ${gnInfo.dbId}
                 // HTML id
                 character.htmlId = "char"+ characterId;
                 // Gender
@@ -211,7 +211,7 @@
         <g:each status="i" in="${characterList}" var="character">
         var character = new Object();
         // Gn Id
-        character.gnId = "${character.DTDId}"
+        character.code = "${character.DTDId}"
         // HTML Id
         character.htmlId = "char${character.DTDId}"
         // Gender
@@ -228,8 +228,8 @@
         </g:each>
         <g:each status="j" in="${character.relationList}" var="rel">
         var relationChar = new Object();
-        relationChar.role1 = "${rel.role1}";
-        relationChar.role2 = "${rel.role2}";
+        relationChar.role1 = "${rel.r1}";
+        relationChar.role2 = "${rel.r2}";
         relationChar.type = "${rel.type}";
         relationArray.push(relationChar);
         </g:each>
