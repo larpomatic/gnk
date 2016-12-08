@@ -21,7 +21,6 @@ import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.RoleHasRelationWithRole
-import org.gnk.substitution.data.RelationCharacter
 
 class IntegrationHandler {
 
@@ -40,8 +39,8 @@ class IntegrationHandler {
         String universe = charJsonObject.get("universe")
         LinkedList<PersoForNaming> charForNamingList = []
         LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList = []
-        LinkedList<RelationCharacter> charsRelBijectives = new LinkedList<RelationCharacter>()
-        LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>>()
+        LinkedList<RoleHasRelationWithRole> charsRelBijectives = new LinkedList<RoleHasRelationWithRole>()
+        LinkedList<org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole>>()
 
 
         // CharForNamingList construction from json
@@ -80,10 +79,10 @@ class IntegrationHandler {
             // Family
             charForNaming.family = []
 
-            charForNaming.relationList = new LinkedList<RelationCharacter>()
+            charForNaming.relationList = new LinkedList<RoleHasRelationWithRole>()
 
             for (rel in characterJson.relationList) {
-                RelationCharacter relationChar = new RelationCharacter()
+                RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                 relationChar.r1 = rel.r1
                 relationChar.r2 = rel.r2
                 relationChar.type = rel.type
@@ -91,7 +90,7 @@ class IntegrationHandler {
                 relationChar.isBijective = rel.isBijective
 
                 if (rel.isBijective) {
-                    org.apache.commons.lang3.tuple.Pair<String, RelationCharacter> tuple
+                    org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole> tuple
                     tuple.key = rel.r2
                     tuple.value = relationChar
                     tuple.value.r1 = rel.r2

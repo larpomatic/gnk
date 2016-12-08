@@ -16,7 +16,6 @@ import org.gnk.substitution.data.Resource
 import org.gnk.substitution.data.Tag
 import org.gnk.roletoperso.Character
 import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.RelationCharacter
 
 class InputHandler {
 
@@ -169,7 +168,7 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
@@ -216,7 +215,7 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
