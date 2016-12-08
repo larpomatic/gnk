@@ -16,11 +16,9 @@
     <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
 
-    <g:render template="../stepProgressBar"/>
 
-    <g:render template="subNav" model="['right': right]"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
-		<legend><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></legend>
+		<h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
         <g:if test="${!screenStep || screenStep == '0'}">
             <g:render template="step0_createGn"/>
         </g:if>
