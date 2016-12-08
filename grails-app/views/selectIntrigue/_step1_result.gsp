@@ -243,5 +243,3 @@
         </g:hasRights>
     </fieldset>
 </g:form>
-
-
