@@ -88,12 +88,6 @@ class ResourceController {
 		
 		print "Error : resource not deleted"
 	}
-	
-    def create() {
-		resourceInstance = new Resource()
-		
-        [resourceInstance: new Resource(params)]
-    }
 
     def save() {
 		if (params.name[0].equals(""))
@@ -281,24 +275,49 @@ class ResourceController {
         redirect(action: "show", id: resourceInstance.id)
     }
 
-    def delete(Long id) {
-        def resourceInstance = Resource.get(id)
-        if (!resourceInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'resource.label', default: 'Resource'), id])
-            redirect(action: "list")
-            return
-        }
-		//FIXME Changement de Base
-		/*
-        try {
-            resourceInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'resource.label', default: 'Resource'), id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'resource.label', default: 'Resource'), id])
-            redirect(action: "show", id: id)
-        }*/
+	def duplicate(Long id) {
+		def resourceInstance = Resource.get(id)
+		if (!resourceInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'resource.label', default: 'Resource'), id])
+			redirect(action: "list")
+			return
+		}
+		String name = resourceInstance.name + "_Copy"
 
-    }
+		Resource tmp = Resource.findByName(name)
+		if (tmp != null) {
+			int i = 1
+			String temp_name = ""
+			while(tmp != null && i < 10) {
+				i++
+				temp_name = name + i.toString()
+				tmp = Resource.findByName(temp_name)
+			}
+			name = temp_name
+		}
+
+		Resource duplicate = new Resource(name:name,description:resourceInstance.description,gender:resourceInstance.gender)
+		if (!duplicate.save(flush: true)) {
+			render(view: "create", model: [resourceInstance: duplicate])
+			return
+		}
+
+		duplicate.extTags = []
+
+		for (ResourceHasTag resourceHasResourceTag : resourceInstance.extTags) {
+			ResourceHasTag resourceHasTagInstance = new ResourceHasTag()
+			resourceHasTagInstance.tag = resourceHasResourceTag.getTag()
+			resourceHasTagInstance.resource = duplicate
+			resourceHasTagInstance.weight = resourceHasResourceTag.getWeight()
+			duplicate.extTags.add(resourceHasTagInstance)
+		}
+
+		if (!duplicate.save(flush: true)) {
+			render(view: "create", model: [resourceInstance: duplicate])
+			return
+		}
+
+		flash.messageInfo = message(code: 'adminRef.resource.info.create', args: [duplicate.name])
+		redirect(action: "list", id: duplicate.id)
+	}
 }

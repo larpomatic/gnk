@@ -31,6 +31,7 @@
                             noSelection="['': '-Choix du genre-']"/>
                 </div>
 
+                <!--
                 <div class="span3">
                     <g:select
                             name="genericResource_select"
@@ -39,6 +40,8 @@
                             from="${GenericResource.list()}"
                             noSelection="['': '-Ressource générique-']"/>
                 </div>
+                -->
+
             </div>
             <g:hasRights lvlright="${right.REFMODIFY.value()}">
                 <g:submitButton name="create" class="btn btn-primary" value="${message(code: 'default.add')}"/>

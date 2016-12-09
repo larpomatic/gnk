@@ -53,10 +53,20 @@
                 <g:form>
                     <fieldset class="buttons">
                         <g:hiddenField name="id" value="${resourceInstance?.id}"/>
+                        <g:hasRights lvlright="${right.REFMODIFY.value()}">
+                            <g:actionSubmit class="btn btn-warning" action="duplicate"
+                                            value="${message(code: 'default.duplicate')}"
+                                            onclick="return;"/>
+                        </g:hasRights>
+                    </fieldset>
+                </g:form>
+                <g:form>
+                    <fieldset class="buttons">
+                        <g:hiddenField name="id" value="${resourceInstance?.id}"/>
                         <g:hasRights lvlright="${right.REFDELETE.value()}">
                             <g:actionSubmit class="btn btn-warning" action="deleteResource"
                                             value="${message(code: 'default.delete')}"
-                                            onclick="return confirm('Supprimer la ressource ?');"/>
+                                            onclick="return confirm('${message(code: 'adminRef.resource.deletion.confirm')}');"/>
                         </g:hasRights>
                     </fieldset>
                 </g:form>

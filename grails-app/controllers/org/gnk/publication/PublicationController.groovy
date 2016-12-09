@@ -2210,7 +2210,7 @@ class PublicationController {
             DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
                     format1,
                     format2,
-                    new Locale("FR", "fr"));
+                    new Locale("FR", "fr"))
             return shortDateFormat.format(date)
         } else {
             return new SimpleDateFormat(formater).format(date)
