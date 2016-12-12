@@ -176,9 +176,9 @@ class RedactIntrigueController {
         return pastscenes;
     }
 
-	def update(Long id) {
+	def update() {
         def isupdate = true;
-		def plotInstance = Plot.get(id)
+		def plotInstance = Plot.get(params.plotid)
 		if (!plotInstance) {
             isupdate = false;
 		}

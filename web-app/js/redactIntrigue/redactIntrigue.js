@@ -782,12 +782,12 @@ function verify_descriptionUpdate()
     console.log("Ceci est un test");
     if (is_modified)
     {
-        createNotification("danger", "Attention", "Si vous prévisualisez votre intrigue sans sauvegarder vos modifications, celles-ci seront perdues")
+        createNotification("danger", "Attention", "Si vous prévisualisez votre intrigue sans sauvegarder vos modifications, celles-ci ne seront pas visibles dans la prévisualisation");
         /*if (confirm("Attention, si vous ne sauvegardez pas avant de visualiser votre intrigue, les éléments modifiés seront perdus. \n Voulez vous continuer ?"))
             return true;
         else
             return false;*/
-        return false;
+        return true;
     }
     //return !is_modified;
     return true;

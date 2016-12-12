@@ -28,7 +28,7 @@
 <g:javascript src="selectIntrigue/bootstrap.min.js"/>
 <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
 <div class="row-fluid" id="hidTest">
-    <form id="exportPDFButton" onclick="return verify_descriptionUpdate()" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST">
+    <form id="exportPDFButton" onclick="verify_descriptionUpdate()" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST" target="_blank">
         <div class="span4">
             <input type="hidden" id="plotid" name="plotid" value="${plotInstance.id}"/>
             <button id="print" class="btn" type="submit" style="visibility: visible; display: block; margin-bottom: 10px;" ><i class="icon-ok-sign"></i> Prévisualisation</button>

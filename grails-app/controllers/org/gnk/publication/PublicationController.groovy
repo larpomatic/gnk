@@ -1013,18 +1013,23 @@ class PublicationController {
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
-
-            wordWriter.addStyledParagraphOfText("T3", "Ce que je détiens : ")
             boolean hasRessource = false
-            for (Role r : c.selectedRoles) {
+            for (Role r : c.selectedRoles)
                 for (GenericResource gr : gnk.genericResourceMap.values())
-                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId))
                         hasRessource = true
-                        String pubResource = (gr.code ? gr.code + " - " : "")
-                        pubResource += (gr.comment ? gr.comment : "")
-                        wordWriter.addParagraphOfText(pubResource)
-                    }
-                (hasRessource ?: wordWriter.addParagraphOfText("-"))
+
+            if (hasRessource)
+            {
+                wordWriter.addStyledParagraphOfText("T3", "Ce que je détiens : ")
+                for (Role r : c.selectedRoles) {
+                    for (GenericResource gr : gnk.genericResourceMap.values())
+                        if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                            String pubResource = (gr.code ? gr.code + " - " : "")
+                            pubResource += (gr.comment ? gr.comment : "")
+                            wordWriter.addParagraphOfText(pubResource)
+                        }
+                }
             }
 
 

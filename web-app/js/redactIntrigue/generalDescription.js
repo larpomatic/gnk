@@ -77,8 +77,9 @@ function update_id(render, description) {
 function initialise_description(render)
 {
     document.getElementById('render_' + render).getElementsByClassName('pitchOrga')[0].setAttribute('value', "false");
-    document.getElementById('render_' + render).getElementsByClassName('pitchPj')[0].setAttribute('value', "false");
+    document.getElementById('render_' + render).getElementsByClassName('pitchPj')[0].setAttribute('value', false);
     document.getElementById('render_' + render).getElementsByClassName('pitchPnj')[0].bool = false;
+    console.log("initialisation de la description");
     document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].setAttribute('value', "Entrez votre description ici");
     document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].setAttribute('value', "contexte du GN");
 
@@ -93,6 +94,12 @@ function update_introduction(render, desc_remove){
         introduction.desc_id = -1;
         introduction.bool = false;
     }
+}
+
+function updateIntrigue()
+{
+    console.log("Update intrigue");
+    $("#savePlotForm").submit();
 }
 
 function reset_ismodified()

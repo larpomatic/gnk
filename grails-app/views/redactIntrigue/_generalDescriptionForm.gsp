@@ -209,7 +209,7 @@
                 </div>
                 <fieldset class="buttons text-center">
                     <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEMODIFY.value()}" lvlrightAdmin="${right.INTRIGUEMODIFY.value()}">
-                        <input type="button" name="Update" id="update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot" onclick="reset_ismodified()"/>
+                        <input type="button" name="Update" value="${message(code: 'default.button.update.label', default: 'Update')}" class="btn btn-primary updatePlot"/>
                     </g:plotOwner>
                     <g:plotOwner idOwner="${plotInstance.user.id}" lvlright="${right.MINTRIGUEDELETE.value()}" lvlrightAdmin="${right.INTRIGUEDELETE.value()}">
                         <input type="button" name="Delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" data-redirect="<g:createLink controller="RedactIntrigue" action="list"/>"
