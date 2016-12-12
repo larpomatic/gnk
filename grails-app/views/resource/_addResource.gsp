@@ -3,7 +3,7 @@
 <%@ page import="org.gnk.admin.right" %>
 
 <div id="create-resource" class="content scaffold-create" role="main">
-    <legend>Création d'une nouvelle ressource</legend>
+    <legend>${message(code: 'adminRef.resource.creation.title')}</legend>
 
 
     <g:hasErrors bean="${resourceInstance}">
@@ -18,7 +18,7 @@
     <g:form action="save">
         <form class="form-inline">
             <div class="row">
-                <div class="span3">Nom : <g:textField name="name" maxlength="45"
+                <div class="span3">${message(code: 'default.name')} : <g:textField name="name" maxlength="45"
                                                       value="${resourceInstance?.name}"/></div>
 
                 <div class="span3.5">Description : <g:textField name="desc" maxlength="100"
