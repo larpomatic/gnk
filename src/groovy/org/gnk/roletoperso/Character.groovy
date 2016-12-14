@@ -19,7 +19,7 @@ class Character {
     // m, f, n
     private String gender
     private String type
-    List<org.gnk.substitution.data.Tag> tagList
+    List<Tag> tagList
     def roleList
     List<RoleHasRelationWithRole> relationList
 

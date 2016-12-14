@@ -1,7 +1,7 @@
 package org.gnk.substitution.data
 
 import org.codehaus.groovy.grails.web.json.JSONObject
-
+import org.gnk.tag.Tag
 import java.util.List;
 
 class GnInformation {
