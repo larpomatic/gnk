@@ -1,7 +1,8 @@
 var template = desc_number - 1;
 $(document).ready(function() {
     console.log("template value : idDescription_" + template);
-    $('#idDescription_' + template).editable({
+    console.log("desc_number value : idDescription_" + desc_number);
+    $('#idDescription_0').editable({
         success: function(response, newValue) {
             updateName(newValue);
         }

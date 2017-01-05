@@ -87,3 +87,25 @@ select {
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>
 </div>
+<script type="text/javascript">
+    var template = desc_number - 1;
+    var test = template + 1;
+    $(document).ready(function() {
+        console.log("template value : idDescription_" + test);
+        //console.log("desc_number value : idDescription_" + desc_number);
+        $('#idDescription_' + test).editable({
+            success: function(response, newValue) {
+                updateName(newValue);
+            }
+        });
+    });
+
+    function updateName(elt){
+        console.log("template value : " + template);
+        $("#titleRender_" + template).remove();
+        var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
+        //$("#titleRender_").id = "titleRender" + template;
+        $('#overview').append(new_elt);
+        //console.log($('#description_0').editable('getValue', true));
+    }
+</script>

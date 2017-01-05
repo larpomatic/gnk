@@ -106,7 +106,7 @@ class SelectIntrigueController {
             for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
             }
-            redirect(controller: 'place', action:'index', params: [gnId: id as String, sexe: sexes]);
+            redirect(controller: 'placeSub', action:'index', params: [gnId: id as String, sexe: sexes]);
         }
         else if (step == "time") {
             List<String> sexes = new ArrayList<>();

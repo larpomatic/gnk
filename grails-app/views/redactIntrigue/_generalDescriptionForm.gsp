@@ -14,7 +14,6 @@
     white-space: nowrap;
 }
 </style>
-<g:javascript src="redactIntrigue/pitchForm.js"/>
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
