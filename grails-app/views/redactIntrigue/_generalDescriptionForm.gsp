@@ -136,7 +136,7 @@
                         <h3 class="panel-title">Sommaire des descriptions</h3>
                     </div>
                     <div class="list-group" id="overview">
-                        <li class="list-group-item" id="titleRender_0">Description</li>
+                        <li class="list-group-item" id="titleRender_0" value="Description">Description</li>
                     </div>
                 </div>
                 <div id="desc_wrapper">
