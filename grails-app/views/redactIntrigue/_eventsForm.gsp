@@ -22,11 +22,11 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="newEvent">
-            <form name="newEventForm" data-url="<g:createLink controller="Event" action="Save"/>">
+            <form id="newEventForm" name="newEventForm" action="Save" onsubmit="getevent()" data-url="<g:createLink controller="Event" action="Save" />">
                 <g:hiddenField name="eventDescription" class="descriptionContent" value=""/>
                 <g:hiddenField name="eventName" class="titleContent" value=""/>
                 <input type="hidden" name="plotId" id="plotId" value="${plotInstance?.id}"/>
-                <div class="row formRow text-center">
+                <div id="handleerror" data-url= <g:createLink controller="Event" action="Isvalidate" />"class="row formRow text-center">
                     <label for="eventName">
                         <g:message code="redactintrigue.event.eventName" default="Name"/>*
                     </label>

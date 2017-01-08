@@ -1,6 +1,6 @@
 package org.gnk.parser
 
-import org.gnk.administration.ErrorHandlerController
+import org.gnk.ErrorHandlerService
 import org.springframework.web.multipart.MultipartFile
 
 class DtdImportController {
@@ -10,7 +10,7 @@ class DtdImportController {
     def index() {
         //      redirect(view: "import")
     }
-
+     ErrorHandlerService errorHandlerService
     def importDtd() {
 
     }
@@ -25,7 +25,8 @@ class DtdImportController {
         }
         catch (Exception e) {
             flash.message = "Echec de l'import du fichier"
-         ErrorHandlerController.filesendingerror();
+            e.printStackTrace();
+         errorHandlerService.filesendingerror();
 
 
         }

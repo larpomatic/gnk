@@ -2,6 +2,7 @@ package org.gnk.gn.redactintrigue
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ErrorHandlerService
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.roletoperso.Role
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class PastSceneController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+    ErrorHandlerService errorHandlerService;
 
     def index() {}
 
@@ -231,7 +234,8 @@ class PastSceneController {
             cal.setTime(date)
             return cal;
         } catch (ParseException e) {
-          org.gnk.administration.ErrorHandlerController.ParseErrorHandler();
+            e.printStackTrace();
+          errorHandlerService.ParseErrorHandler(dateToValidate, dateFromat);
             return null;
         }
     }

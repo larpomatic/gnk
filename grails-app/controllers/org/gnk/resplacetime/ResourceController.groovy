@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.gnk.selectintrigue.Plot
 import org.gnk.tag.Tag
 
 class ResourceController {
@@ -67,7 +68,28 @@ class ResourceController {
 		redirect(action: "list")
 	}
 
-
+/*Boolean checkresource(Resource resource)
+{
+/*	Plot plot = new Plot();
+	String title = resource.description;
+	ArrayList<String> event = plot.events.name;
+	ArrayList<String> roles = plot.roles.code;
+	ArrayList<String> pastscenes = plot.pastescenes.description;
+	ArrayList<String> gplace = plot.genericPlaces.code;
+	//print(title);
+	for  (int i = 0; i < roles.size(); i++)
+	{
+		return title.contains(roles[i]);
+	}
+	for  (int i = 0; i < gplace.size(); i++)
+	{
+		return title.contains(gplace[i]);
+	}
+	for  (int i = 0; i < title.size(); i++)
+	{
+		return pastscenes.contains(title[i]);
+	}
+}*/
     def deleteResource()
 	{
 		Resource resourceInstance
@@ -108,6 +130,8 @@ class ResourceController {
 		{
 			if (res.name.equals(params.name[0]))
 			{
+//				if(!checkresource(res))
+//					return false;
 				flash.message = message(code: 'Erreur : Une ressource de ce nom existe déjà !')
 				redirect(action: "list")
 				return
@@ -249,6 +273,7 @@ class ResourceController {
         resourceHasTag.delete(flush: true)
         flash.messageInfo = message(code: 'adminRef.resource.info.deleteTag', args: [resourceHasTag.tag.name, resourceHasTag.resource.name])
 				
+
 		redirect(action: "list")
 	}
 

@@ -1,6 +1,6 @@
 package org.gnk.social
 
-import org.gnk.administration.ErrorHandlerController
+import org.gnk.ErrorHandlerService
 import org.gnk.naming.Convention
 import org.gnk.naming.ConventionHasRule
 import org.gnk.naming.Rule
@@ -15,7 +15,7 @@ class SocialController {
     def index() {
         redirect(action: "listConventionRule", params: params)
     }
-
+   ErrorHandlerService errorHandlerService
     def listConventionRule(Integer max, Integer offset, String sort) {
         //max = max ?: 10
         //offset = offset ?: 0
@@ -37,7 +37,7 @@ class SocialController {
                 }
             } else {
                 println("you DID NOT select: ${r.description}");
-                ErrorHandlerController.RuleraiseError();
+                errorHandlerService.RuleraiseError();
                 if (convention.getConventionHasRules().rule.contains(r)) {
                     for (chr in ConventionHasRule.list()) {
                         if (chr.rule.equals(r)) {

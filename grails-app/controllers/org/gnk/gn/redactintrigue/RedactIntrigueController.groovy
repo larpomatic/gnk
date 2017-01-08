@@ -65,12 +65,7 @@ class RedactIntrigueController {
 	}
 
 
-    def checkresource(Object obj)
-    {
-        ressources rls = ressources.get(obj)
-        if (obj)
-        {}
-    }
+
 
 	def save() {
 		Object obj = params

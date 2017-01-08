@@ -1,7 +1,10 @@
 package org.gnk.publication
+
+import org.apache.xpath.operations.String
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Place
 import org.gnk.roletoperso.Role
+import org.hibernate.mapping.Map
 
 import java.text.SimpleDateFormat
 

@@ -31,47 +31,46 @@ class GenericResourceController {
     def save() {
         GenericResource genericResource = new GenericResource(params)
         Boolean res = saveOrUpdate(genericResource);
-        Boolean res_ = checkresource(genericResource);
+      //  Boolean res_ = checkresource(genericResource);
 //        genericResource = GenericResource.findAllWhere("code": genericResource.getCode(), "plot": genericResource.plot).first();
         def resourceTagList = new TagService().getResourceTagQuery();
         def jsonTagList = buildTagList(resourceTagList);
         def jsonGenericResource = buildJson(genericResource);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
-        object.put("ischecked", res_);
+     //   object.put("ischecked", res_);
         object.put("genericResource", jsonGenericResource);
         object.put("genericResourceTagList", jsonTagList);
         render(contentType: "application/json") {
             object
         }
     }
-def checkresource(GenericResource genre)
+Boolean checkresource(Plot plot)
 {
-    Pastscene ps = new Pastscene();
-    JSONObject jsonGenericResource = new JSONObject();
-    jsonGenericResource.put("code", genre.getCode());
-    jsonGenericResource.put("id", genre.getId());
-    jsonGenericResource.put("plotId", genre.getPlot().getId());
-    jsonGenericResource.put("comment", genre.getComment());
-    jsonGenericResource.put("resourceObject", genre.getObjectType().getId());
 
-    if (genre.getCode() != null) {
-        if (ps.getDescription().contains(genre.getCode()))
-        {
-            System.out.println("l'event a bien été utilisé")
-
-        }
-        else
-        {
-            System.out.print("Warnning!, l'event n'est pas présent dans la description")
-        }
-
-    }
-    else
+    ArrayList<String> title = plot.genericResources.comment;
+    ArrayList<String> event = plot.events.name;
+    ArrayList<String> roles = plot.roles.code;
+    ArrayList<String> pastscenes = plot.pastescenes.description;
+    ArrayList<String> gplace = plot.genericPlaces.code;
+   print(title);
+    for  (int i = 0; i < roles.size(); i++)
     {
-        System.out.print("There is no GenericPlace in your event !")
-        System.out.print("Veuillez saisir un event valide !")
+        return title.contains(roles[i]);
     }
+    for  (int i = 0; i < gplace.size(); i++)
+    {
+        return title.contains(gplace[i]);
+    }
+    for  (int i = 0; i < title.size(); i++)
+    {
+        return pastscenes.contains(title[i]);
+    }
+    for (int i = 0; i < event.size(); i++)
+    {
+        return event.contains(title[i]);
+    }
+return checkresource(plot);
 }
     def buildTagList(def genericResourceTagList) {
         JSONArray jsonTagList = new JSONArray();
@@ -139,6 +138,8 @@ def checkresource(GenericResource genre)
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericResource.plot = plot
+            if (!checkresource(plot))
+            return false;
         } else {
             return false
         }

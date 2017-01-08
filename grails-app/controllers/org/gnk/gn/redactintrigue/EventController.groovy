@@ -2,6 +2,7 @@ package org.gnk.gn.redactintrigue
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ErrorHandlerService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
 import org.gnk.resplacetime.GenericResource
@@ -17,18 +18,18 @@ import java.text.SimpleDateFormat
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class EventController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+//   ErrorHandlerService errorHandlerService
     def index() {}
-
     def save () {
+
         Event event = new Event();
         Boolean res = saveOrUpdate(event);
-        Boolean res_ = checkevent(event);
+        //Boolean error_event = isValidDate();
         def jsonEvent = buildJson(event);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
-        object.put("ischecked", res_);
         object.put("event", jsonEvent);
+        object.put("isvalidDate", error_event);
         render(contentType: "application/json") {
             object
         }
@@ -94,39 +95,47 @@ class EventController {
         jsonEvent.put("roleList", jsonRoleList);
         return jsonEvent;
     }
-    def checkevent(Event  ev)
+    Boolean checkevent(Plot plot)
     {
-        Pastscene ps = new Pastscene();
+        ArrayList<String> title = plot.events.name;
+        ArrayList<String> eventdescr = plot.events.description;
+        ArrayList<String> roles = plot.roles.code;
+        ArrayList<String> pastscenes = plot.pastescenes.description;
+        ArrayList<String> gplace = plot.genericPlaces.code;
+        print(pastscenes);
+        print(roles);
+        print(title);
+        //String description = params.description
+        //Pastscene ps = new Pastscene();
         JSONObject jsonEvent = new JSONObject();
-        jsonEvent.put("name", ev.getName());
-        jsonEvent.put("id", ev.getId());
-        jsonEvent.put("plotId", ev.getPlot().getId());
-        jsonEvent.put("timing", ev.getTiming());
-        jsonEvent.put("duration", ev.getDuration());
-        jsonEvent.put("isPublic", ev.getIsPublic());
-        jsonEvent.put("isPlanned", ev.getIsPlanned());
-        jsonEvent.put("description", ev.getDescription());
-        jsonEvent.put("absoluteYear", ev.getAbsoluteYear());
-        jsonEvent.put("absoluteMonth", ev.getAbsoluteMonth());
-        jsonEvent.put("absoluteDay", ev.getAbsoluteDay());
-        jsonEvent.put("absoluteHour", ev.getAbsoluteHour());
-        jsonEvent.put("absoluteMinute", ev.getAbsoluteMinute());
-
-        if (ev.getGenericPlace() != null) {
-
-            if (ps.getDescription().contains(ev.getName()))
+        //Je parse ma description et mon titre avec les roles... et je valide
+        for (int k = 0; k < roles.size(); k++) {
+            if (eventdescr.contains(roles) != roles[k])
             {
-                System.out.println("l'event a bien été utilisé")
-            }
-            else
-            {
-                System.out.print("Warrning!, l'event n'est pas présent dans la description")
+                print ("role non défini");
+                return false;
             }
         }
-        else
+        for  (int i = 0; i < roles.size(); i++)
         {
-            System.out.print("Veuillez saisir un event valide !")
+            int j = 0;
+            print(roles[i]);
+            return eventdescr.contains(roles[i]);
+            }
+
+        for  (int j = 0; j < gplace.size(); j++)
+        {
+            return eventdescr.contains(gplace[j]);
         }
+        for  (int m = 0; m < title.size(); m++)
+        {
+            return pastscenes.contains(title[m]);
+        }
+
+
+        boolean isChecked = true;
+        jsonEvent.put("isChecked", isChecked);
+
 
     }
     def update (Long id) {
@@ -144,6 +153,8 @@ class EventController {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newEvent.plot = plot
+            if (!checkevent(plot))
+                return false;
         } else {
             return false
         }
@@ -278,9 +289,11 @@ class EventController {
     }
 
     public Calendar isValidDate(String dateToValidate, String dateFromat){
+
         if(dateToValidate == null){
             return null;
         }
+
         SimpleDateFormat sdf = new SimpleDateFormat(dateFromat);
         sdf.setLenient(false);
         try {
@@ -289,7 +302,8 @@ class EventController {
             cal.setTime(date)
             return cal;
         } catch (ParseException e) {
-            org.gnk.administration.ErrorHandlerController.ParseErrorHandler();
+            e.printStackTrace();
+  //          errorHandlerService.ParseErrorHandler();
             return null;
         }
     }

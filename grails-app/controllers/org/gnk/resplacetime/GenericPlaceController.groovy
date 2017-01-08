@@ -30,7 +30,7 @@ class GenericPlaceController {
     def save() {
         GenericPlace genericPlace = new GenericPlace(params);
         Boolean res = saveOrUpdate(genericPlace);
-        Boolean res_ = checkplace(genericPlace);
+       // Boolean res_ = checkplace(genericPlace);
 //        genericPlace = GenericPlace.findAllWhere("code": genericPlace.getCode(), "plot": ).first();
         def placeTagList = new TagService().getPlaceTagQuery();
         def jsonTagList = buildTagList(placeTagList);
@@ -46,33 +46,32 @@ class GenericPlaceController {
         }
     }
 
-    def checkplace(GenericPlace gp) {
-        boolean verify_place = true;
-        Pastscene ps = new Pastscene();
-        JSONObject jsonGenericPlace = new JSONObject();
-        jsonGenericPlace.put("code", gp.getCode());
-        jsonGenericPlace.put("id", gp.getId());
-        jsonGenericPlace.put("plotId", gp.getPlot().getId());
-        jsonGenericPlace.put("comment", gp.getComment());
-        jsonGenericPlace.put("placeObject", gp.getObjectType().getId());
+    def checkplace(Plot plot) {
 
-        if (gp.getCode() != null) {
-        if (ps.getDescription().contains(gp.getCode()))
-        {
-            System.out.println("l'event a bien été utilisé")
-            return verify_place;
+        ArrayList<String> title = plot.events.name;
+        ArrayList<String> roles = plot.roles.code;
+        ArrayList<String> pastscenes = plot.pastescenes.description;
+        ArrayList<String> gplace = plot.genericPlaces.code;
+        print(pastscenes);
+        print(roles);
+        print(title);
+        //String description = params.description
+        //Pastscene ps = new Pastscene();
+        JSONObject jsonEvent = new JSONObject();
+        //Je parse ma description et mon titre avec les roles... et je valide
+        for (int i = 0; i < roles.size(); i++) {
+            return gplace.contains(roles[i]);
         }
-        else
-        {
-            verify_place = false;
-            System.out.print("Warnning!, l'event n'est pas présent dans la description")
+        for (int i = 0; i < title.size(); i++) {
+            return gplace.contains(title[i]);
+        }
+        for (int i = 0; i < gplace.size(); i++) {
+            return pastscenes.contains(gplace[i]);
+        }
 
-        }
-    } else {
-        System.out.print("There is no GenericPlace in your event !")
-        System.out.print("Veuillez saisir un event valide !")
-    }
-    return verify_place;
+
+        boolean isChecked = true;
+        jsonEvent.put("isChecked", isChecked);
 }
 
     def getBestPlaces() {
@@ -158,6 +157,8 @@ class GenericPlaceController {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             newGenericPlace.plot = plot
+            if (!checkplace(plot))
+                return false;
         } else {
             return false
         }

@@ -57,8 +57,9 @@ class TagController {
                     tagFamily {
                         order(sort.split('\\.')[1], params.order)
                     }
-                } else
                     order(sort, params.order as String)
+                } else
+                   order(sort, params.order as String)
             }
             [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName, listTagParent: mapTagParent]
         }

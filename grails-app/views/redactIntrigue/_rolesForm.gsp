@@ -11,7 +11,7 @@
             </a>
         </li>
         <g:each in="${plotInstance.roles}" status="i5" var="role">
-            <li class="leftMenuList">
+            <li class="leftMenuList isrole">
                 <a href="#role_${role.id}" data-toggle="tab">
                     ${role.code}
                 </a>

@@ -18,51 +18,49 @@ class RoleController {
         Role role = new Role(params);
         Plot plot = Plot.get(params.plotId as Integer);
         Boolean res = saveOrUpdate(role);
-        Boolean res_ = checkrole(role);
+ //       Boolean res_ = checkrole(role);
         def roleTagList = new TagService().getRoleTagQuery();
         def jsonTagList = buildTagList(roleTagList);
         def jsonRole = buildJson(role, plot);
         final JSONObject object = new JSONObject();
         object.put("iscreate", res);
-        object.put("ischecked", res_);
         object.put("role", jsonRole);
         object.put("roleTagList", jsonTagList);
         render(contentType: "application/json") {
             object
         }
 	}
-    def checkrole(Role  rl)
+    Boolean checkrole(Plot plot)
     {
-        Pastscene ps = new Pastscene();
-        JSONObject jsonRole = new JSONObject();
-        jsonRole.put("code", rl.getCode());
-        jsonRole.put("id", rl.getId());
-        jsonRole.put("plotId", rl.getPlot().getId());
-        jsonRole.put("pipi", rl.getPipi());
-        jsonRole.put("pipr", rl.getPipr());
-        jsonRole.put("type", rl.getType());
-        jsonRole.put("pjgp", rl.getPjgp());
-        jsonRole.put("description", rl.getDescription());
 
-
-            if (rl.getDescription() != null) {
-
-                if (ps.getDescription().contains(rl.getDescription()))
-                {
-                    System.out.println("l'event a bien été utilisé")
-                }
-                else
-                {
-                    System.out.print("Warrning!, l'event n'est pas présent dans la description")
-                }
+            ArrayList<String> title = plot.events.name;
+            ArrayList<String> roles = plot.roles.code;
+            ArrayList<String> pastscenes = plot.pastescenes.description;
+            ArrayList<String> gplace = plot.genericPlaces.code;
+            print(pastscenes);
+            print(roles);
+            print(title);
+            //String description = params.description
+            //Pastscene ps = new Pastscene();
+          JSONObject jsonEvent = new JSONObject();
+            //Je parse ma description et mon titre avec les roles... et je valide
+            for (int i = 0; i < title.size(); i++) {
+                return roles.contains(title[i]);
             }
-            else
-            {
-                System.out.print("Veuillez saisir un event valide !")
+            for (int i = 0; i < gplace.size(); i++) {
+                return roles.contains(gplace[i]);
+            }
+            for (int i = 0; i < roles.size(); i++) {
+                return pastscenes.contains(roles[i]);
             }
 
 
-    }
+            boolean isChecked = true;
+            jsonEvent.put("isChecked", isChecked);
+
+
+
+        }
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (Tag roleTag in roleTagList) {
@@ -179,6 +177,8 @@ class RoleController {
         if (params.containsKey("plotId")) {
 			Plot plot = Plot.get(params.plotId as Integer)
 			newRole.plot = plot
+            if (!checkrole(plot))
+                return false;
 		} else {
 			return false
 		}
