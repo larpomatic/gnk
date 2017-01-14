@@ -14,7 +14,7 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.GnInformation
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
