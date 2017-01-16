@@ -19,7 +19,7 @@ import org.gnk.substitution.data.GnInformation
 
 class InputHandler {
 
-    GnInformation gnInfo
+    Gn gnInfo
     List<Character> characterList
     List<Resource> resourceList
     List<Place> placeList
@@ -103,7 +103,7 @@ class InputHandler {
 
     // GnInfo
     private void createGnInformation(Gn gnInst) {
-        gnInfo = new GnInformation()
+        gnInfo = new Gn()
 
         // Database id
         gnInfo.id = gnInst.id
@@ -116,7 +116,7 @@ class InputHandler {
         // Nb players
         gnInfo.nbPlayers = gnInst.nbPlayers
         // Universe
-        gnInfo.universe = gnInst.univers
+        gnInfo.universe = gnInst.univers.name
         // T0 date
         gnInfo.t0Date = gnInst.t0Date
         // Duration
@@ -130,7 +130,7 @@ class InputHandler {
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
-        gnInfo.GanttData = "";
+        gnInfo.ganttData = "";
     }
 
     // CharacterList
