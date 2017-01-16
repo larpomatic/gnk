@@ -5,10 +5,10 @@ import org.gnk.tag.Tag
 import java.util.List;
 
 class GnInformation {
-    Integer dbId
-	String title
-	Date creationDate
-	Date lastUpdateDate
+    Integer id
+	String name
+	Date dateCreated
+	Date lastUpdated
 	List<Tag> tagList
 	Integer nbPlayers
     String universe

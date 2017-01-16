@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         <tr>
-            <td class="cap">${gnInfo.title}</td>
+            <td class="cap">${gnInfo.name}</td>
             <td>
                 <ul class="unstyled">
                     <g:each status="i" in="${gnInfo.tagList}" var="tag">
@@ -31,8 +31,8 @@
             <td title="yyyy-MM-dd"><g:formatDate format="dd/MM/yyyy HH:mm" date="${gnInfo.t0Date}"/></td>
             <td class="cap">${gnInfo.duration}</td>
             <td class="cap">${gnInfo.nbPlayers}</td>
-            <td title="yyyy-MM-dd"><g:formatDate format="dd/MM/yyyy" date="${gnInfo.creationDate}"/></td>
-            <td title="yyyy-MM-dd"><g:formatDate format="dd/MM/yyyy" date="${gnInfo.lastUpdateDate}"/></td>
+            <td title="yyyy-MM-dd"><g:formatDate format="dd/MM/yyyy" date="${gnInfo.dateCreated}"/></td>
+            <td title="yyyy-MM-dd"><g:formatDate format="dd/MM/yyyy" date="${gnInfo.lastUpdated}"/></td>
         </tr>
         </tbody>
     </table>

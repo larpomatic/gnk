@@ -106,17 +106,17 @@ class InputHandler {
         gnInfo = new GnInformation()
 
         // Database id
-        gnInfo.dbId = gnInst.id
+        gnInfo.id = gnInst.id
         // Title
-        gnInfo.title = gnInst.name
+        gnInfo.name = gnInst.name
         // Creation date
-        gnInfo.creationDate = gnInst.dateCreated
+        gnInfo.dateCreated = gnInst.dateCreated
         // Last update date
-        gnInfo.lastUpdateDate = gnInst.lastUpdated
+        gnInfo.lastUpdated = gnInst.lastUpdated
         // Nb players
         gnInfo.nbPlayers = gnInst.nbPlayers
         // Universe
-        gnInfo.universe = gnInst.univers.name
+        gnInfo.universe = gnInst.univers
         // T0 date
         gnInfo.t0Date = gnInst.t0Date
         // Duration

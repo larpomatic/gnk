@@ -10,6 +10,7 @@ import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleToPersoController
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.SelectIntrigueController
+import org.gnk.substitution.data.GnInformation
 import org.gnk.tag.TagService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -261,7 +262,7 @@ class SelectStepService {
      * @param gn : the gn chosen for the test
      * @return result of the test : true if it's compatible, if not false
      */
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompatible(Plot plot, GnInformation gn) {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
         org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);

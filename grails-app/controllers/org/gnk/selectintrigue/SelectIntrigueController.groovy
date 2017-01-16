@@ -7,6 +7,7 @@ import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.step.SelectStepService
+import org.gnk.substitution.data.GnInformation
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
@@ -392,7 +393,7 @@ class SelectIntrigueController {
                  conventionList: Convention.list()]);
     }
 
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompGatible(Plot plot, GnInformation gn) {
         /* int countWomen = 0;
          int countMen = 0;
          int countOthers = 0;
