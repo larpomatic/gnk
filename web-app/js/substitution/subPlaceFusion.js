@@ -36,6 +36,12 @@ $(document).ready(function () {
                     $("td:first-child", this).html(count);
                     count++;
                 });
+                /*var index = 0;
+                var placeArray = placesJSON.places;
+                while (index < placeArray.length())
+                {
+
+                }*/
             }
         })
     });

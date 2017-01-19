@@ -106,10 +106,10 @@ $(document).ready(function() {
 
 function updateName(elt){
     console.log("template value : " + template);
-    $("#titleRender_" + template).remove();
-    var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
+    document.getElementById('titleRender_' + template).setAttribute('value', elt);
+    //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
     //$("#titleRender_").id = "titleRender" + template;
-    $('#overview').append(new_elt);
+    //$('#overview').append(new_elt);
     //console.log($('#description_0').editable('getValue', true));
 }
 </script>
