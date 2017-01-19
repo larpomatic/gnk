@@ -160,9 +160,9 @@ function preparePlacesJSONForValidation(placesJSON) {
         // Place HTML element
         var placeElement = $("#" + place.htmlId);
         var index = 0;
-        if (place.code != "Manoir") {
-            console.log("Test " + index);
-            index++;
+        //if (place.code != "Manoir") {
+            //console.log("Test " + index);
+            //index++;
             // Update name
             var placeWritten = document.getElementById("placeWritten");
             var placeSelect = placeElement.children(".place").eq(0).children("select").eq(0);
@@ -176,7 +176,6 @@ function preparePlacesJSONForValidation(placesJSON) {
             else {
                 return false;
             }
-        }
     }
     return true;
 }
