@@ -9,9 +9,9 @@ import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
-import org.gnk.substitution.data.GnInformation
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
+import org.json.*;
 
 class GanttController {
 
@@ -57,14 +57,14 @@ class GanttController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         List<Character> characterList = inputHandler.characterList
         List<Resource> resourceList = inputHandler.resourceList
         List<Place> placeList = inputHandler.placeList
         List<Pastscene> pastsceneList = inputHandler.pastsceneList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
-        JSONObject GanttData = loadGanttData();
+        JSONObject ganttData = loadGanttData();
 
         [gnInfo: gnInfo,
          characterList: characterList,
@@ -77,23 +77,32 @@ class GanttController {
          ruleList: Convention.findById(gn.convention_id).conventionHasRules.rule,
 //                ruleList: gn.convention.conventionHasRules.rule,
          sexe: params.sexe,
-         GanttData: GanttData
+         ganttData: ganttData
         ]
     }
 
 
     def saveGanttData() {
-        String GanttData = params.GanttData;
+
+        //les données du Gantt se trouve dans params.ganttData
+        String ganttData = params.ganttData;
+
         //def gnInstance = Gn.get(Long.valueOf(params.gnId).longValue())
 
-        System.out.println("azertyuiopmlkjhhgn " + params.GanttData);
-        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, GanttData: params.GanttData /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+        System.out.println("azertyuiopmlkjhhgn "+  ganttData.toString());
+        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: params.ganttData /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 
     def loadGanttData() {
-        // on récupère les périodes sous forme de liste de liste
-        return null
+
+        // ce JSONObject est renvoyé à la page subtitution du gnk et doit contenir les données du gantt (périodes) récupérées en base
+        JSONObject obj = new JSONObject();
+
+        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: obj /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+
     }
+
+
 }
 
 

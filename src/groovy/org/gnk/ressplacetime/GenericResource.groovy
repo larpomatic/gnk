@@ -1,6 +1,7 @@
 package org.gnk.ressplacetime
 
 import com.gnk.substitution.Tag
+import org.gnk.utils.Pair
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +14,7 @@ class GenericResource {
     String code
     List<Tag> tagList
     List<ReferentialResource> bannedItemsList
+    ArrayList<Pair<ReferentialObject, Integer>> resultList_bis
     List<ReferentialResource> resultList
 
     @Override

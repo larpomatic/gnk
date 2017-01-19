@@ -49,6 +49,10 @@ class SubstitutionPlaceXMLWriterService {
             genericPlaceE.appendChild(getPlaceElement(doc, genericPlace.selectedPlace, "selected"))
         }
 
+        if (genericPlace.lockedPlace != null) {
+            genericPlaceE.appendChild(getPlaceElement(doc, genericPlace.lockedPlace, "locked"))
+        }
+
         for(place in genericPlace.proposedPlaces) {
             genericPlaceE.appendChild(getPlaceElement(doc, place, "proposed"))
         }

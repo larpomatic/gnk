@@ -29,7 +29,7 @@
 <g:render template="gnInformation" />
 <g:render template="characters" />
 
-<g:javascript src="naming/sub.js" />
+<g:javascript src="substitution/subName.js" />
 
 <script type="text/javascript">
     function publicationAccess()
@@ -41,7 +41,7 @@
         if (isCharsReady /*&& isResourcesReady && isPlacesReady && isDatesReady*/) {
             // SubJSON construction
             var subJSON = new Object();
-            subJSON.gnDbId = ${gnInfo.dbId};
+            subJSON.gnDbId = ${gnInfo.id};
             subJSON.subCharacter = charsJSON.characters;
             //subJSON.subResource = resourcesJSON.resources;
             //subJSON.subPlace = placesJSON.places;

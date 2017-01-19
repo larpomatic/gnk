@@ -21,18 +21,26 @@ import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.RoleHasRelationWithRole
-import org.gnk.substitution.data.RelationCharacter
 
 class IntegrationHandler {
 
     Map<String, Integer> resultList = new HashMap<>()
 
+    /**
+     * Make the naming substitution happen
+     * Give a name to the characters of the GN
+     *
+     * @param charJsonObject the JSON from the NamingController getSubCharacters() request
+     *      contain the data from substitution naming _character.gsp table : gnId, Universe and characters
+     * @return
+
+     */
     public JSONObject namingIntegration(JSONObject charJsonObject) {
         String universe = charJsonObject.get("universe")
         LinkedList<PersoForNaming> charForNamingList = []
         LinkedList<Map<org.gnk.tag.Tag, Integer>> tagForNamingList = []
-        LinkedList<RelationCharacter> charsRelBijectives = new LinkedList<RelationCharacter>()
-        LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RelationCharacter>>()
+        LinkedList<RoleHasRelationWithRole> charsRelBijectives = new LinkedList<RoleHasRelationWithRole>()
+        LinkedList<org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole>> tupleList = new LinkedList<org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole>>()
 
 
         // CharForNamingList construction from json
@@ -41,15 +49,17 @@ class IntegrationHandler {
 
             charForNaming.universe = universe
 
-            charForNaming.code = characterJson.gnId
-            //print ("characterJson.gnId : " + characterJson.gnId)
+            charForNaming.code = characterJson.code
+            //print ("characterJson.code : " + characterJson.code)
             charForNaming.gender = characterJson.gender
 
             // Tags
             List<Tag> tagList = []
             Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
             for (tagJson in characterJson.tags) {
+                //Tag used in calculation
                 Tag tag = new Tag()
+                //Persisted tag from the db, can't contain weight
                 org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
                 tag.value = tagJson.value
@@ -69,22 +79,22 @@ class IntegrationHandler {
             // Family
             charForNaming.family = []
 
-            charForNaming.relationList = new LinkedList<RelationCharacter>()
+            charForNaming.relationList = new LinkedList<RoleHasRelationWithRole>()
 
             for (rel in characterJson.relationList) {
-                RelationCharacter relationChar = new RelationCharacter()
-                relationChar.role1 = rel.role1
-                relationChar.role2 = rel.role2
+                RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
+                relationChar.r1 = rel.r1
+                relationChar.r2 = rel.r2
                 relationChar.type = rel.type
                 relationChar.isHidden = rel.isHidden
                 relationChar.isBijective = rel.isBijective
 
                 if (rel.isBijective) {
-                    org.apache.commons.lang3.tuple.Pair<String, RelationCharacter> tuple
-                    tuple.key = rel.role2
+                    org.apache.commons.lang3.tuple.Pair<String, RoleHasRelationWithRole> tuple
+                    tuple.key = rel.r2
                     tuple.value = relationChar
-                    tuple.value.role1 = rel.role2
-                    tuple.value.role2 = rel.role1
+                    tuple.value.r1 = rel.r2
+                    tuple.value.r2 = rel.r1
                 }
 
                 //print(rel.type + " : De [" + rel.role1 + "] Vers [" + rel.role2 + "]")
@@ -133,17 +143,16 @@ class IntegrationHandler {
 
         // NAMING CALL
         NamingService namingService = new NamingService()
-        String s = charJsonObject.gnId
-        charForNamingList = namingService.namingMethod(charForNamingList, s.toInteger())
+        charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
         // END NAMING CALL
 
         // Update json
         for (characterJson in charJsonObject.characters) {
-            String gn_Id = characterJson.gnId
+            String code = characterJson.code
             PersoForNaming charForNaming = null
 
             for (charForNamingIt in charForNamingList) {
-                if (charForNamingIt.code == gn_Id) {
+                if (charForNamingIt.code == code) {
                     charForNaming = charForNamingIt
                     break
                 }
@@ -442,12 +451,12 @@ class IntegrationHandler {
             PastsceneTime pastsceneTime = new PastsceneTime()
             pastsceneTime.relativeDateValue = null
             pastsceneTime.relativeDateUnit = null
-            /*if (pastsceneJson.relativeTime != "") {
-                pastsceneTime.relativeDateValue = pastsceneJson.relativeTime as Integer
+            /*if (pastsceneJson.timingRelative != "") {
+                pastsceneTime.relativeDateValue = pastsceneJson.timingRelative as Integer
             }
 
             if (pastsceneJson.relativeDateUnit != "") {
-                pastsceneTime.relativeDateUnit = pastsceneJson.relativeTimeUnit
+                pastsceneTime.relativeDateUnit = pastsceneJson.unitTimingRelative
             }
             */
             pastsceneTime.absoluteYear = null

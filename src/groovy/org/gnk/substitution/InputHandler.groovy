@@ -15,6 +15,7 @@ import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 import org.gnk.tag.Tag
 import org.gnk.roletoperso.Character
+import org.gnk.substitution.data.GnInformation
 
 class InputHandler {
 

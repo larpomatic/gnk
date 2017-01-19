@@ -333,6 +333,7 @@ class RedactIntrigueController {
 
         wordWriter.addStyledParagraphOfText("T1", "Résumé de l'intrigue")
         createSummary(wordWriter, plot)
+
         wordWriter.addStyledParagraphOfText("T1", "Rôles")
         createRoles(wordWriter, plot)
 

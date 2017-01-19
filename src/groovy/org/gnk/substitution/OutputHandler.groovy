@@ -115,7 +115,7 @@ class OutputHandler {
         // Add firstnames and lastnames to each character
         for(characterJSON in charsJSONArray) {
             // Get character in gn instance
-            Integer characterGnId = characterJSON.gnId.toInteger()
+            Integer characterGnId = characterJSON.code.toInteger()
             Character character = null
             for (characterEl in gnInst.characterSet) {
                 if (characterEl.DTDId == characterGnId) {
@@ -245,6 +245,7 @@ class OutputHandler {
                 }
                 // Gn update
                 genericResource.selectedResource = selectedResource
+                genericResource.lockedResource = selectedResource
                 genericResource.proposedResources = proposedResources
                 genericResource.bannedResources = bannedResources
             }
@@ -354,6 +355,7 @@ class OutputHandler {
                 }
                 // Gn update
                 genericPlace.selectedPlace = selectedPlace
+                genericPlace.lockedPlace = selectedPlace
                 int lastIndexOf = selectedPlace.name.lastIndexOf(" -")
                 if (lastIndexOf != -1)
                     selectedPlace.name = selectedPlace.name.substring(0, lastIndexOf)

@@ -165,7 +165,7 @@
             if (content != "") {
                 var place = new Object();
                 // Gn id
-                place.gnId = ${gnInfo.dbId}
+                place.gnId = ${gnInfo.id}
                     // Gn plot id
                         place.gnPlotId = plotId;
                 // HTML id

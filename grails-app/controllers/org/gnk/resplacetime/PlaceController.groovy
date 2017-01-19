@@ -77,7 +77,7 @@ class PlaceController {
             return
         }
 
-        [placeInstance: placeInstance]
+        [placeInstance: placeInstance, params: params]
     }
 
     def showByName(String name) {
@@ -150,5 +150,53 @@ class PlaceController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'place.label', default: 'Place'), id])
             redirect(action: "show", id: id)
         }
+    }
+
+    def duplicate(Long id) {
+        Place placeInstance = Place.findById(id)
+        if (!placeInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'place.label', default: 'Place'), id])
+            redirect(action: "list")
+            return
+        }
+        String name = placeInstance.name + "_Copy"
+        Place tmp = Place.findByName(name)
+        if (tmp != null) {
+            int i = 1
+            String temp_name = ""
+            while(tmp != null && i < 50) {
+                i++
+                temp_name = name + i.toString()
+                tmp = Place.findByName(temp_name)
+            }
+            name = temp_name
+        }
+
+        Place duplicate = new Place(name:name,
+                description: placeInstance.description,
+                gender: placeInstance.gender,
+                genericPlace: placeInstance.genericPlace)
+        if (!duplicate.save(flush: true)) {
+            render(view: "create", model: [placeInstance: duplicate])
+            return
+        }
+
+        duplicate.extTags = []
+
+        for (PlaceHasTag placeHasPlaceTag : placeInstance.extTags) {
+            PlaceHasTag placeHasTagInstance = new PlaceHasTag()
+            placeHasTagInstance.tag = placeHasPlaceTag.getTag()
+            placeHasTagInstance.place = duplicate
+            placeHasTagInstance.weight = placeHasPlaceTag.getWeight()
+            duplicate.extTags.add(placeHasTagInstance)
+        }
+
+        if (!duplicate.save(flush: true)) {
+            render(view: "create", model: [resourceInstance: duplicate])
+            return
+        }
+
+        flash.messageInfo = message(code: 'adminRef.resource.info.create', args: [duplicate.name])
+        redirect(action: "list", id: duplicate.id)
     }
 }

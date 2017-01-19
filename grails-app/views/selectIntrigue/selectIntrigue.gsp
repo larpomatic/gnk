@@ -20,7 +20,7 @@
     <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
     <g:render template="subNav" model="['right': right]"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
-		<legend><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></legend>
+		<h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
         <g:if test="${!screenStep || screenStep == '0'}">
             <g:render template="step0_createGn"/>
         </g:if>

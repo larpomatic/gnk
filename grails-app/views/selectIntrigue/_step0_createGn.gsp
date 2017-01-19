@@ -42,7 +42,7 @@ select {
                         code="selectintrigue.step0.gnArchitecture" default="Architecture"/>
                 </label></td>
                 <td><g:select name="gnArchitechture" id="gnArchitechture"
-                              from="${['Parallelisé', 'Mainstream']}" keys="${[true, false]}"
+                              from="${['Parallelisé', 'Mainstream']}" keys="${[false, true]}"
                               value="${!gnInstance?.isMainstream}" required=""/></td>
 
 
@@ -162,15 +162,12 @@ select {
     </fieldset>
 
     <div class="form-actions">
-        <g:hasRights lvlright="${right.MGNMODIFY.value()}">
-            <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
-                        value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-        </g:hasRights>
-        <g:hasRights lvlright="${right.MGNDELETE.value()}">
-            <g:actionSubmit action="delete" class="btn btn-primary"
-                        value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                        formnovalidate=""
-                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
-        </g:hasRights>
+
+            <g:hasRights lvlright="${right.MGNMODIFY.value()}">
+                <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
+                                value="${message(code: 'default.button.update.label', default: 'Update')}"/>
+            </g:hasRights>
+        </div>
+
     </div>
 </g:form>

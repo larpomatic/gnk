@@ -7,17 +7,15 @@ import org.gnk.gn.Gn
 import org.gnk.naming.NamingController
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
+import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
 import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.Pastscene
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -67,7 +65,7 @@ class TimeController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         //List<Character> characterList = inputHandler.characterList
         //List<Resource> resourceList = inputHandler.resourceList
         //List<Place> placeList = inputHandler.placeList

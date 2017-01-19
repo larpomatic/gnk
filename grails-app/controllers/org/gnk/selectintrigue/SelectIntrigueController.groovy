@@ -140,7 +140,7 @@ class SelectIntrigueController {
         if (id >= 0) {
             gnInstance = Gn.get(id)
             if ((params.screenStep as Integer) == 1) {
-                new GNKDataContainerService().ReadDTD(gnInstance)
+                final gnData = new GNKDataContainerService().ReadDTD(gnInstance);
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
                 params.each {
@@ -178,7 +178,9 @@ class SelectIntrigueController {
                     render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery(), conventionList: Convention.list()])
                     return
                 }
-                selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
+
+                if (gnInstance.isMainstream)
+                    selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
                 gnInstance.selectedPlotSet = selectedPlotInstanceList;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;
@@ -390,7 +392,7 @@ class SelectIntrigueController {
                  conventionList: Convention.list()]);
     }
 
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompGatible(Plot plot, Gn gn) {
         /* int countWomen = 0;
          int countMen = 0;
          int countOthers = 0;

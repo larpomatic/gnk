@@ -8,7 +8,7 @@
 <div id="subDatesAlertContainer">
 </div>
 
-<g:form method="post" controller="substitution">
+<g:form method="post" controller="time">
 
     <g:hiddenField name="gnId" value="${gnId}"/>
     <g:each in="${sexe}" var="a">
@@ -64,8 +64,8 @@
     <g:each in="${sexe}" var="a">
         <g:hiddenField id="a" name="sexe" value="NO"/>
     </g:each>
+    <g:hiddenField id="XMLField" name="ganttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
     <g:if test="${gnInfo.duration > 0}">
-
     <g:javascript src="substitution/dhtmlxgantt.js"></g:javascript>
     <link href="${resource(dir: 'css', file: 'dhtmlxgantt.css')}" rel="stylesheet"/>
     <div id="gantt_here" name="gant_here" style='width:1100px; height:400px;'></div>
@@ -77,8 +77,8 @@
         dated.setTime(dated.getTime() + ${gnInfo.duration}*60*60*1000);
 
 
-    <g:if test="${gnInfo.GanttData =! null && gnInfo.GanttData != ""}">
-        var tasks_XML = "${gnInfo.GanttData}";
+    <g:if test="${gnInfo.ganttData =! null && gnInfo.ganttData != ""}">
+        var tasks_XML = "${gnInfo.ganttData}";
         tasks = gantt.parse(tasks_XML, "xml");
      </g:if>
     <g:else>
@@ -334,17 +334,20 @@
         });
 
 
-        var xml = "";
+        var json_data = "";
         gantt.attachEvent("onAfterTaskUpdate", function() {
-            xml = gantt.serialize("xml");
+            json_data = gantt.serialize();
             //window.alert(xml);
         });
 
         gantt.init("gantt_here");
         gantt.parse (tasks);
 
+        xml_data = gantt.serialize("xml");
+        document.getElementById(id="XMLField").value = json_data;
+
         </script>
-        <g:hiddenField name="GanttData" value=""/>
+
         <g:actionSubmit class="btn btn-primary" action="saveGanttData"
                         value="Sauvegarder le Gantt"/>
     </g:if>
@@ -367,9 +370,6 @@
 
 
     <tbody>
-    <g:each in="${characterList}" var="character">
-        <g:hiddenField name="id" value="${character.DTDId.encodeAsHTML()}" />
-    </g:each>
     <g:each status="i" in="${pastsceneList}" var="pastscene">
         <tr id="pastscene${pastscene.id}_plot${pastscene.plotId}">
             <!-- # -->
@@ -428,8 +428,8 @@
         isSubDatesRunning = false;
 
         // Run dates substitution
-        //runDatesSubstitution("${g.createLink(controller:'substitution', action:'getSubDates')}");
-        initDateList("${g.createLink(controller:'substitution', action:'getSubDates', params: [subDates : params.subDates] )}");
+        //runDatesSubstitution("${g.createLink(controller:'time', action:'getSubDates')}");
+        initDateList("${g.createLink(controller:'time', action:'getSubDates', params: [subDates : params.subDates] )}");
     });
 
     function initDatesJSON() {
@@ -445,22 +445,18 @@
         <g:each status="i" in="${pastsceneList}" var="pastscene">
             var pastscene = new Object();
             // Gn id
-            pastscene.gnId = "${pastscene.id}";
+            pastscene.gnId = "${pastscene.gnId}";
             // Gn plot id
             pastscene.gnPlotId = "${pastscene.plotId}";
             // HTML id
             pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
             // Time
 
-            // DOIT ËTRE SUPP
-            //pastscene.relativeTime = "${pastscene.relativeTime}";
-            //pastscene.relativeTimeUnit = "${pastscene.relativeTimeUnit}";
-            // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";
             pastscene.absoluteHour = "${pastscene.absoluteHour}";
-            pastscene.absoluteMinute = "${pastscene.absoluteMin}";
+            pastscene.absoluteMinute = "${pastscene.absoluteMinute}";
 
 
 

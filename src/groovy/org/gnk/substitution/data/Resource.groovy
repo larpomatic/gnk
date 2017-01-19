@@ -1,6 +1,7 @@
 package org.gnk.substitution.data
 
 import org.gnk.roletoperso.Character;
+import org.gnk.tag.Tag
 
 class Resource {
 	String id

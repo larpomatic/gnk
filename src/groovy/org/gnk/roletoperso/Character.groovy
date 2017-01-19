@@ -5,7 +5,6 @@ import org.gnk.gn.Gn
 import org.gnk.naming.Firstname
 import org.gnk.naming.Name
 import org.gnk.selectintrigue.Plot
-import org.gnk.substitution.data.RelationCharacter
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 
@@ -20,9 +19,9 @@ class Character {
     // m, f, n
     private String gender
     private String type
-    List<org.gnk.substitution.data.Tag> tagList
+    List<Tag> tagList
     def roleList
-    List<RelationCharacter> relationList
+    List<RoleHasRelationWithRole> relationList
 
     Integer getAge() {
         return age
