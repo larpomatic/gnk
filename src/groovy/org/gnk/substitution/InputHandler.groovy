@@ -7,20 +7,18 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.resplacetime.Event
-//import org.gnk.resplacetime.Pastscene
+import org.gnk.resplacetime.Pastscene
 
 //import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.Pastscene
+//import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
-import org.gnk.substitution.data.Tag
+import org.gnk.tag.Tag
 import org.gnk.roletoperso.Character
-import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.RelationCharacter
 
 class InputHandler {
 
-    GnInformation gnInfo
+    Gn gnInfo
     List<Character> characterList
     List<Resource> resourceList
     List<Place> placeList
@@ -104,16 +102,16 @@ class InputHandler {
 
     // GnInfo
     private void createGnInformation(Gn gnInst) {
-        gnInfo = new GnInformation()
+        gnInfo = new Gn()
 
         // Database id
-        gnInfo.dbId = gnInst.id
+        gnInfo.id = gnInst.id
         // Title
-        gnInfo.title = gnInst.name
+        gnInfo.name = gnInst.name
         // Creation date
-        gnInfo.creationDate = gnInst.dateCreated
+        gnInfo.dateCreated = gnInst.dateCreated
         // Last update date
-        gnInfo.lastUpdateDate = gnInst.lastUpdated
+        gnInfo.lastUpdated = gnInst.lastUpdated
         // Nb players
         gnInfo.nbPlayers = gnInst.nbPlayers
         // Universe
@@ -131,7 +129,7 @@ class InputHandler {
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
-        gnInfo.GanttData = "";
+        gnInfo.ganttData = "";
     }
 
     // CharacterList
@@ -169,13 +167,13 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r1 = r1
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
@@ -216,13 +214,13 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r1 = r1
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
@@ -437,33 +435,21 @@ class InputHandler {
         for (plot in gnInst.selectedPlotSet) {
             String plotId = plot.DTDId as String
             for (pastscene in plot.pastescenes) {
-                Pastscene pastsceneData = new Pastscene()
 
-                // Id
-                pastsceneData.id = pastscene.DTDId
+                pastscene.gnId = pastscene.DTDId
                 // Plot id
-                pastsceneData.plotId = plotId
+                pastscene.plotId = plotId
                 //Plot name
-                pastsceneData.plotName = plot.name
-                // Title
-                pastsceneData.title = pastscene.title
-                // Relative time
-                pastsceneData.relativeTime = pastscene.timingRelative
-                pastsceneData.relativeTimeUnit = pastscene.unitTimingRelative
+                pastscene.plotName = plot.name
+
                 // Absolute time
-                pastsceneData.absoluteYear = pastscene.dateYear
-                pastsceneData.absoluteMonth = pastscene.dateMonth
-                pastsceneData.absoluteDay = pastscene.dateDay
-                pastsceneData.absoluteHour = pastscene.dateHour
-                pastsceneData.absoluteMin = pastscene.dateMinute
+                pastscene.absoluteYear = pastscene.dateYear
+                pastscene.absoluteMonth = pastscene.dateMonth
+                pastscene.absoluteDay = pastscene.dateDay
+                pastscene.absoluteHour = pastscene.dateHour
+                pastscene.absoluteMinute = pastscene.dateMinute
 
-                pastsceneData.isYearAbsolute = pastscene.isAbsoluteYear
-                pastsceneData.isMonthAbsolute = pastscene.isAbsoluteMonth
-                pastsceneData.isDayAbsolute = pastscene.isAbsoluteDay
-                pastsceneData.isHourAbsolute = pastscene.isAbsoluteHour
-                pastsceneData.isMinuteAbsolute = pastscene.isAbsoluteMinute
-
-                pastsceneList.add(pastsceneData)
+                pastsceneList.add(pastscene)
             }
         }
     }
