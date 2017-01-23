@@ -41,7 +41,7 @@ select {
 <div class="fullScreenEditable" id="new_render">
     <g:hiddenField name="pitchDescription_0" class="pitchDescription" value="idDescription_0"/>
     <div class="test">
-        <a href="#" id="idDescription_0" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click">Description</a>
+        <a href="#" id="idDescription_0" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click" onmouseover="edit(this)">Description</a>
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
     </div>
     <div class="row formRow">
@@ -88,24 +88,12 @@ select {
     </div>
 </div>
 <script type="text/javascript">
-    var template = desc_number;
+    var template = desc_number - 1;
+    var template2 = desc_number;
     $(document).ready(function() {
         console.log("template value : idDescription_" + template);
-        //console.log("desc_number value : idDescription_" + desc_number);
-        $('#idDescription_' + template).editable({
-            success: function(response, newValue) {
-                updateName(newValue);
-            }
-        });
+        console.log("template value 2 : idDescription_" + template2);
+        console.log("nbrender value : " + nb_render);
+        console.log("desc_number value : " + desc_number);
     });
-
-    function updateName(elt){
-        console.log("template value : " + template);
-        //$("#titleRender_" + template).setAttribute('value', elt);
-        document.getElementById('titleRender_' + template).setAttribute('value', elt);
-        //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
-        //$("#titleRender_").id = "titleRender" + template;
-        //$('#overview').append(new_elt);
-        //console.log($('#description_0').editable('getValue', true));
-    }
 </script>

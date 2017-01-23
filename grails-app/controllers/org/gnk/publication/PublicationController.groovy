@@ -20,7 +20,6 @@ import org.gnk.selectintrigue.Description
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-import org.gnk.resplacetime.Pastscene
 import java.lang.reflect.Array
 import java.text.DateFormat
 import java.text.SimpleDateFormat

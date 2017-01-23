@@ -27,6 +27,7 @@
 <g:javascript src="selectIntrigue/bootstrap-editable.js"/>
 <g:javascript src="selectIntrigue/bootstrap.min.js"/>
 <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
+<g:javascript src="redactIntrigue/pitchForm.js"/>
 <div class="row-fluid" id="hidTest">
     <form id="exportPDFButton" onclick="verify_descriptionUpdate()" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST" target="_blank">
         <div class="span4">

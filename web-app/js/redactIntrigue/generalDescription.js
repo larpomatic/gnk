@@ -34,7 +34,7 @@ function addDescription() {
     $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '">Description</li>');
     desc_number = desc_number + 1;
     ++nb_render;
-    //console.log("template value 2 : " + template);
+    //console.log("desc_number value : " + desc_number);
 }
 
 function deleteDescription(elt){
