@@ -1,4 +1,11 @@
-var template = desc_number;
+var template = desc_number - 1;
+var template2 = desc_number;
+$(document).ready(function() {
+    console.log("template value : idDescription_" + template);
+    console.log("template value 2 : idDescription_" + template2);
+    console.log("nbrender value : " + nb_render);
+    console.log("desc_number value : " + desc_number);
+});
 function edit(elt)
 {
     var id_elt = elt.getAttribute('id');
@@ -15,7 +22,8 @@ function edit(elt)
 function updateName(newValue, elt){
     console.log("template value : " + template);
     var id_render = elt.id.split('_');
-    document.getElementById('titleRender_' + id_render[1]).replaceWith('<li class="list-group-item" id="titleRender_' + id_render[1] + '" value="Description">' + newValue + '</li>');
+    console.log(document.getElementById('refDesc_' + id_render[1]).textContent);
+    document.getElementById('refDesc_' + id_render[1]).textContent =  newValue;
     //$("#titleRender_" + template).remove();
     //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + newValue + '</li>';
     //$("#titleRender_").id = "titleRender" + template;

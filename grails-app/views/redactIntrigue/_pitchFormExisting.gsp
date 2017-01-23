@@ -41,7 +41,7 @@ select {
 <div class="fullScreenEditable" id="new_render">
     <g:hiddenField name="pitchDescription_${description.idDescription}" class="pitchDescription" value="idDescription_${description.idDescription}"/>
     <div class="test">
-        <a href="#" id="idDescription_${description.idDescription}" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click">Description</a>
+        <a href="#" id="idDescription_${description.idDescription}" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click" onmouseover="edit(this)">Description</a>
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
     </div>
     <div class="row formRow">

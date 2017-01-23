@@ -6,7 +6,7 @@ var introduction = {
    desc_id : -1
 };
 
-//add a new description
+
 $(document).ready(function() {
     var j = document.getElementById('render_' + desc_number);
     while (j != null) {
@@ -23,7 +23,7 @@ $(document).ready(function() {
     }
 });
 
-
+//add a new description
 function addDescription() {
     clone = $("#render_0").clone();
     clone.attr('id', "render_"+ desc_number);
@@ -31,10 +31,10 @@ function addDescription() {
     $('#desc_wrapper').append(clone);
     initialise_description(desc_number);
     update_id(desc_number, desc_number);
-    $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '">Description</li>');
+    $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '"> <a id="refDesc_' + desc_number + '"href="#idDescription_' + desc_number + '">Description </a> </li>');
     desc_number = desc_number + 1;
     ++nb_render;
-    //console.log("desc_number value : " + desc_number);
+    //console.log("template value 2 : " + template);
 }
 
 function deleteDescription(elt){
@@ -45,6 +45,7 @@ function deleteDescription(elt){
         var pred_desc;
         var id_parent = elt.parentElement.parentElement.parentElement.id.split('_');
         elt.parentElement.parentElement.parentElement.remove();
+        document.getElementById('titleRender_' + id_parent[1]).remove();
         while (new_desc > id_parent[1])
         {
             pred_desc = new_desc - 1;
