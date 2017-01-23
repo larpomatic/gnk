@@ -178,7 +178,7 @@ class RedactIntrigueController {
 
 	def update() {
         def isupdate = true;
-		def plotInstance = Plot.get(params.plotid)
+		def plotInstance = Plot.get(params.id)
 		if (!plotInstance) {
             isupdate = false;
 		}
