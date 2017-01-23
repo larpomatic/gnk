@@ -64,7 +64,7 @@
     <g:each in="${sexe}" var="a">
         <g:hiddenField id="a" name="sexe" value="NO"/>
     </g:each>
-    <g:hiddenField id="XMLField" name="GanttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
+    <g:hiddenField id="XMLField" name="ganttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
     <g:if test="${gnInfo.duration > 0}">
     <g:javascript src="substitution/dhtmlxgantt.js"></g:javascript>
     <link href="${resource(dir: 'css', file: 'dhtmlxgantt.css')}" rel="stylesheet"/>
@@ -77,8 +77,8 @@
         dated.setTime(dated.getTime() + ${gnInfo.duration}*60*60*1000);
 
 
-    <g:if test="${gnInfo.GanttData =! null && gnInfo.GanttData != ""}">
-        var tasks_XML = "${gnInfo.GanttData}";
+    <g:if test="${gnInfo.ganttData =! null && gnInfo.ganttData != ""}">
+        var tasks_XML = "${gnInfo.ganttData}";
         tasks = gantt.parse(tasks_XML, "xml");
      </g:if>
     <g:else>

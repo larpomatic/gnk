@@ -24,9 +24,12 @@ class Event {
 	String plotId
 	String plotName
 
+	//to be removed
+	String title
+
     // Id referenced into DTD
     static transients = ["DTDId", "absoluteYear", "absoluteMonth", "absoluteDay",
-						 "absoluteHour", "absoluteMinute", "plotId", "plotName"]
+						 "absoluteHour", "absoluteMinute", "plotId", "plotName", "title"]
     Integer DTDId
 
     Integer absoluteYear

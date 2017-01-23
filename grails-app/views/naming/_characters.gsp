@@ -166,7 +166,7 @@
             if (content != "") {
                 var character = new Object();
                 // Gn id
-                character.code = ${gnInfo.dbId}
+                character.code = ${gnInfo.id}
                 // HTML id
                 character.htmlId = "char"+ characterId;
                 // Gender
@@ -205,7 +205,7 @@
         var jsonObject = new Object();
         // Universe
         jsonObject.universe = "${gnInfo.universe}";
-        jsonObject.gnId = "${gnInfo.dbId}"
+        jsonObject.gnId = "${gnInfo.id}"
         // BEGIN Characters LOOP
         var charArray = new Array();
         <g:each status="i" in="${characterList}" var="character">

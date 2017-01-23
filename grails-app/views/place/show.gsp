@@ -94,8 +94,11 @@
 			<g:form>
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${placeInstance?.id}" />
-					<g:link class="edit" action="edit" id="${placeInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					<g:link class="btn" action="duplicate" id="${placeInstance?.id}"><g:message code="default.duplicate" default="Duplicate" /></g:link>
+					<g:link class="btn" action="edit" id="${placeInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+					%{--<g:hasRights lvlright="${right.REFDELETE.value()}">--}%
+						<g:actionSubmit class="btn btn-danger" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					%{--</g:hasRights>--}%
 				</fieldset>
 			</g:form>
 		</div>

@@ -20,6 +20,14 @@ class Tag{
     String name
     Tag parent
 
+
+
+    String value
+    String family
+    Integer weight
+    String status
+    static transients = ["value", "family", "weight", "status"]
+
     static hasMany = [
     extPlaceTags: PlaceHasTag,
     extResourceTags: ResourceHasTag,

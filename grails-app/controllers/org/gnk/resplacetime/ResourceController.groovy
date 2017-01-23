@@ -276,7 +276,7 @@ class ResourceController {
     }
 
 	def duplicate(Long id) {
-		def resourceInstance = Resource.get(id)
+		Resource resourceInstance = Resource.get(id)
 		if (!resourceInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'resource.label', default: 'Resource'), id])
 			redirect(action: "list")
@@ -288,7 +288,7 @@ class ResourceController {
 		if (tmp != null) {
 			int i = 1
 			String temp_name = ""
-			while(tmp != null && i < 10) {
+			while(tmp != null && i < 50) {
 				i++
 				temp_name = name + i.toString()
 				tmp = Resource.findByName(temp_name)

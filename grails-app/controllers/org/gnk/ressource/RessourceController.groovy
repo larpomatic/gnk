@@ -13,8 +13,7 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.GnInformation
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
 import org.gnk.substitution.data.Resource
 
@@ -61,7 +60,7 @@ class RessourceController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         List<Character> characterList = inputHandler.characterList
         List<Resource> resourceList = inputHandler.resourceList
         List<Event> eventList = inputHandler.eventList
