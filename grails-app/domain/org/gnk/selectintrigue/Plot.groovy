@@ -5,7 +5,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Role
 import org.gnk.tag.Tag
-import org.gnk.tag.TagRelevant
+
 import org.gnk.user.User
 
 class Plot {
@@ -187,7 +187,7 @@ class Plot {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-            TagRelevant tagRelevant = TagRelevant.findByTag(child);
+            Tag tagRelevant = Tag.findByTag(child);
             if (tagRelevant && tagRelevant.relevantPlot) {
                 result.add(child);
             }

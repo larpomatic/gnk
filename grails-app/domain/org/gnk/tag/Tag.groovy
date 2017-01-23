@@ -9,7 +9,12 @@ class Tag{
 
     Integer id
     Integer version
-
+    boolean relevantPlot
+    boolean relevantRole
+    boolean relevantResource
+    boolean relevantPlace
+    boolean relevantFirstname
+    boolean relevantLastname
     Date lastUpdated
     Date dateCreated
     String name
@@ -51,8 +56,8 @@ class Tag{
         return name;
     }
 
-    TagRelevant getTagRelevant(){
-         return TagRelevant.findByTag(this)
-    }
+    //TagRelevant getTagRelevant(){
+      //   return TagRelevant.findByTag(this)
+    //}
 
 }
