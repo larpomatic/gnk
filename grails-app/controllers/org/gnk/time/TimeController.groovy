@@ -154,7 +154,7 @@ class TimeController {
 
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
-        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
+        if (!gnInstance.save(flush: true)) {
 
         }
         redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
