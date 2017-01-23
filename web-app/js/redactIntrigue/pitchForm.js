@@ -1,27 +1,26 @@
-var template = desc_number - 1;
-$(document).ready(function() {
-    console.log("template value : idDescription_" + template);
-    console.log("desc_number value : idDescription_" + desc_number);
-    $('#idDescription_0').editable({
-        success: function(response, newValue) {
-            updateName(newValue);
+var template = desc_number;
+function edit(elt)
+{
+    var id_elt = elt.getAttribute('id');
+    console.log("Edit : " + id_elt);
+    $("#"+ id_elt).editable({
+        success: function (response, newValue) {
+            console.log("it's work");
+            updateName(newValue, elt);
         }
     });
-    //activate_update();
-});
-
-function updateName(elt){
-    console.log("template value : " + template);
-    $("#titleRender_" + template).remove();
-    var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
-    //$("#titleRender_").id = "titleRender" + template;
-    $('#overview').append(new_elt);
-    //console.log($('#description_0').editable('getValue', true));
+    activate_update();
 }
 
-function updatePlotPitchOrga(elt)
-{
-    console.log("test");
+function updateName(newValue, elt){
+    console.log("template value : " + template);
+    var id_render = newValue.id.split('_');
+    document.getElementById('titleRender_' + id_render[1]).replaceWith(newValue);
+    //$("#titleRender_" + template).remove();
+    //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + newValue + '</li>';
+    //$("#titleRender_").id = "titleRender" + template;
+    //$('#overview').append(new_elt);
+    //console.log($('#description_0').editable('getValue', true));
 }
 
 function verifyType(elt)
