@@ -109,28 +109,53 @@ class EventController {
         //Pastscene ps = new Pastscene();
         JSONObject jsonEvent = new JSONObject();
         //Je parse ma description et mon titre avec les roles... et je valide
-        for (int k = 0; k < roles.size(); k++) {
-            if (eventdescr.contains(roles) != roles[k])
-            {
-                print ("role non défini");
-                return false;
-            }
+        //for (int k = 0; k < roles.size(); k++) {
+          //  if (eventdescr.contains(roles) != roles[k])
+           // {
+             //   print ("role non défini");
+              //  return false;
+            //}
+       // }
+        for (String r : roles)
+        {
+            for (String desc : eventdescr)
+                {
+                    return desc.contains(r)
+                    print(desc.contains(r));
+                }
+
+            //System.out.println(r);
+            //return eventdescr.contains(r);
         }
-        for  (int i = 0; i < roles.size(); i++)
+       /* for  (int i = 0; i < roles.size(); i++)
         {
             int j = 0;
             print(roles[i]);
             return eventdescr.contains(roles[i]);
             }
-
-        for  (int j = 0; j < gplace.size(); j++)
+*/
+        for (String desc: eventdescr)
+        {
+            for (String gp:gplace)
+            {
+                return eventdescr.contains(gp);
+            }
+        }
+        /*for  (int j = 0; j < gplace.size(); j++)
         {
             return eventdescr.contains(gplace[j]);
+        }*/
+        for (String titre : title)
+        {
+            for (String ps: pastscenes)
+            {
+                return ps.contains(titre);
+            }
         }
-        for  (int m = 0; m < title.size(); m++)
+        /*for  (int m = 0; m < title.size(); m++)
         {
             return pastscenes.contains(title[m]);
-        }
+        }*/
 
 
         boolean isChecked = true;
