@@ -15,7 +15,7 @@ function edit(elt)
 function updateName(newValue, elt){
     console.log("template value : " + template);
     var id_render = elt.id.split('_');
-    document.getElementById('titleRender_' + id_render[1]).replaceWith(newValue);
+    document.getElementById('titleRender_' + id_render[1]).replaceWith('<li class="list-group-item" id="titleRender_' + id_render[1] + '" value="Description">' + newValue + '</li>');
     //$("#titleRender_" + template).remove();
     //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + newValue + '</li>';
     //$("#titleRender_").id = "titleRender" + template;
