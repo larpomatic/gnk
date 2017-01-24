@@ -9,7 +9,7 @@ import com.gnk.substitution.Tag
  * Time: 23:04
  * To change this template use File | Settings | File Templates.
  */
-class ReferentialPlace {
+class ReferentialPlace{
     String name
     Integer matchingRate
     List<Tag> tagList

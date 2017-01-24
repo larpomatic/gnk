@@ -124,6 +124,8 @@ class Gn {
             this.selectedPlotSet.removeAll { it.isEvenemential == true };
 //        if (this.selectedPlotSet == null)
 //            this.selectedPlotSet = new HashSet<Plot>();
+        if (selectedPlotSet == null)
+            selectedPlotSet = new HashSet<Plot>()
         selectedPlotSet.add(plot);
     }
 

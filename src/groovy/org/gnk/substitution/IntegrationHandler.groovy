@@ -25,6 +25,7 @@ import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.ressplacetime.ReferentialResource
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.RoleHasRelationWithRole
+import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.data.RelationCharacter
 import org.gnk.resplacetime.GenericResource
 import org.gnk.utils.Pair
@@ -201,6 +202,7 @@ class IntegrationHandler {
             GenericResource gr = new GenericResource()
 
             gr.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
+            gr.plotId = new Integer(Integer.parseInt(resourceJson.gnPlotId))
 
             List<Tag> tagList = []
             List<Tag> tags = new ArrayList<>();
@@ -218,17 +220,17 @@ class IntegrationHandler {
             gr.taglist = tags
 
             // Name
-            List<ReferentialResource> proposedNameList = []
+            List<Resource> proposedNameList = []
             for (nameJson in resourceJson.proposedNames) {
-                ReferentialResource referentialResource = new ReferentialResource()
+                Resource referentialResource = new Resource()
                 referentialResource.name = nameJson
                 proposedNameList.add(referentialResource)
             }
             gr.proposedResources = proposedNameList
 
-            List<ReferentialResource> bannedNameList = []
+            List<Resource> bannedNameList = []
             for (nameJson in resourceJson.bannedNames) {
-                ReferentialResource referentialResource = new ReferentialResource()
+                Resource referentialResource = new Resource()
                 referentialResource.name = nameJson
                 bannedNameList.add(referentialResource)
             }
@@ -244,7 +246,7 @@ class IntegrationHandler {
         for (genericResource in genericResourceList) {
             if (genericResource.proposedResources.isEmpty()) {
                 //print "GenericResource IN : " + genericResource
-                genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource, null)
+                genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource,Plot.findById(genericResource.plotId))
                 //print "GenericResource OUT : " + genericResource
             }
         }

@@ -53,6 +53,7 @@ public class PlaceResourceService {
      */
     ArrayList<Pair<ReferentialObject, Integer>> removeSameObjects(ArrayList<Pair<ReferentialObject, Integer>> listObject, Plot plot) {
 
+
         ArrayList<ReferentialObject> plLis = new ArrayList();
         if (listObject[0].left.getSubType().equals("Ressource")) {
             for (GenericResource gr in plot.getGenericResources()) {

@@ -33,15 +33,16 @@ class GenericResource extends GenericObject{
     static belongsTo = [fromRole: Role, toRole: Role, possessedByRole: Role, plot: Plot, objectType: ObjectType]
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource", "resultsAllUniverses"]
+    static transients = ["DTDId", "proposedResources", "bannedResources", "selectedResource", "lockedResource", "resultsAllUniverses", "plotId"]
 
 
-    List<ReferentialResource> proposedResources
-    List<ReferentialResource> bannedResources
+    ArrayList<Resource> proposedResources
+    ArrayList<Resource> bannedResources
     Resource selectedResource
     Resource lockedResource
     List<Tag> taglist
     ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultsAllUniverses
+    Integer plotId
 
 	static hasMany = [ extTags: GenericResourceHasTag,
 	                   roleHasEventHasRessources: RoleHasEventHasGenericResource]
@@ -101,7 +102,7 @@ class GenericResource extends GenericObject{
 
 
     ArrayList<ReferentialObject> getReferentialObject() {
-        return this.proposedResources();
+        return this.proposedResources;
     }
 
     ArrayList<Tag> getTags() {
