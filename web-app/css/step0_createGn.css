@@ -1,0 +1,18 @@
+input {
+    text-align: right;
+    width: 180px;
+    margin-right: 25px;
+}
+
+select {
+    width: 195px;
+}
+
+.footer-nav {
+    padding: 20px 0;
+}
+
+.empty-block {
+    height: 30px;
+    margin: 0;
+}

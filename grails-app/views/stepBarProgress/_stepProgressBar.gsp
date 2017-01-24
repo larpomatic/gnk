@@ -36,7 +36,7 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
                             <a class="first-icon" href="#selecintrigue" data-toggle="tab" aria-controls="step1" role="tab">
-                                <span class="label-tab">Select Intrigue</span>
+                                <span class="label-tab">Intrigues</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-pencil"></i>
                                 </span>
@@ -44,8 +44,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#role2perso" data-toggle="tab" aria-controls="step2" role="tab" title="Role to Perso">
-                                <span class="label-tab">Role To Perso</span>
+                            <a href="#role2perso" data-toggle="tab" aria-controls="step2" role="tab">
+                                <span class="label-tab">Rôles</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-user"></i>
                                 </span>
@@ -53,8 +53,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#life" data-toggle="tab" aria-controls="step3" role="tab" title="Life">
-                                <span class="label-tab">Life</span>
+                            <a href="#life" data-toggle="tab" aria-controls="step3" role="tab">
+                                <span class="label-tab">Vie</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-tower"></i>
                                 </span>
@@ -62,8 +62,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#naming" data-toggle="tab" aria-controls="step4" role="tab" title="Naming">
-                                <span class="label-tab">Naming</span>
+                            <a href="#naming" data-toggle="tab" aria-controls="step4" role="tab">
+                                <span class="label-tab">Identité</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-font"></i>
                                 </span>
@@ -71,8 +71,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#ressource" data-toggle="tab" aria-controls="step5" role="tab" title="Ressource">
-                                <span class="label-tab">Ressource</span>
+                            <a href="#ressource" data-toggle="tab" aria-controls="step5" role="tab">
+                                <span class="label-tab">Ressources</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-cog"></i>
                                 </span>
@@ -80,8 +80,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#place" data-toggle="tab" aria-controls="step6" role="tab" title="Place">
-                                <span class="label-tab">Place</span>
+                            <a href="#place" data-toggle="tab" aria-controls="step6" role="tab">
+                                <span class="label-tab">Lieux</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-map-marker"></i>
                                 </span>
@@ -89,8 +89,8 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#time" data-toggle="tab" aria-controls="step7" role="tab" title="Time">
-                                <span class="label-tab">Time</span>
+                            <a href="#time" data-toggle="tab" aria-controls="step7" role="tab">
+                                <span class="label-tab">Epoque</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-calendar"></i>
                                 </span>
@@ -98,7 +98,7 @@
                         </li>
 
                         <li role="presentation">
-                            <a href="#publication" data-toggle="tab" aria-controls="step8" role="tab" title="Publication">
+                            <a href="#publication" data-toggle="tab" aria-controls="step8" role="tab">
                                 <span class="label-tab">Publication</span>
                                 <span class="round-tab">
                                     <i class="glyphicon glyphicon-film"></i>

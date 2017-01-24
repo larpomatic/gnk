@@ -17,6 +17,8 @@
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
 
 
+<g:render template="../stepBarProgress/stepProgressBar" />
+
 	<div id="edit-plot" class="content scaffold-list" role="main">
 		<h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
         <g:if test="${!screenStep || screenStep == '0'}">
