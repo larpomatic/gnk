@@ -70,14 +70,6 @@ function activate_update()
         document.getElementById('update').isDisabled = true;
 }
 
-function update_text(elt)
-{
-    var id_render = elt.id.split('_');
-    document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0].setAttribute('value', elt.textContent);
-    console.log((document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0]).value);
-    update_modified();
-}
-
 function update_modified()
 {
     is_modified = true;

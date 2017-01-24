@@ -80,6 +80,14 @@ $(function(){
                         updateAllDescription($.unique(spanList.closest("form")));
                         updateSave();
                     }
+                    if (data.iscreate == 2) {
+                        createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté car un rôle avec ce nom existe déjà.");
+                        updateSave();
+                    }
+                    if (data.iscreate == 3) {
+                        createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, les champs PIPI et PIPR doivent être des nombres et sont obligatoires.");
+                        updateSave();
+                    }
                     else {
                             createNotification("danger", "Création échouée.", "Votre rôle n'a pas pu être ajouté, une erreur s'est produite.");
                         updateSave();
@@ -152,7 +160,8 @@ function updateRole() {
                     data: form.serialize(),
                     dataType: "json",
                     success: function (data) {
-                        if (data.object.isupdate) {
+                        //data.object.isupdate has many possible errors, with success on 0
+                        if (data.object.isupdate == 0) {
                             //delay is here to prevent the first notification to disappear to quickly
                             setTimeout(function(){
                                 createNotification("success", "Modifications réussies.", "Votre rôle a bien été modifié.");
@@ -181,7 +190,17 @@ function updateRole() {
                             });
                             updateSave();
                         }
-                        else {
+                        if (data.object.isupdate == 2) {
+                            createNotification("danger", "Modifications échouées.", "Votre rôle : *"+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"*  n'a pas pu être renommé car un autre rôle possède déjà ce nom.");
+                            updateSave();
+                        }
+
+                        if (data.object.isupdate == 3) {
+                            createNotification("danger", "Modifications échouées.", "Votre rôle : *"+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"*  n'a pas pu être renommé, les champs PIPI et PIPR doivent être des nombres et sont obligatoires.");
+                            updateSave();
+                        }
+
+                        if (data.object.isupdate == 1) {
                                 createNotification("danger", "Modifications échouées.", "Votre rôle : *"+ $('form[name="updateRole_' + roleId + '"] input[name="roleCode"]').val()+"*  n'a pas pu être modifié, une erreur s'est produite.");
                                 updateSave();}
                     },
