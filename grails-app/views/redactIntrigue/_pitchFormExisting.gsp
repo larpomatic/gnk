@@ -87,7 +87,10 @@ select {
    <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
         ${description.pitch}
     </div>-->
-    <g:textArea name="description_text" id="idDescriptionText_${description.idDescription}" class="text-left richTextEditor editable" value="${description.pitch}" onchange="update_modified()"/>
+    <div id="idDescriptionText_${description.idDescription}" contenteditable="true" class="text-left richTextEditor editable"  onblur="update_text(this)">
+        ${description.pitch}
+    </div>
+    <g:hiddenField name="description_text" class="description_text" id="idDescriptionTextHide_${description.idDescription}" value="Description"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

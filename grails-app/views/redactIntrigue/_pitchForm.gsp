@@ -83,7 +83,9 @@ select {
     <div class="button_template">
         <g:render template="dropdownButtons" />
     </div>
-        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" placeholder="Insérer votre description" onchange="update_modified()"/>
+    <div id="idDescriptionText_0" contenteditable="true" class="text-left richTextEditor editable"  onblur="update_text(this)">
+    </div>
+    <g:hiddenField name="description_text" class="description_text" id="idDescriptionTextHide_0" value="Description"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

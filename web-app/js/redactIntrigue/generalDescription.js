@@ -75,7 +75,8 @@ function update_id(render, description) {
     document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].id = "idDescriptionText_" + description;
     document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].id = "idType_" + description;
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].id = "idDescription_" + description;
-    document.getElementById('render_' + render).getElementsByClassName('pitchDescriptionTitle')[0].id = "titleDescription_" + description;
+    document.getElementById('render_' + render).getElementsByClassName('pitchDescriptionTitle')[0].name = "titleDescription_" + description;
+    document.getElementById('render_' + render).getElementsByClassName('description_text')[0].id = "idDescriptionTextHide_" + description;
     //console.log("pitch Description : " + document.getElementById('render_' + render).getElementsByClassName('pitchDescription')[0].name);
 }
 
@@ -85,7 +86,7 @@ function initialise_description(render)
     document.getElementById('render_' + render).getElementsByClassName('pitchPj')[0].setAttribute('value', false);
     document.getElementById('render_' + render).getElementsByClassName('pitchPnj')[0].bool = false;
     console.log(document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0]);
-    document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].value = "";
+    document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].textContent = "";
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].textContent = "Description";
     document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].setAttribute('value', "contexte du GN");
 
