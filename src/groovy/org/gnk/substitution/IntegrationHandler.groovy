@@ -345,12 +345,12 @@ class IntegrationHandler {
         PlaceService placeService = new PlaceService()
         //print "Universe : " + universe
         for (genericPlace in genericPlaceList) {
-            if (genericPlace.resultList.isEmpty()) {
+            //if (genericPlace.resultList.isEmpty()) {
                 //print "GenericPlace IN : " + genericPlace
                 genericPlace = placeService.findReferentialPlace(genericPlace, universe)
                 //print "GenericPlace OUT : " + genericPlace
 //                genericPlace.resultList.first().name
-            }
+            //}
         }
         // END PLACE SERVICE CALL
 

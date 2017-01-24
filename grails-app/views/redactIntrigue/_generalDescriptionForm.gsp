@@ -1,4 +1,19 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
+<style>
+.buttonAdd {
+    position: relative;
+    left: 500px;
+    width: 150px;
+    padding-top: 20px;
+    padding-bottom: 60px;
+}
+.span14{
+    text-align: left;
+    float: left;
+    margin-right: 1000px;
+    white-space: nowrap;
+}
+</style>
 <div class="tabbable tabs-left plotScreen">
     <div class="tab-content">
         <div class="tab-pane active" id="newPlot">
@@ -6,13 +21,8 @@
                 <g:hiddenField name="id" value="${plotInstance?.id}"/>
                 <g:hiddenField name="version" value="${plotInstance?.version}"/>
                 <g:hiddenField name="screenStep" value="0"/>
-                <g:hiddenField name="plotDescription" class="descriptionContent" value=""/>
-                <g:hiddenField name="plotPitchOrga" class="pitchOrgaContent" value=""/>
-                <g:hiddenField name="plotPitchPj" class="pitchPjContent" value=""/>
-                <g:hiddenField name="plotPitchPnj" class="pitchPnjContent" value=""/>
                 <g:hiddenField name="plotVariantField" class="variantContent" value=""/>
                 <div class="row formRow">
-                    <div class="span1"></div>
                     <div class="span1">
                         <label for="name">
                             <g:message code="redactintrigue.generalDescription.plotName" default="Name"/>
@@ -25,7 +35,7 @@
 
                 </div>
 
-                <div class="row formRow">
+                <div class="row formRow" id="pre_render">
                     <div class="span2">
                         <label for="plotVariant">
                             <g:message code="redactintrigue.generalDescription.plotVariant" default="Select a variant"/>
@@ -54,8 +64,6 @@
 
 
                 <div class="row formRow">
-                    <div class="span1"></div>
-
                     <div class="span1">
                         <label>
                             <g:message code="redactintrigue.generalDescription.tags" default="Tags"/>
@@ -92,7 +100,6 @@
                 </div>
 
                 <div class="row formRow">
-                    <div class="span1"></div>
                     <div class="span1">
                         <label for="isMainstream">
                             <g:message code="redactintrigue.generalDescription.isMainstream" default="Mainstream"/>
@@ -124,73 +131,31 @@
                     </div>
 
                 </div>
-
-                <div class="text-center plotTabs">
-                    <div class="span1"></div>
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#descriptionTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.plotDescription" default="Description"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchOrgaTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchOrga" default="pitchOrga"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchPjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPj" default="pitchPj"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#pitchPnjTab" data-toggle="tab">
-                                <g:message code="redactintrigue.generalDescription.pitchPnj" default="pitchPnj"/>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="descriptionTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditor" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.description?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchOrgaTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchOrga" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchOrga?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchPjTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPj?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="pitchPnjTab">
-                            <div class="fullScreenEditable">
-                                <g:render template="dropdownButtons" />
-
-                                <!-- Editor -->
-                                <div id="plotRichTextEditorPitchPnj" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-                                    ${plotInstance.pitchPnj?.encodeAsHTML()}
-                                </div>
-                            </div>
-                        </div>
+                <div class="span14">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Sommaire des descriptions</h3>
                     </div>
+                    <div class="list-group" id="overview">
+                        <li class="list-group-item" id="titleRender_0" value="Description"> <a id="refDesc_0" href="#idDescription_0">Description </a> </li>
+                    </div>
+                </div>
+                <div id="desc_wrapper">
+                    <g:if test="${descriptionList.size() == 0}">
+                        <div class="render" id="render_0">
+                            <g:render template="pitchForm"/>
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <g:each in="${descriptionList}" status="i" var="description">
+                            <div class="render" id="render_${description.idDescription}">
+                                <g:render template="pitchFormExisting" model="[description : description]"/>
+                            </div>
+                        </g:each>
+                    </g:else>
+                </div>
+
+                <div class="buttonAdd">
+                    <div type="button" class="btn btn-success" onclick="addDescription()" style="width: 150px">Ajouter une autre description</div>
                 </div>
 
                 <div id="tagsModal" class="modal hide fade tags-modal" tabindex="-1">
@@ -255,3 +220,5 @@
         </div>
     </div>
 </div>
+
+

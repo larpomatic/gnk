@@ -9,14 +9,16 @@
 <link rel="stylesheet" href="<g:resource dir="css" file="selectIntrigue.css" />" type="text/css">
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
+    <link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap-editable.css')}" type="text/css">
+
 </head>
 <body>
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.min.js"/>
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
     <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
-
-
+    <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
+    <g:render template="subNav" model="['right': right]"/>
 	<div id="edit-plot" class="content scaffold-list" role="main">
 		<h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
         <g:if test="${!screenStep || screenStep == '0'}">
