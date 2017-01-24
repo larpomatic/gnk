@@ -30,10 +30,11 @@ class TagService {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-           // Tag tagRelevant = Tag.findByTag(child);
+            //Tag tagRelevant = Tag.findByTag(child);
             if (child.relevantPlot) {
                 result.add(child);
             }
+
         }
         return result;
     }
@@ -41,7 +42,8 @@ class TagService {
     def List<Tag> getUniversTagQuery() {
         Tag genericUnivers = Tag.findByName("Tag Univers");
         ArrayList<Tag> result = new ArrayList<>();
-        for (Tag child in genericUnivers.children) {
+        List<Tag> children = Tag.findAllByParent(genericUnivers);
+        for (Tag child in children) {
             result.add(child);
         }
         Collections.sort(result, new ComparateurTag())

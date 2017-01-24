@@ -9,12 +9,12 @@ class Tag{
 
     Integer id
     Integer version
-    boolean relevantPlot
-    boolean relevantRole
-    boolean relevantResource
-    boolean relevantPlace
-    boolean relevantFirstname
-    boolean relevantLastname
+    Boolean relevantPlot
+    Boolean relevantRole
+    Boolean relevantResource
+    Boolean relevantPlace
+    Boolean relevantFirstname
+    Boolean relevantLastname
     Date lastUpdated
     Date dateCreated
     String name
