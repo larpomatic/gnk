@@ -26,11 +26,14 @@ import org.gnk.roletoperso.RoleRelationType
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-import org.gnk.tag.TagService;
+import org.gnk.tag.TagService
+import org.gnk.resplacetime.GenericPlaceController
 
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
+
+import static org.gnk.resplacetime.GenericPlaceController.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
@@ -294,8 +297,14 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T1", "Places")
         createPlaces(wordWriter, plot)
 
-        wordWriter.addStyledParagraphOfText("T1", "Resources")
+        wordWriter.addStyledParagraphOfText("T1", "Meilleure Place")
+        createBestPlace(wordWriter, plot)
+
+        wordWriter.addStyledParagraphOfText("T1", "Ressources")
         createResources(wordWriter, plot)
+
+        wordWriter.addStyledParagraphOfText("T1", "Meilleure ressource")
+        createBestResource(wordWriter, plot)
 
         wordWriter.addStyledParagraphOfText("T1", "Relation")
         createRelation(wordWriter, plot)
@@ -521,6 +530,14 @@ class RedactIntrigueController {
 
 
         }
+
+    }
+
+    def createBestPlace(WordWriter wordWriter, Plot plot){
+//        org.gnk.ressplacetime.GenericPlace genericPlace
+//        String s = genericPlace.
+//        Plot plot
+//        plot.getGenericPlaces()[0].
 
     }
 
