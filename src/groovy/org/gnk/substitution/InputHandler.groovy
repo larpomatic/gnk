@@ -12,7 +12,7 @@ import org.gnk.resplacetime.Pastscene
 //import org.gnk.substitution.data.Event
 //import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
+import org.gnk.resplacetime.Resource
 import org.gnk.tag.Tag
 import org.gnk.roletoperso.Character
 
