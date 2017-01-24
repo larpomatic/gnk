@@ -14,6 +14,7 @@ import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.GenericResourceHasTag
 import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.GnConstantController
+import org.gnk.resplacetime.ObjectType
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
@@ -974,6 +975,8 @@ class RedactIntrigueController {
             newDuplicatedPlace.lastUpdated = new Date()
             newDuplicatedPlace.dateCreated = new Date()
             newDuplicatedPlace.code = p.code
+            ObjectType tmpObject = ObjectType.findById(p.objectTypeId);
+            newDuplicatedPlace.objectType = tmpObject;
             newDuplicatedPlace.id = p.id * 2
             newDuplicatedPlace.version = p.version
             //newDuplicatedPlace.gender = p.gender
@@ -1003,7 +1006,7 @@ class RedactIntrigueController {
 
 
            duplicatedPlot.genericPlaces = newduplicatedPlaces
-           duplicatedPlot.save()
+           duplicatedPlot.save(failOnError: true)
         // Duplicate PastScenes
 
         redirect(action: "edit", id: duplicatedPlot.id)

@@ -30,6 +30,8 @@ $(function(){
             $(this).prev().val("+");
         }
     });
+
+
     // charge les datetimepickers
 //    $('.datetimepicker').datetimepicker({
 //        language: 'fr',

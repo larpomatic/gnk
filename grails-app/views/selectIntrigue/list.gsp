@@ -1,5 +1,6 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
+<script src="path/to/bootstrap-confirmation.js"></script>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,6 +12,7 @@
         <div>
 		    <a href="#list-plot" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
         </div>
+	<g:javascript src="selectIntrigue/listSelectIntigue.js"/>
         <g:render template="subNav" model="['right': right]"/>
 		<div id="list-gn" class="content scaffold-list" role="main">
 			<legend><g:message code="default.list.label" args="[entityName]" /></legend>
@@ -27,10 +29,11 @@
 				<tbody>
 				<g:each in="${gnInstanceList}" status="i" var="gnInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td>
+						<td  class="tet">
                             <g:hasRights lvlright="${right.MGNOPEN.value()}">
-                                <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
+                               <g:link action="dispatchStep" id="${gnInstance.id}">${fieldValue(bean: gnInstance, field: "name")}</g:link>
                             </g:hasRights>
+
                             <g:hasNotRights lvlright="${right.MGNOPEN.value()}">
                                 ${fieldValue(bean: gnInstance, field: "name")}
                             </g:hasNotRights>
@@ -38,7 +41,7 @@
 						<td><g:formatDate date="${gnInstance.date}" /></td>
                         <td>
                             <g:hasRights lvlright="${right.MGNDELETE.value()}">
-                                <g:link action="delete" id="${gnInstance.id}" class="btn btn-danger">
+                                <g:link action="delete" onclick="return confirm('êtes vous sur ?');" id="${gnInstance.id}" class="btn btn-danger">
                                     <g:message code="default.delete" default="Delete" />
                                 </g:link>
                             </g:hasRights>
