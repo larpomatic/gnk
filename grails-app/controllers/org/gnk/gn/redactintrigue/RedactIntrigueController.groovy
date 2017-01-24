@@ -6,6 +6,7 @@ import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage
 import org.docx4j.wml.Tbl
+import org.gnk.description.PrintDescriptionService
 import org.gnk.publication.WordWriter
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
@@ -23,6 +24,7 @@ import org.gnk.roletoperso.RoleHasPastscene
 import org.gnk.roletoperso.RoleHasRelationWithRole
 import org.gnk.roletoperso.RoleHasTag
 import org.gnk.roletoperso.RoleRelationType
+import org.gnk.selectintrigue.Description
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
@@ -88,8 +90,8 @@ class RedactIntrigueController {
 		int screen = 0
 		if (params.screenStep)
 		{
-			screen = params.screenStep 
-			screen = (screen - 48)	 
+			screen = params.screenStep
+			screen = (screen - 48)
 		}
         TagService tagService = new TagService();
         TreeMap<Long, Pastscene> tmp = orderPastscenes(plotInstance);
@@ -108,6 +110,7 @@ class RedactIntrigueController {
 
 		[plotInstance: plotInstance,
                 pastscenes: pastscenes,
+                descriptionList : Description.findAllByPlotId(plotInstance.id),
                 plotTagList: tagService.getPlotTagQuery(),
                 plotUniversList: tagService.getUniversTagQuery(),
                 roleTagList: tagService.getRoleTagQuery(),
@@ -173,14 +176,15 @@ class RedactIntrigueController {
         return pastscenes;
     }
 
-	def update(Long id) {
+	def update() {
         def isupdate = true;
-		def plotInstance = Plot.get(id)
+		def plotInstance = Plot.get(params.id)
 		if (!plotInstance) {
             isupdate = false;
 		}
-		plotInstance.properties = params
-		plotInstance.description = params.plotDescription == "" ? null : params.plotDescription;
+        plotInstance.properties = params
+
+        isupdate = updateDescription(plotInstance, isupdate)
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
         plotInstance.pitchPnj = params.plotPitchPnj == "" ? null : params.plotPitchPnj;
@@ -253,6 +257,50 @@ class RedactIntrigueController {
         }
 	}
 
+    def updateDescription(Plot plotInstance, Boolean isupdate){
+        List<String> pitchOrga = new ArrayList<String>()
+        List<String> pitchPj = new ArrayList<String>()
+        List<String> pitchPnj = new ArrayList<String>()
+        List<String> title = new ArrayList<String>()
+        List<Integer> descriptionId = new ArrayList<Integer>()
+
+        int nb_desc = (params.desc_type instanceof String[]) ? params.desc_type.length : 1
+
+        for (int i = 0; i < nb_desc; i++)
+        {
+            pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
+            pitchPj.add(params.get("pitchPj_" + i.toString()).toString());
+            pitchPnj.add(params.get("pitchPnj_" + i.toString()).toString());
+            title.add(params.get("titleDescription_" + i.toString()).toString());
+            String test_description = (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text
+            if (pitchOrga.get(i) == "null" && pitchPj.get(i) == "null" && pitchPnj.get(i) == "null" || test_description == "") {
+                isupdate = false
+                return isupdate
+            }
+            descriptionId.add(params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger());
+            //System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
+        }
+
+        for (int i = 0; i < nb_desc; i++)
+        {
+            def type_description = (params.desc_type instanceof String[]) ? params.desc_type[i].toString() : params.desc_type.toString();
+            Description new_description = new Description(plotInstance.id.toInteger(), descriptionId.get(i), type_description, (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text, pitchPnj.get(i), pitchPj.get(i), pitchOrga.get(i), title.get(i));
+            if (type_description == "Introduction")
+               plotInstance.description = (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text
+            plotInstance.add_Description(new_description);
+            if (Description.findByIdDescriptionAndPlotId(descriptionId.get(i), plotInstance.id.toInteger()) != null)
+            //Description.executeUpdate("update Description d set d.is_pnj = " + new_description.isPnj + ", d.is_pj=" + new_description.isPj + ", d.is_orga=" + new_description.isOrga + ", d.type=" + new_description.type + ", d.pitch=" + new_description.pitch + "where d.plot_id=" + plotInstance.id.toInteger() + "and d.id_description=" + descriptionId.get(i))
+                Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + descriptionId.get(i))
+            new_description.save(flush: true)
+        }
+
+        for (int j = Description.findAllByPlotId(plotInstance.id.toInteger()).size() - 1; j >= descriptionId.size(); j--)
+        {
+            Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + j)
+        }
+        return isupdate
+    }
+
     def print(){
         def plotInstance = Plot.get(params.plotid)
         def folderName = "${request.getSession().getServletContext().getRealPath("/")}word/"
@@ -314,6 +362,7 @@ class RedactIntrigueController {
         return subtitle
     }
     def  createDescription(WordWriter wordWriter,Plot plot) {
+        PrintDescriptionService printDescriptionService = new PrintDescriptionService();
         String tag = ""
         def list = []
         wordWriter.addStyledParagraphOfText("T2", "Tags choisis")
@@ -366,17 +415,10 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T3", "Intrigue")
         wordWriter.addStyledParagraphOfText("Normal", plot.description)
 
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Organisateur")
-        if (plot.pitchOrga)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchOrga)
+        if (plot.list_Description == null)
+            plot.list_Description = Description.findAllByPlotId(plot.id)
 
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Joueur")
-        if (plot.pitchPj)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchPj)
-
-        wordWriter.addStyledParagraphOfText("T3", "Pitch Personnage non joueur")
-        if (plot.pitchPnj)
-            wordWriter.addStyledParagraphOfText("Normal", plot.pitchPnj)
+        printDescriptionService.printDescription(wordWriter, plot.list_Description)
     }
 
     def createSummary(WordWriter wordWriter, Plot plot){
