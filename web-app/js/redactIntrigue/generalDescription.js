@@ -9,6 +9,8 @@ var introduction = {
 
 $(document).ready(function() {
     var j = document.getElementById('render_' + desc_number);
+    if (j != null)
+        $('.list-group-item').remove();
     while (j != null) {
         //console.log(j);
         if (j.getElementsByClassName('desc_type')[0].value == "Introduction")
@@ -16,6 +18,7 @@ $(document).ready(function() {
             introduction.bool = true;
             introduction.desc_id = desc_number;
         }
+        $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '"> <a id="refDesc_' + desc_number + '"href="#idDescription_' + desc_number + '">' +  document.getElementById('render_' + desc_number).getElementsByClassName('pitchDescriptionTitle')[0].value + '</a> </li>')
         desc_number++;
         nb_render++;
         j = document.getElementById('render_' + desc_number);
