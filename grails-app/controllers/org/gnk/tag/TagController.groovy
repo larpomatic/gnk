@@ -146,7 +146,7 @@ class TagController {
             return
         }
         if (tagParent.children.size() == 1) {
-            Tag tagRelevant1 = new Tag();
+            TagRelevant tagRelevant1 = new TagRelevant();
             tagRelevant1.relevantFirstname = false;
             tagRelevant1.relevantLastname = false;
             tagRelevant1.relevantPlace = false;
@@ -367,7 +367,7 @@ class TagController {
         if (tagInstance.children.size() > 0) {
             flash.message = message(code: 'adminRef.tag.info.delete.fail', args: [tagInstance.name])
         } else {
-            Tag tr = tr.findByTag(tagInstance);
+            TagRelevant tr = TagRelevant.findByTag(tagInstance);
             if (tr) {
                 tr.delete(flush: true);
             }
@@ -417,7 +417,7 @@ class TagController {
     def editRelevantTag() {
         int id = Integer.parseInt(params.idEditRelTag)
         Tag tag = Tag.findById(id)
-        Tag tagRelevant = tag.getTagRelevant()
+        TagRelevant tagRelevant = tag.getTagRelevant()
         if (tagRelevant) {
             if (params.checkboxRelevantPlace) {
                 tagRelevant.relevantPlace = true;
@@ -455,7 +455,7 @@ class TagController {
         if (idparent != -1) {
             tag.parent = tagParent;
             if (tagParent.children.size() == 1) {
-                Tag tagRelevant1 = new Tag();
+                TagRelevant tagRelevant1 = new TagRelevant();
                 tagRelevant1.relevantFirstname = false;
                 tagRelevant1.relevantLastname = false;
                 tagRelevant1.relevantPlace = false;
