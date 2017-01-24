@@ -48,13 +48,17 @@ class Place extends ReferentialObject{
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
         for (PlaceHasTag placeHasTag in this.extTags)
-            mapTagInt.put(placeHasTag.tag, placeHasTag.weight * ponderation)
+            mapTagInt.put(placeHasTag.tag, new Integer((int)(placeHasTag.weight * ponderation)))
 
         return mapTagInt;
     }
 
     String getSubType() {
         return "Place";
+    }
+
+    List<ReferentialObject> getAll() {
+        Place.findAll()
     }
 
 }

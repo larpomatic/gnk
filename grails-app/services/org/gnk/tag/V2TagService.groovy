@@ -6,7 +6,7 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
 
-public class TagServiceV2 {
+public class V2TagService {
 
     private static int  IDgenericUniverTag = 33089;
     private static int NumberOfGenerationsRelevant = 2;
@@ -19,12 +19,9 @@ public class TagServiceV2 {
     private static float GenericObjectponderation = 1;
     private static float ReferentialObjectponderation = 1;
 
-
-    TagServiceV2() {
+    V2TagService() {
     }
-
-
-    /**
+/**
      * get all the univers
      * @return list of all the univers
      */
@@ -55,20 +52,20 @@ public class TagServiceV2 {
         // initialisation des tags du generic object
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
         //récupérer les tags relevants du genericobjet
-        map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights()));
+        map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights(GenericObjectponderation)));
 
         //initialisation des tags de l'object
         Map<Tag, Integer> map_Object = initObjectList(object);
 
 
         //récupérer les tags parents
-        map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights()));
+        map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights(PonderationParent)));
 
 
-        //récupérer les tags du genericobjet
-        map_Object.putAll(getRelevantTags(object.getTagsAndWeights()));
-        //récupérer les tags parents
-        map_Object.putAll(getParentTags(object.getTagsAndWeights()));
+        //récupérer les tags du refenretialobjet
+        map_Object.putAll(getRelevantTags(object.getTagsAndWeights(ReferentialObjectponderation)));
+        //récupérer les tags parents du referential
+        map_Object.putAll(getParentTags(object.getTagsAndWeights(PonderationParent)));
 
         Long score = 0;
 
@@ -98,25 +95,34 @@ public class TagServiceV2 {
 
         //recupérer les tags du gn
         // chaque poids d'un tag du GN est pondéré à 90%
-        for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
-            map_tags = addTag(map_tags ,gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
+        if (gn.gnTags != null) {
+            for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
+                map_tags = addTag(map_tags, gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
+            }
         }
 
-        // chaque poids d'un tag evenementiel du GN est pondéré à 60%
-        for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
-            map_tags = addTag(map_tags, gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * Evenementielponderation));
+        if (gn.evenementialTags != null) {
+            // chaque poids d'un tag evenementiel du GN est pondéré à 60%
+            for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
+                map_tags = addTag(map_tags, gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * Evenementielponderation));
+            }
         }
 
-        // chaque poids d'un tag mainstream du GN est pondéré à 40%
-        for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
-            map_tags = addTag(map_tags ,gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
+
+        if (gn.mainstreamTags != null) {
+            // chaque poids d'un tag mainstream du GN est pondéré à 40%
+            for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
+                map_tags = addTag(map_tags, gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
+            }
         }
 
         // chaque poids d'un tag normal d'une intrigue est pondéré à 20%
-        Set<Plot> plotlist = gn.selectedPlotSet;
-        for (Plot p : plotlist) {
-            for (PlotHasTag tp : p.plotHasTag) {
-                map_tags = addTag(map_tags, tp.tag, new Integer((int) tp.weight * plotponderation));
+        if (gn.selectedPlotSet != null) {
+            Set<Plot> plotlist = gn.selectedPlotSet;
+            for (Plot p : plotlist) {
+                for (PlotHasTag tp : p.plotHasTag) {
+                    map_tags = addTag(map_tags, tp.tag, new Integer((int) tp.weight * plotponderation));
+                }
             }
         }
 
@@ -162,7 +168,7 @@ public class TagServiceV2 {
                                     parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
                                 } else {
                                     tr = TagRelation.myFindWhere(p, t)
-                                    if (tr.isBijective)
+                                    if (tr != null && tr.isBijective)
                                         parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
                                 }
                             }

@@ -203,6 +203,7 @@ class IntegrationHandler {
 
             gr.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
             gr.plotId = new Integer(Integer.parseInt(resourceJson.gnPlotId))
+            gr.gnId = new Integer(resourceJson.IdOfGn)
 
             List<Tag> tagList = []
             List<Tag> tags = new ArrayList<>();
@@ -246,8 +247,9 @@ class IntegrationHandler {
         for (genericResource in genericResourceList) {
             if (genericResource.proposedResources.isEmpty()) {
                 //print "GenericResource IN : " + genericResource
-                genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource,Plot.findById(genericResource.plotId))
+                //genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource,Plot.findById(genericResource.plotId))
                 //print "GenericResource OUT : " + genericResource
+                genericResource.resultService = placeresourceservice.findBestObjects(genericResource, Gn.findById(genericResource.gnId))
             }
         }
         // END RESOURCE SERVICE CALL
@@ -264,8 +266,8 @@ class IntegrationHandler {
                 }
             }
 
-            // Name
-            resourceJson.remove("proposedNames")
+            // Name A VIRER
+            /*resourceJson.remove("proposedNames")
             if (genericResource.resultsAllUniverses != null && !genericResource.resultsAllUniverses.isEmpty()) {
                 JSONArray proposedNames = new JSONArray()
                 for (Pair<org.gnk.tag.Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in genericResource.resultsAllUniverses) {
@@ -273,7 +275,18 @@ class IntegrationHandler {
                         proposedNames.put(ref2.left.name)
                 }
                 resourceJson.put("proposedNames", proposedNames)
+            }*/
+
+            // Name
+            resourceJson.remove("proposedNames")
+            if (genericResource.resultService != null && !genericResource.resultService.isEmpty()) {
+                JSONArray proposedNames = new JSONArray()
+                for (Pair<ReferentialObject, Integer> ref in genericResource.resultService) {
+                        proposedNames.put(ref.left.name)
+                }
+                resourceJson.put("proposedNames", proposedNames)
             }
+
             // TOREMOVE
             else {
                 JSONArray proposedNames = new JSONArray()

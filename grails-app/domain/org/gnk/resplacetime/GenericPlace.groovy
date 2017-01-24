@@ -5,6 +5,7 @@ import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.tag.Tag
 import org.gnk.selectintrigue.Plot
+import org.gnk.utils.Pair
 
 class GenericPlace extends GenericObject{
 
@@ -20,13 +21,18 @@ class GenericPlace extends GenericObject{
     Integer DTDId
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace"]
+    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace", "resultsAllUniverses", "resultService", "plotId", "gnId"]
 
 
     ArrayList<ReferentialPlace> proposedPlaces
     ArrayList<ReferentialPlace> bannedPlaces
     Place selectedPlace
     Place lockedPlace
+    List<Tag> taglist
+    ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultsAllUniverses
+    ArrayList<Pair<ReferentialObject, Integer>> resultService
+    Integer plotId
+    Integer gnId
 
     static belongsTo = [plot: Plot, objectType: ObjectType]
 
@@ -74,9 +80,13 @@ class GenericPlace extends GenericObject{
          return mapTagInt;
      }
 
-     ArrayList<ReferentialObject> getReferentialObject() {
+     ArrayList<ReferentialObject> getProposedObject() {
          return this.proposedPlaces;
      }
+
+    ArrayList<ReferentialObject> getReferentialObject() {
+        return Place.findAll();
+    }
 
     ReferentialObject getLockedObject() {
         return this.lockedPlace;
@@ -91,6 +101,10 @@ class GenericPlace extends GenericObject{
 
     String getName() {
         return this.name;
+    }
+
+    Plot getPlotbyId() {
+        return Plot.findById(this.plotId);
     }
 
 //    boolean isIngameClue()

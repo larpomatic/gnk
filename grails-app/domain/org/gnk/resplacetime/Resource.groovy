@@ -50,13 +50,17 @@ class Resource extends ReferentialObject {
 		Map<Tag, Integer> mapTagInt = new HashMap<>();
 
 		for (ResourceHasTag resourceHasTag in this.extTags)
-			mapTagInt.put(resourceHasTag.tag, resourceHasTag.weight * ponderation)
+			mapTagInt.put(resourceHasTag.tag, new Integer((int)(resourceHasTag.weight * ponderation)))
 
 		return mapTagInt;
 	}
 
 	String getSubType() {
-		return "Ressource";
+		return "Resource";
+	}
+
+	List<ReferentialObject> getAll() {
+		Resource.findAll()
 	}
 
 }

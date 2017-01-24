@@ -5,12 +5,12 @@ import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.utils.Pair
 import org.gnk.gn.Gn
 import org.gnk.selectintrigue.Plot
-import org.gnk.tag.TagServiceV2
+import org.gnk.tag.V2TagService
 import org.gnk.tag.Tag
 
 public class PlaceResourceService {
 
-    TagServiceV2 tagServiceV2;
+    V2TagService v2TagService;
     private static int IDgenericUniverTag = 33089;
 
     PlaceResourceService() {
@@ -55,7 +55,7 @@ public class PlaceResourceService {
 
 
         ArrayList<ReferentialObject> plLis = new ArrayList();
-        if (listObject[0].left.getSubType().equals("Ressource")) {
+        if (plot.getGenericResources() != null && listObject[0].left.getSubType().contains("Resource")) {
             for (GenericResource gr in plot.getGenericResources()) {
                 if (gr.selectedResource != null) {
                     plLis.add(gr.selectedResource)
@@ -63,11 +63,14 @@ public class PlaceResourceService {
             }
         }
         else {
-            for (GenericPlace gp in plot.getGenericPlaces()) {
-                if (gp.selectedPlace != null) {
-                    plLis.add(gp.selectedPlace)
+            if (plot.getGenericPlaces() != null) {
+                for (GenericPlace gp in plot.getGenericPlaces()) {
+                    if (gp.selectedPlace != null) {
+                        plLis.add(gp.selectedPlace)
+                    }
                 }
             }
+
         }
 
         ArrayList<Pair<ReferentialObject, Integer>> tmp = listObject.clone()
@@ -104,15 +107,19 @@ public class PlaceResourceService {
     }
 
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
-    ArrayList<Pair<ReferentialObject, Integer>> findBestObjects(GenericObject GenericObject, Gn gn) {
+    ArrayList<Pair<ReferentialObject, Integer>> findBestObjects(GenericObject genericObject, Gn gn) {
+
+
+        // à retirer par la suite et le faire proprement
+        v2TagService = new V2TagService();
 
         // liste contenant les objets et leurs scores par rapport au GenericObject
         ArrayList<Pair<ReferentialObject, Integer>> sorted_list = new ArrayList<>();
 
         // on récupère la liste des places/resources et leurs scores
-        List<ReferentialObject> all_object = GenericObject.getReferentialObject();
+        List<ReferentialObject> all_object = genericObject.getReferentialObject()
         for (ReferentialObject p : all_object) {
-            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) tagServiceV2.computeComparativeScoreObject(GenericObject, p, gn))))
+            sorted_list.add(new Pair<ReferentialObject, Integer>(p, new Integer((int) v2TagService.computeComparativeScoreObject(genericObject, p, gn))))
         }
 
         // on trie la sorted_list en fonction du poids de l'object
@@ -126,8 +133,8 @@ public class PlaceResourceService {
             }
         });
 
-        sorted_list = removeSameObjects(sorted_list, GenericObject.getPlotFromGenericObject());
-        sorted_list = raiseLockedObject(sorted_list, GenericObject)
+        sorted_list = removeSameObjects(sorted_list, genericObject.getPlotbyId());
+        sorted_list = raiseLockedObject(sorted_list, genericObject)
 
         return sorted_list;
     }
@@ -151,5 +158,13 @@ public class PlaceResourceService {
         }
 
         return all_objects;
+    }
+
+
+    private List<Resource> getAllResourcesFromDB (int val)
+    {
+        LinkedList<Resource> fnlist = new LinkedList<Resource>()
+        fnlist += Resource.findAll("from Resource where id>=\'$val\' order by rand()")
+        return fnlist
     }
 }

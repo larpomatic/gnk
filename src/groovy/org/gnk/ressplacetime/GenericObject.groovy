@@ -24,8 +24,10 @@ abstract class GenericObject {
 
      abstract ArrayList<Tag> getTags()
      abstract Map<Tag, Integer> getTagsAndWeights(Float ponderation)
+     abstract ArrayList<ReferentialObject> getProposedObject()
      abstract ArrayList<ReferentialObject> getReferentialObject()
      abstract ReferentialObject getLockedObject();
      abstract Plot getPlotFromGenericObject()
      abstract String getSubType();
+     abstract Plot getPlotbyId();
 }
