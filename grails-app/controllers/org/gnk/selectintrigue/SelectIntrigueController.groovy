@@ -392,7 +392,7 @@ class SelectIntrigueController {
                  conventionList: Convention.list()]);
     }
 
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompGatible(Plot plot, Gn gn) {
         /* int countWomen = 0;
          int countMen = 0;
          int countOthers = 0;

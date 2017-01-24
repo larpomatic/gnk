@@ -110,7 +110,7 @@
             if (content != "") {
                 var resource = new Object();
                 // Gn id
-                resource.gnId = ${gnInfo.dbId}
+                resource.gnId = ${gnInfo.id}
                 // Gn plot id
                 resource.gnPlotId = plotId;
                 // HTML id

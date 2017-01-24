@@ -12,11 +12,9 @@ import org.gnk.roletoperso.Graph
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.GnInformation
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
-import org.gnk.substitution.data.Tag
+import org.gnk.tag.Tag
 
 class PlaceSubController {
 
@@ -62,7 +60,7 @@ class PlaceSubController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         List<Place> placeList = inputHandler.placeList
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap

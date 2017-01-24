@@ -27,9 +27,9 @@ class PeriodTests {
         //Convention convention = Convention.findByDescription("Occidentale")
         Gn gn = new Gn(name: gnName, convention_id: 1, date: gnBeginning,
                 duration: gnDuration, step: "selectIntrigue")
-        gnHasConvention.setGn(gn)
+        //gnHasConvention.setGn(gn)
         gn.save(failOnError: true)
-        gnHasConvention.save(failOnError: true)
+        //gnHasConvention.save(failOnError: true)
         gnId = gn.getId()
     }
 

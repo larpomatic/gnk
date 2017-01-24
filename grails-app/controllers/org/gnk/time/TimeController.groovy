@@ -14,10 +14,8 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.GnInformation
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -67,7 +65,7 @@ class TimeController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         //List<Character> characterList = inputHandler.characterList
         //List<Resource> resourceList = inputHandler.resourceList
         //List<Place> placeList = inputHandler.placeList
@@ -156,7 +154,7 @@ class TimeController {
 
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
-        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
+        if (!gnInstance.save(flush: true)) {
 
         }
         redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])

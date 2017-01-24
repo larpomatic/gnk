@@ -12,14 +12,13 @@ import org.gnk.resplacetime.Pastscene
 //import org.gnk.substitution.data.Event
 //import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
-import org.gnk.substitution.data.Tag
+import org.gnk.resplacetime.Resource
+import org.gnk.tag.Tag
 import org.gnk.roletoperso.Character
-import org.gnk.substitution.data.GnInformation
 
 class InputHandler {
 
-    GnInformation gnInfo
+    Gn gnInfo
     List<Character> characterList
     List<Resource> resourceList
     List<Place> placeList
@@ -103,16 +102,16 @@ class InputHandler {
 
     // GnInfo
     private void createGnInformation(Gn gnInst) {
-        gnInfo = new GnInformation()
+        gnInfo = new Gn()
 
         // Database id
-        gnInfo.dbId = gnInst.id
+        gnInfo.id = gnInst.id
         // Title
-        gnInfo.title = gnInst.name
+        gnInfo.name = gnInst.name
         // Creation date
-        gnInfo.creationDate = gnInst.dateCreated
+        gnInfo.dateCreated = gnInst.dateCreated
         // Last update date
-        gnInfo.lastUpdateDate = gnInst.lastUpdated
+        gnInfo.lastUpdated = gnInst.lastUpdated
         // Nb players
         gnInfo.nbPlayers = gnInst.nbPlayers
         // Universe
@@ -130,7 +129,7 @@ class InputHandler {
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
-        gnInfo.GanttData = "";
+        gnInfo.ganttData = "";
     }
 
     // CharacterList

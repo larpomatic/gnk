@@ -261,7 +261,7 @@ class SelectStepService {
      * @param gn : the gn chosen for the test
      * @return result of the test : true if it's compatible, if not false
      */
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompatible(Plot plot, Gn gn) {
         User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUsername = user.getUsername();
         org.gnk.user.User currentUser = org.gnk.user.User.findByUsername(currentUsername);
