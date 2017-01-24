@@ -1056,8 +1056,8 @@ class PublicationController {
                 for (Role r : roles) {
                     for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
 
-                        Integer time = roleHasPastscene.pastscene.timingRelative
-                        String unit = roleHasPastscene.pastscene.unitTimingRelative
+                        //Integer time = roleHasPastscene.pastscene.timingRelative
+                        //String unit = roleHasPastscene.pastscene.unitTimingRelative
                         tmp.add(roleHasPastscene);
                     }
                 }

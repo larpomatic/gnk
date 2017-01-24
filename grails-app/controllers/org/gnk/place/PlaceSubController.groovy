@@ -14,7 +14,6 @@ import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
 import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
 import org.gnk.tag.Tag
 
 class PlaceSubController {
