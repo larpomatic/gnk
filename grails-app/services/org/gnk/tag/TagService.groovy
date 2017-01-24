@@ -30,8 +30,8 @@ class TagService {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-            Tag tagRelevant = Tag.findByTag(child);
-            if (tagRelevant && tagRelevant.relevantPlot) {
+           // Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantPlot) {
                 result.add(child);
             }
         }
