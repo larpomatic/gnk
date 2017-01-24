@@ -24,6 +24,7 @@ function updateName(newValue, elt){
     var id_render = elt.id.split('_');
     console.log(document.getElementById('refDesc_' + id_render[1]).textContent);
     document.getElementById('refDesc_' + id_render[1]).textContent =  newValue;
+    document.getElementById('render_' + id_render[1]).getElementsByClassName('pitchDescriptionTitle')[0].setAttribute('value', newValue);
     //$("#titleRender_" + template).remove();
     //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + newValue + '</li>';
     //$("#titleRender_").id = "titleRender" + template;

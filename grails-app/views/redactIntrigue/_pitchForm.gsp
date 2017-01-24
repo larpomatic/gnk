@@ -40,6 +40,7 @@ select {
 </style>
 <div class="fullScreenEditable" id="new_render">
     <g:hiddenField name="pitchDescription_0" class="pitchDescription" value="idDescription_0"/>
+    <g:hiddenField name="titleDescription_0" class="pitchDescriptionTitle" value="Description"/>
     <div class="test">
         <a href="#" id="idDescription_0" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click" onmouseover="edit(this)">Description</a>
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
@@ -82,7 +83,7 @@ select {
     <div class="button_template">
         <g:render template="dropdownButtons" />
     </div>
-        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" value="Insérer votre description" onchange="update_modified()"/>
+        <g:textArea name="description_text" id="idDescriptionText_0" class="text-left richTextEditor editable" placeholder="Insérer votre description" onchange="update_modified()"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>

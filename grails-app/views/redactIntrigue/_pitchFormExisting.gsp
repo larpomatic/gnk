@@ -40,8 +40,9 @@ select {
 </style>
 <div class="fullScreenEditable" id="new_render">
     <g:hiddenField name="pitchDescription_${description.idDescription}" class="pitchDescription" value="idDescription_${description.idDescription}"/>
+    <g:hiddenField name="titleDescription_${description.idDescription}" class="pitchDescriptionTitle" value="${description.title}"/>
     <div class="test">
-        <a href="#" id="idDescription_${description.idDescription}" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click" onmouseover="edit(this)">Description</a>
+        <a href="#" id="idDescription_${description.idDescription}" data-type="text" data-pk="1" data-url="" data-title="Entrer le titre de la description" class="editable editable-click" onmouseover="edit(this)">${description.title}</a>
         <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
     </div>
     <div class="row formRow">
@@ -91,25 +92,3 @@ select {
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>
 </div>
-
-<script type="javascript">
-var template = desc_number - 1;
-$(document).ready(function() {
-    console.log("template value : idDescription_" + template);
-    //console.log("desc_number value : idDescription_" + desc_number);
-    $('#idDescription_0').editable({
-        success: function(response, newValue) {
-            updateName(newValue);
-        }
-    });
-});
-
-function updateName(elt){
-    console.log("template value : " + template);
-    document.getElementById('titleRender_' + template).setAttribute('value', elt);
-    //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + elt + '</li>';
-    //$("#titleRender_").id = "titleRender" + template;
-    //$('#overview').append(new_elt);
-    //console.log($('#description_0').editable('getValue', true));
-}
-</script>

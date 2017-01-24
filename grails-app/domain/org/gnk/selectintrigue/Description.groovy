@@ -12,10 +12,11 @@ class Description {
 
     String type
     String pitch
+    String title
 
     Integer plotId
 
-    public Description(Integer id, Integer desc_idDescription, String desc_Type, String desc_Pitch, String desc_isPnj, String desc_isPj, String desc_isOrga)
+    public Description(Integer id, Integer desc_idDescription, String desc_Type, String desc_Pitch, String desc_isPnj, String desc_isPj, String desc_isOrga, String desc_title)
     {
         plotId = id
         type = desc_Type
@@ -25,6 +26,7 @@ class Description {
         isPj = desc_isPj == "on" ? true : false
         isOrga = desc_isOrga == "on" ? true : false
         idDescription = desc_idDescription
+        title = desc_title != "" ? desc_title : "Description"
     }
 
     static mapping = {
