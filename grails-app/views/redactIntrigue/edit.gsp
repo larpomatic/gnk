@@ -24,7 +24,6 @@
 <g:javascript src="redactIntrigue/genericResource.js"/>
 <g:javascript src="redactIntrigue/relation.js"/>
 <g:javascript src="redactIntrigue/generalDescription.js"/>
-<g:javascript src="selectIntrigue/bootstrap-editable.js"/>
 <g:javascript src="selectIntrigue/bootstrap.min.js"/>
 <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
 <g:javascript src="redactIntrigue/pitchForm.js"/>

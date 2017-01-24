@@ -94,9 +94,37 @@ select {
     var template = desc_number - 1;
     var template2 = desc_number;
     $(document).ready(function() {
-        console.log("template value : idDescription_" + template);
-        console.log("template value 2 : idDescription_" + template2);
-        console.log("nbrender value : " + nb_render);
-        console.log("desc_number value : " + desc_number);
+        //On sauvegarde la position du curseur lorsque l'éditeur perd le focus
+        function saveCarretPos(editorName) {
+            var caretOffset = 0;
+            var element = document.getElementById(editorName);
+            var doc = element.ownerDocument || element.document;
+            var win = doc.defaultView || doc.parentWindow;
+            var sel;
+            if (typeof win.getSelection != "undefined") {
+                var range = win.getSelection().getRangeAt(0);
+                var preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            } else if ((sel = doc.selection) && sel.type != "Control") {
+                var textRange = sel.createRange();
+                var preCaretTextRange = doc.body.createTextRange();
+                preCaretTextRange.moveToElementText(element);
+                preCaretTextRange.setEndPoint("EndToEnd", textRange);
+                caretOffset = preCaretTextRange.text.length;
+            }
+            carretPos = window.getSelection().getRangeAt(0); //caretOffset;
+            focusedNode = document.activeElement;
+            document.getElementById("printHere").innerText = carretPos;
+        }
+
+// Avant d'insert l'objet on remet le curseur à l'endroit sauvegardé
+        function setCarretPos() {
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(carretPos);
+        }
+
     });
 </script>
