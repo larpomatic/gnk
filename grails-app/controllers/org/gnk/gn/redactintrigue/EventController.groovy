@@ -102,54 +102,54 @@ class EventController {
         ArrayList<String> roles = plot.roles.code;
         ArrayList<String> pastscenes = plot.pastescenes.description;
         ArrayList<String> gplace = plot.genericPlaces.code;
-        print(pastscenes);
-        print(roles);
-        print(title);
+        //print(pastscenes);
+        //print(roles);
+        //print(title);
         //String description = params.description
         //Pastscene ps = new Pastscene();
         JSONObject jsonEvent = new JSONObject();
         //Je parse ma description et mon titre avec les roles... et je valide
-        //for (int k = 0; k < roles.size(); k++) {
-          //  if (eventdescr.contains(roles) != roles[k])
-           // {
-             //   print ("role non défini");
-              //  return false;
-            //}
-       // }
+
         for (String r : roles)
         {
             for (String desc : eventdescr)
                 {
-                    return desc.contains(r)
-                    print(desc.contains(r));
-                }
 
-            //System.out.println(r);
-            //return eventdescr.contains(r);
-        }
-       /* for  (int i = 0; i < roles.size(); i++)
-        {
-            int j = 0;
-            print(roles[i]);
-            return eventdescr.contains(roles[i]);
-            }
-*/
+                        if (!desc.contains(r))
+                        {
+                            System.out.print("warning");
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                        }
+
+                }
         for (String desc: eventdescr)
         {
             for (String gp:gplace)
             {
-                return eventdescr.contains(gp);
+                return desc.contains(gp)
+
             }
         }
-        /*for  (int j = 0; j < gplace.size(); j++)
-        {
-            return eventdescr.contains(gplace[j]);
-        }*/
+
         for (String titre : title)
         {
             for (String ps: pastscenes)
             {
-                return ps.contains(titre);
+                if (!ps.contains(title))
+                {
+                    System.out.print("warning");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+              //  return ps.contains(titre);
             }
         }
         /*for  (int m = 0; m < title.size(); m++)

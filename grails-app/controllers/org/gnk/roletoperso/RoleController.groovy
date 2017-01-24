@@ -35,6 +35,7 @@ class RoleController {
 
             ArrayList<String> title = plot.events.name;
             ArrayList<String> roles = plot.roles.code;
+        ArrayList<String> roledesc = plot.roles.description;
             ArrayList<String> pastscenes = plot.pastescenes.description;
             ArrayList<String> gplace = plot.genericPlaces.code;
             print(pastscenes);
@@ -44,6 +45,14 @@ class RoleController {
             //Pastscene ps = new Pastscene();
           JSONObject jsonEvent = new JSONObject();
             //Je parse ma description et mon titre avec les roles... et je valide
+        for (String desc: roledesc)
+        {
+            for (String gp:gplace)
+            {
+                return desc.contains(gp)
+                //return eventdescr.contains(gp);
+            }
+        }
             for (int i = 0; i < title.size(); i++) {
                 return roles.contains(title[i]);
             }
