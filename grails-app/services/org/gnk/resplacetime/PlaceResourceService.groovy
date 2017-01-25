@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import org.gnk.parser.GNKDataContainerService
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.utils.Pair
@@ -109,6 +110,11 @@ public class PlaceResourceService {
     // retourne la liste triée des meilleurs objects qui pourront subtituer au generic object
     ArrayList<Pair<ReferentialObject, Integer>> findBestObjects(GenericObject genericObject, Gn gn) {
 
+        if (gn.dtd != null) {
+            GNKDataContainerService gnk = new GNKDataContainerService()
+            gnk.ReadDTD(gn.dtd)
+            gn = gnk.gn
+        }
 
         // à retirer par la suite et le faire proprement
         v2TagService = new V2TagService();
@@ -124,14 +130,11 @@ public class PlaceResourceService {
 
         // on trie la sorted_list en fonction du poids de l'object
         Collections.sort(sorted_list, new Comparator<Pair<ReferentialObject, Integer>>() {
-            @Override
             public int compare(final Pair<ReferentialObject, Integer> o1, final Pair<ReferentialObject, Integer> o2) {
-                if (o1.right.intValue() > o2.right.intValue())
-                    return 1;
-                else
-                    return 0;
+                return o1.right.intValue().compareTo(o2.right.intValue());
             }
         });
+        //Collections.reverse(sorted_list)
 
         sorted_list = removeSameObjects(sorted_list, genericObject.getPlotbyId());
         sorted_list = raiseLockedObject(sorted_list, genericObject)

@@ -204,6 +204,7 @@ class IntegrationHandler {
             gr.code = "res" + resourceJson.gnId + "_plot" + resourceJson.gnPlotId
             gr.plotId = new Integer(Integer.parseInt(resourceJson.gnPlotId))
             gr.gnId = new Integer(resourceJson.IdOfGn)
+            gr.totalNumberOfTags = 0;
 
             List<Tag> tagList = []
             List<Tag> tags = new ArrayList<>();
@@ -245,12 +246,12 @@ class IntegrationHandler {
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         //print "Universe : " + universe
         for (genericResource in genericResourceList) {
-            if (genericResource.proposedResources.isEmpty()) {
+            //if (genericResource.proposedResources.isEmpty()) {
                 //print "GenericResource IN : " + genericResource
                 //genericResource.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(genericResource,Plot.findById(genericResource.plotId))
                 //print "GenericResource OUT : " + genericResource
                 genericResource.resultService = placeresourceservice.findBestObjects(genericResource, Gn.findById(genericResource.gnId))
-            }
+            //}
         }
         // END RESOURCE SERVICE CALL
 

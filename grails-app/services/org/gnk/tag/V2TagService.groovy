@@ -49,10 +49,14 @@ public class V2TagService {
      */
     Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
 
+        int totalNumberOfTagsUsed = 0;
+        int result = 0;
         // initialisation des tags du generic object
         Map<Tag, Integer> map_genericObject = initGenericObjectList(genericObject, gn);
+
         //récupérer les tags relevants du genericobjet
         map_genericObject.putAll(getRelevantTags(genericObject.getTagsAndWeights(GenericObjectponderation)));
+        //for (tags )
 
         //initialisation des tags de l'object
         Map<Tag, Integer> map_Object = initObjectList(object);
@@ -74,11 +78,13 @@ public class V2TagService {
                 if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
                     score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
                     score = tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
+                    totalNumberOfTagsUsed += 1;
                 }
             }
         }
 
-        return score;
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        return result;
     }
 
     /**
@@ -92,6 +98,7 @@ public class V2TagService {
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
         map_tags.putAll(genericObject.getTagsAndWeights(GenericObjectponderation))
+        for (tags in map_tags)
 
         //recupérer les tags du gn
         // chaque poids d'un tag du GN est pondéré à 90%
@@ -120,7 +127,7 @@ public class V2TagService {
         if (gn.selectedPlotSet != null) {
             Set<Plot> plotlist = gn.selectedPlotSet;
             for (Plot p : plotlist) {
-                for (PlotHasTag tp : p.plotHasTag) {
+                for (PlotHasTag tp : p.extTags) {
                     map_tags = addTag(map_tags, tp.tag, new Integer((int) tp.weight * plotponderation));
                 }
             }

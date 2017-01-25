@@ -21,7 +21,7 @@ class GenericPlace extends GenericObject{
     Integer DTDId
 
     // Id referenced into DTD
-    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace", "resultsAllUniverses", "resultService", "plotId", "gnId"]
+    static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace", "resultsAllUniverses", "resultService", "plotId", "gnId", "totalNumberOfTags"]
 
 
     ArrayList<ReferentialPlace> proposedPlaces
@@ -33,6 +33,7 @@ class GenericPlace extends GenericObject{
     ArrayList<Pair<ReferentialObject, Integer>> resultService
     Integer plotId
     Integer gnId
+    Integer totalNumberOfTags
 
     static belongsTo = [plot: Plot, objectType: ObjectType]
 
