@@ -241,6 +241,7 @@ class RedactIntrigueController {
             RoleHasEvent.executeUpdate("delete RoleHasEvent r where r.role = " + role.id);
             RoleHasPastscene.executeUpdate("delete RoleHasPastscene r where r.role = " + role.id);
         }
+        Description.executeUpdate("delete Description d where d.plotId = " + plotInstance.id);
         Role.executeUpdate("delete Role r where r.plot = " + plotInstance.id);
         Pastscene.executeUpdate("update Pastscene p set p.pastscenePredecessor=null where p.plot=" + plotInstance.id);
         Pastscene.executeUpdate("delete Pastscene p where p.plot = " + plotInstance.id);

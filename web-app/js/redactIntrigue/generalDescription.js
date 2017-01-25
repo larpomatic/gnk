@@ -1,4 +1,4 @@
-var nb_render = 1;
+var nb_render = 0;
 var clone;
 var desc_number = 0;
 var introduction = {
@@ -59,7 +59,10 @@ function deleteDescription(elt){
         }
         --nb_render;
         --desc_number;
+        console.log(nb_render);
     }
+    else
+        createNotification("danger", "Impossible de supprimer cette description", "Vous devez avoir au moins une description dans votre intrigue");
     update_modified();
 }
 
@@ -83,7 +86,7 @@ function initialise_description(render)
     console.log(document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0]);
     document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].textContent = "";
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].textContent = "Description";
-    document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].setAttribute('value', "contexte du GN");
+    document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].value = "Contexte du GN";
 }
 
 function update_introduction(render, desc_remove){
