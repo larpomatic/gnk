@@ -30,8 +30,8 @@ function addDescription() {
     clone.attr('id', "render_"+ desc_number);
     $('#desc_wrapper').append(clone);
     initialise_description(desc_number);
-    update_id(desc_number, desc_number);
     $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '"> <a id="refDesc_' + desc_number + '"href="#idDescription_' + desc_number + '">Description </a> </li>');
+    update_id(desc_number, desc_number);
     desc_number = desc_number + 1;
     ++nb_render;
 }
@@ -74,12 +74,17 @@ function update_id(render, description) {
     document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].id = "idType_" + description;
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].id = "idDescription_" + description;
     document.getElementById('render_' + render).getElementsByClassName('pitchDescriptionTitle')[0].setAttribute('name', "titleDescription_" + description);
+    document.getElementById('titleRender_' + render).id = "titleRender_" + description;
+    document.getElementById('refDesc_' + render).href = "#idDescription_" + description;
+    document.getElementById('refDesc_' + render).id = "refDesc_" + description;
+
 }
 
 //Lors de l'ajout d'une description, réinitialise les paramètres
 function initialise_description(render)
 {
     document.getElementById('render_' + render).getElementsByClassName('text-left richTextEditor editable')[0].textContent = "";
+    document.getElementById('render_' + render).getElementsByClassName('description_text')[0].textContent = "";
     document.getElementById('render_' + render).getElementsByClassName('editable editable-click')[0].textContent = "Description";
     document.getElementById('render_' + render).getElementsByClassName('desc_type')[0].value = "Contexte du GN";
 }
