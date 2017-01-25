@@ -184,6 +184,7 @@ class RedactIntrigueController {
 		}
         plotInstance.properties = params
 
+        //Sauvergarde des descriptions en base
         isupdate = updateDescription(plotInstance, isupdate)
         plotInstance.pitchOrga = params.plotPitchOrga == "" ? null : params.plotPitchOrga;
         plotInstance.pitchPj = params.plotPitchPj == "" ? null : params.plotPitchPj;
@@ -259,6 +260,8 @@ class RedactIntrigueController {
 	}
 
     def updateDescription(Plot plotInstance, Boolean isupdate){
+
+
         List<String> pitchOrga = new ArrayList<String>()
         List<String> pitchPj = new ArrayList<String>()
         List<String> pitchPnj = new ArrayList<String>()
@@ -267,6 +270,7 @@ class RedactIntrigueController {
 
         int nb_desc = (params.desc_type instanceof String[]) ? params.desc_type.length : 1
 
+        //Récupération des valeurs des champs de chaque description
         for (int i = 0; i < nb_desc; i++)
         {
             pitchOrga.add(params.get("pitchOrga_" + i.toString()).toString());
@@ -275,6 +279,7 @@ class RedactIntrigueController {
             title.add(params.get("titleDescription_" + i.toString()).toString());
             String test_description = (params.description_text instanceof String[]) ? params.description_text[i].toString() : params.description_text
             if (pitchOrga.get(i) == "null" && pitchPj.get(i) == "null" && pitchPnj.get(i) == "null" || test_description == "") {
+                //Si un des champs est vide, l'insertion n'est pas validée et un message d'erreur est envoyé
                 isupdate = false
                 return isupdate
             }
@@ -282,6 +287,7 @@ class RedactIntrigueController {
             //System.out.println("pitchDescription value : " + params.get("pitchDescription_" + i.toString()).toString().split('_')[1].toInteger())
         }
 
+        //Création et insertion/update des descriptions en base
         for (int i = 0; i < nb_desc; i++)
         {
             def type_description = (params.desc_type instanceof String[]) ? params.desc_type[i].toString() : params.desc_type.toString();
@@ -295,6 +301,7 @@ class RedactIntrigueController {
             new_description.save(flush: true)
         }
 
+        //Suppression des descriptions en base
         for (int j = Description.findAllByPlotId(plotInstance.id.toInteger()).size() - 1; j >= descriptionId.size(); j--)
         {
             Description.executeUpdate("delete Description d where d.plotId=" + plotInstance.id.toInteger() + "and d.idDescription=" + j)

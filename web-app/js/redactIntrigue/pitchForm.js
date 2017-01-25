@@ -1,46 +1,30 @@
-var template = desc_number - 1;
-var template2 = desc_number;
-$(document).ready(function() {
-    console.log("template value : idDescription_" + template);
-    console.log("template value 2 : idDescription_" + template2);
-    console.log("nbrender value : " + nb_render);
-    console.log("desc_number value : " + desc_number);
-});
+
+//Mettre à jour le titre de la description
 function edit(elt)
 {
     var id_elt = elt.getAttribute('id');
-    console.log("Edit : " + id_elt);
     $("#"+ id_elt).editable({
         success: function (response, newValue) {
-            console.log("it's work");
             updateName(newValue, elt);
         }
     });
-    activate_update();
 }
 
+//Le sommaire est mis à jour en fonction de la valeur de la description
 function updateName(newValue, elt){
-    console.log("template value : " + template);
     var id_render = elt.id.split('_');
-    console.log(document.getElementById('refDesc_' + id_render[1]).textContent);
     document.getElementById('refDesc_' + id_render[1]).textContent =  newValue;
     document.getElementById('render_' + id_render[1]).getElementsByClassName('pitchDescriptionTitle')[0].setAttribute('value', newValue);
-    //$("#titleRender_" + template).remove();
-    //var new_elt = '<li class="list-group-item" id="titleRender_' + template + '">' + newValue + '</li>';
-    //$("#titleRender_").id = "titleRender" + template;
-    //$('#overview').append(new_elt);
-    //console.log($('#description_0').editable('getValue', true));
 }
 
+//Vérifie que le type "Introduction" n'est selectionné qu'une seule fois
 function verifyType(elt)
 {
     var id_introduction = elt.id.split('_');
-    console.log("value : " + introduction.desc_id);
     if (id_introduction[1] == introduction.desc_id) {
         if (elt.value != "Introduction") {
             introduction.desc_id = -1;
             introduction.bool = false;
-            console.log("Pas Introduction ici")
         }
     }
     else {
@@ -51,25 +35,15 @@ function verifyType(elt)
                     elt.value = "Contexte du GN";
                 }
                 else {
-                    console.log('Introduction ici et en plus true');
                     introduction.bool = true;
                     introduction.desc_id = id_introduction[1];
                 }
             }
     }
-    console.log("VerifyType : " + introduction.bool);
-    //activate_update();
     update_modified();
 }
 
-function activate_update()
-{
-    if (introduction.bool)
-        document.getElementById('update').isDisabled = false;
-    else
-        document.getElementById('update').isDisabled = true;
-}
-
+//Associe le ritchTexteEditor de la description avec une hiddenvalue pour récupérer la description en back
 function update_text(elt)
 {
     var id_render = elt.id.split('_');
