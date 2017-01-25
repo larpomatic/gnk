@@ -54,8 +54,8 @@ class TagService {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-            Tag tagRelevant = Tag.findByTag(child);
-            if (tagRelevant && tagRelevant.relevantResource) {
+            //Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantResource) {
                 result.add(child);
             }
         }
@@ -66,8 +66,8 @@ class TagService {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-            Tag tagRelevant = Tag.findByTag(child);
-            if (tagRelevant && tagRelevant.relevantPlace) {
+            //Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantPlace) {
                 result.add(child);
             }
         }
@@ -78,8 +78,8 @@ class TagService {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();
         for (Tag child in genericChilds) {
-            Tag tagRelevant = Tag.findByTag(child);
-            if (tagRelevant && tagRelevant.relevantRole) {
+            //Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantRole) {
                 result.add(child);
             }
         }
