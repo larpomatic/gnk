@@ -354,6 +354,67 @@ function pasteHtmlAtCaret(html) {
 //Dernière position du curseur dans l'éditeur
 var carretPos = null;
 
+$(document).ready(function() {
+        $('.dropdown-toggle').dropdown()
+});
+
+//insert html span into textEditors
+function initSpanCreation() {
+    $(".buttonRichTextEditor").unbind('click');
+    $('.buttonRichTextEditor').click(function() {
+        setCarretPos();
+        if ($(this).closest("ul").hasClass("roleSelector")) {
+            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("a").hasClass("gnPlaceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("placeSelector")) {
+            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("resourceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("a").hasClass("gnDateButton")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        initializePopover();
+        return false;
+    });
+}
+//On sauvegarde la position du curseur lorsque l'éditeur perd le focus
+function saveCarretPos(editorName, elt) {
+    update_text(elt);
+    var caretOffset = 0;
+    var element = document.getElementById(editorName);
+    var doc = element.ownerDocument || element.document;
+    var win = doc.defaultView || doc.parentWindow;
+    var sel;
+    if (typeof win.getSelection != "undefined") {
+        var range = win.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if ((sel = doc.selection) && sel.type != "Control") {
+        var textRange = sel.createRange();
+        var preCaretTextRange = doc.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    carretPos = window.getSelection().getRangeAt(0); //caretOffset;
+    focusedNode = document.activeElement;
+    document.getElementById("printHere").innerText = carretPos;
+}
+
+// Avant d'insert l'objet on remet le curseur à l'endroit sauvegardé
+function setCarretPos() {
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(carretPos);
+}
+
 // on remplace les balise de la description par des span html
 function initializeTextEditor() {
     $('.richTextEditor').each(function() {
