@@ -36,12 +36,8 @@ $(document).ready(function () {
                     $("td:first-child", this).html(count);
                     count++;
                 });
-                /*var index = 0;
-                var placeArray = placesJSON.places;
-                while (index < placeArray.length())
-                {
-
-                }*/
+                console.log(place2.val());
+                removeItem(placesJSON.places, place2.val())
             }
         })
     });
@@ -110,3 +106,13 @@ $(document).ready(function () {
         })
     });
 });
+
+function removeItem(array, item){
+    for(var i in array){
+        if(array[i].code == item){
+            console.log(array[i].code);
+            array.splice(i,1);
+            break;
+        }
+    }
+}

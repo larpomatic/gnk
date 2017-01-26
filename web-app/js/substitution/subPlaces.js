@@ -161,11 +161,13 @@ function preparePlacesJSONForValidation(placesJSON) {
         var placeElement = $("#" + place.htmlId);
         var index = 0;
         //if (place.code != "Manoir") {
-          //  console.log(place);
+            //console.log(place);
             //index++;
             // Update name
             var placeWritten = document.getElementById("placeWritten");
+            console.log("PlaceWritten : " + placeWritten);
             var placeSelect = placeElement.children(".place").eq(0).children("select").eq(0);
+            console.log(placeSelect);
             if (placeSelect.attr("isEmpty") == "false") {
                 if (document.getElementById("writtenPlace").checked) {
                     place.selectedName = placeWritten.value;
