@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat
 class TimeController {
 
     private org.gnk.naming.Convention convention
+    static private OutputHandler outputHandler
 
     def index() {
         InputHandler inputHandler = new InputHandler()
@@ -53,7 +54,7 @@ class TimeController {
         gnData.ReadDTD(gn)
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "substitution";
+        gn.step = "time";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
 
         gn.save(flush: true);
@@ -196,7 +197,7 @@ class TimeController {
         // Getback JSON files in database
         String[] jsonFiles = Gn.get(gnDbId).charJSONArray.split("JSONArray");
         // Output Substitution
-        OutputHandler outputHandler = NamingController.getOutputHandler()
+        outputHandler = new OutputHandler();
         // Characters
         JSONArray charsJSONArray = new JSONArray(jsonFiles.getAt(0))
         outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
@@ -232,7 +233,7 @@ class TimeController {
             gnkDataContainerService.gn.dtd = xmlGN;
             //gnkDataContainerService.SaveDTD(gnkDataContainerService.gn.dtd)
             //line below can be commented to go back to substitution step when leaving the GN creation during publication
-            gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
+            gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"time\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return
