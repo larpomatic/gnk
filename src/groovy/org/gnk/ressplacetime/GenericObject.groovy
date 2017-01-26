@@ -30,4 +30,5 @@ abstract class GenericObject {
      abstract Plot getPlotFromGenericObject()
      abstract String getSubType();
      abstract Plot getPlotbyId();
+     abstract ArrayList<Tag> getTaglist()
 }

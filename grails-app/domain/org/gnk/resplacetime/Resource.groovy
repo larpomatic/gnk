@@ -21,6 +21,8 @@ class Resource extends ReferentialObject {
 	Integer DTDId;
 
 
+
+
 //    static belongsTo = [ genericResource: GenericResource] // Dump20131114-version 2.1
 
 	static hasMany = [ extTags: ResourceHasTag]

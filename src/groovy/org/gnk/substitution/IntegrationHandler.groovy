@@ -29,6 +29,7 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.data.RelationCharacter
 import org.gnk.resplacetime.GenericResource
 import org.gnk.utils.Pair
+import org.gnk.tag.Tag
 
 class IntegrationHandler {
 
@@ -214,9 +215,9 @@ class IntegrationHandler {
                 tag.tag = tagJson
                 tag.weight = tagJson.weight as Integer*/
                 Tag tag = new Tag()
-                tag.value = tagJson.value
-                tag.type = tagJson.family
-                tag.weight = tagJson.weight as Integer
+                tag.value_substitution = tagJson.value
+                tag.type_substitution = tagJson.family
+                tag.weight_substitution = tagJson.weight as Integer
                 tags.add(tag)
             }
             gr.taglist = tags

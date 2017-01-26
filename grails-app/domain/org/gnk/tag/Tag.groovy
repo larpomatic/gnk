@@ -15,6 +15,12 @@ class Tag{
     String name
     Tag parent
 
+    static transients = ["value_substitution", "type_substitution", "weight_substitution", "status_substitution"]
+    String value_substitution
+    String type_substitution
+    Integer weight_substitution
+    String status_substitution
+
     static hasMany = [
     extPlaceTags: PlaceHasTag,
     extResourceTags: ResourceHasTag,

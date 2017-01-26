@@ -66,8 +66,8 @@ class GenericPlace extends GenericObject{
      ArrayList<Tag> getTags() {
          ArrayList<Tag> tagsList = new ArrayList<>();
 
-         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
-            tags.add(genericPlaceHasTag.tag)
+         for (Tag t in this.taglist)
+            tags.add(t)
 
          return tagsList;
      }
@@ -75,8 +75,8 @@ class GenericPlace extends GenericObject{
     Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
-         for (GenericPlaceHasTag genericPlaceHasTag in this.extTags)
-             mapTagInt.put(genericPlaceHasTag.tag, new Integer((int)(genericPlaceHasTag.weight * ponderation)))
+         for (Tag t in this.taglist)
+             mapTagInt.put(t, new Integer((int)(t.weight_substitution * ponderation)))
 
          return mapTagInt;
      }
@@ -106,6 +106,10 @@ class GenericPlace extends GenericObject{
 
     Plot getPlotbyId() {
         return Plot.findById(this.plotId);
+    }
+
+    ArrayList<Tag> getTaglist() {
+        return this.taglist;
     }
 
 //    boolean isIngameClue()

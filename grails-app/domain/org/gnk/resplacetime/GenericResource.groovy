@@ -115,8 +115,8 @@ class GenericResource extends GenericObject{
     ArrayList<Tag> getTags() {
         ArrayList<Tag> tagsList = new ArrayList<>();
 
-        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
-            tags.add(genericResourceHasTag.tag)
+        for (Tag t in this.taglist)
+            tags.add(t)
 
         return tagsList;
     }
@@ -124,8 +124,8 @@ class GenericResource extends GenericObject{
     Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
 
-        for (GenericResourceHasTag genericResourceHasTag in this.extTags)
-            mapTagInt.put(genericResourceHasTag.tag, new Integer((int)(genericResourceHasTag.weight * ponderation)))
+        for (Tag t in this.taglist)
+            mapTagInt.put(t, new Integer((int)(t.weight_substitution * ponderation)))
 
         return mapTagInt;
     }
@@ -149,6 +149,10 @@ class GenericResource extends GenericObject{
 
     Plot getPlotbyId() {
         return Plot.findById(this.plotId);
+    }
+
+    ArrayList<Tag> getTaglist() {
+        return this.taglist;
     }
 }
 
