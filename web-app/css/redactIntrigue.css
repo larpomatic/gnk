@@ -11,10 +11,10 @@
 #edit-plot input[type='text'],
 #edit-plot input[type='number']:not(.tagWeightInput),
 #edit-plot textarea,
-#edit-plot select:not(#selectUnivers):not(#selectUniversResource)
+#edit-plot select:not(#selectUnivers):not(#selectUniversResource):not(.desc_type)
 {
     /*font-family: 'Shadows Into Light', cursive !important;*/
-    font-size: 14px;
+    font-size: 20px;
     font-family: 'Gudea', sans-serif !important;
 }
 

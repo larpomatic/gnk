@@ -18,7 +18,7 @@
     margin-right: 70px;
 }
 select {
-    font-size: 16px !important;
+    font-size: 16px;
     width: 200px;
     outline: none;
 }
