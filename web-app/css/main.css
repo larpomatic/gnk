@@ -34,6 +34,17 @@ h1 {
 }
 
 
+.unique-h2 {
+    color: #767e85 !important;
+    font-family: 'Droid serif', serif !important;
+    font-size: 36px !important;
+    font-weight: 400 !important;
+    line-height: 44px !important;
+    margin: 0 0 12px !important;
+    margin-bottom: 50px !important;
+    border-bottom: 1px solid Darkgoldenrod;
+}
+
 h4 {
     color: DarkGoldenRod !important;
     font-weight: normal !important;
@@ -119,6 +130,26 @@ p:first-letter {
     border: solid 5px #FFFFFF;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);
     border-radius: 2px;
+}
+
+.image-wiki {
+    background: url(../images/wikipedia.jpg) no-repeat;
+    background-size: 125px auto;
+    width: 150px;
+    height: 180px;
+    margin: 80px auto 0;
+}
+
+.margin-top40 {
+    margin-top: 40px;
+}
+
+.margin-bottom-20-important {
+    margin-bottom: 20px !important;
+}
+
+.margin-left-0 {
+    margin-left: 0;
 }
 
 .legend {
