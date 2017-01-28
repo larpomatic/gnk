@@ -15,16 +15,16 @@
 
 <body>
 <g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='naming']"/>
-<h1>Noms des personnages</h1>
+<h1><g:message code="naming.label" default="Naming Module"/></h1>
 <div id="subAlertContainer">
 </div>
 
 <g:hiddenField name="gnId" value="${gnId}"/>
-<div class="form-actions">
+%{--<div class="form-actions">
     <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
     <button id="publication" onclick="return publicationAccess()" class="btn btn-primary" action="index">
         ${message(code: 'navbar.ressource', default: 'Ressource')}</button>
-</div>
+</div>--}%
 
 
 <g:render template="gnInformation" />

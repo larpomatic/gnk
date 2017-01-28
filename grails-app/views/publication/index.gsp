@@ -13,9 +13,9 @@
 </head>
 <body>
 <g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='publication']"/>
-<h1>Publication du GN</h1>
+<h1><g:message code="publication.label" default="Publication Module"/></h1>
 <br><br>
-<g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
+%{--<g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>--}%
 <div class="row-fluid" id="hidTest">
     <div class="span4">
         <form id="exportWordButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">

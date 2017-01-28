@@ -35,10 +35,6 @@
 }
 </style>
 
-<h3>
-    <g:message code="roletoperso.result"
-               default="RoleToPerso result"/>
-</h3>
 <g:form method="post">
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <g:hiddenField name="gnDTD" value="${gnInstance?.dtd}"/>
@@ -129,7 +125,7 @@
             </g:if>
             <div class="span6" id="Char${character.DTDId}">
                 <div class="panel panel-default">
-                    <div class="panel-heading" style="margin-top: 20px">
+                    <div class="panel-heading">
                         <g:message code="roletoperso.character"
                                    default="Character"/> ${character.DTDId}
                         <div class="pull-right" style="margin-top: -5px">
@@ -492,7 +488,7 @@
             <div class="row-fluid">
                 <div class="span12" id="Relations">
                     <div class="panel panel-default">
-                        <div class="panel-heading" style="margin-top: 20px">
+                        <div class="panel-heading">
                             <g:message code="roletoperso.allRelationsSummary"
                                        default="All relations between characters summary"/>
                         </div>

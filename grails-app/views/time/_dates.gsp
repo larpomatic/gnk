@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
         <div class="input-append">
             <input readonly type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
-                   required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}"
+                   required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}" style="cursor: pointer"
                    value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
             <script>
 

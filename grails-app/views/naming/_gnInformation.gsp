@@ -1,6 +1,6 @@
 <div class="row-fluid">
-    <div class="span4"><h3 class="cap">information gn</h3></div>
-    <div class="span2"><button type="button" class="btn" data-toggle="collapse" data-target="#gnInformation"><i class="icon-arrow-down"></i></button></div>
+    <div class="span3"><h3 class="cap">Informations sur le gn</h3></div>
+    <div class="span2"><button type="button" class="btn margin-top15" data-toggle="collapse" data-target="#gnInformation"><i class="icon-arrow-down"></i></button></div>
 </div>
 
 <div id="gnInformation" class="collapse in">

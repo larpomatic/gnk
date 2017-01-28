@@ -28,5 +28,7 @@
             <g:render template="/selectIntrigue/step1_result" />
         </g:if>
 	</div>
+
+
 </body>
 </html>

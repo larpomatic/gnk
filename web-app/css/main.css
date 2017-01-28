@@ -123,8 +123,8 @@ p:first-letter {
 
 .legend {
     background-image: url('../images/Role2Perso/graphe_legende.png');
-    width: 275px;
-    height: 77px;
+    width: 280px;
+    height: 85px;
     margin: 0 auto 0 auto;
     border: solid 5px #FFFFFF;
     box-shadow: 0 0 10px rgba(0, 0, 0, .5);

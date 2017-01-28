@@ -13,11 +13,12 @@
 
 <body>
 <g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='roleToPerso']"/>
-<g:render template="subNav"/>
+
 <div id="edit-plot" class="content scaffold-list" role="main">
-    <legend><g:message code="roletoperso.roletopersoModule" default="RoleToPerso Module"/></legend>
-    <g:link action="getBack" controller="selectIntrigue" id="${gnInstance.id}"
-            class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
+    <h1><g:message code="roletoperso.roletopersoModule" default="RoleToPerso Module"/></h1>
+%{--    <g:link action="getBack" controller="selectIntrigue" id="${gnInstance.id}"
+            class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/>
+    </g:link>--}%
     <g:render template="result"/>
 </div>
 </body>
