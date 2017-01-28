@@ -4,10 +4,6 @@ th,td {
     margin: 0.3em;
 }
 
-.tab-pane.active {
-    height: 350pt;
-}
-
 .time
 {
     width: 55pt;

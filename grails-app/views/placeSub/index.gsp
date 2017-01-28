@@ -15,7 +15,8 @@
 
 <body>
 
-<h1>Place</h1>
+<g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='place']"/>
+<h1>Lieux de l'intrigue</h1>
 <div id="subAlertContainer">
 </div>
 

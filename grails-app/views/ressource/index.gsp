@@ -14,7 +14,8 @@
 </head>
 
 <body>
-<h1>Ressource</h1>
+<g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='ressource']"/>
+<h1>Ressources des personnages</h1>
 <div id="subAlertContainer">
 </div>
 

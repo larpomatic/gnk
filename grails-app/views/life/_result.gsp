@@ -36,12 +36,6 @@
 }
 </style>
 
-<h3>
-    %{--<g:message code="roletoperso.result"--}%
-    %{--default="RoleToPerso result"/>--}%
-    Resultat life
-</h3>
-
 <div class="container-fluid">
 <g:form method="post" controller="life">
 

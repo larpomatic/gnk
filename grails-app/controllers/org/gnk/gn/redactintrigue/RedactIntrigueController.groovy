@@ -16,6 +16,8 @@ import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceService
+import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
 import org.gnk.roletoperso.RoleHasEventHasGenericResource
@@ -37,6 +39,8 @@ import static org.gnk.resplacetime.GenericPlaceController.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
+    PlaceService placeService
+
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
 	def index() {
@@ -297,14 +301,8 @@ class RedactIntrigueController {
         wordWriter.addStyledParagraphOfText("T1", "Places")
         createPlaces(wordWriter, plot)
 
-        wordWriter.addStyledParagraphOfText("T1", "Meilleure Place")
-        createBestPlace(wordWriter, plot)
-
         wordWriter.addStyledParagraphOfText("T1", "Ressources")
         createResources(wordWriter, plot)
-
-        wordWriter.addStyledParagraphOfText("T1", "Meilleure ressource")
-        createBestResource(wordWriter, plot)
 
         wordWriter.addStyledParagraphOfText("T1", "Relation")
         createRelation(wordWriter, plot)
@@ -509,6 +507,10 @@ class RedactIntrigueController {
 
     def createPlaces(WordWriter wordWriter, Plot plot){
         String txt = ""
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
             wordWriter.addStyledParagraphOfText("T3", "Type : ")
@@ -528,17 +530,16 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("T3","Description")
             wordWriter.addStyledParagraphOfText("Normal", place.comment)
 
+/*            org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+
+            List<com.gnk.substitution.Tag> tags = new ArrayList<>();
+            genericplace.setTagList(place.getTags())
+            for (int i = 0; i < universList.size() ; i++) {
+                genericplace = placeService.findReferentialPlace(genericplace, universList[i].name)
+                // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
+            } */
 
         }
-
-    }
-
-    def createBestPlace(WordWriter wordWriter, Plot plot){
-//        org.gnk.ressplacetime.GenericPlace genericPlace
-//        String s = genericPlace.
-//        Plot plot
-//        plot.getGenericPlaces()[0].
-
     }
 
     def createResources(WordWriter wordWriter, Plot plot){
@@ -704,7 +705,7 @@ class RedactIntrigueController {
     }
     def createDate(Pastscene pastscene){
         def date = ""
-        switch (pastscene.unitTimingRelative) {
+/*        switch (pastscene.unitTimingRelative) {
             case "Y":
                 date = "an(s)"
                 break
@@ -722,7 +723,7 @@ class RedactIntrigueController {
             default:
                 date = "something went terribly wrong"
                 break
-        }
+        } */
         def numberdate = ""
         if (pastscene.dateYear)
             numberdate = pastscene.dateYear

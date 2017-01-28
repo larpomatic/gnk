@@ -13,10 +13,8 @@
 <div id="list-gn" class="content scaffold-list" role="main">
     <h1><g:message code="navbar.selectintrigue" default="Plot List"/></h1>
 
-    <div class="container">
-        <div class="text-center">
-            <g:render template="subNav" model="['right': right]"/>
-        </div>
+    <div class="container margin-bottom-20">
+        <g:render template="subNav" model="['right': right]"/>
     </div>
 
     <g:if test="${flash.message}">

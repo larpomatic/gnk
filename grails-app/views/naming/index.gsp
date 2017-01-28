@@ -14,7 +14,8 @@
 </head>
 
 <body>
-<h1>Naming</h1>
+<g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='naming']"/>
+<h1>Noms des personnages</h1>
 <div id="subAlertContainer">
 </div>
 

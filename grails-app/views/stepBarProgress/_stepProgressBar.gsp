@@ -1,31 +1,17 @@
-<head>
-    <meta charset="utf-8">
-    <meta name="robots" content="noindex">
 
-    <title>Form wizard (using tabs) - Bootsnipp.com</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'stepProgressBar.css')}" type="text/css">
-    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'stepProgressBar.css')}" type="text/css">
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script>
+    function submitSelectIntrigue()
+    {
+        $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_goToRoleToPerso\'>');
+        $('#edit-plot form').submit()
+    }
+</script>
 
-    <g:javascript src="stepProgressBar/stepProgressBar.js"/>
-
-    <script type="text/javascript">
-        window.alert = function () {
-        };
-        var defaultCSS = document.getElementById('bootstrap-css');
-        function changeCSS(css) {
-            if (css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="' + css + '" type="text/css" />');
-            else $('head > link').filter(':first').replaceWith(defaultCSS);
-        }
-        $(document).ready(function () {
-            var iframe_height = parseInt($('html').height());
-            window.parent.postMessage(iframe_height, 'http://bootsnipp.com');
-        });
-    </script>
-</head>
-
+<g:javascript src="stepProgressBar/stepProgressBar.js"/>
 
 <div class="container auto-width">
     <div class="row">
@@ -34,275 +20,146 @@
                 <div class="wizard-inner">
                     <div class="connecting-line"></div>
                     <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a class="first-icon" href="#selecintrigue" data-toggle="tab" aria-controls="step1" role="tab">
-                                <span class="label-tab">Intrigues</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-pencil"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'selectIntrigue'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'roleToPerso'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
+                                </g:link>
+                            </g:if>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'selectIntrigue'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#role2perso" data-toggle="tab" aria-controls="step2" role="tab">
-                                <span class="label-tab">Rôles</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-user"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'roleToPerso'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'life'}">
+                                <g:link action="getBack" controller="life" id="${gnInstance.id}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Personnages',glyph='user']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'selectIntrigue'}">
+                                <a onclick="submitSelectIntrigue()" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Personnages',glyph='user']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'roleToPerso'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Personnages',glyph='user']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#life" data-toggle="tab" aria-controls="step3" role="tab">
-                                <span class="label-tab">Vie</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-tower"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'life'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'naming'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'roleToPerso'}">
+                                <a onclick="$('form#form-life').submit()" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'life'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#naming" data-toggle="tab" aria-controls="step4" role="tab">
-                                <span class="label-tab">Identité</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-font"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'naming'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'ressource'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Identité',glyph='font']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'roleToPerso'}">
+                                <a onclick="$('form#form-naming').submit()" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Identité',glyph='font']"/>
+                                </a>
+                            </g:elseif>
+                            <g:elseif test="${currentStep == 'life'}">
+                                <a onclick="return publicationAccess()" action="index" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Identité',glyph='font']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'naming'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Identité',glyph='font']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#ressource" data-toggle="tab" aria-controls="step5" role="tab">
-                                <span class="label-tab">Ressources</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'ressource'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'place'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Ressources',glyph='cog']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'naming'}">
+                                <a onclick="return publicationAccess()" action="index" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Ressources',glyph='cog']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'ressource'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Ressources',glyph='cog']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#place" data-toggle="tab" aria-controls="step6" role="tab">
-                                <span class="label-tab">Lieux</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-map-marker"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'place'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'time'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Lieux',glyph='map-marker']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'ressource'}">
+                                <a onclick="return publicationAccess()" action="index" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Lieux',glyph='map-marker']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'place'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Lieux',glyph='map-marker']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#time" data-toggle="tab" aria-controls="step7" role="tab">
-                                <span class="label-tab">Epoque</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'time'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'publication'}">
+                                <g:link action="getBack" id="${gnId}" class="prev">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Époque',glyph='calendar']"/>
+                                </g:link>
+                            </g:if>
+                            <g:elseif test="${currentStep == 'place'}">
+                                <a onclick="return publicationAccess()" action="index" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Époque',glyph='calendar']"/>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'time'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Époque',glyph='calendar']"/>
+                                </a>
+                            </g:else>
                         </li>
 
-                        <li role="presentation">
-                            <a href="#publication" data-toggle="tab" aria-controls="step8" role="tab">
-                                <span class="label-tab">Publication</span>
-                                <span class="round-tab">
-                                    <i class="glyphicon glyphicon-film"></i>
-                                </span>
-                            </a>
+                        <li role="presentation"<g:if test="${currentStep == 'publication'}"> class="active"</g:if>>
+                            <g:if test="${currentStep == 'time'}">
+                                <a onclick="return publicationAccess()" action="index" class="next">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Publication',glyph='film']"/>
+                                </a>
+                            </g:if>
+                            <g:else>
+                                <a href="#"<g:if test="${currentStep != 'publication'}"> class="inactive"</g:if>>
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Publication',glyph='film']"/>
+                                </a>
+                            </g:else>
                         </li>
-
                     </ul>
                 </div>
-
-                <form role="form">
-                    <div class="tab-content">
-                        <div class="tab-pane active margin-top20 no-padding" role="tabpanel" id="selecintrigue">
-                            <div class="span4 no-margin float-left"></div>
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Selectionnez vôtre intrigue</h4>
-                                <p>Dans cette partie, creez ou editez vos GN.</p>
-                            </div>
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="role2perso-button" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="role2perso">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Donnez un rôle à votre personnage</h4>
-
-                                <p>Faites vivre votre personnage avec la personnalité qui vous séduira...</p>
-                            </div>
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="life">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Life</h4>
-
-                                <p>Donnez vie à votre personnage...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="naming">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Naming</h4>
-
-                                <p>Donnez les noms les plus mysterieux à vos personnages...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="ressource">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Ressource</h4>
-
-                                <p>Donnez les ressources nécessaires donner vie à votre histoire...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="place">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Place</h4>
-
-                                <p>De la grèce antique à la planete Tatooine, l'univers est à vous...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="time">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Time</h4>
-
-                                <p>La courbe du temps n'a aucune emprise sur vous, soyez le maitre du temps de vôtre scénierio...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane margin-top20 no-padding" role="tabpanel" id="publication">
-                            <div class="span4 no-margin float-left">
-                                <div class="center-button">
-                                    <g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right">
-                                        <g:message code="default.back.label" default="Back"/>
-                                    </g:link>
-                                </div>
-                            </div>
-
-                            <div class="span4 text-center no-margin cadre">
-                                <h4>Publication</h4>
-
-                                <p>Votre histoire est prête à être publiée...</p>
-                            </div>
-
-                            <div class="span4">
-                                <div class="center-button">
-                                    <button id="publication" onclick="return publicationAccess()"
-                                            class="btn btn-primary"
-                                            action="index">
-                                        ${message(code: 'navbar.publication', default: 'Publication')}</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </form>
             </div>
         </section>
     </div>

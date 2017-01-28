@@ -190,3 +190,26 @@ span.round-tab:hover {
 .first-icon {
     margin-left: 37px !important;
 }
+
+.wizard .nav-tabs > li a:hover {
+    cursor: pointer;
+}
+.wizard .nav-tabs > li a.inactive:hover {
+    cursor: default;
+}
+
+.wizard .nav-tabs > li a.prev:hover span.round-tab i:before {
+    content: "\e079";
+}
+.wizard .nav-tabs > li a.next:hover span.round-tab i:before {
+    content: "\e080";
+}
+.wizard .nav-tabs > li a.inactive span.round-tab {
+    border-color: #e0e0e0 !important;
+}
+.wizard .nav-tabs > li a.inactive span.round-tab i {
+    color: #e0e0e0;
+}
+.wizard .nav-tabs > li a.inactive span.label-tab {
+    color: #e0e0e0;
+}

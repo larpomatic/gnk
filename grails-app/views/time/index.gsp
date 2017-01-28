@@ -15,7 +15,8 @@
 
 <body>
 
-<h1>Session et Timing</h1>
+<g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='time']"/>
+<h1>Époque de l'intrigue</h1>
 <div id="subAlertContainer">
 </div>
 

@@ -689,7 +689,7 @@
 </g:form>
 
 
-<g:form method="post" controller="life">
+<g:form method="post" controller="life" name="form-life">
     <g:each in="${characterList}" var="PHJ">
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
@@ -697,13 +697,11 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-    <div class="span1">
-        <g:actionSubmit class="btn btn-primary" action="life"
-                        value="Life"/>
+    <g:hiddenField name="_action_life" value="Life"/>
     </div>
 </g:form>
 
-<g:form method="post" controller="naming">
+<g:form method="post" controller="naming" name="form-naming">
     <g:each in="${characterList}" var="PHJ">
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
@@ -711,11 +709,7 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-
-    <div class="span1">
-        <g:actionSubmit class="btn btn-primary" action="index"
-                        value="${message(code: 'navbar.naming', default: 'Naming')}"/>
-    </div>
+    <g:hiddenField name="_action_index" value="${message(code: 'navbar.naming', default: 'Naming')}"/>
 </g:form>
 </div>
 %{--</div>--}%

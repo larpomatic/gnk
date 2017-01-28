@@ -23,9 +23,9 @@
 </head>
 <body>
 <div id="edit-plot" class="content scaffold-list" role="main">
-    %{--<legend><g:message code="roletoperso.roletopersoModule" default="RoleToPerso Module"/></legend>--}%
-    <legend>Module Life</legend>
-    <g:link action="getBack" controller="life" id="${gnInstance.id}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
+    <g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='life']"/>
+
+    <h1>Vie du personnage</h1>
     <g:render template="result" model="[gnInstance : gnInstance, characterListLife : characterListLife, PHJList : PHJList]"/>
 </div>
 </body>

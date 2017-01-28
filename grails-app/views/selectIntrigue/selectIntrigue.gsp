@@ -16,15 +16,13 @@
     <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
 
-
-<g:render template="../stepBarProgress/stepProgressBar" />
-
 	<div id="edit-plot" class="content scaffold-list" role="main">
-		<h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
         <g:if test="${!screenStep || screenStep == '0'}">
             <g:render template="step0_createGn"/>
         </g:if>
         <g:if test="${screenStep == '1'}">
+            <g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='selectIntrigue']"/>
+            <h1><g:message code="selectintrigue.selectintrigueModule" default="SelectIntrigue Module"/></h1>
             <g:render template="/selectIntrigue/step1_result" />
         </g:if>
 	</div>
