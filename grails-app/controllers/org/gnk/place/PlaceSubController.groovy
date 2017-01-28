@@ -238,7 +238,7 @@ class PlaceSubController {
         List<Place> lPlace = session.getAttribute("placeList")
         String placestr = params.place1
 
-        if (!placestr.equals("-1")) {
+            if (!placestr.equals("-1")) {
             List<Place> nlist = new ArrayList<Place>();
             Place p;
             for (Place place : lPlace) {

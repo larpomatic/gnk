@@ -113,7 +113,7 @@ class RessourceController {
         }
 
         // Output Substitution
-        OutputHandler outputHandler = NamingController.getOutputHandler()
+        //OutputHandler outputHandler = NamingController.getOutputHandler()
         // Resources
         JSONArray resourcesJSONArray = subJSON.subResource
         Gn gn = Gn.get(gnDbId)
