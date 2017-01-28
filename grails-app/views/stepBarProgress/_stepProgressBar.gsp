@@ -9,6 +9,12 @@
         $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_goToRoleToPerso\'>');
         $('#edit-plot form').submit()
     }
+
+    function reloadSelectIntrigue()
+    {
+        $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_selectIntrigue\'>');
+        $('#edit-plot form').submit()
+    }
 </script>
 
 <g:javascript src="stepProgressBar/stepProgressBar.js"/>
@@ -26,11 +32,16 @@
                                     <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
                                 </g:link>
                             </g:if>
-                            <g:else>
-                                <a href="#"<g:if test="${currentStep != 'selectIntrigue'}"> class="inactive"</g:if>>
+                            <g:elseif test="${currentStep != 'selectIntrigue'}">
+                                <a href="#" class="inactive">
                                     <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
                                 </a>
-                            </g:else>
+                            </g:elseif>
+                            <g:elseif test="${currentStep == 'selectIntrigue'}">
+                                <a onclick="reloadSelectIntrigue()" class="reload">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
+                                </a>
+                            </g:elseif>
                         </li>
 
                         <li role="presentation"<g:if test="${currentStep == 'roleToPerso'}"> class="active"</g:if>>

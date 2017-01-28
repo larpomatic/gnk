@@ -202,6 +202,10 @@ span.round-tab:hover {
     cursor: default;
 }
 
+.wizard .nav-tabs > li a.reload:hover span.round-tab i:before {
+    content: "\e030";
+}
+
 .wizard .nav-tabs > li a.prev:hover span.round-tab i:before {
     content: "\e079";
 }

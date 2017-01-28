@@ -240,12 +240,14 @@
         </div>
     </div>
     <fieldset class="buttons">
+%{--
         <g:hasRights lvlright="${right.MGNMODIFY.value()}">
             <g:actionSubmit class="btn btn-primary" action="selectIntrigue"
                             value=" ${message(code: 'selectintrigue.step1.reload', default: 'Reload')}"/>
             <g:actionSubmit class="btn btn-primary" action="goToRoleToPerso"
                             value="${message(code: 'navbar.role2perso', default: 'Role2Perso')}"/>
         </g:hasRights>
+--}%
     </fieldset>
     %{--<button type="button" class="btn btn-primary btn-circle btn-xl"><i class="glyphicon glyphicon-refresh"></i></button>--}%
     %{--<button type="button" class="btn btn-primary btn-circle btn-xl"><i class="glyphicon glyphicon-chevron-right"></i></button>--}%
