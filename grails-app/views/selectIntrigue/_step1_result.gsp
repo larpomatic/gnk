@@ -1,9 +1,6 @@
 <%@ page import="org.gnk.gn.Gn; org.gnk.selectintrigue.Plot" %>
 <%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
-<h3>
-    <g:message code="selectintrigue.step1.name"
-               default="SelectIntrigue result"/>
-</h3>
+
 <g:form method="post">
     <g:hiddenField name="id" value="${gnInstance?.id}"/>
     <g:hiddenField name="gnDTD" value="${gnInstance?.dtd}"/>

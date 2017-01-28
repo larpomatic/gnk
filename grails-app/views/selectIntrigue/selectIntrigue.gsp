@@ -17,12 +17,7 @@
     <g:javascript src="redactIntrigue/bootstrap-datetimepicker.fr.js"/>
     <g:javascript src="selectIntrigue/dhtmlxcalendar.js"/>
     <g:javascript src="selectIntrigue/selectIntrigue.js"/>
-<<<<<<< HEAD
 
-=======
-    <g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
-    <g:render template="subNav" model="['right': right]"/>
->>>>>>> 5dbdd6edbaa2ee65819c34188d233c49495b0835
 	<div id="edit-plot" class="content scaffold-list" role="main">
         <g:if test="${!screenStep || screenStep == '0'}">
             <g:render template="step0_createGn"/>

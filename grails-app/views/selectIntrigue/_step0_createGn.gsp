@@ -4,9 +4,7 @@
 
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'step0_createGn.css')}" type="text/css">
 
-<legend>
-    <g:message code="default.edit.label" args="[entityName]"/>
-</legend>
+<h1><g:message code="default.create.label" args="[entityName]" default="SelectIntrigue result"/></h1>
 <g:if test="${flash.message}">
     <div class="alert notificationBox alert-block alert-danger fade in">
         <button type="button" class="close" data-dismiss="alert">×</button>
