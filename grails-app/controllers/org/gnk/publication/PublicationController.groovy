@@ -10,15 +10,17 @@ import org.docx4j.wml.Br
 import org.docx4j.wml.STBrType
 import org.docx4j.wml.Tbl
 import org.docx4j.wml.Tr
+import org.gnk.description.PrintDescriptionService
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.parser.gn.GnXMLWriterService
 import org.gnk.resplacetime.*
 import org.gnk.roletoperso.*
+import org.gnk.selectintrigue.Description
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
-
+import java.lang.reflect.Array
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -30,6 +32,7 @@ class PublicationController {
     private Gn gn
     private SubstitutionPublication substitutionPublication
     private String publicationFolder
+    private PrintDescriptionService printDescriptionService = new PrintDescriptionService();
 
     def getBack(Long id) {
         Gn gn = Gn.get(id);
@@ -205,13 +208,24 @@ class PublicationController {
         response.setHeader("Content-disposition", "filename=${gnk.gn.name.replaceAll(" ", "_").replaceAll("/", "_")}_${System.currentTimeMillis()}.docx")
         response.outputStream << output.newInputStream()
 
-
-
-
     }
 
     // Méthode principale de la génération des documents
     public WordprocessingMLPackage createPublication(ArrayList<String> jsoncharlist, String fileName) {
+
+
+        // On récupère toutes les descriptions en fonction de si elles sont addressées au PJ, PNJ ou à l'orga
+        ArrayList<Description> descriptionArraylistOrga = new ArrayList<Description>()
+        ArrayList<Description> descriptionArraylistPj = new ArrayList<Description>()
+        ArrayList<Description> descriptionArraylistPnj = new ArrayList<Description>()
+
+        for (Plot p : gn.selectedPlotSet)
+        {
+            descriptionArraylistOrga.addAll(Description.findAllByPlotIdAndIsOrga(p.DTDId, true))
+            descriptionArraylistPj.addAll(Description.findAllByPlotIdAndIsPj(p.DTDId, true))
+            descriptionArraylistPnj.addAll(Description.findAllByPlotIdAndIsPnj(p.DTDId, true))
+        }
+
         // Custom styling for the output document
 
         wordWriter.addStyledParagraphOfText("T", gn.name)
@@ -221,7 +235,7 @@ class PublicationController {
                 "VOUS NE POUVEZ LIRE CE SUIT SI VOUS ÊTES JOUEUR(SE)S")
 
         wordWriter.addStyledParagraphOfText("T2", "Introduction")
-        createPitchOrga()
+        createPitchOrga(descriptionArraylistOrga)
 
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des personnages")
         createPlayersTable(jsoncharlist, fileName)
@@ -257,8 +271,8 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T3", "Synthèse des Scènes passées")
         createPastSceneTable()
 
-        createPJFile(jsoncharlist, fileName)
-        createPNJFile(jsoncharlist, fileName)
+        createPJFile(jsoncharlist, fileName, descriptionArraylistPj)
+        createPNJFile(jsoncharlist, fileName, descriptionArraylistPnj)
         createPHJFile(jsoncharlist, fileName)
         createStaffFolder()
 
@@ -613,7 +627,6 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom(s) de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom du lieu")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type du lieu")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Description")
@@ -622,11 +635,6 @@ class PublicationController {
         table.getContent().add(tableRow)
         for (Place p : GPOTList + GPList + PList) {
             Tr tableRowPlace = wordWriter.factory.createTr()
-            String listPlot = "";
-            for (Plot plot in gn.getSelectedPlotSet()) {
-                listPlot += plot.getName() + "; ";
-            }
-            wordWriter.addTableStyledCell("Table1C", tableRowPlace, listPlot);
             int lastIndexOf = p.name.lastIndexOf(" -")
             if (lastIndexOf != -1)
                 wordWriter.addTableStyledCell("Table1C", tableRowPlace, p.name.substring(0, lastIndexOf))
@@ -712,7 +720,6 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
-        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom(s) de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de la ressource")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Descriptions")
@@ -725,11 +732,6 @@ class PublicationController {
         for (GenericResource genericResource : GROTList + GRList) {
             Tr tableRowRes = wordWriter.factory.createTr()
 
-            String listPlot = "";
-            for (Plot plot in gn.getSelectedPlotSet()) {
-                listPlot += plot.getName() + "; ";
-            }
-            wordWriter.addTableStyledCell("Table1C", tableRowRes, listPlot)
             if (genericResource.selectedResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, genericResource.selectedResource.name)
             else
@@ -889,7 +891,7 @@ class PublicationController {
     }
 
     //Génère le dossier PJ
-    private createPJFile(ArrayList<String> jsoncharlist = [], String fileName = null) {
+    private createPJFile(ArrayList<String> jsoncharlist = [], String fileName = null, ArrayList<Description> descriptionArrayListPJ) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.characterSet)
             lchar.add(c.lastname + c.firstname)
@@ -911,10 +913,15 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         createCharactersFile(listPJ, jsoncharlist, fileName)
+
+        //Liste des annexes des PJ
+        wordWriter.addStyledParagraphOfText("T2", "Dossier général pour les participants")
+        wordWriter.addParagraphOfText("Voici la liste des descriptions de chaque intrigue classé en fonction du type de description : ")
+        printDescriptionService.printDescription(wordWriter, descriptionArrayListPJ)
     }
 
     //Génère le dossier PNJ
-    private createPNJFile(ArrayList<String> jsoncharlist = [], String fileName = null) {
+    private createPNJFile(ArrayList<String> jsoncharlist = [], String fileName = null, ArrayList<Description> descriptionArrayListPNJ) {
         HashSet<String> lchar = new HashSet<Character>()
         for (Character c : gn.nonPlayerCharSet)
             lchar.add(c.lastname + c.firstname)
@@ -936,6 +943,11 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPNJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages non-joueurs, triés par ordre Alphabétique, à distribuer aux joueurs")
         createCharactersFile(listPNJ, jsoncharlist, fileName)
+
+        //Liste des annexes des PNJ
+        wordWriter.addStyledParagraphOfText("T2", "Dossier général pour les participants")
+        wordWriter.addParagraphOfText("Voici la liste des descriptions de chaque intrigue classé en fonction du type de description : ")
+        printDescriptionService.printDescription(wordWriter, descriptionArrayListPNJ)
     }
 
     //Génère le dossier PHJ
@@ -961,6 +973,8 @@ class PublicationController {
         wordWriter.addParagraphOfText(resListPHJ)
         wordWriter.addParagraphOfText("Vous trouverez ci-après les dossiers Personnages Hors-jeu, triés par ordre Alphabétique")
         createCharactersFile(listPHJ, jsoncharlist, fileName)
+
+
     }
 
     private boolean  isClueVisibleForEveryone(GenericResource clue){
@@ -973,7 +987,8 @@ class PublicationController {
     }
 
     // Création de toutes les fiches de personnages de la liste entrée en paramètre
-    private createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
+    private
+    createCharactersFile(ArrayList<Character> listCharacters, ArrayList<String> jsoncharlist = [], String fileName = null) {
         for (Character c : listCharacters) {
             Br br = wordWriter.factory.createBr()
             br.setType(STBrType.PAGE)
@@ -997,18 +1012,23 @@ class PublicationController {
             wordWriter.addParagraphOfText("Sexe du personnage : " + sex)
             wordWriter.addParagraphOfText("Age du personnage : " + c.getAge())
             wordWriter.addParagraphOfText("Type de personnage : " + typePerso)
-
-            wordWriter.addStyledParagraphOfText("T3", "Ce que je détiens : ")
             boolean hasRessource = false
-            for (Role r : c.selectedRoles) {
+            for (Role r : c.selectedRoles)
                 for (GenericResource gr : gnk.genericResourceMap.values())
-                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                    if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId))
                         hasRessource = true
-                        String pubResource = (gr.code ? gr.code + " - " : "")
-                        pubResource += (gr.comment ? gr.comment : "")
-                        wordWriter.addParagraphOfText(pubResource)
-                    }
-                (hasRessource ?: wordWriter.addParagraphOfText("-"))
+
+            if (hasRessource)
+            {
+                wordWriter.addStyledParagraphOfText("T3", "Ce que je détiens : ")
+                for (Role r : c.selectedRoles) {
+                    for (GenericResource gr : gnk.genericResourceMap.values())
+                        if (gr.selectedResource && gr.possessedByRole != null && (gr.possessedByRole.id == r.DTDId)) {
+                            String pubResource = (gr.code ? gr.code + " - " : "")
+                            pubResource += (gr.comment ? gr.comment : "")
+                            wordWriter.addParagraphOfText(pubResource)
+                        }
+                }
             }
 
 
@@ -1028,8 +1048,8 @@ class PublicationController {
                 for (Role r : roles) {
                     for (RoleHasPastscene roleHasPastscene : r.roleHasPastscenes) {
 
-                        Integer time = roleHasPastscene.pastscene.timingRelative
-                        String unit = roleHasPastscene.pastscene.unitTimingRelative
+                        //Integer time = roleHasPastscene.pastscene.timingRelative
+                        //String unit = roleHasPastscene.pastscene.unitTimingRelative
                         tmp.add(roleHasPastscene);
                     }
                 }
@@ -1400,7 +1420,7 @@ class PublicationController {
     }
 
     // Création du tableau de synthèse des pitch des intrigues pour les Orga
-    def createPitchOrga() {
+    def createPitchOrga(ArrayList<Description> descriptionArrayListOrga) {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
@@ -1411,8 +1431,10 @@ class PublicationController {
         String msgCharacters = PitchOrgaMsgCharacters()
         wordWriter.addParagraphOfText(msgCharacters)
 
+
+        printDescriptionService.printDescription(wordWriter, descriptionArrayListOrga)
         // On affiche d'abord les intrigue evennementiel
-        for (Plot p : gn.selectedPlotSet)
+        /*for (Plot p : gn.selectedPlotSet)
             if (p.pitchOrga != null && p.isEvenemential) {
                 wordWriter.addStyledParagraphOfText("T5", p.name)
                 substituteRolesAndPlotDescription(p)
@@ -1428,7 +1450,7 @@ class PublicationController {
                 substituteRolesAndPlotDescription(p)
                 wordWriter.addParagraphOfText(p.pitchOrga)
             }
-        }
+        }*/
         wordWriter.addBorders(table)
         wordWriter.addObject(table);
     }

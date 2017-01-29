@@ -55,6 +55,7 @@ class Gn {
             "nbWomen",
             "univers",
             "gnTags",
+            "ganttData",
             "mainstreamTags",
             "evenementialTags",
             "selectedPlotSet",
@@ -65,6 +66,8 @@ class Gn {
             "firstnameSet",
             "lastnameSet",
             "isLife",
+            "universe",
+            "tagList"
     ]
 
     Date t0Date
@@ -87,6 +90,7 @@ class Gn {
     int nbMen
     int nbWomen
     Tag univers
+
     HashMap<Tag, Integer> gnTags
     HashMap<Tag, Integer> mainstreamTags
     HashMap<Tag, Integer> evenementialTags
@@ -98,6 +102,11 @@ class Gn {
     Set<Place> placeSet
     Integer convention_id
 //    Convention convention
+
+    //Substitution fields
+    List<Tag> tagList
+    String universe
+    String ganttData
 
     static hasMany = [ gnHasUsers: GnHasUser, periods: Period ]
 

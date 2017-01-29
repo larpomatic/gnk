@@ -15,6 +15,7 @@ class GenericResource {
     String code
     List<Tag> tagList
     List<ReferentialResource> bannedItemsList
+    ArrayList<Pair<ReferentialObject, Integer>> resultList_bis
     List<ReferentialResource> resultList
     ArrayList<Pair<org.gnk.tag.Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultListForAllUniverses
 

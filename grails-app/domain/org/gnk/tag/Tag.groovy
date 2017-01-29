@@ -9,17 +9,24 @@ class Tag{
 
     Integer id
     Integer version
-
+    Boolean relevantPlot
+    Boolean relevantRole
+    Boolean relevantResource
+    Boolean relevantPlace
+    Boolean relevantFirstname
+    Boolean relevantLastname
     Date lastUpdated
     Date dateCreated
     String name
     Tag parent
+
 
     static transients = ["value_substitution", "type_substitution", "weight_substitution", "status_substitution"]
     String value_substitution
     String type_substitution
     Integer weight_substitution
     String status_substitution
+
 
     static hasMany = [
     extPlaceTags: PlaceHasTag,
@@ -49,8 +56,8 @@ class Tag{
         return name;
     }
 
-    TagRelevant getTagRelevant(){
-         return TagRelevant.findByTag(this)
-    }
+    //TagRelevant getTagRelevant(){
+      //   return TagRelevant.findByTag(this)
+    //}
 
 }
