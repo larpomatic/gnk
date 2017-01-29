@@ -1,5 +1,7 @@
 package org.gnk.substitution.data
 
+import org.gnk.tag.Tag
+
 class Place {
 	String id
     String plotId

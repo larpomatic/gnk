@@ -1,6 +1,6 @@
 package org.gnk.naming
 
-import org.gnk.substitution.data.RelationCharacter
+import org.gnk.roletoperso.RoleHasRelationWithRole
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ class PersoForNaming {
 	 Boolean is_selectedName /* True si je dois le traiter */
 	 Boolean is_selectedFirstName
 	 List<String> family /* List de String de code */
-     List<RelationCharacter> relationList /* Relation de Filiation*/
+     List<RoleHasRelationWithRole> relationList /* Relation de Filiation*/
 
     public  PersoForNaming()
     {

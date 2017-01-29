@@ -14,10 +14,8 @@ import org.gnk.selectintrigue.Plot
 import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
-import org.gnk.substitution.data.Event
-import org.gnk.substitution.data.GnInformation
+import org.gnk.resplacetime.Event
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -25,6 +23,7 @@ import java.text.SimpleDateFormat
 class TimeController {
 
     private org.gnk.naming.Convention convention
+    static private OutputHandler outputHandler
 
     def index() {
         InputHandler inputHandler = new InputHandler()
@@ -39,7 +38,13 @@ class TimeController {
             inputHandler.parseGN(fileContent)
         } else {
             Integer gnDbId = gnIdStr as Integer;
-            List<String> sexes = params.sexe;
+            List<String> sexes = new ArrayList<String>();
+            try {
+                sexes = params.sexe;
+            } catch (Exception e) { System.out.println(e.getMessage())}
+            try {
+                sexes.add(params.sexe);
+            } catch (Exception e) { System.out.println(e.getMessage())}
             //Gn gn = changeCharSex(gnDbId, sexes);
             Gn gn = Gn.get(gnDbId)
             //gn = changeCharSex(gn, sexes);
@@ -55,7 +60,7 @@ class TimeController {
         gnData.ReadDTD(gn)
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "substitution";
+        gn.step = "time";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
 
         gn.save(flush: true);
@@ -67,7 +72,7 @@ class TimeController {
 
         session.setAttribute("placeList", inputHandler.placeList)
         //test
-        GnInformation gnInfo = inputHandler.gnInfo
+        Gn gnInfo = inputHandler.gnInfo
         //List<Character> characterList = inputHandler.characterList
         //List<Resource> resourceList = inputHandler.resourceList
         //List<Place> placeList = inputHandler.placeList
@@ -156,10 +161,10 @@ class TimeController {
 
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
-        if (!gnInstance.save(flush: true) || !gnHasConvention.save(flush: true)) {
+        if (!gnInstance.save(flush: true)) {
 
         }
-        redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+        redirect(controller: "Time", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 
     def getSubDates() {
@@ -198,7 +203,7 @@ class TimeController {
         // Getback JSON files in database
         String[] jsonFiles = Gn.get(gnDbId).charJSONArray.split("JSONArray");
         // Output Substitution
-        OutputHandler outputHandler = NamingController.getOutputHandler()
+        outputHandler = new OutputHandler();
         // Characters
         JSONArray charsJSONArray = new JSONArray(jsonFiles.getAt(0))
         outputHandler.updateGnWithNaming(gnkDataContainerService, charsJSONArray)
@@ -234,7 +239,7 @@ class TimeController {
             gnkDataContainerService.gn.dtd = xmlGN;
             //gnkDataContainerService.SaveDTD(gnkDataContainerService.gn.dtd)
             //line below can be commented to go back to substitution step when leaving the GN creation during publication
-            gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"substitution\">", "<STEPS last_step_id=\"publication\">");
+            gnkDataContainerService.gn.dtd = gnkDataContainerService.gn.dtd.replace("<STEPS last_step_id=\"time\">", "<STEPS last_step_id=\"publication\">");
             if (!gnkDataContainerService.gn.save(flush: true)) {
                 redirect(action: "list", controller: "selectIntrigue", params: [gnId: gnDbId])
                 return

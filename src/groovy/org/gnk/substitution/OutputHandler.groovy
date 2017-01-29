@@ -115,7 +115,7 @@ class OutputHandler {
         // Add firstnames and lastnames to each character
         for(characterJSON in charsJSONArray) {
             // Get character in gn instance
-            Integer characterGnId = characterJSON.gnId.toInteger()
+            Integer characterGnId = characterJSON.code.toInteger()
             Character character = null
             for (characterEl in gnInst.characterSet) {
                 if (characterEl.DTDId == characterGnId) {

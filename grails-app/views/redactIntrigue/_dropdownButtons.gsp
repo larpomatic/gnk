@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Personnage <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu roleSelector">
+    <ul class="dropdown-menu placeSelector">
         <g:each in="${plotInstance.roles}" status="i5" var="role">
             <g:if test="${!(role.type == "STF")}">
                 <li data-id="${role.id}">

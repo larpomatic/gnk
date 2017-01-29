@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'dhtmlxcalendar.css')}" type="text/css">
         <div class="input-append">
             <input readonly type="text" id="t0DateHour" name="t0DateHour" placeholder="jj/mm/aaaa hh:mm"
-                   required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}"
+                   required="required" pattern="\d{1,2}/\d{1,2}/\d{4} \d{2}:\d{2}" style="cursor: pointer"
                    value="${formatDate(format: 'dd/MM/yyyy HH:mm', date: gnInstance?.t0Date)}"/>
             <script>
 
@@ -64,7 +64,7 @@
     <g:each in="${sexe}" var="a">
         <g:hiddenField id="a" name="sexe" value="NO"/>
     </g:each>
-    <g:hiddenField id="XMLField" name="GanttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
+    <g:hiddenField id="XMLField" name="ganttData" value="xxxxxxxxxxxxxxxxxxxxxxx"/>
     <g:if test="${gnInfo.duration > 0}">
     <g:javascript src="substitution/dhtmlxgantt.js"></g:javascript>
     <link href="${resource(dir: 'css', file: 'dhtmlxgantt.css')}" rel="stylesheet"/>
@@ -77,8 +77,8 @@
         dated.setTime(dated.getTime() + ${gnInfo.duration}*60*60*1000);
 
 
-    <g:if test="${gnInfo.GanttData =! null && gnInfo.GanttData != ""}">
-        var tasks_XML = "${gnInfo.GanttData}";
+    <g:if test="${gnInfo.ganttData =! null && gnInfo.ganttData != ""}">
+        var tasks_XML = "${gnInfo.ganttData}";
         tasks = gantt.parse(tasks_XML, "xml");
      </g:if>
     <g:else>
@@ -452,10 +452,6 @@
             pastscene.htmlId = "pastscene${pastscene.id}_plot${pastscene.plotId}";
             // Time
 
-            // DOIT ËTRE SUPP
-            //pastscene.timingRelative = "${pastscene.timingRelative}";
-            //pastscene.unitTimingRelative = "${pastscene.unitTimingRelative}";
-            // FIN DOIT ETRE SUPP
             pastscene.absoluteYear = "${pastscene.absoluteYear}";
             pastscene.absoluteMonth = "${pastscene.absoluteMonth}";
             pastscene.absoluteDay = "${pastscene.absoluteDay}";

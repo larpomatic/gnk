@@ -17,6 +17,15 @@ class RoleHasRelationWithRole {
 
 //    static transients = ["isHidden"] // TODO To remove after getting the database
 
+    // String used in substitution
+    String r1
+    String r2
+    String type
+    Character character
+    String charId
+
+    static transients = ["r1", "r2", "type", "character", "charId"]
+
     static mapping = {
         description type: 'text'
         id type:'integer'

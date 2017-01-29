@@ -106,7 +106,7 @@ class SelectIntrigueController {
             for (org.gnk.roletoperso.Character character in gn.nonPlayerCharSet) {
                 sexes.add("sexe_" + character.getDTDId() as String);
             }
-            redirect(controller: 'place', action:'index', params: [gnId: id as String, sexe: sexes]);
+            redirect(controller: 'placeSub', action:'index', params: [gnId: id as String, sexe: sexes]);
         }
         else if (step == "time") {
             List<String> sexes = new ArrayList<>();
@@ -140,7 +140,7 @@ class SelectIntrigueController {
         if (id >= 0) {
             gnInstance = Gn.get(id)
             if ((params.screenStep as Integer) == 1) {
-                final gnData = new GNKDataContainerService().ReadDTD(gnInstance)
+                final gnData = new GNKDataContainerService().ReadDTD(gnInstance);
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
                 params.each {
@@ -175,7 +175,7 @@ class SelectIntrigueController {
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
                 if (selectedEvenementialPlotInstanceList.size() == 0) {
                     flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
-                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
+                    render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery(), conventionList: Convention.list()])
                     return
                 }
 
@@ -392,7 +392,7 @@ class SelectIntrigueController {
                  conventionList: Convention.list()]);
     }
 
-    public isEvenementialIsCompatible(Plot plot, gn) {
+    public isEvenementialIsCompGatible(Plot plot, Gn gn) {
         /* int countWomen = 0;
          int countMen = 0;
          int countOthers = 0;
@@ -559,11 +559,12 @@ class SelectIntrigueController {
         //gnInstance.convention = Convention.findById(params.convention as Integer)
         gnInstance.convention_id = params.convention as Integer
 
+        TagService tagService = new TagService();
         formatParams(gnInstance)
         gnInstance.dtd = new GnXMLWriterService().getGNKDTDString(gnInstance)
 
         if (!gnInstance.save(flush: true)) {
-            render(view: "selectIntrigue", model: [gnInstance: gnInstance])
+            render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery()])
             return
         }
 

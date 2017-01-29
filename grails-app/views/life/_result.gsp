@@ -3,44 +3,8 @@
 <%@ page import="org.gnk.selectintrigue.Plot" %>
 
 <%@ page import="org.gnk.gn.Gn" %>
-<style>
-.panel-default > .panel-heading {
-    color: #333333;
-    background-color: #f5f5f5;
-    font-weight: bold;
-    border: 1px solid #dddddd;
-}
 
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-}
-
-.table-bordered-no-top {
-    border: 1px solid #dddddd;
-    border-collapse: separate;
-    *border-collapse: collapse;
-    border-left: 0;
-    border-top: 0px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    margin-bottom: 0;
-
-}
-
-.table-bordered-no-top th,
-.table-bordered-no-top td {
-    border-left: 1px solid #dddddd;
-}
-</style>
-
-<h3>
-    %{--<g:message code="roletoperso.result"--}%
-    %{--default="RoleToPerso result"/>--}%
-    Resultat life
-</h3>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'life_result.css')}" type="text/css">
 
 <div class="container-fluid">
 <g:form method="post" controller="life">
@@ -184,7 +148,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
 
         <g:if test="${characterIter % 2 == 1}">
@@ -222,8 +185,7 @@
 </g:form>
 </div>
 </div>
-
-%{--</div>--}%
+</div>
 
 %{--<script>--}%
 %{--function sortData(){--}%

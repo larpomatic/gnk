@@ -2,20 +2,9 @@
 <%@ page import="org.gnk.gn.Gn" %>
 <%@ page import="org.gnk.admin.right" contentType="text/html;charset=UTF-8" %>
 
-<style type="text/css">
-input {
-    text-align: right;
-    width: 180px;
-    margin-right: 25px;
-}
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'step0_createGn.css')}" type="text/css">
 
-select {
-    width: 195px;
-}
-</style>
-<legend>
-    <g:message code="default.edit.label" args="[entityName]"/>
-</legend>
+<h1><g:message code="default.create.label" args="[entityName]" default="SelectIntrigue result"/></h1>
 <g:if test="${flash.message}">
     <div class="alert notificationBox alert-block alert-danger fade in">
         <button type="button" class="close" data-dismiss="alert">×</button>
@@ -50,7 +39,8 @@ select {
                         code="selectintrigue.step0.gnUnivers" default="Univers"/>
                 </label></td>
                 <td>
-                    <g:select name="univers" id="gnUnivers" from="${universList}" optionKey="id" value="${gnInstance?.univers?.id}" />
+                    <g:select name="univers" id="gnUnivers" from="${universList}" optionKey="id"
+                              value="${gnInstance?.univers?.id}"/>
                 </td>
             </tr>
             <tr>
@@ -161,16 +151,14 @@ select {
                   model="['idPopup': 'tagsEvenementialModal', 'namePopup': 'Tags évenementiels', 'myOwner': gnInstance, 'tagList': plotTagList, 'tagPrefix': 'tagsEvenemential_', 'weightTagPrefix': 'weight_tagsEvenemential_', 'tagListName': 'EvenementialTags']"/>
     </fieldset>
 
-    <div class="form-actions">
-        <g:hasRights lvlright="${right.MGNMODIFY.value()}">
-            <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
-                        value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-        </g:hasRights>
-        <g:hasRights lvlright="${right.MGNDELETE.value()}">
-            <g:actionSubmit action="delete" class="btn btn-primary"
-                        value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                        formnovalidate=""
-                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
-        </g:hasRights>
+    <div class="form-actions footer-nav">
+        <div class="span10 empty-block"></div>
+
+        <div class="span2 text-center">
+            <g:hasRights lvlright="${right.MGNMODIFY.value()}">
+                <g:actionSubmit class="btn btn-primary" action="saveOrUpdate"
+                                value="${message(code: 'default.button.update.label', default: 'Update')}"/>
+            </g:hasRights>
+        </div>
     </div>
 </g:form>

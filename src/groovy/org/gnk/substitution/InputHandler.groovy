@@ -12,15 +12,13 @@ import org.gnk.resplacetime.Pastscene
 //import org.gnk.substitution.data.Event
 //import org.gnk.substitution.data.Pastscene
 import org.gnk.substitution.data.Place
-import org.gnk.substitution.data.Resource
-import org.gnk.substitution.data.Tag
+import org.gnk.resplacetime.Resource
+import org.gnk.tag.Tag
 import org.gnk.roletoperso.Character
-import org.gnk.substitution.data.GnInformation
-import org.gnk.substitution.data.RelationCharacter
 
 class InputHandler {
 
-    GnInformation gnInfo
+    Gn gnInfo
     List<Character> characterList
     List<Resource> resourceList
     List<Place> placeList
@@ -104,16 +102,16 @@ class InputHandler {
 
     // GnInfo
     private void createGnInformation(Gn gnInst) {
-        gnInfo = new GnInformation()
+        gnInfo = new Gn()
 
         // Database id
-        gnInfo.dbId = gnInst.id
+        gnInfo.id = gnInst.id
         // Title
-        gnInfo.title = gnInst.name
+        gnInfo.name = gnInst.name
         // Creation date
-        gnInfo.creationDate = gnInst.dateCreated
+        gnInfo.dateCreated = gnInst.dateCreated
         // Last update date
-        gnInfo.lastUpdateDate = gnInst.lastUpdated
+        gnInfo.lastUpdated = gnInst.lastUpdated
         // Nb players
         gnInfo.nbPlayers = gnInst.nbPlayers
         // Universe
@@ -131,7 +129,7 @@ class InputHandler {
             tagData.weight = el.value
             gnInfo.tagList.add(tagData)
         }
-        gnInfo.GanttData = "";
+        gnInfo.ganttData = "";
     }
 
     // CharacterList
@@ -169,13 +167,13 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r1 = r1
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)
@@ -216,13 +214,13 @@ class InputHandler {
                 if ((rrr.getterRoleRelationType().name).equals("Filiation")
                         || (rrr.getterRoleRelationType().name).equals("Parent (direct)")
                         || (rrr.getterRoleRelationType().name).equals("Mariage")) {
-                    RelationCharacter relationChar = new RelationCharacter()
+                    RoleHasRelationWithRole relationChar = new RoleHasRelationWithRole()
                     r1 = gnInst.getAllCharacterContainingRole(rrr.getterRole1())?.DTDId
                     r2 = gnInst.getAllCharacterContainingRole(rrr.getterRole2())?.DTDId
                     if (!r1.equals("") && !r2.equals("")) {
                         relationChar.type = rrr.getterRoleRelationType().name
-                        relationChar.role1 = r1
-                        relationChar.role2 = r2
+                        relationChar.r1 = r1
+                        relationChar.r2 = r2
                         relationChar.isHidden = rrr.isHidden
                         relationChar.isBijective = rrr.isBijective
                         characterData.relationList.add(relationChar)

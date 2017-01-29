@@ -12,8 +12,10 @@
     <title><g:message code="navbar.publication" /></title>
 </head>
 <body>
+<g:render template="../stepBarProgress/stepProgressBar" model="[currentStep='publication']"/>
+<h1><g:message code="publication.label" default="Publication Module"/></h1>
 <br><br>
-<g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>
+%{--<g:link action="getBack" id="${gnId}" class="btn btn-primary pull-right"><g:message code="default.back.label" default="Back"/></g:link>--}%
 <div class="row-fluid" id="hidTest">
     <div class="span4">
         <form id="exportWordButton" action="${g.createLink(controller:'publication', action:'publication')}" method="POST">
@@ -88,9 +90,8 @@
 
 
 
-<h1><u>${title}</u></h1>
+<h2><u>${title} - Synthèse pour les organisateurs</u></h2>
 <i>${subtitle}</i>
-<h2>Synthèse pour les organisateurs : </h2>
 
 
 <h3>Synthèse des pitchs des Intrigues du GN</h3>

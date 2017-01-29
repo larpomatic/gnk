@@ -186,11 +186,6 @@ class PastSceneXMLReaderService {
         assert (TIME.ABSOLUTE.size() <= 1)
         if (TIME.RELATIVE.size() == 1) {
             Node RELATIVE = TIME.RELATIVE[0]
-            if (RELATIVE.attribute("time") != "null" && RELATIVE.attribute("time_unit") != "null") {
-                if ((RELATIVE.attribute("time") as String).isInteger())
-                    pastsceneRes.timingRelative = RELATIVE.attribute("time") as Integer
-                pastsceneRes.unitTimingRelative = RELATIVE.attribute("time_unit") as String
-            }
         }
         if (TIME.ABSOLUTE.size() == 1) {
             Node ABSOLUTE = TIME.ABSOLUTE[0]

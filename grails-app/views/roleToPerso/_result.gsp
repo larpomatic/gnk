@@ -35,10 +35,6 @@
 }
 </style>
 
-<h3>
-    <g:message code="roletoperso.result"
-               default="RoleToPerso result"/>
-</h3>
 <g:form method="post">
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
     <g:hiddenField name="gnDTD" value="${gnInstance?.dtd}"/>
@@ -129,7 +125,7 @@
             </g:if>
             <div class="span6" id="Char${character.DTDId}">
                 <div class="panel panel-default">
-                    <div class="panel-heading" style="margin-top: 20px">
+                    <div class="panel-heading">
                         <g:message code="roletoperso.character"
                                    default="Character"/> ${character.DTDId}
                         <div class="pull-right" style="margin-top: -5px">
@@ -492,7 +488,7 @@
             <div class="row-fluid">
                 <div class="span12" id="Relations">
                     <div class="panel panel-default">
-                        <div class="panel-heading" style="margin-top: 20px">
+                        <div class="panel-heading">
                             <g:message code="roletoperso.allRelationsSummary"
                                        default="All relations between characters summary"/>
                         </div>
@@ -689,7 +685,7 @@
 </g:form>
 
 
-<g:form method="post" controller="life">
+<g:form method="post" controller="life" name="form-life">
     <g:each in="${characterList}" var="PHJ">
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
@@ -697,13 +693,11 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-    <div class="span1">
-        <g:actionSubmit class="btn btn-primary" action="life"
-                        value="Life"/>
+    <g:hiddenField name="_action_life" value="Life"/>
     </div>
 </g:form>
 
-<g:form method="post" controller="naming">
+<g:form method="post" controller="naming" name="form-naming">
     <g:each in="${characterList}" var="PHJ">
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
@@ -711,11 +705,7 @@
         <g:hiddenField id="${"sexe_" + ((Character) PHJ).getDTDId()}" name="sexe" value="NO"/>
     </g:each>
     <g:hiddenField name="gnId" value="${gnInstance?.id}"/>
-
-    <div class="span1">
-        <g:actionSubmit class="btn btn-primary" action="index"
-                        value="${message(code: 'navbar.naming', default: 'Naming')}"/>
-    </div>
+    <g:hiddenField name="_action_index" value="${message(code: 'navbar.naming', default: 'Naming')}"/>
 </g:form>
 </div>
 %{--</div>--}%

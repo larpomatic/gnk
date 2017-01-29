@@ -168,31 +168,6 @@ function initSpanLabel(element) {
     });
 }
 
-//insert html span into textEditors
-function initSpanCreation() {
-    $(".buttonRichTextEditor").unbind('click');
-    $('.buttonRichTextEditor').click(function() {
-        setCarretPos();
-        if ($(this).closest("ul").hasClass("roleSelector")) {
-            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
-        }
-        else if ($(this).closest("a").hasClass("gnPlaceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
-        }
-        else if ($(this).closest("ul").hasClass("placeSelector")) {
-            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
-        }
-        else if ($(this).closest("ul").hasClass("resourceSelector")) {
-            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
-        }
-        else if ($(this).closest("a").hasClass("gnDateButton")) {
-            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
-        }
-        initializePopover();
-        return false;
-    });
-}
-
 function initQuickObjects() {
     //permet d'ajouter rapidement une ressource, lieu ou role
     $(".leftMenuList input, .inputOther").keypress(function(e) {
@@ -379,8 +354,37 @@ function pasteHtmlAtCaret(html) {
 //Dernière position du curseur dans l'éditeur
 var carretPos = null;
 
+$(document).ready(function() {
+        $('.dropdown-toggle').dropdown()
+});
+
+//insert html span into textEditors
+function initSpanCreation() {
+    $(".buttonRichTextEditor").unbind('click');
+    $('.buttonRichTextEditor').click(function() {
+        setCarretPos();
+        if ($(this).closest("ul").hasClass("roleSelector")) {
+            pasteHtmlAtCaret('<span class="label label-success" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("a").hasClass("gnPlaceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("placeSelector")) {
+            pasteHtmlAtCaret('<span class="label label-warning" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("ul").hasClass("resourceSelector")) {
+            pasteHtmlAtCaret('<span class="label label-important" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        else if ($(this).closest("a").hasClass("gnDateButton")) {
+            pasteHtmlAtCaret('<span class="label label-info" data-tag="none" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">' + $(this).html().trim() + '</span>');
+        }
+        initializePopover();
+        return false;
+    });
+}
 //On sauvegarde la position du curseur lorsque l'éditeur perd le focus
-function saveCarretPos(editorName) {
+function saveCarretPos(editorName, elt) {
+    update_text(elt);
     var caretOffset = 0;
     var element = document.getElementById(editorName);
     var doc = element.ownerDocument || element.document;
@@ -402,7 +406,6 @@ function saveCarretPos(editorName) {
     carretPos = window.getSelection().getRangeAt(0); //caretOffset;
     focusedNode = document.activeElement;
     document.getElementById("printHere").innerText = carretPos;
-
 }
 
 // Avant d'insert l'objet on remet le curseur à l'endroit sauvegardé
