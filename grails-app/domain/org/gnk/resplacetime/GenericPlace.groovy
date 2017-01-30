@@ -24,8 +24,8 @@ class GenericPlace extends GenericObject{
     static transients = ["DTDId", "proposedPlaces", "bannedPlaces", "selectedPlace", "lockedPlace", "resultsAllUniverses", "resultService", "plotId", "gnId", "totalNumberOfTags"]
 
 
-    ArrayList<ReferentialPlace> proposedPlaces
-    ArrayList<ReferentialPlace> bannedPlaces
+    ArrayList<Place> proposedPlaces
+    ArrayList<Place> bannedPlaces
     Place selectedPlace
     Place lockedPlace
     List<Tag> taglist

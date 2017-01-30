@@ -213,6 +213,8 @@
         // Code
         place.code = "${place.code}"
 
+        place.IdOfGn = ${gnInfo.id}
+
         // BEGIN Generic Tags LOOP
         var tagArray = new Array();
         <g:each status="j" in="${place.tagList}" var="tag">

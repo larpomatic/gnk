@@ -1,6 +1,7 @@
 package org.gnk.resplacetime
 
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.roletoperso.Character
 import org.gnk.tag.Tag
 
 class Place extends ReferentialObject{
@@ -16,8 +17,20 @@ class Place extends ReferentialObject{
     static def genders = ["M", "F", "MP", "FP"]
 
     // Id referenced into DTD
-    static transients = ["DTDId"]
+    static transients = ["DTDId", "plotId", "code", "character", "tagList", "comment", "plot", "objectType"]
     Integer DTDId;
+
+    //Transient fields used in substitution
+
+    //String id
+    String plotId
+    String code
+    Character character
+    List<Tag> tagList
+    String comment
+    // Plot name
+    String plot
+    String objectType
 
     static belongsTo = [genericPlace: GenericPlace]
 

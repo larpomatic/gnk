@@ -333,57 +333,56 @@ class IntegrationHandler {
 
     public JSONObject placeIntegration(JSONObject placeJsonObject) {
         String universe = placeJsonObject.get("universe")
-        List<GenericPlace> genericPlaceList = []
+        List<org.gnk.resplacetime.GenericPlace> genericPlaceList = []
 
         // GenericPlaceList construction from json
         for (placeJson in placeJsonObject.places) {
 
-            GenericPlace genericPlace = new GenericPlace()
+            org.gnk.resplacetime.GenericPlace genericPlace = new org.gnk.resplacetime.GenericPlace()
 
             genericPlace.code = "res" + placeJson.gnId + "_plot" + placeJson.gnPlotId
+            genericPlace.plotId = new Integer(Integer.parseInt(placeJson.gnPlotId))
+            genericPlace.gnId = new Integer(placeJson.IdOfGn)
+            genericPlace.totalNumberOfTags = 0;
 
             List<Tag> tagList = []
             for (tagJson in placeJson.tags) {
                 Tag tag = new Tag()
 
-                tag.value = tagJson.value
-                tag.type = tagJson.family
-                tag.weight = tagJson.weight as Integer
+                tag.value_substitution = tagJson.value
+                tag.type_substitution = tagJson.family
+                tag.weight_substitution = tagJson.weight as Integer
 
                 tagList.add(tag)
             }
-            genericPlace.tagList = tagList
+            genericPlace.taglist = tagList
 
             // Name
-            List<ReferentialPlace> proposedNameList = []
+            List<Place> proposedNameList = []
             for (nameJson in placeJson.proposedNames) {
-                ReferentialPlace referentialPlace = new ReferentialPlace()
+                Place referentialPlace = new Place()
                 referentialPlace.name = nameJson
                 proposedNameList.add(referentialPlace)
             }
-            genericPlace.resultList = proposedNameList
+            genericPlace.proposedPlaces = proposedNameList
 
-            List<ReferentialPlace> bannedNameList = []
+            List<Place> bannedNameList = []
             for (nameJson in placeJson.bannedNames) {
-                ReferentialPlace referentialPlace = new ReferentialPlace()
+                Place referentialPlace = new Place()
                 referentialPlace.name = nameJson
                 bannedNameList.add(referentialPlace)
             }
-            genericPlace.bannedItemsList = bannedNameList
+            genericPlace.bannedPlaces = bannedNameList
 
             genericPlaceList.add(genericPlace)
         }
 
         // PLACE SERVICE CALL
-        PlaceService placeService = new PlaceService()
+        //PlaceService placeService = new PlaceService()
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
         //print "Universe : " + universe
         for (genericPlace in genericPlaceList) {
-            //if (genericPlace.resultList.isEmpty()) {
-                //print "GenericPlace IN : " + genericPlace
-                genericPlace = placeService.findReferentialPlace(genericPlace, universe)
-                //print "GenericPlace OUT : " + genericPlace
-//                genericPlace.resultList.first().name
-            //}
+            genericPlace.resultService = placeresourceservice.findBestObjects(genericPlace, Gn.findById(genericPlace.gnId))
         }
         // END PLACE SERVICE CALL
 
@@ -395,7 +394,7 @@ class IntegrationHandler {
             Map<String, Integer> placeTags = new HashMap<>()
 
             String code = "res" + placeJson.gnId + "_plot" + placeJson.gnPlotId
-            GenericPlace genericPlace = null
+            org.gnk.resplacetime.GenericPlace genericPlace = null
 
             for (genericPlaceIt in genericPlaceList) {
                 if (genericPlaceIt.code == code) {
@@ -411,27 +410,11 @@ class IntegrationHandler {
 
             // Name
             placeJson.remove("proposedNames")
-            if (genericPlace.resultList != null && !genericPlace.resultList.isEmpty()) {
+            if (genericPlace.resultService != null && !genericPlace.resultService.isEmpty()) {
                 JSONArray proposedNames = new JSONArray()
-                for (referentialPlace in genericPlace.resultList) { // Place
-                    proposedNames.put(referentialPlace.name + " - " + (referentialPlace.matchingRate / 10) + "%")
-//                    for (Tag p in referentialPlace.tagList) {
-//                        // A VERIFIER
-//                        placeTags.put(referentialPlace.name, p.weight)
-//                        // FIN A VERIFIER
-//                    }
+                for (Pair<ReferentialObject, Integer> ref in genericPlace.resultService) {
+                    proposedNames.put(ref.left.name)
                 }
-
-//                if (genericPlaceTags != null && placeTags != null) {
-//                    calcDiffBetweenGenericPlaceTagsAndPlaceTags(genericPlaceTags, placeTags)
-//                }
-
-//                for (i in resultList) {
-//                    for (int j = 0; j < proposedNames.length(); j++) {
-//                        if (i.key == proposedNames[j])
-//                            proposedNames[j] = proposedNames[j] + " - " +  + "%"
-//                    }
-//                }
                 placeJson.put("proposedNames", proposedNames)
             }
 
