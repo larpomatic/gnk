@@ -38,7 +38,13 @@ class TimeController {
             inputHandler.parseGN(fileContent)
         } else {
             Integer gnDbId = gnIdStr as Integer;
-            List<String> sexes = params.sexe;
+            List<String> sexes = new ArrayList<String>();
+            try {
+                sexes = params.sexe;
+            } catch (Exception e) { System.out.println(e.getMessage())}
+            try {
+                sexes.add(params.sexe);
+            } catch (Exception e) { System.out.println(e.getMessage())}
             //Gn gn = changeCharSex(gnDbId, sexes);
             Gn gn = Gn.get(gnDbId)
             //gn = changeCharSex(gn, sexes);
@@ -158,7 +164,7 @@ class TimeController {
         if (!gnInstance.save(flush: true)) {
 
         }
-        redirect(controller: "Substitution", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+        redirect(controller: "Time", action: "index", params: [gnId: gnInstance.id, sexe: params.sexe /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 
     def getSubDates() {

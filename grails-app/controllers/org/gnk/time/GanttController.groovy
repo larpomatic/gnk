@@ -1,4 +1,4 @@
-package org.gnk.substitution
+package org.gnk.time
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
@@ -9,6 +9,7 @@ import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
+import org.gnk.substitution.InputHandler
 import org.gnk.substitution.data.Place
 import org.gnk.resplacetime.Resource
 import org.json.*;
@@ -45,7 +46,7 @@ class GanttController {
         gnData.ReadDTD(gn)
 
         GnXMLWriterService gnXMLWriterService = new GnXMLWriterService()
-        gn.step = "substitution";
+        gn.step = "time";
         gn.dtd = gnXMLWriterService.getGNKDTDString(gn)
 
         gn.save(flush: true);
@@ -89,8 +90,8 @@ class GanttController {
 
         //def gnInstance = Gn.get(Long.valueOf(params.gnId).longValue())
 
-        System.out.println("azertyuiopmlkjhhgn "+  ganttData.toString());
-        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: params.ganttData /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+
+        redirect(controller: "Time", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: params.ganttData /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
     }
 
     def loadGanttData() {
@@ -98,7 +99,7 @@ class GanttController {
         // ce JSONObject est renvoyé à la page subtitution du gnk et doit contenir les données du gantt (périodes) récupérées en base
         JSONObject obj = new JSONObject();
 
-        redirect(controller: "Substitution", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: obj /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
+        redirect(controller: "Time", action: "index", params: [gnId: params.gnId, sexe: params.sexe, ganttData: obj /*, gnDTD: gnInstance.dtd, screenStep: 2*/])
 
     }
 
