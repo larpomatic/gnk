@@ -563,7 +563,7 @@ class RedactIntrigueController {
 
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
-            wordWriter.addStyledParagraphOfText("T3", "Type : ")
+            wordWriter.addStyledParagraphOfText("T3", "Type")
             wordWriter.addStyledParagraphOfText("Normal", getNameObjectId(place.objectTypeId))
             wordWriter.addStyledParagraphOfText("T3", "Tags")
             txt = "Les tags du lieu sont : \n"
@@ -580,15 +580,15 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("T3","Description")
             wordWriter.addStyledParagraphOfText("Normal", place.comment)
 
-/*            org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+            org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
 
             List<com.gnk.substitution.Tag> tags = new ArrayList<>();
-            genericplace.setTagList(place.getTags())
+ /*           genericplace.setTagList(place.getTags())
             for (int i = 0; i < universList.size() ; i++) {
                 genericplace = placeService.findReferentialPlace(genericplace, universList[i].name)
                 // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
-            } */
-
+            }
+*/
         }
     }
 
