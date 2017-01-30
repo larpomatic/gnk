@@ -10,7 +10,7 @@ class PersoForNaming {
 	 String code
 	 String gender
      String universe
-	 List<Tag> tag
+	 ArrayList<Tag> tag
 	 List<String> bannedNames /* ceux qui n'ont pas �t� s�lectionn�s par l'utilisateur */
 	 List<String> selectedNames /* ceux que je renvoie si plein = s�lectionn� */
 	 List<String> bannedFirstnames

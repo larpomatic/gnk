@@ -21,11 +21,15 @@ class Tag{
     Tag parent
 
 
-    static transients = ["value_substitution", "type_substitution", "weight_substitution", "status_substitution"]
+    static transients = ["value_substitution", "type_substitution", "weight_substitution", "status_substitution","value", "family", "weight", "status"]
     String value_substitution
     String type_substitution
     Integer weight_substitution
     String status_substitution
+    String value
+    String family
+    Integer weight
+    String status
 
 
     static hasMany = [

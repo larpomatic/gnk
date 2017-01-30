@@ -65,7 +65,7 @@ class IntegrationHandler {
             charForNaming.gender = characterJson.gender
 
             // Tags
-            List<Tag> tagList = []
+            ArrayList<Tag> tagList = []
             Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
             for (tagJson in characterJson.tags) {
                 //Tag used in calculation
@@ -74,7 +74,7 @@ class IntegrationHandler {
                 org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
                 tag.value = tagJson.value
-                tag.type = tagJson.family
+                tag.family = tagJson.family
                 tag.weight = tagJson.weight as Integer
                 ntag.name = tagJson.value
                 ntag = org.gnk.tag.Tag.createCriteria().list {
