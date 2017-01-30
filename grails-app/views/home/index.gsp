@@ -17,7 +17,7 @@
 <div role="main">
     <h1>Bienvenue sur le Genotron</h1>
 
-    <p class="how-to">Osez entrer dans l’univers du jeu de rôle…<br>Pour commencer, rendez-vous dans la rubrique <g:link
+    <p class="how-to">Osez entrer dans l’univers du GN, le jeu de rôle grandeur nature…<br>Pour creer votre GN, cliquez sur <g:link
             action="list" controller="selectIntrigue">Gestion des GN</g:link>.</p>
 
     <div class="splash"></div>

@@ -21,6 +21,18 @@
         $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_roleToPerso\'>');
         $('#edit-plot form').submit()
     }
+
+    function submitNaming()
+    {
+        $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_index\'>');
+        $('#edit-plot form').submit()
+    }
+
+    function reloadLife()
+    {
+        $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_life\'>');
+        $('#edit-plot form').submit()
+    }
 </script>
 
 <g:javascript src="stepProgressBar/stepProgressBar.js"/>
@@ -84,11 +96,16 @@
                                     <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
                                 </a>
                             </g:elseif>
-                            <g:else>
-                                <a href="#"<g:if test="${currentStep != 'life'}"> class="inactive"</g:if>>
+                            <g:elseif test="${currentStep != 'life'}">
+                                <a href="#" class="inactive">
                                     <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
                                 </a>
-                            </g:else>
+                            </g:elseif>
+                            <g:elseif test="${currentStep == 'life'}">
+                                <a onclick="reloadLife()" class="reload">
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Vie',glyph='tower']"/>
+                                </a>
+                            </g:elseif>
                         </li>
 
                         <li role="presentation"<g:if test="${currentStep == 'naming'}"> class="active"</g:if>>
@@ -103,7 +120,7 @@
                                 </a>
                             </g:elseif>
                             <g:elseif test="${currentStep == 'life'}">
-                                <a onclick="return publicationAccess()" action="index" class="next">
+                                <a onclick="submitNaming()" class="next">
                                     <g:render template="../stepBarProgress/stepContent" model="[label='Identité',glyph='font']"/>
                                 </a>
                             </g:elseif>
