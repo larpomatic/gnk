@@ -2,7 +2,8 @@ package org.gnk.tag
 
 import org.gnk.naming.NamingService
 import org.gnk.utils.ComparateurTag
-import org.javatuples.Pair
+//import org.javatuples.Pair
+import org.gnk.utils.Pair
 
 import java.lang.reflect.Array
 
