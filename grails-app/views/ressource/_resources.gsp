@@ -114,7 +114,7 @@
                 // Gn plot id
                 resource.gnPlotId = plotId;
 
-                resource.IdOfGn = ${gnInfo.dbId}
+                resource.IdOfGn = ${gnInfo.id}
                 // HTML id
                 resource.htmlId = "res"+genericId+"_plot" + plotId;
                 // Code
@@ -162,7 +162,7 @@
         // Gn id
         resource.gnId = "${resource.id}"
 
-        resource.IdOfGn = ${gnInfo.dbId}
+        resource.IdOfGn = ${gnInfo.id}
         // Gn plot id
         resource.gnPlotId = "${resource.plotId}"
         // HTML id

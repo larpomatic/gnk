@@ -98,7 +98,7 @@ public class V2TagService {
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
 
         map_tags.putAll(genericObject.getTagsAndWeights(GenericObjectponderation))
-        for (tags in map_tags)
+        //for (tags in map_tags)
 
         //recupérer les tags du gn
         // chaque poids d'un tag du GN est pondéré à 90%

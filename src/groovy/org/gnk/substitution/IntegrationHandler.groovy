@@ -27,10 +27,11 @@ import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.RoleHasRelationWithRole
 
 import org.gnk.selectintrigue.Plot
-import org.gnk.substitution.data.RelationCharacter
+//import org.gnk.substitution.data.RelationCharacter
 import org.gnk.resplacetime.GenericResource
 import org.gnk.utils.Pair
 import org.gnk.tag.Tag
+
 
 
 class IntegrationHandler {
@@ -65,16 +66,16 @@ class IntegrationHandler {
             charForNaming.gender = characterJson.gender
 
             // Tags
-            ArrayList<Tag> tagList = []
+            ArrayList<com.gnk.substitution.Tag> tagList = []
             Map<org.gnk.tag.Tag, Integer> persoTagList = new HashMap<org.gnk.tag.Tag, Integer>();
             for (tagJson in characterJson.tags) {
                 //Tag used in calculation
-                Tag tag = new Tag()
+                com.gnk.substitution.Tag tag = new com.gnk.substitution.Tag()
                 //Persisted tag from the db, can't contain weight
                 org.gnk.tag.Tag ntag = new org.gnk.tag.Tag()
 
                 tag.value = tagJson.value
-                tag.family = tagJson.family
+                tag.type = tagJson.family
                 tag.weight = tagJson.weight as Integer
                 ntag.name = tagJson.value
                 ntag = org.gnk.tag.Tag.createCriteria().list {
