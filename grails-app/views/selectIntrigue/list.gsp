@@ -8,7 +8,7 @@
     <g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}"/>
     <title><g:message code="navbar.selectintrigue"/></title>
 </head>
-
+<g:javascript src="selectIntrigue/listSelectIntigue.js"/>
 <body>
 <div id="list-gn" class="content scaffold-list" role="main">
     <h1><g:message code="navbar.selectintrigue" default="Plot List"/></h1>
