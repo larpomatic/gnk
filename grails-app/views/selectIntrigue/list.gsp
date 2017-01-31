@@ -8,7 +8,7 @@
     <g:set var="entityName" value="${message(code: 'gn.label', default: 'GN')}"/>
     <title><g:message code="navbar.selectintrigue"/></title>
 </head>
-
+<g:javascript src="selectIntrigue/listSelectIntigue.js"/>
 <body>
 <div id="list-gn" class="content scaffold-list" role="main">
     <h1><g:message code="navbar.selectintrigue" default="Plot List"/></h1>
@@ -94,7 +94,7 @@
 
             <td>
                 <g:hasRights lvlright="${right.MGNDELETE.value()}">
-                    <g:link action="delete" id="${gnInstance.id}" class="btn btn-danger">
+                    <g:link action="delete" onclick="return confirm('êtes vous sur ?');" id="${gnInstance.id}" class="btn btn-danger">
                         <g:message code="default.delete" default="Delete"/>
                     </g:link>
                 </g:hasRights>
