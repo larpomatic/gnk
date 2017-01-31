@@ -75,10 +75,18 @@ public class V2TagService {
 
         for (Map.Entry<Tag, Integer> entry_generic : map_genericObject.entrySet()) {
             for (Map.Entry<Tag, Integer> entry : map_Object.entrySet()) {
-                if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
-                    score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
-                    score = tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
-                    totalNumberOfTagsUsed += 1;
+                if (entry_generic.getKey().getId() == null) {
+                    if (entry_generic.getKey().value_substitution.equals(entry.getKey().getName()) /*|| entry_generic.getKey().type_substitution.equals(entry.getKey().getName())*/) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_genericObject);
+                        totalNumberOfTagsUsed += 1;
+                    }
                 }
             }
         }
@@ -124,14 +132,14 @@ public class V2TagService {
         }
 
         // chaque poids d'un tag normal d'une intrigue est pondéré à 20%
-        if (gn.selectedPlotSet != null) {
+        /*if (gn.selectedPlotSet != null) {
             Set<Plot> plotlist = gn.selectedPlotSet;
             for (Plot p : plotlist) {
                 for (PlotHasTag tp : p.extTags) {
                     map_tags = addTag(map_tags, tp.tag, new Integer((int) tp.weight * plotponderation));
                 }
             }
-        }
+        }*/
 
         return map_tags;
     }
@@ -257,10 +265,14 @@ public class V2TagService {
     Long computeCumulativeScoreTags(Tag tag, Integer gPweight, Integer pweight) {
         long score = 0;
 
-        score = Math.abs(gPweight) + Math.abs(pweight);
-        if (gPweight * pweight == -1)
-            score *= -1;
-
+        if (tag.parent != null && tag.parent.getName() != null && tag.parent.getName().equals("Tag Univers")) {
+            score = 50;
+        }
+        else {
+            score = Math.abs(gPweight) + Math.abs(pweight);
+            if (gPweight < 0 || pweight < 0)
+                score *= -1;
+        }
         return score;
     }
 
@@ -308,7 +320,8 @@ public class V2TagService {
         if (testValue == null)
             map.put(tag, integer);
         else {
-                map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
+                //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
+                map.put(tag, (Integer)(integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
         }
 
         return  map;

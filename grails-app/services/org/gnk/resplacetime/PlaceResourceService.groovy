@@ -134,7 +134,7 @@ public class PlaceResourceService {
                 return o1.right.intValue().compareTo(o2.right.intValue());
             }
         });
-        //Collections.reverse(sorted_list)
+        Collections.reverse(sorted_list)
 
         sorted_list = removeSameObjects(sorted_list, genericObject.getPlotbyId());
         sorted_list = raiseLockedObject(sorted_list, genericObject)
