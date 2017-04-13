@@ -115,8 +115,9 @@
     $("#listTable2").DataTable({
         "order": [[2, "desc"]],
         "columnDefs": [
-            {"type": 'date-euro', "targets": 1},
-            {"type": 'date-euro', "targets": 3}
+
+            {"type": 'date-euro', "targets": 2},
+            {"type": 'date-euro', "targets": 4}
         ]
     });
 </script>
