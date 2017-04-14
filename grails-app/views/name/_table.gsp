@@ -10,6 +10,7 @@
     <tr>
         <th>Nom</th>
         <th>Genre</th>
+        <th>Tag</th>
         <th>Date Creation</th>
         <th>Date Modification</th>
 
@@ -17,7 +18,7 @@
             <g:hasRights lvlright="${right.REFDELETE.value()}">
                 <th>
                     %{--<g:message code="default.delete"/>--}%
-                    Suprimmer
+                    Supprimer
                 </th>
             </g:hasRights>
         </g:hasRights>
