@@ -1018,17 +1018,49 @@ class RedactIntrigueController {
         }
 
         // Duplicate Resource
-        /*Set<GenericResource> toDuplicateResources = plotInstance.genericResources
+        Set<GenericResource> toDuplicateResources = plotInstance.genericResources
         Set<GenericResource> duplicatedResources = new HashSet<>()
         Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
-        for (GenericResource)*/
-
-
 
 
         // Duplicate Place
+        Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
+        Set<GenericPlace> duplicatedPlaces = new HashSet<>()
+        Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
 
         // Duplicate PastScenes
+        Set<Pastscene> toDuplicatePastscenes = plotInstance.pastescenes
+        Set<Pastscene> duplicatedPastscenes = new HashSet<>()
+        Map<Integer, Pastscene> pastsceneToDuplicateMap = new HashMap<>() // Keep track of the duplicated past scenes in order to rebuild links
+        for (Pastscene p : toDuplicatePastscenes)
+        {
+            Pastscene newDuplicatedPastscene = new Pastscene()
+            newDuplicatedPastscene.version = p.version
+            newDuplicatedPastscene.lastUpdated = new Date()
+            newDuplicatedPastscene.dateCreated = new Date ()
+            newDuplicatedPastscene.title = p.title
+            newDuplicatedPastscene.isPublic = p.isPublic
+            newDuplicatedPastscene.description = p.description
+            newDuplicatedPastscene.dateYear = p.dateYear
+            newDuplicatedPastscene.dateMonth = p.dateMonth
+            newDuplicatedPastscene.dateDay = p.dateDay
+            newDuplicatedPastscene.dateHour = p.dateHour
+            newDuplicatedPastscene.dateMinute = p.dateMinute
+            newDuplicatedPastscene.isAbsoluteYear = p.isAbsoluteYear
+            newDuplicatedPastscene.isAbsoluteMonth = p.isAbsoluteMonth
+            newDuplicatedPastscene.isAbsoluteDay = p.isAbsoluteDay
+            newDuplicatedPastscene.isAbsoluteHour = p.isAbsoluteHour
+            newDuplicatedPastscene.isAbsoluteMinute = p.isAbsoluteMinute
+
+            newDuplicatedPastscene.save()
+            resourceToDuplicateMap.put(p.id, newDuplicatedPastscene)
+            duplicatedPastscenes.add(newDuplicatedPastscene)
+            
+        }
+
+        duplicatedPlot.pastescenes = duplicatedPastscenes
+        duplicatedPlot.save()
+
 
         redirect(action: "edit", id: duplicatedPlot.id)
     }
