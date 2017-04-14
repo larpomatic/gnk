@@ -114,11 +114,11 @@
                             <div class="hidden">${plotInstance.isDraft}</div>
                         </div></td>
 
-                        <!-- <td>
+                         <td>
                             <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
                                 <g:link class="btn" action="duplicate" id="${plotInstance?.id}">Dupliquer</g:link>
                             </g:hasRights>
-                        </td> -->
+                        </td>
                     </tr>
 				</g:each>
 				</tbody>

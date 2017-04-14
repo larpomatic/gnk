@@ -18,6 +18,7 @@ import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceService
+import org.gnk.resplacetime.Resource
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -848,7 +849,7 @@ class RedactIntrigueController {
     }
 
     // Unfinished work to duplicate plots
-    /*def duplicate(Long id) {
+    def duplicate(Long id) {
         Plot plotInstance = Plot.get(id)
         Plot duplicatedPlot = new Plot()
 
@@ -856,7 +857,7 @@ class RedactIntrigueController {
         String currentUsername = user.getUsername();
         User currentUser = User.findByUsername(currentUsername);
 
-        duplicatedPlot.name = plotInstance.name + "[duplicate]"
+        duplicatedPlot.name = plotInstance.name + "_COPY"
         duplicatedPlot.dateCreated = new Date();
         duplicatedPlot.lastUpdated = new Date();
         duplicatedPlot.user = currentUser;
@@ -1017,11 +1018,18 @@ class RedactIntrigueController {
         }
 
         // Duplicate Resource
+        /*Set<GenericResource> toDuplicateResources = plotInstance.genericResources
+        Set<GenericResource> duplicatedResources = new HashSet<>()
+        Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
+        for (GenericResource)*/
+
+
+
 
         // Duplicate Place
 
         // Duplicate PastScenes
 
         redirect(action: "edit", id: duplicatedPlot.id)
-    }*/
+    }
 }
