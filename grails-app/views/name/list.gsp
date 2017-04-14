@@ -11,7 +11,7 @@
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>List des Noms</h2>
+        <h2>Noms existants</h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />
@@ -20,7 +20,7 @@
             <fieldset class="buttons">
                 <g:hasRights lvlright="${right.REFMODIFY.value()}">
                     <g:actionSubmit class="btn btn-primary" action="create"
-                                    value="${message(code: 'default.button.create.label')}"/>
+                                    value="+ Ajouter nouveau nom"/>
                 </g:hasRights>
             </fieldset>
         </g:form>

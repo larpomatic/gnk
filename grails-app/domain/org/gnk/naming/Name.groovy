@@ -1,5 +1,8 @@
 package org.gnk.naming
 
+import org.gnk.selectintrigue.PlotHasTag
+import org.gnk.tag.Tag
+
 class Name {
 
     Integer id
@@ -25,5 +28,13 @@ class Name {
         id type:'integer'
         version type: 'integer'
     }
-	
+
+    public getNameHasTag(Tag tag) {
+        return NameHasTag.findByTagAndName(tag, this);
+    }
+
+    public getNameHasTag() {
+        return NameHasTag.findAllByName(this).sort { -it.weight };
+    }
+
 }

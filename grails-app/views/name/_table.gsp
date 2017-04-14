@@ -36,17 +36,32 @@
             </td>
 
             <td>${fieldValue(bean: NameInstance, field: "gender")}</td>
-            <td>TAG</td>
-            <td>${fieldValue(bean: NameInstance, field: "dateCreated")}</td>
-            <td>${fieldValue(bean: NameInstance, field: "lastUpdated")}</td>
+            <td>
+                <g:each in="${NameInstance.getNameHasTag()}" var="tag">
+                    <g:if test="${tag.weight > 50}">
+                        <span class="label mytool label-success" data-tag="none" contenteditable="false" toggle="tooltip"  data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
+                    </g:if>
+                    <g:elseif test="${tag.weight >=0}">
+                        <span class="label mytool label-info" data-tag="none" contenteditable="false" toggle="tooltip" data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
+                    </g:elseif>
+                    <g:elseif test="${tag.weight >= -50}">
+                        <span class="label mytool label-warning" data-tag="none" contenteditable="false" toggle="tooltip" data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
+                    </g:elseif>
+                    <g:else>
+                        <span class="label mytool label-important" data-tag="none" contenteditable="false" toggle="tooltip" data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
+                    </g:else>
+                </g:each>
+            </td>
+            <td>${NameInstance.dateCreated.format("dd/MM/yyyy")}</td>
+            <td>${NameInstance.lastUpdated.format("dd/MM/yyyy")}</td>
             <td>
         <g:form>
             <fieldset class="buttons">
-                <g:hiddenField name="id" value="${NameInstance?.id}"/>
+                <g:hiddenField name="id" value="${NameInstance.id}"/>
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <g:actionSubmit class="btn btn-danger" action="delete"
                                     value="${message(code: 'default.delete')}"
-                                    onclick="return confirm('Delete this plot ?');"/>
+                                    onclick="return confirm('Delete this name?');"/>
                 </g:hasRights>
             </fieldset>
         </g:form>
