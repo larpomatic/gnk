@@ -93,6 +93,18 @@
     </ul>
 </div>
 
+<div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        NewButton <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu resourceSelector">
+
+        <li>
+            <input data-entity="resource" data-label="important" type="text" class="inputOther" id="resourceOther"
+                   placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
+        </li>
+    </ul>
+</div>
 
 <div class="btn-group">
     <div class="btnFullScreen"></div>
