@@ -2207,6 +2207,24 @@ class PublicationController {
         }
         return returnedSet
     }
+    
+    private Boolean isTPJ(Character character)
+    {
+        character.getRoleTags().each {Role r ->
+            if (r.isTPJ())
+                return true
+        }
+        return false
+    }
+
+    private Boolean isPJG(Character character)
+    {
+        character.getRoleTags().each {Role r ->
+            if (r.isPJG())
+                return true
+        }
+        return false
+    }
 
     private String getPrintableDate(Date date, String formater = null, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
         if (formater == null) {
