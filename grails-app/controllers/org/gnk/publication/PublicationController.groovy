@@ -2198,6 +2198,15 @@ class PublicationController {
         return returnedSet
     }
 
+    // Récupère la liste des TPJ
+    private Set<Character> getTPJList(Set<Character> allPersoList) {
+        Set<Character> returnedSet = new HashSet<>()
+        allPersoList.each { chara ->
+            if (chara.isPNJ() || chara.isPJ())
+                returnedSet.add(chara)
+        }
+        return returnedSet
+    }
 
     private String getPrintableDate(Date date, String formater = null, int format1 = DateFormat.MEDIUM, int format2 = DateFormat.SHORT) {
         if (formater == null) {
