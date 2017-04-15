@@ -2207,10 +2207,10 @@ class PublicationController {
         }
         return returnedSet
     }
-    
+
     private Boolean isTPJ(Character character)
     {
-        character.getRoleTags().each {Role r ->
+        character.getSelectedRoles().each {Role r ->
             if (r.isTPJ())
                 return true
         }
@@ -2219,7 +2219,7 @@ class PublicationController {
 
     private Boolean isPJG(Character character)
     {
-        character.getRoleTags().each {Role r ->
+        character.getSelectedRoles().each {Role r ->
             if (r.isPJG())
                 return true
         }
