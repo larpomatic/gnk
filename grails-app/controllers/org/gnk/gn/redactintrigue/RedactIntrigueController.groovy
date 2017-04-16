@@ -1021,12 +1021,34 @@ class RedactIntrigueController {
         Set<GenericResource> toDuplicateResources = plotInstance.genericResources
         Set<GenericResource> duplicatedResources = new HashSet<>()
         Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
+        for (GenericResource r : toDuplicateResources)
+        {
+            GenericResource newDuplicatedResource = new GenericResource()
+            newDuplicatedResource.lastUpdated = new Date()
+            newDuplicatedResource.dateCreated = new Date()
+            newDuplicatedResource.version = r.version
+            newDuplicatedResource.code = r.code
+            newDuplicatedResource.comment = r.comment
+            newDuplicatedResource.plotId = duplicatedPlot.id
+            newDuplicatedResource.title = r.title
+            newDuplicatedResource.description = r.description
 
+            newDuplicatedResource.save()
+            resourceToDuplicateMap.put(r.id, newDuplicatedResource)
+            duplicatedResources.add(newDuplicatedResource)
+        }
+        duplicatedPlot.genericResources = duplicatedResources
+        duplicatedPlot.save()
 
         // Duplicate Place
         Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
         Set<GenericPlace> duplicatedPlaces = new HashSet<>()
         Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
+        /*for (GenericPlace p : toDuplicatePlaces)
+        {
+            GenericPlace newDuplicatedPlace = new GenericPlace()
+            newDuplicatedPlace.
+        }*/
 
         // Duplicate PastScenes
         Set<Pastscene> toDuplicatePastscenes = plotInstance.pastescenes
@@ -1040,6 +1062,7 @@ class RedactIntrigueController {
             newDuplicatedPastscene.dateCreated = new Date ()
             newDuplicatedPastscene.title = p.title
             newDuplicatedPastscene.isPublic = p.isPublic
+            newDuplicatedPastscene.plotId = duplicatedPlot.id
             newDuplicatedPastscene.description = p.description
             newDuplicatedPastscene.dateYear = p.dateYear
             newDuplicatedPastscene.dateMonth = p.dateMonth
@@ -1055,9 +1078,8 @@ class RedactIntrigueController {
             newDuplicatedPastscene.save()
             resourceToDuplicateMap.put(p.id, newDuplicatedPastscene)
             duplicatedPastscenes.add(newDuplicatedPastscene)
-            
-        }
 
+        }
         duplicatedPlot.pastescenes = duplicatedPastscenes
         duplicatedPlot.save()
 
