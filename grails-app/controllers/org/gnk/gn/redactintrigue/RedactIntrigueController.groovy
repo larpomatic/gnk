@@ -1017,7 +1017,7 @@ class RedactIntrigueController {
             currentEvent.save()
         }
 
-        // Duplicate Resource
+        // Duplicate Resources
         Set<GenericResource> toDuplicateResources = plotInstance.genericResources
         Set<GenericResource> duplicatedResources = new HashSet<>()
         Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
@@ -1040,15 +1040,26 @@ class RedactIntrigueController {
         duplicatedPlot.genericResources = duplicatedResources
         duplicatedPlot.save()
 
-        // Duplicate Place
+        // Duplicate Places
         Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
         Set<GenericPlace> duplicatedPlaces = new HashSet<>()
         Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
-        /*for (GenericPlace p : toDuplicatePlaces)
+        for (GenericPlace p : toDuplicatePlaces)
         {
             GenericPlace newDuplicatedPlace = new GenericPlace()
-            newDuplicatedPlace.
-        }*/
+            newDuplicatedPlace.lastUpdated = new Date()
+            newDuplicatedPlace.dateCreated = new Date()
+            newDuplicatedPlace.version = p.version
+            newDuplicatedPlace.code = p.code
+            newDuplicatedPlace.comment = p.comment
+            newDuplicatedPlace.plotId = duplicatedPlot.id
+
+            newDuplicatedPlace.save()
+            placeToDuplicateMap.put(p.id, newDuplicatedPlace)
+            duplicatedPlaces.add(newDuplicatedPlace)
+        }
+        duplicatedPlot.genericPlaces = duplicatedPlaces
+        duplicatedPlot.save()
 
         // Duplicate PastScenes
         Set<Pastscene> toDuplicatePastscenes = plotInstance.pastescenes
