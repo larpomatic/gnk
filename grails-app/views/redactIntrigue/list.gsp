@@ -116,7 +116,11 @@
 
                          <td>
                             <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
-                                <g:link class="btn" action="duplicate" id="${plotInstance?.id}">Dupliquer</g:link>
+                                <g:link class="btn" action="duplicate"  id="${plotInstance?.id}">Dupliquer</g:link>
+                                <script type="application/javascript">
+                                    createNotification("success", "Modifications réussies.", "Votre intrigue a bien été dupliquée.");
+                                </script>
+
                             </g:hasRights>
                         </td>
                     </tr>

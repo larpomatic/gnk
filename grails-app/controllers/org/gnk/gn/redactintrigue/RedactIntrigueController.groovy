@@ -39,6 +39,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.gnk.resplacetime.GenericPlaceController.*
+import javax.script.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
@@ -1023,7 +1024,9 @@ class RedactIntrigueController {
         Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
         for (GenericResource r : toDuplicateResources)
         {
+            println("BOUCLE RESOURCES")
             GenericResource newDuplicatedResource = new GenericResource()
+
             newDuplicatedResource.lastUpdated = new Date()
             newDuplicatedResource.dateCreated = new Date()
             newDuplicatedResource.version = r.version
@@ -1032,10 +1035,15 @@ class RedactIntrigueController {
             newDuplicatedResource.plotId = duplicatedPlot.id
             newDuplicatedResource.title = r.title
             newDuplicatedResource.description = r.description
+            println("code duppliqué: " + newDuplicatedResource.code)
+            if(newDuplicatedResource.save())
+            {
+                println("newDuplicatedResource saved")
+                resourceToDuplicateMap.put(r.id, newDuplicatedResource)
+                duplicatedResources.add(newDuplicatedResource)
+            }
+            else println("RESOURCE SAVE HAS FAILED !")
 
-            newDuplicatedResource.save()
-            resourceToDuplicateMap.put(r.id, newDuplicatedResource)
-            duplicatedResources.add(newDuplicatedResource)
         }
         duplicatedPlot.genericResources = duplicatedResources
         duplicatedPlot.save()
@@ -1046,6 +1054,7 @@ class RedactIntrigueController {
         Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
         for (GenericPlace p : toDuplicatePlaces)
         {
+            //println("BOUCLE PLACES")
             GenericPlace newDuplicatedPlace = new GenericPlace()
             newDuplicatedPlace.lastUpdated = new Date()
             newDuplicatedPlace.dateCreated = new Date()
@@ -1055,6 +1064,7 @@ class RedactIntrigueController {
             newDuplicatedPlace.plotId = duplicatedPlot.id
 
             newDuplicatedPlace.save()
+            //println("newDuplicatedPlace saved")
             placeToDuplicateMap.put(p.id, newDuplicatedPlace)
             duplicatedPlaces.add(newDuplicatedPlace)
         }
@@ -1067,6 +1077,7 @@ class RedactIntrigueController {
         Map<Integer, Pastscene> pastsceneToDuplicateMap = new HashMap<>() // Keep track of the duplicated past scenes in order to rebuild links
         for (Pastscene p : toDuplicatePastscenes)
         {
+            //println("BOUCLE PAST SCENES")
             Pastscene newDuplicatedPastscene = new Pastscene()
             newDuplicatedPastscene.version = p.version
             newDuplicatedPastscene.lastUpdated = new Date()
@@ -1087,6 +1098,7 @@ class RedactIntrigueController {
             newDuplicatedPastscene.isAbsoluteMinute = p.isAbsoluteMinute
 
             newDuplicatedPastscene.save()
+            //println("newDuplicatedPastscene saved")
             resourceToDuplicateMap.put(p.id, newDuplicatedPastscene)
             duplicatedPastscenes.add(newDuplicatedPastscene)
 
@@ -1094,7 +1106,10 @@ class RedactIntrigueController {
         duplicatedPlot.pastescenes = duplicatedPastscenes
         duplicatedPlot.save()
 
-
+        /*<script type="application/javascript">
+                createNotification("success", "Modifications réussies.", "Votre intrigue a bien été dupliquée.");
+        </script>*/
         redirect(action: "edit", id: duplicatedPlot.id)
+       
     }
 }
