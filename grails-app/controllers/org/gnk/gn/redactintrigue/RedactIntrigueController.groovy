@@ -1024,7 +1024,6 @@ class RedactIntrigueController {
         Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
         for (GenericResource r : toDuplicateResources)
         {
-            println("BOUCLE RESOURCES")
             GenericResource newDuplicatedResource = new GenericResource()
 
             newDuplicatedResource.lastUpdated = new Date()
@@ -1035,15 +1034,15 @@ class RedactIntrigueController {
             newDuplicatedResource.plotId = duplicatedPlot.id
             newDuplicatedResource.title = r.title
             newDuplicatedResource.description = r.description
-            println("code duppliqué: " + newDuplicatedResource.code)
-            if(newDuplicatedResource.save())
-            {
-                println("newDuplicatedResource saved")
-                resourceToDuplicateMap.put(r.id, newDuplicatedResource)
-                duplicatedResources.add(newDuplicatedResource)
-            }
-            else println("RESOURCE SAVE HAS FAILED !")
 
+            try {
+                newDuplicatedResource.save()
+            }
+            catch (Exception e){
+                println ("ERROR")
+            }
+            resourceToDuplicateMap.put(r.id, newDuplicatedResource)
+            duplicatedResources.add(newDuplicatedResource)
         }
         duplicatedPlot.genericResources = duplicatedResources
         duplicatedPlot.save()
