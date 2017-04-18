@@ -1038,7 +1038,6 @@ class RedactIntrigueController {
             newDuplicatedResource.plot = duplicatedPlot
             newDuplicatedResource.objectType = r.objectType
 
-
             newDuplicatedResource.save(failOnError: true)
 
             resourceToDuplicateMap.put(r.id, newDuplicatedResource)
@@ -1053,7 +1052,6 @@ class RedactIntrigueController {
         Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
         for (GenericPlace p : toDuplicatePlaces)
         {
-            //println("BOUCLE PLACES")
             GenericPlace newDuplicatedPlace = new GenericPlace()
             newDuplicatedPlace.lastUpdated = new Date()
             newDuplicatedPlace.dateCreated = new Date()
@@ -1061,9 +1059,10 @@ class RedactIntrigueController {
             newDuplicatedPlace.code = p.code
             newDuplicatedPlace.comment = p.comment
             newDuplicatedPlace.plot = duplicatedPlot
+            newDuplicatedPlace.objectType = p.objectType
+            newDuplicatedPlace.gnConstant = p.gnConstant
 
-            newDuplicatedPlace.save()
-            //println("newDuplicatedPlace saved")
+            newDuplicatedPlace.save(failOnError: true)
             placeToDuplicateMap.put(p.id, newDuplicatedPlace)
             duplicatedPlaces.add(newDuplicatedPlace)
         }
@@ -1076,7 +1075,6 @@ class RedactIntrigueController {
         Map<Integer, Pastscene> pastsceneToDuplicateMap = new HashMap<>() // Keep track of the duplicated past scenes in order to rebuild links
         for (Pastscene p : toDuplicatePastscenes)
         {
-            //println("BOUCLE PAST SCENES")
             Pastscene newDuplicatedPastscene = new Pastscene()
             newDuplicatedPastscene.version = p.version
             newDuplicatedPastscene.lastUpdated = new Date()
@@ -1096,8 +1094,7 @@ class RedactIntrigueController {
             newDuplicatedPastscene.isAbsoluteHour = p.isAbsoluteHour
             newDuplicatedPastscene.isAbsoluteMinute = p.isAbsoluteMinute
 
-            newDuplicatedPastscene.save()
-            //println("newDuplicatedPastscene saved")
+            newDuplicatedPastscene.save(failOnError: true)
             resourceToDuplicateMap.put(p.id, newDuplicatedPastscene)
             duplicatedPastscenes.add(newDuplicatedPastscene)
 
@@ -1105,9 +1102,6 @@ class RedactIntrigueController {
         duplicatedPlot.pastescenes = duplicatedPastscenes
         duplicatedPlot.save()
 
-        /*<script type="application/javascript">
-                createNotification("success", "Modifications réussies.", "Votre intrigue a bien été dupliquée.");
-        </script>*/
         redirect(action: "edit", id: duplicatedPlot.id)
        
     }
