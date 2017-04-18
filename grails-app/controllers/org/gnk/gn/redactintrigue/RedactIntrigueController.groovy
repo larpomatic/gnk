@@ -1030,17 +1030,17 @@ class RedactIntrigueController {
             newDuplicatedResource.dateCreated = new Date()
             newDuplicatedResource.version = r.version
             newDuplicatedResource.code = r.code
+
             newDuplicatedResource.comment = r.comment
-            newDuplicatedResource.plotId = duplicatedPlot.id
             newDuplicatedResource.title = r.title
             newDuplicatedResource.description = r.description
 
-            try {
-                newDuplicatedResource.save()
-            }
-            catch (Exception e){
-                println ("ERROR")
-            }
+            newDuplicatedResource.plot = duplicatedPlot
+            newDuplicatedResource.objectType = r.objectType
+
+
+            newDuplicatedResource.save(failOnError: true)
+
             resourceToDuplicateMap.put(r.id, newDuplicatedResource)
             duplicatedResources.add(newDuplicatedResource)
         }
@@ -1060,7 +1060,7 @@ class RedactIntrigueController {
             newDuplicatedPlace.version = p.version
             newDuplicatedPlace.code = p.code
             newDuplicatedPlace.comment = p.comment
-            newDuplicatedPlace.plotId = duplicatedPlot.id
+            newDuplicatedPlace.plot = duplicatedPlot
 
             newDuplicatedPlace.save()
             //println("newDuplicatedPlace saved")
@@ -1083,7 +1083,7 @@ class RedactIntrigueController {
             newDuplicatedPastscene.dateCreated = new Date ()
             newDuplicatedPastscene.title = p.title
             newDuplicatedPastscene.isPublic = p.isPublic
-            newDuplicatedPastscene.plotId = duplicatedPlot.id
+            newDuplicatedPastscene.plot = duplicatedPlot
             newDuplicatedPastscene.description = p.description
             newDuplicatedPastscene.dateYear = p.dateYear
             newDuplicatedPastscene.dateMonth = p.dateMonth
