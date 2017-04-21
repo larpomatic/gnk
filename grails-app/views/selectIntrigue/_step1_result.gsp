@@ -71,7 +71,6 @@
                         <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:else>
-
                 </td>
             </tr>
         </g:each>
@@ -91,7 +90,11 @@
             <thead>
             <tr>
                 <th><g:message code="selectintrigue.mainstreamPlotsName"
-                               default="Mainstream plot name"/></th>
+                               default="Plot name"/></th>
+                <th><g:img dir="images/selectIntrigue"
+                           file="locked.png"/></th>
+                <th><g:img dir="images/selectIntrigue"
+                           file="forbidden.png"/></th>
                 <th><g:img dir="images/selectIntrigue"
                            file="validate.png"/></th>
             </tr>
@@ -104,6 +107,27 @@
                                 id="${mainstreamPlotInstance.id}" target="_blank">
                             ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
                         </g:link>
+                    </td>
+
+                    <td>
+                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
+                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
+                                     class="radioMainstream"/>
+                        </g:if>
+                        <g:else>
+                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
+                                     class="radioMainstream"/>
+                        </g:else>
+                    </td>
+                    <td>
+                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
+                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
+                                     class="radioMainstream"/>
+                        </g:if>
+                        <g:else>
+                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
+                                     class="radioMainstream"/>
+                        </g:else>
                     </td>
                     <td>
                         <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
@@ -118,7 +142,7 @@
                 </tr>
             </g:each>
             <tr>
-                <td colspan="2">
+                <td colspan="4">
                     <button type="button" class="moreMainstream btn btn-primary">
                         <g:message code="selectintrigue.step1.moreMainstream" default="Display more mainstreams plots"/>
                     </button>
