@@ -975,7 +975,8 @@ class RedactIntrigueController {
             newDuplicatedEvent.isPlanned = e.isPlanned
             newDuplicatedEvent.description = e.description
             newDuplicatedEvent.plot = duplicatedPlot
-            // Missing predecessor + genericPlace
+
+            /* FIXME Missing predecessor + genericPlace */
 
             if (newDuplicatedEvent.save()) {
                 eventToDuplicateMap.put(e.id, newDuplicatedEvent)
@@ -1030,16 +1031,19 @@ class RedactIntrigueController {
             newDuplicatedResource.dateCreated = new Date()
             newDuplicatedResource.version = r.version
             newDuplicatedResource.code = r.code
-
             newDuplicatedResource.comment = r.comment
             newDuplicatedResource.title = r.title
             newDuplicatedResource.description = r.description
-
             newDuplicatedResource.plot = duplicatedPlot
             newDuplicatedResource.objectType = r.objectType
 
-            newDuplicatedResource.save(failOnError: true)
+            //NEW
+            newDuplicatedResource.fromRole = r.fromRole
+            newDuplicatedResource.toRole = r.toRole
+            newDuplicatedResource.possessedByRole = r.possessedByRole
+            newDuplicatedResource.gnConstant = r.gnConstant
 
+            newDuplicatedResource.save(failOnError: true)
             resourceToDuplicateMap.put(r.id, newDuplicatedResource)
             duplicatedResources.add(newDuplicatedResource)
         }
@@ -1088,6 +1092,12 @@ class RedactIntrigueController {
             newDuplicatedPastscene.dateDay = p.dateDay
             newDuplicatedPastscene.dateHour = p.dateHour
             newDuplicatedPastscene.dateMinute = p.dateMinute
+
+            //NEW
+            newDuplicatedPastscene.genericPlace = p.genericPlace
+            newDuplicatedPastscene.pastscenePredecessor = p.pastscenePredecessor
+
+
             newDuplicatedPastscene.isAbsoluteYear = p.isAbsoluteYear
             newDuplicatedPastscene.isAbsoluteMonth = p.isAbsoluteMonth
             newDuplicatedPastscene.isAbsoluteDay = p.isAbsoluteDay
