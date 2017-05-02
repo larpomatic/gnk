@@ -1036,8 +1036,6 @@ class RedactIntrigueController {
             newDuplicatedResource.description = r.description
             newDuplicatedResource.plot = duplicatedPlot
             newDuplicatedResource.objectType = r.objectType
-
-            //NEW
             newDuplicatedResource.fromRole = r.fromRole
             newDuplicatedResource.toRole = r.toRole
             newDuplicatedResource.possessedByRole = r.possessedByRole
@@ -1092,12 +1090,8 @@ class RedactIntrigueController {
             newDuplicatedPastscene.dateDay = p.dateDay
             newDuplicatedPastscene.dateHour = p.dateHour
             newDuplicatedPastscene.dateMinute = p.dateMinute
-
-            //NEW
             newDuplicatedPastscene.genericPlace = p.genericPlace
             newDuplicatedPastscene.pastscenePredecessor = p.pastscenePredecessor
-
-
             newDuplicatedPastscene.isAbsoluteYear = p.isAbsoluteYear
             newDuplicatedPastscene.isAbsoluteMonth = p.isAbsoluteMonth
             newDuplicatedPastscene.isAbsoluteDay = p.isAbsoluteDay
