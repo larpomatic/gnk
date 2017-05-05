@@ -33,7 +33,7 @@
                         ${fieldValue(bean: plotInstance, field: "name")}
                     </g:link>
                 </td>
-                <g:radioGroup name="plot_status_${plotInstance.id}" values="[1, 2, 3]"
+                <g:radioGroup name="plot_status_${plotInstance.id}" onclick="reloadSelectIntrigue()" values="[1, 2, 3]"
                               value="${((Gn) gnInstance).getLockedPlotSet()?.contains(plotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(plotInstance) ? "2" : "3")}">
                     <td>
                         ${it.radio}
@@ -64,11 +64,11 @@
                 </td>
                 <td>
                     <g:if test="${evenementialPlotInstance.id.equals(evenementialId)}">
-                        <g:radio name="selected_evenemential" checked="true" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="reloadSelectIntrigue()" checked="true" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:if>
                     <g:else>
-                        <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="reloadSelectIntrigue()" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:else>
 
@@ -107,11 +107,11 @@
                     </td>
                     <td>
                         <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="reloadSelectIntrigue()" checked="true" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:if>
                         <g:else>
-                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="reloadSelectIntrigue()" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:else>
                     </td>
@@ -147,7 +147,7 @@
                     ${fieldValue(bean: plotInstance, field: "name")}
                 </g:link></td>
                 <td>
-                    <g:checkBox name="keepBanned_${plotInstance.id}" checked="true"/>
+                    <g:checkBox name="keepBanned_${plotInstance.id}" onclick="reloadSelectIntrigue()" checked="true"/>
                 </td>
             </tr>
         </g:each>
