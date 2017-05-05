@@ -1048,6 +1048,34 @@ class RedactIntrigueController {
         duplicatedPlot.genericResources = duplicatedResources
         duplicatedPlot.save()
 
+        // Duplicate GenericResourceHasTag
+        for (GenericResource r : toDuplicateResources)
+        {
+            Set<GenericResourceHasTag> toDuplicateGenericResourceHasTag = r.extTags
+            Set<GenericResourceHasTag> newGenericResourceHasTagSet = new HashSet<>()
+            for (GenericResourceHasTag genericResourceHasTag : toDuplicateGenericResourceHasTag) {
+                GenericResourceHasTag newGenericResourceHasTag =
+                        new GenericResourceHasTag(resourceToDuplicateMap.get(r.id),
+                                genericResourceHasTag.tag, genericResourceHasTag.weight)
+                newGenericResourceHasTag.save(failOnError: true)
+                newGenericResourceHasTagSet.add(newGenericResourceHasTag)
+            }
+            resourceToDuplicateMap.get(r.id).extTags = newGenericResourceHasTagSet
+            resourceToDuplicateMap.get(r.id).save(failOnError: true)
+        }
+
+        /*for (Role r : toDuplicateRoles) {
+            Set<RoleHasTag> toDuplicateRoleHasTags = r.roleHasTags
+            Set<RoleHasTag> newRoleHasTags = new HashSet<>()
+            for (RoleHasTag roleHasTag : toDuplicateRoleHasTags) {
+                RoleHasTag newRoleHasTag = new RoleHasTag(roleToDuplicateMap.get(r.id), roleHasTag.tag, roleHasTag.weight)
+                if (newRoleHasTag.save())
+                    newRoleHasTags.add(newRoleHasTag)
+            }
+            roleToDuplicateMap.get(r.id).roleHasTags = newRoleHasTags
+            roleToDuplicateMap.get(r.id).save()
+        }*/
+
         // Duplicate Places
         Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
         Set<GenericPlace> duplicatedPlaces = new HashSet<>()
