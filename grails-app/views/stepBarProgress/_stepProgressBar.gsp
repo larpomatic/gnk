@@ -57,7 +57,7 @@
                             </g:elseif>
                             <g:elseif test="${currentStep == 'selectIntrigue'}">
                                 <a onclick="reloadSelectIntrigue()" class="reload">
-                                    <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
+
                                 </a>
                             </g:elseif>
                         </li>
