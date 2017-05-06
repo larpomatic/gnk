@@ -1064,18 +1064,6 @@ class RedactIntrigueController {
             resourceToDuplicateMap.get(r.id).save(failOnError: true)
         }
 
-        /*for (Role r : toDuplicateRoles) {
-            Set<RoleHasTag> toDuplicateRoleHasTags = r.roleHasTags
-            Set<RoleHasTag> newRoleHasTags = new HashSet<>()
-            for (RoleHasTag roleHasTag : toDuplicateRoleHasTags) {
-                RoleHasTag newRoleHasTag = new RoleHasTag(roleToDuplicateMap.get(r.id), roleHasTag.tag, roleHasTag.weight)
-                if (newRoleHasTag.save())
-                    newRoleHasTags.add(newRoleHasTag)
-            }
-            roleToDuplicateMap.get(r.id).roleHasTags = newRoleHasTags
-            roleToDuplicateMap.get(r.id).save()
-        }*/
-
         // Duplicate Places
         Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
         Set<GenericPlace> duplicatedPlaces = new HashSet<>()
@@ -1098,6 +1086,28 @@ class RedactIntrigueController {
         }
         duplicatedPlot.genericPlaces = duplicatedPlaces
         duplicatedPlot.save()
+
+        // Duplicate PlaceHasTag
+        for (GenericPlace p : toDuplicatePlaces)
+        {
+            Set<GenericPlaceHasTag> toDuplicateGenericPlaceHasTag = p.extTags
+            Set<GenericPlaceHasTag> newGenericPlaceHasTagSet =  new HashSet<>()
+            for (GenericPlaceHasTag genericPlaceHasTag : toDuplicateGenericPlaceHasTag)
+            {
+                GenericPlaceHasTag newGenericPlaceHasTag = new GenericPlaceHasTag()
+                newGenericPlaceHasTag.lastUpdated = new Date()
+                newGenericPlaceHasTag.dateCreated = new Date()
+                newGenericPlaceHasTag.version = genericPlaceHasTag.version
+                newGenericPlaceHasTag.genericPlace = placeToDuplicateMap.get(p.id)
+                newGenericPlaceHasTag.weight = genericPlaceHasTag.weight
+                newGenericPlaceHasTag.tag = genericPlaceHasTag.tag
+
+                newGenericPlaceHasTag.save(failOnError: true)
+                newGenericPlaceHasTagSet.add(newGenericPlaceHasTag)
+            }
+            placeToDuplicateMap.get(p.id).extTags = newGenericPlaceHasTagSet
+            placeToDuplicateMap.get(p.id).save(failOnError: true)
+        }
 
         // Duplicate PastScenes
         Set<Pastscene> toDuplicatePastscenes = plotInstance.pastescenes
