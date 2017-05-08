@@ -976,7 +976,8 @@ class RedactIntrigueController {
             newDuplicatedEvent.description = e.description
             newDuplicatedEvent.plot = duplicatedPlot
 
-            /* FIXME Missing predecessor + genericPlace */
+            newDuplicatedEvent.eventPredecessor =  e.eventPredecessor
+            newDuplicatedEvent.genericPlace = e.genericPlace // Real copy is done after the duplication of places.
 
             if (newDuplicatedEvent.save()) {
                 eventToDuplicateMap.put(e.id, newDuplicatedEvent)
@@ -1107,6 +1108,12 @@ class RedactIntrigueController {
             }
             placeToDuplicateMap.get(p.id).extTags = newGenericPlaceHasTagSet
             placeToDuplicateMap.get(p.id).save(failOnError: true)
+        }
+
+        // Duplicate Events places
+        for (Event e : duplicatedEvents)
+        {
+            e.genericPlace = placeToDuplicateMap.get(e.genericPlace.id)
         }
 
         // Duplicate PastScenes
