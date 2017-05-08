@@ -1,9 +1,64 @@
+<style type="text/css">
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: pink;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+
+</style>
 <!-- navbar des différentes catégories d'objets insérables -->
 <div class="btn-group">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
         Personnage <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu placeSelector">
+    <ul class="dropdown-menu roleSelector">
         <g:each in="${plotInstance.roles}" status="i5" var="role">
             <g:if test="${!(role.type == "STF")}">
                 <li data-id="${role.id}">
@@ -92,10 +147,11 @@
 
     </ul>
 </div>
-
+<!--
 <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-        NewButton <span class="caret"></span>
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle=""><input type="checkbox" checked data-toggle="toggle">
+
+        transform to Textbrut button <span class="caret"></span>
     </button>
     <ul class="dropdown-menu resourceSelector">
 
@@ -104,8 +160,13 @@
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
+-->
+<div class="btn-group">
+<label class="switch">
+    <input type="checkbox">
+    <div class="slider"></div>
+</label>
 </div>
-
 <div class="btn-group">
     <div class="btnFullScreen"></div>
 </div>
