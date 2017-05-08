@@ -1136,9 +1136,8 @@ class RedactIntrigueController {
             newDuplicatedPastscene.isAbsoluteHour = p.isAbsoluteHour
             newDuplicatedPastscene.isAbsoluteMinute = p.isAbsoluteMinute
 
-
             newDuplicatedPastscene.save(failOnError: true)
-            resourceToDuplicateMap.put(p.id, newDuplicatedPastscene)
+            pastsceneToDuplicateMap.put(p.id, newDuplicatedPastscene)
             duplicatedPastscenes.add(newDuplicatedPastscene)
 
         }
@@ -1148,9 +1147,8 @@ class RedactIntrigueController {
         // Duplicate RoleHasPastScene
         for (Pastscene p : toDuplicatePastscenes)
         {
-            Set<RoleHasPastscene> toDuplicateRoleHasPastscene = p.roleHasPastscenes
             Set<RoleHasPastscene> newRoleHasPastsceneSet = new HashSet<>()
-            for (RoleHasPastscene roleHasPastscene : toDuplicateRoleHasPastscene)
+            for (RoleHasPastscene roleHasPastscene : p.roleHasPastscenes)
             {
                 RoleHasPastscene newRoleHasPastScene = new RoleHasPastscene()
                 newRoleHasPastScene.lastUpdated = new Date()
@@ -1158,11 +1156,10 @@ class RedactIntrigueController {
                 newRoleHasPastScene.version = roleHasPastscene.version
                 newRoleHasPastScene.title = roleHasPastscene.title
                 newRoleHasPastScene.description = roleHasPastscene.description
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                newRoleHasPastScene.pastscene = pastsceneToDuplicateMap.get(p.id)
+
+                newRoleHasPastScene.pastscene = pastsceneToDuplicateMap.get(roleHasPastscene.pastscene.id)
                 Role currentRole = roleToDuplicateMap.get(roleHasPastscene.role.id)
                 newRoleHasPastScene.role = currentRole
-
                 if (newRoleHasPastScene.save(failOnError: true)) {
                     newRoleHasPastsceneSet.add(newRoleHasPastScene)
                     if (null == currentRole.roleHasPastscenes)
