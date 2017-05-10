@@ -56,9 +56,9 @@
                         <th style="width: 3%">
                             <g:message code="plot.isDraft.label" default="Draft" />
                         </th>
-                        <!--<th>
+                        <th>
                              <%-- Left blank for duplicate btn --%>
-                        </th>-->
+                        </th>
 					</tr>
 				</thead>
 				<tbody>
