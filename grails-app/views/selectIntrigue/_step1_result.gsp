@@ -22,6 +22,17 @@
         </tr>
         </thead>
         <tbody>
+
+        //<g:form action="list" class="right pull-right">
+            <form role="search">
+
+                <div class="form-group btn-block">
+                    <input type="text" name="usersearch" class="form-control" placeholder=<g:message code="default.action.search.label"/>>
+
+                    <button type="submit" class="btn btn-default btn-submit"><g:message code="default.action.search.label"/></button>
+                </div>
+            </form>
+        </g:form> *//
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
@@ -33,7 +44,7 @@
                         ${fieldValue(bean: plotInstance, field: "name")}
                     </g:link>
                 </td>
-                <g:radioGroup name="plot_status_${plotInstance.id}" onclick="reloadSelectIntrigue()" values="[1, 2, 3]"
+                <g:radioGroup name="plot_status_${plotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
                               value="${((Gn) gnInstance).getLockedPlotSet()?.contains(plotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(plotInstance) ? "2" : "3")}">
                     <td>
                         ${it.radio}

@@ -9,6 +9,24 @@
         $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_goToRoleToPerso\'>');
         $('#edit-plot form').submit()
     }
+    function saveRadioBouton()
+    {$.ajax({
+            type: "PUT",
+            url: "${createLink(controller:'selectIntrigue', action:'selectIntrigue')}",
+            dataType: "json",
+            contentType: 'text/json',
+            data: {},
+            async: true,
+            success : function(data, textStatus, jqXHR) {
+            },
+            error : function(jqXHR, textStatus, errorThrown) {
+            },
+            complete : function(jqXHR, textStatus) {
+                // completeFunc(jqXHR, textStatus);
+            }
+     });
+    }
+
 
     function reloadSelectIntrigue()
     {
@@ -57,7 +75,7 @@
                             </g:elseif>
                             <g:elseif test="${currentStep == 'selectIntrigue'}">
                                 <a onclick="reloadSelectIntrigue()" class="reload">
-
+                                    <g:render template="../stepBarProgress/stepContent" model="[label='Intrigues',glyph='pencil']"/>
                                 </a>
                             </g:elseif>
                         </li>
