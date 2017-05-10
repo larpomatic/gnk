@@ -346,7 +346,7 @@ class SubstitutionPublication {
             }
         }
 
-        if (null == character)
+        if (character == null)
             return "[Rôle générique]"
 
         // Retourne le changement de genre
