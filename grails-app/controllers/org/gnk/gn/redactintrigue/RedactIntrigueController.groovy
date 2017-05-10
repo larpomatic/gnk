@@ -1113,7 +1113,8 @@ class RedactIntrigueController {
         // Duplicate Events places
         for (Event e : duplicatedEvents)
         {
-            e.genericPlace = placeToDuplicateMap.get(e.genericPlace.id)
+            if (e.genericPlace)
+                e.genericPlace = placeToDuplicateMap.get(e.genericPlace.id)
         }
 
         // Duplicate PastScenes
@@ -1121,7 +1122,7 @@ class RedactIntrigueController {
         Set<Pastscene> duplicatedPastscenes = new HashSet<>()
         Map<Integer, Pastscene> pastsceneToDuplicateMap = new HashMap<>() // Keep track of the duplicated past scenes in order to rebuild links
         for (Pastscene p : toDuplicatePastscenes)
-        {
+            {
             Pastscene newDuplicatedPastscene = new Pastscene()
             newDuplicatedPastscene.version = p.version
             newDuplicatedPastscene.lastUpdated = new Date()
@@ -1167,6 +1168,12 @@ class RedactIntrigueController {
                 newRoleHasPastScene.pastscene = pastsceneToDuplicateMap.get(roleHasPastscene.pastscene.id)
                 Role currentRole = roleToDuplicateMap.get(roleHasPastscene.role.id)
                 newRoleHasPastScene.role = currentRole
+
+                /*println("-------------------------")
+                println("roleToDuplicateMap.get(roleHasPastscene.role.id) = "
+                        + roleToDuplicateMap.get(roleHasPastscene.role.id))
+                println ("Contenu de la map" + Arrays.asList(roleToDuplicateMap))
+                println("-------------------------") */
                 if (newRoleHasPastScene.save(failOnError: true)) {
                     newRoleHasPastsceneSet.add(newRoleHasPastScene)
                     if (null == currentRole.roleHasPastscenes)
