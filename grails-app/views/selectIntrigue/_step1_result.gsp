@@ -10,29 +10,21 @@
     <g:hiddenField name="screenStep" value="1"/>
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th><g:message code="selectintrigue.plotName"
-                           default="Plot name"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="locked.png"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="forbidden.png"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="validate.png"/></th>
-        </tr>
-        </thead>
+    <tr>
+        <th><g:message code="selectintrigue.plotName"
+                       default="Plot name"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="locked.png"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="forbidden.png"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="validate.png"/></th>
+    </tr>
+    </thead>
         <tbody>
 
-        //<g:form action="list" class="right pull-right">
-            <form role="search">
-
-                <div class="form-group btn-block">
-                    <input type="text" name="usersearch" class="form-control" placeholder=<g:message code="default.action.search.label"/>>
-
-                    <button type="submit" class="btn btn-default btn-submit"><g:message code="default.action.search.label"/></button>
-                </div>
-            </form>
-        </g:form> *//
+        <g:form action="list" class="right pull-right">
+        </g:form>
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
@@ -118,11 +110,11 @@
                     </td>
                     <td>
                         <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" onclick="reloadSelectIntrigue()" checked="true" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:if>
                         <g:else>
-                            <g:radio name="selected_mainstream" onclick="reloadSelectIntrigue()" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:else>
                     </td>
