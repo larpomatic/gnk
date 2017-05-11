@@ -147,7 +147,7 @@ input:checked + .slider:before {
 
     </ul>
 </div>
-<button type="button" onclick="toBalise(description)">Change to balise</button>
+<button type="button" onclick="toBalise()">Change to balise</button>
 
 
 
