@@ -3,13 +3,13 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'Firstname.label', default: 'Name')}" />
+    <g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
     %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
-    <title>Editer Firstname</title>
+    <title>Duppliquer Prénom</title>
 </head>
 <body>
 <div id="edit-Firstname" class="content scaffold-edit" role="main">
-    <h1>Création Firstname</h1>
+    <h1>Dupplication Firstname" /></h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
@@ -25,7 +25,7 @@
         <form>
 
             <g:hiddenField name="FirstnameId" value="${FirstnameInstance?.id}" />
-            <g:hiddenField name="FirstnameVersion" value="${FirstnameInstance?.version}" />
+            <g:hiddenField name="FirstnamVersion" value="${FirstnameInstance?.version}" />
             <fieldset class="form-inline">
                 <g:render template="form" model="[FirstnameInstance : FirstnameInstance,
                                                   FirstnameInstanceList : FirstnameInstanceList,
@@ -33,7 +33,7 @@
                                                   FirstnameHasTagList : FirstnameHasTagList]"/>
             </fieldset>
             <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="Editer" />
+                <g:actionSubmit class="save" action="update" value="Duppliquer" />
                 <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
                                 formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>
