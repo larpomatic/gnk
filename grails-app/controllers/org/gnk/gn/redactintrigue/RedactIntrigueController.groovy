@@ -986,8 +986,10 @@ class RedactIntrigueController {
         }
 
         // Duplicate RoleHasEvent
-        for (Event e : toDuplicateEvents) {
+        for (Event e : toDuplicateEvents)
+        {
             Set<RoleHasEvent> newRoleHasEventSet = new HashSet<>()
+            Set<RoleHasEventHasGenericResource> newRoleHasEventHasGenericResourceSet = new HashSet<>()
             for (RoleHasEvent roleHasEvent : e.roleHasEvents) {
                 RoleHasEvent newRoleHasEvent = new RoleHasEvent()
                 newRoleHasEvent.lastUpdated = new Date()
@@ -997,7 +999,6 @@ class RedactIntrigueController {
                 newRoleHasEvent.description = roleHasEvent.description
                 newRoleHasEvent.comment = roleHasEvent.comment
                 newRoleHasEvent.evenementialDescription = roleHasEvent.evenementialDescription
-
                 newRoleHasEvent.event = eventToDuplicateMap.get(roleHasEvent.event.id)
                 Role currentRole = roleToDuplicateMap.get(roleHasEvent.role.id)
                 newRoleHasEvent.role = currentRole
@@ -1011,6 +1012,21 @@ class RedactIntrigueController {
                     currentRole.save()
                 }
                 // Missing RoleHasEventHasGenericResources
+                for (RoleHasEventHasGenericResource r : roleHasEvent.roleHasEventHasGenericResources)
+                {
+                    RoleHasEventHasGenericResource newRoleHasEventHasGenericResource =
+                            new RoleHasEventHasGenericResource()
+                    newRoleHasEventHasGenericResource.lastUpdated = new Date()
+                    newRoleHasEventHasGenericResource.dateCreated = new Date()
+                    newRoleHasEventHasGenericResource.quantity = r.quantity
+                    newRoleHasEventHasGenericResource.roleHasEvent = newRoleHasEvent
+                    newRoleHasEventHasGenericResource.genericResource = r.genericResource
+
+                    newRoleHasEventHasGenericResource.save(failOnError: true)
+                    newRoleHasEventHasGenericResourceSet.add(newRoleHasEventHasGenericResource)
+                }
+                newRoleHasEvent.roleHasEventHasGenericResources = newRoleHasEventHasGenericResourceSet
+                newRoleHasEvent.save(failOnError: true)
             }
             Event currentEvent = eventToDuplicateMap.get(e.id)
             if (null == currentEvent.roleHasEvents)
@@ -1047,7 +1063,7 @@ class RedactIntrigueController {
             duplicatedResources.add(newDuplicatedResource)
         }
         duplicatedPlot.genericResources = duplicatedResources
-        duplicatedPlot.save()
+        duplicatedPlot.save(failOnError: true)
 
         // Duplicate GenericResourceHasTag
         for (GenericResource r : toDuplicateResources)
