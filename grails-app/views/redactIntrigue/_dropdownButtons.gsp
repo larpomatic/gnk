@@ -147,20 +147,10 @@ input:checked + .slider:before {
 
     </ul>
 </div>
-<!--
-<div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle=""><input type="checkbox" checked data-toggle="toggle">
+<button type="button" onclick="toBalise(description)">Change to balise</button>
 
-        transform to Textbrut button <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu resourceSelector">
 
-        <li>
-            <input data-entity="resource" data-label="important" type="text" class="inputOther" id="resourceOther"
-                   placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
-        </li>
-    </ul>
--->
+
 <div class="btn-group">
 <label class="switch">
     <input type="checkbox">
