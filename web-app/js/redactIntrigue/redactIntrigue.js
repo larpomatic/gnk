@@ -778,14 +778,19 @@ function convertHTMLRegisterHelper(description) {
     return description;
 }
 
-function toBalise(description)
+function toBalise()
 {
+    var form = $('.savePlotForm');
+    //var description = document.getElementById('idDescriptionText_0').textContent;
 
 
-    description = $('#plotRichTextEditor', form).html();
+    var description = $('#idDescriptionText_0', form).html();
+    console.log(description);
+    window.alert(description);
     description = transformDescription(description);
     $('.descriptionContent', form).val(description);
-    description = $(this).html();
+
+    /*description = $(this).html();
 
     while (description.length != 0 && (description[0] == '\n' ||
     description[0] == ' ' || description[0] == '\r'))
@@ -797,10 +802,9 @@ function toBalise(description)
     description[description.length - 1] == ' ' || description[description.length - 1] == '\r'))
     {
         description = description.substring(0, description.length - 1)
-    }
+    }*/
 
-
-    description = "<span>" + convertDescription(description) + "</span>";
+    description =  convertDescription(description);
 
     var html = $(description);
     $("span br", html).remove();
