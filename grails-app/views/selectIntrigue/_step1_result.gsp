@@ -10,18 +10,21 @@
     <g:hiddenField name="screenStep" value="1"/>
     <table class="table table-bordered">
         <thead>
-        <tr>
-            <th><g:message code="selectintrigue.plotName"
-                           default="Plot name"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="locked.png"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="forbidden.png"/></th>
-            <th><g:img dir="images/selectIntrigue"
-                       file="validate.png"/></th>
-        </tr>
-        </thead>
+    <tr>
+        <th><g:message code="selectintrigue.plotName"
+                       default="Plot name"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="locked.png"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="forbidden.png"/></th>
+        <th><g:img dir="images/selectIntrigue"
+                   file="validate.png"/></th>
+    </tr>
+    </thead>
         <tbody>
+
+        <g:form action="list" class="right pull-right">
+        </g:form>
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
@@ -33,7 +36,7 @@
                         ${fieldValue(bean: plotInstance, field: "name")}
                     </g:link>
                 </td>
-                <g:radioGroup name="plot_status_${plotInstance.id}" values="[1, 2, 3]"
+                <g:radioGroup name="plot_status_${plotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
                               value="${((Gn) gnInstance).getLockedPlotSet()?.contains(plotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(plotInstance) ? "2" : "3")}">
                     <td>
                         ${it.radio}
@@ -64,11 +67,11 @@
                 </td>
                 <td>
                     <g:if test="${evenementialPlotInstance.id.equals(evenementialId)}">
-                        <g:radio name="selected_evenemential" checked="true" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="saveRadioBouton()" checked="true" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:if>
                     <g:else>
-                        <g:radio name="selected_evenemential" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="saveRadioBouton()" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:else>
                 </td>
@@ -131,11 +134,11 @@
                     </td>
                     <td>
                         <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:if>
                         <g:else>
-                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
+                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${mainstreamPlotInstance.id}"
                                      class="radioMainstream"/>
                         </g:else>
                     </td>
@@ -171,7 +174,7 @@
                     ${fieldValue(bean: plotInstance, field: "name")}
                 </g:link></td>
                 <td>
-                    <g:checkBox name="keepBanned_${plotInstance.id}" checked="true"/>
+                    <g:checkBox name="keepBanned_${plotInstance.id}" onclick="reloadSelectIntrigue()" checked="true"/>
                 </td>
             </tr>
         </g:each>

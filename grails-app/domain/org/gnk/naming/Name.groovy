@@ -1,5 +1,7 @@
 package org.gnk.naming
 
+import org.gnk.tag.Tag
+
 class Name {
 
     Integer id
@@ -24,6 +26,25 @@ class Name {
     static mapping = {
         id type:'integer'
         version type: 'integer'
+        extTags cascade: "all-delete-orphan"
     }
-	
+
+    public getNameHasTag(Tag tag) {
+        return NameHasTag.findByTagAndName(tag, this);
+    }
+
+    public getNameHasTag() {
+        return NameHasTag.findAllByName(this).sort { -it.weight };
+    }
+    public NameHasTag hasTagValue(Tag tag) {
+        def find = this.extTags.find { it.tag.id == tag.id }
+
+        return find
+    }
+    public boolean hasTag(Tag tag) {
+        def find = this.extTags.find { it.tag.id == tag.id }
+
+        return (find != null)
+    }
+
 }
