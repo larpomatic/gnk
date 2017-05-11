@@ -778,6 +778,37 @@ function convertHTMLRegisterHelper(description) {
     return description;
 }
 
+function toBalise(description)
+{
+
+
+    description = $('#plotRichTextEditor', form).html();
+    description = transformDescription(description);
+    $('.descriptionContent', form).val(description);
+    description = $(this).html();
+
+    while (description.length != 0 && (description[0] == '\n' ||
+    description[0] == ' ' || description[0] == '\r'))
+    {
+        description = description.substring(1, description.length)
+    }
+
+    while (description.length != 0 && (description[description.length - 1] == '\n' ||
+    description[description.length - 1] == ' ' || description[description.length - 1] == '\r'))
+    {
+        description = description.substring(0, description.length - 1)
+    }
+
+
+    description = "<span>" + convertDescription(description) + "</span>";
+
+    var html = $(description);
+    $("span br", html).remove();
+    description = html.html();
+    $(this).html(description);
+
+}
+
 function detectPaste() {
     $('#richTextEditor').bind({
         paste : function(){
