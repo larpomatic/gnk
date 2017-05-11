@@ -18,11 +18,13 @@
             data: {},
             async: true,
             success : function(data, textStatus, jqXHR) {
+                onSuccesFunc(data, textStatus, jqXHR);
             },
             error : function(jqXHR, textStatus, errorThrown) {
+                onErrorFunc(jqXHR, textStatus, errorThrown);
             },
             complete : function(jqXHR, textStatus) {
-                // completeFunc(jqXHR, textStatus);
+                completeFunc(jqXHR, textStatus);
             }
      });
     }
