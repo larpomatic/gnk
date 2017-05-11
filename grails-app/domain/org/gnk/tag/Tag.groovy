@@ -1,5 +1,7 @@
 package org.gnk.tag
 
+import org.gnk.naming.FirstnameHasTag
+import org.gnk.naming.NameHasTag
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.resplacetime.ResourceHasTag
 import org.gnk.roletoperso.RoleHasTag
@@ -37,6 +39,8 @@ class Tag{
     extResourceTags: ResourceHasTag,
     extPlotTags: PlotHasTag,
     extRoleTags: RoleHasTag,
+    extNameTags: NameHasTag,
+    extFirstnameTags: FirstnameHasTag,
     children: Tag]
 
     static constraints = {

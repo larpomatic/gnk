@@ -18,6 +18,7 @@ import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceService
+import org.gnk.resplacetime.Resource
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -38,6 +39,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
 import static org.gnk.resplacetime.GenericPlaceController.*
+import javax.script.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
@@ -848,7 +850,7 @@ class RedactIntrigueController {
     }
 
     // Unfinished work to duplicate plots
-    /*def duplicate(Long id) {
+    def duplicate(Long id) {
         Plot plotInstance = Plot.get(id)
         Plot duplicatedPlot = new Plot()
 
@@ -856,7 +858,7 @@ class RedactIntrigueController {
         String currentUsername = user.getUsername();
         User currentUser = User.findByUsername(currentUsername);
 
-        duplicatedPlot.name = plotInstance.name + "[duplicate]"
+        duplicatedPlot.name = plotInstance.name + "_COPY"
         duplicatedPlot.dateCreated = new Date();
         duplicatedPlot.lastUpdated = new Date();
         duplicatedPlot.user = currentUser;
@@ -973,7 +975,9 @@ class RedactIntrigueController {
             newDuplicatedEvent.isPlanned = e.isPlanned
             newDuplicatedEvent.description = e.description
             newDuplicatedEvent.plot = duplicatedPlot
-            // Missing predecessor + genericPlace
+
+            newDuplicatedEvent.eventPredecessor =  e.eventPredecessor
+            newDuplicatedEvent.genericPlace = e.genericPlace // Real copy is done after the duplication of places.
 
             if (newDuplicatedEvent.save()) {
                 eventToDuplicateMap.put(e.id, newDuplicatedEvent)
@@ -982,8 +986,10 @@ class RedactIntrigueController {
         }
 
         // Duplicate RoleHasEvent
-        for (Event e : toDuplicateEvents) {
+        for (Event e : toDuplicateEvents)
+        {
             Set<RoleHasEvent> newRoleHasEventSet = new HashSet<>()
+            Set<RoleHasEventHasGenericResource> newRoleHasEventHasGenericResourceSet = new HashSet<>()
             for (RoleHasEvent roleHasEvent : e.roleHasEvents) {
                 RoleHasEvent newRoleHasEvent = new RoleHasEvent()
                 newRoleHasEvent.lastUpdated = new Date()
@@ -993,7 +999,6 @@ class RedactIntrigueController {
                 newRoleHasEvent.description = roleHasEvent.description
                 newRoleHasEvent.comment = roleHasEvent.comment
                 newRoleHasEvent.evenementialDescription = roleHasEvent.evenementialDescription
-
                 newRoleHasEvent.event = eventToDuplicateMap.get(roleHasEvent.event.id)
                 Role currentRole = roleToDuplicateMap.get(roleHasEvent.role.id)
                 newRoleHasEvent.role = currentRole
@@ -1007,6 +1012,21 @@ class RedactIntrigueController {
                     currentRole.save()
                 }
                 // Missing RoleHasEventHasGenericResources
+                for (RoleHasEventHasGenericResource r : roleHasEvent.roleHasEventHasGenericResources)
+                {
+                    RoleHasEventHasGenericResource newRoleHasEventHasGenericResource =
+                            new RoleHasEventHasGenericResource()
+                    newRoleHasEventHasGenericResource.lastUpdated = new Date()
+                    newRoleHasEventHasGenericResource.dateCreated = new Date()
+                    newRoleHasEventHasGenericResource.quantity = r.quantity
+                    newRoleHasEventHasGenericResource.roleHasEvent = newRoleHasEvent
+                    newRoleHasEventHasGenericResource.genericResource = r.genericResource
+
+                    newRoleHasEventHasGenericResource.save(failOnError: true)
+                    newRoleHasEventHasGenericResourceSet.add(newRoleHasEventHasGenericResource)
+                }
+                newRoleHasEvent.roleHasEventHasGenericResources = newRoleHasEventHasGenericResourceSet
+                newRoleHasEvent.save(failOnError: true)
             }
             Event currentEvent = eventToDuplicateMap.get(e.id)
             if (null == currentEvent.roleHasEvents)
@@ -1016,12 +1036,179 @@ class RedactIntrigueController {
             currentEvent.save()
         }
 
-        // Duplicate Resource
+        // Duplicate Resources
+        Set<GenericResource> toDuplicateResources = plotInstance.genericResources
+        Set<GenericResource> duplicatedResources = new HashSet<>()
+        Map<Integer, GenericResource> resourceToDuplicateMap = new HashMap<>() // Keep track of the duplicated resources in order to rebuild links
+        for (GenericResource r : toDuplicateResources)
+        {
+            GenericResource newDuplicatedResource = new GenericResource()
 
-        // Duplicate Place
+            newDuplicatedResource.lastUpdated = new Date()
+            newDuplicatedResource.dateCreated = new Date()
+            newDuplicatedResource.version = r.version
+            newDuplicatedResource.code = r.code
+            newDuplicatedResource.comment = r.comment
+            newDuplicatedResource.title = r.title
+            newDuplicatedResource.description = r.description
+            newDuplicatedResource.plot = duplicatedPlot
+            newDuplicatedResource.objectType = r.objectType
+            newDuplicatedResource.fromRole = r.fromRole
+            newDuplicatedResource.toRole = r.toRole
+            newDuplicatedResource.possessedByRole = r.possessedByRole
+            newDuplicatedResource.gnConstant = r.gnConstant
+
+            newDuplicatedResource.save(failOnError: true)
+            resourceToDuplicateMap.put(r.id, newDuplicatedResource)
+            duplicatedResources.add(newDuplicatedResource)
+        }
+        duplicatedPlot.genericResources = duplicatedResources
+        duplicatedPlot.save(failOnError: true)
+
+        // Duplicate GenericResourceHasTag
+        for (GenericResource r : toDuplicateResources)
+        {
+            Set<GenericResourceHasTag> toDuplicateGenericResourceHasTag = r.extTags
+            Set<GenericResourceHasTag> newGenericResourceHasTagSet = new HashSet<>()
+            for (GenericResourceHasTag genericResourceHasTag : toDuplicateGenericResourceHasTag) {
+                GenericResourceHasTag newGenericResourceHasTag =
+                        new GenericResourceHasTag(resourceToDuplicateMap.get(r.id),
+                                genericResourceHasTag.tag, genericResourceHasTag.weight)
+                newGenericResourceHasTag.save(failOnError: true)
+                newGenericResourceHasTagSet.add(newGenericResourceHasTag)
+            }
+            resourceToDuplicateMap.get(r.id).extTags = newGenericResourceHasTagSet
+            resourceToDuplicateMap.get(r.id).save(failOnError: true)
+        }
+
+        // Duplicate Places
+        Set<GenericPlace> toDuplicatePlaces = plotInstance.genericPlaces
+        Set<GenericPlace> duplicatedPlaces = new HashSet<>()
+        Map<Integer, GenericPlace> placeToDuplicateMap = new HashMap<>() // Keep track of the duplicated places in order to rebuild links
+        for (GenericPlace p : toDuplicatePlaces)
+        {
+            GenericPlace newDuplicatedPlace = new GenericPlace()
+            newDuplicatedPlace.lastUpdated = new Date()
+            newDuplicatedPlace.dateCreated = new Date()
+            newDuplicatedPlace.version = p.version
+            newDuplicatedPlace.code = p.code
+            newDuplicatedPlace.comment = p.comment
+            newDuplicatedPlace.plot = duplicatedPlot
+            newDuplicatedPlace.objectType = p.objectType
+            newDuplicatedPlace.gnConstant = p.gnConstant
+
+            newDuplicatedPlace.save(failOnError: true)
+            placeToDuplicateMap.put(p.id, newDuplicatedPlace)
+            duplicatedPlaces.add(newDuplicatedPlace)
+        }
+        duplicatedPlot.genericPlaces = duplicatedPlaces
+        duplicatedPlot.save()
+
+        // Duplicate PlaceHasTag
+        for (GenericPlace p : toDuplicatePlaces)
+        {
+            Set<GenericPlaceHasTag> toDuplicateGenericPlaceHasTag = p.extTags
+            Set<GenericPlaceHasTag> newGenericPlaceHasTagSet =  new HashSet<>()
+            for (GenericPlaceHasTag genericPlaceHasTag : toDuplicateGenericPlaceHasTag)
+            {
+                GenericPlaceHasTag newGenericPlaceHasTag = new GenericPlaceHasTag()
+                newGenericPlaceHasTag.lastUpdated = new Date()
+                newGenericPlaceHasTag.dateCreated = new Date()
+                newGenericPlaceHasTag.version = genericPlaceHasTag.version
+                newGenericPlaceHasTag.genericPlace = placeToDuplicateMap.get(p.id)
+                newGenericPlaceHasTag.weight = genericPlaceHasTag.weight
+                newGenericPlaceHasTag.tag = genericPlaceHasTag.tag
+
+                newGenericPlaceHasTag.save(failOnError: true)
+                newGenericPlaceHasTagSet.add(newGenericPlaceHasTag)
+            }
+            placeToDuplicateMap.get(p.id).extTags = newGenericPlaceHasTagSet
+            placeToDuplicateMap.get(p.id).save(failOnError: true)
+        }
+
+        // Duplicate Events places
+        for (Event e : duplicatedEvents)
+        {
+            if (e.genericPlace)
+                e.genericPlace = placeToDuplicateMap.get(e.genericPlace.id)
+        }
 
         // Duplicate PastScenes
+        Set<Pastscene> toDuplicatePastscenes = plotInstance.pastescenes
+        Set<Pastscene> duplicatedPastscenes = new HashSet<>()
+        Map<Integer, Pastscene> pastsceneToDuplicateMap = new HashMap<>() // Keep track of the duplicated past scenes in order to rebuild links
+        for (Pastscene p : toDuplicatePastscenes)
+            {
+            Pastscene newDuplicatedPastscene = new Pastscene()
+            newDuplicatedPastscene.version = p.version
+            newDuplicatedPastscene.lastUpdated = new Date()
+            newDuplicatedPastscene.dateCreated = new Date ()
+            newDuplicatedPastscene.title = p.title
+            newDuplicatedPastscene.isPublic = p.isPublic
+            newDuplicatedPastscene.plot = duplicatedPlot
+            newDuplicatedPastscene.description = p.description
+            newDuplicatedPastscene.dateYear = p.dateYear
+            newDuplicatedPastscene.dateMonth = p.dateMonth
+            newDuplicatedPastscene.dateDay = p.dateDay
+            newDuplicatedPastscene.dateHour = p.dateHour
+            newDuplicatedPastscene.dateMinute = p.dateMinute
+            newDuplicatedPastscene.genericPlace = p.genericPlace
+            newDuplicatedPastscene.pastscenePredecessor = p.pastscenePredecessor
+            newDuplicatedPastscene.isAbsoluteYear = p.isAbsoluteYear
+            newDuplicatedPastscene.isAbsoluteMonth = p.isAbsoluteMonth
+            newDuplicatedPastscene.isAbsoluteDay = p.isAbsoluteDay
+            newDuplicatedPastscene.isAbsoluteHour = p.isAbsoluteHour
+            newDuplicatedPastscene.isAbsoluteMinute = p.isAbsoluteMinute
+
+            newDuplicatedPastscene.save(failOnError: true)
+            pastsceneToDuplicateMap.put(p.id, newDuplicatedPastscene)
+            duplicatedPastscenes.add(newDuplicatedPastscene)
+
+        }
+        duplicatedPlot.pastescenes = duplicatedPastscenes
+        duplicatedPlot.save()
+
+        // Duplicate RoleHasPastScene
+        for (Pastscene p : toDuplicatePastscenes)
+        {
+            Set<RoleHasPastscene> newRoleHasPastsceneSet = new HashSet<>()
+            for (RoleHasPastscene roleHasPastscene : p.roleHasPastscenes)
+            {
+                RoleHasPastscene newRoleHasPastScene = new RoleHasPastscene()
+                newRoleHasPastScene.lastUpdated = new Date()
+                newRoleHasPastScene.dateCreated = new Date()
+                newRoleHasPastScene.version = roleHasPastscene.version
+                newRoleHasPastScene.title = roleHasPastscene.title
+                newRoleHasPastScene.description = roleHasPastscene.description
+
+                newRoleHasPastScene.pastscene = pastsceneToDuplicateMap.get(roleHasPastscene.pastscene.id)
+                Role currentRole = roleToDuplicateMap.get(roleHasPastscene.role.id)
+                newRoleHasPastScene.role = currentRole
+
+                /*println("-------------------------")
+                println("roleToDuplicateMap.get(roleHasPastscene.role.id) = "
+                        + roleToDuplicateMap.get(roleHasPastscene.role.id))
+                println ("Contenu de la map" + Arrays.asList(roleToDuplicateMap))
+                println("-------------------------") */
+                if (newRoleHasPastScene.save(failOnError: true)) {
+                    newRoleHasPastsceneSet.add(newRoleHasPastScene)
+                    if (null == currentRole.roleHasPastscenes)
+                        currentRole.roleHasPastscenes = newRoleHasPastsceneSet
+                    else
+                        currentRole.roleHasPastscenes.addAll(newRoleHasPastsceneSet)
+                    currentRole.save(failOnError: true)
+                }
+            }
+            Pastscene currentPastscene = pastsceneToDuplicateMap.get(p.id)
+            if (null == currentPastscene.roleHasPastscenes)
+                currentPastscene.roleHasPastscenes = newRoleHasPastsceneSet
+            else
+                currentPastscene.roleHasPastscenes.addAll(newRoleHasPastsceneSet)
+            currentPastscene.save(failOnError: true)
+        }
+
 
         redirect(action: "edit", id: duplicatedPlot.id)
-    }*/
+       
+    }
 }

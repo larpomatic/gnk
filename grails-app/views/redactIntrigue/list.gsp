@@ -56,9 +56,9 @@
                         <th style="width: 3%">
                             <g:message code="plot.isDraft.label" default="Draft" />
                         </th>
-                        <!--<th>
+                        <th>
                              <%-- Left blank for duplicate btn --%>
-                        </th>-->
+                        </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -114,11 +114,18 @@
                             <div class="hidden">${plotInstance.isDraft}</div>
                         </div></td>
 
-                        <!-- <td>
+                         <td>
                             <g:hasRights lvlright="${right.MINTRIGUEMODIFY.value()}">
-                                <g:link class="btn" action="duplicate" id="${plotInstance?.id}">Dupliquer</g:link>
+                                <g:link class="btn test" action="duplicate"  id="${plotInstance?.id}">Dupliquer</g:link>
+                                <script type="application/javascript">
+                                    $(".test").click(function() {
+                                        createNotification("success", "Modifications réussies.", "Votre intrigue a bien été dupliquée.");
+                                    })
+
+                                </script>
+
                             </g:hasRights>
-                        </td> -->
+                        </td>
                     </tr>
 				</g:each>
 				</tbody>
