@@ -75,11 +75,11 @@
                 </td>
                 <td>
                     <g:if test="${evenementialPlotInstance.id.equals(evenementialId)}">
-                        <g:radio name="selected_evenemential" onclick="reloadSelectIntrigue()" checked="true" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="saveRadioBouton()" checked="true" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:if>
                     <g:else>
-                        <g:radio name="selected_evenemential" onclick="reloadSelectIntrigue()" value="${evenementialPlotInstance.id}"
+                        <g:radio name="selected_evenemential" onclick="saveRadioBouton()" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:else>
 
