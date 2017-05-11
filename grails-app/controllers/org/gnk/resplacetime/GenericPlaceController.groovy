@@ -51,19 +51,20 @@ class GenericPlaceController {
     def getBestPlaces() {
         GenericPlace gp = new GenericPlace();
         Set<GenericPlaceHasTag> tags = new ArrayList<>();
+
         params.each {
             if (it.key.startsWith("placeTags_")) {
-                com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
                 Tag tag = Tag.get((it.key - "placeTags_") as Integer);
                 if (tag.parent != null) {
-                    subtag.value = tag.name;
+                    subtag.tag = tag;
                     subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
-                    subtag.type = tag.parent.name;
+                    //subtag.type = tag.parent.name;
                     tags.add(subtag);
                 }
             }
         }
-        gp.setTagList(tags);
+        //gp.setTagList(tags);
 
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
