@@ -8,8 +8,8 @@
 	</head>
 	<body>
 		<a href="#create-Firstname" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="create-genericEvent" class="content scaffold-create" role="main">
-			<h1><g:message code="default.create.label" args="[firstname]" /></h1>
+		<div id="create-firsname" class="content scaffold-create" role="main">
+			<h1>Création Firstname</h1>>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>

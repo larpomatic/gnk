@@ -8,8 +8,8 @@
     <title>Editer Firstname</title>
 </head>
 <body>
-<div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1><g:message code="default.edit.label" args="[Firstname]" /></h1>
+<div id="edit-Firstname" class="content scaffold-edit" role="main">
+    <h1>Création Firstname</h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
