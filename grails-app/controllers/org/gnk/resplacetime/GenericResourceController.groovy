@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.ressplacetime.ReferentialObject
@@ -308,7 +309,7 @@ class GenericResourceController {
         //ResourceService resourceService = new ResourceService();
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
-        tagUnivers = Tag.findById("33089");
+        tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
         //genericressource.setTagList(tags);
         gr.setExtTags(tags);
@@ -327,9 +328,9 @@ class GenericResourceController {
         }
 
         render(contentType: "application/json") {
-            object(json: json)
+            object([json: json] as JSON)
 
-            return json.toString();
+            return json as JSON;
         }
     }
 }
