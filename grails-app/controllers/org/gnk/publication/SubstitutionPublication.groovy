@@ -333,15 +333,23 @@ class SubstitutionPublication {
 
     String replaceRole(String syntax, String code) {
         String[] character //[fisrtname, lastname, age, gender]
-        for (Map.Entry<String, Role> map : rolesNames.entrySet())
-        {
-            if (map.value.code.toUpperCase().equals(code))
-                character = map.key.split(";")
+        // Recherche du 'character' correspondant au 'code'
+        for (Map.Entry<String, Role> map : rolesNames.entrySet()) {
+            // 'character' sera le dernier personage qui correspond au 'code' s'il n'est pas un PJG ou TPJ
+            if (map.value.code.toUpperCase().equals(code)) {
+                if (map.value.PJG)
+                    return replaceListingRole(syntax, code, "PJG")
+                else if (map.value.TPJ)
+                    return replaceListingRole(syntax, code, "TPJ")
+                else
+                    character = map.key.split(";")
+            }
         }
 
-        if (null == character)
+        if (character == null)
             return "[Rôle générique]"
 
+        // Retourne le changement de genre
         if (syntax.contains("M#") && syntax.contains("F#")) {
             String[] switchGender = syntax.split(";")
             if (character[3].equals("M"))
@@ -358,6 +366,48 @@ class SubstitutionPublication {
             case "INIF" : return character[0].substring(0, 1) + ". " + character[1]
         }
 
+        return "[Rôle générique]"
+    }
+
+    // Devrait remplacer les roles(TPJ/PJG) avec 'code' par l'élément en prenant la 'syntax'
+    // 'type' = "TPJ" ou "PJG"
+    String replaceListingRole(String syntax, String code, String type) {
+        String result = ""
+        String[] character
+        boolean isFirst = true
+        for (Map.Entry<String, Role> map : rolesNames.entrySet())
+        {
+            if (map.value.code.toUpperCase().equals(code) && map.value.type.equals(type))
+            {
+                character = map.key.split(";")
+                if (null == character)
+                    continue
+                // pas de check sur genderSwap
+                // Si c'est le premier élément ou le seul on ne met pas de '; ' devant
+                if (isFirst)
+                    isFirst = false
+                else
+                    result += "; "
+
+                /*
+                * Switch pour savoir le contenu que l'on veut afficher
+                * "NONE" -> "Prénom Patronyme" ex: Azraël Godsword
+                * "PRE" -> "Prénom" ex: Azraël
+                * "PAT" -> "Patronyme" nom de famille, ex: Godsword
+                * "AGE" -> "Age" ex: 200000
+                * "INIF" -> ex: Az. Godsword
+                */
+                switch (syntax) {
+                    case "NONE" : result += character[0] + " " + character[1]
+                    case "PRE" : result += character[0]
+                    case "PAT" : result +=  character[1]
+                    case "AGE" : result += character[2]
+                    case "INIF" : result += character[0].substring(0, 1) + ". " + character[1]
+                }
+            }
+        }
+        if (!result.isEmpty())
+            return result
         return "[Rôle générique]"
     }
 
