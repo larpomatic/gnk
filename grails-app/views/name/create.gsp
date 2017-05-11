@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.genericevent.GenericEvent" %>
+<%@ page import="org.gnk.naming.Name" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -7,9 +7,8 @@
 		<title>Creer nouveau Nom</title>
 	</head>
 	<body>
-		<a href="#create-Name" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="create-genericEvent" class="content scaffold-create" role="main">
-			<h1><g:message code="default.create.label" args="[name]" /></h1>
+		<div id="create-name">
+			<h1>Création Name></h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>
