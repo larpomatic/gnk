@@ -1,4 +1,4 @@
-package org.gnk.Firstname
+package org.gnk.firstname
 
 import org.gnk.naming.Firstname
 import org.gnk.naming.FirstnameHasTag
