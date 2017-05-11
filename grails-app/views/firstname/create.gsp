@@ -1,31 +1,31 @@
-<%@ page import="org.gnk.genericevent.GenericEvent" %>
+<%@ page import="org.gnk.naming.Firstname" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
-		<title>Creer nouveau Nom</title>
+		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Firstname')}" />
+		<title>Creer nouveau Prénom</title>
 	</head>
 	<body>
-		<a href="#create-Name" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<a href="#create-Firstname" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="create-genericEvent" class="content scaffold-create" role="main">
-			<h1><g:message code="default.create.label" args="[name]" /></h1>
+			<h1><g:message code="default.create.label" args="[firstname]" /></h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>
-			<g:hasErrors bean="${NameInstance}">
+			<g:hasErrors bean="${FirstnameInstance}">
 			<ul class="errors" role="alert">
-				<g:eachError bean="${NameInstance}" var="error">
+				<g:eachError bean="${FirstnameInstance}" var="error">
 				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
 			<g:form action="save" method="POST">
 				<fieldset class="form-horizontal">
-                    <g:render template="form" model="[NameInstance : NameInstance,
-													  NameInstanceList : NameInstanceList,
+                    <g:render template="form" model="[FirstnameInstance : FirstnameInstance,
+													  FirstnameInstanceList : FirstnameInstanceList,
 													  TagInstanceList : TagInstanceList,
-													  NameHasTagList : NameHasTagList]"/>
+													  FirstnameHasTagList : FirstnameHasTagList]"/>
 
 				</fieldset>
 				<fieldset class="buttons">

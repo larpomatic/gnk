@@ -4,12 +4,13 @@
 
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des Noms</legend>
+<legend>Liste des Prénoms</legend>
 
 <table id="listTable" class="table table-bordered">
     <thead>
     <tr>
-        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Genre</th>
         <th>Tag</th>
         <th>Date Creation</th>
         <th>Date Modification</th>
@@ -27,18 +28,17 @@
     </tr>
     </thead>
     <tbody>
-    <g:each in="${NameInstanceList}" status="i" var="NameInstance">
+    <g:each in="${FirstnameInstanceList}" status="i" var="FirstnameInstance">
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
             <td>
                 <g:hasRights lvlright="${right.REFMODIFY.value()}">
-                    <a href="${createLink(action: "edit", id: "${NameInstance?.id}")}">
-                        ${fieldValue(bean: NameInstance, field: "name")}</a>
+                    <a href="${createLink(action: "edit", id: "${FirstnameInstance?.id}")}">
+                        ${fieldValue(bean: FirstnameInstance, field: "name")}</a>
                 </g:hasRights>
             </td>
-
-
+            <td>${FirstnameInstance.gender}</td>
             <td>
-                <g:each in="${NameInstance.getNameHasTag()}" var="tag">
+                <g:each in="${FirstnameInstance.getFirstnameHasTag()}" var="tag">
                     <g:if test="${tag.weight > 50}">
                         <span class="label mytool label-success" data-tag="none" contenteditable="false" toggle="tooltip"  data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
                     </g:if>
@@ -53,14 +53,15 @@
                     </g:else>
                 </g:each>
             </td>
-            <td>${NameInstance.dateCreated.format("dd/MM/yyyy")}</td>
-            <td>${NameInstance.lastUpdated.format("dd/MM/yyyy")}</td>
+            <td>${FirstnameInstance.dateCreated.format("dd/MM/yyyy")}</td>
+            <td>${FirstnameInstance.lastUpdated.format("dd/MM/yyyy")}</td>
             <td>
                 <g:form>
                     <fieldset class="buttons">
+                        <g:hiddenField name="id" value="${FirstnameInstance.id}"/>
                         <g:hasRights lvlright="${right.REFMODIFY.value()}">
-                            <a href="${createLink(action: "dupplicate", id: "${NameInstance?.id}")}">
-                               Duppliquer</a>
+                            <a href="${createLink(action: "dupplicate", id: "${FirstnameInstance?.id}")}">
+                                Duppliquer</a>
                         </g:hasRights>
                     </fieldset>
                 </g:form>
@@ -68,11 +69,11 @@
             <td>
         <g:form>
             <fieldset class="buttons">
-                <g:hiddenField name="id" value="${NameInstance.id}"/>
+                <g:hiddenField name="id" value="${FirstnameInstance.id}"/>
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <g:actionSubmit class="btn btn-danger" action="delete"
                                     value="${message(code: 'default.delete')}"
-                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce nom?');"/>
+                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce prénom?');"/>
                 </g:hasRights>
             </fieldset>
         </g:form>

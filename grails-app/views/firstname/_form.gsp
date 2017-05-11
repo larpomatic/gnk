@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.naming.Name" %>
+<%@ page import="org.gnk.naming.Firstname" %>
 <%@ page import="org.gnk.tag.Tag" %>
 <%@ page import="org.gnk.admin.right" %>
 <style>
@@ -14,14 +14,19 @@
     <div class="form-group">
         <div class="row">
             <div class="span4">
-                <div class="fieldcontain ${hasErrors(bean: NameInstance, field: 'name', 'error')} required">
+                <div class="fieldcontain ${hasErrors(bean: FirstnameInstance, field: 'name', 'error')} required">
                     <label for="title">
                         <g:message code="Name.title.label" default="Name"/>
                         <span class="required-indicator">*</span>
                     </label>
-                    <g:textField name="name" value="${NameInstance?.name}" required=""/>
+                    <g:textField name="name" value="${FirstnameInstance?.name}" required=""/>
                 </div>
             </div>
+            <input type=text list=browsers >
+            <datalist id=browsers >
+                <option> Feminin
+                <option> Masculin
+            </datalist>
         </div>
     </div>
 
@@ -37,7 +42,7 @@
         </div>
 
         <div class="panel-body">
-            <table id="listTableNameHasTag" class="table table-bordered">
+            <table id="listTableFirstnameHasTag" class="table table-bordered">
                 <thead>
                 <tr>
                     <th>Tags</th>
@@ -47,11 +52,11 @@
                 <tbody>
                 <tr>
                     <td>
-                        <g:each in="${NameHasTagList}" status="i" var="NameHasTag">
+                        <g:each in="${FirstnameHasTagList}" status="i" var="FirstnameHasTag">
                             <ul class="inline">
                                 <li class="badge badge-info">
-                                    <g:hiddenField name="tableTag_${NameHasTag.id}_${i}" value="${NameHasTag.tag.id}_${NameHasTag.weight}"/>
-                                    <span style="color:black">${NameHasTag.tag.name} ${NameHasTag.weight}%</span>
+                                    <g:hiddenField name="tableTag_${FirstnameHasTag.id}_${i}" value="${FirstnameHasTag.tag.id}_${FirstnameHasTag.weight}"/>
+                                    <span style="color:black">${FirstnameHasTag.tag.name} ${FirstnameHasTag.weight}%</span>
                                 </li>
                             </ul>
                         </g:each>
@@ -69,7 +74,7 @@
             <button type="button" class="close" data-dismiss="modal">×</button>
 
             <h3>Tags</h3>
-            <input class="input-medium search-query" data-content="NameTags"
+            <input class="input-medium search-query" data-content="FirstnameTags"
                    placeholder="<g:message code="redactintrigue.generalDescription.search" default="Search..."/>"/>
             <button type="button" class="btn btn-primary modifyTag push">
                 <g:message code="redactintrigue.generalDescription.validatedTags" default="Validated tags"/>
@@ -77,13 +82,13 @@
         </div>
 
         %{--<form>--}%
-        <g:hiddenField name="NameHasTagAdd" value="true"/>
+        <g:hiddenField name="FirstanameHasTagAdd" value="true"/>
         <div class="modal-body">
             <ul class="NameTags">
                 <g:each in="${TagInstanceList}" status="i" var="tagInstance">
-                    <g:render template="NameTagTree"
-                              model="[tagInstance : tagInstance, NameInstance: NameInstance,
-                                      referenceTag: NameInstance.extTags]"/>
+                    <g:render template="FirstnameTagTree"
+                              model="[tagInstance : tagInstance, FirstnameInstance: FirstnameInstance,
+                                      referenceTag: FirstnameInstance.extTags]"/>
                 </g:each>
             </ul>
         </div>

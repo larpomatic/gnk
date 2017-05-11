@@ -73,7 +73,28 @@ class TagService {
         }
         return result;
     }
-
+    def List<Tag> getNameTagQuery() {
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            //Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantLastname) {
+                result.add(child);
+            }
+        }
+        return result;
+    }
+    def List<Tag> getFirstnameTagQuery() {
+        ArrayList<Tag> genericChilds = getGenericChilds();
+        ArrayList<Tag> result = new ArrayList<>();
+        for (Tag child in genericChilds) {
+            //Tag tagRelevant = Tag.findByTag(child);
+            if (child.relevantFirstname) {
+                result.add(child);
+            }
+        }
+        return result;
+    }
     def List<Tag> getRoleTagQuery() {
         ArrayList<Tag> genericChilds = getGenericChilds();
         ArrayList<Tag> result = new ArrayList<>();

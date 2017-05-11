@@ -6,14 +6,14 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Administration Name</title>
+    <title>Administration Firstname</title>
 </head>
 	<body>
 
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Noms existants</h2>
+        <h2>Firstnane existants</h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />
@@ -22,11 +22,11 @@
             <fieldset class="buttons">
                 <g:hasRights lvlright="${right.REFMODIFY.value()}">
                     <g:actionSubmit class="btn btn-primary" action="create"
-                                    value="+ Ajouter nouveau nom"/>
+                                    value="+ Ajouter nouveau prénom"/>
                </g:hasRights>
            </fieldset>
        </g:form>
-   <g:render template="table" model="[NameInstanceList : NameInstanceList]" />
+   <g:render template="table" model="[FirstnameInstanceList : FirstnameInstanceList]" />
 
 <script type="application/javascript">
 $(function(){
