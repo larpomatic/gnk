@@ -18,8 +18,8 @@ import org.gnk.tag.TagService;
 public class SelectIntrigueProcessing {
 
     private Gn _gn;
-    private Set<Plot> _selectedMainstreamPlotList;
-    private Set<Plot> _selectedEvenementialPlotList;
+    private ArrayList<Plot> _selectedMainstreamPlotList;
+    private ArrayList<Plot> _selectedEvenementialPlotList;
     private Set<Plot> _selectedPlotList;
     private Set<Plot> _lockedPlotList;
     private Set<Plot> _bannedPlotList;
@@ -38,8 +38,8 @@ public class SelectIntrigueProcessing {
     public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
         _gn = parGn;
         _selectedPlotList = new HashSet<Plot>();
-        _selectedEvenementialPlotList = new HashSet<Plot>();
-        _selectedMainstreamPlotList = new HashSet<Plot>();
+        _selectedEvenementialPlotList = new ArrayList<Plot>();
+        _selectedMainstreamPlotList = new ArrayList<Plot>();
         _lockedPlotList = lockedPlot;
         _bannedPlotList = bannedList;
         _allPlotList = new HashSet<Plot>();
@@ -132,11 +132,11 @@ public class SelectIntrigueProcessing {
         return _selectedPlotList;
     }
 
-    public Set<Plot> getSelectedEvenementialPlotList() {
+    public ArrayList<Plot> getSelectedEvenementialPlotList() {
         return _selectedEvenementialPlotList;
     }
 
-    public Set<Plot> getSelectedMainstreamPlotList() {
+    public ArrayList<Plot> getSelectedMainstreamPlotList() {
         return _selectedMainstreamPlotList;
     }
 
@@ -329,7 +329,7 @@ public class SelectIntrigueProcessing {
 
     private boolean selectEvenementailAndMainstreamPlots(Set<Plot> typePlotList,
                                                          HashMap<Tag, Integer> gnTypeTags,
-                                                         Set<Plot> resultTypeList) {
+                                                         ArrayList<Plot> resultTypeList) {
         if (_allPlotList.size() == 0) {
             return false;
         }
@@ -350,7 +350,7 @@ public class SelectIntrigueProcessing {
         }
         resultTypeList.addAll(typePlots);
         if (resultTypeList.size() > 1 && rankMap.size() > 1) {
-            resultTypeList = resultTypeList.sort(new customPlotComparator(rankMap));
+            resultTypeList.sort(new customPlotComparator(rankMap));
         }
         return true;
     }

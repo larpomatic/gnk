@@ -131,8 +131,8 @@ class SelectIntrigueController {
         TagService tagService = new TagService();
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
-        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>();
-        Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
+        ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
+        ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
