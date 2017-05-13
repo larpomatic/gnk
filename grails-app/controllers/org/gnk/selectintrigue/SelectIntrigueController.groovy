@@ -173,14 +173,17 @@ class SelectIntrigueController {
                 SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
                 selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
+                evenementialId = selectedEvenementialPlotInstanceList.first().getId();
                 if (selectedEvenementialPlotInstanceList.size() == 0) {
                     flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
                     render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery(), conventionList: Convention.list()])
                     return
                 }
 
-                if (gnInstance.isMainstream)
+                if (gnInstance.isMainstream) {
                     selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
+                    mainstreamId = selectedMainstreamPlotInstanceList.first().getId();
+                }
                 gnInstance.selectedPlotSet = selectedPlotInstanceList;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;

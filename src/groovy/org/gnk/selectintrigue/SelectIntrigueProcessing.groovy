@@ -348,10 +348,10 @@ public class SelectIntrigueProcessing {
             int rankTag = tagService.getTagsDifferenceToObjective(gnTypeTags, challengerTagList);
             rankMap.put(plot.getId(), rankTag);
         }
-        if (typePlots.size() > 1 && rankMap.size() > 1) {
-            Collections.sort(typePlots, new customPlotComparator(rankMap));
-        }
         resultTypeList.addAll(typePlots);
+        if (resultTypeList.size() > 1 && rankMap.size() > 1) {
+            resultTypeList = resultTypeList.sort(new customPlotComparator(rankMap));
+        }
         return true;
     }
 
