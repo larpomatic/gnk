@@ -335,8 +335,8 @@ public class SelectIntrigueProcessing {
         ArrayList<Plot> typePlots = new ArrayList<Plot>();
         HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
         TagService tagService = new TagService();
-        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
         for (Plot plot : typePlotList) {
+            Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
             typePlots.add(plot);
             Set<PlotHasTag> plotHasTags = plot.getExtTags();
             if (plotHasTags != null) {
@@ -364,7 +364,7 @@ public class SelectIntrigueProcessing {
         public int compare(Plot plot1, Plot plot2) {
             Integer rank1 = _rankMap.get(plot1.getId());
             Integer rank2 = _rankMap.get(plot2.getId());
-            return Integer.compare(rank1, rank2);
+            return Integer.compare(rank2, rank1);
         }
     }
 
