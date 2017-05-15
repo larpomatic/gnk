@@ -23,15 +23,9 @@
     </thead>
         <tbody>
 
-        <g:form action="list" class="right pull-right">
-        </g:form>
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
                 <td>
-                    <g:if test="${plotInstance.isMainstream && gnInstance.isMainstream}">
-                        <span class="mainstreamIcon">M</span>
-                    </g:if>
                     <g:link controller="redactIntrigue" action="edit" id="${plotInstance.id}" target="_blank">
                         ${fieldValue(bean: plotInstance, field: "name")}
                     </g:link>
@@ -104,7 +98,7 @@
             </thead>
             <tbody>
             <g:each in="${mainstreamPlotInstanceList}" status="i" var="mainstreamPlotInstance">
-                <tr>
+                <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                     <td>
                         <g:link controller="redactIntrigue" action="edit"
                                 id="${mainstreamPlotInstance.id}" target="_blank">
@@ -112,36 +106,12 @@
                         </g:link>
                     </td>
 
-                    <td>
-                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:else>
-                    </td>
-                    <td>
-                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" checked="true" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                            <g:radio name="selected_mainstream" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:else>
-                    </td>
-                    <td>
-                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:else>
-                    </td>
+                    <g:radioGroup name="plot_status_${mainstreamId}" onclick="saveRadioBouton()" values="[1, 2, 3]"
+                                  value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
+                        <td>
+                            ${it.radio}
+                        </td>
+                    </g:radioGroup>
                 </tr>
             </g:each>
             <tr>

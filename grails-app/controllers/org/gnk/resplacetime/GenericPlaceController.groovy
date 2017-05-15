@@ -73,13 +73,16 @@ class GenericPlaceController {
         json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, null)
-        for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-            for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
-                jsonArray.add(ref2.left.getName());
+        if (params.containsKey("plotId")) {
+            Plot plot = Plot.get(params.plotId as Integer)
+            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
+                    jsonArray.add(ref2.left.getName());
+                }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
             }
-            json.put(ref.left.name, jsonArray)
-            jsonArray = [];
         }
 
         render(contentType: "application/json") {
