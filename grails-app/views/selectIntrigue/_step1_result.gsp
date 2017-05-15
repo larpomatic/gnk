@@ -23,15 +23,9 @@
     </thead>
         <tbody>
 
-        <g:form action="list" class="right pull-right">
-        </g:form>
         <g:each in="${plotInstanceList}" status="i" var="plotInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-
                 <td>
-                    <g:if test="${plotInstance.isMainstream && gnInstance.isMainstream}">
-                        <span class="mainstreamIcon">M</span>
-                    </g:if>
                     <g:link controller="redactIntrigue" action="edit" id="${plotInstance.id}" target="_blank">
                         ${fieldValue(bean: plotInstance, field: "name")}
                     </g:link>
@@ -74,7 +68,6 @@
                         <g:radio name="selected_evenemential" onclick="saveRadioBouton()" value="${evenementialPlotInstance.id}"
                                  class="radioEvenemential"/>
                     </g:else>
-
                 </td>
             </tr>
         </g:each>
@@ -94,34 +87,35 @@
             <thead>
             <tr>
                 <th><g:message code="selectintrigue.mainstreamPlotsName"
-                               default="Mainstream plot name"/></th>
+                               default="Plot name"/></th>
+                <th><g:img dir="images/selectIntrigue"
+                           file="locked.png"/></th>
+                <th><g:img dir="images/selectIntrigue"
+                           file="forbidden.png"/></th>
                 <th><g:img dir="images/selectIntrigue"
                            file="validate.png"/></th>
             </tr>
             </thead>
             <tbody>
             <g:each in="${mainstreamPlotInstanceList}" status="i" var="mainstreamPlotInstance">
-                <tr>
+                <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                     <td>
                         <g:link controller="redactIntrigue" action="edit"
                                 id="${mainstreamPlotInstance.id}" target="_blank">
                             ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
                         </g:link>
                     </td>
-                    <td>
-                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:else>
-                    </td>
+
+                    <g:radioGroup name="plot_status_${mainstreamId}" onclick="saveRadioBouton()" values="[1, 2, 3]"
+                                  value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
+                        <td>
+                            ${it.radio}
+                        </td>
+                    </g:radioGroup>
                 </tr>
             </g:each>
             <tr>
-                <td colspan="2">
+                <td colspan="4">
                     <button type="button" class="moreMainstream btn btn-primary">
                         <g:message code="selectintrigue.step1.moreMainstream" default="Display more mainstreams plots"/>
                     </button>
