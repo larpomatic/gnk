@@ -404,10 +404,15 @@ class SubstitutionPublication {
                 */
                 switch (syntax) {
                     case "NONE" : result += character[0] + " " + character[1]
+                        break
                     case "PRE" : result += character[0]
+                        break
                     case "PAT" : result +=  character[1]
+                        break
                     case "AGE" : result += character[2]
+                        break
                     case "INIF" : result += character[0].substring(0, 1) + ". " + character[1]
+                        break
                 }
             }
         }
