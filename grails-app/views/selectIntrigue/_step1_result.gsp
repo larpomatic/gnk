@@ -150,7 +150,7 @@
                     ${fieldValue(bean: plotInstance, field: "name")}
                 </g:link></td>
                 <td>
-                    <g:checkBox name="keepBanned_${plotInstance.id}" onclick="reloadSelectIntrigue()" checked="true"/>
+                    <g:checkBox name="keepBanned_${plotInstance.id}" onclick="saveRadioBouton()" checked="true"/>
                 </td>
             </tr>
         </g:each>
