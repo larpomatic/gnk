@@ -279,9 +279,13 @@ class TagService {
         Integer rankTag = 0;
         for (Tag refTag : refTagList.keySet()) {
             Integer challengerTagWeight = challengerTagList.get(refTag);
-            if (challengerTagWeight == null)
-                challengerTagWeight = 0;
-            rankTag -= Math.pow(Math.abs(refTagList.get(refTag) - challengerTagWeight), 2);
+            Integer rankTag_tmp = 0;
+            if (challengerTagWeight != null) {
+                rankTag_tmp = Math.abs(refTagList.get(refTag)) + Math.abs(challengerTagWeight);
+                if ((refTagList.get(refTag) * challengerTagWeight) < 0)
+                    rankTag_tmp *= (-1);
+                rankTag += rankTag_tmp
+            }
         }
         return rankTag;
     }

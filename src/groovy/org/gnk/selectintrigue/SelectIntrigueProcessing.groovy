@@ -18,8 +18,8 @@ import org.gnk.tag.TagService;
 public class SelectIntrigueProcessing {
 
     private Gn _gn;
-    private Set<Plot> _selectedMainstreamPlotList;
-    private Set<Plot> _selectedEvenementialPlotList;
+    private ArrayList<Plot> _selectedMainstreamPlotList;
+    private ArrayList<Plot> _selectedEvenementialPlotList;
     private Set<Plot> _selectedPlotList;
     private Set<Plot> _lockedPlotList;
     private Set<Plot> _bannedPlotList;
@@ -38,8 +38,8 @@ public class SelectIntrigueProcessing {
     public SelectIntrigueProcessing(Gn parGn, List<Plot> parAllPlotList, Set<Plot> bannedList, Set<Plot> lockedPlot) {
         _gn = parGn;
         _selectedPlotList = new HashSet<Plot>();
-        _selectedEvenementialPlotList = new HashSet<Plot>();
-        _selectedMainstreamPlotList = new HashSet<Plot>();
+        _selectedEvenementialPlotList = new ArrayList<Plot>();
+        _selectedMainstreamPlotList = new ArrayList<Plot>();
         _lockedPlotList = lockedPlot;
         _bannedPlotList = bannedList;
         _allPlotList = new HashSet<Plot>();
@@ -132,11 +132,11 @@ public class SelectIntrigueProcessing {
         return _selectedPlotList;
     }
 
-    public Set<Plot> getSelectedEvenementialPlotList() {
+    public ArrayList<Plot> getSelectedEvenementialPlotList() {
         return _selectedEvenementialPlotList;
     }
 
-    public Set<Plot> getSelectedMainstreamPlotList() {
+    public ArrayList<Plot> getSelectedMainstreamPlotList() {
         return _selectedMainstreamPlotList;
     }
 
@@ -329,15 +329,15 @@ public class SelectIntrigueProcessing {
 
     private boolean selectEvenementailAndMainstreamPlots(Set<Plot> typePlotList,
                                                          HashMap<Tag, Integer> gnTypeTags,
-                                                         Set<Plot> resultTypeList) {
+                                                         ArrayList<Plot> resultTypeList) {
         if (_allPlotList.size() == 0) {
             return false;
         }
         ArrayList<Plot> typePlots = new ArrayList<Plot>();
         HashMap<Integer, Integer> rankMap = new HashMap<Integer, Integer>();
         TagService tagService = new TagService();
-        Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
         for (Plot plot : typePlotList) {
+            Map<Tag, Integer> challengerTagList = new HashMap<Tag, Integer>();
             typePlots.add(plot);
             Set<PlotHasTag> plotHasTags = plot.getExtTags();
             if (plotHasTags != null) {
@@ -348,10 +348,10 @@ public class SelectIntrigueProcessing {
             int rankTag = tagService.getTagsDifferenceToObjective(gnTypeTags, challengerTagList);
             rankMap.put(plot.getId(), rankTag);
         }
-        if (typePlots.size() > 1 && rankMap.size() > 1) {
-            Collections.sort(typePlots, new customPlotComparator(rankMap));
-        }
         resultTypeList.addAll(typePlots);
+        if (resultTypeList.size() > 1 && rankMap.size() > 1) {
+            resultTypeList.sort(new customPlotComparator(rankMap));
+        }
         return true;
     }
 
@@ -365,7 +365,7 @@ public class SelectIntrigueProcessing {
         public int compare(Plot plot1, Plot plot2) {
             Integer rank1 = _rankMap.get(plot1.getId());
             Integer rank2 = _rankMap.get(plot2.getId());
-            return Integer.compare(rank1, rank2);
+            return Integer.compare(rank2, rank1);
         }
     }
 
