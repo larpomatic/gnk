@@ -327,7 +327,7 @@ function getBestResource()
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                $.each(data.object.json,function(i,v){
+                $.each(data.genericResource.json, function(i,v){
                     var h5 = document.createElement("H4");
                     var node = document.createTextNode(v[0]);
                     h5.appendChild(node);
@@ -345,10 +345,10 @@ function getBestResource()
                     }
                     cont.append(ul);
                 });
-                $('.placeLoader').css('display', 'none');
+                $('.resourceLoader').css('display', 'none');
             },
             error: function() {
-                $('.placeLoader').css('display', 'none');
+                $('.resourceLoader').css('display', 'none');
                 createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs ressoures correspondant à vos critères.");
             }
         })

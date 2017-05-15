@@ -1,5 +1,6 @@
 package org.gnk.resplacetime
 
+import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.ressplacetime.ReferentialObject
@@ -270,28 +271,8 @@ class GenericResourceController {
 
 
     def getBestResources() {
-        //org.gnk.ressplacetime.GenericResource genericressource = new org.gnk.ressplacetime.GenericResource()
         GenericResource gr = new GenericResource()
         Set<GenericResourceHasTag> tags = new ArrayList<>();
-        /*params.each {
-            if (it.key.startsWith("resourceTags_")) {
-                com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
-                Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
-                if (tag.parent != null) {
-                    subtag.value = tag.name;
-                    subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
-                    subtag.type = tag.parent.name;
-                    if (tag.parent.id == 33096)
-                    {
-                        tags.add(tags.size(), subtag);
-                    }
-                    else {
-                        tags.add(0, subtag);
-                    }
-                }
-            }
-        }*/
-
         params.each {
             if (it.key.startsWith("resourceTags_")) {
                 GenericResourceHasTag subtag = new GenericResourceHasTag();
@@ -308,7 +289,7 @@ class GenericResourceController {
         //ResourceService resourceService = new ResourceService();
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
-        tagUnivers = Tag.findById("33089");
+        tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
         //genericressource.setTagList(tags);
         gr.setExtTags(tags);
@@ -317,19 +298,24 @@ class GenericResourceController {
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, null)
-        for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
-            for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
-                jsonArray.add(ref2.left.getName());
+        if (params.containsKey("plotId")) {
+            Plot plot = Plot.get(params.plotId as Integer)
+            gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
+            if (gr.resultsAllUniverses.empty)
+                throw (NullPointerException)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
+                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
+                    jsonArray.add(ref2.left.getName());
+                }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
             }
-            json.put(ref.left.name, jsonArray)
-            jsonArray = [];
         }
 
         render(contentType: "application/json") {
-            object(json: json)
+            object([json: json] as JSON)
 
-            return json.toString();
+            return json as JSON;
         }
     }
 }

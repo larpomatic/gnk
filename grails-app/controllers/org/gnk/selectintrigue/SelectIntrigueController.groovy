@@ -131,8 +131,8 @@ class SelectIntrigueController {
         TagService tagService = new TagService();
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
-        Set<Plot> selectedEvenementialPlotInstanceList = new HashSet<Plot>();
-        Set<Plot> selectedMainstreamPlotInstanceList = new HashSet<Plot> ();
+        ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
+        ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
         Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
@@ -173,14 +173,19 @@ class SelectIntrigueController {
                 SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
                 selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
+                if ((selectedEvenementialPlotInstanceList != null) && (selectedEvenementialPlotInstanceList.size() >0))
+                    evenementialId = selectedEvenementialPlotInstanceList.first().getId();
                 if (selectedEvenementialPlotInstanceList.size() == 0) {
                     flash.message = "Aucune intrigue évenementielle trouvée. Augmentez le nombre de joueurs."
                     render(view: "selectIntrigue", model: [gnInstance: gnInstance, universList: tagService.getUniversTagQuery(), conventionList: Convention.list()])
                     return
                 }
 
-                if (gnInstance.isMainstream)
+                if (gnInstance.isMainstream) {
                     selectedMainstreamPlotInstanceList = algo.getSelectedMainstreamPlotList();
+                    if ((selectedMainstreamPlotInstanceList != null) && (selectedMainstreamPlotInstanceList.size() > 0))
+                        mainstreamId = selectedMainstreamPlotInstanceList.first().getId();
+                }
                 gnInstance.selectedPlotSet = selectedPlotInstanceList;
                 gnInstance.bannedPlotSet = bannedPlot;
                 gnInstance.lockedPlotSet = lockedPlot;

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1><g:message code="default.edit.label" args="[Name]" /></h1>
+    <h1>Dupplication Name" /></h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
@@ -33,7 +33,7 @@
                                                   NameHasTagList : NameHasTagList]"/>
             </fieldset>
             <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+                <g:actionSubmit class="save" action="update" value="Duppliquer" />
                 <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
                                 formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>
