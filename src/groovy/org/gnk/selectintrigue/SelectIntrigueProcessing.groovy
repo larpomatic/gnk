@@ -63,6 +63,9 @@ public class SelectIntrigueProcessing {
                     if (_gn.getIsMainstream() && plot.getIsMainstream()) {
                         _allMainstreamPlotList.add(plot); //on ajoute l'intrigue à la liste des mainstreams
                         _allPlotList.remove(plot); //on la retire des évenementielles
+                        if (plot in _bannedPlotList) {
+                            _allMainstreamPlotList.remove(plot);
+                        }
                     }
                 }
             }
