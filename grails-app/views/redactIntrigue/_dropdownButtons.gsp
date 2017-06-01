@@ -147,16 +147,16 @@ input:checked + .slider:before {
 
     </ul>
 </div>
-<button type="button" onclick="toBalise()">Change to balise</button>
+<button type="button" onclick="toBalise()">Mode balise</button>
 
 
-
+<!--
 <div class="btn-group">
 <label class="switch">
     <input type="checkbox">
     <div class="slider"></div>
 </label>
-</div>
+</div> -->
 <div class="btn-group">
     <div class="btnFullScreen"></div>
 </div>
