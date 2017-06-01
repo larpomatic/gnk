@@ -521,6 +521,33 @@ function transformDescription(description) {
     return description;
 }
 
+
+function transformDescription_2(description) {
+    description = "<div>" + description + "</div>";
+    var html = $(description);
+    $("span:not(.label)", html).contents().unwrap();
+    description = html.html();
+    description = description.replace(/<div>/g, '\n');
+    description = description.replace(/<\/div>/g, '\n');
+    description = description.replace(/<br>/g, '\n');
+    description = description.replace(/<span /g, 'span');
+    description = description.replace(/<span class="label label-important" data-tag="/g, 'important');
+    description = description.replace(/<span class="label label-success" data-tag="/g, 'success');
+    description = description.replace(/<span class="label label-default" data-tag="/g, '<u:');
+    description = description.replace(/<span class="label label-info" data-tag="/g, '<k:');
+    description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
+    description = description.replace(/" data-toggle="popover" data-original-title="Choix balise" title="" contenteditable="false">/g, ':');
+    description = description.replace(/<\/span>/g, '>');
+    description = description.replace(/&nbsp;/g, ' ');
+    description = description.replace(/&lt;l:/g, '<l:');
+    description = description.replace(/&lt;o:/g, '<o:');
+    description = description.replace(/&lt;i:/g, '<i:');
+    description = description.replace(/&lt;u:/g, '<u:');
+    description = description.replace(/&lt;k:/g, '<k:');
+    description = description.replace(/&gt;/g, '>');
+    return description;
+}
+
 //update all these forms
 function updateAllDescription(formlist) {
     formlist.each(function() {
@@ -781,35 +808,23 @@ function convertHTMLRegisterHelper(description) {
 function toBalise()
 {
     var form = $('.savePlotForm');
-    //var description = document.getElementById('idDescriptionText_0').textContent;
-
 
     var description = $('#idDescriptionText_0', form).html();
+    //var description = document.getElementById('idDescriptionText_0').textContent;
+    //document.getElementById('idDescriptionText_0').textContent = description;
+    //document.getElementById('idDescriptionText_0').text(description);
+
+
     console.log(description);
-    window.alert(description);
-    description = transformDescription(description);
-    $('.descriptionContent', form).val(description);
+    description = transformDescription_2(description);
 
-    /*description = $(this).html();
+    console.log(description);
+    //$('.descriptionContent', form).val(description);
+    $("#idDescriptionText_0").html(description);
 
-    while (description.length != 0 && (description[0] == '\n' ||
-    description[0] == ' ' || description[0] == '\r'))
-    {
-        description = description.substring(1, description.length)
-    }
+    console.log(description);
 
-    while (description.length != 0 && (description[description.length - 1] == '\n' ||
-    description[description.length - 1] == ' ' || description[description.length - 1] == '\r'))
-    {
-        description = description.substring(0, description.length - 1)
-    }*/
 
-    description =  convertDescription(description);
-
-    var html = $(description);
-    $("span br", html).remove();
-    description = html.html();
-    $(this).html(description);
 
 }
 
