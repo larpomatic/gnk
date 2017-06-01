@@ -537,7 +537,7 @@ function transformDescription_2(description) {
     description = description.replace(/<span class="label label-info" data-tag="/g, '<k:');
     description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
     description = description.replace(/" data-toggle="popover" data-original-title="Choix balise" title="" contenteditable="false">/g, ':');
-    description = description.replace(/<\/span>/g, '>');
+    description = description.replace(/<\/span>/g, '\n');
     description = description.replace(/&nbsp;/g, ' ');
     description = description.replace(/&lt;l:/g, '<l:');
     description = description.replace(/&lt;o:/g, '<o:');

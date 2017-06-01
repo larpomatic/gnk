@@ -1,3 +1,5 @@
+<!-- dhtml gant -->
+
 <div class="row-fluid">
     <div class="span4"><legend>Dates</legend></div>
     <div class="span1"><span class="badge badge-important" id="datesPercentage">0 %</span></div>
