@@ -110,7 +110,7 @@ input:checked + .slider:before {
     <ul class="dropdown-menu resourceSelector">
         <g:each in="${gnConstantResourceList}" status="i5" var="gnConstantResource">
             <li data-id="${gnConstantResource.id}">
-                <a class="buttonRichTextEditor btn-info gnPlaceSelector">
+                <a class="buttonRichTextEditor btn-danger gnPlaceSelector">
                     ${gnConstantResource.name}
                 </a>
             </li>
