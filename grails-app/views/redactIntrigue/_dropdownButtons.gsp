@@ -123,7 +123,7 @@ input:checked + .slider:before {
             </li>
         </g:each>
         <li>
-            <input data-entity="resource" data-label="important" type="text" class="inputOther" id="resourceOther"
+            <input data-entity="resource" data-label="danger" type="text" class="inputOther" id="resourceOther"
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
