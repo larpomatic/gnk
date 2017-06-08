@@ -82,7 +82,7 @@ input:checked + .slider:before {
     <ul class="dropdown-menu placeSelector">
         <g:each in="${gnConstantPlaceList}" status="i5" var="gnConstantPlace">
             <li data-id="${gnConstantPlace.id}">
-                <a class="buttonRichTextEditor btn-info gnPlaceSelector">
+                <a class="buttonRichTextEditor btn-warning gnPlaceSelector">
                     ${gnConstantPlace.name}
                 </a>
             </li>
@@ -123,7 +123,7 @@ input:checked + .slider:before {
             </li>
         </g:each>
         <li>
-            <input data-entity="resource" data-label="important" type="text" class="inputOther" id="resourceOther"
+            <input data-entity="resource" data-label="danger" type="text" class="inputOther" id="resourceOther"
                    placeholder="<g:message code="redactintrigue.generalDescription.other" default="Other"/>"/>
         </li>
     </ul>
