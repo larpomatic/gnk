@@ -392,7 +392,7 @@ class SubstitutionPublication {
                 if (isFirst)
                     isFirst = false
                 else
-                    result += "; "
+                    result += ", "
 
                 /*
                 * Switch pour savoir le contenu que l'on veut afficher
