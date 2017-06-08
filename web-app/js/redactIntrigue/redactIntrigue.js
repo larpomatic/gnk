@@ -495,33 +495,6 @@ function convertDescription(description) {
 
 // on remplace les span html dans une description par des balises
 
-
-function transformDescription_2(description) {
-    description = "<div>" + description + "</div>";
-    var html = $(description);
-    $("span:not(.label)", html).contents().unwrap();
-    description = html.html();
-    description = description.replace(/<div>/g, '\n');
-    description = description.replace(/<\/div>/g, '\n');
-    description = description.replace(/<br>/g, '\n');
-    description = description.replace(/<span /g, 'span');
-    description = description.replace(/<span class="label label-important" data-tag="/g, 'important');
-    description = description.replace(/<span class="label label-success" data-tag="/g, 'success');
-    description = description.replace(/<span class="label label-default" data-tag="/g, '<u:');
-    description = description.replace(/<span class="label label-info" data-tag="/g, '<k:');
-    description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
-    description = description.replace(/" data-toggle="popover" data-original-title="Choix balise" title="" contenteditable="false">/g, ':');
-    description = description.replace(/<\/span>/g, '\n');
-    description = description.replace(/&nbsp;/g, ' ');
-    description = description.replace(/&lt;l:/g, '<l:');
-    description = description.replace(/&lt;o:/g, '<o:');
-    description = description.replace(/&lt;i:/g, '<i:');
-    description = description.replace(/&lt;u:/g, '<u:');
-    description = description.replace(/&lt;k:/g, '<k:');
-    description = description.replace(/&gt;/g, '>');
-    return description;
-}
-
 function transformDescription(description) {
     description = "<div>" + description + "</div>";
     var html = $(description);
@@ -804,27 +777,6 @@ function convertHTMLRegisterHelper(description) {
 
     return description;
 }
-
-
-function toBalise()
-{
-    var form = $('.savePlotForm');
-
-    var description = $('#idDescriptionText_0', form).html();
-    //var description = document.getElementById('idDescriptionText_0').textContent;
-    //document.getElementById('idDescriptionText_0').textContent = description;
-    //document.getElementById('idDescriptionText_0').text(description);
-
-    console.log(description);
-    description = transformDescription_2(description);
-
-    console.log(description);
-    //$('.descriptionContent', form).val(description);
-    $("#idDescriptionText_0").html(description);
-
-    console.log(description);
-}
-
 
 function detectPaste() {
     $('#richTextEditor').bind({
