@@ -405,7 +405,7 @@ function saveCarretPos(editorName, elt) {
     }
     carretPos = window.getSelection().getRangeAt(0); //caretOffset;
     focusedNode = document.activeElement;
-    document.getElementById("printHere").innerText = carretPos;
+    //document.getElementById("printHere").innerText = carretPos;
 }
 
 // Avant d'insert l'objet on remet le curseur à l'endroit sauvegardé
@@ -494,31 +494,40 @@ function convertDescription(description) {
 }
 
 // on remplace les span html dans une description par des balises
+var button_on = true; // Mode Balise on
+function transformDescription_3(description) {
+    description = "<div>" + description + "</div>";
+    var html = $(description);
+    //$("span:not(.label)", html).contents().unwrap();
+    description = html.html();
 
+    description = description.replace(/~/g, '<');
+    description = description.replace(/&gt;/g, '>');
+    console.log(description);
+    return description;
+}
 
 function transformDescription_2(description) {
     description = "<div>" + description + "</div>";
     var html = $(description);
-    $("span:not(.label)", html).contents().unwrap();
+    //$("span:not(.label)", html).contents().unwrap();
     description = html.html();
-    description = description.replace(/<div>/g, '\n');
-    description = description.replace(/<\/div>/g, '\n');
-    description = description.replace(/<br>/g, '\n');
-    description = description.replace(/<span /g, 'span');
-    description = description.replace(/<span class="label label-important" data-tag="/g, 'important');
-    description = description.replace(/<span class="label label-success" data-tag="/g, 'success');
-    description = description.replace(/<span class="label label-default" data-tag="/g, '<u:');
-    description = description.replace(/<span class="label label-info" data-tag="/g, '<k:');
-    description = description.replace(/" contenteditable="false" data-toggle="popover" data-original-title="Choix balise" title="">/g, ':');
-    description = description.replace(/" data-toggle="popover" data-original-title="Choix balise" title="" contenteditable="false">/g, ':');
-    description = description.replace(/<\/span>/g, '\n');
-    description = description.replace(/&nbsp;/g, ' ');
-    description = description.replace(/&lt;l:/g, '<l:');
-    description = description.replace(/&lt;o:/g, '<o:');
-    description = description.replace(/&lt;i:/g, '<i:');
-    description = description.replace(/&lt;u:/g, '<u:');
-    description = description.replace(/&lt;k:/g, '<k:');
-    description = description.replace(/&gt;/g, '>');
+
+    description = description.replace(/</g, '~');
+    console.log(description);
+    //description = description.replace(/<span /g, 'span ');
+
+
+    //var sup = "span class=\"label label-success\" data-tag=\"none\" contenteditable=\"false\" data-toggle=\"popover\" data-original-title=\"Choix balise\" title=\"\">";
+    //var sup2 = "span class=\"label label-important\" data-tag=\"none\" contenteditable=\"false\" data-toggle=\"popover\" data-original-title=\"Choix balise\" title=\"\">";
+    //var sup3 = "span class=\"label label-danger\" data-tag=\"none\" contenteditable=\"false\" data-toggle=\"popover\" data-original-title=\"Choix balise\" title=\"\">";
+    //var sup4 = "span class=\"label label-info\" data-tag=\"none\" contenteditable=\"false\" data-toggle=\"popover\" data-original-title=\"Choix balise\" title=\"\">";
+    //var title = description.replace(sup,'');
+    //var title = description.replace(sup2,'');
+    //var title = description.replace(sup3,'');
+    //var title = description.replace(sup4,'');
+    //description = description.replace(title,'');
+    //description = description.replace("Choix balise\" title=\"\"","Choix balise\" title=\""+title+"\"");
     return description;
 }
 
@@ -810,19 +819,27 @@ function toBalise()
 {
     var form = $('.savePlotForm');
 
+
     var description = $('#idDescriptionText_0', form).html();
+    console.log("description avant :" + description);
     //var description = document.getElementById('idDescriptionText_0').textContent;
     //document.getElementById('idDescriptionText_0').textContent = description;
     //document.getElementById('idDescriptionText_0').text(description);
 
-    console.log(description);
-    description = transformDescription_2(description);
-
-    console.log(description);
+    if (button_on) {
+        description = transformDescription_2(description);
+        button_on = false;
+    }
+    else
+    {
+        description = transformDescription_3(description);
+        button_on = true;
+    }
+    //console.log(description);
     //$('.descriptionContent', form).val(description);
     $("#idDescriptionText_0").html(description);
 
-    console.log(description);
+    //console.log(description);
 }
 
 
