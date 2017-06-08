@@ -300,6 +300,7 @@ class GenericResourceController {
 
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
+            gr.plotId = plot.id;
             gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
             if (gr.resultsAllUniverses.empty)
                 throw (NullPointerException)
@@ -313,9 +314,7 @@ class GenericResourceController {
         }
 
         render(contentType: "application/json") {
-            object([json: json] as JSON)
-
-            return json as JSON;
+            object([json: json])
         }
     }
 }
