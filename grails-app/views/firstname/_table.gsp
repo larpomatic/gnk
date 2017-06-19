@@ -1,4 +1,4 @@
-<%@ page import="org.gnk.name.*" %>
+<%@ page import="org.gnk.firstname.*" %>
 <%@ page import="org.gnk.admin.right" %>
 <%@ page import="org.gnk.tag.Tag" %>
 
@@ -36,9 +36,9 @@
                         ${fieldValue(bean: FirstnameInstance, field: "name")}</a>
                 </g:hasRights>
             </td>
-            <td>${FirstnameInstance.gender}</td>
+            <td><span style="text-transform:uppercase">${FirstnameInstance.gender}</span></td>
             <td>
-                <g:each in="${FirstnameInstance.getFirstnameHasTag()}" var="tag">
+                <g:each in="${FirstnameInstance.extTags}" var="tag">
                     <g:if test="${tag.weight > 50}">
                         <span class="label mytool label-success" data-tag="none" contenteditable="false" toggle="tooltip"  data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
                     </g:if>
@@ -81,7 +81,7 @@
 
         </tr>
     </g:each>
-%{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
+    %{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
     %{----}%%{----}%%{--Modal--}%%{----}%%{----}%
     %{--<div id="tagsModalHasTag${NameInstance.id}" class="modal hide fade tags-modal" tabindex="-1">--}%
         %{--<div class="modal-header">--}%

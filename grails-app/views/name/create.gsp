@@ -4,11 +4,11 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
-		<title>Creer nouveau Nom</title>
+		<title>Creer nouveau Patronyme</title>
 	</head>
 	<body>
 		<div id="create-name">
-			<h1>Création Name></h1>
+			<h1>Création Patronyme></h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>

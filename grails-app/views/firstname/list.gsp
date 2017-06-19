@@ -16,28 +16,36 @@
         <h2>Firstnane existants</h2>
     </fieldset>
 
-    <g:render template="../infosAndErrors" />
+
 
         <g:form>
             <fieldset class="buttons">
-                <g:hasRights lvlright="${right.REFMODIFY.value()}">
+
                     <g:actionSubmit class="btn btn-primary" action="create"
                                     value="+ Ajouter nouveau prénom"/>
-               </g:hasRights>
+
            </fieldset>
        </g:form>
-   <g:render template="table" model="[FirstnameInstanceList : FirstnameInstanceList]" />
+        <div id="list-name" class="content scaffold-list" role="main">
 
-<script type="application/javascript">
-$(function(){
-$("#listTable").DataTable({
-    "language": {
-        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-    }
-});
-});
-</script>
-<g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
+
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <fieldset class="form">
+                <g:form action="list" method="GET">
+                    <div class="fieldcontain">
+                        <g:textField name="query" value="${params.query}" placeholder= "Rechercher"/>
+                    </div>
+                </g:form>
+            </fieldset>
+            <g:render template="table" model="[FirstnameInstanceList : FirstnameInstanceList]" />
+
+            <div class="pagination">
+                <g:paginate total="${firstnameTotal}" action="list" params="${params}"/>
+            </div>
+        </div>
+
 
 </body>
 </html>

@@ -5,11 +5,11 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="Name" />
     %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
-    <title>Editer Name</title>
+    <title>Editer Patronyme</title>
 </head>
 <body>
 <div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1>Edition Name </h1>
+    <h1>Edition Patronyme </h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>

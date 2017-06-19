@@ -4,7 +4,7 @@
 
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des Noms</legend>
+<legend>Liste des Patronymes</legend>
 
 <table id="listTable" class="table table-bordered">
     <thead>
@@ -15,7 +15,7 @@
         <th>Date Modification</th>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <th>
-                Duppliquer
+                Dupliquer
             </th>
         </g:hasRights>
             <g:hasRights lvlright="${right.REFDELETE.value()}">
@@ -23,7 +23,6 @@
                     Supprimer
                 </th>
             </g:hasRights>
-
     </tr>
     </thead>
     <tbody>
@@ -80,6 +79,7 @@
 
         </tr>
     </g:each>
+
 %{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
     %{----}%%{----}%%{--Modal--}%%{----}%%{----}%
     %{--<div id="tagsModalHasTag${NameInstance.id}" class="modal hide fade tags-modal" tabindex="-1">--}%
@@ -115,3 +115,4 @@
 %{--</g:each>--}%
     </tbody>
 </table>
+

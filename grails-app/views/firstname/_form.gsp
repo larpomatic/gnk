@@ -22,11 +22,9 @@
                     <g:textField name="name" value="${FirstnameInstance?.name}" required=""/>
                 </div>
             </div>
-            <input type=text list=browsers >
-            <datalist id=browsers >
-                <option> Feminin
-                <option> Masculin
-            </datalist>
+            <g:select name='gender' value="${FirstnameInstance?.gender}"
+                      from="${['m': 'Masculin','f': 'Feminin']}" optionKey="key" optionValue="value"
+                      ></g:select>
         </div>
     </div>
 

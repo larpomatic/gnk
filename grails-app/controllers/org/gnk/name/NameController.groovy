@@ -11,9 +11,16 @@ class NameController {
         def index() {
             redirect(action: "list")
         }
-        def list(String sort) {
-            def names = Name.list()
-            [NameInstanceList: names]
+        def list() {
+            params.max = Math.min(params.max ? params.int('max') : 10, 100)
+            def ls = Name.createCriteria().list (params) {
+                if ( params.query ) {
+                    ilike("name", "%${params.query}%")
+                }
+            }
+            ls.sort()
+            def totalCount = ls.size()
+            [NameInstanceList: ls, nameTotal: totalCount, params: params]
         }
 def create() {
     List<NameHasTag> NameHasTagList = new ArrayList<>()
