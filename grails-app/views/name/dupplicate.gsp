@@ -3,13 +3,13 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
+    <g:set var="entityName" value="Name" />
     %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
-    <title>Duplication Name</title>
+    <title>Nouveau Patronyme</title>
 </head>
 <body>
 <div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1>Duplication Patronyme"</h1>
+    <h1>Nouveau Patronyme</h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
@@ -33,7 +33,7 @@
                                                   NameHasTagList : NameHasTagList]"/>
             </fieldset>
             <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="Dupliquer" />
+                <g:actionSubmit class="save" action="update" value="Création" />
                 <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
                                 formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
             </fieldset>

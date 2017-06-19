@@ -24,8 +24,8 @@
     <g:form>
         <form>
 
-            <g:hiddenField name="NameId" value="${NameInstance?.id}" />
-            <g:hiddenField name="NameVersion" value="${NameInstance?.version}" />
+            <g:hiddenField name="NameInstanceId" value="${NameInstance?.id}" />
+            <g:hiddenField name="NameInstanceVersion" value="${NameInstance?.version}" />
             <fieldset class="form-inline">
                 <g:render template="form" model="[NameInstance : NameInstance,
                                                   NameInstanceList : NameInstanceList,

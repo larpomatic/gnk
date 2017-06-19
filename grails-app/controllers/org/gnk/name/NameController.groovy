@@ -18,8 +18,7 @@ class NameController {
                     ilike("name", "%${params.query}%")
                 }
             }
-            ls.sort()
-            def totalCount = ls.size()
+            def totalCount = Name.count()
             [NameInstanceList: ls, nameTotal: totalCount, params: params]
         }
 def create() {
@@ -127,7 +126,7 @@ def save() {
 
         ArrayList<NameHasTag> temp = new ArrayList<>()
         for(NameHasTag prev : n.extTags){
-            if (NameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight} == null){
+            if (NameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight}){
                 temp.add(prev)
             }
         }

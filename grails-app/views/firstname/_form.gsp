@@ -10,7 +10,6 @@
 %{--<div class="form-inline">--}%
 <div>
     <g:hiddenField name="first" value="true"/>
-
     <div class="form-group">
         <div class="row">
             <div class="span4">
@@ -80,9 +79,9 @@
         </div>
 
         %{--<form>--}%
-        <g:hiddenField name="FirstanameHasTagAdd" value="true"/>
+        <g:hiddenField name="FirstnameHasTagAdd" value="true"/>
         <div class="modal-body">
-            <ul class="NameTags">
+            <ul class="FirstnameTags">
                 <g:each in="${TagInstanceList}" status="i" var="tagInstance">
                     <g:render template="FirstnameTagTree"
                               model="[tagInstance : tagInstance, FirstnameInstance: FirstnameInstance,

@@ -59,7 +59,7 @@
                     <fieldset class="buttons">
                         <g:hasRights lvlright="${right.REFMODIFY.value()}">
                             <a href="${createLink(action: "dupplicate", id: "${NameInstance?.id}")}">
-                               Duppliquer</a>
+                               Dupliquer</a>
                         </g:hasRights>
                     </fieldset>
                 </g:form>
@@ -79,7 +79,6 @@
 
         </tr>
     </g:each>
-
 %{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
     %{----}%%{----}%%{--Modal--}%%{----}%%{----}%
     %{--<div id="tagsModalHasTag${NameInstance.id}" class="modal hide fade tags-modal" tabindex="-1">--}%

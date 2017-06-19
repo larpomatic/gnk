@@ -41,7 +41,7 @@ class Firstname {
                 '}';
     }
 
-    public getFirsnameHasTag(Tag tag) {
+    public getFirstnameHasTag(Tag tag) {
         return FirstnameHasTag.findByTagAndFirstname(tag, this);
     }
 

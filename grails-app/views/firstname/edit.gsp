@@ -3,13 +3,13 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'Firstname.label', default: 'Name')}" />
+    <g:set var="entityName" value="" />
     %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
     <title>Editer Firstname</title>
 </head>
 <body>
 <div id="edit-Firstname" class="content scaffold-edit" role="main">
-    <h1>Création Firstname</h1>
+    <h1>Edition Firstname</h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>

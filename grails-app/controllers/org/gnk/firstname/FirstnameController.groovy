@@ -127,7 +127,7 @@ class FirstnameController {
 
         ArrayList<FirstnameHasTag> temp = new ArrayList<>()
         for(FirstnameHasTag prev : n.extTags){
-            if (FirstnameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight} == null){
+            if (FirstnameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight}){
                 temp.add(prev)
             }
         }
@@ -169,16 +169,16 @@ class FirstnameController {
 
         params.each {
             if (it.key.toString().contains("tableTag_") && it.value != null && it.value != "") {
-                FirstnameHasTag FirstnameHasTag = new FirstnameHasTag();
+                FirstnameHasTag firstnameHasTag = new FirstnameHasTag();
                 def tokenize = it.value.toString().tokenize("_")
-                FirstnameHasTag.tag = Tag.findById(tokenize[0].toInteger());
-                FirstnameHasTag.weight = tokenize[1].toInteger();
-                FirstnameHasTag.dateCreated = new Date();
-                FirstnameHasTag.lastUpdated = new Date();
-                FirstnameHasTag.version = 1
+                firstnameHasTag.tag = Tag.findById(tokenize[0].toInteger());
+                firstnameHasTag.weight = tokenize[1].toInteger();
+                firstnameHasTag.dateCreated = new Date();
+                firstnameHasTag.lastUpdated = new Date();
+                firstnameHasTag.version = 1
 
-                if (!FirstnameHasTagList.find {it.tag.id == FirstnameHasTag.tag.id}){
-                    FirstnameHasTagList.add(FirstnameHasTag)
+                if (!FirstnameHasTagList.find {it.tag.id == firstnameHasTag.tag.id}){
+                    FirstnameHasTagList.add(firstnameHasTag)
                 }
             }
 
@@ -200,7 +200,6 @@ class FirstnameController {
             FirstnameInstance.lastUpdated = new Date();
             FirstnameInstance.dateCreated = new Date();
             FirstnameInstance.extTags = new HashSet<>()
-            FirstnameInstance.gender='m'
 
         } else {
             FirstnameInstance.properties = params

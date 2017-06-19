@@ -16,7 +16,7 @@
         <th>Date Modification</th>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <th>
-                Duppliquer
+                Dupliquer
             </th>
         </g:hasRights>
             <g:hasRights lvlright="${right.REFDELETE.value()}">
@@ -38,7 +38,7 @@
             </td>
             <td><span style="text-transform:uppercase">${FirstnameInstance.gender}</span></td>
             <td>
-                <g:each in="${FirstnameInstance.extTags}" var="tag">
+                <g:each in="${FirstnameInstance.getFirstnameHasTag()}" var="tag">
                     <g:if test="${tag.weight > 50}">
                         <span class="label mytool label-success" data-tag="none" contenteditable="false" toggle="tooltip"  data-placement="top" data-original-title="${tag.weight}" title="">${tag.tag.name}</span>
                     </g:if>
@@ -58,10 +58,9 @@
             <td>
                 <g:form>
                     <fieldset class="buttons">
-                        <g:hiddenField name="id" value="${FirstnameInstance.id}"/>
                         <g:hasRights lvlright="${right.REFMODIFY.value()}">
                             <a href="${createLink(action: "dupplicate", id: "${FirstnameInstance?.id}")}">
-                                Duppliquer</a>
+                                Dupliquer</a>
                         </g:hasRights>
                     </fieldset>
                 </g:form>
