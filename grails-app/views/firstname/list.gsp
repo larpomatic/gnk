@@ -13,7 +13,7 @@
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Firstnane existants</h2>
+        <h2>Firstnanes existants</h2>
     </fieldset>
 
 

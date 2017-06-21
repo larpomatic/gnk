@@ -114,4 +114,6 @@
 %{--</g:each>--}%
     </tbody>
 </table>
-
+<script type="application/javascript">
+    $(".mytool").tooltip({ html: true });
+</script>

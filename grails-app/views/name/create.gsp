@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
-		<title>Creer nouveau Patronyme</title>
+		<title>Création Patronyme</title>
 	</head>
 	<body>
 		<div id="create-name">

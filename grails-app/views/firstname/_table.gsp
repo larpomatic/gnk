@@ -4,7 +4,7 @@
 
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des Prénoms</legend>
+<legend>Liste des Firstnames</legend>
 
 <table id="listTable" class="table table-bordered">
     <thead>
@@ -115,3 +115,6 @@
 %{--</g:each>--}%
     </tbody>
 </table>
+<script type="application/javascript">
+    $(".mytool").tooltip({ html: true });
+</script>

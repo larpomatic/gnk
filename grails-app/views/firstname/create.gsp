@@ -4,12 +4,11 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Firstname')}" />
-		<title>Creer nouveau Prénom</title>
+		<title>Création Firstname</title>
 	</head>
 	<body>
-		<a href="#create-Firstname" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div id="create-firtsname" class="content scaffold-create" role="main">
-			<h1><C></C>réation Firstname</h1>>
+			<h1><C></C>Création Firstname</h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>

@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Administration Patronyme</title>
+    <title>Administration Patronymes</title>
 </head>
 	<body>
 
