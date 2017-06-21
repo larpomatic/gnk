@@ -24,18 +24,18 @@
     <g:form>
         <form>
 
-            <g:hiddenField name="NameInstanceId" value="${NameInstance?.id}" />
-            <g:hiddenField name="NameInstanceVersion" value="${NameInstance?.version}" />
+            <g:hiddenField name="NameId" value="${NameInstance?.id}" />
+            <g:hiddenField name="NameVersion" value="${NameInstance?.version}" />
             <fieldset class="form-inline">
                 <g:render template="form" model="[NameInstance : NameInstance,
                                                   NameInstanceList : NameInstanceList,
                                                   TagInstanceList : TagInstanceList,
                                                   NameHasTagList : NameHasTagList]"/>
             </fieldset>
-            <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="Edition" />
-                <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
-                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+            <fieldset class="button">
+                <g:actionSubmit class="btn btn-primary" action="update" value="Edition" />
+                <g:actionSubmit class="btn btn-primary" action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Etes vous sûr de vouloir quitter la fenêtre?')}');" />
             </fieldset>
         </form>
     </g:form>

@@ -29,7 +29,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 Tags
-                <a href="#tagsModalHasTag" class="btn" data-toggle="modal">
+                <a href="#tagsModalHasTag" class="btn btn-primary" data-toggle="modal">
                     Selection de tags
                 </a>
             </h3>
@@ -90,7 +90,7 @@
 
         <div class="modal-footer">
             %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
-            <g:actionSubmit class="save" action="edit" value="Ok"/>
+            <g:actionSubmit class="btn btn-primary" action="edit" value="Ok"/>
         </div>
         %{--</form>--}%
 

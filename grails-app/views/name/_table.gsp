@@ -71,7 +71,7 @@
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <g:actionSubmit class="btn btn-danger" action="delete"
                                     value="${message(code: 'default.delete')}"
-                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce nom?');"/>
+                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce Patronyme?');"/>
                 </g:hasRights>
             </fieldset>
         </g:form>

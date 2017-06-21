@@ -13,25 +13,22 @@
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Firstnanes existants</h2>
+        <h2>Firstnames existants</h2>
     </fieldset>
 
-
+        <g:render template="../infosAndErrors" />
 
         <g:form>
             <fieldset class="buttons">
 
                     <g:actionSubmit class="btn btn-primary" action="create"
-                                    value="+ Ajouter nouveau prénom"/>
+                                    value="+ Ajouter nouveau Firstname"/>
 
            </fieldset>
        </g:form>
         <div id="list-name" class="content scaffold-list" role="main">
 
 
-            <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
-            </g:if>
             <fieldset class="form">
                 <g:form action="list" method="GET">
                     <div class="fieldcontain">

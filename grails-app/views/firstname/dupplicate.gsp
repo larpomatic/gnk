@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="edit-Firstname" class="content scaffold-edit" role="main">
-    <h1>Création Firstname" /></h1>
+    <h1>Création Firstname</h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
@@ -32,10 +32,10 @@
                                                   TagInstanceList : TagInstanceList,
                                                   FirstnameHasTagList : FirstnameHasTagList]"/>
             </fieldset>
-            <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="Création" />
-                <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
-                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+            <fieldset class="button">
+                <g:actionSubmit class="btn btn-primary" action="update" value="Création" />
+                <g:actionSubmit class="btn btn-primary" action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Etes vous sûr de vouloir quitter la fenêtre?')}');" />
             </fieldset>
         </form>
     </g:form>

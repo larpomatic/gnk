@@ -29,9 +29,6 @@
         <div id="list-name" class="content scaffold-list" role="main">
 
 
-            <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
-            </g:if>
             <fieldset class="form">
                 <g:form action="list" method="GET">
                     <div class="fieldcontain">
