@@ -119,11 +119,14 @@ class SubstitutionPublication {
                 return switchGender[1].substring(2).toLowerCase()
         }
 
-        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+        boolean startsWithVowel = replacement.startsWith('' +
+                "a") || replacement.startsWith("e") || replacement.startsWith("i") || replacement.startsWith("o") || replacement.startsWith("u") || replacement.startsWith("y") || replacement.startsWith("h") || replacement.startsWith("é")|| replacement.startsWith("è") || replacement.startsWith("ê")
+        //replacement.matches("^[HAEIOUY].*")
 
         switch (syntax) {
             case "NONE" : return replacement
             case "ART" :
+
                 switch (gender) {
                     case "" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
                     case "M" : return (startsWithVowel) ? "l'" + replacement : "le " + replacement
@@ -238,7 +241,9 @@ class SubstitutionPublication {
                 return switchGender[1].substring(2).toLowerCase()
         }
 
-        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+        boolean startsWithVowel = replacement.startsWith('' +
+                "a") || replacement.startsWith("e") || replacement.startsWith("i") || replacement.startsWith("o") || replacement.startsWith("u") || replacement.startsWith("y") || replacement.startsWith("h") || replacement.startsWith("é")|| replacement.startsWith("è") || replacement.startsWith("ê")
+        //replacement.matches("^[HAEIOUY].*")
 
         switch (syntax) {
             case "NONE" : return replacement
@@ -387,7 +392,7 @@ class SubstitutionPublication {
                 if (isFirst)
                     isFirst = false
                 else
-                    result += "; "
+                    result += ", "
 
                 /*
                 * Switch pour savoir le contenu que l'on veut afficher
@@ -399,10 +404,15 @@ class SubstitutionPublication {
                 */
                 switch (syntax) {
                     case "NONE" : result += character[0] + " " + character[1]
+                        break
                     case "PRE" : result += character[0]
+                        break
                     case "PAT" : result +=  character[1]
+                        break
                     case "AGE" : result += character[2]
+                        break
                     case "INIF" : result += character[0].substring(0, 1) + ". " + character[1]
+                        break
                 }
             }
         }
@@ -435,7 +445,9 @@ class SubstitutionPublication {
                 return switchGender[1].substring(2).toLowerCase()
         }
 
-        boolean startsWithVowel = replacement.matches("^[AEIOUY].*")
+        boolean startsWithVowel = replacement.startsWith('' +
+                "a") || replacement.startsWith("e") || replacement.startsWith("i") || replacement.startsWith("o") || replacement.startsWith("u") || replacement.startsWith("y") || replacement.startsWith("h") || replacement.startsWith("é")|| replacement.startsWith("è") || replacement.startsWith("ê")
+        //replacement.matches("^[HAEIOUY].*")
 
         switch (syntax) {
             case "NONE" : return replacement
@@ -452,7 +464,7 @@ class SubstitutionPublication {
                 switch (gender) {
                     case "" : return "mon " + replacement
                     case "M" : return "mon " + replacement
-                    case "F" : return "ma " + replacement
+                    case "F" : return (startsWithVowel) ? "mon" + replacement : "ma " + replacement
                     case "MP" : return "mes " + replacement
                     case "FP" : return "mes " + replacement
                 }
@@ -461,7 +473,7 @@ class SubstitutionPublication {
                 switch (gender) {
                     case "" : return "ton " + replacement
                     case "M" : return "ton " + replacement
-                    case "F" : return "ta " + replacement
+                    case "F" : return (startsWithVowel) ? "ton" + replacement : "ta " + replacement
                     case "MP" : return "tes " + replacement
                     case "FP" : return "tes " + replacement
                 }
@@ -470,7 +482,7 @@ class SubstitutionPublication {
                 switch (gender) {
                     case "" : return "son " + replacement
                     case "M" : return "son " + replacement
-                    case "F" : return "sa " + replacement
+                    case "F" : return (startsWithVowel) ? "son" + replacement :  "sa " + replacement
                     case "MP" : return "ses " + replacement
                     case "FP" : return "ses " + replacement
                 }

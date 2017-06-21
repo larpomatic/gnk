@@ -9,6 +9,26 @@
         $('#edit-plot form').append('<input type=\'hidden\' name=\'_action_goToRoleToPerso\'>');
         $('#edit-plot form').submit()
     }
+    function saveRadioBouton()
+    {$.ajax({
+            type: "PUT",
+            url: "${createLink(controller:'selectIntrigue', action:'selectIntrigue')}",
+            dataType: "json",
+            contentType: 'text/json',
+            data: {},
+            async: true,
+            success : function(data, textStatus, jqXHR) {
+                onSuccesFunc(data, textStatus, jqXHR);
+            },
+            error : function(jqXHR, textStatus, errorThrown) {
+                onErrorFunc(jqXHR, textStatus, errorThrown);
+            },
+            complete : function(jqXHR, textStatus) {
+                completeFunc(jqXHR, textStatus);
+            }
+     });
+    }
+
 
     function reloadSelectIntrigue()
     {

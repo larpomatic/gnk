@@ -1,15 +1,19 @@
 package org.gnk.resplacetime
 
+import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagService
 import org.gnk.tag.Tag
+import org.gnk.utils.Pair
 
 class GenericPlaceController {
 
-    PlaceService placeService;
+    //PlaceService placeService;
+    PlaceResourceService placeResourceService;
     JSONObject json;
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -45,44 +49,46 @@ class GenericPlaceController {
     }
 
     def getBestPlaces() {
-        org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
+        GenericPlace gp = new GenericPlace();
+        Set<GenericPlaceHasTag> tags = new ArrayList<>();
 
-        List<com.gnk.substitution.Tag> tags = new ArrayList<>();
         params.each {
             if (it.key.startsWith("placeTags_")) {
-                com.gnk.substitution.Tag subtag = new com.gnk.substitution.Tag();
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
                 Tag tag = Tag.get((it.key - "placeTags_") as Integer);
                 if (tag.parent != null) {
-                    subtag.value = tag.name;
+                    subtag.tag = tag;
                     subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
-                    subtag.type = tag.parent.name;
+                    //subtag.type = tag.parent.name;
                     tags.add(subtag);
                 }
             }
         }
-        genericplace.setTagList(tags);
+        //gp.setTagList(tags);
 
         Tag tagUnivers = new Tag();
-        tagUnivers = Tag.findById("33089");
+        tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
 
         json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        for (int i = 0; i < universList.size() ; i++) {
-            genericplace = placeService.findReferentialPlace(genericplace, universList[i].name);
-            jsonArray.add(universList[i].name);
-            for(ReferentialPlace ref in genericplace.resultList) {
-                jsonArray.add(ref.name);
+        if (params.containsKey("plotId")) {
+            Plot plot = Plot.get(params.plotId as Integer)
+            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
+                    jsonArray.add(ref2.left.getName());
+                }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
             }
-            json.put(universList[i].name,jsonArray);
-            jsonArray = [];
         }
 
         render(contentType: "application/json") {
-            object(json: json)
+            object([json: json] as JSON)
 
-            return json.toString();
+            return json as JSON;
         }
     }
 
