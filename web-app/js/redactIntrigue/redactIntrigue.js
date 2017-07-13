@@ -805,13 +805,14 @@ function convertHTMLRegisterHelper(description) {
 }
 
 
-function toBalise()
+function toBalise(description_zone)
 {
     var form = $('.savePlotForm');
+    var id_description =  description_zone.parentElement.parentElement.parentElement.parentElement.id.split('_')[1];
 
-
-    var description = $('#idDescriptionText_0', form).html();
-    console.log("description avant :" + description);
+    var description = $('#idDescriptionText_' + id_description, form).html();
+   // console.log("description avant :" + description);
+    console.log(id_description);
     //var description = document.getElementById('idDescriptionText_0').textContent;
     //document.getElementById('idDescriptionText_0').textContent = description;
     //document.getElementById('idDescriptionText_0').text(description);
@@ -826,7 +827,7 @@ function toBalise()
         button_on = true;
     }
 
-    $("#idDescriptionText_0").html(description);
+    $("#idDescriptionText_" + id_description).html(description);
 
 
 }

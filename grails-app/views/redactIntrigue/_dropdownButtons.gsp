@@ -161,8 +161,8 @@ input:checked + .slider:before {
 
 
 <label class="switch">
-    <input type="checkbox" checked>
-    <div class="slider" onclick="toBalise()"></div>
+    <input type="checkbox" >
+    <div class="slider" onclick="toBalise(this)"></div>
 </label><br><br>
 
 
