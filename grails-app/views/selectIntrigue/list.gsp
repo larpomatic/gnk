@@ -10,6 +10,15 @@
 </head>
 <g:javascript src="selectIntrigue/listSelectIntigue.js"/>
 <body>
+<g:set var="step1" value="${message(code: 'selectIntrigue.step.selectIntrigue')}"/>
+<g:set var="step2" value="${message(code: 'selectIntrigue.step.characters')}"/>
+<g:set var="step2_5" value="${message(code: 'selectIntrigue.step.life')}"/>
+<g:set var="step3" value="${message(code: 'selectIntrigue.step.identity')}"/>
+<g:set var="step4" value="${message(code: 'selectIntrigue.step.ressource')}"/>
+<g:set var="step5" value="${message(code: 'selectIntrigue.step.place')}"/>
+<g:set var="step6" value="${message(code: 'selectIntrigue.step.time')}"/>
+<g:set var="step6" value="${message(code: 'selectIntrigue.step.publication')}"/>
+
 <div id="list-gn" class="content scaffold-list" role="main">
     <h1><g:message code="navbar.selectintrigue" default="Plot List"/></h1>
 
