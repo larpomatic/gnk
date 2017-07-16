@@ -166,7 +166,14 @@ class SelectIntrigueController {
                         evenementialId = it.value as Integer;
                     }
                     else if (it.key.startsWith("selected_mainstream")) {
-                        mainstreamId = it.value as Integer;
+
+                        Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
+                        if (it.value == "1" && it.value == "3") {
+                            lockedPlot.add(plot)
+                            mainstreamId = plot.id
+                        } else {
+                            bannedPlot.add(plot)
+                        }
                     }
                 }
 
@@ -253,6 +260,7 @@ class SelectIntrigueController {
                 new GNKDataContainerService().ReadDTD(gnInstance)
                 HashSet<Plot> bannedPlot = new HashSet<Plot>();
                 HashSet<Plot> lockedPlot = new HashSet<Plot>();
+                HashSet<Plot> selectedPlot = new HashSet<Plot>();
                 params.each {
                     if (it.key.startsWith("plot_status_") && it.value != "3") {
                         // Locked = 1, Banned= 2, Selected = 3
@@ -275,7 +283,13 @@ class SelectIntrigueController {
                         evenementialId = it.value as Integer;
                     }
                     else if (it.key.startsWith("selected_mainstream")) {
-                        mainstreamId = it.value as Integer;
+                        Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
+                        if (it.value == "1" || it.value == "3") {
+                            //lockedPlot.add(plot)
+                            mainstreamId = plot.id
+                        } else if (it.value == "2") {
+                            bannedPlot.add(plot)
+                        }
                     }
                 }
                 for (Plot plot : lockedPlot) {

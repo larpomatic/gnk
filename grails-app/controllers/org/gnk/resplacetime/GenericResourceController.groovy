@@ -294,7 +294,6 @@ class GenericResourceController {
         //genericressource.setTagList(tags);
         gr.setExtTags(tags);
 
-
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
