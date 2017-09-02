@@ -249,7 +249,7 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux")
         createPlaceTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Resources Logistiques")
+        wordWriter.addStyledParagraphOfText("T2", "Ressources Logistiques")
         wordWriter.addStyledParagraphOfText("T3", "Synthèse")
         createResTable()
 
@@ -1458,7 +1458,7 @@ class PublicationController {
     // Fonction renvoyant un message sur le nombre des personnages dans le pitch orga
     def PitchOrgaMsgCharacters() {
         int NbPJ = gn.characterSet.size()
-        String msgCharacters = "Ce GN accueille " + NbPJ + " Personnage" + ((NbPJ > 1) ? "s" : "") + " Joueur" + ((NbPJ > 1) ? "s" : "") + " (PJ dont "
+        String msgCharacters = "Ce GN accueille " + NbPJ + " Personnage" + ((NbPJ > 1) ? "s" : "") + " Joueur" + ((NbPJ > 1) ? "s" : "") + " (PJ, dont "
         String tmpGender = ""
         int nbMale = 0, nbFemale = 0, nbNoGender = 0
         for (int i = 0; i < NbPJ; i++) {
@@ -1501,7 +1501,7 @@ class PublicationController {
             }
         }
 
-        msgCharacters += NbPNJ + " Personnage" + ((NbPNJ > 1) ? "s" : "") + " Non Joueur" + ((NbPNJ > 1) ? "s" : "") + " (PNJ)  " + ((nbNoGender == NbPNJ) ? "" : "(")
+        msgCharacters += NbPNJ + " Personnage" + ((NbPNJ > 1) ? "s" : "") + " Non Joueur" + ((NbPNJ > 1) ? "s" : "") + " (PNJ" + ((nbNoGender == NbPNJ) ? ")" : ", ")
         if (nbFemale > 0)
             msgCharacters += nbFemale + " fille" + ((nbFemale > 1) ? "s" : "")
         if (nbFemale > 0 && nbMale > 0)
@@ -1526,9 +1526,9 @@ class PublicationController {
                     nbNoGender++;
             }
         }
-        msgCharacters += "Il mentionne " + NbPHJ + " Personnage" + ((NbPHJ > 1) ? "s" : "") + " Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)
-        msgCharacters += "Le scénario est construit autour des intrigues suivantes :" + "\n"
+        msgCharacters += "Il mentionne " + NbPHJ + " Personnage" + ((NbPHJ > 1) ? "s" : "") + " Hors jeu (PHJ). Dans ce document, le timing a été calculé pour une session commençant le "
+        msgCharacters += getPrintableDate(gn.t0Date,  "dd MMMM yyyy 'à' HH'h'mm") + "." + "\n"
+        //msgCharacters += "Le scénario est construit autour des intrigues suivantes :" + "\n"
 
         return msgCharacters
     }
