@@ -680,10 +680,20 @@ class PublicationController {
                         PList.remove(gr)
                         break
                     }
+
             resList += tmpList
         }
+
         return resList
     }
+
+    /*def sort2(ArrayList<GenericResource> PList)
+    {
+        ArrayList<GenericResource> resList = new ArrayList<>()
+        def p = Plot.get(id
+        p.getName()
+
+    }*/
 
     def sortGenericResourceList(ArrayList<GenericResource> GRList) {
         ArrayList<String> nameList = new ArrayList<String>()
@@ -701,6 +711,8 @@ class PublicationController {
                 }
         return resList
     }
+
+
 
     // Création du tableau de la synthèse des ressources
     def createResTable() {
@@ -720,6 +732,7 @@ class PublicationController {
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de la ressource")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Descriptions")
@@ -731,6 +744,14 @@ class PublicationController {
 
         for (GenericResource genericResource : GROTList + GRList) {
             Tr tableRowRes = wordWriter.factory.createTr()
+
+            //Display plot
+            
+            def plot_name = genericResource.plot.name
+            if (plot_name != null)
+                wordWriter.addTableStyledCell("Table1C", tableRowRes, plot_name)
+            else
+                wordWriter.addTableStyledCell("Table1C", tableRowRes, "Pas d'intrigue")
 
             if (genericResource.selectedResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, genericResource.selectedResource.name)
