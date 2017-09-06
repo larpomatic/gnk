@@ -716,7 +716,10 @@ class PublicationController {
         }
         plotNameList.sort()
         for (GenericResource gr : GRList)
-            resNameList.add(gr.selectedResource.name)
+        {
+            if (gr.selectedResource)
+                resNameList.add(gr.selectedResource.name)
+        }
         resNameList.sort()
 
         for (String plotName : plotNameList)
@@ -725,12 +728,13 @@ class PublicationController {
             {
                 for (GenericResource gr : GRList)
                 {
+                    if (gr.selectedResource != null){
                     if (gr.plot.name == plotName && gr.selectedResource.name == resName)
                     {
                         resList.add(gr)
                         GRList.remove(gr)
                         break
-                    }
+                    }}
 
                 }
             }
@@ -753,8 +757,10 @@ class PublicationController {
                 GRList.add(gr)
         }
 
-        GRList = sortGenericResourceList(GRList)
-        GROTList = sortGenericResourceObjectTypeList(GROTList)
+        GRList = sort2(GRList)
+        GROTList = sort2(GROTList)
+        //GRList = sortGenericResourceList(GRList)
+        //GROTList = sortGenericResourceObjectTypeList(GROTList)
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
@@ -813,7 +819,7 @@ class PublicationController {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
-                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname)
                         }
                     }
                 }
@@ -1597,7 +1603,7 @@ class PublicationController {
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                         for (Role r : c.selectedRoles) {
                             if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
-                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname)
                             }
                         }
                     }
@@ -1730,7 +1736,7 @@ class PublicationController {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r2 : c.selectedRoles) {
                         if (r1.DTDId == r2.DTDId) {
-                            playerImplication += (playerImplication.isEmpty() ? "" : "\n") + c.firstname + " " + c.lastname.toUpperCase() + " : " + r1.description
+                            playerImplication += (playerImplication.isEmpty() ? "" : "\n") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname) + " : " + r1.description
                         }
                     }
                 }
