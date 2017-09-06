@@ -687,14 +687,6 @@ class PublicationController {
         return resList
     }
 
-    /*def sort2(ArrayList<GenericResource> PList)
-    {
-        ArrayList<GenericResource> resList = new ArrayList<>()
-        def p = Plot.get(id
-        p.getName()
-
-    }*/
-
     def sortGenericResourceList(ArrayList<GenericResource> GRList) {
         ArrayList<String> nameList = new ArrayList<String>()
         ArrayList<GenericResource> resList = new ArrayList<GenericResource>()
@@ -711,6 +703,41 @@ class PublicationController {
                 }
         return resList
     }
+    def sort2(ArrayList<GenericResource> GRList)
+    {
+        ArrayList<GenericResource> resList = new ArrayList<>()
+        ArrayList<String> plotNameList = new ArrayList<>()
+        ArrayList<String> resNameList = new ArrayList<>()
+
+        for (GenericResource gr : GRList)
+        {
+            if (!plotNameList.contains(gr.plot.name))
+                plotNameList.add(gr.plot.name)
+        }
+        plotNameList.sort()
+        for (GenericResource gr : GRList)
+            resNameList.add(gr.selectedResource.name)
+        resNameList.sort()
+
+        for (String plotName : plotNameList)
+        {
+            for (String resName : resNameList)
+            {
+                for (GenericResource gr : GRList)
+                {
+                    if (gr.plot.name == plotName && gr.selectedResource.name == resName)
+                    {
+                        resList.add(gr)
+                        GRList.remove(gr)
+                        break
+                    }
+
+                }
+            }
+        }
+        return resList
+    }
+
 
 
 
@@ -746,7 +773,6 @@ class PublicationController {
             Tr tableRowRes = wordWriter.factory.createTr()
 
             //Display plot
-            
             def plot_name = genericResource.plot.name
             if (plot_name != null)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, plot_name)
