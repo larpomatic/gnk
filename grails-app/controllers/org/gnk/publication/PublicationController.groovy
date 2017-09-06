@@ -720,8 +720,6 @@ class PublicationController {
             if (gr.selectedResource)
                 resNameList.add(gr.selectedResource.name)
         }
-        resNameList.sort()
-
         for (String plotName : plotNameList)
         {
             for (String resName : resNameList)
