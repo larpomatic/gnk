@@ -154,5 +154,10 @@ class Period {
 
     //enrichir le contructeur pour les dates de début relatives
     //toJSON
+    private void beginningtoJson()
+    {
+     beginning = getBeginning(parseInt(jsonDate.substr(6)));
+    }
+
     //fromJSON
 }
