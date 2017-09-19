@@ -26,6 +26,7 @@ class SubstitutionPublication {
     def SubstitutionPublication(HashMap<String, Role> rolesNames, List<Place> placeList, List<GenericResource> genericResourceList, Date gnDate)
     {
         this.rolesNames = rolesNames
+        println("INIT expected:" + rolesNames.size() + "gotten: " + this.rolesNames.size())
         this.placeList = placeList
         this.genericResourceList = genericResourceList
         this.gnDate = gnDate;
@@ -42,7 +43,7 @@ class SubstitutionPublication {
         println("===================== Role =====================")
         for (Map.Entry<String, Role> map : rolesNames.entrySet())
         {
-            println(map.key)
+            println(map.key + " -> " + map.value.code)
         }
     }
 
@@ -339,7 +340,10 @@ class SubstitutionPublication {
     String replaceRole(String syntax, String code) {
         String[] character //[fisrtname, lastname, age, gender]
         // Recherche du 'character' correspondant au 'code'
+        println("TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSST")
+        println("Recherche code -> " + code + " Rolenames ->" + rolesNames.size())
         for (Map.Entry<String, Role> map : rolesNames.entrySet()) {
+            println("FOR role -> " + map.value.code)
             // 'character' sera le dernier personage qui correspond au 'code' s'il n'est pas un PJG ou TPJ
             if (map.value.code.toUpperCase().equals(code)) {
                 if (map.value.PJG)
@@ -349,7 +353,9 @@ class SubstitutionPublication {
                 else
                     character = map.key.split(";")
             }
+            println("Result ->" + character.toString())
         }
+        println("EEEEEEEEEEEEEENNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDD")
 
         if (character == null)
             return "[Rôle générique]"
@@ -561,6 +567,7 @@ class SubstitutionPublication {
                 if (map.key.split(";").length >= 2)
                     return map.key.split(";")[0] + " " + map.key.split(";")[1]
         }
+        println("Old role called " + input)
         return "[Role générique]"
     }
 
