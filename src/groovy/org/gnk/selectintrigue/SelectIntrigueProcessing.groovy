@@ -23,7 +23,7 @@ public class SelectIntrigueProcessing {
     private Set<Plot> _selectedPlotList;
     private Set<Plot> _lockedPlotList;
     private Set<Plot> _bannedPlotList;
-    private Set<Plot> _allPlotList;
+    public Set<Plot> _allPlotList;
     private Set<Plot> _allEvenementialPlotList;
     private Set<Plot> _allMainstreamPlotList;
     private Map<Tag, Integer> _value;
@@ -59,13 +59,17 @@ public class SelectIntrigueProcessing {
                 }
             } else {
                 if (plotIsCompatible(plot)) {
-                    _allPlotList.add(plot);
                     if (_gn.getIsMainstream() && plot.getIsMainstream()) {
                         _allMainstreamPlotList.add(plot); //on ajoute l'intrigue à la liste des mainstreams
-                        _allPlotList.remove(plot); //on la retire des évenementielles
+                        //_allPlotList.remove(plot); //on la retire des évenementielles
+                        //_bannedPlotList.remove(plot)
+                        //_lockedPlotList.remove(plot)
                         if (plot in _bannedPlotList) {
                             _allMainstreamPlotList.remove(plot);
                         }
+                    }
+                    else {
+                        _allPlotList.add(plot);
                     }
                 }
             }

@@ -105,20 +105,12 @@
                             ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
                         </g:link>
                     </td>
-                        <g:radioGroup name="plot_status_${mainstreamPlotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
-                                    value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
-                            <td>
-                                ${it.radio}
-                            </td>
-                        </g:radioGroup>
-            %{-- <g:if test="${mainstreamPlotInstance.id.equals(mainstreamId)}">
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
-                                class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                        <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${[1, 2, 3]}"
-                            class="radioMainstream"/>
-                        </g:else>--}%
+                    <g:radioGroup name="selected_mainstream${mainstreamPlotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
+                                  value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
+                        <td>
+                            ${it.radio}
+                        </td>
+                    </g:radioGroup>
                 </tr>
             </g:each>
             <tr>
