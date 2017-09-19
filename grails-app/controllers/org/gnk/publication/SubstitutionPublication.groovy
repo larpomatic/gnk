@@ -32,7 +32,7 @@ class SubstitutionPublication {
         simpleGnDate = new SimpleDateFormat("dd/MM/yyyy");
         simpleGnHour = new SimpleDateFormat("HH:mm");
 
-        println("===================== Place ======================")
+        /*println("===================== Place ======================")
         for (Place place : placeList)
         {
             if (place.genericPlace == null)
@@ -43,7 +43,7 @@ class SubstitutionPublication {
         for (Map.Entry<String, Role> map : rolesNames.entrySet())
         {
             println(map.key)
-        }
+        }*/
     }
 
     def String replaceAll(String input) {
