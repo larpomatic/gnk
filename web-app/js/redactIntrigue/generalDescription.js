@@ -28,6 +28,8 @@ $(document).ready(function() {
 function addDescription() {
     clone = $("#render_0").clone();
     clone.attr('id', "render_"+ desc_number);
+    console.log(clone.find('.switch'));//.switch en paramètre
+
     $('#desc_wrapper').append(clone);
     initialise_description(desc_number);
     $('#overview').append('<li class="list-group-item" id="titleRender_' + desc_number + '"> <a id="refDesc_' + desc_number + '"href="#idDescription_' + desc_number + '">Description </a> </li>');
