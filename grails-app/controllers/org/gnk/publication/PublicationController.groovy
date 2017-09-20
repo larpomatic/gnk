@@ -249,7 +249,7 @@ class PublicationController {
         wordWriter.addStyledParagraphOfText("T2", "Synthèse des lieux")
         createPlaceTable()
 
-        wordWriter.addStyledParagraphOfText("T2", "Resources Logistiques")
+        wordWriter.addStyledParagraphOfText("T2", "Ressources Logistiques")
         wordWriter.addStyledParagraphOfText("T3", "Synthèse")
         createResTable()
 
@@ -680,8 +680,10 @@ class PublicationController {
                         PList.remove(gr)
                         break
                     }
+
             resList += tmpList
         }
+
         return resList
     }
 
@@ -701,6 +703,45 @@ class PublicationController {
                 }
         return resList
     }
+    def sort2(ArrayList<GenericResource> GRList)
+    {
+        ArrayList<GenericResource> resList = new ArrayList<>()
+        ArrayList<String> plotNameList = new ArrayList<>()
+        ArrayList<String> resNameList = new ArrayList<>()
+
+        for (GenericResource gr : GRList)
+        {
+            if (!plotNameList.contains(gr.plot.name))
+                plotNameList.add(gr.plot.name)
+        }
+        plotNameList.sort()
+        for (GenericResource gr : GRList)
+        {
+            if (gr.selectedResource)
+                resNameList.add(gr.selectedResource.name)
+        }
+        for (String plotName : plotNameList)
+        {
+            for (String resName : resNameList)
+            {
+                for (GenericResource gr : GRList)
+                {
+                    if (gr.selectedResource != null){
+                    if (gr.plot.name == plotName && gr.selectedResource.name == resName)
+                    {
+                        resList.add(gr)
+                        GRList.remove(gr)
+                        break
+                    }}
+
+                }
+            }
+        }
+        return resList
+    }
+
+
+
 
     // Création du tableau de la synthèse des ressources
     def createResTable() {
@@ -714,12 +755,15 @@ class PublicationController {
                 GRList.add(gr)
         }
 
-        GRList = sortGenericResourceList(GRList)
-        GROTList = sortGenericResourceObjectTypeList(GROTList)
+        GRList = sort2(GRList)
+        GROTList = sort2(GROTList)
+        //GRList = sortGenericResourceList(GRList)
+        //GROTList = sortGenericResourceObjectTypeList(GROTList)
 
         Tbl table = wordWriter.factory.createTbl()
         Tr tableRow = wordWriter.factory.createTr()
 
+        wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de l'intrigue")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Nom de la ressource")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Type")
         wordWriter.addTableStyledCell("Table1L", tableRow, "Descriptions")
@@ -731,6 +775,13 @@ class PublicationController {
 
         for (GenericResource genericResource : GROTList + GRList) {
             Tr tableRowRes = wordWriter.factory.createTr()
+
+            //Display plot
+            def plot_name = genericResource.plot.name
+            if (plot_name != null)
+                wordWriter.addTableStyledCell("Table1C", tableRowRes, plot_name)
+            else
+                wordWriter.addTableStyledCell("Table1C", tableRowRes, "Pas d'intrigue")
 
             if (genericResource.selectedResource)
                 wordWriter.addTableStyledCell("Table1C", tableRowRes, genericResource.selectedResource.name)
@@ -766,7 +817,7 @@ class PublicationController {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
-                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                            possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname)
                         }
                     }
                 }
@@ -1462,7 +1513,7 @@ class PublicationController {
     // Fonction renvoyant un message sur le nombre des personnages dans le pitch orga
     def PitchOrgaMsgCharacters() {
         int NbPJ = gn.characterSet.size()
-        String msgCharacters = "Ce GN accueille " + NbPJ + " Personnage" + ((NbPJ > 1) ? "s" : "") + " Joueur" + ((NbPJ > 1) ? "s" : "") + " (PJ dont "
+        String msgCharacters = "Ce GN accueille " + NbPJ + " Personnage" + ((NbPJ > 1) ? "s" : "") + " Joueur" + ((NbPJ > 1) ? "s" : "") + " (PJ, dont "
         String tmpGender = ""
         int nbMale = 0, nbFemale = 0, nbNoGender = 0
         for (int i = 0; i < NbPJ; i++) {
@@ -1505,7 +1556,7 @@ class PublicationController {
             }
         }
 
-        msgCharacters += NbPNJ + " Personnage" + ((NbPNJ > 1) ? "s" : "") + " Non Joueur" + ((NbPNJ > 1) ? "s" : "") + " (PNJ)  " + ((nbNoGender == NbPNJ) ? "" : "(")
+        msgCharacters += NbPNJ + " Personnage" + ((NbPNJ > 1) ? "s" : "") + " Non Joueur" + ((NbPNJ > 1) ? "s" : "") + " (PNJ" + ((nbNoGender == NbPNJ) ? ")" : ", ")
         if (nbFemale > 0)
             msgCharacters += nbFemale + " fille" + ((nbFemale > 1) ? "s" : "")
         if (nbFemale > 0 && nbMale > 0)
@@ -1530,9 +1581,9 @@ class PublicationController {
                     nbNoGender++;
             }
         }
-        msgCharacters += "Il mentionne " + NbPHJ + " Personnage" + ((NbPHJ > 1) ? "s" : "") + " Hors jeu (PHJ). Dans ce document, le timing a été calculé pour un jeu commençant à "
-        msgCharacters += getPrintableDate(gn.t0Date)
-        msgCharacters += "Le scénario est construit autour des intrigues suivantes :" + "\n"
+        msgCharacters += "Il mentionne " + NbPHJ + " Personnage" + ((NbPHJ > 1) ? "s" : "") + " Hors jeu (PHJ). Dans ce document, le timing a été calculé pour une session commençant le "
+        msgCharacters += getPrintableDate(gn.t0Date,  "dd MMMM yyyy 'à' HH'h'mm") + "." + "\n"
+        //msgCharacters += "Le scénario est construit autour des intrigues suivantes :" + "\n"
 
         return msgCharacters
     }
@@ -1554,7 +1605,7 @@ class PublicationController {
                     for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                         for (Role r : c.selectedRoles) {
                             if (r.getDTDId() == genericResource.getPossessedByRole().getId()) {
-                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + c.lastname.toUpperCase()
+                                possessedByCharacters += (possessedByCharacters.isEmpty() ? "" : ", ") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname)
                             }
                         }
                     }
@@ -1687,7 +1738,7 @@ class PublicationController {
                 for (Character c : gn.characterSet + gn.nonPlayerCharSet + gn.staffCharSet) {
                     for (Role r2 : c.selectedRoles) {
                         if (r1.DTDId == r2.DTDId) {
-                            playerImplication += (playerImplication.isEmpty() ? "" : "\n") + c.firstname + " " + c.lastname.toUpperCase() + " : " + r1.description
+                            playerImplication += (playerImplication.isEmpty() ? "" : "\n") + c.firstname + " " + (c.lastname ? c.lastname.toUpperCase() : c.lastname) + " : " + r1.description
                         }
                     }
                 }
