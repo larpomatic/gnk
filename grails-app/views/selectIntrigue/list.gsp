@@ -54,41 +54,41 @@
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${[]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step7}"}">
+                <g:if test="${gnInstance.step == "publication"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step7}","${step6}", "${step5}", "${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <%--
+
                 <g:if test="${gnInstance.step == 'substitution'}">
                     <td><g:select name="step-${gnInstance.id}"
                                   from="${['naming', 'life', 'role2perso', 'selectIntrigue']}"/></td>
                 </g:if>
-                --%>
-                <g:if test="${gnInstance.step == "${step6}"}">
+
+                <g:if test="${gnInstance.step == "time"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step6}", "${step5}", "${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step ==  "${step5}"}">
+                <g:if test="${gnInstance.step ==  "place"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${[ "${step5}", "${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step4}"}">
+                <g:if test="${gnInstance.step == "ressource"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step3}"}">
+                <g:if test="${gnInstance.step == "naming"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step2_5}"}">
+                <g:if test="${gnInstance.step == "life"}">
                     <td><g:select name="step-${gnInstance.id}"
                                   from="${["${step2_5}", "${step2}", "${step1}"]}"/></td>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step2}"}">
+                <g:if test="${gnInstance.step == "role2perso"}">
                     <td><g:select name="step-${gnInstance.id}"
                                   from="${["${step2}", "${step1}"]}"/></td>
                 </g:if>
-                <g:if test="${gnInstance.step == "${step1}"}">
+                <g:if test="${gnInstance.step == "selectIntrigue"}">
                     <td><g:select name="step-${gnInstance.id}"
                                   from="${["${step1}"]}"/></td>
                 </g:if>
