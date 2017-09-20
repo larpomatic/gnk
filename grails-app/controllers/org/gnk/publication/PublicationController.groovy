@@ -788,9 +788,7 @@ class PublicationController {
             for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
                 for (Role r : c.selectedRoles) {
                     if (r.plot.DTDId.equals(p.DTDId)) {
-                        println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                         rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                        println(rolesNames.size())
                     }
                 }
             }
@@ -799,9 +797,7 @@ class PublicationController {
             for (Character c : gn.nonPlayerCharSet) {
                 for (Role r : c.selectedRoles) {
                     if (r.plot.DTDId.equals(p.DTDId)) {
-                        println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                         rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                        println(rolesNames.size())
                     }
                 }
             }
@@ -878,9 +874,7 @@ class PublicationController {
         for (Character c : gn.characterSet + gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId)) {
-                    println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                     rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    println(rolesNames.size())
                 }
             }
         }
@@ -889,9 +883,7 @@ class PublicationController {
         for (Character c : gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId)) {
-                    println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                     rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    println(rolesNames.size())
                 }
             }
         }
@@ -1713,9 +1705,7 @@ class PublicationController {
         for (Character c : gn.characterSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId)) {
-                    println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                     rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    println(rolesNames.size())
                 }
             }
         }
@@ -1724,9 +1714,7 @@ class PublicationController {
         for (Character c : gn.nonPlayerCharSet) {
             for (Role r : c.selectedRoles) {
                 if (r.plot.DTDId.equals(p.DTDId)) {
-                    println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                     rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                    println(rolesNames.size())
                 }
             }
         }
@@ -1845,9 +1833,7 @@ class PublicationController {
                 for (Character c : gn.characterSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.plot.DTDId.equals(e.plot.DTDId)) {
-                            println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                            println(rolesNames.size())
                         }
                     }
                 }
@@ -1856,9 +1842,7 @@ class PublicationController {
                 for (Character c : gn.nonPlayerCharSet) {
                     for (Role r : c.selectedRoles) {
                         if (r.plot.DTDId.equals(e.plot.DTDId)) {
-                            println("Success: "+ c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender)
                             rolesNames.put(c.firstname + ";" + c.lastname + ";" + c.age + ";" + c.gender, r)
-                            println(rolesNames.size())
                         }
                     }
                 }
