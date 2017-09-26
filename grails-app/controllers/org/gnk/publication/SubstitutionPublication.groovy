@@ -32,7 +32,7 @@ class SubstitutionPublication {
         simpleGnDate = new SimpleDateFormat("dd/MM/yyyy");
         simpleGnHour = new SimpleDateFormat("HH:mm");
 
-        /*println("===================== Place ======================")
+        println("===================== Place ======================")
         for (Place place : placeList)
         {
             if (place.genericPlace == null)
