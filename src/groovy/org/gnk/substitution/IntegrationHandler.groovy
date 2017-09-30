@@ -158,6 +158,12 @@ class IntegrationHandler {
         charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
         // END NAMING CALL
 
+        // joseph: print des noms générés par l'ancien NamingService
+        for (PersoForNaming p : charForNamingList)
+        {
+            println("Prenoms: " + p.selectedFirstnames + "  Noms: " + p.selectedNames)
+        }
+
         // Update json
         for (characterJson in charJsonObject.characters) {
             String code = characterJson.code
