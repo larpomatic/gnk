@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.gn.Gn
 import org.gnk.naming.NamingService
+import org.gnk.naming.Naming2Service
 import org.gnk.naming.PersoForNaming
 import org.gnk.resplacetime.GenericPlaceHasTag
 import org.gnk.resplacetime.GenericResourceHasTag
@@ -158,11 +159,11 @@ class IntegrationHandler {
         charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
         // END NAMING CALL
 
-        // joseph: print des noms générés par l'ancien NamingService
+        //joseph
+        /*Naming2Service naming2Service = new Naming2Service()
+        charForNamingList = naming2Service.findBestNames(charForNamingList, charJsonObject.gnId as Integer)
         for (PersoForNaming p : charForNamingList)
-        {
-            println("Prenoms: " + p.selectedFirstnames + "  Noms: " + p.selectedNames)
-        }
+            println("Prenoms: " + p.selectedFirstnames + "  Noms: " + p.selectedNames)*/
 
         // Update json
         for (characterJson in charJsonObject.characters) {
