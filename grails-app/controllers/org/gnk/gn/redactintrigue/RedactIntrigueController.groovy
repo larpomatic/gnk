@@ -36,6 +36,7 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 import org.gnk.resplacetime.GenericPlaceController
+import org.gnk.resplacetime.GenericResourceController
 
 import org.gnk.user.User
 import org.springframework.security.access.annotation.Secured
