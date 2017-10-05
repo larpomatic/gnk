@@ -8,7 +8,7 @@ import org.gnk.ressplacetime.ReferentialObject
 
 public class V2TagService {
 
-    private static int  IDgenericUniverTag = 33089;
+    private static int IDgenericUniverTag = 33089;
     private static int NumberOfGenerationsRelevant = 2;
     private static int NumberofGenerationsParent = 2;
     private static int PonderationParent = 1;
@@ -22,9 +22,9 @@ public class V2TagService {
     V2TagService() {
     }
 /**
-     * get all the univers
-     * @return list of all the univers
-     */
+ * get all the univers
+ * @return list of all the univers
+ */
     ArrayList<Tag> getUnivers() {
         ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
         Tag genericUnivers = Tag.findById(IDgenericUniverTag);
@@ -61,10 +61,8 @@ public class V2TagService {
         //initialisation des tags de l'object
         Map<Tag, Integer> map_Object = initObjectList(object);
 
-
         //récupérer les tags parents
         map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights(PonderationParent)));
-
 
         //récupérer les tags du refenretialobjet
         map_Object.putAll(getRelevantTags(object.getTagsAndWeights(ReferentialObjectponderation)));
@@ -91,7 +89,7 @@ public class V2TagService {
             }
         }
 
-        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        result = totalNumberOfTagsUsed == 0 ? score : (score / totalNumberOfTagsUsed);
         return result;
     }
 
@@ -163,40 +161,39 @@ public class V2TagService {
      * @param object
      * @return Map < Tag , Integer >
      */
-        Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
+    Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
-            Map<Tag, Integer> parents_tags = new HashMap<>();
+        Map<Tag, Integer> parents_tags = new HashMap<>();
 
-            ArrayList<Tag> current_gen_parents = new ArrayList<>();
-            current_gen_parents.addAll(taglist.keySet());
+        ArrayList<Tag> current_gen_parents = new ArrayList<>();
+        current_gen_parents.addAll(taglist.keySet());
 
-            ArrayList<Tag> next_gen_parents = new ArrayList<>();
+        ArrayList<Tag> next_gen_parents = new ArrayList<>();
 
 
-                for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
-                    for (Tag t in current_gen_parents) {
-                        ArrayList<Tag> parent = TagRelation.findParents(t);
-                            for (Tag p in parent) {
-                                next_gen_parents.add(p);
-                                TagRelation tr = TagRelation.myFindWhere(t, p)
-                                if (tr != null) {
-                                    parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                } else {
-                                    tr = TagRelation.myFindWhere(p, t)
-                                    if (tr != null && tr.isBijective)
-                                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                }
-                            }
-
-                        }
-                    current_gen_parents = next_gen_parents;
-                    next_gen_parents.clear();
+        for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
+            for (Tag t in current_gen_parents) {
+                ArrayList<Tag> parent = TagRelation.findParents(t);
+                for (Tag p in parent) {
+                    next_gen_parents.add(p);
+                    TagRelation tr = TagRelation.myFindWhere(t, p)
+                    if (tr != null) {
+                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                    } else {
+                        tr = TagRelation.myFindWhere(p, t)
+                        if (tr != null && tr.isBijective)
+                            parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
                     }
+                }
 
-            return parents_tags;
-
+            }
+            current_gen_parents = next_gen_parents;
+            next_gen_parents.clear();
         }
 
+        return parents_tags;
+
+    }
 
     /**
      *
@@ -267,8 +264,7 @@ public class V2TagService {
 
         if (tag.parent != null && tag.parent.getName() != null && tag.parent.getName().equals("Tag Univers")) {
             score = 50;
-        }
-        else {
+        } else {
             score = Math.abs(gPweight) + Math.abs(pweight);
             if (gPweight < 0 || pweight < 0)
                 score *= -1;
@@ -282,7 +278,7 @@ public class V2TagService {
      * @param relationWeight
      * @return The computed relationship score.
      */
-    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight)  {
+    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
         Integer result = sonWeight * relationWeight / 100;
 
         if (result < -100)
@@ -320,10 +316,10 @@ public class V2TagService {
         if (testValue == null)
             map.put(tag, integer);
         else {
-                //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
-                map.put(tag, (Integer)(integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
+            //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
+            map.put(tag, (Integer) (integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
         }
 
-        return  map;
+        return map;
     }
 }

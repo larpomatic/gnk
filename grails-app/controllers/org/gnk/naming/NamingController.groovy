@@ -14,7 +14,7 @@ import org.gnk.substitution.InputHandler
 import org.gnk.substitution.IntegrationHandler
 import org.gnk.substitution.OutputHandler
 import org.gnk.resplacetime.Event
-import org.gnk.substitution.data.Place
+import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 
 class NamingController {
@@ -71,15 +71,15 @@ class NamingController {
         List<Event> eventList = inputHandler.eventList
         Map<String, Place> gnPlaceConstantMap = inputHandler.gnPlaceConstantMap
 
-        [gnInfo: gnInfo,
+        [gnInfo       : gnInfo,
          characterList: characterList,
-         resourceList: resourceList,
-         placeList: placeList,
+         resourceList : resourceList,
+         placeList    : placeList,
          pastsceneList: pastsceneList,
-         eventList: eventList,
-         relationjson: json,
-         gnId: gnIdStr,
-         sexe: params.sexe
+         eventList    : eventList,
+         relationjson : json,
+         gnId         : gnIdStr,
+         sexe         : params.sexe
         ]
     }
 
@@ -108,8 +108,8 @@ class NamingController {
         if (gn.isLife)
             redirect(controller: 'life', action: 'life', params: [gnId: id as String]);
         else
-            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId: id as String,
-                                                                                selectedMainstream: mainstreamId as String,
+            redirect(controller: 'roleToPerso', action: 'roleToPerso', params: [gnId                : id as String,
+                                                                                selectedMainstream  : mainstreamId as String,
                                                                                 selectedEvenemential: evenementialId as String]);
     }
 
@@ -177,8 +177,7 @@ class NamingController {
         }
     }
 
-    static OutputHandler getOutputHandler()
-    {
+    static OutputHandler getOutputHandler() {
         return outputHandler;
     }
 }

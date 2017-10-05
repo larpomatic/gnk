@@ -1,4 +1,4 @@
-package org.gnk.substitution.data
+/*package org.gnk.substitution.data
 
 import org.gnk.tag.Tag
 
@@ -13,3 +13,4 @@ class Place {
     List<Tag> placeTags
     String objectType
 }
+*/
