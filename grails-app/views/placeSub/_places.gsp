@@ -80,12 +80,12 @@
 </table>
 
 <!-- Modal Views -->
-<div id="modalFusionPlace" class="modal hide fade" style="width: 800px; margin-left: -400px;"
+<div id="modalFusionPlace" class="modal hide fade" style="width: 90%; margin: auto; height: 50%;"
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <h3>Fusion</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 
     <div class="modal-body">
         <g:form action="merged">

@@ -15,6 +15,21 @@ body {
     background-color: #FFF;
 }
 
+.modal.fade.in {
+    display: block !important;
+    z-index: 10000;
+}
+
+#modalFusionPlace > .modal-backdrop {
+    display: none;
+}
+
+.modal-header > button {
+    top: 10px;
+    position: absolute;
+    right: 10px;
+}
+
 h1 {
     color: #767e85 !important;
     font-family: 'Droid serif', serif !important;
