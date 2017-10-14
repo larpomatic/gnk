@@ -101,7 +101,7 @@
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                     <td>
                         <g:link controller="redactIntrigue" action="edit"
-                            id="${mainstreamPlotInstance}" target="_blank">
+                            id="${mainstreamPlotInstance.id}" target="_blank">
                             ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
                         </g:link>
                     </td>
@@ -111,16 +111,6 @@
                             ${it.radio}
                         </td>
                     </g:radioGroup>
-                    <td>
-                        <g:if test="${mainstreamPlotInstance.id.equals(mainstreamPlotInstance)}">
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" checked="true" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:if>
-                        <g:else>
-                            <g:radio name="selected_mainstream" onclick="saveRadioBouton()" value="${mainstreamPlotInstance.id}"
-                                     class="radioMainstream"/>
-                        </g:else>
-                    </td>
                 </tr>
             </g:each>
             <tr>

@@ -96,6 +96,25 @@ class GenericPlaceController {
         }
     }
 
+    def getBestPlacesAux()
+    {
+        GenericPlace gp = new GenericPlace();
+        Set<GenericPlaceHasTag> tags = new ArrayList<>();
+
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+        //gp.setTagList(tags);
+    }
     def buildTagList(def genericPlaceTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (genericPlaceTag in genericPlaceTagList) {

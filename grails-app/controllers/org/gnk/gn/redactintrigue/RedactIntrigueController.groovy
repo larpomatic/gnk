@@ -571,18 +571,14 @@ class RedactIntrigueController {
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
 
-        params.each {
-            if (it.key.startsWith("placeTags_")) {
-                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
-                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
-                if (tag.parent != null) {
-                    subtag.tag = tag;
-                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
-                    //subtag.type = tag.parent.name;
-                    tags.add(subtag);
-                }
-            }
-        }
+        /*
+         * APPEL A GENERICPLACE A CET ENDROIT, FAIRE DE MEME POUR LES GENERIC RESSOURCES
+         * pour chaque bulletpoint, tagunivers : obj, obj, obj
+         * via tag.getterName()
+         */
+        GenericPlaceController gpc = new GenericPlaceController();
+        gpc.getBestPlacesAux();
+        tagUnivers.getterName();
 
         if (params.containsKey("plotId")) {
             plot = Plot.get(params.plotId as Integer)

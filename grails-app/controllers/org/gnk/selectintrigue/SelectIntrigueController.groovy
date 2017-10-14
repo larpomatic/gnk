@@ -168,7 +168,7 @@ class SelectIntrigueController {
                     else if (it.key.startsWith("selected_mainstream")) {
 
                         Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
-                        if (it.value == "1" && it.value == "3") {
+                        if (it.value == "1" || it.value == "3") {
                             lockedPlot.add(plot)
                             mainstreamId = plot.id
                         } else {
@@ -282,15 +282,13 @@ class SelectIntrigueController {
                     else if (it.key.startsWith("selected_evenemential")) {
                         evenementialId = it.value as Integer;
                     }
-                    else if (it.key.startsWith("selected_mainstream")) {
-                        Plot plot = Plot.get((it.key - "plot_status_") as Integer);
+                    else if (it.key.startsWith("selected_mainstream") && it.value != "3") {
+                        Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
                         mainstreamId = it.value as Integer;
                         if (it.value == "1") {
                             lockedPlot.add(plot)
                         } else if (it.value == "2") {
                             bannedPlot.add(plot)
-                        } else if (it.value == "3") {
-                            selectedPlot.add(plot)
                         }
                     }
                 }
