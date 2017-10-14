@@ -1,6 +1,10 @@
 package org.gnk.tag
 
 import org.gnk.gn.Gn
+import org.gnk.naming.Firstname
+import org.gnk.naming.FirstnameHasTag
+import org.gnk.naming.Name
+import org.gnk.naming.NameHasTag
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.ressplacetime.GenericObject
@@ -159,11 +163,49 @@ public class V2TagService {
     }
 
     /**
+     * Initialize the tags list of an object Firstname
+     * @param Firstname
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initObjectList(Firstname firstname){
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
+        Set<FirstnameHasTag> fnHasTags = firstname.getExtTags()
+
+        if (fnHasTags != null)
+        {
+            for (FirstnameHasTag fnHasTag : fnHasTags)
+            {
+                map_tags.put(fnHasTag.getTag(), fnHasTag.getWeight())
+            }
+        }
+        return map_tags
+    }
+
+    /**
+     * Initialize the tags list of an object Name
+     * @param Name
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initObjectList(Name lastname){
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
+        Set<NameHasTag> nHasTags = lastname.getExtTags()
+
+        if (nHasTags != null)
+        {
+            for (NameHasTag nHasTag : nHasTags)
+            {
+                map_tags.put(nHasTag.getTag(), nHasTag.getWeight())
+            }
+        }
+        return map_tags
+    }
+
+    /**
      * get tags with weights from an object Place/Resource witch is not generic
      * @param object
      * @return Map < Tag , Integer >
      */
-        Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
+    Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
             Map<Tag, Integer> parents_tags = new HashMap<>();
 
@@ -196,7 +238,6 @@ public class V2TagService {
             return parents_tags;
 
         }
-
 
     /**
      *
