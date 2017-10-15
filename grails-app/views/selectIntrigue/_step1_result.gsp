@@ -106,7 +106,7 @@
                         </g:link>
                     </td>
 
-                    <g:radioGroup name="plot_status_${mainstreamId}" onclick="saveRadioBouton()" values="[1, 2, 3]"
+                    <g:radioGroup name="selected_mainstream${mainstreamPlotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
                                   value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
                         <td>
                             ${it.radio}
