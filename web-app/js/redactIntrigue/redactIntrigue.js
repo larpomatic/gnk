@@ -501,10 +501,22 @@ function transformDescription_3(description) {
     //$("span:not(.label)", html).contents().unwrap();
     description = html.html();
 
-   description = description.replace(/~/g, '<');
-   description = description.replace(/&gt;/g, '>');
-   console.log(description);
-   return description;
+   //description = description.replace(/~/g, '<');
+    //description = description.replace(/&gt;/g, '>');
+    console.log(description);
+    return description;
+}
+
+function transformDescription_4(description) {
+    description = "<div>" + description + "</div>";
+    var html = $(description);
+    //$("span:not(.label)", html).contents().unwrap();
+    description = html.html();
+
+    description = description.replace(/~/g, '<');
+    description = description.replace(/&gt;/g, '>');
+    console.log(description);
+    return description;
 }
 
 function transformDescription_2(description) {
@@ -513,10 +525,10 @@ function transformDescription_2(description) {
     //$("span:not(.label)", html).contents().unwrap();
     description = html.html();
 
-   description = description.replace(/</g, '~');
+   //description = description.replace(/</g, '~');
 
     console.log(description);
-    description = description.replace(/<span /g, 'span ');
+    //description = description.replace(/<span /g, 'span ');
 
 
     return description;
@@ -812,19 +824,19 @@ function toBalise(description_zone)
     var id_description =  description_zone.parentElement.parentElement.parentElement.parentElement.id.split('_')[1];
 
     var description = $('#idDescriptionText_' + id_description, form).html();
-   // console.log("description avant :" + description);
+    //console.log("description avant :" + description);
     console.log(id_description);
     //var description = document.getElementById('idDescriptionText_0').textContent;
     //document.getElementById('idDescriptionText_0').textContent = description;
     //document.getElementById('idDescriptionText_0').text(description);
 
     if (button_on) {
-        description = transformDescription_2(description);
+        description = transformDescription_3(description);
         button_on = false;
     }
     else
     {
-        description = transformDescription_3(description);
+        description = transformDescription(description);
         button_on = true;
     }
 
