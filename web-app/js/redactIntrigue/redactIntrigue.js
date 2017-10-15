@@ -501,10 +501,10 @@ function transformDescription_3(description) {
     //$("span:not(.label)", html).contents().unwrap();
     description = html.html();
 
-    description = description.replace(/~/g, '<');
-    description = description.replace(/&gt;/g, '>');
-    console.log(description);
-    return description;
+   description = description.replace(/~/g, '<');
+   description = description.replace(/&gt;/g, '>');
+   console.log(description);
+   return description;
 }
 
 function transformDescription_2(description) {
@@ -513,9 +513,10 @@ function transformDescription_2(description) {
     //$("span:not(.label)", html).contents().unwrap();
     description = html.html();
 
-    description = description.replace(/</g, '~');
+   description = description.replace(/</g, '~');
+
     console.log(description);
-    //description = description.replace(/<span /g, 'span ');
+    description = description.replace(/<span /g, 'span ');
 
 
     return description;
@@ -830,7 +831,14 @@ function toBalise(description_zone)
     $("#idDescriptionText_" + id_description).html(description);
 
 
+
 }
+
+
+
+
+
+
 
 
 function detectPaste() {
