@@ -22,6 +22,7 @@ import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceResourceService
 import org.gnk.resplacetime.PlaceService
 import org.gnk.resplacetime.Resource
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -39,6 +40,7 @@ import org.gnk.resplacetime.GenericPlaceController
 import org.gnk.resplacetime.GenericResourceController
 
 import org.gnk.user.User
+import org.gnk.utils.Pair
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -580,12 +582,6 @@ class RedactIntrigueController {
         gpc.getBestPlacesAux();
         tagUnivers.getterName();
 
-        if (params.containsKey("plotId")) {
-            plot = Plot.get(params.plotId as Integer)
-            gp.plotId = plot.id
-            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
-        }
-
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
             wordWriter.addStyledParagraphOfText("T3", "Type")
@@ -607,12 +603,15 @@ class RedactIntrigueController {
 
             //List<com.gnk.substitution.Tag> tags = new ArrayList<>();
             //gp.setTagList(place.getTags())
+
+            wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Places :")
             for (int i = 0; i < universList.size() ; i++) {
                 if (params.containsKey("plotId")) {
                     plot = Plot.get(params.plotId as Integer)
                     gp.plotId = plot.id
                     gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
                 }
+                wordWriter.addStyledParagraphOfText("T3","-" + gp.resultsAllUniverses);
                 // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
             }
         }

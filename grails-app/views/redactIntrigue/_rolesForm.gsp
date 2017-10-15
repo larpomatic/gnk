@@ -68,8 +68,7 @@
                         <a href="#roleTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                         </a>
-                        <button data-target="#bestRoleModal" id="newbestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="GenericRole" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
-
+                        <button data-target="#bestRoleModal" id="newbestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="Role" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
                     </div>
                     <div class="span1">
                         <label for="roleType">

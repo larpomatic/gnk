@@ -2,15 +2,17 @@ package org.gnk.roletoperso
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.naming.NamingService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericResource
 import org.gnk.resplacetime.Pastscene
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.selectintrigue.Plot;
 import org.gnk.tag.Tag
-import org.gnk.tag.TagService;
+import org.gnk.tag.TagService
+import org.gnk.utils.Pair;
 
 class RoleController {
-
 	def index() {
 	}
 
