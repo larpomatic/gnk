@@ -77,7 +77,7 @@ class Period {
 
         def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: "beginning")
 
-        Boolean allowed = true
+        Boolean allowed = false
 
         blockingPeriods.each { Period testedPeriod ->
             //Return is the closure equivalent for continue
@@ -154,10 +154,12 @@ class Period {
 
     //enrichir le contructeur pour les dates de début relatives
     //toJSON
-    private void beginningtoJson()
-    {
-     beginning = getBeginning(parseInt(jsonDate.substr(6)));
-    }
+    //private void beginningtoJson()
+    //{
+     //beginning = getBeginning(parseInt(jsonDate.substr(6)));
+      //  var jsonDate = (new Date()).toJSON();
+
+    //}
 
     //fromJSON
 }
