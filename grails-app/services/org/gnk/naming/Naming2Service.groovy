@@ -14,7 +14,7 @@ class Naming2Service {
 
     def serviceMethod() {}
 
-    V2TagService v2TagService
+    V2TagService v2TagService = new V2TagService()
     Integer selectionNumber = 10
     LinkedList<String> usedFirstName = new LinkedList<String>()
     LinkedList<String> usedName = new LinkedList<String>()
@@ -60,6 +60,8 @@ class Naming2Service {
 
                 for (Firstname firstname : fnlist){
                     //calcule la correspondance d'un prenom avec le character
+                    println ("character = " + character.code + ", firstname = " + firstname.name +
+                            ", gn = " + gn.name + ", univers = " + gn.getUnivers() + ", ranktag = " + rankTag)
                     rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, firstname, gn)))
                     fnweight.add(new NameAndWeight(firstname.name, rankTag))
                 }

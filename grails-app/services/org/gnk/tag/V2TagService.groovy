@@ -268,10 +268,11 @@ public class V2TagService {
      * @return Map < Tag , Integer >
      */
     Map<Tag, Integer> initGenericObjectList(PersoForNaming character, Gn gn){
-        Map<org.gnk.tag.Tag, Integer> map_tags = new HashMap<org.gnk.tag.Tag, Integer>()
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
         for (com.gnk.substitution.Tag t : character.getTag()) {
-            map_tags.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+            map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
         }
+
 
         // RECUPERER LES TAGS DU GN
 
@@ -293,6 +294,7 @@ public class V2TagService {
                 map_tags = addTag(map_tags, gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
             }
         }
+        return map_tags
     }
 
     /**
@@ -413,7 +415,7 @@ public class V2TagService {
                 Tag parent = t.getParent();
                 if (parent != null) {
                     next_gen_parents.add(parent);
-                    parents_tags = addTag(parents_tags, parent, computeFatherWeightParent(taglist.get(t)));
+                    parents_tags = addTag(parents_tags, parent, computeFatherWeightParent(taglist.get(t).intValue()));
                 }
             }
             current_gen_parents = next_gen_parents;
