@@ -1,9 +1,11 @@
 package org.gnk.naming
 
+import com.gnk.substitution.Tag
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.tag.TagService
 import org.gnk.tag.V2TagService
 import org.gnk.utils.Pair
 import org.hibernate.FetchMode
@@ -17,9 +19,9 @@ class Naming2Service {
     LinkedList<String> usedFirstName = new LinkedList<String>()
     LinkedList<String> usedName = new LinkedList<String>()
 
-    LinkedList<PersoForNaming> findBestObjects(LinkedList<PersoForNaming> persoList, Integer gn_id)
+    LinkedList<PersoForNaming> findBestNames(LinkedList<PersoForNaming> persoList, Integer gn_id)
     {
-        //region <Lists initializations>
+        //region <Initializations>
         LinkedList<PersoForNaming> result = new LinkedList<PersoForNaming>()
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
         LinkedList<Firstname> fnlistFemme = getFirstNamebyGender (persoList, "f", persoList.first.universe)
@@ -27,11 +29,112 @@ class Naming2Service {
         Collections.shuffle(fnlistHomme)
         Collections.shuffle(fnlistFemme)
         Collections.shuffle (nlist)
+        Gn gn = Gn.findById(gn_id)
         //endregion
 
         //Loop on every character in the list
-        for (PersoForNaming charater : persoList)
+        for (PersoForNaming character : persoList)
         {
+            if (character.is_selectedFirstName){
+                NameAndWeight maxname
+                LinkedList<Firstname> fnlist = character.getgender() == "M" ? fnlistHomme : fnlistFemme
+                Integer rankTag = 0;
+                List<NameAndWeight> fnweight = new ArrayList<NameAndWeight>()
+
+                for (Tag persotag : character.tag )
+                {
+                    if (persotag.type.equals("Sexe"))
+                    {
+                        if (persotag.weight.equals(-101))
+                            if (character.getgender() == "F" || character.getgender() == "H")
+                                fnlist = character.getgender() == "F" ? fnlistHomme : fnlistFemme
+                            else
+                                fnlist = persotag.value.equals("Femme") ? fnlistHomme : fnlistFemme
+                        else if (character.getgender() == "N")
+                            fnlist = persotag.value.equals("Homme") ? fnlistHomme : fnlistFemme
+                        else
+                            fnlist = character.getgender() == "M" ? fnlistHomme : fnlistFemme
+                        break;
+                    }
+                }
+
+                for (Firstname firstname : fnlist){
+                    //calcule la correspondance d'un prenom avec le character
+                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, firstname, gn)))
+                    fnweight.add(new NameAndWeight(firstname.name, rankTag))
+                }
+
+                if (fnweight.empty)
+                    fnweight = getRandomFirstname(fnlist)
+
+                Collections.sort(fnweight)
+                // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
+                while (fnweight.size() > 0)
+                {
+                    maxname = fnweight.last()
+                    if (!usedFirstName.contains(maxname.name) && !character.selectedFirstnames.contains(maxname.name))
+                    {
+                        character.selectedFirstnames.add(maxname.name)
+                        if (character.selectedFirstnames.size() > 5)
+                            usedFirstName.add(character.selectedFirstnames.last())
+                    }
+                    fnweight.remove(maxname)
+
+                    if (character.selectedFirstnames.size() >= selectionNumber)
+                        break
+                }
+                if (!character.selectedFirstnames.isEmpty())
+                    usedFirstName.add(character.selectedFirstnames.first())
+            }
+
+            if (!character.relationList.empty){
+                List<List<Object>> res = (new ConventionVisitorService()).visit(character, result, gn_id)
+                if (!res[1].isEmpty()){
+                    result = (LinkedList<PersoForNaming>) res[0]
+                    character.selectedNames = (List<String>) res[1]
+                }
+            }
+
+            // Choix du nom de famille
+            if (character.is_selectedName && character.selectedNames.isEmpty())
+            {
+                NameAndWeight maxname
+                List<NameAndWeight> nweight = new ArrayList<NameAndWeight>()
+                Integer rankTag = 0;
+                for (Name name : nlist){
+                    //calcule la correspondance d'un nom avec le character
+                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, name, gn)))
+                    nweight.add(new NameAndWeight(name.name, rankTag))
+                }
+
+                if (nweight.size() < persoList.size())
+                    nweight += getRandomName(nlist, persoList)
+
+                // verifie que les tags sont bien valides
+                if (!nweight.empty)
+                {
+                    Collections.sort(nweight)
+                    // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
+                    while (nweight.size() > 0)
+                    {
+                        maxname = nweight.last()
+                        if (!usedName.contains(maxname.name) && !character.selectedNames.contains(maxname.name))
+                        {
+                            character.selectedNames.add(maxname.name)
+                            if (character.selectedNames.size() > 5)
+                                usedName.add(character.selectedNames.last())
+                        }
+                        nweight.remove(maxname)
+
+                        if (character.selectedNames.size() >= selectionNumber)
+                            break
+                    }
+                    if (!character.selectedNames.isEmpty())
+                        usedName.add(character.selectedNames.first())
+                }
+            }
+            result.add(character)
+            print("NAMING 2 SERVICE DONE !")
 
         }
 

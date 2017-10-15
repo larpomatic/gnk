@@ -156,14 +156,12 @@ class IntegrationHandler {
 
         // NAMING CALL
         NamingService namingService = new NamingService()
-        charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
-        // END NAMING CALL
+        //charForNamingList = namingService.namingMethod(charForNamingList, charJsonObject.gnId as Integer)
 
-        //joseph
-        /*Naming2Service naming2Service = new Naming2Service()
+        //test new naming service
+        Naming2Service naming2Service = new Naming2Service()
         charForNamingList = naming2Service.findBestNames(charForNamingList, charJsonObject.gnId as Integer)
-        for (PersoForNaming p : charForNamingList)
-            println("Prenoms: " + p.selectedFirstnames + "  Noms: " + p.selectedNames)*/
+        // END NAMING CALL
 
         // Update json
         for (characterJson in charJsonObject.characters) {

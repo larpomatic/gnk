@@ -5,6 +5,7 @@ import org.gnk.naming.Firstname
 import org.gnk.naming.FirstnameHasTag
 import org.gnk.naming.Name
 import org.gnk.naming.NameHasTag
+import org.gnk.naming.PersoForNaming
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.ressplacetime.GenericObject
@@ -48,7 +49,7 @@ public class V2TagService {
      * Calculate the total score of similitude between a GenericObjet and an Objet
      * @param genericObject
      * @param Object
-     * @param gn
+     * @param Gn
      * @return the calculus in Long
      */
     Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
@@ -100,6 +101,118 @@ public class V2TagService {
     }
 
     /**
+     * Calculate the total score of similitude between a Character and a Firstname
+     * @param PersoForNaming
+     * @param Firstname
+     * @param Gn
+     * @return the calculus in Long
+     */
+    Long computeComparativeScoreObject(PersoForNaming character, Firstname firstname, Gn gn) {
+
+        Map<Tag, Integer> initial_map_tags = new HashMap<Tag, Integer>()
+        for (com.gnk.substitution.Tag t : character.getTag()) {
+            initial_map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+        }
+        int totalNumberOfTagsUsed = 0;
+        int result = 0;
+        // initialisation des tags du character
+        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
+
+        //récupérer les tags relevants du character
+        map_character.putAll(getRelevantTags(initial_map_tags))
+
+        //initialisation des tags du firstname
+        Map<Tag, Integer> map_firstname = initObjectList(firstname)
+
+        //récupérer les tags parents
+        map_character.putAll(getParentTags(initial_map_tags))
+
+        //récupérer les tags relevants du firstname
+        map_firstname.putAll(getRelevantTags(map_firstname))
+        //récupérer les tags parents du referential
+        map_firstname.putAll(getParentTags(initObjectList(firstname)))
+
+        Long score = 0;
+
+        for (Map.Entry<Tag, Integer> entry_generic : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry : map_firstname.entrySet()) {
+                if (entry_generic.getKey().getId() == null) {
+                    if (entry_generic.getKey().value_substitution.equals(entry.getKey().getName()) /*|| entry_generic.getKey().type_substitution.equals(entry.getKey().getName())*/) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+                        totalNumberOfTagsUsed += 1;
+                    }
+                }
+            }
+        }
+
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        return result;
+    }
+
+    /**
+     * Calculate the total score of similitude between a Character and a Name
+     * @param PersoForNaming
+     * @param Name
+     * @param Gn
+     * @return the calculus in Long
+     */
+    Long computeComparativeScoreObject(PersoForNaming character, Name name, Gn gn) {
+
+        Map<Tag, Integer> initial_map_tags = new HashMap<Tag, Integer>()
+        for (com.gnk.substitution.Tag t : character.getTag()) {
+            initial_map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+        }
+        int totalNumberOfTagsUsed = 0;
+        int result = 0;
+        // initialisation des tags du character
+        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
+
+        //récupérer les tags relevants du character
+        map_character.putAll(getRelevantTags(initial_map_tags))
+
+        //initialisation des tags du name
+        Map<Tag, Integer> map_name = initObjectList(name)
+
+        //récupérer les tags parents
+        map_character.putAll(getParentTags(initial_map_tags))
+
+        //récupérer les tags relevants du firstname
+        map_name.putAll(getRelevantTags(map_name))
+        //récupérer les tags parents du referential
+        map_name.putAll(getParentTags(initObjectList(name)))
+
+        Long score = 0;
+
+        for (Map.Entry<Tag, Integer> entry_generic : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry : map_name.entrySet()) {
+                if (entry_generic.getKey().getId() == null) {
+                    if (entry_generic.getKey().value_substitution.equals(entry.getKey().getName()) /*|| entry_generic.getKey().type_substitution.equals(entry.getKey().getName())*/) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
+                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+                        totalNumberOfTagsUsed += 1;
+                    }
+                }
+            }
+        }
+
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        return result;
+    }
+
+    /**
      * Initialize the list of tags with the weight of GenericObject Place/Resource and a gn
      * @param GenericObject
      * @param gn
@@ -107,7 +220,7 @@ public class V2TagService {
      */
     Map<Tag, Integer> initGenericObjectList(GenericObject genericObject, Gn gn) {
 
-        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
 
         map_tags.putAll(genericObject.getTagsAndWeights(GenericObjectponderation))
         //for (tags in map_tags)
@@ -149,6 +262,40 @@ public class V2TagService {
     }
 
     /**
+     * Initialize the list of tags with the weight of a character and a gn
+     * @param GenericObject
+     * @param gn
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initGenericObjectList(PersoForNaming character, Gn gn){
+        Map<org.gnk.tag.Tag, Integer> map_tags = new HashMap<org.gnk.tag.Tag, Integer>()
+        for (com.gnk.substitution.Tag t : character.getTag()) {
+            map_tags.put(org.gnk.tag.Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+        }
+
+        // RECUPERER LES TAGS DU GN
+
+        // chaque poids d'un tag du GN est pondéré à 90%
+        if (gn.gnTags != null) {
+            for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
+                map_tags = addTag(map_tags, gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
+            }
+        }
+        if (gn.evenementialTags != null) {
+            // chaque poids d'un tag evenementiel du GN est pondéré à 60%
+            for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
+                map_tags = addTag(map_tags, gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * Evenementielponderation));
+            }
+        }
+        if (gn.mainstreamTags != null) {
+            // chaque poids d'un tag mainstream du GN est pondéré à 40%
+            for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
+                map_tags = addTag(map_tags, gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
+            }
+        }
+    }
+
+    /**
      * Initialize the tags list of an object Place/resource
      * @param object
      * @return Map < Tag , Integer >
@@ -171,11 +318,9 @@ public class V2TagService {
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
         Set<FirstnameHasTag> fnHasTags = firstname.getExtTags()
 
-        if (fnHasTags != null)
-        {
-            for (FirstnameHasTag fnHasTag : fnHasTags)
-            {
-                map_tags.put(fnHasTag.getTag(), fnHasTag.getWeight())
+        if (fnHasTags != null) {
+            for (FirstnameHasTag fnHasTag : fnHasTags) {
+                map_tags.put(fnHasTag.getTag(), fnHasTag.getWeight() * ReferentialObjectponderation)
             }
         }
         return map_tags
@@ -190,11 +335,9 @@ public class V2TagService {
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
         Set<NameHasTag> nHasTags = lastname.getExtTags()
 
-        if (nHasTags != null)
-        {
-            for (NameHasTag nHasTag : nHasTags)
-            {
-                map_tags.put(nHasTag.getTag(), nHasTag.getWeight())
+        if (nHasTags != null) {
+            for (NameHasTag nHasTag : nHasTags) {
+                map_tags.put(nHasTag.getTag(), nHasTag.getWeight() * ReferentialObjectponderation)
             }
         }
         return map_tags
