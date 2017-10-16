@@ -65,7 +65,6 @@ class GenericPlaceController {
             }
         }
         //gp.setTagList(tags);
-
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
@@ -77,18 +76,21 @@ class GenericPlaceController {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             gp.plotId = plot.id
-            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            def list = plot.genericPlaces;
+            def element = list.asList().get(0);
+            element.plotId = plot.id;
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(element, plot)
             if (gp.resultsAllUniverses.empty)
                 throw (NullPointerException)
 
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
                 int i = 0;
                 while (i != 3) {
-                    jsonArray.add(ref.left.getName());
-                    json.put(ref.left.name, jsonArray)
-                    jsonArray = [];
+                    jsonArray.add(ref.right[i].left.name);
                     i++;
                 }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
             }
         }
 

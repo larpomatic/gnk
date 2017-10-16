@@ -605,16 +605,17 @@ class RedactIntrigueController {
             //gp.setTagList(place.getTags())
 
             wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Places :")
-            for (int i = 0; i < universList.size() ; i++) {
-                if (params.containsKey("plotId")) {
-                    plot = Plot.get(params.plotId as Integer)
-                    gp.plotId = plot.id
-                    gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                wordWriter.addStyledParagraphOfText("T3","-" + ref.left.name + ":");
+                for (int j = 0; j < 3; j++) {
+                    wordWriter.addStyledParagraphOfText("Normal", ref.right[j].left.name);
                 }
-                wordWriter.addStyledParagraphOfText("T3","-" + universList[i] + ":");
-                wordWriter.addStyledParagraphOfText("T4", "Pas de meilleure Place");
-                // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
             }
+
+                // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
+
         }
 
     }
