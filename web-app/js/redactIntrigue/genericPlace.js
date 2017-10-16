@@ -289,7 +289,7 @@ function getBestPlace()
             data: form.serialize(),
             dataType: "json",
             success: function(data) {
-                $.each(data.genericPlace.json, function(i,v){
+                $.each(data.object.json, function(i,v){
                     var h5 = document.createElement("H4");
                     var node = document.createTextNode(v[0]);
                     h5.appendChild(node);

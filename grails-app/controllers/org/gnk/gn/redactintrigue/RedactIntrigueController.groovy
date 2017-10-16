@@ -1,6 +1,8 @@
 package org.gnk.gn.redactintrigue
 
 import org.apache.poi.hwpf.usermodel.DateAndTime
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.docx4j.convert.out.pdf.PdfConversion
 import org.docx4j.convert.out.pdf.viaXSLFO.Conversion
 import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings
@@ -17,6 +19,7 @@ import org.gnk.resplacetime.GnConstant
 import org.gnk.resplacetime.GnConstantController
 import org.gnk.resplacetime.Pastscene
 import org.gnk.resplacetime.Place
+import org.gnk.resplacetime.PlaceResourceService
 import org.gnk.resplacetime.PlaceService
 import org.gnk.resplacetime.Resource
 import org.gnk.ressplacetime.ReferentialPlace
@@ -558,10 +561,20 @@ class RedactIntrigueController {
     }
 
     def createPlaces(WordWriter wordWriter, Plot plot){
+        GenericPlace gp = new GenericPlace();
+        Set<GenericPlaceHasTag> tags = new ArrayList<>();
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
+
         String txt = ""
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+
+        /*
+         * APPEL A GENERICPLACE A CET ENDROIT, FAIRE DE MEME POUR LES GENERIC RESSOURCES
+         * pour chaque bulletpoint, tagunivers : obj, obj, obj
+         * via tag.getterName()
+         */
 
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
@@ -582,16 +595,18 @@ class RedactIntrigueController {
             wordWriter.addStyledParagraphOfText("T3","Description")
             wordWriter.addStyledParagraphOfText("Normal", place.comment)
 
-            org.gnk.ressplacetime.GenericPlace genericplace = new org.gnk.ressplacetime.GenericPlace();
-
-            List<com.gnk.substitution.Tag> tags = new ArrayList<>();
- /*           genericplace.setTagList(place.getTags())
+            //List<com.gnk.substitution.Tag> tags = new ArrayList<>();
+            //gp.setTagList(place.getTags())
             for (int i = 0; i < universList.size() ; i++) {
-                genericplace = placeService.findReferentialPlace(genericplace, universList[i].name)
+                if (params.containsKey("plotId")) {
+                    plot = Plot.get(params.plotId as Integer)
+                    gp.plotId = plot.id
+                    gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+                }
                 // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
             }
-*/
         }
+
     }
 
     def createResources(WordWriter wordWriter, Plot plot){

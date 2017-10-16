@@ -561,6 +561,7 @@ class SubstitutionPublication {
                 if (map.key.split(";").length >= 2)
                     return map.key.split(";")[0] + " " + map.key.split(";")[1]
         }
+
         return "[Role générique]"
     }
 
