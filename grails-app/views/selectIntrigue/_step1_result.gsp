@@ -86,7 +86,7 @@
         <table class="table table-bordered mainstream-table">
             <thead>
             <tr>
-                <th><g:message code="selectintrigue.mainstreamPlotsName"
+                <th><g:message code="selectintrigue.plotName"
                                default="Plot name"/></th>
                 <th><g:img dir="images/selectIntrigue"
                            file="locked.png"/></th>
@@ -101,11 +101,10 @@
                 <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
                     <td>
                         <g:link controller="redactIntrigue" action="edit"
-                                id="${mainstreamPlotInstance.id}" target="_blank">
+                            id="${mainstreamPlotInstance.id}" target="_blank">
                             ${fieldValue(bean: mainstreamPlotInstance, field: "name")}
                         </g:link>
                     </td>
-
                     <g:radioGroup name="selected_mainstream${mainstreamPlotInstance.id}" onclick="saveRadioBouton()" values="[1, 2, 3]"
                                   value="${((Gn) gnInstance).getLockedPlotSet()?.contains(mainstreamPlotInstance) ? "1" : (((Gn) gnInstance).getBannedPlotSet()?.contains(mainstreamPlotInstance) ? "2" : "3")}">
                         <td>

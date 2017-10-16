@@ -75,10 +75,14 @@ class GenericPlace extends GenericObject{
 
     Map<Tag, Integer> getTagsAndWeights(Float ponderation) {
         Map<Tag, Integer> mapTagInt = new HashMap<>();
-
-         for (Tag t in this.taglist)
-             mapTagInt.put(t, new Integer((int)(t.weight_substitution * ponderation)))
-
+        if (taglist != null) {
+            for (Tag t in this.taglist)
+                mapTagInt.put(t, new Integer((int) (t.weight_substitution * ponderation)))
+        } else {
+            for (GenericPlaceHasTag tag in this.extTags) {
+                mapTagInt.put(tag.getTag(), new Integer((int) (tag.getWeight() * ponderation)))
+            }
+        }
          return mapTagInt;
      }
 

@@ -75,10 +75,12 @@ class GenericPlaceController {
         JSONArray jsonArray = new JSONArray();
 
         if (params.containsKey("plotId")) {
-            gp.resultsAllUniverses = constructBestPlaces(gp, placeresourceservice)
+            Plot plot = Plot.get(params.plotId as Integer)
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            if (gp.resultsAllUniverses.empty)
+                throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-                //ITERER 3 FOIS SUR LA BOUCLE (ne pas faire un for each)
-
                 for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
                     jsonArray.add(ref2.left.getName());
                 }
@@ -91,16 +93,7 @@ class GenericPlaceController {
             object([json: json])
         }
     }
-
-    public ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> constructBestPlaces (GenericPlace gp, PlaceResourceService placeresourceservice) {
-        Plot plot = Plot.get(params.plotId as Integer)
-        gp.plotId = plot.id
-        gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
-        if (gp.resultsAllUniverses.empty)
-            throw (NullPointerException)
-        return gp.resultsAllUniverses;
-    }
-
+    
     def buildTagList(def genericPlaceTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (genericPlaceTag in genericPlaceTagList) {

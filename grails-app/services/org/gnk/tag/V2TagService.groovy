@@ -235,6 +235,10 @@ public class V2TagService {
             }
         }
 
+        if (gn.getUnivers() != null) {
+            map_tags = addTag(map_tags, gn.getUnivers(), gn.getUnivers().getWeight());
+        }
+
         if (gn.evenementialTags != null) {
             // chaque poids d'un tag evenementiel du GN est pondéré à 60%
             for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
