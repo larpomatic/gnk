@@ -133,7 +133,7 @@ class SelectIntrigueController {
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
         ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
         ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
-        Set<Plot> nonTreatedPlots = null;
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>();
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
@@ -168,7 +168,7 @@ class SelectIntrigueController {
                     else if (it.key.startsWith("selected_mainstream")) {
 
                         Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
-                        if (it.value == "1" && it.value == "3") {
+                        if (it.value == "1" || it.value == "3") {
                             lockedPlot.add(plot)
                             mainstreamId = plot.id
                         } else {
@@ -282,11 +282,11 @@ class SelectIntrigueController {
                     else if (it.key.startsWith("selected_evenemential")) {
                         evenementialId = it.value as Integer;
                     }
-                    else if (it.key.startsWith("selected_mainstream")) {
+                    else if (it.key.startsWith("selected_mainstream") && it.value != "3") {
                         Plot plot = Plot.get((it.key - "selected_mainstream") as Integer);
-                        if (it.value == "1" || it.value == "3") {
-                            //lockedPlot.add(plot)
-                            mainstreamId = plot.id
+                        mainstreamId = it.value as Integer;
+                        if (it.value == "1") {
+                            lockedPlot.add(plot)
                         } else if (it.value == "2") {
                             bannedPlot.add(plot)
                         }

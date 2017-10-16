@@ -65,7 +65,6 @@ class GenericPlaceController {
             }
         }
         //gp.setTagList(tags);
-
         PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
@@ -75,12 +74,19 @@ class GenericPlaceController {
         JSONArray jsonArray = new JSONArray();
 
         if (params.containsKey("plotId")) {
-            gp.resultsAllUniverses = constructBestPlaces(gp, placeresourceservice)
+            Plot plot = Plot.get(params.plotId as Integer)
+            gp.plotId = plot.id
+            def list = plot.genericPlaces;
+            def element = list.asList().get(0);
+            element.plotId = plot.id;
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(element, plot)
+            if (gp.resultsAllUniverses.empty)
+                throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-                //ITERER 3 FOIS SUR LA BOUCLE (ne pas faire un for each)
-
-                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
-                    jsonArray.add(ref2.left.getName());
+                int i = 0;
+                while (i != 3) {
+                    jsonArray.add(ref.right[i].left.name);
+                    i++;
                 }
                 json.put(ref.left.name, jsonArray)
                 jsonArray = [];
@@ -92,13 +98,24 @@ class GenericPlaceController {
         }
     }
 
-    public ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> constructBestPlaces (GenericPlace gp, PlaceResourceService placeresourceservice) {
-        Plot plot = Plot.get(params.plotId as Integer)
-        gp.plotId = plot.id
-        gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
-        if (gp.resultsAllUniverses.empty)
-            throw (NullPointerException)
-        return gp.resultsAllUniverses;
+    def getBestPlacesAux()
+    {
+        GenericPlace gp = new GenericPlace();
+        Set<GenericPlaceHasTag> tags = new ArrayList<>();
+
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+        //gp.setTagList(tags);
     }
 
     def buildTagList(def genericPlaceTagList) {
