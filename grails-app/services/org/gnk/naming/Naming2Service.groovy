@@ -12,11 +12,10 @@ import org.hibernate.FetchMode
 
 class Naming2Service {
 
-    private static boolean VERBOSE = false
     def serviceMethod() {}
 
     V2TagService v2TagService = new V2TagService()
-    Integer selectionNumber = 6
+    Integer selectionNumber = 10
     LinkedList<String> usedFirstName = new LinkedList<String>()
     LinkedList<String> usedName = new LinkedList<String>()
 
@@ -24,7 +23,6 @@ class Naming2Service {
     {
         //region <Initializations>
         LinkedList<PersoForNaming> result = new LinkedList<PersoForNaming>()
-        if (VERBOSE== true) println ("Univers = " + persoList.first.universe)
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
         LinkedList<Firstname> fnlistFemme = getFirstNamebyGender (persoList, "f", persoList.first.universe)
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
@@ -66,20 +64,12 @@ class Naming2Service {
                     //calcule la correspondance d'un prenom avec le character
                     rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, firstname, gn)))
                     fnweight.add(new NameAndWeight(firstname.name, rankTag))
-                    //println ("NAME AND RANK: " + firstname.name + rankTag)
                 }
 
                 if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
 
                 Collections.sort(fnweight)
-
-
-                if (VERBOSE==true)
-                {
-                    for (int i = fnweight.size()-1; i > fnweight.size() -1 - selectionNumber; i--)
-                        println ("name: " + fnweight.get(i).name + ", rank: " + fnweight.get(i).weight)
-                }
 
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                 while (fnweight.size() > 0)
@@ -149,7 +139,6 @@ class Naming2Service {
             long endTimeCharacter = System.nanoTime();
             println ("Naming the character number " + character.code + ": " + ((endTimeCharacter - startTimeCharacter )/ 1000000000.0))
             result.add(character)
-            //print("NAMING 2 SERVICE DONE !")
 
         }
         long endTime = System.nanoTime();
@@ -179,7 +168,6 @@ class Naming2Service {
             }
             fetchMode("firstname", FetchMode.EAGER)
         }
-        print(fnlist.size())
         if(fnlist.isEmpty() || fnlist.size() < (persoList.size() * 1))
         {
             fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 100])

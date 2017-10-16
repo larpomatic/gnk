@@ -138,20 +138,13 @@ public class V2TagService {
         for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
             for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
                 if (entry_character.getKey().getId() == null) {
-                    if (VERBOSE == true) print("ok1")
                     if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
-                        if (VERBOSE== true)print("ok2")
                         score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
                         //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
-                        if (VERBOSE== true)println ("entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())")
                     }
                 } else {
-                    if (VERBOSE== true) println ("ok3") // entry_character.getKey().getId() != null
-                    if (VERBOSE== true) println ("entry_character.getKey().getId() = " + entry_character.getKey().getId() +
-                    ", entry_firstname.getKey().getId() =" + entry_firstname.getKey().getId())
                     if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
-                        println ("ok4")
                         score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
                         //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
@@ -159,8 +152,7 @@ public class V2TagService {
                 }
             }
         }
-
-        //println ("totalNumberOfTagsUsed = " + totalNumberOfTagsUsed + ", score = " + score)
+        
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
         return result;
     }
