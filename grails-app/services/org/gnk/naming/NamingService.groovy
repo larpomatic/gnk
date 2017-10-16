@@ -86,9 +86,10 @@ class NamingService
                             challengerTagList.put(fnHasTag.getTag(), fnHasTag.getWeight());
                         }
 
-                        //calcule la correspondance d'un prenom avec le caractere
-                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList, Collections.emptyMap(),
-                                                                        dictionnaryTagFirstnameName);
+                        //calcule la correspondance d'un prenom avec le character
+                        rankTag = (new TagService()).getTagsMatching(tagMap, challengerTagList as Map<org.gnk.tag.Tag, Integer>, Collections.emptyMap(),
+                                dictionnaryTagFirstnameName as HashMap<org.gnk.utils.Pair<Tag, Tag>, Integer>)
+                        println ("firstname ranktag = " + rankTag)
                         fnweight.add(new NameAndWeight(fn.name, rankTag))
                     }
                 }
@@ -193,7 +194,7 @@ class NamingService
             //print("     LN " + tmp)
             // ajout du personnage a la liste des personnages deja traite pour pouvoir retrouver les noms de famille
             doneperso.add(tmp)
-            print("Perso Done !")
+
         }
 //        total.stop()
 //        print("total = " + total.getTotalTimeSeconds())

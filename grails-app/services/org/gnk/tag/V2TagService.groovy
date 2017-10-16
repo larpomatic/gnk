@@ -134,24 +134,32 @@ public class V2TagService {
 
         Long score = 0;
 
-        for (Map.Entry<Tag, Integer> entry_generic : map_character.entrySet()) {
-            for (Map.Entry<Tag, Integer> entry : map_firstname.entrySet()) {
-                if (entry_generic.getKey().getId() == null) {
-                    if (entry_generic.getKey().value_substitution.equals(entry.getKey().getName()) /*|| entry_generic.getKey().type_substitution.equals(entry.getKey().getName())*/) {
-                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
-                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
+                if (entry_character.getKey().getId() == null) {
+                    print("ok1")
+                    if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
+                        print("ok2")
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
+                        println ("entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())")
                     }
                 } else {
-                    if (entry_generic.getKey().getId().equals(entry.getKey().getId())) {
-                        score += computeCumulativeScoreTags(entry_generic.getKey(), entry_generic.getValue(), entry.getValue());
-                        //score = tagUniversTreatment(entry_generic.getKey(), score, map_character);
+                    println ("ok3") // entry_character.getKey().getId() != null
+                    println ("entry_character.getKey().getId() = " + entry_character.getKey().getId() +
+                    ", entry_firstname.getKey().getId() =" + entry_firstname.getKey().getId())
+                    if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
+                        println ("ok4")
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
                     }
                 }
             }
         }
 
+        //println ("totalNumberOfTagsUsed = " + totalNumberOfTagsUsed + ", score = " + score)
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
         return result;
     }

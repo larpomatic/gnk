@@ -15,7 +15,7 @@ class Naming2Service {
     def serviceMethod() {}
 
     V2TagService v2TagService = new V2TagService()
-    Integer selectionNumber = 10
+    Integer selectionNumber = 6
     LinkedList<String> usedFirstName = new LinkedList<String>()
     LinkedList<String> usedName = new LinkedList<String>()
 
@@ -23,6 +23,7 @@ class Naming2Service {
     {
         //region <Initializations>
         LinkedList<PersoForNaming> result = new LinkedList<PersoForNaming>()
+        println ("Univers = " + persoList.first.universe)
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
         LinkedList<Firstname> fnlistFemme = getFirstNamebyGender (persoList, "f", persoList.first.universe)
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
@@ -60,16 +61,20 @@ class Naming2Service {
 
                 for (Firstname firstname : fnlist){
                     //calcule la correspondance d'un prenom avec le character
-                    println ("character = " + character.code + ", firstname = " + firstname.name +
-                            ", gn = " + gn.name + ", univers = " + gn.getUnivers() + ", ranktag = " + rankTag)
                     rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, firstname, gn)))
                     fnweight.add(new NameAndWeight(firstname.name, rankTag))
+                    //println ("NAME AND RANK: " + firstname.name + rankTag)
                 }
 
                 if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
 
                 Collections.sort(fnweight)
+
+
+                for (int i = fnweight.size()-1; i > fnweight.size() -1 - selectionNumber; i--)
+                    println ("name: " + fnweight.get(i).name + ", rank: " + fnweight.get(i).weight)
+
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                 while (fnweight.size() > 0)
                 {
@@ -77,7 +82,7 @@ class Naming2Service {
                     if (!usedFirstName.contains(maxname.name) && !character.selectedFirstnames.contains(maxname.name))
                     {
                         character.selectedFirstnames.add(maxname.name)
-                        if (character.selectedFirstnames.size() > 5)
+                        if (character.selectedFirstnames.size() > selectionNumber / 2)
                             usedFirstName.add(character.selectedFirstnames.last())
                     }
                     fnweight.remove(maxname)
@@ -123,7 +128,7 @@ class Naming2Service {
                         if (!usedName.contains(maxname.name) && !character.selectedNames.contains(maxname.name))
                         {
                             character.selectedNames.add(maxname.name)
-                            if (character.selectedNames.size() > 5)
+                            if (character.selectedNames.size() > selectionNumber / 2)
                                 usedName.add(character.selectedNames.last())
                         }
                         nweight.remove(maxname)
@@ -136,7 +141,7 @@ class Naming2Service {
                 }
             }
             result.add(character)
-            print("NAMING 2 SERVICE DONE !")
+            //print("NAMING 2 SERVICE DONE !")
 
         }
 
