@@ -12,6 +12,7 @@ import org.hibernate.FetchMode
 
 class Naming2Service {
 
+    private static boolean VERBOSE = false
     def serviceMethod() {}
 
     V2TagService v2TagService = new V2TagService()
@@ -23,7 +24,7 @@ class Naming2Service {
     {
         //region <Initializations>
         LinkedList<PersoForNaming> result = new LinkedList<PersoForNaming>()
-        println ("Univers = " + persoList.first.universe)
+        if (VERBOSE== true) println ("Univers = " + persoList.first.universe)
         LinkedList<Firstname> fnlistHomme = getFirstNamebyGender (persoList, "m", persoList.first.universe)
         LinkedList<Firstname> fnlistFemme = getFirstNamebyGender (persoList, "f", persoList.first.universe)
         LinkedList<Name> nlist = getNamebyTag(persoList, persoList.first.universe)
@@ -34,8 +35,10 @@ class Naming2Service {
         //endregion
 
         //Loop on every character in the list
+        long startTime = System.nanoTime();
         for (PersoForNaming character : persoList)
         {
+            long startTimeCharacter = System.nanoTime();
             if (character.is_selectedFirstName){
                 NameAndWeight maxname
                 LinkedList<Firstname> fnlist = character.getgender() == "M" ? fnlistHomme : fnlistFemme
@@ -72,8 +75,11 @@ class Naming2Service {
                 Collections.sort(fnweight)
 
 
-                for (int i = fnweight.size()-1; i > fnweight.size() -1 - selectionNumber; i--)
-                    println ("name: " + fnweight.get(i).name + ", rank: " + fnweight.get(i).weight)
+                if (VERBOSE==true)
+                {
+                    for (int i = fnweight.size()-1; i > fnweight.size() -1 - selectionNumber; i--)
+                        println ("name: " + fnweight.get(i).name + ", rank: " + fnweight.get(i).weight)
+                }
 
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
                 while (fnweight.size() > 0)
@@ -140,11 +146,15 @@ class Naming2Service {
                         usedName.add(character.selectedNames.first())
                 }
             }
+            long endTimeCharacter = System.nanoTime();
+            println ("Naming the character number " + character.code + ": " + ((endTimeCharacter - startTimeCharacter )/ 1000000000.0))
             result.add(character)
             //print("NAMING 2 SERVICE DONE !")
 
         }
-
+        long endTime = System.nanoTime();
+        println ("Time for naming all the characters: ".toUpperCase()
+                + ((endTime - startTime )/ 1000000000.0) + " seconds")
         return result
     }
 

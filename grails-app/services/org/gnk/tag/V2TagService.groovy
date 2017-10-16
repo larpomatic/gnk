@@ -23,6 +23,7 @@ public class V2TagService {
     private static float plotponderation = 0.2;
     private static float GenericObjectponderation = 1;
     private static float ReferentialObjectponderation = 1;
+    private static boolean VERBOSE = false
 
     V2TagService() {
     }
@@ -137,17 +138,17 @@ public class V2TagService {
         for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
             for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
                 if (entry_character.getKey().getId() == null) {
-                    print("ok1")
+                    if (VERBOSE == true) print("ok1")
                     if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
-                        print("ok2")
+                        if (VERBOSE== true)print("ok2")
                         score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
                         //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
-                        println ("entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())")
+                        if (VERBOSE== true)println ("entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())")
                     }
                 } else {
-                    println ("ok3") // entry_character.getKey().getId() != null
-                    println ("entry_character.getKey().getId() = " + entry_character.getKey().getId() +
+                    if (VERBOSE== true) println ("ok3") // entry_character.getKey().getId() != null
+                    if (VERBOSE== true) println ("entry_character.getKey().getId() = " + entry_character.getKey().getId() +
                     ", entry_firstname.getKey().getId() =" + entry_firstname.getKey().getId())
                     if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
                         println ("ok4")
