@@ -297,6 +297,7 @@ function getBestPlace()
                     var ul = document.createElement("ul");
                     if (v.length == 1)
                     {
+                        //charger les best places
                         cont.append("Pas de meilleure place !");
                     }
                     for(j = 1; j < v.length; j++)

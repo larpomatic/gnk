@@ -49,7 +49,7 @@ import javax.script.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
-    PlaceService placeService
+    PlaceResourceService placeResourceService
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
@@ -611,7 +611,8 @@ class RedactIntrigueController {
                     gp.plotId = plot.id
                     gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
                 }
-                wordWriter.addStyledParagraphOfText("T3","-" + gp.resultsAllUniverses);
+                wordWriter.addStyledParagraphOfText("T3","-" + universList[i] + ":");
+                wordWriter.addStyledParagraphOfText("T4", "Pas de meilleure Place");
                 // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
             }
         }
@@ -619,7 +620,24 @@ class RedactIntrigueController {
     }
 
     def createResources(WordWriter wordWriter, Plot plot){
+        GenericResource gr = new GenericResource();
+        Set<GenericResourceHasTag> tags = new ArrayList<>();
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
+
         String txt = ""
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+
+        /*
+         * APPEL A GENERICRESSOURCES A CET ENDROIT, FAIRE DE MEME POUR LES GENERIC RESSOURCES
+         * pour chaque bulletpoint, tagunivers : obj, obj, obj
+         * via tag.getterName()
+         */
+        GenericResourceController gpc = new GenericResourceController();
+        gpc.getBestResourcesAux();
+        tagUnivers.getterName();
+
         for (GenericResource resource : plot.genericResources){
             wordWriter.addStyledParagraphOfText("T2", resource.code)
             wordWriter.addStyledParagraphOfText("T3", "Type : ")
@@ -641,6 +659,17 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("T5", "Pour : " + resource?.toRoleText)
                 wordWriter.addStyledParagraphOfText("Normal", resource.description)
             }
+        }
+
+        wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Ressources :")
+        for (int i = 0; i < universList.size() ; i++) {
+            if (params.containsKey("plotId")) {
+                plot = Plot.get(params.plotId as Integer)
+                gr.plotId = plot.id
+                gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
+            }
+            wordWriter.addStyledParagraphOfText("T3","-" + universList[i] + ":");
+            wordWriter.addStyledParagraphOfText("T4", "Pas de meilleure Ressource");
         }
     }
 

@@ -80,6 +80,7 @@ class GenericPlaceController {
             gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
             if (gp.resultsAllUniverses.empty)
                 throw (NullPointerException)
+
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
                 int i = 0;
                 while (i != 3) {
