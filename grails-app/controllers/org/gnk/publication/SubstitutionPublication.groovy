@@ -392,7 +392,7 @@ class SubstitutionPublication {
                 if (isFirst)
                     isFirst = false
                 else
-                    result += ", "
+                    result += "; "
 
                 /*
                 * Switch pour savoir le contenu que l'on veut afficher
@@ -561,7 +561,6 @@ class SubstitutionPublication {
                 if (map.key.split(";").length >= 2)
                     return map.key.split(";")[0] + " " + map.key.split(";")[1]
         }
-
         return "[Role générique]"
     }
 
