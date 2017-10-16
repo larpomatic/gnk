@@ -299,21 +299,23 @@ class GenericResourceController {
 
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
-            gr.plotId = plot.id;
-            gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
+            gr.plotId = plot.id
+            def list = plot.genericResources;
+            def element = list.asList().get(0);
+            element.plotId = plot.id;
+            gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(element, plot)
             if (gr.resultsAllUniverses.empty)
                 throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
                 int i = 0;
                 while (i != 3) {
-                    jsonArray.add(ref.left.getName());
-                    json.put(ref.left.name, jsonArray)
-                    jsonArray = [];
+                    jsonArray.add(ref.right[i].left.name);
                     i++;
                 }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
             }
         }
-
         render(contentType: "application/json") {
             object([json: json])
         }

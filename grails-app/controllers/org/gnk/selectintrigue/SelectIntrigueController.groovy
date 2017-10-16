@@ -133,7 +133,7 @@ class SelectIntrigueController {
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
         ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
         ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
-        Set<Plot> nonTreatedPlots = null;
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>();
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
