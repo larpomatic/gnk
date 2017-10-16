@@ -36,6 +36,7 @@
             <th><g:message code="gn.name.label" default="Name"/></th>
             <th><g:message code="gn.step.label" default="Step"/></th>
             <th><g:message code="gn.date.label" default="Date"/></th>
+            <th><g:message code="gn.description.label" default="Description"/></th>
             <th><g:message code="gn.Creation.label" default="Author"/></th>
             <th><g:message code="gn.lastUpdate.label" default="last update"/></th>
             <th style="display: none"><g:message code="gn.date.label"/></th>
@@ -96,8 +97,8 @@
                     ${fieldValue(bean: gnInstance, field: "name")}
                 </g:hasNotRights>
             </g:form>
-            </td>
             <td>${gnInstance.dateCreated.format("dd/MM/yyyy")}</td>
+            <td>${gnInstance.description_text}</td>
             <td>${gnInstance.gnHasUsers.find { x -> x.gn.id = gnInstance.id }.user.username}</td>
 
             <td>${gnInstance.lastUpdated.format("dd/MM/yyyy")}</td>
