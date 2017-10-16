@@ -66,6 +66,7 @@ class GenericPlaceController {
         }
         //gp.setTagList(tags);
 
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
@@ -74,9 +75,10 @@ class GenericPlaceController {
         JSONArray jsonArray = new JSONArray();
 
         if (params.containsKey("plotId")) {
-            Plot plot = Plot.get(params.plotId as Integer)
-            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
+            gp.resultsAllUniverses = constructBestPlaces(gp, placeresourceservice)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                //ITERER 3 FOIS SUR LA BOUCLE (ne pas faire un for each)
+
                 for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
                     jsonArray.add(ref2.left.getName());
                 }
@@ -86,10 +88,17 @@ class GenericPlaceController {
         }
 
         render(contentType: "application/json") {
-            object([json: json] as JSON)
-
-            return json as JSON;
+            object([json: json])
         }
+    }
+
+    public ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> constructBestPlaces (GenericPlace gp, PlaceResourceService placeresourceservice) {
+        Plot plot = Plot.get(params.plotId as Integer)
+        gp.plotId = plot.id
+        gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+        if (gp.resultsAllUniverses.empty)
+            throw (NullPointerException)
+        return gp.resultsAllUniverses;
     }
 
     def buildTagList(def genericPlaceTagList) {

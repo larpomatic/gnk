@@ -4,11 +4,11 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Name')}" />
-		<title>Creer nouveau Nom</title>
+		<title>Création Patronyme</title>
 	</head>
 	<body>
 		<div id="create-name">
-			<h1>Création Name></h1>
+			<h1>Création Patronyme</h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>
@@ -18,6 +18,7 @@
 				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
+
 			</g:hasErrors>
 			<g:form action="save" method="POST">
 				<fieldset class="form-horizontal">
@@ -27,10 +28,10 @@
 													  NameHasTagList : NameHasTagList]"/>
 
 				</fieldset>
-				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value="Création" />
-					<g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
-									formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+				<fieldset class="button">
+					<g:actionSubmit class="btn btn-primary" action="update" value="Création" />
+					<g:actionSubmit class="btn btn-primary" action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+									formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Etes vous sûr de vouloir quitter la fenêtre?')}');" />
 				</fieldset>
 			</g:form>
 		</div>
