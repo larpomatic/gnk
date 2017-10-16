@@ -29,6 +29,7 @@ class GenericPlace extends GenericObject{
     Place selectedPlace
     Place lockedPlace
     List<Tag> taglist
+    //Tag : Univers, la liste contient un objet considéré comme le meilleur dans l'univers actuel (Tag), Integer : plausibilité de l'objet
     ArrayList<Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>> resultsAllUniverses
     ArrayList<Pair<ReferentialObject, Integer>> resultService
     Integer plotId

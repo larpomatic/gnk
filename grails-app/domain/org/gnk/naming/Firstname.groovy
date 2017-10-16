@@ -21,12 +21,14 @@ class Firstname {
 	static constraints = {
 		name maxSize: 45
 		gender maxSize: 2
+        gender( inList: ["m", "f"])
 	}
 
     static mapping = {
         id type:'integer'
         version type: 'integer'
         extTags cascade: "all-delete-orphan"
+        sort "name"
     }
 
 
@@ -39,7 +41,7 @@ class Firstname {
                 '}';
     }
 
-    public getFirsnameHasTag(Tag tag) {
+    public getFirstnameHasTag(Tag tag) {
         return FirstnameHasTag.findByTagAndFirstname(tag, this);
     }
 
