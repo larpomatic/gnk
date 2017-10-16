@@ -9,7 +9,8 @@
 </head>
 <body>
 <div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1>Nouveau Patronyme</h1>
+    <h1>Nouveau Patronyme
+
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>

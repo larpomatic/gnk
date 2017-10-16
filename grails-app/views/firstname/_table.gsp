@@ -7,6 +7,7 @@
 <legend>Liste des Firstnames</legend>
 
 <table id="listTable" class="table table-bordered">
+
     <thead>
     <tr>
         <th>Prénom</th>

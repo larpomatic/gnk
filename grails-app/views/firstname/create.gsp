@@ -5,6 +5,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Firstname')}" />
 		<title>Nouveau Firstname</title>
+
 	</head>
 	<body>
 		<div id="create-firtsname" class="content scaffold-create" role="main">

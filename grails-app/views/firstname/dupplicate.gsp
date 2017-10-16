@@ -13,6 +13,7 @@
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
+
     <g:hasErrors bean="${FirstnameInstance}">
         <ul class="errors" role="alert">
             <g:eachError bean="${FirstnameInstance}" var="error">

@@ -5,6 +5,7 @@
                     checked="${FirstnameInstance.hasTag(tagInstance)}"
                     onClick="hideTags('FirstnameTags${FirstnameInstance.id}_${tagInstance.id}', 'FirstnameTagsWeight${FirstnameInstance.id}_${tagInstance.id}')"/>
         ${tagInstance.name}
+
     </label>
     <div class="pull-right">
         <button type="button" class="btn btn-danger banTag"><i class="icon-ban-circle"></i></button>

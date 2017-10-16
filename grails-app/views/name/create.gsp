@@ -18,6 +18,7 @@
 				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
+
 			</g:hasErrors>
 			<g:form action="save" method="POST">
 				<fieldset class="form-horizontal">
