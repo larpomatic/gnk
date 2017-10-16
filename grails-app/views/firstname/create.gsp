@@ -4,12 +4,12 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'Name.label', default: 'Firstname')}" />
-		<title>Creer nouveau Prénom</title>
+		<title>Nouveau Firstname</title>
+
 	</head>
 	<body>
-		<a href="#create-Firstname" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="create-firsname" class="content scaffold-create" role="main">
-			<h1>Création Firstname</h1>>
+		<div id="create-firtsname" class="content scaffold-create" role="main">
+			<h1>Nouveau Firstname</h1>
 			<g:if test="${flash.message}">
 			<div class="alert alert-error" role="status">${flash.message}</div>
 			</g:if>
@@ -28,10 +28,10 @@
 													  FirstnameHasTagList : FirstnameHasTagList]"/>
 
 				</fieldset>
-				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value="Création" />
-					<g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
-									formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+				<fieldset class="button">
+					<g:actionSubmit class="btn btn-primary" action="update" value="Création" />
+					<g:actionSubmit class="btn btn-primary" action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+									formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Etes vous sûr de vouloir quitter la fenêtre?')}');" />
 				</fieldset>
 			</g:form>
 		</div>

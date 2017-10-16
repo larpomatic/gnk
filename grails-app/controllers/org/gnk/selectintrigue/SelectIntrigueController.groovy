@@ -178,7 +178,7 @@ class SelectIntrigueController {
                 }
 
                 SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
-                nonTreatedPlots = new HashSet<Plot>(algo._allPlotList);
+                nonTreatedPlots = algo._allPlotList;
                 selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
                 if ((selectedEvenementialPlotInstanceList != null) && (selectedEvenementialPlotInstanceList.size() >0))

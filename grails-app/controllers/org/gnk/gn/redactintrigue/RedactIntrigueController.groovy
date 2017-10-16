@@ -37,7 +37,6 @@ import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.tag.Tag
 import org.gnk.tag.TagService
 import org.gnk.resplacetime.GenericPlaceController
-import org.gnk.resplacetime.GenericResourceController
 
 import org.gnk.user.User
 import org.gnk.utils.Pair
@@ -49,7 +48,7 @@ import javax.script.*
 
 @Secured(['ROLE_USER', 'ROLE_ADMIN'])
 class RedactIntrigueController {
-    PlaceResourceService placeResourceService
+    PlaceService placeService
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
@@ -579,8 +578,27 @@ class RedactIntrigueController {
          * via tag.getterName()
          */
         GenericPlaceController gpc = new GenericPlaceController();
-        gpc.getBestPlacesAux();
         tagUnivers.getterName();
+
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+
+        if (params.containsKey("plotId")) {
+            plot = Plot.get(params.plotId as Integer)
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+        }
+
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
             wordWriter.addStyledParagraphOfText("T3", "Type")
@@ -602,23 +620,20 @@ class RedactIntrigueController {
 
             //List<com.gnk.substitution.Tag> tags = new ArrayList<>();
             //gp.setTagList(place.getTags())
-
-            wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Places :")
-            gp.plotId = plot.id
-            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
-            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-                wordWriter.addStyledParagraphOfText("T3","-" + ref.left.name + ":");
-                for (int j = 0; j < 3; j++) {
-                    wordWriter.addStyledParagraphOfText("Normal", ref.right[j].left.name);
+            for (int i = 0; i < universList.size() ; i++) {
+                if (params.containsKey("plotId")) {
+                    plot = Plot.get(params.plotId as Integer)
+                    gp.plotId = plot.id
+                    gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
                 }
-            }
                 // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
+            }
         }
 
     }
 
     def createResources(WordWriter wordWriter, Plot plot){
-        GenericResource gr = new GenericResource();
+        GenericPlace gr = new GenericResource();
         Set<GenericResourceHasTag> tags = new ArrayList<>();
         PlaceResourceService placeresourceservice = new PlaceResourceService();
 
@@ -626,16 +641,6 @@ class RedactIntrigueController {
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089");
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
-
-        /*
-         * APPEL A GENERICRESSOURCES A CET ENDROIT, FAIRE DE MEME POUR LES GENERIC RESSOURCES
-         * pour chaque bulletpoint, tagunivers : obj, obj, obj
-         * via tag.getterName()
-         */
-        GenericResourceController gpc = new GenericResourceController();
-        gpc.getBestResourcesAux();
-        tagUnivers.getterName();
-
         for (GenericResource resource : plot.genericResources){
             wordWriter.addStyledParagraphOfText("T2", resource.code)
             wordWriter.addStyledParagraphOfText("T3", "Type : ")
@@ -658,7 +663,6 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("Normal", resource.description)
             }
         }
-
         wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Ressources :")
         gr.plotId = plot.id
         gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
