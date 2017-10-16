@@ -159,10 +159,10 @@ input:checked + .slider:before {
 
 
 
-<div class="switch">
+<label class="switch">
     <input type="checkbox">
     <div class="slider" onclick="toBalise(this)"></div>
-</div>
+</label>
 
 
 <div class="btn-group">
