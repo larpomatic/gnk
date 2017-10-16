@@ -10,7 +10,7 @@ import org.gnk.resplacetime.Pastscene
 import org.gnk.roletoperso.Character
 import org.gnk.roletoperso.Graph
 import org.gnk.substitution.InputHandler
-import org.gnk.substitution.data.Place
+import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.Resource
 import org.json.*;
 

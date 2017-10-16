@@ -21,7 +21,29 @@
     %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
         <link rel="stylesheet" href="${resource(dir: 'css', file: 'administration.css')}" type="text/css">
         %{--<link rel="stylesheet" href="${resource(dir: 'css', file: 'redactIntrigue.css')}" type="text/css">--}%
-	</head>
+    <script>
+        function getError(identifier, type, args)
+        {$.ajax({
+            type: "GET",
+            url: "${createLink(controller:'error', action:'getError')}",
+            dataType: "json",
+            contentType: 'text/json',
+            data: {type: "WARNING", identifier: "adminRef.tagRelation.info.delete", args: ["TEST_ARG_1", "TEST_ARG_2"]},
+            async: true,
+            success : function(data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            error : function(jqXHR, textStatus, errorThrown) {
+                //FIXME
+            },
+            complete : function(jqXHR, textStatus) {
+                //FIXME
+            }
+        });
+        }
+    </script>
+
+</head>
 	<body>
         <div class="gnk">
             <g:render template="/navbar"/>
