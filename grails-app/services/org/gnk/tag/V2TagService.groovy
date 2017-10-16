@@ -152,7 +152,8 @@ public class V2TagService {
                 }
             }
         }
-        
+
+        //println ("totalNumberOfTagsUsed = " + totalNumberOfTagsUsed + ", score = " + score)
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
         return result;
     }
