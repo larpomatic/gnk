@@ -1,12 +1,13 @@
-<%@ page import="org.gnk.name.*" %>
+<%@ page import="org.gnk.firstname.*" %>
 <%@ page import="org.gnk.admin.right" %>
 <%@ page import="org.gnk.tag.Tag" %>
 
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des Prénoms</legend>
+<legend>Liste des Firstnames</legend>
 
 <table id="listTable" class="table table-bordered">
+
     <thead>
     <tr>
         <th>Prénom</th>
@@ -16,7 +17,7 @@
         <th>Date Modification</th>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <th>
-                Duppliquer
+                Dupliquer
             </th>
         </g:hasRights>
             <g:hasRights lvlright="${right.REFDELETE.value()}">
@@ -36,7 +37,7 @@
                         ${fieldValue(bean: FirstnameInstance, field: "name")}</a>
                 </g:hasRights>
             </td>
-            <td>${FirstnameInstance.gender}</td>
+            <td><span style="text-transform:uppercase">${FirstnameInstance.gender}</span></td>
             <td>
                 <g:each in="${FirstnameInstance.getFirstnameHasTag()}" var="tag">
                     <g:if test="${tag.weight > 50}">
@@ -58,10 +59,9 @@
             <td>
                 <g:form>
                     <fieldset class="buttons">
-                        <g:hiddenField name="id" value="${FirstnameInstance.id}"/>
                         <g:hasRights lvlright="${right.REFMODIFY.value()}">
                             <a href="${createLink(action: "dupplicate", id: "${FirstnameInstance?.id}")}">
-                                Duppliquer</a>
+                                Dupliquer</a>
                         </g:hasRights>
                     </fieldset>
                 </g:form>
@@ -73,7 +73,7 @@
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <g:actionSubmit class="btn btn-danger" action="delete"
                                     value="${message(code: 'default.delete')}"
-                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce prénom?');"/>
+                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce firstname?');"/>
                 </g:hasRights>
             </fieldset>
         </g:form>
@@ -81,7 +81,7 @@
 
         </tr>
     </g:each>
-%{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
+    %{--<g:each in="${NameInstanceList}" status="a" var="NameInstance">--}%
     %{----}%%{----}%%{--Modal--}%%{----}%%{----}%
     %{--<div id="tagsModalHasTag${NameInstance.id}" class="modal hide fade tags-modal" tabindex="-1">--}%
         %{--<div class="modal-header">--}%
@@ -116,3 +116,6 @@
 %{--</g:each>--}%
     </tbody>
 </table>
+<script type="application/javascript">
+    $(".mytool").tooltip({ html: true });
+</script>

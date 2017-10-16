@@ -133,7 +133,7 @@ class SelectIntrigueController {
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
         ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
         ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
-        Set<Plot> nonTreatedPlots = null;
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>();
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
@@ -178,7 +178,7 @@ class SelectIntrigueController {
                 }
 
                 SelectIntrigueProcessing algo = new SelectIntrigueProcessing(gnInstance, eligiblePlots, bannedPlot, lockedPlot)
-                nonTreatedPlots = new HashSet<Plot>(algo._allPlotList);
+                nonTreatedPlots = algo._allPlotList;
                 selectedPlotInstanceList = algo.getSelectedPlots();
                 selectedEvenementialPlotInstanceList = algo.getSelectedEvenementialPlotList();
                 if ((selectedEvenementialPlotInstanceList != null) && (selectedEvenementialPlotInstanceList.size() >0))

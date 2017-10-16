@@ -5,11 +5,11 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="Name" />
     %{--<title><g:message code="default.edit.label" args="[entityName]" /></title>--}%
-    <title>Editer Name</title>
+    <title>Editer Patronyme</title>
 </head>
 <body>
 <div id="edit-Name" class="content scaffold-edit" role="main">
-    <h1>Edition Name </h1>
+    <h1>Edition Patronyme </h1>
     <g:if test="${flash.message}">
         <div class="alert alert-error" role="status">${flash.message}</div>
     </g:if>
@@ -23,7 +23,6 @@
     %{--<g:form action="edit">--}%
     <g:form>
         <form>
-
             <g:hiddenField name="NameId" value="${NameInstance?.id}" />
             <g:hiddenField name="NameVersion" value="${NameInstance?.version}" />
             <fieldset class="form-inline">
@@ -32,10 +31,10 @@
                                                   TagInstanceList : TagInstanceList,
                                                   NameHasTagList : NameHasTagList]"/>
             </fieldset>
-            <fieldset class="buttons">
-                <g:actionSubmit class="save" action="update" value="Edition" />
-                <g:actionSubmit action="index" value="${message(code: 'default.back.label', default: 'Back')}"
-                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+            <fieldset class="button">
+                <g:actionSubmit class="btn btn-primary" action="update" value="Edition" />
+                <g:actionSubmit class="btn btn-primary" action="index" value="${message(code: 'default.back.label', default: 'Back')}"
+                                formnovalidate="" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Etes vous sûr de vouloir quitter la fenêtre?')}');" />
             </fieldset>
         </form>
     </g:form>
