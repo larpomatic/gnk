@@ -11,9 +11,15 @@ class FirstnameController {
     def index() {
         redirect(action: "list")
     }
-    def list(String sort) {
-        def firstnames = Firstname.list()
-        [FirstnameInstanceList: firstnames]
+    def list() {
+            params.max = Math.min(params.max ? params.int('max') : 10, 100)
+            def ls = Firstname.createCriteria().list (params) {
+                if ( params.query ) {
+                    ilike("name", "%${params.query}%")
+                }
+            }
+            def totalCount = Firstname.count()
+            [FirstnameInstanceList: ls, firstnameTotal: totalCount, params: params]
     }
     def create() {
         List<FirstnameHasTag> FirstnameHasTagList = new ArrayList<>()
@@ -49,7 +55,7 @@ class FirstnameController {
         FirstnameInstance.id = -1
         FirstnameInstance.version = 1
         FirstnameInstance.dateCreated =new Date()
-
+        FirstnameInstance.gender=FirstnameInstanceold.gender
         FirstnameInstance.name = FirstnameInstanceold.name
         FirstnameInstance.extTags = FirstnameInstanceold.extTags
 
@@ -121,19 +127,19 @@ class FirstnameController {
 
         ArrayList<FirstnameHasTag> temp = new ArrayList<>()
         for(FirstnameHasTag prev : n.extTags){
-            if (FirstnameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight} == null){
+            if (FirstnameHasTagList.find {it.tag.id == prev.tag.id && it.weight == prev.weight}){
                 temp.add(prev)
             }
         }
 
         for(FirstnameHasTag prev : temp){
-            n.extTags.remove(prev)
+            n.removeFromExtTags(prev)
         }
 
         for (FirstnameHasTag future : FirstnameHasTagList){
-            n.extTags.add(future)
+            n.addToExtTags(future)
         }
-        n.gender="n"
+
         if (!n.save (flush: true)) {
             return render(view: "edit", model: [FirstnameInstance: n])
         }
@@ -163,16 +169,16 @@ class FirstnameController {
 
         params.each {
             if (it.key.toString().contains("tableTag_") && it.value != null && it.value != "") {
-                FirstnameHasTag FirstnameHasTag = new FirstnameHasTag();
+                FirstnameHasTag firstnameHasTag = new FirstnameHasTag();
                 def tokenize = it.value.toString().tokenize("_")
-                FirstnameHasTag.tag = Tag.findById(tokenize[0].toInteger());
-                FirstnameHasTag.weight = tokenize[1].toInteger();
-                FirstnameHasTag.dateCreated = new Date();
-                FirstnameHasTag.lastUpdated = new Date();
-                FirstnameHasTag.version = 1
+                firstnameHasTag.tag = Tag.findById(tokenize[0].toInteger());
+                firstnameHasTag.weight = tokenize[1].toInteger();
+                firstnameHasTag.dateCreated = new Date();
+                firstnameHasTag.lastUpdated = new Date();
+                firstnameHasTag.version = 1
 
-                if (!FirstnameHasTagList.find {it.tag.id == FirstnameHasTag.tag.id}){
-                    FirstnameHasTagList.add(FirstnameHasTag)
+                if (!FirstnameHasTagList.find {it.tag.id == firstnameHasTag.tag.id}){
+                    FirstnameHasTagList.add(firstnameHasTag)
                 }
             }
 

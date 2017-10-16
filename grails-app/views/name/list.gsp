@@ -6,14 +6,14 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Administration Name</title>
+    <title>Administration Patronymes</title>
 </head>
-	<body>
+	<body>  
 
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Noms existants</h2>
+        <h2>Patronymes existants </h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />
@@ -22,22 +22,28 @@
             <fieldset class="buttons">
                 <g:hasRights lvlright="${right.REFMODIFY.value()}">
                     <g:actionSubmit class="btn btn-primary" action="create"
-                                    value="+ Ajouter nouveau nom"/>
+                                    value="+ Ajouter nouveau patronyme"/>
                </g:hasRights>
            </fieldset>
        </g:form>
-   <g:render template="table" model="[NameInstanceList : NameInstanceList]" />
+        <div id="list-name" class="content scaffold-list" role="main">
 
-<script type="application/javascript">
-$(function(){
-$("#listTable").DataTable({
-    "language": {
-        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-    }
-});
-});
-</script>
-<g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
+
+            <fieldset class="form">
+                <g:form action="list" method="GET">
+                    <div class="fieldcontain">
+                        <g:textField name="query" value="${params.query}" placeholder= "Rechercher"/>
+                    </div>
+                </g:form>
+            </fieldset>
+            <g:render template="table" model="[NameInstanceList : NameInstanceList]" />
+
+            <div class="pagination">
+                <g:paginate total="${nameTotal}" action="list" params="${params}"/>
+            </div>
+        </div>
+
+
 
 </body>
 </html>

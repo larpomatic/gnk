@@ -27,6 +27,7 @@ class Name {
         id type:'integer'
         version type: 'integer'
         extTags cascade: "all-delete-orphan"
+        sort "name"
     }
 
     public getNameHasTag(Tag tag) {
