@@ -141,7 +141,16 @@
                 <td><g:select name="convention" id="gnConvention"
                               from="${conventionList}" optionKey="id"/></td>
             </tr>
+            <tr>
+                <td><label for="gnDescription"><g:message
+                        code="selectintrigue.step0.gnDescription"
+                        default=" Gn's description"/></label></td>
+            </tr>
+
         </table>
+        <div>
+            <g:textArea name="gnDescription" value="${gnInstance?.description_text}"/>
+        </div>
 
         <g:render template="tagsPopup"
                   model="['idPopup': 'tagsModal', 'namePopup': 'Tags', 'myOwner': gnInstance, 'tagList': plotTagList, 'tagPrefix': 'tags_', 'weightTagPrefix': 'weight_tags_', 'tagListName': 'BaseTags']"/>

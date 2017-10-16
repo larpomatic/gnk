@@ -42,7 +42,7 @@ class SelectIntrigueController {
     }
 
     def dispatchStep(Long id) {
-        if (id == 0) {
+        if (id==null || id == 0) {
             redirect(controller: 'selectIntrigue', action:'selectIntrigue', id: id);
         }
         Gn gn = Gn.get(id);
@@ -127,17 +127,17 @@ class SelectIntrigueController {
     }
 
     def selectIntrigue(Long id) {
-        Gn gnInstance
+        Gn gnInstance = new Gn()
         TagService tagService = new TagService();
         List<Plot> eligiblePlots = Plot.findAllWhere(isDraft: false);
         Set<Plot> selectedPlotInstanceList = new HashSet<Plot>();
         ArrayList<Plot> selectedEvenementialPlotInstanceList = new ArrayList<Plot>();
         ArrayList<Plot> selectedMainstreamPlotInstanceList = new ArrayList<Plot>();
-        Set<Plot> nonTreatedPlots = null;
+        Set<Plot> nonTreatedPlots = new HashSet<Plot>(eligiblePlots);
         List<List<String>> statisticResultList = new ArrayList<List<String>>();
         Integer evenementialId = 0;
         Integer mainstreamId = 0;
-        if (id >= 0) {
+        if (id > 0) {
             gnInstance = Gn.get(id)
             if ((params.screenStep as Integer) == 1) {
                 final gnData = new GNKDataContainerService().ReadDTD(gnInstance);
@@ -672,6 +672,9 @@ class SelectIntrigueController {
         }
         if (params.gnNbWomen) {
             gnInstance.nbWomen = params.gnNbWomen as Integer
+        }
+        if (params.gnDescription) {
+            gnInstance.description_text = params.gnDescription as String
         }
         Map<Tag, Integer> gnTags = gnInstance.gnTags
         Map<Tag, Integer> mainstreamTags = gnInstance.mainstreamTags

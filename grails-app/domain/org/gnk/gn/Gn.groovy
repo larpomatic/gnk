@@ -41,6 +41,8 @@ class Gn {
     String dtd
 
     String charJSONArray
+    // Description
+    String description_text
 
     static transients = [
             "t0Date",
@@ -117,6 +119,7 @@ class Gn {
         date nullable: true
         dtd nullable: true
         charJSONArray nullable: true
+        description_text nullable: true
     }
 
     static mapping = {
@@ -125,6 +128,7 @@ class Gn {
         id type: 'integer'
         version type: 'integer'
         periods sort: 'beginning'
+        description_text type: 'text'
 //        convention column: 'convention_id'
     }
 
