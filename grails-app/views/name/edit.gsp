@@ -23,7 +23,6 @@
     %{--<g:form action="edit">--}%
     <g:form>
         <form>
-
             <g:hiddenField name="NameId" value="${NameInstance?.id}" />
             <g:hiddenField name="NameVersion" value="${NameInstance?.version}" />
             <fieldset class="form-inline">

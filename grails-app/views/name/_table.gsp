@@ -65,6 +65,7 @@
                 </g:form>
             </td>
             <td>
+
         <g:form>
             <fieldset class="buttons">
                 <g:hiddenField name="id" value="${NameInstance.id}"/>

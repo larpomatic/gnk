@@ -8,12 +8,12 @@
     <meta name="layout" content="main">
     <title>Administration Patronymes</title>
 </head>
-	<body>
+	<body>  
 
     <g:render template="../tag/subNav" />
 <div id="list-event" class="content scaffold-list" role="main">
     <fieldset>
-        <h2>Patronymes existants</h2>
+        <h2>Patronymes existants </h2>
     </fieldset>
 
     <g:render template="../infosAndErrors" />

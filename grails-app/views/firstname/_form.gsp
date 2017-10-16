@@ -3,6 +3,7 @@
 <%@ page import="org.gnk.admin.right" %>
 <style>
 .modalLi {
+
     list-style-type: none;
 }
 </style>

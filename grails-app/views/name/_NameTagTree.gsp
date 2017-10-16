@@ -26,6 +26,7 @@
 <g:if test="${tagInstance.children.size() != 0}">
     <li class="modalLi">
         <ul>
+
             <g:each in="${tagInstance.getChildren()}" var="child">
                 <g:render template="NameTagTree" model="[tagInstance: child, NameInstance: NameInstance, referenceTag : referenceTag]"/>
             </g:each>
