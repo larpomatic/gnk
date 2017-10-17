@@ -59,12 +59,6 @@
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step7}","${step6}", "${step5}", "${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-
-                <g:if test="${gnInstance.step == 'substitution'}">
-                    <td><g:select name="step-${gnInstance.id}"
-                                  from="${['naming', 'life', 'role2perso', 'selectIntrigue']}"/></td>
-                </g:if>
-
                 <g:if test="${gnInstance.step == "time"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step6}", "${step5}", "${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
@@ -77,7 +71,7 @@
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step4}", "${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>
-                <g:if test="${gnInstance.step == "naming"}">
+                <g:if test="${gnInstance.step == "naming" || gnInstance.step == "substitution"}">
                     <td><g:select name='step-${gnInstance.id}'
                                   from="${["${step3}", "${step2_5}", "${step2}", "${step1}"]}"/>
                 </g:if>

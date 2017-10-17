@@ -3,6 +3,7 @@
 <%@ page import="org.gnk.admin.right" %>
 <style>
 .modalLi {
+
     list-style-type: none;
 }
 </style>
@@ -10,23 +11,18 @@
 %{--<div class="form-inline">--}%
 <div>
     <g:hiddenField name="first" value="true"/>
-
     <div class="form-group">
         <div class="row">
             <div class="span4">
                 <div class="fieldcontain ${hasErrors(bean: FirstnameInstance, field: 'name', 'error')} required">
-                    <label for="title">
-                        <g:message code="Name.title.label" default="Name"/>
+                        <g:message code="Name.title.label" default="Firstname"/>
                         <span class="required-indicator">*</span>
-                    </label>
                     <g:textField name="name" value="${FirstnameInstance?.name}" required=""/>
                 </div>
             </div>
-            <input type=text list=browsers >
-            <datalist id=browsers >
-                <option> Feminin
-                <option> Masculin
-            </datalist>
+            <g:select name='gender' value="${FirstnameInstance?.gender}"
+                      from="${['m': 'Masculin','f': 'Féminin']}" optionKey="key" optionValue="value"
+                      ></g:select>
         </div>
     </div>
 
@@ -34,7 +30,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 Tags
-                <a href="#tagsModalHasTag" class="btn" data-toggle="modal">
+                <a href="#tagsModalHasTag" class="btn btn-primary" data-toggle="modal">
                     Selection de tags
                 </a>
             </h3>
@@ -82,9 +78,9 @@
         </div>
 
         %{--<form>--}%
-        <g:hiddenField name="FirstanameHasTagAdd" value="true"/>
+        <g:hiddenField name="FirstnameHasTagAdd" value="true"/>
         <div class="modal-body">
-            <ul class="NameTags">
+            <ul class="FirstnameTags">
                 <g:each in="${TagInstanceList}" status="i" var="tagInstance">
                     <g:render template="FirstnameTagTree"
                               model="[tagInstance : tagInstance, FirstnameInstance: FirstnameInstance,
@@ -95,7 +91,7 @@
 
         <div class="modal-footer">
             %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
-            <g:actionSubmit class="save" action="edit" value="Ok"/>
+            <g:actionSubmit class="btn btn-primary"  action="edit" value="Ok"/>
         </div>
         %{--</form>--}%
 

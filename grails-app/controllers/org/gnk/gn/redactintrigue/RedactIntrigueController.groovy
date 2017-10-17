@@ -22,6 +22,7 @@ import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceResourceService
 import org.gnk.resplacetime.PlaceService
 import org.gnk.resplacetime.Resource
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.ressplacetime.ReferentialPlace
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasEvent
@@ -38,6 +39,7 @@ import org.gnk.tag.TagService
 import org.gnk.resplacetime.GenericPlaceController
 
 import org.gnk.user.User
+import org.gnk.utils.Pair
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -575,6 +577,27 @@ class RedactIntrigueController {
          * pour chaque bulletpoint, tagunivers : obj, obj, obj
          * via tag.getterName()
          */
+        GenericPlaceController gpc = new GenericPlaceController();
+        tagUnivers.getterName();
+
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+
+        if (params.containsKey("plotId")) {
+            plot = Plot.get(params.plotId as Integer)
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+        }
 
         for (GenericPlace place : plot.genericPlaces) {
             wordWriter.addStyledParagraphOfText("T2", place.code)
@@ -610,7 +633,14 @@ class RedactIntrigueController {
     }
 
     def createResources(WordWriter wordWriter, Plot plot){
+        GenericPlace gr = new GenericResource();
+        Set<GenericResourceHasTag> tags = new ArrayList<>();
+        PlaceResourceService placeresourceservice = new PlaceResourceService();
+
         String txt = ""
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089");
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
         for (GenericResource resource : plot.genericResources){
             wordWriter.addStyledParagraphOfText("T2", resource.code)
             wordWriter.addStyledParagraphOfText("T3", "Type : ")
@@ -631,6 +661,15 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("T5", "De : " + resource?.fromRoleText)
                 wordWriter.addStyledParagraphOfText("T5", "Pour : " + resource?.toRoleText)
                 wordWriter.addStyledParagraphOfText("Normal", resource.description)
+            }
+        }
+        wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Ressources :")
+        gr.plotId = plot.id
+        gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
+        for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
+            wordWriter.addStyledParagraphOfText("T3","-" + ref.left.name + ":");
+            for (int j = 0; j < 3; j++) {
+                wordWriter.addStyledParagraphOfText("Normal", ref.right[j].left.name);
             }
         }
     }
