@@ -108,8 +108,10 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
     </g:else>
 </g:each>
 
-
-<h3>Synthèse des personnages du GN</h3>
+<table>
+    <tr>
+        <td>
+    <h3>Synthèse des personnages du GN</h3>
 
 <TABLE BORDER="1" CELLPADDING="10">
     <TR>
@@ -152,6 +154,20 @@ ${GNinfo1}<br>${GNinfo2}<br>${msgCharacters}
         </TR>
     </g:each>
 </TABLE>
+        </td>
+        <g:form mehtod="post">
+            <td>
+                <label for="gnDescription"><g:message
+                        code="selectintrigue.step0.gnDescription"
+                        default=" Gn's description"/></label>
+                <g:textArea name="gnDescription" value="${gnInstance?.description_text}"/>
+            </td>
+            <td>
+                <g:actionSubmit value="${message(code: 'default.button.save.label', default: 'Save')}"/>
+            </td>
+        </g:form>
+    </tr>
+</table>
 
 
 <script type="text/javascript">
