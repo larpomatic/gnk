@@ -118,7 +118,7 @@ public class V2TagService {
         int result = 0;
         // initialisation des tags du character
         Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
-
+        /*
         //récupérer les tags relevants du character
         map_character.putAll(getRelevantTags(initial_map_tags))
 
@@ -145,6 +145,7 @@ public class V2TagService {
                     }
                 } else {
                     if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
+                        println("OK score va etre incrementé")
                         score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
                         //score = tagUniversTreatment(entry_character.getKey(), score, map_character);
                         totalNumberOfTagsUsed += 1;
@@ -153,9 +154,24 @@ public class V2TagService {
             }
         }
 
-        //println ("totalNumberOfTagsUsed = " + totalNumberOfTagsUsed + ", score = " + score)
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
-        return result;
+
+        print("------------------------------------------------------")
+        println("Tags du character number ".toUpperCase() + character.code + ": " )
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet())
+        {
+            println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+        }
+        print(System.lineSeparator())
+        println("Tags du firstname: ".toUpperCase() + firstname.name.toUpperCase() )
+        for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet())
+        {
+            println(" tag: " + entry_firstname.key.name + ", weight: " + entry_firstname.value)
+        }
+        println("Ranktag = " + result)
+        print(System.lineSeparator())
+        */
+        return result
     }
 
     /**
@@ -274,10 +290,26 @@ public class V2TagService {
      * @return Map < Tag , Integer >
      */
     Map<Tag, Integer> initGenericObjectList(PersoForNaming character, Gn gn){
+
+        println("------------------------------------------------------")
+        println("Char ".toUpperCase() + character.code)
+
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
-        for (com.gnk.substitution.Tag t : character.getTag()) {
-            map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+
+        if (!character.getTag().isEmpty()) {
+            for (com.gnk.substitution.Tag t : character.getTag()) {
+                map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+            }
+            println("----")
+            println("character tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
         }
+        else
+            println(" PAS DE CHARACTER TAGS")
 
 
         // RECUPERER LES TAGS DU GN
@@ -287,19 +319,58 @@ public class V2TagService {
             for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
                 map_tags = addTag(map_tags, gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
             }
+            println("----")
+            println("gntags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
         }
+        else
+            println (" PAS DE GNTAGS")
+        if (gn.getUnivers() != null) {
+            map_tags = addTag(map_tags, gn.getUnivers(), gn.getUnivers().getWeight());
+            println("----")
+            println("getUnivers tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
+        }
+        else
+            println (" PAS DE UNIVERS TAGS")
         if (gn.evenementialTags != null) {
             // chaque poids d'un tag evenementiel du GN est pondéré à 60%
             for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
                 map_tags = addTag(map_tags, gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * Evenementielponderation));
             }
+            println("----")
+            println("evenemential tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
         }
+        else
+            println (" PAS DE EVENEMENTIAL TAGS")
         if (gn.mainstreamTags != null) {
             // chaque poids d'un tag mainstream du GN est pondéré à 40%
             for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
                 map_tags = addTag(map_tags, gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
             }
+            println("----")
+            println("mainstream tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
         }
+        else
+            println (" PAS DE MAINSTREAM TAGS")
         return map_tags
     }
 
