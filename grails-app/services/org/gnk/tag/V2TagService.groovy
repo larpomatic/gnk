@@ -141,6 +141,7 @@ public class V2TagService {
 
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
 
+        VERBOSE = true
         if (VERBOSE){
         print("------------------------------------------------------")
         println("Tags du character number ".toUpperCase() + character.code + ": " )
@@ -156,6 +157,7 @@ public class V2TagService {
         }
         println("Ranktag = " + result)
         print(System.lineSeparator())}
+        VERBOSE = false
 
         return result
     }
@@ -293,8 +295,14 @@ public class V2TagService {
 
         Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
 
-        if (character.universe)
-            map_tags.put(Tag.findWhere(name: character.universe), new Integer((int)101))
+        if (character.universe){
+            map_tags.put(Tag.findWhere(name: character.universe), new Integer((int)100 * GenericObjectponderation))}
+
+        ArrayList<TagRelation> relations = TagRelation.findAllWhere(tag1: Tag.findWhere(name: character.universe))
+        if (relations){
+            for (def r : relations)
+                map_tags.put(r.tag2, (int)(r.weight * GNponderation))
+        }
 
         if (!character.getTag().isEmpty()) {
             for (com.gnk.substitution.Tag t : character.getTag()) {
@@ -424,37 +432,38 @@ public class V2TagService {
      */
     Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
-            Map<Tag, Integer> parents_tags = new HashMap<>();
 
-            ArrayList<Tag> current_gen_parents = new ArrayList<>();
-            current_gen_parents.addAll(taglist.keySet());
+        Map<Tag, Integer> parents_tags = new HashMap<>();
 
-            ArrayList<Tag> next_gen_parents = new ArrayList<>();
+        ArrayList<Tag> current_gen_parents = new ArrayList<>();
+        current_gen_parents.addAll(taglist.keySet());
+
+        ArrayList<Tag> next_gen_parents = new ArrayList<>();
 
 
-                for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
-                    for (Tag t in current_gen_parents) {
-                        ArrayList<Tag> parent = TagRelation.findParents(t);
-                            for (Tag p in parent) {
-                                next_gen_parents.add(p);
-                                TagRelation tr = TagRelation.myFindWhere(t, p)
-                                if (tr != null) {
-                                    parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                } else {
-                                    tr = TagRelation.myFindWhere(p, t)
-                                    if (tr != null && tr.isBijective)
-                                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                }
-                            }
-
-                        }
-                    current_gen_parents = next_gen_parents;
-                    next_gen_parents.clear();
+        for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
+            for (Tag t in current_gen_parents) {
+                ArrayList<Tag> parent = TagRelation.findParents(t);
+                for (Tag p in parent) {
+                    next_gen_parents.add(p);
+                    TagRelation tr = TagRelation.myFindWhere(t, p)
+                    if (tr != null) {
+                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                    } else {
+                        tr = TagRelation.myFindWhere(p, t)
+                        if (tr != null && tr.isBijective)
+                            parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
                     }
+                }
 
-            return parents_tags;
-
+            }
+            current_gen_parents = next_gen_parents;
+            next_gen_parents.clear();
         }
+
+        return parents_tags;
+
+    }
 
     /**
      *
