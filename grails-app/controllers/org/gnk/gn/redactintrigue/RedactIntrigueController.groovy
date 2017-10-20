@@ -620,20 +620,21 @@ class RedactIntrigueController {
 
             //List<com.gnk.substitution.Tag> tags = new ArrayList<>();
             //gp.setTagList(place.getTags())
-            for (int i = 0; i < universList.size() ; i++) {
-                if (params.containsKey("plotId")) {
-                    plot = Plot.get(params.plotId as Integer)
-                    gp.plotId = plot.id
-                    gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Places :")
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                wordWriter.addStyledParagraphOfText("T3","-" + ref.left.name + ":");
+                for (int j = 0; j < 3; j++) {
+                    wordWriter.addStyledParagraphOfText("Normal", ref.right[j].left.name);
                 }
-                // Pour l'univer universList[i] les bestPlaces de la GenericPlace place sont genericplace.resultList
             }
         }
 
     }
 
     def createResources(WordWriter wordWriter, Plot plot){
-        GenericPlace gr = new GenericResource();
+        GenericResource gr = new GenericResource();
         Set<GenericResourceHasTag> tags = new ArrayList<>();
         PlaceResourceService placeresourceservice = new PlaceResourceService();
 
