@@ -34,11 +34,11 @@ class Naming2Service {
         Gn gn = Gn.findById(gn_id)
         //endregion
 
-        println("Univers: " + persoList.first.universe)
+        /*println("Univers: " + persoList.first.universe)
         System.out.print ("Male firstname list: " + fnlistHomme.name)
         System.out.print ("Female firstname list: " + fnlistFemme.name)
         System.out.print ("Name list: " + nlist.name)
-        System.out.print(System.lineSeparator())
+        System.out.print(System.lineSeparator())*/
 
         //Loop on every character in the list
         long startTime = System.nanoTime();
