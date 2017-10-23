@@ -93,7 +93,7 @@ class GenericPlaceController {
             object([json: json])
         }
     }
-    
+
     def buildTagList(def genericPlaceTagList) {
         JSONArray jsonTagList = new JSONArray();
         for (genericPlaceTag in genericPlaceTagList) {
