@@ -1,10 +1,12 @@
 package org.gnk.naming
 
 import com.gnk.substitution.Tag
+import org.apache.tools.ant.types.resources.First
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.tag.TagRelation
 import org.gnk.tag.TagService
 import org.gnk.tag.V2TagService
 import org.gnk.utils.Pair
@@ -32,7 +34,7 @@ class Naming2Service {
         Gn gn = Gn.findById(gn_id)
         //endregion
 
-        println("Univers: " + gn.name)
+        println("Univers: " + persoList.first.universe)
         System.out.print ("Male firstname list: " + fnlistHomme.name)
         System.out.print ("Female firstname list: " + fnlistFemme.name)
         System.out.print ("Name list: " + nlist.name)
@@ -174,10 +176,25 @@ class Naming2Service {
             }
             fetchMode("firstname", FetchMode.EAGER)
         }
-        if(fnlist.isEmpty() || fnlist.size() < (persoList.size() * 1))
+        if(fnlist.isEmpty() || fnlist.size() < (persoList.size() * 2))
         {
-            fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 100])
-            return (fnlist)
+            ArrayList<FirstnameHasTag> extraFirstnameHasTags = new ArrayList<FirstnameHasTag>()
+            ArrayList<org.gnk.tag.Tag> extraTags = new ArrayList<org.gnk.tag.Tag>()
+            LinkedList<Firstname> extraFirstnames = new LinkedList<Firstname>()
+            ArrayList<TagRelation> relations = TagRelation.findAllWhere(tag1 :org.gnk.tag.Tag.findWhere(name: universe))
+            if (relations){
+                for (TagRelation r : relations)
+                    extraTags.add( r.tag2)
+                for (org.gnk.tag.Tag t : extraTags)
+                    extraFirstnameHasTags += FirstnameHasTag.findAllWhere(tag: t)
+                for (FirstnameHasTag f :extraFirstnameHasTags)
+                    extraFirstnames += Firstname.findAllByIdAndGender((int)f.firstnameId, gender)
+
+                Collections.shuffle(extraFirstnames)
+                for (int i = 0; i < 100; i++)
+                    fnlist += extraFirstnames.get(i)
+            }
+            //else random
         }
         return fnlist
     }
@@ -197,15 +214,30 @@ class Naming2Service {
             }
             fetchMode("name", FetchMode.EAGER)
         }
-        if(nlist.isEmpty() || nlist.size() < (persoList.size() * 1))
+        if(nlist.isEmpty() || nlist.size() < (persoList.size() * 2))
         {
-            nlist += Name.findAll("from Name order by rand()", [max: 100])
-            return (nlist)
+            ArrayList<NameHasTag> extraNameHasTags = new ArrayList<NameHasTag>()
+            ArrayList<org.gnk.tag.Tag> extraTags = new ArrayList<org.gnk.tag.Tag>()
+            LinkedList<Name> extraNames = new LinkedList<Name>()
+            ArrayList<TagRelation> relations = TagRelation.findAllWhere(tag1 :org.gnk.tag.Tag.findWhere(name: universe))
+            if (relations){
+                for (TagRelation r : relations)
+                    extraTags.add( r.tag2)
+                for (org.gnk.tag.Tag t : extraTags)
+                    extraNameHasTags += NameHasTag.findAllWhere(tag: t)
+                for (NameHasTag n :extraNameHasTags)
+                    extraNames += Name.findAllById((int)n.nameId)
+
+                Collections.shuffle(extraNames)
+                for (int i = 0; i < 100; i++)
+                    nlist += extraNames.get(i)
+            }
+            //else random
         }
         return nlist
     }
 
-    private LinkedList<NameAndWeight> getRandomFirstname (LinkedList fnlist)
+    private static LinkedList<NameAndWeight> getRandomFirstname (LinkedList fnlist)
     {
         LinkedList<NameAndWeight> fnweight = new LinkedList<NameAndWeight> ()
         for (Firstname fn : fnlist)
@@ -218,7 +250,7 @@ class Naming2Service {
         return fnweight
     }
 
-    private LinkedList<NameAndWeight> getRandomName (LinkedList nlist, LinkedList persoList)
+    private static LinkedList<NameAndWeight> getRandomName (LinkedList nlist, LinkedList persoList)
     {
         LinkedList<NameAndWeight> nweight = new LinkedList<NameAndWeight> ()
         for (Name n : nlist)

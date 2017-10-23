@@ -141,7 +141,7 @@ public class V2TagService {
 
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
 
-        VERBOSE = true
+
         if (VERBOSE){
         print("------------------------------------------------------")
         println("Tags du character number ".toUpperCase() + character.code + ": " )
@@ -157,7 +157,6 @@ public class V2TagService {
         }
         println("Ranktag = " + result)
         print(System.lineSeparator())}
-        VERBOSE = false
 
         return result
     }
