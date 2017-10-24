@@ -102,26 +102,19 @@ public class V2TagService {
     }
 
     /**
-     * Calculate the total score of similitude between a Character and a Firstname
-     * @param PersoForNaming
+     * Calculate the total score of similitude between the map of Character 's tags and a Firstname
+     * @param map_character
      * @param Firstname
-     * @param Gn
      * @return the calculus in Long
      */
-    Long computeComparativeScoreObject(PersoForNaming character, Firstname firstname, Gn gn) {
-
-        int totalNumberOfTagsUsed = 0;
-        int result = 0;
-
-        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
-        map_character.putAll(getRelevantTags(map_character))
-        map_character.putAll(getParentTags(map_character))
+    Long computeComparativeScoreObject(Map<Tag, Integer> map_character, Firstname firstname){
+        int totalNumberOfTagsUsed = 0
+        int result = 0
+        Long score = 0
 
         Map<Tag, Integer> map_firstname = initObjectList(firstname)
         map_firstname.putAll(getRelevantTags(map_firstname))
         map_firstname.putAll(getParentTags(map_firstname))
-
-        Long score = 0;
 
         for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
             for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
@@ -138,49 +131,24 @@ public class V2TagService {
                 }
             }
         }
-
-        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
-
-
-        if (VERBOSE){
-        print("------------------------------------------------------")
-        println("Tags du character number ".toUpperCase() + character.code + ": " )
-        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet())
-        {
-            println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
-        }
-        print(System.lineSeparator())
-        println("Tags du firstname: ".toUpperCase() + firstname.name.toUpperCase() )
-        for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet())
-        {
-            println(" tag: " + entry_firstname.key.name + ", weight: " + entry_firstname.value)
-        }
-        println("Ranktag = " + result)
-        print(System.lineSeparator())}
-
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed)
         return result
     }
 
     /**
-     * Calculate the total score of similitude between a Character and a Name
-     * @param PersoForNaming
+     * Calculate the total score of similitude between the map of Character 's tags and a Name
+     * @param map_character
      * @param Name
-     * @param Gn
      * @return the calculus in Long
      */
-    Long computeComparativeScoreObject(PersoForNaming character, Name name, Gn gn) {
-        int totalNumberOfTagsUsed = 0;
-        int result = 0;
-
-        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
-        map_character.putAll(getRelevantTags(map_character))
-        map_character.putAll(getParentTags(map_character))
+    Long computeComparativeScoreObject(Map<Tag, Integer> map_character, Name name) {
+        int totalNumberOfTagsUsed = 0
+        int result = 0
+        Long score = 0
 
         Map<Tag, Integer> map_name = initObjectList(name)
         map_name.putAll(getRelevantTags(map_name))
         map_name.putAll(getParentTags(map_name))
-
-        Long score = 0;
 
         for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
             for (Map.Entry<Tag, Integer> entry_name : map_name.entrySet()) {
@@ -197,25 +165,7 @@ public class V2TagService {
                 }
             }
         }
-
         result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
-
-        if (VERBOSE){
-        print("------------------------------------------------------")
-        println("Tags du character number ".toUpperCase() + character.code + ": " )
-        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet())
-        {
-            println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
-        }
-        print(System.lineSeparator())
-        println("Tags du lastname: ".toUpperCase() + name.name.toUpperCase() )
-        for (Map.Entry<Tag, Integer> entry_name : map_name.entrySet())
-        {
-            println(" tag: " + entry_name.key.name + ", weight: " + entry_name.value)
-        }
-        println("Ranktag = " + result)
-        print(System.lineSeparator())}
-
         return result
     }
 
@@ -592,4 +542,64 @@ public class V2TagService {
 
         return  map;
     }
+    
+    //Ne pas supprimer, car contient les print pour tester les tags de tous les éléments
+    /*
+    Long computeComparativeScoreObject(PersoForNaming character, Firstname firstname, Gn gn) {
+
+        int totalNumberOfTagsUsed = 0;
+        int result = 0;
+
+        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
+        map_character.putAll(getRelevantTags(map_character))
+        map_character.putAll(getParentTags(map_character))
+
+
+        long startTime = System.nanoTime();
+        Map<Tag, Integer> map_firstname = initObjectList(firstname)
+        map_firstname.putAll(getRelevantTags(map_firstname))
+        map_firstname.putAll(getParentTags(map_firstname))
+        long endTime = System.nanoTime();
+        println("initObjectList duration: " + ((endTime - startTime) / 1000000000.0) + " seconds")
+
+        Long score = 0;
+
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
+                if (entry_character.getKey().getId() == null) {
+                    if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1
+                    }
+                }
+            }
+        }
+
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+
+
+        if (VERBOSE){
+        print("------------------------------------------------------")
+        println("Tags du character number ".toUpperCase() + character.code + ": " )
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet())
+        {
+            println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+        }
+        print(System.lineSeparator())
+        println("Tags du firstname: ".toUpperCase() + firstname.name.toUpperCase() )
+        for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet())
+        {
+            println(" tag: " + entry_firstname.key.name + ", weight: " + entry_firstname.value)
+        }
+        println("Ranktag = " + result)
+        print(System.lineSeparator())}
+
+        return result
+    }*/
+
 }

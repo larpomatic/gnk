@@ -45,6 +45,11 @@ class Naming2Service {
         for (PersoForNaming character : persoList)
         {
             long startTimeCharacter = System.nanoTime();
+
+            Map<org.gnk.tag.Tag, Integer> map_character = v2TagService.initGenericObjectList(character, gn)
+            map_character.putAll(v2TagService.getRelevantTags(map_character))
+            map_character.putAll(v2TagService.getParentTags(map_character))
+
             if (character.is_selectedFirstName){
                 NameAndWeight maxname
                 LinkedList<Firstname> fnlist = character.getgender() == "M" ? fnlistHomme : fnlistFemme
@@ -70,13 +75,12 @@ class Naming2Service {
 
                 for (Firstname firstname : fnlist){
                     //calcule la correspondance d'un prenom avec le character
-                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, firstname, gn)))
+                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(map_character, firstname)))
                     fnweight.add(new NameAndWeight(firstname.name, rankTag))
                 }
 
                 if (fnweight.empty)
                     fnweight = getRandomFirstname(fnlist)
-
                 Collections.sort(fnweight)
 
                 // ranger la liste dans l'ordre et la mettre dans le perso a renvoyer
@@ -114,10 +118,9 @@ class Naming2Service {
                 Integer rankTag = 0;
                 for (Name name : nlist){
                     //calcule la correspondance d'un nom avec le character
-                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(character, name, gn)))
+                    rankTag = (new Integer((int) v2TagService.computeComparativeScoreObject(map_character, name)))
                     nweight.add(new NameAndWeight(name.name, rankTag))
                 }
-
                 if (nweight.size() < persoList.size())
                     nweight += getRandomName(nlist, persoList)
 
@@ -144,11 +147,13 @@ class Naming2Service {
                         usedName.add(character.selectedNames.first())
                 }
             }
-            long endTimeCharacter = System.nanoTime();
-            println ("Naming the character number " + character.code + ": " + ((endTimeCharacter - startTimeCharacter )/ 1000000000.0))
-            result.add(character)
 
+            result.add(character)
+            long endTimeCharacter = System.nanoTime();
+            println ("Naming the character number " + character.code + ": "
+                    + ((endTimeCharacter - startTimeCharacter )/ 1000000000.0))
         }
+
         long endTime = System.nanoTime();
         println ("Time for naming all the characters: ".toUpperCase()
                 + ((endTime - startTime )/ 1000000000.0) + " seconds")
@@ -194,7 +199,10 @@ class Naming2Service {
                 for (int i = 0; i < 100; i++)
                     fnlist += extraFirstnames.get(i)
             }
-            //else random
+            else{
+                fnlist += Firstname.findAll("from Firstname where gender=\'$gender\' order by rand()", [max: 100])
+                Collections.shuffle(fnlist)
+            }
         }
         return fnlist
     }
@@ -232,7 +240,10 @@ class Naming2Service {
                 for (int i = 0; i < 100; i++)
                     nlist += extraNames.get(i)
             }
-            //else random
+            else{
+                nlist += Name.findAll("from Name order by rand()", [max: 100])
+                Collections.shuffle(nlist)
+            }
         }
         return nlist
     }
