@@ -196,7 +196,7 @@ class Naming2Service {
                     extraFirstnames += Firstname.findAllByIdAndGender((int)f.firstnameId, gender)
 
                 Collections.shuffle(extraFirstnames)
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 100 && i < extraFirstnames.size(); i++)
                     fnlist += extraFirstnames.get(i)
             }
             else{
@@ -237,7 +237,7 @@ class Naming2Service {
                     extraNames += Name.findAllById((int)n.nameId)
 
                 Collections.shuffle(extraNames)
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 100 & i < extraNames.size(); i++)
                     nlist += extraNames.get(i)
             }
             else{
