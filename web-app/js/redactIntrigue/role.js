@@ -451,3 +451,56 @@ function tot (){
     });
     return pjg_tota;
 }
+
+function getBestName()
+{
+    var cont = $('#listContainerName');
+
+    $('#newbestName').click(function() {
+        var br = document.createElement("br");
+        cont.empty();
+        cont.append("Les meilleures noms sont les noms qui correspondent le mieux aux caractéristiques de votre univers.\n");
+        cont.append(br);
+        cont.append("Ces caractéristiques sont choisies à l'aide de tags.");
+        cont.append("Pour choisir les tags, cliquez sur le bouton \"Choisir tags\".");
+    });
+
+    $('.bestName').click(function() {
+        var url = $('#urlBestName').data('url');
+        var form_name = $(this).data('form');
+        var form = $('form[name=' + form_name + ']');
+        cont.empty();
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function(data) {
+                $.each(data.object.json, function(i,v){
+                    var h5 = document.createElement("H4");
+                    var node = document.createTextNode(i);
+                    h5.appendChild(node);
+                    cont.append(h5);
+                    var ul = document.createElement("ul");
+                    if (v.length == 1)
+                    {
+                        cont.append("Pas de meilleure nom !");
+                    }
+                    for(j = 0; j < v.length; j++)
+                    {
+                        var li = document.createElement("li");
+                        li.innerHTML = v[j];
+                        ul.appendChild(li);
+                    }
+                    cont.append(ul);
+                });
+                $('.nameLoader').css('display', 'none');
+            },
+            error: function() {
+                $('.nameLoader').css('display', 'none');
+                createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs noms correspondant à vos critères.");
+            }
+        })
+    });
+}

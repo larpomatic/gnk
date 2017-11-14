@@ -349,7 +349,7 @@ function getBestResource()
             },
             error: function() {
                 $('.resourceLoader').css('display', 'none');
-                createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs ressoures correspondant à vos critères.");
+                createNotification("danger", "Recherche échouée.", "Impossible de déterminer les 10 meilleurs ressources correspondant à vos critères.");
             }
         })
     });
