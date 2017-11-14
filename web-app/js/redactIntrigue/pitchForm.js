@@ -50,15 +50,9 @@ function update_text(elt)
 
     var description = transformDescription(elt);
 
-
     var id_render = elt.id.split('_');
     document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0].setAttribute('value', description);
     console.log((document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0]).value);
-
-    //var description = $('#idDescriptionText_' + id_description, form).html();
-    //description = transformDescription(description);
-
-
 
     update_modified();
 }
