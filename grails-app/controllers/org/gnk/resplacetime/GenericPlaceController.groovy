@@ -66,7 +66,7 @@ class GenericPlaceController {
         }
         //gp.setTagList(tags);
 
-        PlaceResourceService placeresourceservice = new PlaceResourceService();
+        //PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
@@ -77,7 +77,7 @@ class GenericPlaceController {
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
             gp.plotId = plot.id
-            gp.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gp, plot)
+            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
             if (gp.resultsAllUniverses.empty)
                 throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {

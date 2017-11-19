@@ -68,7 +68,7 @@
                         <a href="#roleTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                         </a>
-                        <button data-target="#bestRoleModal" id="newbestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="Role" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
+                        <button data-target="#bestRoleModal" id="bestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="Role" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
                     </div>
                     <div class="span1">
                         <label for="roleType">
@@ -173,6 +173,7 @@
                             <a href="#roleTagsModal_${role.id}" class="btn" data-toggle="modal">
                                 <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                             </a>
+                            <button data-target="#bestRoleModal" id="newbestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="Role" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
                         </div>
                         <div class="span1">
                             <label for="roleType">
@@ -384,5 +385,41 @@
                 </form>
             </div>
         </g:each>
+    </div>
+
+    <div id="bestRoleModal" class="modal hide fade tags-modal" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>
+                <g:message code="redactintrigue.role.bestRole" default="Best Roles"/>
+            </h3>
+        </div>
+
+        <div id="modalBestRole" class="modal-body">
+            <!--<div class="span1 placeLoader" style="display:none;"></div>>
+        <!--<select class="form-control" id="selectUnivers" data-url="<g:createLink controller="GenericPlace" action="getBestRoles"/>" name="univerTag">
+            <option value="" disabled selected style='display:none;'><g:message code="redactintrigue.selectunivers" default="Choose univer ..."/></option>-->
+            <table class="display">
+            <!-- <th>Univers</th>
+             <th>Valeurs</th>-->
+                <g:each in="${plotInstance}" status="i" var="plotUniversInstance">
+                    <tr>
+                        <td>${plotUniversInstance.name}</td>
+                        <td></td>
+                    </tr>
+                </g:each>
+            </table>
+
+            <!--</select>-->
+            <div class="span1 placeLoader" style="display:none; float : right;"><g:img dir="images/substitution" file="loader.gif" width="30" height="30"/></div>
+            <br>
+            <ul id="listContainer" class="unstyled">
+                <li id="templateBest" class="hidden">TEMPLATE</li>
+            </ul>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Ok</button>
+        </div>
     </div>
 </div>

@@ -25,7 +25,7 @@ import org.gnk.utils.Pair
 
 class NamingController {
 
-    NamingService namingService;
+    Naming2Service namingService;
     JSONObject json;
 
     def list(Integer max) {
@@ -38,104 +38,6 @@ class NamingController {
     }
 
     static private OutputHandler outputHandler
-
-    def bestFirstName()
-    {
-        Firstname nam = new Firstname();
-        Set<RoleHasTag> tags = new ArrayList<>();
-
-        params.each {
-            if (it.key.startsWith("firstnameTags_")) {
-                FirstnameHasTag subtag = new Firstname();
-                Tag tag = Tag.get((it.key - "firstnameTags_") as Integer);
-                if (tag.parent != null) {
-                    subtag.tag = tag;
-                    subtag.weight = params.get("firstnameTagsWeight_" + tag.id) as Integer;
-                    //subtag.type = tag.parent.name;
-                    tags.add(subtag);
-                }
-            }
-        }
-        //gp.setTagList(tags);
-
-        NamingService namingservice = new NamingService();
-        Tag tagUnivers = new Tag();
-        tagUnivers = Tag.findById("33089" as Integer);
-        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
-
-        json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-
-        if (params.containsKey("plotId")) {
-            Plot plot = Plot.get(params.plotId as Integer)
-            nam.plotId = plot.id
-            nam.resultsAllUniverses = namingservice.findBestObjectsForAllUnivers(rol, plot)
-            if (gp.resultsAllUniverses.empty)
-                throw (NullPointerException)
-            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-                int i = 0;
-                while (i != 3) {
-                    jsonArray.add(ref.left.getName());
-                    json.put(ref.left.name, jsonArray)
-                    jsonArray = [];
-                    i++;
-                }
-            }
-        }
-
-        render(contentType: "application/json") {
-            object([json: json])
-        }
-    }
-
-    def bestName()
-    {
-        Name naming = new Name();
-        Set<RoleHasTag> tags = new ArrayList<>();
-
-        params.each {
-            if (it.key.startsWith("nameTags_")) {
-                NameHasTag subtag = new Name();
-                Tag tag = Tag.get((it.key - "nameTags_") as Integer);
-                if (tag.parent != null) {
-                    subtag.tag = tag;
-                    subtag.weight = params.get("nameTagsWeight_" + tag.id) as Integer;
-                    //subtag.type = tag.parent.name;
-                    tags.add(subtag);
-                }
-            }
-        }
-        //gp.setTagList(tags);
-
-        NamingService namingservice = new NamingService();
-        Tag tagUnivers = new Tag();
-        tagUnivers = Tag.findById("33089" as Integer);
-        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
-
-        json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-
-        if (params.containsKey("plotId")) {
-            Plot plot = Plot.get(params.plotId as Integer)
-            naming.plotId = plot.id
-            naming.resultsAllUniverses = namingservice.findBestObjectsForAllUnivers(naming, plot)
-            if (gp.resultsAllUniverses.empty)
-                throw (NullPointerException)
-            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
-                int i = 0;
-                while (i != 3) {
-                    jsonArray.add(ref.left.getName());
-                    json.put(ref.left.name, jsonArray)
-                    jsonArray = [];
-                    i++;
-                }
-            }
-        }
-
-        render(contentType: "application/json") {
-            object([json: json])
-        }
-    }
 
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();

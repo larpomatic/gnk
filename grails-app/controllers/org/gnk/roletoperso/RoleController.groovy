@@ -2,6 +2,7 @@ package org.gnk.roletoperso
 
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.gnk.naming.Name
 import org.gnk.naming.NamingService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
@@ -42,6 +43,52 @@ class RoleController {
             object
         }
 	}
+
+    /*def getBestNames() {
+        Name n = new GenericName();
+        Set<GenericPlaceHasTag> tags = new ArrayList<>();
+
+        params.each {
+            if (it.key.startsWith("placeTags_")) {
+                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                Tag tag = Tag.get((it.key - "placeTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("placeTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
+        }
+        //gp.setTagList(tags);
+
+        //PlaceResourceService placeresourceservice = new PlaceResourceService();
+        Tag tagUnivers = new Tag();
+        tagUnivers = Tag.findById("33089" as Integer);
+        ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
+
+        json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        if (params.containsKey("plotId")) {
+            Plot plot = Plot.get(params.plotId as Integer)
+            gp.plotId = plot.id
+            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
+            if (gp.resultsAllUniverses.empty)
+                throw (NullPointerException)
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
+                    jsonArray.add(ref2.left.getName());
+                }
+                json.put(ref.left.name, jsonArray)
+                jsonArray = [];
+            }
+        }
+
+        render(contentType: "application/json") {
+            object([json: json])
+        }
+    }*/
 
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();
