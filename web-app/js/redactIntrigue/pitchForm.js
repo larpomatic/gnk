@@ -47,9 +47,9 @@ function verifyType(elt)
 function update_text(elt)
 {
     console.log(elt.textContent);
-
-    var description = transformDescription(elt);
-
+    var zo = elt.innerHTML;
+    //var description = transformDescription(elt); // element a convertir
+    var description = transformDescription(zo);
     var id_render = elt.id.split('_');
     document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0].setAttribute('value', description);
     console.log((document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0]).value);
