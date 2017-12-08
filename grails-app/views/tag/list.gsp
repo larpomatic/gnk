@@ -27,11 +27,11 @@
 			<g:render template="../infosAndErrors" />
         <div class="modal-body">
             <ul class="Tags">
-                <g:render template="jstreeold"/>
+
+              <g:render template="jstree" model="[json : json, tagInstanceList : tagInstanceList]"/>
 
     <g:javascript src="redactIntrigue/bootstrap-confirmation.js"/>
     <g:javascript src="tag/addTagChild.js"/>
-    <g:javascript src="tag/deleteTag.js"/>
     <g:javascript src="tag/modalTag.js"/>
     </body>
 </html>
