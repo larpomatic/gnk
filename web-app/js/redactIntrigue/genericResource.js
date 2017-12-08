@@ -329,7 +329,7 @@ function getBestResource()
             success: function(data) {
                 $.each(data.object.json, function(i,v){
                     var h5 = document.createElement("H4");
-                    var node = document.createTextNode(v[0]);
+                    var node = document.createTextNode(i);
                     h5.appendChild(node);
                     cont.append(h5);
                     var ul = document.createElement("ul");
@@ -337,7 +337,7 @@ function getBestResource()
                     {
                         cont.append("Pas de meilleure ressource !");
                     }
-                    for(j = 1; j < v.length; j++)
+                    for(j = 0; j < v.length; j++)
                     {
                         var li = document.createElement("li");
                         li.innerHTML = v[j];

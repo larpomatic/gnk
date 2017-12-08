@@ -156,6 +156,7 @@ public class PlaceResourceService {
         for (Tag t in univerListTag) {
             Gn gn = new Gn();
             gn.addPlot(plot);
+            t.setWeight(101);
             gn.setUnivers(t);
             all_objects.addAll(new Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>>(t, findBestObjects(genericObject, gn)));
         }

@@ -1,6 +1,11 @@
 package org.gnk.tag
 
 import org.gnk.gn.Gn
+import org.gnk.naming.Firstname
+import org.gnk.naming.FirstnameHasTag
+import org.gnk.naming.Name
+import org.gnk.naming.NameHasTag
+import org.gnk.naming.PersoForNaming
 import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 import org.gnk.ressplacetime.GenericObject
@@ -18,6 +23,7 @@ public class V2TagService {
     private static float plotponderation = 0.2;
     private static float GenericObjectponderation = 1;
     private static float ReferentialObjectponderation = 1;
+    private static boolean VERBOSE = false
 
     V2TagService() {
     }
@@ -44,7 +50,7 @@ public class V2TagService {
      * Calculate the total score of similitude between a GenericObjet and an Objet
      * @param genericObject
      * @param Object
-     * @param gn
+     * @param Gn
      * @return the calculus in Long
      */
     Long computeComparativeScoreObject(GenericObject genericObject, ReferentialObject object, Gn gn) {
@@ -96,6 +102,74 @@ public class V2TagService {
     }
 
     /**
+     * Calculate the total score of similitude between the map of Character 's tags and a Firstname
+     * @param map_character
+     * @param Firstname
+     * @return the calculus in Long
+     */
+    Long computeComparativeScoreObject(Map<Tag, Integer> map_character, Firstname firstname){
+        int totalNumberOfTagsUsed = 0
+        int result = 0
+        Long score = 0
+
+        Map<Tag, Integer> map_firstname = initObjectList(firstname)
+        map_firstname.putAll(getRelevantTags(map_firstname))
+        map_firstname.putAll(getParentTags(map_firstname))
+
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
+                if (entry_character.getKey().getId() == null) {
+                    if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1
+                    }
+                }
+            }
+        }
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed)
+        return result
+    }
+
+    /**
+     * Calculate the total score of similitude between the map of Character 's tags and a Name
+     * @param map_character
+     * @param Name
+     * @return the calculus in Long
+     */
+    Long computeComparativeScoreObject(Map<Tag, Integer> map_character, Name name) {
+        int totalNumberOfTagsUsed = 0
+        int result = 0
+        Long score = 0
+
+        Map<Tag, Integer> map_name = initObjectList(name)
+        map_name.putAll(getRelevantTags(map_name))
+        map_name.putAll(getParentTags(map_name))
+
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry_name : map_name.entrySet()) {
+                if (entry_character.getKey().getId() == null) {
+                    if (entry_character.getKey().value_substitution == (entry_name.getKey().getName())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_name.getValue());
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_character.getKey().getId()== (entry_name.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_name.getValue());
+                        totalNumberOfTagsUsed += 1
+                    }
+                }
+            }
+        }
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        return result
+    }
+
+    /**
      * Initialize the list of tags with the weight of GenericObject Place/Resource and a gn
      * @param GenericObject
      * @param gn
@@ -103,7 +177,7 @@ public class V2TagService {
      */
     Map<Tag, Integer> initGenericObjectList(GenericObject genericObject, Gn gn) {
 
-        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>();
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
 
         map_tags.putAll(genericObject.getTagsAndWeights(GenericObjectponderation))
         //for (tags in map_tags)
@@ -114,6 +188,10 @@ public class V2TagService {
             for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
                 map_tags = addTag(map_tags, gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
             }
+        }
+
+        if (gn.getUnivers() != null) {
+            map_tags = addTag(map_tags, gn.getUnivers(), 100)
         }
 
         if (gn.evenementialTags != null) {
@@ -145,6 +223,110 @@ public class V2TagService {
     }
 
     /**
+     * Initialize the list of tags with the weight of a character and a gn
+     * @param GenericObject
+     * @param gn
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initGenericObjectList(PersoForNaming character, Gn gn){
+        if (VERBOSE){
+        println("------------------------------------------------------")
+        println("Char ".toUpperCase() + character.code)
+        println("chara univers " + character.universe)
+        println("GN name: " + gn.name)
+        println("GN id: " + gn.id)
+        println("GN tag list: " + gn.tagList)
+        println("GN evenmentialTags: " + gn.evenementialTags)
+        println("GN mainstreamTags: " + gn.mainstreamTags)
+        println("GN univers tags: " + gn.getUnivers())
+        println("GN tags: " + gn.getGnTags())
+        println("GN firstnameSet: " + gn.firstnameSet)}
+
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
+
+        if (character.universe){
+            map_tags.put(Tag.findWhere(name: character.universe), new Integer((int)100 * GenericObjectponderation))}
+
+        ArrayList<TagRelation> relations = TagRelation.findAllWhere(tag1: Tag.findWhere(name: character.universe))
+        if (relations){
+            for (def r : relations)
+                map_tags.put(r.tag2, (int)(r.weight * GNponderation))
+        }
+
+        if (!character.getTag().isEmpty()) {
+            for (com.gnk.substitution.Tag t : character.getTag()) {
+                map_tags.put(Tag.findWhere(name: t.value), t.weight * GenericObjectponderation)
+            }
+            if (VERBOSE){
+            println("----")
+            println("character tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())}
+        }
+        //else println(" PAS DE CHARACTER TAGS")
+        // chaque poids d'un tag du GN est pondéré à 90%
+        if (gn.gnTags != null) {
+            for (Map.Entry<Tag, Integer> gnTags_list : gn.gnTags.entrySet()) {
+                map_tags = addTag(map_tags, gnTags_list.getKey(), new Integer((int) gnTags_list.getValue() * GNponderation));
+            }
+            if (VERBOSE){
+            println("----")
+            println("gntags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())}
+        }
+        //else println (" PAS DE GNTAGS")
+        if (gn.getUnivers() != null) {
+            map_tags = addTag(map_tags, gn.getUnivers(), gn.getUnivers().getWeight());
+            println("----")
+            println("getUnivers tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())
+        }
+        //else println (" PAS DE UNIVERS TAGS")
+        if (gn.evenementialTags != null) {
+            // chaque poids d'un tag evenementiel du GN est pondéré à 60%
+            for (Map.Entry<Tag, Integer> gnevenementialTags_list : gn.evenementialTags.entrySet()) {
+                map_tags = addTag(map_tags, gnevenementialTags_list.getKey(), new Integer((int) gnevenementialTags_list.getValue() * Evenementielponderation));
+            }
+            if (VERBOSE){
+            println("----")
+            println("evenemential tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())}
+        }
+        //else println (" PAS DE EVENEMENTIAL TAGS")
+        if (gn.mainstreamTags != null) {
+            // chaque poids d'un tag mainstream du GN est pondéré à 40%
+            for (Map.Entry<Tag, Integer> gnmainstreamTags_list : gn.mainstreamTags.entrySet()) {
+                map_tags = addTag(map_tags, gnmainstreamTags_list.getKey(), new Integer((int) gnmainstreamTags_list.getValue() * Mainstreamponderation));
+            }
+            if (VERBOSE){
+            println("----")
+            println("mainstream tags:" )
+            for (Map.Entry<Tag, Integer> entry_character : map_tags.entrySet())
+            {
+                println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+            }
+            print(System.lineSeparator())}
+        }
+        //else println (" PAS DE MAINSTREAM TAGS")
+        return map_tags
+    }
+
+    /**
      * Initialize the tags list of an object Place/resource
      * @param object
      * @return Map < Tag , Integer >
@@ -159,44 +341,78 @@ public class V2TagService {
     }
 
     /**
+     * Initialize the tags list of an object Firstname
+     * @param Firstname
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initObjectList(Firstname firstname){
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
+        Set<FirstnameHasTag> fnHasTags = firstname.getExtTags()
+
+        if (fnHasTags != null) {
+            for (FirstnameHasTag fnHasTag : fnHasTags) {
+                map_tags.put(fnHasTag.getTag(), (int)(fnHasTag.getWeight() * ReferentialObjectponderation))
+            }
+        }
+        return map_tags
+    }
+
+    /**
+     * Initialize the tags list of an object Name
+     * @param Name
+     * @return Map < Tag , Integer >
+     */
+    Map<Tag, Integer> initObjectList(Name lastname){
+        Map<Tag, Integer> map_tags = new HashMap<Tag, Integer>()
+        Set<NameHasTag> nHasTags = lastname.getExtTags()
+
+        if (nHasTags != null) {
+            for (NameHasTag nHasTag : nHasTags) {
+                map_tags.put(nHasTag.getTag(), (int)(nHasTag.getWeight() * ReferentialObjectponderation))
+            }
+        }
+        return map_tags
+    }
+
+    /**
      * get tags with weights from an object Place/Resource witch is not generic
      * @param object
      * @return Map < Tag , Integer >
      */
-        Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
-
-            Map<Tag, Integer> parents_tags = new HashMap<>();
-
-            ArrayList<Tag> current_gen_parents = new ArrayList<>();
-            current_gen_parents.addAll(taglist.keySet());
-
-            ArrayList<Tag> next_gen_parents = new ArrayList<>();
+    Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
 
 
-                for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
-                    for (Tag t in current_gen_parents) {
-                        ArrayList<Tag> parent = TagRelation.findParents(t);
-                            for (Tag p in parent) {
-                                next_gen_parents.add(p);
-                                TagRelation tr = TagRelation.myFindWhere(t, p)
-                                if (tr != null) {
-                                    parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                } else {
-                                    tr = TagRelation.myFindWhere(p, t)
-                                    if (tr != null && tr.isBijective)
-                                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
-                                }
-                            }
+        Map<Tag, Integer> parents_tags = new HashMap<>();
 
-                        }
-                    current_gen_parents = next_gen_parents;
-                    next_gen_parents.clear();
+        ArrayList<Tag> current_gen_parents = new ArrayList<>();
+        current_gen_parents.addAll(taglist.keySet());
+
+        ArrayList<Tag> next_gen_parents = new ArrayList<>();
+
+
+        for (int gen = NumberOfGenerationsRelevant; gen--; gen > 0) {
+            for (Tag t in current_gen_parents) {
+                ArrayList<Tag> parent = TagRelation.findParents(t);
+                for (Tag p in parent) {
+                    next_gen_parents.add(p);
+                    TagRelation tr = TagRelation.myFindWhere(t, p)
+                    if (tr != null) {
+                        parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
+                    } else {
+                        tr = TagRelation.myFindWhere(p, t)
+                        if (tr != null && tr.isBijective)
+                            parents_tags = addTag(parents_tags, p, computeFatherWeight(taglist.get(t), tr.getterWeight()));
                     }
+                }
 
-            return parents_tags;
-
+            }
+            current_gen_parents = next_gen_parents;
+            next_gen_parents.clear();
         }
 
+        return parents_tags;
+
+    }
 
     /**
      *
@@ -229,7 +445,7 @@ public class V2TagService {
                 Tag parent = t.getParent();
                 if (parent != null) {
                     next_gen_parents.add(parent);
-                    parents_tags = addTag(parents_tags, parent, computeFatherWeightParent(taglist.get(t)));
+                    parents_tags = addTag(parents_tags, parent, computeFatherWeightParent(taglist.get(t).intValue()));
                 }
             }
             current_gen_parents = next_gen_parents;
@@ -265,7 +481,7 @@ public class V2TagService {
     Long computeCumulativeScoreTags(Tag tag, Integer gPweight, Integer pweight) {
         long score = 0;
 
-        if (tag.parent != null && tag.parent.getName() != null && tag.parent.getName().equals("Tag Univers")) {
+        if (tag.parent != null && tag.parent.getName() != null && tag.parent.getName() == "Tag Univers") {
             score = 50;
         }
         else {
@@ -315,10 +531,10 @@ public class V2TagService {
      * @return The map modified or not.
      */
     private Map<Tag, Integer> addTag(Map<Tag, Integer> map, Tag tag, Integer integer) {
-        Integer testValue = map.get(tag);
+        Integer testValue = map.get(tag)
 
         if (testValue == null)
-            map.put(tag, integer);
+            map.put(tag, integer)
         else {
                 //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
                 map.put(tag, (Integer)(integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
@@ -326,4 +542,64 @@ public class V2TagService {
 
         return  map;
     }
+    
+    //Ne pas supprimer, car contient les print pour tester les tags de tous les éléments
+    /*
+    Long computeComparativeScoreObject(PersoForNaming character, Firstname firstname, Gn gn) {
+
+        int totalNumberOfTagsUsed = 0;
+        int result = 0;
+
+        Map<Tag, Integer> map_character = initGenericObjectList(character, gn)
+        map_character.putAll(getRelevantTags(map_character))
+        map_character.putAll(getParentTags(map_character))
+
+
+        long startTime = System.nanoTime();
+        Map<Tag, Integer> map_firstname = initObjectList(firstname)
+        map_firstname.putAll(getRelevantTags(map_firstname))
+        map_firstname.putAll(getParentTags(map_firstname))
+        long endTime = System.nanoTime();
+        println("initObjectList duration: " + ((endTime - startTime) / 1000000000.0) + " seconds")
+
+        Long score = 0;
+
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet()) {
+            for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet()) {
+                if (entry_character.getKey().getId() == null) {
+                    if (entry_character.getKey().value_substitution == (entry_firstname.getKey().getName())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1;
+                    }
+                } else {
+                    if (entry_character.getKey().getId()== (entry_firstname.getKey().getId())) {
+                        score += computeCumulativeScoreTags(entry_character.getKey(), entry_character.getValue(), entry_firstname.getValue());
+                        totalNumberOfTagsUsed += 1
+                    }
+                }
+            }
+        }
+
+        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+
+
+        if (VERBOSE){
+        print("------------------------------------------------------")
+        println("Tags du character number ".toUpperCase() + character.code + ": " )
+        for (Map.Entry<Tag, Integer> entry_character : map_character.entrySet())
+        {
+            println(" tag: " + entry_character.key.name + ", weight: " + entry_character.value)
+        }
+        print(System.lineSeparator())
+        println("Tags du firstname: ".toUpperCase() + firstname.name.toUpperCase() )
+        for (Map.Entry<Tag, Integer> entry_firstname : map_firstname.entrySet())
+        {
+            println(" tag: " + entry_firstname.key.name + ", weight: " + entry_firstname.value)
+        }
+        println("Ranktag = " + result)
+        print(System.lineSeparator())}
+
+        return result
+    }*/
+
 }
