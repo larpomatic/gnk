@@ -191,7 +191,7 @@ public class V2TagService {
         }
 
         if (gn.getUnivers() != null) {
-            map_tags = addTag(map_tags, gn.getUnivers(), gn.getUnivers().getWeight());
+            map_tags = addTag(map_tags, gn.getUnivers(), 100)
         }
 
         if (gn.evenementialTags != null) {
@@ -531,10 +531,10 @@ public class V2TagService {
      * @return The map modified or not.
      */
     private Map<Tag, Integer> addTag(Map<Tag, Integer> map, Tag tag, Integer integer) {
-        Integer testValue = map.get(tag);
+        Integer testValue = map.get(tag)
 
         if (testValue == null)
-            map.put(tag, integer);
+            map.put(tag, integer)
         else {
                 //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
                 map.put(tag, (Integer)(integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
