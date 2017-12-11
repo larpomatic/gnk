@@ -174,6 +174,7 @@
                                 <g:message code="redactintrigue.role.chooseTags" default="Choose tags"/>
                             </a>
                             <button data-target="#bestRoleModal" id="newbestRole" type="button" class="btnBestRole" data-toggle="modal" data-url="<g:createLink controller="Role" action="getBestRole"/>"><i class="btnBestRole img-circle" ></i></button>
+                            <
                         </div>
                         <div class="span1">
                             <label for="roleType">
@@ -318,7 +319,6 @@
                                         </g:else>
                                             <a class="accordion-toggle spanLabel" data-toggle="collapse" data-parent="#accordionPastScene${role.id}"
                                                href="#collapsePastScene${role.id}-${pastscene.id}" data-pastsceneId="${pastscene.id}">
-
                                                 <g:pastsceneTime pastsceneId="${pastscene.id}"/>
                                             </a>
                                         </div>

@@ -320,21 +320,4 @@ class GenericResourceController {
             object([json: json])
         }
     }
-    def getBestResourcesAux()
-    {
-        GenericResource gr = new GenericResource()
-        Set<GenericResourceHasTag> tags = new ArrayList<>();
-        params.each {
-            if (it.key.startsWith("resourceTags_")) {
-                GenericResourceHasTag subtag = new GenericResourceHasTag();
-                Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
-                if (tag.parent != null) {
-                    subtag.tag = tag;
-                    subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
-                    //subtag.type = tag.parent.name;
-                    tags.add(subtag);
-                }
-            }
-        }
-    }
 }

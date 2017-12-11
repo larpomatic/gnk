@@ -1,5 +1,6 @@
 package org.gnk.naming
 
+import org.gnk.roletoperso.RoleController
 import org.gnk.roletoperso.RoleHasRelationWithRole
 
 import java.util.List;
@@ -42,7 +43,15 @@ class PersoForNaming {
 		this.is_selectedName = is_selectedName;
 		this.is_selectedFirstName = is_selectedFirstName;
 		this.family = family;
-	}
+
+        RoleController Rl = new RoleController();
+        Rl.getBestNames();
+
+        if (this.is_selectedFirstName)
+        {
+            Rl.getBestNames();
+        }
+    }
 
     @java.lang.Override
     public String getgender() {

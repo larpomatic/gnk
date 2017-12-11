@@ -557,8 +557,16 @@ class RedactIntrigueController {
                 wordWriter.addStyledParagraphOfText("Normal", "La relation est : " + isbijective + exclusive + hidden)
 //                wordWriter.addStyledParagraphOfText("T4", "Description : ")
 //                wordWriter.addStyledParagraphOfText("Normal", role2.description)
+                wordWriter.addStyledParagraphOfText("T2","Liste des Meilleures Noms et Prénoms :")
+                n.plotId = plot.id
+                n.resultsAllUniverses = naming.findBestObjectsForAllUnivers(n, plot)
+                for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in n.resultsAllUniverses) {
+                    wordWriter.addStyledParagraphOfText("T3","-" + ref.left.name + ":");
+                    for (int j = 0; j < 3; j++) {
+                        wordWriter.addStyledParagraphOfText("Normal", ref.right[j].left.name);
+                    }
+                }
             }
-
         }
     }
 

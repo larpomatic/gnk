@@ -3,6 +3,8 @@ package org.gnk.roletoperso
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.gnk.naming.Name
+import org.gnk.naming.NameHasTag
+import org.gnk.naming.Naming2Service
 import org.gnk.naming.NamingService
 import org.gnk.resplacetime.Event
 import org.gnk.resplacetime.GenericPlace
@@ -15,6 +17,9 @@ import org.gnk.tag.TagService
 import org.gnk.utils.Pair;
 
 class RoleController {
+    Naming2Service Naming;
+    JSONObject json;
+
 	def index() {
         redirect(action: "list", params: params)
 	}
@@ -44,13 +49,13 @@ class RoleController {
         }
 	}
 
-    /*def getBestNames() {
-        Name n = new GenericName();
-        Set<GenericPlaceHasTag> tags = new ArrayList<>();
+    def getBestNames() {
+        Name n = new Name();
+        Set<NameHasTag> tags = new ArrayList<>();
 
         params.each {
             if (it.key.startsWith("placeTags_")) {
-                GenericPlaceHasTag subtag = new GenericPlaceHasTag();
+                NameHasTag subtag = new NameHasTag();
                 Tag tag = Tag.get((it.key - "placeTags_") as Integer);
                 if (tag.parent != null) {
                     subtag.tag = tag;
@@ -60,9 +65,7 @@ class RoleController {
                 }
             }
         }
-        //gp.setTagList(tags);
 
-        //PlaceResourceService placeresourceservice = new PlaceResourceService();
         Tag tagUnivers = new Tag();
         tagUnivers = Tag.findById("33089" as Integer);
         ArrayList<Tag> universList = Tag.findAllByParent(tagUnivers);
@@ -71,12 +74,12 @@ class RoleController {
         JSONArray jsonArray = new JSONArray();
 
         if (params.containsKey("plotId")) {
-            Plot plot = Plot.get(params.plotId as Integer)
-            gp.plotId = plot.id
-            gp.resultsAllUniverses = placeResourceService.findBestObjectsForAllUnivers(gp, plot)
-            if (gp.resultsAllUniverses.empty)
+            //Plot plot = Plot.get(params.plotId as Integer)
+            //n.plotId = plot.id
+            n.name = Naming2Service.findBestNames(persolist, gn_id)
+            if (n.name.empty)
                 throw (NullPointerException)
-            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gp.resultsAllUniverses) {
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in n.name) {
                 for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
                     jsonArray.add(ref2.left.getName());
                 }
@@ -88,7 +91,7 @@ class RoleController {
         render(contentType: "application/json") {
             object([json: json])
         }
-    }*/
+    }
 
     def JSONArray buildTagList(def roleTagList) {
         JSONArray jsonTagList = new JSONArray();
