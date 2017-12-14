@@ -4,7 +4,7 @@
 
 
 %{--<legend>${message(code: 'adminRef.tag.list')}</legend>--}%
-<legend>Liste des Noms</legend>
+<legend>Liste des Patronymes</legend>
 
 <table id="listTable" class="table table-bordered">
     <thead>
@@ -15,7 +15,7 @@
         <th>Date Modification</th>
         <g:hasRights lvlright="${right.REFMODIFY.value()}">
             <th>
-                Duppliquer
+                Dupliquer
             </th>
         </g:hasRights>
             <g:hasRights lvlright="${right.REFDELETE.value()}">
@@ -23,7 +23,6 @@
                     Supprimer
                 </th>
             </g:hasRights>
-
     </tr>
     </thead>
     <tbody>
@@ -60,19 +59,20 @@
                     <fieldset class="buttons">
                         <g:hasRights lvlright="${right.REFMODIFY.value()}">
                             <a href="${createLink(action: "dupplicate", id: "${NameInstance?.id}")}">
-                               Duppliquer</a>
+                               Dupliquer</a>
                         </g:hasRights>
                     </fieldset>
                 </g:form>
             </td>
             <td>
+
         <g:form>
             <fieldset class="buttons">
                 <g:hiddenField name="id" value="${NameInstance.id}"/>
                 <g:hasRights lvlright="${right.REFDELETE.value()}">
                     <g:actionSubmit class="btn btn-danger" action="delete"
                                     value="${message(code: 'default.delete')}"
-                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce nom?');"/>
+                                    onclick="return confirm('Etes vous sûre de vouloir supprimer ce Patronyme?');"/>
                 </g:hasRights>
             </fieldset>
         </g:form>
@@ -115,3 +115,6 @@
 %{--</g:each>--}%
     </tbody>
 </table>
+<script type="application/javascript">
+    $(".mytool").tooltip({ html: true });
+</script>

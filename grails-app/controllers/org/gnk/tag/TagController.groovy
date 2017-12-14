@@ -27,17 +27,38 @@ class TagController {
     def list(String sort) {
         List<Tag> tags = Tag.list();
         Map<Integer, ArrayList<Tag>> mapTagParent = new HashMap<Integer, ArrayList>();
+        JSONArray jsonArray = new JSONArray();
         for (Tag tag : tags) {
+            JSONObject obj = new JSONObject();
+            JSONObject obj2 = new JSONObject();
+            obj.put("id", tag.id);
             ArrayList<Tag> tagParent = new ArrayList<Tag>();
             Tag t = tag.parent;
+
             while (t != null) {
                 if (!"".equals(tag.name)) {
                     tagParent.add(t);
+
                 }
                 t = t.parent;
             }
+
+
             tagParent = tagParent.reverse();
             mapTagParent.put(tag.id, tagParent);
+            if (tagParent.size() == 0)
+                obj.put("parent", "#");
+            else
+                obj.put("parent", tagParent.get(tagParent.size()-1).id);
+            obj.put("text", tag.name);
+            obj2.put("relevantFirstname", tag.relevantFirstname)
+            obj2.put("relevantLastname", tag.relevantLastname);
+            obj2.put("relevantPlace", tag.relevantPlace);
+            obj2.put("relevantPlot", tag.relevantPlot);
+            obj2.put("relevantResource", tag.relevantResource);
+            obj2.put("relevantRole", tag.relevantRole);
+            obj.put("a_attr",obj2);
+            jsonArray.put(obj);
         }
         Tag parent = Tag.get(params.Tag_select as Integer)
         String parentName = parent == null ? "" : parent.name
@@ -47,7 +68,7 @@ class TagController {
 
             List<Tag> resultList = new ArrayList<Tag>()
             resultList.addAll(parent.children)
-            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName]
+            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName,json:jsonArray]
         } else {
             sort = sort ?: 'name'
             params.order = params.order ?: 'asc'
@@ -60,7 +81,7 @@ class TagController {
                 } else
                     order(sort, params.order as String)
             }
-            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName, listTagParent: mapTagParent]
+            [tagInstanceList: resultList, genericTags: new TagService().getGenericChilds(), tagParent: parentName, listTagParent: mapTagParent,json:jsonArray]
         }
     }
 
@@ -107,7 +128,7 @@ class TagController {
     }
 
     def save() {
-        int idparent = Integer.parseInt(params.idParentSave);
+        int idparent = Integer.parseInt(params.idTag);
         Tag tagParent = Tag.findById(idparent);
         Tag newTag = new Tag();
         String name = params.nameTag
@@ -125,6 +146,36 @@ class TagController {
         newTag.extPlotTags = new HashSet<>();
         newTag.extResourceTags = new HashSet<>();
         newTag.extRoleTags = new HashSet<>();
+        if (params.relevantPlaceson) {
+            newTag.relevantPlace = true;
+        } else {
+            newTag.relevantPlace = false;
+        }
+        if (params.relevantFirstnameson) {
+            newTag.relevantFirstname = true;
+        } else {
+            newTag.relevantFirstname = false;
+        }
+        if (params.relevantLastnameson) {
+            newTag.relevantLastname = true;
+        } else {
+            newTag.relevantLastname = false;
+        }
+        if (params.relevantPlotson) {
+            newTag.relevantPlot = true;
+        } else {
+            newTag.relevantPlot = false;
+        }
+        if (params.relevantResourceson) {
+            newTag.relevantResource = true;
+        } else {
+            newTag.relevantResource = false;
+        }
+        if (params.relevantRoleson) {
+            newTag.relevantRole = true;
+        } else {
+            newTag.relevantRole = false;
+        }
         newTag.parent = tagParent;
 
 //		TagFamily tagFamilyInstance = null;
@@ -132,10 +183,10 @@ class TagController {
 //
 //		if (tagFamilyInstance.equals(null))
 //		{
-//			print "Family not found"
-//			flash.message = message(code: 'Erreur : Cette famille n\'existe pas !')
-//            redirect(action: "list")
-//            return
+//		print "Family not found"
+//		flash.message = message(code: 'Erreur : Cette famille n\'existe pas !')
+//           redirect(action: "list")
+//           return
 //		}
 //
 //		// Creates the relation between the tag and the family
@@ -145,17 +196,7 @@ class TagController {
             render(view: "create", model: [tagInstance: newTag])
             return
         }
-        if (tagParent.children.size() == 1) {
-            Tag tagRelevant1 = new Tag();
-            tagRelevant1.relevantFirstname = false;
-            tagRelevant1.relevantLastname = false;
-            tagRelevant1.relevantPlace = false;
-            tagRelevant1.relevantPlot = false;
-            tagRelevant1.relevantResource = false;
-            tagRelevant1.relevantRole = false;
-            tagRelevant1.tag = tagParent;
-            tagRelevant1.save(failOnError: true);
-        }
+
         flash.messageInfo = message(code: 'adminRef.tag.info.create', args: [newTag.name, tagParent.name])
         redirect(action: "list")
     }
@@ -361,16 +402,12 @@ class TagController {
 //	}
 
     def deleteTag() {
-        int idTag = Integer.parseInt(params.idTag);
+        int idTag = Integer.parseInt(params.idEditRelTagson);
         def tagInstance = Tag.findById(idTag)
-
+        def tagInstanceName = tagInstance.name
         if (tagInstance.children.size() > 0) {
             flash.message = message(code: 'adminRef.tag.info.delete.fail', args: [tagInstance.name])
         } else {
-            Tag tr = tr.findByTag(tagInstance);
-            if (tr) {
-                tr.delete(flush: true);
-            }
             for (int i = 0; tagInstance.extPlaceTags; i++) {
                 ((PlaceHasTag) tagInstance.extPlaceTags.toArray()[i]).delete()
             }
@@ -384,11 +421,10 @@ class TagController {
                 ((PlaceHasTag) tagInstance.extRoleTags.toArray()[i]).delete()
             }
             tagInstance.parent = null;
-            flash.messageInfo = message(code: 'adminRef.tag.info.delete', args: [tagInstance.name])
             tagInstance.delete(flush: true)
-            render(contentType: "text/html") {
-                "OK"
-            }
+            flash.message = message(code: 'adminRef.tag.info.delete', args: [tagInstanceName])
+
+            redirect(action: "list")
         }
     }
 
@@ -417,40 +453,39 @@ class TagController {
     def editRelevantTag() {
         int id = Integer.parseInt(params.idEditRelTag)
         Tag tag = Tag.findById(id)
-        Tag tagRelevant = tag.getTagRelevant()
-        if (tagRelevant) {
-            if (params.checkboxRelevantPlace) {
-                tagRelevant.relevantPlace = true;
+        tag.name = params.NameEditRelTag
+            if (params.relevantPlace) {
+                tag.relevantPlace = true;
             } else {
-                tagRelevant.relevantPlace = false;
+                tag.relevantPlace = false;
             }
-            if (params.checkboxRelevantFirstName) {
-                tagRelevant.relevantFirstname = true;
+            if (params.relevantFirstname) {
+                tag.relevantFirstname = true;
             } else {
-                tagRelevant.relevantFirstname = false;
+                tag.relevantFirstname = false;
             }
-            if (params.checkboxRelevantLastname) {
-                tagRelevant.relevantLastname = true;
+            if (params.relevantLastname) {
+                tag.relevantLastname = true;
             } else {
-                tagRelevant.relevantLastname = false;
+                tag.relevantLastname = false;
             }
-            if (params.checkboxRelevantPlot) {
-                tagRelevant.relevantPlot = true;
+            if (params.relevantPlot) {
+                tag.relevantPlot = true;
             } else {
-                tagRelevant.relevantPlot = false;
+                tag.relevantPlot = false;
             }
-            if (params.checkboxRelevantResource) {
-                tagRelevant.relevantResource = true;
+            if (params.relevantResource) {
+                tag.relevantResource = true;
             } else {
-                tagRelevant.relevantResource = false;
+                tag.relevantResource = false;
             }
-            if (params.checkboxRelevantRole) {
-                tagRelevant.relevantRole = true;
+            if (params.relevantRole) {
+                tag.relevantRole = true;
             } else {
-                tagRelevant.relevantRole = false;
+                tag.relevantRole = false;
             }
-        }
-        int idparent = Integer.parseInt(params.tagParentChoice);
+
+        int idparent = Integer.parseInt(params.idParentSave);
         Tag tagParent = Tag.findById(idparent)
         if (idparent != -1) {
             tag.parent = tagParent;
@@ -462,10 +497,12 @@ class TagController {
                 tagRelevant1.relevantPlot = false;
                 tagRelevant1.relevantResource = false;
                 tagRelevant1.relevantRole = false;
-                tagRelevant1.tag = tagParent;
+               // tagRelevant1.tag = tagParent;
                 tagRelevant1.save(failOnError: true);
             }
         }
+        flash.messageInfo = message(code: 'default.updated.message', args: [tag.name])
+
         redirect(action: "list")
     }
 
