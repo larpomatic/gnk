@@ -24,8 +24,7 @@
 <g:javascript src="redactIntrigue/genericResource.js"/>
 <g:javascript src="redactIntrigue/relation.js"/>
 <g:javascript src="redactIntrigue/generalDescription.js"/>
-<g:javascript src="selectIntrigue/bootstrap.min.js"/>
-<g:javascript src="selectIntrigue/bootstrap-editable.min.js"/>
+<g:javascript src="selectIntrigue/bootstrap.js"/>
 <g:javascript src="redactIntrigue/pitchForm.js"/>
 <div class="row-fluid" id="hidTest">
     <form id="exportPDFButton" onclick="verify_descriptionUpdate()" action="${g.createLink(controller:'redactIntrigue', action:'print')}" method="POST" target="_blank">

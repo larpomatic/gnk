@@ -299,21 +299,42 @@ class GenericResourceController {
 
         if (params.containsKey("plotId")) {
             Plot plot = Plot.get(params.plotId as Integer)
-            gr.plotId = plot.id;
-            gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(gr, plot)
+            gr.plotId = plot.id
+            def list = plot.genericResources;
+            def element = list.asList().get(0);
+            element.plotId = plot.id;
+            gr.resultsAllUniverses = placeresourceservice.findBestObjectsForAllUnivers(element, plot)
             if (gr.resultsAllUniverses.empty)
                 throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in gr.resultsAllUniverses) {
-                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
-                    jsonArray.add(ref2.left.getName());
+                int i = 0;
+                while (i != 3) {
+                    jsonArray.add(ref.right[i].left.name);
+                    i++;
                 }
                 json.put(ref.left.name, jsonArray)
                 jsonArray = [];
             }
         }
-
         render(contentType: "application/json") {
             object([json: json])
+        }
+    }
+    def getBestResourcesAux()
+    {
+        GenericResource gr = new GenericResource()
+        Set<GenericResourceHasTag> tags = new ArrayList<>();
+        params.each {
+            if (it.key.startsWith("resourceTags_")) {
+                GenericResourceHasTag subtag = new GenericResourceHasTag();
+                Tag tag = Tag.get((it.key - "resourceTags_") as Integer);
+                if (tag.parent != null) {
+                    subtag.tag = tag;
+                    subtag.weight = params.get("resourceTagsWeight_" + tag.id) as Integer;
+                    //subtag.type = tag.parent.name;
+                    tags.add(subtag);
+                }
+            }
         }
     }
 }

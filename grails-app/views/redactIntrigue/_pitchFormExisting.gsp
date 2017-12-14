@@ -99,12 +99,11 @@ select {
         <g:render template="dropdownButtons"/>
     </div>
     <!-- Editor -->
-<<<<<<< Updated upstream
    <div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
         ${description.pitch}
     </div>
     <div id="idDescriptionText_${description.idDescription}" contenteditable="true" class="text-left richTextEditor editable"  onblur="saveCarretPos($(this).attr('id'), this)">
-=======
+
     <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
         ${description.pitch}
     </div>-->

@@ -46,9 +46,14 @@ function verifyType(elt)
 //Associe le ritchTexteEditor de la description avec une hiddenvalue pour récupérer la description en back
 function update_text(elt)
 {
+    console.log(elt.textContent);
+    var elt_html_format = elt.innerHTML;
+    //var description = transformDescription(zo);
+    var description = convertDescription_2(elt_html_format);
     var id_render = elt.id.split('_');
-    document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0].setAttribute('value', elt.textContent);
+    document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0].setAttribute('value', description);
     console.log((document.getElementById('render_' + id_render[1]).getElementsByClassName('description_text')[0]).value);
+
     update_modified();
 }
 
