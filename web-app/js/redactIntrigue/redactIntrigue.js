@@ -946,13 +946,6 @@ function toBalise(description_zone)
 
 }
 
-
-
-
-
-
-
-
 function detectPaste() {
     $('#richTextEditor').bind({
         paste : function(){
