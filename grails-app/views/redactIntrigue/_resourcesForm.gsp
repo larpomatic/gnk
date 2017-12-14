@@ -50,7 +50,7 @@
                         <a href="#resourceTagsModal" class="btn" data-toggle="modal">
                             <g:message code="redactintrigue.resource.chooseTags" default="Choose tags"/>
                         </a>
-                        <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>"> <i class="btnBestResource img-circle" ></i></button>
+                        <button data-target="#bestResourceModal" id="newbestResource" type="button" class="btnBestResource" data-toggle="modal" data-url="<g:createLink controller="GenericResource" action="getBestResource"/>"><i class="btnBestResource img-circle" ></i></button>
                     </div>
 
                     <!-- generic ressource possessor -->

@@ -21,7 +21,7 @@ class Naming2Service {
     LinkedList<String> usedFirstName = new LinkedList<String>()
     LinkedList<String> usedName = new LinkedList<String>()
 
-    LinkedList<PersoForNaming> findBestNames(LinkedList<PersoForNaming> persoList, Integer gn_id)
+    public LinkedList<PersoForNaming> findBestNames(LinkedList<PersoForNaming> persoList, Integer gn_id)
     {
         //region <Initializations>
         LinkedList<PersoForNaming> result = new LinkedList<PersoForNaming>()
