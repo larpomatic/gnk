@@ -7,7 +7,7 @@
     </div>
 
     <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbuttonmodal" class="btn btn-warning" data-toggle="modal"><i
-            class="icon-play icon-white"></i> FUSION</a>
+            class="icon-play icon-white"> </i> FUSION</a>
     </div>
 
     <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
@@ -117,8 +117,8 @@
 
                     </div>
                 </div>
+                <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
             </div>
-            <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
         </g:form>
     </div>
 
