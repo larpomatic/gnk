@@ -80,8 +80,10 @@ class RoleController {
             if (n.name.empty)
                 throw (NullPointerException)
             for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in n.name) {
-                for (Pair<ReferentialObject, Integer> ref2 in ref.right) {
-                    jsonArray.add(ref2.left.getName());
+                int i = 0;
+                while (i != 3) {
+                    jsonArray.add(ref.right[i].left.name);
+                    i++;
                 }
                 json.put(ref.left.name, jsonArray)
                 jsonArray = [];
