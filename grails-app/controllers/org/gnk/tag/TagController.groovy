@@ -3,10 +3,13 @@ package org.gnk.tag
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.gnk.administration.DbCoherenceController
+import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
+import org.gnk.resplacetime.Resource
 import org.gnk.resplacetime.ResourceHasTag
 import org.gnk.roletoperso.Role
 import org.gnk.roletoperso.RoleHasTag
+import org.gnk.selectintrigue.Plot
 import org.gnk.selectintrigue.PlotHasTag
 
 //import org.json.JSONArray
@@ -31,6 +34,10 @@ class TagController {
         for (Tag tag : tags) {
             JSONObject obj = new JSONObject();
             JSONObject obj2 = new JSONObject();
+            String namePlot = new String()
+            String namePlace = new String()
+            String nameResource = new String()
+            String nameRole = new String()
             obj.put("id", tag.id);
             ArrayList<Tag> tagParent = new ArrayList<Tag>();
             Tag t = tag.parent;
@@ -54,9 +61,38 @@ class TagController {
             obj2.put("relevantFirstname", tag.relevantFirstname)
             obj2.put("relevantLastname", tag.relevantLastname);
             obj2.put("relevantPlace", tag.relevantPlace);
+            List<PlaceHasTag> places = PlaceHasTag.findAllByTag(tag)
+            for (PlaceHasTag placeht : places) {
+                Place place = placeht.getPlace()
+                namePlace+=place.name+"\n"
+
+            }
+            if (namePlace != "")
+             obj2.put("place",namePlace)
             obj2.put("relevantPlot", tag.relevantPlot);
+            List<PlotHasTag> plots = PlotHasTag.findAllByTag(tag)
+            for (PlotHasTag plotht : plots) {
+                Plot plot = plotht.getPlot()
+                namePlot+=plot.name+"\n"
+            }
+             if (namePlot != "")
+              obj2.put("plot",namePlot)
             obj2.put("relevantResource", tag.relevantResource);
+            List<ResourceHasTag> resources = ResourceHasTag.findAllByTag(tag)
+            for (ResourceHasTag resourceht : resources) {
+                Resource resource = resourceht.getResource()
+                nameResource+=resource.name+"\n"
+            }
+             if (nameResource != "")
+                obj2.put("resource",nameResource)
             obj2.put("relevantRole", tag.relevantRole);
+            List<RoleHasTag> roles = RoleHasTag.findAllByTag(tag)
+            for (RoleHasTag roleht : roles) {
+                Role role = roleht.getRole()
+                nameRole+=role.code+"\n"
+            }
+             if (nameRole != "")
+             obj2.put("role",nameRole)
             obj.put("a_attr",obj2);
             jsonArray.put(obj);
         }
@@ -424,7 +460,7 @@ class TagController {
             tagInstance.delete(flush: true)
             flash.message = message(code: 'adminRef.tag.info.delete', args: [tagInstanceName])
 
-            redirect(action: "list")
+            render(action: "list")
         }
     }
 
@@ -454,36 +490,36 @@ class TagController {
         int id = Integer.parseInt(params.idEditRelTag)
         Tag tag = Tag.findById(id)
         tag.name = params.NameEditRelTag
-            if (params.relevantPlace) {
-                tag.relevantPlace = true;
-            } else {
-                tag.relevantPlace = false;
-            }
-            if (params.relevantFirstname) {
-                tag.relevantFirstname = true;
-            } else {
-                tag.relevantFirstname = false;
-            }
-            if (params.relevantLastname) {
-                tag.relevantLastname = true;
-            } else {
-                tag.relevantLastname = false;
-            }
-            if (params.relevantPlot) {
-                tag.relevantPlot = true;
-            } else {
-                tag.relevantPlot = false;
-            }
-            if (params.relevantResource) {
-                tag.relevantResource = true;
-            } else {
-                tag.relevantResource = false;
-            }
-            if (params.relevantRole) {
-                tag.relevantRole = true;
-            } else {
-                tag.relevantRole = false;
-            }
+        if (params.relevantPlace) {
+            tag.relevantPlace = true;
+        } else {
+            tag.relevantPlace = false;
+        }
+        if (params.relevantFirstname) {
+            tag.relevantFirstname = true;
+        } else {
+            tag.relevantFirstname = false;
+        }
+        if (params.relevantLastname) {
+            tag.relevantLastname = true;
+        } else {
+            tag.relevantLastname = false;
+        }
+        if (params.relevantPlot) {
+            tag.relevantPlot = true;
+        } else {
+            tag.relevantPlot = false;
+        }
+        if (params.relevantResource) {
+            tag.relevantResource = true;
+        } else {
+            tag.relevantResource = false;
+        }
+        if (params.relevantRole) {
+            tag.relevantRole = true;
+        } else {
+            tag.relevantRole = false;
+        }
 
         int idparent = Integer.parseInt(params.idParentSave);
         Tag tagParent = Tag.findById(idparent)
@@ -497,7 +533,7 @@ class TagController {
                 tagRelevant1.relevantPlot = false;
                 tagRelevant1.relevantResource = false;
                 tagRelevant1.relevantRole = false;
-               // tagRelevant1.tag = tagParent;
+                // tagRelevant1.tag = tagParent;
                 tagRelevant1.save(failOnError: true);
             }
         }
