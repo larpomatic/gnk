@@ -1,7 +1,5 @@
 <%@ page import="org.gnk.tag.Tag; org.gnk.admin.right" %>
 <style>
-
-
 #container {
     min-width: 320px;
     margin: 0px auto 0 auto;
@@ -10,7 +8,6 @@
     padding: 0px;
     overflow: hidden;
 }
-
 #SimpleJSTree {
     float: left;
     min-width: 319px;
@@ -18,11 +15,9 @@
     overflow: auto;
     padding: 0px 0;
 }
-
 #data {
     margin-left: 320px;
 }
-
 #data textarea {
     margin: 0;
     padding: 0;
@@ -33,7 +28,6 @@
     display: block;
     line-height: 18px;
 }
-
 #data, {
     font: normal normal normal 12px/18px 'Consolas', monospace !important;
 }
@@ -66,55 +60,88 @@
 
                     <div style="text-align:center; ">
                         <h4> Informations Tag</h4>
-                    <form method="post" action="/gnk/tag/editRelevantTag">
-                        Nom du Tag : <input type="text" id="NameEditRelTag" name="NameEditRelTag"/>
-                        <input type="hidden" name="idEditRelTag" id="idEditRelTag"/>
-                        Tag Parent : <select id="idParentSave" name="idParentSave">
-                        <g:each in="${tagInstanceList}" status="i" var="tagInstance">
-                            <g:if test="${params.idParentSave == tagInstance?.id}">
-                                <option value=${tagInstance?.id} selected>${tagInstance?.name}</option>
-                            </g:if>
-                            <g:else>
-                                <option value= ${tagInstance?.id}>${tagInstance?.name}</option>
-                            </g:else>
-                        </g:each>
-                    </select>
+                        <form method="post" action="/gnk/tag/editRelevantTag">
+                            Nom du Tag : <input type="text" id="NameEditRelTag" name="NameEditRelTag"/>
+                            <input type="hidden" name="idEditRelTag" id="idEditRelTag"/>
+                            Tag Parent : <select id="idParentSave" name="idParentSave">
+                            <g:each in="${tagInstanceList}" status="i" var="tagInstance">
+                                <g:if test="${params.idParentSave == tagInstance?.id}">
+                                    <option value=${tagInstance?.id} selected>${tagInstance?.name}</option>
+                                </g:if>
+                                <g:else>
+                                    <option value= ${tagInstance?.id}>${tagInstance?.name}</option>
+                                </g:else>
+                            </g:each>
+                        </select>
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
 
-                        <div>
+                                        <input id="relevantFirstname" name="relevantFirstname" type="checkbox"/>
+                                        <a href="#colfirst" data-toggle="collapse">RelevantFirstName</a>
+                                        <div id="colfirst" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="firstname" rows=3 name="firstname" style="text-align:center" ></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input name="relevantLastname" id="relevantLastname" type="checkbox"/>
+                                        <a href="#collast" data-toggle="collapse">RelevantLastName</a>
+                                        <div id="collast" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="lastname" rows=3 name="lastname" style="text-align:center" ></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input name="relevantPlace" id="relevantPlace" type="checkbox"/>
+                                        <a href="#colplace" data-toggle="collapse">RelevantPlace</a>
+                                        <div id="colplace" class="collapse">
+                                            <label ></label>
+                                            <textarea  DISABLED id="place" rows=3 name="place" style="text-align:center"></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input name="relevantPlot" id="relevantPlot" type="checkbox"/>
+                                        <a href="#colplot" data-toggle="collapse">RelevantPlot</a>
+                                        <div id="colplot" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="plot" rows=3 name="plot" style="text-align:center" ></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
 
-                            RelevantFirstName
-                            <input id="relevantFirstname" name="relevantFirstname" type="checkbox"/>
+                                        <input name="relevantResource" id="relevantResource" type="checkbox"/>
+                                        <a href="#colres" data-toggle="collapse">RelevantResource</a>
+                                        <div id="colres" class="panel-collapse collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="resource" rows=3 name="resource" style="text-align:center"></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input name="relevantRole" id="relevantRole" type="checkbox"/>
+                                        <a href="#colrole" data-toggle="collapse">RelevantRole</a>
+                                        <div id="colrole" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="role" rows=3 name="role" style="text-align:center" ></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
 
-
-                            RelevantLastName
-                            <input name="relevantLastname" id="relevantLastname" type="checkbox"/>
-
-
-                            RelevantPlace
-                            <input name="relevantPlace" id="relevantPlace" type="checkbox"/>
-
-                            RelevantPlot
-                            <input name="relevantPlot" id="relevantPlot" type="checkbox"/>
-
-
-                            RelevantResource
-                            <input name="relevantResource" id="relevantResource" type="checkbox"/>
-
-
-                            RelevantRole
-                            <input name="relevantRole" id="relevantRole" type="checkbox"/>
-
-                        </div>
-                        <button type="submit" class="btn btn-warning btn-sm">Modifier</button>
-                    </form>
-                    <g:hasRights lvlright="${right.REFMODIFY.value()}">
-                        <g:hasRights lvlright="${right.REFDELETE.value()}">
-                            <input type="hidden" name="idEditRelTagson" ID="idEditRelTagson"/>
-                            <button data-toggle="confirmation-popout" data-placement="left"
-                                    class="btn btn-danger btn-sm">${message(code: 'default.delete')}</button>
+                            <button type="submit" class="btn btn-warning btn-sm">Modifier</button>
+                        </form>
+                        <g:hasRights lvlright="${right.REFMODIFY.value()}">
+                            <g:hasRights lvlright="${right.REFDELETE.value()}">
+                                <input type="hidden" name="idEditRelTagson" ID="idEditRelTagson"/>
+                                <button data-toggle="confirmation-popout" data-placement="left"
+                                        class="btn btn-danger btn-sm">${message(code: 'default.delete')}</button>
+                            </g:hasRights>
                         </g:hasRights>
-                    </g:hasRights>
-                        </div>
+                    </div>
             </tr>
         </td>
             <tr>
@@ -132,28 +159,24 @@
                                 </div>
 
                                 <div>
-
-                                    RelevantFirstName
                                     <input id="relevantFirstnameson" name="relevantFirstnameson" type="checkbox"/>
+                                    RelevantFirstName
 
-                                    RelevantLastName
                                     <input name="relevantLastnameson" id="relevantLastnameson" type="checkbox"/>
+                                    RelevantLastName
 
-
-                                    RelevantPlace
                                     <input name="relevantPlaceson" id="relevantPlaceson" type="checkbox"/>
+                                    RelevantPlace
 
-                                    RelevantPlot
                                     <input name="relevantPlotson" id="relevantPlotson" type="checkbox"/>
+                                    RelevantPlot
 
-                                    RelevantResource
                                     <input name="relevantResourceson" id="relevantResourceson" type="checkbox"/>
+                                    RelevantResource
 
-                                    RelevantRole
                                     <input name="relevantRoleson" id="relevantRoleson" type="checkbox"/>
-
+                                    RelevantRole
                                 </div>
-
                             </div>
                         </g:form>
                     </div>
@@ -166,7 +189,6 @@
 <input type="hidden" name="idTagurl" id="idTagurl" data-url="<g:createLink controller="tag" action="deleteTag"/>"/>
 <script type="text/javascript">
     $(function () {
-
         createJSTree();
     });
     function demo_create() {
@@ -191,7 +213,6 @@
         }
         sel = $('#event_resulttag');
         ref.edit(sel);
-
     }
     ;
     function demo_delete() {
@@ -203,34 +224,34 @@
         ref.delete_node(sel);
     }
     ;
-
-
     function createJSTree() {
         $(window).resize(function () {
             var h = Math.max($(window).height() - 0, 420);
             $('#container, #data, #SimpleJSTree, #data .content').height(h).filter('.default').css('lineHeight', h + 'px');
         }).resize();
-
         $(".search-input").keyup(function () {
-
             var searchString = $(this).val();
             $('#SimpleJSTree').jstree('search', searchString);
         });
-
         $('#SimpleJSTree')
             .on('changed.jstree', function (e, data) {
-                var i, j, t = [], p = [], n = [], relevantFirstname = [], relevantLastname = [], relevantPlace = [], relevantPlot = [], relevantResource = [], relevantRole = [];
+                var i, j, t = [], p = [], n = [], relevantFirstname = [], relevantLastname = [], relevantPlace = [], relevantPlot = [], relevantResource = [], relevantRole = [], Place = [], Plot = [], Resource = [], Role = [], Lastname = [], Firstname = [];
                 for (i = 0, j = data.selected.length; i < j; i++) {
                     t.push(data.instance.get_node(data.selected[i]).id);
                     p.push(data.instance.get_node(data.selected[i]).parent);
                     n.push(data.instance.get_node(data.selected[i]).text);
-
                     relevantFirstname.push(data.instance.get_node(data.selected[i]).a_attr.relevantFirstname);
                     relevantLastname.push(data.instance.get_node(data.selected[i]).a_attr.relevantLastname);
                     relevantPlace.push(data.instance.get_node(data.selected[i]).a_attr.relevantPlace);
                     relevantPlot.push(data.instance.get_node(data.selected[i]).a_attr.relevantPlot);
                     relevantResource.push(data.instance.get_node(data.selected[i]).a_attr.relevantResource);
                     relevantRole.push(data.instance.get_node(data.selected[i]).a_attr.relevantRole);
+                    Place.push(data.instance.get_node(data.selected[i]).a_attr.place);
+                    Plot.push(data.instance.get_node(data.selected[i]).a_attr.plot);
+                    Resource.push(data.instance.get_node(data.selected[i]).a_attr.resource);
+                    Role.push(data.instance.get_node(data.selected[i]).a_attr.role);
+                    Firstname.push(data.instance.get_node(data.selected[i]).a_attr.firstname);
+                    Lastname.push(data.instance.get_node(data.selected[i]).a_attr.lastname);
                 }
                 document.getElementById('idTag').value = t.join(', ');
                 document.getElementById('NameEditRelTag').value = n.join(', ');
@@ -238,6 +259,12 @@
                 document.getElementById('idEditRelTagson').value = t.join(', ');
                 document.getElementById('idParentSave').value = p.join(', ');
                 document.getElementById('relevantFirstname').checked = relevantFirstname.join(', ');
+                document.getElementById('plot').value = Plot.join(', ');
+                document.getElementById('place').value = Place.join(', ');
+                document.getElementById('role').value = Role.join(', ');
+                document.getElementById('resource').value = Resource.join(', ');
+                document.getElementById('firstname').value = Firstname.join(', ');
+                document.getElementById('lastname').value = Lastname.join(', ');
                 if (relevantFirstname.join(', ') == 'true')
                     document.getElementById('relevantFirstname').checked = true;
                 else
@@ -264,26 +291,21 @@
                     document.getElementById('relevantRole').checked = false;
                 $('#').html();
                 $('#').html();
-
             }).jstree({
             'core': {
                 'data': ${json},
                 "check_callback": true
             },
             "search": {
-
                 "case_insensitive": true,
                 "show_only_matches": true
-
             },
-
             "plugins": ["search"]
         });
     }
     $(function () {
         initConfirm();
     });
-
     function initConfirm() {
         $('[data-toggle="confirmation-popout"]').confirmation({
             popout: true,
@@ -300,6 +322,7 @@
                     url: url,
                     data: "idEditRelTagson=" + idEditRelTagson,
                     success: function () {
+                        window.location.reload()
                     },
                     error: function () {
 //                    idTag.parentNode.parentNode.remove()

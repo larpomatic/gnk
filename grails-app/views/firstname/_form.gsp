@@ -91,7 +91,7 @@
 
         <div class="modal-footer">
             %{--<button class="btn" data-dismiss="modal">Ok</button>--}%
-            <g:actionSubmit class="btn btn-primary"  action="edit" value="Ok"/>
+            <g:actionSubmit class=""  action="edit" value="Ok"/>
         </div>
         %{--</form>--}%
 
