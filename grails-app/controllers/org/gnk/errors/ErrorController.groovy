@@ -2,7 +2,7 @@ package org.gnk.errors
 
 class ErrorController {
 
-    private ErrorHandler errorHandler = ErrorHandler.instance;
+   /* private ErrorHandler errorHandler = ErrorHandler.instance;
 
     def getError() {
         Error.Type typeError;
@@ -32,4 +32,4 @@ class ErrorController {
     }
 
     def index() {}
-}
+*/}
