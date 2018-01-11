@@ -51,6 +51,7 @@ class RoleController {
 
     def getBestNames() {
         Name n = new Name();
+        LinkedList persolist = new LinkedList();
         Set<NameHasTag> tags = new ArrayList<>();
 
         params.each {
@@ -74,12 +75,12 @@ class RoleController {
         JSONArray jsonArray = new JSONArray();
 
         if (params.containsKey("plotId")) {
-            //Plot plot = Plot.get(params.plotId as Integer)
-            //n.plotId = plot.id
-            n.name = Naming2Service.findBestNames(persolist, gn_id)
+            Plot plot = Plot.get(params.plotId as Integer)
+            n.id = plot.id
+            n.resultsAllUniverses = Naming.findBestNamesForAllUnivers(persolist, plot)
             if (n.name.empty)
                 throw (NullPointerException)
-            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in n.name) {
+            for (Pair<Tag, ArrayList<Pair<ReferentialObject, Integer>>> ref in n.resultsAllUniverses) {
                 int i = 0;
                 while (i != 3) {
                     jsonArray.add(ref.right[i].left.name);

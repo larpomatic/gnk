@@ -1,6 +1,8 @@
 package org.gnk.naming
 
+import org.gnk.ressplacetime.ReferentialObject
 import org.gnk.tag.Tag
+import org.gnk.utils.Pair
 
 class Name {
 
@@ -13,9 +15,10 @@ class Name {
 	String gender
 
     // Id referenced into DTD
-    static transients = ["DTDId"]
+    static transients = ["DTDId", "resultsAllUniverses"]
     Integer DTDId;
 
+    ArrayList<Pair<Tag, LinkedList<PersoForNaming>>> resultsAllUniverses;
     static hasMany = [ extTags: NameHasTag ]
 
 	static constraints = {

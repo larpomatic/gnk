@@ -1,11 +1,12 @@
 package org.gnk.naming
 
-import com.gnk.substitution.Tag
+import org.gnk.tag.Tag
 import org.apache.tools.ant.types.resources.First
 import org.gnk.gn.Gn
 import org.gnk.parser.GNKDataContainerService
 import org.gnk.ressplacetime.GenericObject
 import org.gnk.ressplacetime.ReferentialObject
+import org.gnk.selectintrigue.Plot
 import org.gnk.tag.TagRelation
 import org.gnk.tag.TagService
 import org.gnk.tag.V2TagService
@@ -13,6 +14,7 @@ import org.gnk.utils.Pair
 import org.hibernate.FetchMode
 
 class Naming2Service {
+    private static int IDgenericUniverTag = 33089;
 
     def serviceMethod() {}
 
@@ -33,12 +35,6 @@ class Naming2Service {
         Collections.shuffle (nlist)
         Gn gn = Gn.findById(gn_id)
         //endregion
-
-        /*println("Univers: " + persoList.first.universe)
-        System.out.print ("Male firstname list: " + fnlistHomme.name)
-        System.out.print ("Female firstname list: " + fnlistFemme.name)
-        System.out.print ("Name list: " + nlist.name)
-        System.out.print(System.lineSeparator())*/
 
         //Loop on every character in the list
         long startTime = System.nanoTime();
@@ -158,6 +154,28 @@ class Naming2Service {
         println ("Time for naming all the characters: ".toUpperCase()
                 + ((endTime - startTime )/ 1000000000.0) + " seconds")
         return result
+    }
+
+    ArrayList<Pair<Tag, LinkedList<PersoForNaming>>> findBestNamesForAllUnivers(LinkedList<PersoForNaming> persoList, Plot plot) {
+
+        // on réucpère l'ensemble des tagsunivers dans la liste UniverListTag
+        ArrayList<Tag> univerListTag = new ArrayList<Tag>();
+        Tag genericUnivers = Tag.findById(IDgenericUniverTag);
+        univerListTag.addAll(Tag.findAllByParent(genericUnivers));
+
+        // liste qui contiendra l'ensemble des résultats cherchés
+        ArrayList<Pair<Tag, LinkedList<PersoForNaming>>> all_names= new ArrayList<>();
+
+        // On boucle sur les tags Univers en créant des GN avec le plot défini puis on appelle findBestNames, et on insère le résultat dans all_names
+        for (Tag t in univerListTag) {
+            Gn gn = new Gn();
+            gn.addPlot(plot);
+            t.setWeight(101);
+            gn.setUnivers(t);
+            all_names.addAll(new Pair<Tag, LinkedList<PersoForNaming>>(t, findBestNames(persoList, gn.id)));
+        }
+
+        return all_names;
     }
 
     // recuperer les prenoms de la base de donnees en fonction de l'univers et du genre (+ les neutre)
