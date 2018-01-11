@@ -90,11 +90,11 @@
                                         <input name="relevantPlace" id="relevantPlace" type="checkbox"/>
                                         <a href="#colplace" data-toggle="collapse">RelevantPlace</a>
                                         <div id="colplace" class="collapse">
-                                            <textarea id="place" rows=4 name="place"></textarea>
+                                            <label ></label>
+                                            <textarea  DISABLED id="place" rows=4 name="place"></textarea>
                                         </div>
                                     </td>
                                     <td>
-
                                         <input name="relevantPlot" id="relevantPlot" type="checkbox"/>
                                         <a href="#colplot" data-toggle="collapse">RelevantPlot</a>
                                         <div id="colplot" class="collapse">
@@ -108,6 +108,7 @@
                                         <input name="relevantResource" id="relevantResource" type="checkbox"/>
                                         <a href="#colres" data-toggle="collapse">RelevantResource</a>
                                         <div id="colres" class="panel-collapse collapse">
+                                            <label ></label>
                                             <textarea DISABLED id="resource" rows=4 name="resource"></textarea>
                                         </div>
                                     </td>
@@ -115,6 +116,7 @@
                                         <input name="relevantRole" id="relevantRole" type="checkbox"/>
                                         <a href="#colrole" data-toggle="collapse">RelevantRole</a>
                                         <div id="colrole" class="collapse">
+                                            <label ></label>
                                             <textarea DISABLED id="role" rows=4 name="role"></textarea>
                                         </div>
                                     </td>
