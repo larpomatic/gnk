@@ -7,7 +7,7 @@
     </div>
 
     <div class="span2"><a href="#modalFusionPlace" role="button" id="fusionbuttonmodal" class="btn btn-warning" data-toggle="modal"><i
-            class="icon-play icon-white"></i> FUSION</a>
+            class="icon-play icon-white"> </i> FUSION</a>
     </div>
 
     <div class="span1" id="placesLoader" style="display: none; float : right;"><g:img dir="images/substitution"
@@ -80,12 +80,12 @@
 </table>
 
 <!-- Modal Views -->
-<div id="modalFusionPlace" class="modal hide fade" style="width: 800px; margin-left: -400px;"
+<div id="modalFusionPlace" class="modal hide fade" style="width: 90%; margin: auto; height: 50%;"
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <h3>Fusion</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 
     <div class="modal-body">
         <g:form action="merged">
@@ -117,8 +117,8 @@
 
                     </div>
                 </div>
+                <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
             </div>
-            <button id="fusionButton" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Fusionner</button>
         </g:form>
     </div>
 

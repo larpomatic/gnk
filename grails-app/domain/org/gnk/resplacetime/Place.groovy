@@ -17,7 +17,7 @@ class Place extends ReferentialObject{
     static def genders = ["M", "F", "MP", "FP"]
 
     // Id referenced into DTD
-    static transients = ["DTDId", "plotId", "code", "character", "tagList", "comment", "plot", "objectType"]
+    static transients = ["DTDId", "plotId", "code", "character", "tagList", "comment", "plot", "objectType", "plotName", "placeTags"]
     Integer DTDId;
 
     //Transient fields used in substitution
@@ -29,8 +29,11 @@ class Place extends ReferentialObject{
     List<Tag> tagList
     String comment
     // Plot name
+    String plotName
     String plot
     String objectType
+
+    List<Tag> placeTags;
 
     static belongsTo = [genericPlace: GenericPlace]
 

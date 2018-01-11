@@ -13,7 +13,7 @@ import org.gnk.ressplacetime.ReferentialObject
 
 public class V2TagService {
 
-    private static int  IDgenericUniverTag = 33089;
+    private static int IDgenericUniverTag = 33089;
     private static int NumberOfGenerationsRelevant = 2;
     private static int NumberofGenerationsParent = 2;
     private static int PonderationParent = 1;
@@ -28,9 +28,9 @@ public class V2TagService {
     V2TagService() {
     }
 /**
-     * get all the univers
-     * @return list of all the univers
-     */
+ * get all the univers
+ * @return list of all the univers
+ */
     ArrayList<Tag> getUnivers() {
         ArrayList<Tag> UniverListTag = new ArrayList<Tag>();
         Tag genericUnivers = Tag.findById(IDgenericUniverTag);
@@ -67,10 +67,8 @@ public class V2TagService {
         //initialisation des tags de l'object
         Map<Tag, Integer> map_Object = initObjectList(object);
 
-
         //récupérer les tags parents
         map_genericObject.putAll(getParentTags(genericObject.getTagsAndWeights(PonderationParent)));
-
 
         //récupérer les tags du refenretialobjet
         map_Object.putAll(getRelevantTags(object.getTagsAndWeights(ReferentialObjectponderation)));
@@ -97,7 +95,7 @@ public class V2TagService {
             }
         }
 
-        result = totalNumberOfTagsUsed == 0 ? score : (score /totalNumberOfTagsUsed);
+        result = totalNumberOfTagsUsed == 0 ? score : (score / totalNumberOfTagsUsed);
         return result;
     }
 
@@ -380,8 +378,6 @@ public class V2TagService {
      * @return Map < Tag , Integer >
      */
     Map<Tag, Integer> getRelevantTags(Map<Tag, Integer> taglist) {
-
-
         Map<Tag, Integer> parents_tags = new HashMap<>();
 
         ArrayList<Tag> current_gen_parents = new ArrayList<>();
@@ -483,8 +479,7 @@ public class V2TagService {
 
         if (tag.parent != null && tag.parent.getName() != null && tag.parent.getName() == "Tag Univers") {
             score = 50;
-        }
-        else {
+        } else {
             score = Math.abs(gPweight) + Math.abs(pweight);
             if (gPweight < 0 || pweight < 0)
                 score *= -1;
@@ -498,7 +493,7 @@ public class V2TagService {
      * @param relationWeight
      * @return The computed relationship score.
      */
-    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight)  {
+    Integer computeFatherWeight(Integer sonWeight, Integer relationWeight) {
         Integer result = sonWeight * relationWeight / 100;
 
         if (result < -100)
@@ -536,11 +531,11 @@ public class V2TagService {
         if (testValue == null)
             map.put(tag, integer)
         else {
-                //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
-                map.put(tag, (Integer)(integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
+            //map.put(tag, (Integer)((integer.intValue() * testValue.intValue()) /2));
+            map.put(tag, (Integer) (integer.intValue() > testValue.intValue() ? integer.intValue() * 1.5 : testValue.intValue() * 1.5));
         }
 
-        return  map;
+        return map;
     }
     
     //Ne pas supprimer, car contient les print pour tester les tags de tous les éléments

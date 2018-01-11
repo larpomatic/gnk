@@ -59,7 +59,7 @@ class Period {
     }
     static mapping = {
         description type: 'text'
-        id type:'integer'
+        id type: 'integer'
         version type: 'integer'
 
 //      periodPredecessor (nullable:true)
@@ -75,13 +75,15 @@ class Period {
             return false
         }
 
-        def blockingPeriods = Period.where {gn == this.gn && isBlocking == true}.list(sort: "beginning")
+        def blockingPeriods = Period.where { gn == this.gn && isBlocking == true }.list(sort: "beginning")
 
-        Boolean allowed = true
+        Boolean allowed = false
 
         blockingPeriods.each { Period testedPeriod ->
             //Return is the closure equivalent for continue
-            if(testedPeriod == null) { return }
+            if (testedPeriod == null) {
+                return
+            }
             allowed = allowed && !this.isDuring(testedPeriod.getBeginning(), testedPeriod.getEnd())
 
             //A closure ending with true is equivalent as break statement in a loop
@@ -103,7 +105,6 @@ class Period {
         cal.add(Calendar.MINUTE, this.duration)
         return cal.getTime()
     }
-
 
     /**
      * This method test if an interval of time is intersect with the period
@@ -139,7 +140,6 @@ class Period {
         return (beginsDuringPeriod || endsDuringPeriod || periodInsideTested || testedInsidePeriod)
     }
 
-
     /**
      *
      * This function set the beginning of the period from the integers Absolute times attributes.
@@ -154,5 +154,12 @@ class Period {
 
     //enrichir le contructeur pour les dates de début relatives
     //toJSON
+    //private void beginningtoJson()
+    //{
+     //beginning = getBeginning(parseInt(jsonDate.substr(6)));
+      //  var jsonDate = (new Date()).toJSON();
+
+    //}
+
     //fromJSON
 }

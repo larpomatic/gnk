@@ -16,8 +16,7 @@ class Description {
 
     Integer plotId
 
-    public Description(Integer id, Integer desc_idDescription, String desc_Type, String desc_Pitch, String desc_isPnj, String desc_isPj, String desc_isOrga, String desc_title)
-    {
+    public Description(Integer id, Integer desc_idDescription, String desc_Type, String desc_Pitch, String desc_isPnj, String desc_isPj, String desc_isOrga, String desc_title) {
         plotId = id
         type = desc_Type
         pitch = desc_Pitch
@@ -30,7 +29,7 @@ class Description {
     }
 
     static mapping = {
-        pitch type:'text'
+        pitch type: 'text'
         plotId type: 'integer'
     }
 

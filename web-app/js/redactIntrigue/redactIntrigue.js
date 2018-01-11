@@ -941,9 +941,6 @@ function toBalise(description_zone)
     console.log("description :" + description);
 
     $("#idDescriptionText_" + id_description).html(description);
-
-
-
 }
 
 
