@@ -91,7 +91,7 @@
                                         <a href="#colplace" data-toggle="collapse">RelevantPlace</a>
                                         <div id="colplace" class="collapse">
                                             <label ></label>
-                                            <textarea  DISABLED id="place" rows=4 name="place"></textarea>
+                                            <textarea  DISABLED id="place" rows=4 name="place" style="text-align:center"></textarea>
                                         </div>
                                     </td>
                                     <td>
@@ -99,7 +99,7 @@
                                         <a href="#colplot" data-toggle="collapse">RelevantPlot</a>
                                         <div id="colplot" class="collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="plot" rows=4 name="plot"></textarea>
+                                            <textarea DISABLED id="plot" rows=4 name="plot" style="text-align:center" ></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -110,7 +110,7 @@
                                         <a href="#colres" data-toggle="collapse">RelevantResource</a>
                                         <div id="colres" class="panel-collapse collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="resource" rows=4 name="resource"></textarea>
+                                            <textarea DISABLED id="resource" rows=4 name="resource" style="text-align:center"></textarea>
                                         </div>
                                     </td>
                                     <td>
@@ -118,7 +118,7 @@
                                         <a href="#colrole" data-toggle="collapse">RelevantRole</a>
                                         <div id="colrole" class="collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="role" rows=4 name="role"></textarea>
+                                            <textarea DISABLED id="role" rows=4 name="role" style="text-align:center" ></textarea>
                                         </div>
                                     </td>
                                 </tr>
