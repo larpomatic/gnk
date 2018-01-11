@@ -98,6 +98,7 @@
                                         <input name="relevantPlot" id="relevantPlot" type="checkbox"/>
                                         <a href="#colplot" data-toggle="collapse">RelevantPlot</a>
                                         <div id="colplot" class="collapse">
+                                            <label ></label>
                                             <textarea DISABLED id="plot" rows=4 name="plot"></textarea>
                                         </div>
                                     </td>
