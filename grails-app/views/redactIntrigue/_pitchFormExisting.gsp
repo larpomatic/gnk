@@ -98,22 +98,12 @@ select {
     <div class="button_template">
         <g:render template="dropdownButtons"/>
     </div>
-    <!-- Editor -->
-   <div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-        ${description.pitch}
-    </div>
-    <div id="idDescriptionText_${description.idDescription}" contenteditable="true" class="text-left richTextEditor editable"  onblur="saveCarretPos($(this).attr('id'), this)">
 
-    <!--<div name="plotRichTextEditor" id="idPlotRichTextEditor_${description.idDescription}" value="${description.pitch}" contenteditable="true" class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'))">
-        ${description.pitch}
-    </div>-->
-    <div id="idDescriptionText_${description.idDescription}" contenteditable="true"
-         class="text-left richTextEditor editable" onblur="saveCarretPos($(this).attr('id'), this)">
->>>>>>> Stashed changes
+    <!-- Editor -->
+    <div id="idDescriptionText_${description.idDescription}" contenteditable="true" class="text-left richTextEditor editable"  onblur="saveCarretPos($(this).attr('id'), this)">
         ${description.pitch}
     </div>
-    <g:hiddenField name="description_text" class="description_text"
-                   id="idDescriptionTextHide_${description.idDescription}" value="${description.pitch}"/>
+    <g:hiddenField name="description_text" class="description_text" id="idDescriptionTextHide_${description.idDescription}" value="${description.pitch}"/>
     <div class="buttonDelete">
         <div type="button" class="btn btn-danger" onclick="deleteDescription(this)">Supprimer la description</div>
     </div>
