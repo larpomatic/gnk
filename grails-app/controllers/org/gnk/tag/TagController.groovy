@@ -3,6 +3,10 @@ package org.gnk.tag
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.gnk.administration.DbCoherenceController
+import org.gnk.naming.Firstname
+import org.gnk.naming.FirstnameHasTag
+import org.gnk.naming.Name
+import org.gnk.naming.NameHasTag
 import org.gnk.resplacetime.Place
 import org.gnk.resplacetime.PlaceHasTag
 import org.gnk.resplacetime.Resource
@@ -38,6 +42,8 @@ class TagController {
             String namePlace = new String()
             String nameResource = new String()
             String nameRole = new String()
+            String fname = new String()
+            String name = new String()
             obj.put("id", tag.id);
             ArrayList<Tag> tagParent = new ArrayList<Tag>();
             Tag t = tag.parent;
@@ -59,7 +65,23 @@ class TagController {
                 obj.put("parent", tagParent.get(tagParent.size()-1).id);
             obj.put("text", tag.name);
             obj2.put("relevantFirstname", tag.relevantFirstname)
+            List<FirstnameHasTag> firstnames = FirstnameHasTag.findAllByTag(tag)
+            for (FirstnameHasTag  firstnameht : firstnames) {
+                Firstname firstname = firstnameht.getFirstname()
+                fname+=firstname.name+"\n"
+
+            }
+            if (fname != "")
+                obj2.put("firstname",fname)
             obj2.put("relevantLastname", tag.relevantLastname);
+            List<NameHasTag> lastnames = NameHasTag.findAllByTag(tag)
+            for (NameHasTag lastnameht : lastnames) {
+                Name lastname = lastnameht.getName()
+                name+=lastname.name+"\n"
+
+            }
+            if (name != "")
+                obj2.put("lastname",name)
             obj2.put("relevantPlace", tag.relevantPlace);
             List<PlaceHasTag> places = PlaceHasTag.findAllByTag(tag)
             for (PlaceHasTag placeht : places) {

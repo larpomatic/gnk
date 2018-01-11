@@ -78,11 +78,19 @@
                                     <td>
 
                                         <input id="relevantFirstname" name="relevantFirstname" type="checkbox"/>
-                                        RelevantFirstName
+                                        <a href="#colfirst" data-toggle="collapse">RelevantFirstName</a>
+                                        <div id="colfirst" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="firstname" rows=3 name="firstname" style="text-align:center" ></textarea>
+                                        </div>
                                     </td>
                                     <td>
                                         <input name="relevantLastname" id="relevantLastname" type="checkbox"/>
-                                        RelevantLastName
+                                        <a href="#collast" data-toggle="collapse">RelevantLastName</a>
+                                        <div id="collast" class="collapse">
+                                            <label ></label>
+                                            <textarea DISABLED id="lastname" rows=3 name="lastname" style="text-align:center" ></textarea>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -91,7 +99,7 @@
                                         <a href="#colplace" data-toggle="collapse">RelevantPlace</a>
                                         <div id="colplace" class="collapse">
                                             <label ></label>
-                                            <textarea  DISABLED id="place" rows=4 name="place" style="text-align:center"></textarea>
+                                            <textarea  DISABLED id="place" rows=3 name="place" style="text-align:center"></textarea>
                                         </div>
                                     </td>
                                     <td>
@@ -99,7 +107,7 @@
                                         <a href="#colplot" data-toggle="collapse">RelevantPlot</a>
                                         <div id="colplot" class="collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="plot" rows=4 name="plot" style="text-align:center" ></textarea>
+                                            <textarea DISABLED id="plot" rows=3 name="plot" style="text-align:center" ></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -110,7 +118,7 @@
                                         <a href="#colres" data-toggle="collapse">RelevantResource</a>
                                         <div id="colres" class="panel-collapse collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="resource" rows=4 name="resource" style="text-align:center"></textarea>
+                                            <textarea DISABLED id="resource" rows=3 name="resource" style="text-align:center"></textarea>
                                         </div>
                                     </td>
                                     <td>
@@ -118,7 +126,7 @@
                                         <a href="#colrole" data-toggle="collapse">RelevantRole</a>
                                         <div id="colrole" class="collapse">
                                             <label ></label>
-                                            <textarea DISABLED id="role" rows=4 name="role" style="text-align:center" ></textarea>
+                                            <textarea DISABLED id="role" rows=3 name="role" style="text-align:center" ></textarea>
                                         </div>
                                     </td>
                                 </tr>
@@ -227,7 +235,7 @@
         });
         $('#SimpleJSTree')
             .on('changed.jstree', function (e, data) {
-                var i, j, t = [], p = [], n = [], relevantFirstname = [], relevantLastname = [], relevantPlace = [], relevantPlot = [], relevantResource = [], relevantRole = [], Place = [], Plot = [], Resource = [], Role = [];
+                var i, j, t = [], p = [], n = [], relevantFirstname = [], relevantLastname = [], relevantPlace = [], relevantPlot = [], relevantResource = [], relevantRole = [], Place = [], Plot = [], Resource = [], Role = [], Lastname = [], Firstname = [];
                 for (i = 0, j = data.selected.length; i < j; i++) {
                     t.push(data.instance.get_node(data.selected[i]).id);
                     p.push(data.instance.get_node(data.selected[i]).parent);
@@ -242,6 +250,8 @@
                     Plot.push(data.instance.get_node(data.selected[i]).a_attr.plot);
                     Resource.push(data.instance.get_node(data.selected[i]).a_attr.resource);
                     Role.push(data.instance.get_node(data.selected[i]).a_attr.role);
+                    Firstname.push(data.instance.get_node(data.selected[i]).a_attr.firstname);
+                    Lastname.push(data.instance.get_node(data.selected[i]).a_attr.lastname);
                 }
                 document.getElementById('idTag').value = t.join(', ');
                 document.getElementById('NameEditRelTag').value = n.join(', ');
@@ -253,6 +263,8 @@
                 document.getElementById('place').value = Place.join(', ');
                 document.getElementById('role').value = Role.join(', ');
                 document.getElementById('resource').value = Resource.join(', ');
+                document.getElementById('firstname').value = Firstname.join(', ');
+                document.getElementById('lastname').value = Lastname.join(', ');
                 if (relevantFirstname.join(', ') == 'true')
                     document.getElementById('relevantFirstname').checked = true;
                 else
