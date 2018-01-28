@@ -429,5 +429,6 @@
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal">Ok</button>
         </div>
+
     </div>
 </div>

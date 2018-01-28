@@ -1,6 +1,7 @@
 $(function(){
     updatePJG();
     updateRole();
+    getBestName();
 
     //ajoute un nouveau role dans la base
     $('.insertRole').click(function() {
