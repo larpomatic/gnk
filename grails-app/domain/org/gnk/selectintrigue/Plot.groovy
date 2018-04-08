@@ -109,13 +109,13 @@ class Plot {
 			sumPipRolesBuffer = 0;
 			for(Role role : getRoles()) {
                 if (role.isPJ()) {
-                    sumPipRolesBuffer += role.getPipi() + role.getPipr();
+                    sumPipRolesBuffer += role.getPip();
                     count++
                 }
                 if (role.isTPJ())
-                    sumPipRolesBuffer += nbPlayer * (role.getPipi() + role.getPipr());
+                    sumPipRolesBuffer += nbPlayer * role.getPip();
                 if (role.isPJG() && role.getPjgp() != null)
-                    nbPJG_PIP = (role.getPipr() + role.getPipi()) * role.getPjgp() / 100 *(nbPlayer - nbPJ);
+                    nbPJG_PIP = role.getPip() * role.getPjgp() / 100 *(nbPlayer - nbPJ);
 			}
             sumPipRolesBuffer += (nbPlayer - count) * nbPJG_PIP;
 		}
@@ -178,7 +178,7 @@ class Plot {
     public int getNbRoleOverPipcore(int gnPipcore) {
         int pipCoreOkNumber = 0;
         for (Role role in roles) {
-            if (role.getPipi() + role.getPipr() >= gnPipcore) {
+            if (role.getPip() >= gnPipcore) {
                 pipCoreOkNumber += 1;
             }
         }

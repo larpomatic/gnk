@@ -158,11 +158,15 @@ class RoleXMLReaderService {
         if (ROLE.attribute("id") != "null" && (ROLE.attribute("id") as String).isInteger())
             roleRes.DTDId = ROLE.attribute("id") as Integer
 
-        if (ROLE.attribute("pipr") != "null" && (ROLE.attribute("pipr") as String).isInteger())
-            roleRes.pipr = ROLE.attribute("pipr") as Integer
+        if (ROLE.attribute("pip") != "null" && (ROLE.attribute("pip") as String).isInteger())
+            roleRes.pip = ROLE.attribute("pip") as Integer
+        else {
+            if (ROLE.attribute("pipr") != "null" && (ROLE.attribute("pipr") as String).isInteger())
+                roleRes.pip += ROLE.attribute("pipr") as Integer
 
-        if (ROLE.attribute("pipi") != "null" && (ROLE.attribute("pipi") as String).isInteger())
-            roleRes.pipi = ROLE.attribute("pipi") as Integer
+            if (ROLE.attribute("pipi") != "null" && (ROLE.attribute("pipi") as String).isInteger())
+                roleRes.pip += ROLE.attribute("pipi") as Integer
+        }
 
         if (ROLE.attribute("type") != "null")
             roleRes.type = ROLE.attribute("type")

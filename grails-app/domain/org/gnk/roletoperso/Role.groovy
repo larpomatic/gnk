@@ -15,8 +15,7 @@ class Role implements Comparable {
     Date lastUpdated
     Date dateCreated
     String code
-    Integer pipr
-    Integer pipi
+    Integer pip
     String type
     String description
     Integer pjgp
@@ -171,7 +170,7 @@ class Role implements Comparable {
     }
 
     public int getPIPTotal() {
-        return pipr + pipi;
+        return pip;
     }
 
     @Override

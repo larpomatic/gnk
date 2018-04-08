@@ -488,8 +488,7 @@ class RedactIntrigueController {
                 txt += " (" + role.pjgp + "%)"
             wordWriter.addStyledParagraphOfText("Normal", txt)
 
-            wordWriter.addStyledParagraphOfText("Normal", "PIPI : " + role.getPipi())
-            wordWriter.addStyledParagraphOfText("Normal", "PIPR : " + role.getPipr())
+            wordWriter.addStyledParagraphOfText("Normal", "PIP : " + role.getPip())
             txt = "Les tags du role sont : \n"
             for (RoleHasTag roleHasTag : role.roleHasTags)
             {
@@ -951,8 +950,7 @@ class RedactIntrigueController {
             newDuplicatedRole.lastUpdated = new Date()
             newDuplicatedRole.dateCreated = new Date()
             newDuplicatedRole.code = r.code
-            newDuplicatedRole.pipr = r.pipr
-            newDuplicatedRole.pipi = r.pipi
+            newDuplicatedRole.pip = r.pip
             newDuplicatedRole.pjgp = r.pjgp
             newDuplicatedRole.plot = duplicatedPlot
             newDuplicatedRole.description = r.description

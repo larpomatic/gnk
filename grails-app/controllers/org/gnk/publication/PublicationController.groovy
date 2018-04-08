@@ -1359,15 +1359,15 @@ class PublicationController {
                         if (roleHasTag.tag.parent.name.equals("Sexe") || roleHasTag.tag.parent.name.equals("Âge"))
                             continue
                         int weight = roleHasTag.weight;
-                        if (0 != r.pipi + r.pipr)
-                            weight *= (r.pipi + r.pipr)
+                        if (0 != r.pip)
+                            weight *= r.pip
                         if (false == charHasTagMap.containsKey(roleHasTag.tag.name)) {
-                            MutablePair weightToPipPair = new MutablePair(weight, r.pipr + r.pipi)
+                            MutablePair weightToPipPair = new MutablePair(weight, r.pip)
                             charHasTagMap.put(roleHasTag.tag.name, weightToPipPair)
                         } else { // Tag has ever been encountered for this character
                             MutablePair<Integer, Integer> weightToPipPair = charHasTagMap.get(roleHasTag.tag.name)
                             weightToPipPair.setLeft(weightToPipPair.getLeft() + weight)
-                            weightToPipPair.setRight(weightToPipPair.getRight() + r.pipi + r.pipr)
+                            weightToPipPair.setRight(weightToPipPair.getRight() + r.pip)
                         }
                     }
                 }
@@ -1851,8 +1851,7 @@ class PublicationController {
                     print "Erreur : nom du personnage non trouvé"
                 wordWriter.addTableStyledCell("small", tableRowPlot, characterName)
                 wordWriter.addTableStyledCell("small", tableRowPlot, r.code)
-                wordWriter.addTableStyledCell("small", tableRowPlot, r.pipi.toString())
-                wordWriter.addTableStyledCell("small", tableRowPlot, r.pipr.toString())
+                wordWriter.addTableStyledCell("small", tableRowPlot, r.pip.toString())
                 wordWriter.addTableStyledCell("small", tableRowPlot, r.description)
 
                 table.getContent().add(tableRowPlot);

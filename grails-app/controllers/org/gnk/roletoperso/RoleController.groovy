@@ -63,8 +63,7 @@ class RoleController {
         jsonRole.put("code", role.getCode());
         jsonRole.put("id", role.getId());
         jsonRole.put("plotId", role.getPlot().getId());
-        jsonRole.put("pipi", role.getPipi());
-        jsonRole.put("pipr", role.getPipr());
+        jsonRole.put("pip", role.getPip());
         jsonRole.put("type", role.getType());
         jsonRole.put("pjgp", role.getPjgp());
         jsonRole.put("description", role.getDescription());
@@ -169,13 +168,8 @@ class RoleController {
 			return 2
 		}
         try {
-            if (params.containsKey("rolePipi")) {
-                newRole.pipi = params.rolePipi as Integer
-            } else {
-                return 3
-            }
-            if (params.containsKey("rolePipr")) {
-                newRole.pipr = params.rolePipr as Integer
+            if (params.containsKey("rolePip")) {
+                newRole.pip = params.rolePip as Integer
             } else {
                 return 3
             }

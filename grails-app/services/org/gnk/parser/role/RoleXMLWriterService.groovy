@@ -39,8 +39,7 @@ class RoleXMLWriterService {
         assert (role.DTDId != null && role.DTDId >= 0)
         rootElement.setAttribute("id", role.DTDId.toString());
         rootElement.setAttribute("code", role.code);
-        rootElement.setAttribute("pipr", role.pipr?.toString());
-        rootElement.setAttribute("pipi", role.pipi?.toString());
+        rootElement.setAttribute("pip", role.pip?.toString());
         rootElement.setAttribute("type", role.type);
         rootElement.setAttribute("pjgp",role.pjgp?.toString());
 

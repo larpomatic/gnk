@@ -42,20 +42,12 @@
                 </div>
                 <div class="row formRow">
                     <div class="span1">
-                        <label for="rolePipi">
-                            <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
+                        <label for="rolePip">
+                            <g:message code="redactintrigue.role.rolePip" default="PIP"/>
                         </label>
                     </div>
                     <div class="span4">
-                        <g:field type="number" name="rolePipi" id="rolePipi" value="" required=""/>
-                    </div>
-                    <div class="span1">
-                        <label for="rolePipr">
-                            <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
-                        </label>
-                    </div>
-                    <div class="span4">
-                        <g:field type="number" name="rolePipr" id="rolePipr" value="" required=""/>
+                        <g:field type="number" name="rolePip" id="rolePip" value="" required=""/>
                     </div>
                 </div>
                 <div class="row formRow">
@@ -147,20 +139,12 @@
                     </div>
                     <div class="row formRow">
                         <div class="span1">
-                            <label for="rolePipi">
-                                <g:message code="redactintrigue.role.rolePipi" default="PIPI"/>
+                            <label for="rolePip">
+                                <g:message code="redactintrigue.role.rolePip" default="PIP"/>
                             </label>
                         </div>
                         <div class="span4">
-                            <g:field type="number" name="rolePipi" id="rolePipi" value="${role.pipi}" required=""/>
-                        </div>
-                        <div class="span1">
-                            <label for="rolePipr">
-                                <g:message code="redactintrigue.role.rolePipr" default="PIPR"/>
-                            </label>
-                        </div>
-                        <div class="span4">
-                            <g:field type="number" name="rolePipr" id="rolePipr" value="${role.pipr}" required=""/>
+                            <g:field type="number" name="rolePip" id="rolePip" value="${role.pip}" required=""/>
                         </div>
                     </div>
                     <div class="row formRow">

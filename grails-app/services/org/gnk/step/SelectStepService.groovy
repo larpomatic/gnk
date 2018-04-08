@@ -285,7 +285,7 @@ class SelectStepService {
             if (role.isPJ() || role.isPJG())
                 roleList.add(role);
             if (role.isTPJ())
-                nbTPS_PIP = role.getPipi() + role.getPipr();
+                nbTPS_PIP = role.getPip();
         }
         if (roleList.size() > gn.getNbPlayers())
             return false;
@@ -301,7 +301,7 @@ class SelectStepService {
         }
 
         for (Role role : roleList) {
-            if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > gn.getPipMax()) {
+            if ((nbTPS_PIP + role.getPip()) > gn.getPipMax()) {
                 return false;
             }
         }

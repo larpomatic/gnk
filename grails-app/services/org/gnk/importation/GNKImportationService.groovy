@@ -400,8 +400,7 @@ class GNKImportationService {
         if (roleBDD){
             roleBDD.setDTDId(role.getDTDId())
             roleBDD.description = role.description
-            roleBDD.pipi = role.pipi
-            roleBDD.pipr = role.pipr
+            roleBDD.pip = role.pip
             roleBDD.type = role.type
         }
         else

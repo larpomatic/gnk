@@ -112,8 +112,7 @@ class LifeController {
                             role.roleHasPastscenes.add(rhp)
                             role.description = geAge
                             role.type = "PJ"
-                            role.pipi = 0
-                            role.pipr = 0
+                            role.pip = 0
                             role.code = "Life_" + geTitle
                             role.plot = p
 
@@ -202,8 +201,7 @@ class LifeController {
         // Créer un role
         Role roleForLife = new Role()
         roleForLife.type = "PJ"
-        roleForLife.pipi = 0
-        roleForLife.pipr = 0
+        roleForLife.pip = 0
         roleForLife.code = "Life"
         roleForLife.description = "Vie du personnage"
         roleForLife.plot = p

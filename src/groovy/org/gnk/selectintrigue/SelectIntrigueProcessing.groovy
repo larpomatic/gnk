@@ -298,7 +298,7 @@ public class SelectIntrigueProcessing {
             if (role.isPJ() || role.isPJG())
                 roleList.add(role);
             if (role.isTPJ())
-                nbTPS_PIP = role.getPipi() + role.getPipr();
+                nbTPS_PIP = role.getPip();
         }
         if (roleList.size() > _gn.getNbPlayers())
             return false;
@@ -315,7 +315,7 @@ public class SelectIntrigueProcessing {
         }
 
         for (Role role : roleList) {
-            if ((nbTPS_PIP + role.getPipi() + role.getPipr()) > _gn.getPipMax()) {
+            if ((nbTPS_PIP + role.getPip()) > _gn.getPipMax()) {
                 return false;
             }
         }

@@ -22,12 +22,8 @@
                     <td>${role.type}</td>
                 </tr>
                 <tr>
-                    <td>PIP Relationnelle :</td>
-                    <td>${role.pipr}</td>
-                </tr>
-                <tr>
-                    <td>PIP Intrigue :</td>
-                    <td>${role.pipi}</td>
+                    <td>PIP :</td>
+                    <td>${role.pip}</td>
                 </tr>
                 <tr>
                     <td>Description :</td>
